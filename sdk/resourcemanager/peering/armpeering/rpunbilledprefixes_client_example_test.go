@@ -6,13 +6,14 @@ package armpeering_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ListPeeringServiceCountriesBySubscription.json
-func ExampleServiceCountriesClient_NewListPager() {
+// Generated from example definition: 2025-05-01/ListRpUnbilledPrefixes.json
+func ExampleRpUnbilledPrefixesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +23,8 @@ func ExampleServiceCountriesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewServiceCountriesClient().NewListPager(nil)
+	pager := clientFactory.NewRpUnbilledPrefixesClient().NewListPager("rgName", "peeringName", &armpeering.RpUnbilledPrefixesClientListOptions{
+		Consolidate: to.Ptr(true)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,18 +35,13 @@ func ExampleServiceCountriesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpeering.ServiceCountriesClientListResponse{
-		// 	ServiceCountryListResult: armpeering.ServiceCountryListResult{
-		// 		Value: []*armpeering.ServiceCountry{
+		// page = armpeering.RpUnbilledPrefixesClientListResponse{
+		// 	RpUnbilledPrefixListResult: armpeering.RpUnbilledPrefixListResult{
+		// 		Value: []*armpeering.RpUnbilledPrefix{
 		// 			{
-		// 				Name: to.Ptr("country1"),
-		// 				Type: to.Ptr("Microsoft.Peering/peeringServiceCountries"),
-		// 				ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/peeringServiceCountries/country1"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("country2"),
-		// 				Type: to.Ptr("Microsoft.Peering/peeringServiceCountries"),
-		// 				ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/peeringServiceCountries/country2"),
+		// 				AzureRegion: to.Ptr("West US"),
+		// 				PeerAsn: to.Ptr[int32](65000),
+		// 				Prefix: to.Ptr("192.168.1.0/24"),
 		// 			},
 		// 		},
 		// 	},

@@ -1,5 +1,43 @@
 # Release History
 
+## 2.0.0 (2025-11-06)
+### Breaking Changes
+
+- Type of `ManagementClientCheckServiceProviderAvailabilityResponse.Value` has been changed from `*Enum0` to `*CheckServiceProviderAvailabilityResponse`
+- Enum `Enum0` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New value `ConnectionStateExternalBlocker`, `ConnectionStateTypeChangeInProgress`, `ConnectionStateTypeChangeRequested` added to enum type `ConnectionState`
+- New value `DirectPeeringTypePeerProp` added to enum type `DirectPeeringType`
+- New value `PeeringLocationsDirectPeeringTypePeerProp` added to enum type `PeeringLocationsDirectPeeringType`
+- New value `ProvisioningStateCanceled` added to enum type `ProvisioningState`
+- New enum type `CheckServiceProviderAvailabilityResponse` with values `CheckServiceProviderAvailabilityResponseAvailable`, `CheckServiceProviderAvailabilityResponseUnavailable`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `Protocol` with values `ProtocolICMP`, `ProtocolNone`, `ProtocolTCP`
+- New function `*ClientFactory.NewRpUnbilledPrefixesClient() *RpUnbilledPrefixesClient`
+- New function `*RegisteredPrefixesClient.Validate(context.Context, string, string, string, *RegisteredPrefixesClientValidateOptions) (RegisteredPrefixesClientValidateResponse, error)`
+- New function `NewRpUnbilledPrefixesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RpUnbilledPrefixesClient, error)`
+- New function `*RpUnbilledPrefixesClient.NewListPager(string, string, *RpUnbilledPrefixesClientListOptions) *runtime.Pager[RpUnbilledPrefixesClientListResponse]`
+- New struct `ConnectivityProbe`
+- New struct `RpUnbilledPrefix`
+- New struct `RpUnbilledPrefixListResult`
+- New struct `SystemData`
+- New field `SystemData` in struct `ConnectionMonitorTest`
+- New field `DirectPeeringType` in struct `LegacyPeeringsClientListOptions`
+- New field `ContentType` in struct `ManagementClientCheckServiceProviderAvailabilityResponse`
+- New field `SystemData` in struct `PeerAsn`
+- New field `SystemData` in struct `Peering`
+- New field `ConnectivityProbes` in struct `Properties`
+- New field `SystemData` in struct `RegisteredAsn`
+- New field `SystemData` in struct `RegisteredPrefix`
+- New field `SystemData` in struct `Service`
+- New field `SystemData` in struct `ServicePrefix`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

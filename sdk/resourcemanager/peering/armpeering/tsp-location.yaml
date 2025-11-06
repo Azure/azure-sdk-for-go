@@ -1,0 +1,4 @@
+directory: specification/peering/resource-manager/Microsoft.Peering/Peering
+commit: 3e3524fccfc88d82e82e71d21e2acd70b5569ad8
+repo: i-specs
+additionalDirectories: 

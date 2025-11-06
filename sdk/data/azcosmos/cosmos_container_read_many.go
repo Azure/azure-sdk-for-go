@@ -4,14 +4,11 @@
 package azcosmos
 
 import (
-	"bytes"
 	"context"
 	"errors"
-	"runtime"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -45,13 +42,19 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 			ID:                items[i].ID,
 		}
 	}
+	var pkVersion int32
+	if containerRsp.ContainerProperties.PartitionKeyDefinition.Version == 0 {
+		pkVersion = int32(1)
+	} else {
+		pkVersion = int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version)
+	}
 
-	readManyPipeline, err := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version))
+	readManyPipeline, err := queryEngine.CreateReadManyPipeline(rawPartitionKeyRanges, newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}
 	log.Writef(EventQueryEngine, "Created readMany pipeline")
-	// Fetch more data from the pipeline
+	// Initial run to get any requests.
 	log.Writef(EventQueryEngine, "Fetching more data from readMany pipeline")
 	result, err := readManyPipeline.Run()
 	if err != nil {
@@ -59,176 +62,20 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 		return ReadManyItemsResponse{}, err
 	}
 
-	// we need to make requests for the items in the queue.
-	// If there are no requests, the pipeline should return true for IsComplete
-	totalRequestCharge := float32(0)
-
-	// Determine concurrency for engine requests (mirror point-reads behavior)
-	var concurrency int
-	if readManyOptions != nil && readManyOptions.MaxConcurrency != nil && *readManyOptions.MaxConcurrency > 0 {
-		concurrency = int(*readManyOptions.MaxConcurrency)
-	} else {
-		concurrency = runtime.NumCPU()
-		if concurrency <= 0 {
-			concurrency = 1
-		}
+	concurrency := determineConcurrency(nil)
+	if readManyOptions != nil {
+		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
 	}
-
-	// Channels and synchronization
-	jobs := make(chan queryengine.QueryRequest, len(result.Requests))
-	provideCh := make(chan []queryengine.QueryResult)
-	errCh := make(chan error, 1)
-	done := make(chan struct{})
-	providerDone := make(chan struct{})
-	var wg sync.WaitGroup
-	var chargeMu sync.Mutex
-
-	// Provider goroutine: serializes calls into the pipeline
-	go func() {
-		defer close(providerDone)
-		for res := range provideCh {
-			if err := readManyPipeline.ProvideData(res); err != nil {
-				select {
-				case errCh <- err:
-				default:
-				}
-				return
-			}
-		}
-	}()
-
-	// Start workers
-	workerCount := concurrency
-	if workerCount > len(result.Requests) {
-		workerCount = len(result.Requests)
-	}
-	for w := 0; w < workerCount; w++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for {
-				select {
-				case <-done:
-					return
-				case <-ctx.Done():
-					return
-				case req, ok := <-jobs:
-					if !ok {
-						return
-					}
-
-					log.Writef(azlog.EventRequest, "ReadMany pipeline requested data for PKRange: %s", req.PartitionKeyRangeID)
-					// paginate
-					fetchMorePages := true
-					for fetchMorePages {
-						// wrap req so it implements the toHeaders method expected by sendQueryRequest
-						qr := queryRequest(req)
-						azResponse, err := c.database.client.sendQueryRequest(
-							path,
-							ctx,
-							qr.Query,
-							nil,
-							operationContext,
-							&qr,
-							nil)
-						if err != nil {
-							select {
-							case errCh <- err:
-							default:
-							}
-							return
-						}
-						queryResponse, err := newQueryResponse(azResponse)
-						if err != nil {
-							select {
-							case errCh <- err:
-							default:
-							}
-							return
-						}
-
-						// update totalRequestCharge
-						chargeMu.Lock()
-						totalRequestCharge += queryResponse.RequestCharge
-						chargeMu.Unlock()
-
-						// Load the data into a buffer to send it to the pipeline
-						buf := new(bytes.Buffer)
-						_, err = buf.ReadFrom(azResponse.Body)
-						if err != nil {
-							select {
-							case errCh <- err:
-							default:
-							}
-							return
-						}
-						data := buf.Bytes()
-						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
-						// only end once all pages have been fetched
-						fetchMorePages = continuation != ""
-
-						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
-						qres := queryengine.QueryResult{
-							PartitionKeyRangeID: req.PartitionKeyRangeID,
-							NextContinuation:    continuation,
-							RequestId:           req.Id,
-							Data:                data,
-						}
-						log.Writef(EventQueryEngine, "Received response for PKRange: %s.", req.PartitionKeyRangeID)
-						select {
-						case <-done:
-							return
-						case provideCh <- []queryengine.QueryResult{qres}:
-						}
-					}
-				}
-			}
-		}()
-	}
-
-	// Feed jobs
-	go func() {
-		for _, r := range result.Requests {
-			select {
-			case <-done:
-				break
-			default:
-			}
-			jobs <- queryengine.QueryRequest(r)
-		}
-		close(jobs)
-	}()
-
-	// Wait for workers to finish then close provideCh (so provider can exit)
-	go func() {
-		wg.Wait()
-		close(provideCh)
-	}()
-
-	// Wait for provider to finish or for an error/context cancellation
-	select {
-	case err := <-errCh:
-		// signal cancellation
-		select {
-		case <-done:
-		default:
-			close(done)
-		}
+	totalRequestCharge, err := runEngineRequests(ctx, c, path, readManyPipeline, operationContext, result.Requests, concurrency, func(req queryengine.QueryRequest) (string, []QueryParameter, bool) {
+		// ReadMany pipeline requests carry a Query (optional override). No parameters and we always page until continuation exhausted.
+		return req.Query, nil, true /* treat like drain for full pagination */
+	})
+	if err != nil {
 		readManyPipeline.Close()
 		return ReadManyItemsResponse{}, err
-	case <-ctx.Done():
-		// cancel and return
-		select {
-		case <-done:
-		default:
-			close(done)
-		}
-		readManyPipeline.Close()
-		return ReadManyItemsResponse{}, ctx.Err()
-	case <-providerDone:
-		// provider finished normally
 	}
 
+	// Final run to gather merged items.
 	result, err = readManyPipeline.Run()
 	if err != nil {
 		readManyPipeline.Close()
@@ -251,14 +98,9 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 
 	// Determine concurrency: use provided MaxConcurrency or number of CPU cores
-	var concurrency int
-	if readManyOptions != nil && readManyOptions.MaxConcurrency != nil && *readManyOptions.MaxConcurrency > 0 {
-		concurrency = int(*readManyOptions.MaxConcurrency)
-	} else {
-		concurrency = runtime.NumCPU()
-		if concurrency <= 0 {
-			concurrency = 1
-		}
+	concurrency := determineConcurrency(nil)
+	if readManyOptions != nil {
+		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
 	}
 
 	// Prepare result slots to preserve input order

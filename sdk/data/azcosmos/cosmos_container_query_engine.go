@@ -8,10 +8,12 @@ package azcosmos
 import (
 	"bytes"
 	"context"
+	"runtime"
+	"sync"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -68,8 +70,7 @@ func (c *ContainerClient) getPartitionKeyRangesRaw(ctx context.Context, operatio
 	return buf.Bytes(), nil
 }
 
-// Executes a query using the provided query engine.
-func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEngine, query string, queryOptions *QueryOptions, operationContext pipelineRequestOptions) *runtime.Pager[QueryItemsResponse] {
+func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEngine, query string, queryOptions *QueryOptions, operationContext pipelineRequestOptions) *azruntime.Pager[QueryItemsResponse] {
 	// NOTE: The current interface for runtime.Pager means we're probably going to risk leaking the pipeline, if it's provided by a native query engine.
 	// There's no "Close" method, which means we can't call `queryengine.QueryPipeline.Close()` when we're done.
 	// We _do_ close the pipeline if the user iterates the entire pager, but if they don't we don't have a way to clean up.
@@ -79,8 +80,7 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 	var queryPipeline queryengine.QueryPipeline
 	var lastResponse Response
 	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
-	log.Writef(EventQueryEngine, "Executing query using query engine")
-	return runtime.NewPager(runtime.PagingHandler[QueryItemsResponse]{
+	return azruntime.NewPager(azruntime.PagingHandler[QueryItemsResponse]{
 		More: func(page QueryItemsResponse) bool {
 			if queryPipeline == nil {
 				// We haven't started yet, so there's certainly more to do.
@@ -126,12 +126,9 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 				if queryPipeline.IsComplete() {
 					log.Writef(EventQueryEngine, "Query pipeline is complete")
 					queryPipeline.Close()
-					return QueryItemsResponse{
-						Response: lastResponse,
-						Items:    nil,
-					}, nil
+					return QueryItemsResponse{Response: lastResponse, Items: nil}, nil
 				}
-				// Fetch more data from the pipeline
+
 				log.Writef(EventQueryEngine, "Fetching more data from query pipeline")
 				result, err := queryPipeline.Run()
 				if err != nil {
@@ -139,80 +136,32 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 					return QueryItemsResponse{}, err
 				}
 
-				// If we got items, we can return them, and we should do so now, to avoid making unnecessary requests.
-				// Even if there are requests in the queue, the pipeline should return the same requests again on the next call to NextBatch.
 				if len(result.Items) > 0 {
 					log.Writef(EventQueryEngine, "Query pipeline returned %d items", len(result.Items))
-					return QueryItemsResponse{
-						Response: lastResponse,
-						Items:    result.Items,
-					}, nil
+					return QueryItemsResponse{Response: lastResponse, Items: result.Items}, nil
 				}
 
-				// If we didn't have any items to return, we need to make requests for the items in the queue.
-				// If there are no requests, the pipeline should return true for IsComplete, so we'll stop on the next iteration.
-				// TODO: We can absolutely parallelize these requests
-				for _, request := range result.Requests {
-					log.Writef(azlog.EventRequest, "Query pipeline requested data for PKRange: %s", request.PartitionKeyRangeID)
-					// Make the single-partition query request
-					qryRequest := queryRequest(request) // Cast to our type, which has toHeaders defined on it.
-					// if the query request has an override query, use it
-					if qryRequest.Query != "" {
-						query = qryRequest.Query
+				// Parallelize request execution using shared driver.
+				concurrency := determineConcurrency(nil)
+				charge, err := runEngineRequests(ctx, c, path, queryPipeline, operationContext, result.Requests, concurrency, func(req queryengine.QueryRequest) (string, []QueryParameter, bool) {
+					// Override query if present; decide parameters usage same as previous logic.
+					localQuery := query
+					if req.Query != "" {
+						localQuery = req.Query
 					}
-
-					var queryParameters []QueryParameter
-					if qryRequest.IncludeParameters || qryRequest.Query == "" {
-						// use query options parameters only if IncludeParameters is true or no override query is specified
-						queryParameters = queryOptions.QueryParameters
+					var params []QueryParameter
+					if req.IncludeParameters || req.Query == "" {
+						params = queryOptions.QueryParameters
 					}
-
-					fetchMorePages := true
-					for fetchMorePages {
-
-						azResponse, err := c.database.client.sendQueryRequest(
-							path,
-							ctx,
-							query,
-							queryParameters,
-							operationContext,
-							&qryRequest,
-							nil)
-						if err != nil {
-							queryPipeline.Close()
-							return QueryItemsResponse{}, err
-						}
-						lastResponse = newResponse(azResponse)
-
-						// Load the data into a buffer to send it to the pipeline
-						buf := new(bytes.Buffer)
-						_, err = buf.ReadFrom(azResponse.Body)
-						if err != nil {
-							queryPipeline.Close()
-							return QueryItemsResponse{}, err
-						}
-						data := buf.Bytes()
-						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
-
-						fetchMorePages = continuation != "" && request.Drain
-
-						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
-						result := queryengine.QueryResult{
-							PartitionKeyRangeID: request.PartitionKeyRangeID,
-							RequestId:           request.Id,
-							NextContinuation:    continuation,
-							Data:                data,
-						}
-						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", request.PartitionKeyRangeID, continuation != "")
-						results := []queryengine.QueryResult{result}
-						if err = queryPipeline.ProvideData(results); err != nil {
-							queryPipeline.Close()
-							return QueryItemsResponse{}, err
-						}
-					}
+					// Drain if request.Drain is true.
+					return localQuery, params, req.Drain
+				})
+				_ = charge // totalRequestCharge currently unused for query path; could accumulate into lastResponse later.
+				if err != nil {
+					queryPipeline.Close()
+					return QueryItemsResponse{}, err
 				}
-
-				// No items, but we provided more data, so let's continue the loop.
+				// Loop again to attempt to produce items.
 			}
 		},
 	})
@@ -229,4 +178,180 @@ func (r *queryRequest) toHeaders() *map[string]string {
 	}
 	headers[cosmosHeaderPartitionKeyRangeId] = r.PartitionKeyRangeID
 	return &headers
+}
+
+// runEngineRequests concurrently executes per-partition QueryRequests for either query or readMany pipelines.
+// prepareFn returns the query text, parameters, and a drain flag for each request.
+// It serializes ProvideData calls through a single goroutine to preserve ordering guarantees required by the pipeline.
+func runEngineRequests(
+	ctx context.Context,
+	c *ContainerClient,
+	path string,
+	pipeline queryengine.QueryPipeline,
+	operationContext pipelineRequestOptions,
+	requests []queryengine.QueryRequest,
+	concurrency int,
+	prepareFn func(req queryengine.QueryRequest) (query string, params []QueryParameter, drain bool),
+) (totalCharge float32, err error) {
+	if len(requests) == 0 {
+		return 0, nil
+	}
+
+	jobs := make(chan queryengine.QueryRequest, len(requests))
+	provideCh := make(chan []queryengine.QueryResult)
+	errCh := make(chan error, 1)
+	done := make(chan struct{})
+	providerDone := make(chan struct{})
+	var wg sync.WaitGroup
+	var chargeMu sync.Mutex
+
+	// Provider goroutine ensures only one ProvideData executes at a time.
+	go func() {
+		defer close(providerDone)
+		for batch := range provideCh {
+			if perr := pipeline.ProvideData(batch); perr != nil {
+				select {
+				case errCh <- perr:
+				default:
+				}
+				return
+			}
+		}
+	}()
+
+	// Adjust concurrency.
+	workerCount := concurrency
+	if workerCount > len(requests) {
+		workerCount = len(requests)
+	}
+	if workerCount < 1 {
+		workerCount = 1
+	}
+
+	for w := 0; w < workerCount; w++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for {
+				select {
+				case <-done:
+					return
+				case <-ctx.Done():
+					return
+				case req, ok := <-jobs:
+					if !ok {
+						return
+					}
+
+					log.Writef(azlog.EventRequest, "Engine pipeline requested data for PKRange: %s", req.PartitionKeyRangeID)
+					queryText, params, drain := prepareFn(req)
+					// Pagination loop
+					fetchMore := true
+					for fetchMore {
+						qr := queryRequest(req)
+						azResponse, rerr := c.database.client.sendQueryRequest(
+							path,
+							ctx,
+							queryText,
+							params,
+							operationContext,
+							&qr,
+							nil,
+						)
+						if rerr != nil {
+							select {
+							case errCh <- rerr:
+							default:
+							}
+							return
+						}
+
+						qResp, qErr := newQueryResponse(azResponse)
+						if qErr != nil {
+							select {
+							case errCh <- qErr:
+							default:
+							}
+							return
+						}
+						chargeMu.Lock()
+						totalCharge += qResp.RequestCharge
+						chargeMu.Unlock()
+
+						buf := new(bytes.Buffer)
+						if _, rdErr := buf.ReadFrom(azResponse.Body); rdErr != nil {
+							select {
+							case errCh <- rdErr:
+							default:
+							}
+							return
+						}
+						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
+						fetchMore = continuation != "" && drain
+
+						qres := queryengine.QueryResult{
+							PartitionKeyRangeID: req.PartitionKeyRangeID,
+							NextContinuation:    continuation,
+							RequestId:           req.Id,
+							Data:                buf.Bytes(),
+						}
+						select {
+						case <-done:
+							return
+						case provideCh <- []queryengine.QueryResult{qres}:
+						}
+					}
+				}
+			}
+		}()
+	}
+
+	// Feed jobs
+	go func() {
+		for _, r := range requests {
+			select {
+			case <-done:
+				break
+			default:
+			}
+			jobs <- r
+		}
+		close(jobs)
+	}()
+
+	// Close provider after workers finish
+	go func() { wg.Wait(); close(provideCh) }()
+
+	// Wait for completion / error / cancellation
+	select {
+	case e := <-errCh:
+		select {
+		case <-done:
+		default:
+			close(done)
+		}
+		return totalCharge, e
+	case <-ctx.Done():
+		select {
+		case <-done:
+		default:
+			close(done)
+		}
+		return totalCharge, ctx.Err()
+	case <-providerDone:
+	}
+
+	return totalCharge, nil
+}
+
+// determineConcurrency returns either the provided positive max or NumCPU (>=1).
+func determineConcurrency(max *int32) int {
+	if max != nil && *max > 0 {
+		return int(*max)
+	}
+	c := runtime.NumCPU()
+	if c <= 0 {
+		c = 1
+	}
+	return c
 }

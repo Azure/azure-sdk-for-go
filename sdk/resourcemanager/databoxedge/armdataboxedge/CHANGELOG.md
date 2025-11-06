@@ -1,5 +1,18 @@
 # Release History
 
+## 2.0.0 (2025-11-06)
+### Breaking Changes
+
+- Struct `ARMBaseModel` has been removed
+- Struct `MoveRequest` has been removed
+
+### Features Added
+
+- New field `KubernetesWorkloadProfile` in struct `DeviceProperties`
+- New field `SystemData` in struct `Job`
+- New field `IPRange` in struct `LoadBalancerConfig`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

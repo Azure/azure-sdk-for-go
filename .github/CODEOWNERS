@@ -651,12 +651,13 @@
 ###########
 # Eng Sys
 ###########
-/eng/                         @benbp @weshaggard
-/eng/common/                  @Azure/azure-sdk-eng
-/eng/config.json              @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-/.config/1espt/               @benbp @weshaggard
-/.github/workflows/           @Azure/azure-sdk-eng
-/.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/eng/                              @benbp @weshaggard
+/eng/common/                       @Azure/azure-sdk-eng
+/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/.config/1espt/                    @benbp @weshaggard
+/.github/workflows/                @Azure/azure-sdk-eng
+/.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/.github/copilot-instructions.md   @richardpark @praveenkuttappan @maririos
 
 # Add owners for go sdk tool
 /eng/tools/generator          @lirenhe @tadelesh @JiaqiZhang-Dev

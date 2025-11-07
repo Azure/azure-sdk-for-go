@@ -95,7 +95,7 @@ var azureOpenAI = func() testVars {
 	if recording.GetRecordMode() != recording.PlaybackMode {
 		// check if some of the variables are already in the environment - this'll happen with
 		// live testing.
-		if os.Getenv("AZURE_OPENAI_ENDPOINT") == "" {
+		if os.Getenv("COGNITIVE_SEARCH_API_ENDPOINT") == "" {
 			if err := godotenv.Load(); err != nil {
 				panic(fmt.Errorf("Failed to load .env file: %w", err))
 			} else {

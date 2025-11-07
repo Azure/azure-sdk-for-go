@@ -244,19 +244,19 @@ func GetFuncSigChanges(lhs, rhs exports.Content) map[string]FuncSig {
 			continue
 		}
 		sig := FuncSig{}
-		lhsFunc := lhs.Funcs[rhsKey]
+		lhsValue := lhs.Funcs[rhsKey]
 		
 		// Check for parameter changes
-		if !paramsEqual(lhsFunc.Params, rhsValue.Params) {
+		if !paramsEqual(lhsValue.Params, rhsValue.Params) {
 			sig.Params = &Signature{
-				From: paramsToString(lhsFunc.Params),
+				From: paramsToString(lhsValue.Params),
 				To:   paramsToString(rhsValue.Params),
 			}
 		}
 		
-		if !safeStrCmp(lhsFunc.Returns, rhsValue.Returns) {
+		if !safeStrCmp(lhsValue.Returns, rhsValue.Returns) {
 			sig.Returns = &Signature{
-				From: safeFuncSig(lhsFunc.Returns),
+				From: safeFuncSig(lhsValue.Returns),
 				To:   safeFuncSig(rhsValue.Returns),
 			}
 		}

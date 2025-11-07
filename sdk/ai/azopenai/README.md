@@ -33,7 +33,7 @@ See [Key concepts][openai_key_concepts] in the product documentation for more de
 
 Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://aka.ms/azsdk/go/azopenaiextensions/pkg#pkg-examples) or in the example\*\_test.go files in our GitHub repo for [azopenai](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai).
 
-For examples on using the openai-go client, see the examples in the [openai-go](https://github.com/openai/openai-go/v3/tree/main/examples) repository.
+For examples on using the openai-go client, see the examples in the [openai-go](https://github.com/openai/openai-go/tree/main/examples) repository.
 
 ## Contributing
 

@@ -14,7 +14,7 @@
 
 Azure OpenAI has adopted the official OpenAI library for Go as its supported client library for the Go programming language. This shift ensures maximum code reuse, the fastest possible access to new models and features, and clear integration points between Azure-specific components and OpenAI API capabilities.
 
-The `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go/v3). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
+The `azopenai.Client` provided by this package has been retired in favor of the [official OpenAI Go client library](https://github.com/openai/openai-go). That package contains all that is needed to connect to both the Azure OpenAI and OpenAI services. This library is now a companion, enabling Azure-specific extensions (such as Azure OpenAI On Your Data). The `azopenaiassistants` package has also been deprecated in favor of the official client.
 
 > [!NOTE]
 > This document is a work-in-progress and may change to reflect updates to the package. We value your feedback—please [create an issue](https://github.com/Azure/azure-sdk-for-go/issues/new/choose) to suggest improvements or report problems with this guide or the package.
@@ -165,7 +165,7 @@ The official OpenAI Go client organizes operations into subclients for each serv
 | `client.Uploads`      | [Uploads API](https://platform.openai.com/docs/api-reference/uploads)             |
 | `client.Responses`    | [Responses API](https://platform.openai.com/docs/api-reference/responses)         |
 
-Refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go/v3) for details.
+Refer to the [official OpenAI Go client documentation](https://github.com/openai/openai-go) for details.
 
 > [!NOTE] > **Assistants API:** As of v1.0.0, the Assistants API is not supported in the `openai-go` package. There is currently no official Go SDK support for Assistants. You may need to use direct HTTP requests for this functionality.
 
@@ -751,5 +751,5 @@ for _, choice := range resp.Choices {
 
 ## Additional Resources
 
-- [OpenAI Go Client Documentation](https://github.com/openai/openai-go/v3)
+- [OpenAI Go Client Documentation](https://github.com/openai/openai-go)
 - [Azure OpenAI Service Documentation](https://learn.microsoft.com/azure/ai-services/openai/)

@@ -56,6 +56,7 @@ type GenerateParam struct {
 	ReleaseDate          string
 	SkipGenerateExample  bool
 	RemoveTagSet         bool
+	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
 	ReleasedTags         []string
@@ -147,6 +148,7 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				RemoveTagSet:         commonGenerateParam.RemoveTagSet,
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
+				ForceStableVersion:   commonGenerateParam.ForceStableVersion,
 			})
 			if err != nil {
 				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
@@ -394,6 +396,10 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(t.PackagePath)
 	if err != nil {
 		return nil, err
+	}
+
+	if generateParam.ForceStableVersion {
+		isCurrentPreview = false
 	}
 
 	log.Printf("Get ori exports for changelog generation...")

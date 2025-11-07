@@ -51,7 +51,7 @@ type Const struct {
 type Param struct {
 	// Name is the parameter name, may be empty for unnamed parameters
 	Name string `json:"name,omitempty"`
-	
+
 	// Type is the parameter type
 	Type string `json:"type"`
 }

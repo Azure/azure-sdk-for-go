@@ -245,7 +245,7 @@ func GetFuncSigChanges(lhs, rhs exports.Content) map[string]FuncSig {
 		}
 		sig := FuncSig{}
 		lhsValue := lhs.Funcs[rhsKey]
-		
+
 		// Check for parameter changes
 		if !paramsEqual(lhsValue.Params, rhsValue.Params) {
 			sig.Params = &Signature{
@@ -253,7 +253,7 @@ func GetFuncSigChanges(lhs, rhs exports.Content) map[string]FuncSig {
 				To:   paramsToString(rhsValue.Params),
 			}
 		}
-		
+
 		if !safeStrCmp(lhsValue.Returns, rhsValue.Returns) {
 			sig.Returns = &Signature{
 				From: safeFuncSig(lhsValue.Returns),
@@ -381,7 +381,7 @@ func paramsEqual(lhs, rhs []exports.Param) bool {
 	if len(lhs) != len(rhs) {
 		return false
 	}
-	
+
 	for i := range lhs {
 		// Types must match exactly
 		if lhs[i].Type != rhs[i].Type {
@@ -392,7 +392,7 @@ func paramsEqual(lhs, rhs []exports.Param) bool {
 			return false
 		}
 	}
-	
+
 	return true
 }
 
@@ -401,7 +401,7 @@ func paramsToString(params []exports.Param) string {
 	if len(params) == 0 {
 		return None
 	}
-	
+
 	var parts []string
 	for _, p := range params {
 		if p.Name != "" {

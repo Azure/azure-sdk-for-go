@@ -403,7 +403,7 @@ func formatParams(params []exports.Param) string {
 	if len(params) == 0 {
 		return ""
 	}
-	
+
 	var parts []string
 	for _, p := range params {
 		if p.Name != "" {

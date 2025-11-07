@@ -6,11 +6,10 @@ package armkeyvault_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
+	"log"
 )
 
 // Generated from example definition: 2025-05-01/checkVaultNameAvailability.json
@@ -482,7 +481,7 @@ func ExampleVaultsClient_GetDeleted() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVaultsClient().GetDeleted(ctx, "sample-vault", "westus", nil)
+	res, err := clientFactory.NewVaultsClient().GetDeleted(ctx, "westus", "sample-vault", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -518,7 +517,7 @@ func ExampleVaultsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{
+	pager := clientFactory.NewVaultsClient().NewListPager(to.Ptr("resourceType eq 'Microsoft.KeyVault/vaults'"), to.Ptr("2015-11-01"), &armkeyvault.VaultsClientListOptions{
 		Top: to.Ptr[int32](1)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -835,7 +834,7 @@ func ExampleVaultsClient_BeginPurgeDeleted() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVaultsClient().BeginPurgeDeleted(ctx, "sample-vault", "westus", nil)
+	poller, err := clientFactory.NewVaultsClient().BeginPurgeDeleted(ctx, "westus", "sample-vault", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

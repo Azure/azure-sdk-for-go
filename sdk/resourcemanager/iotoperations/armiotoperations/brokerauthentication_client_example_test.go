@@ -39,20 +39,20 @@ func ExampleBrokerAuthenticationClient_BeginCreateOrUpdate_brokerAuthenticationC
 					X509Settings: &armiotoperations.BrokerAuthenticatorMethodX509{
 						TrustedClientCaCert: to.Ptr("my-ca"),
 						AuthorizationAttributes: map[string]*armiotoperations.BrokerAuthenticatorMethodX509Attributes{
-							"root": {
+							"root": &armiotoperations.BrokerAuthenticatorMethodX509Attributes{
 								Subject: to.Ptr("CN = Contoso Root CA Cert, OU = Engineering, C = US"),
 								Attributes: map[string]*string{
 									"organization": to.Ptr("contoso"),
 								},
 							},
-							"intermediate": {
+							"intermediate": &armiotoperations.BrokerAuthenticatorMethodX509Attributes{
 								Subject: to.Ptr("CN = Contoso Intermediate CA"),
 								Attributes: map[string]*string{
 									"city": to.Ptr("seattle"),
 									"foo":  to.Ptr("bar"),
 								},
 							},
-							"smart-fan": {
+							"smart-fan": &armiotoperations.BrokerAuthenticatorMethodX509Attributes{
 								Subject: to.Ptr("CN = smart-fan"),
 								Attributes: map[string]*string{
 									"building": to.Ptr("17"),
@@ -174,7 +174,7 @@ func ExampleBrokerAuthenticationClient_BeginCreateOrUpdate_brokerAuthenticationC
 					},
 					X509Settings: &armiotoperations.BrokerAuthenticatorMethodX509{
 						AuthorizationAttributes: map[string]*armiotoperations.BrokerAuthenticatorMethodX509Attributes{
-							"key3384": {
+							"key3384": &armiotoperations.BrokerAuthenticatorMethodX509Attributes{
 								Attributes: map[string]*string{
 									"key186": to.Ptr("ucpajramsz"),
 								},

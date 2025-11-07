@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -39,7 +39,7 @@ type VaultsServer struct {
 
 	// GetDeleted is the fake for method VaultsClient.GetDeleted
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeleted func(ctx context.Context, vaultName string, location string, options *armkeyvault.VaultsClientGetDeletedOptions) (resp azfake.Responder[armkeyvault.VaultsClientGetDeletedResponse], errResp azfake.ErrorResponder)
+	GetDeleted func(ctx context.Context, location string, vaultName string, options *armkeyvault.VaultsClientGetDeletedOptions) (resp azfake.Responder[armkeyvault.VaultsClientGetDeletedResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method VaultsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -59,7 +59,7 @@ type VaultsServer struct {
 
 	// BeginPurgeDeleted is the fake for method VaultsClient.BeginPurgeDeleted
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeDeleted func(ctx context.Context, vaultName string, location string, options *armkeyvault.VaultsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+	BeginPurgeDeleted func(ctx context.Context, location string, vaultName string, options *armkeyvault.VaultsClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armkeyvault.VaultsClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method VaultsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -316,15 +316,15 @@ func (v *VaultsServerTransport) dispatchGetDeleted(req *http.Request) (*http.Res
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := v.srv.GetDeleted(req.Context(), vaultNameParam, locationParam, nil)
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := v.srv.GetDeleted(req.Context(), locationParam, vaultNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -550,15 +550,15 @@ func (v *VaultsServerTransport) dispatchBeginPurgeDeleted(req *http.Request) (*h
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-		if err != nil {
-			return nil, err
-		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginPurgeDeleted(req.Context(), vaultNameParam, locationParam, nil)
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginPurgeDeleted(req.Context(), locationParam, vaultNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/32c178f2467f792a322f56174be244135d2c907f/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listprivateendpointconnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0eb1d5347c69e4138cde6d74e58a98eedcd889b0/specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_listprivateendpointconnections.json
 func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/32c178f2467f792a322f56174be244135d2c907f/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_getprivateendpointconnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0eb1d5347c69e4138cde6d74e58a98eedcd889b0/specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_getprivateendpointconnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/32c178f2467f792a322f56174be244135d2c907f/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_updateprivateendpointconnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0eb1d5347c69e4138cde6d74e58a98eedcd889b0/specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_updateprivateendpointconnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/32c178f2467f792a322f56174be244135d2c907f/specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_deleteprivateendpointconnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0eb1d5347c69e4138cde6d74e58a98eedcd889b0/specification/iothub/resource-manager/Microsoft.Devices/IoTHub/preview/2025-08-01-preview/examples/iothub_deleteprivateendpointconnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_usingAzureOnYourData demonstrates how to use Azure OpenAI's Azure-On-Your-Data feature.

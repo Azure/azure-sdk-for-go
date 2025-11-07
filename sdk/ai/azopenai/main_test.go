@@ -36,6 +36,7 @@ func run(m *testing.M) int {
 			}
 		}()
 	}
+
 	os.Setenv("AOAI_OYD_ENDPOINT", os.Getenv("AOAI_ENDPOINT_USEAST"))
 	os.Setenv("AOAI_OYD_MODEL", "gpt-4-0613")
 

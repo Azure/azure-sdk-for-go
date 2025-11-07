@@ -7,7 +7,7 @@
 package azopenai
 
 import (
-	"github.com/openai/openai-go/option"
+	"github.com/openai/openai-go/v3/option"
 )
 
 // WithDataSources adds in Azure data sources to be used with the "Azure OpenAI On Your Data" feature.

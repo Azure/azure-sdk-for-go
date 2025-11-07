@@ -13,7 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,7 +22,7 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		t.Skipf("Ignoring poller-based test")
 	}
 
-	client := newStainlessTestClient(t, azureOpenAI.DallE.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.DallE.Endpoint)
 	// testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL, true)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Minute)

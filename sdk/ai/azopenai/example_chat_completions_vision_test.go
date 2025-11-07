@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_vision demonstrates how to use Azure OpenAI's Vision capabilities for image analysis.

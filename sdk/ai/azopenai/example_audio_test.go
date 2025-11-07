@@ -9,7 +9,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // Example_audioTranscription demonstrates how to transcribe speech to text using Azure OpenAI's Whisper model.

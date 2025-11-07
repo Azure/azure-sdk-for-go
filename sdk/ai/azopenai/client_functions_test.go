@@ -11,26 +11,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/shared"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/shared"
 	"github.com/stretchr/testify/require"
 )
 
-var weatherFuncTool = []openai.ChatCompletionToolParam{{
-	Function: shared.FunctionDefinitionParam{
-		Name:        "get_current_weather",
-		Description: openai.String("Get the current weather in a given location"),
-		Parameters: openai.FunctionParameters{
-			"required": []string{"location"},
-			"type":     "object",
-			"properties": map[string]interface{}{
-				"location": map[string]string{
-					"type":        "string",
-					"description": "The city and state, e.g. San Francisco, CA",
-				},
-				"unit": map[string]interface{}{
-					"type": "string",
-					"enum": []string{"celsius", "fahrenheit"},
+var weatherFuncTool = []openai.ChatCompletionToolUnionParam{{
+	OfFunction: &openai.ChatCompletionFunctionToolParam{
+		Function: shared.FunctionDefinitionParam{
+			Name:        "get_current_weather",
+			Description: openai.String("Get the current weather in a given location"),
+			Parameters: openai.FunctionParameters{
+				"required": []string{"location"},
+				"type":     "object",
+				"properties": map[string]interface{}{
+					"location": map[string]string{
+						"type":        "string",
+						"description": "The city and state, e.g. San Francisco, CA",
+					},
+					"unit": map[string]interface{}{
+						"type": "string",
+						"enum": []string{"celsius", "fahrenheit"},
+					},
 				},
 			},
 		},
@@ -80,7 +82,7 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 		require.Equal(t, location{Location: "Boston, MA", Unit: "celsius"}, *funcParams)
 	}
 
-	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
+	chatClient := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletions.Endpoint)
 
 	testData := []struct {
 		Model      string
@@ -93,7 +95,7 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 			OfAuto: openai.String("auto"),
 		}},
 		{Model: azureOpenAI.ChatCompletions.Model, ToolChoice: &openai.ChatCompletionToolChoiceOptionUnionParam{
-			OfChatCompletionNamedToolChoice: &openai.ChatCompletionNamedToolChoiceParam{
+			OfFunctionToolChoice: &openai.ChatCompletionNamedToolChoiceParam{
 				Function: openai.ChatCompletionNamedToolChoiceFunctionParam{
 					Name: "get_current_weather",
 				},
@@ -120,7 +122,7 @@ func TestGetChatCompletions_usingFunctions_streaming(t *testing.T) {
 		Temperature: openai.Float(0.0),
 	}
 
-	chatClient := newStainlessTestClient(t, azureOpenAI.ChatCompletions.Endpoint)
+	chatClient := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletions.Endpoint)
 
 	stream := chatClient.Chat.Completions.NewStreaming(context.Background(), body)
 

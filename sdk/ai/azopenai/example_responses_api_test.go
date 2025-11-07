@@ -12,8 +12,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/responses"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/responses"
 )
 
 // Example_responsesApiTextGeneration demonstrates how to use the Azure OpenAI Responses API for text generation.
@@ -211,7 +211,7 @@ func Example_responsesApiStreaming() {
 	for stream.Next() {
 		event := stream.Current()
 		if event.Type == "response.output_text.delta" {
-			fmt.Fprintf(os.Stderr, "%s", event.Delta.OfString)
+			fmt.Fprintf(os.Stderr, "%s", event.Delta)
 		}
 	}
 
@@ -319,7 +319,9 @@ func Example_responsesApiFunctionCalling() {
 						{
 							OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
 								CallID: functionCallID,
-								Output: functionOutput,
+								Output: responses.ResponseInputItemFunctionCallOutputOutputUnionParam{
+									OfString: openai.String(functionOutput),
+								},
 							},
 						},
 					},

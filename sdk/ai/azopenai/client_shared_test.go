@@ -93,10 +93,16 @@ func getEndpoint(ev string, azure bool) string {
 
 var azureOpenAI = func() testVars {
 	if recording.GetRecordMode() != recording.PlaybackMode {
-		if err := godotenv.Load(); err != nil {
-			panic(fmt.Errorf("Failed to load .env file: %s", err))
+		// check if some of the variables are already in the environment - this'll happen with
+		// live testing.
+		if os.Getenv("AZURE_OPENAI_ENDPOINT") == "" {
+			if err := godotenv.Load(); err != nil {
+				panic(fmt.Errorf("Failed to load .env file: %w", err))
+			} else {
+				log.Printf(".env file loaded")
+			}
 		} else {
-			log.Printf(".env file loaded")
+			log.Printf(".env file loading skipped - variables already in environment")
 		}
 	} else {
 		log.Printf(".env file loading skipped, since we're in playback mode")

@@ -69,7 +69,10 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 			&azureOpenAI.Cognitive,
 		))
 
-	defer streamer.Close()
+	t.Cleanup(func() {
+		err := streamer.Close()
+		require.NoError(t, err)
+	})
 
 	text := ""
 

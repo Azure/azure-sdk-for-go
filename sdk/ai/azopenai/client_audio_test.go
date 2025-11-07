@@ -107,7 +107,11 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 		// when it sends the request.
 		tempFile, err = os.CreateTemp("", "audio*.flac")
 		require.NoError(t, err)
-		defer tempFile.Close()
+
+		t.Cleanup(func() {
+			err := tempFile.Close()
+			require.NoError(t, err)
+		})
 
 		_, err = tempFile.Write(audioBytes)
 		require.NoError(t, err)

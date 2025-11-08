@@ -8,7 +8,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
+	"github.com/openai/openai-go/v3/option"
 )
 
 // Example_embeddings demonstrates how to generate text embeddings using Azure OpenAI's embedding models.
@@ -20,7 +23,7 @@ import (
 //
 // The example uses environment variables for configuration:
 // - AOAI_EMBEDDINGS_MODEL: The deployment name of your embedding model (e.g., text-embedding-ada-002)
-// - AOAI_EMBEDDINGS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_EMBEDDINGS_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 //
 // Text embeddings are useful for:
 // - Semantic search and information retrieval
@@ -29,19 +32,20 @@ import (
 // - Document similarity analysis
 // - Natural language understanding tasks
 func Example_embeddings() {
-	if !CheckRequiredEnvVars("AOAI_EMBEDDINGS_MODEL", "AOAI_EMBEDDINGS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
-	model := os.Getenv("AOAI_EMBEDDINGS_MODEL") // eg. "text-embedding-ada-002"
+	model := os.Getenv("AOAI_EMBEDDINGS_MODEL")
 	endpoint := os.Getenv("AOAI_EMBEDDINGS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Call the embeddings API
 	resp, err := client.Embeddings.New(context.TODO(), openai.EmbeddingNewParams{

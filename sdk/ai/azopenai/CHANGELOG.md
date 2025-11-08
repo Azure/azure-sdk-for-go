@@ -8,8 +8,9 @@
 
 ### Other Changes
 
-- Added examples demonstrating support for Managed Identity
+- Added examples demonstrating support for Managed Identity.
 - Added examples demonstrating support for deepseek-r1 reasoning.
+- Migrated examples to using the openai/v1 endpoint.
 
 ## 0.8.0 (2025-06-03)
 

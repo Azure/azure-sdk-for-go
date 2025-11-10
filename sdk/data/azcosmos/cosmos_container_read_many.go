@@ -20,7 +20,7 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 	// get the partition key ranges for the container
 	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(ctx, operationContext)
 	if err != nil {
-		// if we can't get the partition key ranges, return empty map
+		// if we can't get the partition key ranges, return empty response
 		return ReadManyItemsResponse{}, err
 	}
 

@@ -104,50 +104,18 @@ func PossibleBackupTypeValues() []BackupType {
 	}
 }
 
-// BucketPatchPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite.
-type BucketPatchPermissions string
-
-const (
-	// BucketPatchPermissionsReadOnly - Read-only access to bucket.
-	BucketPatchPermissionsReadOnly BucketPatchPermissions = "ReadOnly"
-	// BucketPatchPermissionsReadWrite - Read-write access to bucket.
-	BucketPatchPermissionsReadWrite BucketPatchPermissions = "ReadWrite"
-)
-
-// PossibleBucketPatchPermissionsValues returns the possible values for the BucketPatchPermissions const type.
-func PossibleBucketPatchPermissionsValues() []BucketPatchPermissions {
-	return []BucketPatchPermissions{
-		BucketPatchPermissionsReadOnly,
-		BucketPatchPermissionsReadWrite,
-	}
-}
-
-// BucketPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is ReadOnly if no value
-// is provided during bucket creation.
-type BucketPermissions string
-
-const (
-	// BucketPermissionsReadOnly - Read-only access to bucket.
-	BucketPermissionsReadOnly BucketPermissions = "ReadOnly"
-	// BucketPermissionsReadWrite - Read-write access to bucket.
-	BucketPermissionsReadWrite BucketPermissions = "ReadWrite"
-)
-
-// PossibleBucketPermissionsValues returns the possible values for the BucketPermissions const type.
-func PossibleBucketPermissionsValues() []BucketPermissions {
-	return []BucketPermissions{
-		BucketPermissionsReadOnly,
-		BucketPermissionsReadWrite,
-	}
-}
-
 // CheckNameResourceTypes - Resource type used for verification.
 type CheckNameResourceTypes string
 
 const (
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccounts                              CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools                 CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes          CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccounts CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
+	// CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups - ANF Backup under a volume , deprecated, use `Microsoft.NetApp/netAppAccounts/backupVaults/backups`
+	// instead.
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups  CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools        CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	// CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups - ANF Backup under a Backup Vault
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups   CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups"
 	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
 )
 
@@ -155,8 +123,10 @@ const (
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return []CheckNameResourceTypes{
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccounts,
+		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes,
+		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots,
 	}
 }
@@ -165,9 +135,14 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 type CheckQuotaNameResourceTypes string
 
 const (
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts                              CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools                 CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes          CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
+	// CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups - ANF Backup under a volume , deprecated, use
+	// `Microsoft.NetApp/netAppAccounts/backupVaults/backups` instead.
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups  CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools        CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	// CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups - ANF Backup under a Backup Vault
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups   CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups"
 	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
 )
 
@@ -175,8 +150,10 @@ const (
 func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
 	return []CheckQuotaNameResourceTypes{
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts,
+		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes,
+		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots,
 	}
 }
@@ -263,30 +240,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// CredentialsStatus - The bucket credentials status. There states:
-// "NoCredentialsSet": Access and Secret key pair have not been generated.
-// "CredentialsExpired": Access and Secret key pair have expired.
-// "Active": The certificate has been installed and credentials are unexpired.
-type CredentialsStatus string
-
-const (
-	// CredentialsStatusActive - The certificate has been installed on the bucket server and the bucket credentials are unexpired.
-	CredentialsStatusActive CredentialsStatus = "Active"
-	// CredentialsStatusCredentialsExpired - Access and Secret key pair have expired.
-	CredentialsStatusCredentialsExpired CredentialsStatus = "CredentialsExpired"
-	// CredentialsStatusNoCredentialsSet - Access and Secret key pair have not been generated.
-	CredentialsStatusNoCredentialsSet CredentialsStatus = "NoCredentialsSet"
-)
-
-// PossibleCredentialsStatusValues returns the possible values for the CredentialsStatus const type.
-func PossibleCredentialsStatusValues() []CredentialsStatus {
-	return []CredentialsStatus{
-		CredentialsStatusActive,
-		CredentialsStatusCredentialsExpired,
-		CredentialsStatusNoCredentialsSet,
-	}
-}
-
 // EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
 type EnableSubvolumes string
 
@@ -356,6 +309,25 @@ func PossibleEndpointTypeValues() []EndpointType {
 	return []EndpointType{
 		EndpointTypeDst,
 		EndpointTypeSrc,
+	}
+}
+
+// Exclude - An option to filter out replications. 'None' returns all replications, 'Deleted' excludes deleted replications.
+// Default is 'None'
+type Exclude string
+
+const (
+	// ExcludeDeleted - 'Deleted' excludes deleted replications
+	ExcludeDeleted Exclude = "Deleted"
+	// ExcludeNone - 'None' returns all replications
+	ExcludeNone Exclude = "None"
+)
+
+// PossibleExcludeValues returns the possible values for the Exclude const type.
+func PossibleExcludeValues() []Exclude {
+	return []Exclude{
+		ExcludeDeleted,
+		ExcludeNone,
 	}
 }
 
@@ -612,20 +584,22 @@ func PossibleNetworkSiblingSetProvisioningStateValues() []NetworkSiblingSetProvi
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - Accepted
+	// ProvisioningStateAccepted - Resource has been Accepted
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateCreating - Creating
+	// ProvisioningStateCreating - Resource is being Created
 	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting - Deleting
+	// ProvisioningStateDeleting - Resource is being Deleted
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Failed
+	// ProvisioningStateFailed - Resource has Failed
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateMoving - Moving
+	// ProvisioningStateMoving - Resource is being Moved
 	ProvisioningStateMoving ProvisioningState = "Moving"
-	// ProvisioningStatePatching - Patching
+	// ProvisioningStatePatching - Resource is being Patched
 	ProvisioningStatePatching ProvisioningState = "Patching"
-	// ProvisioningStateSucceeded - Succeeded
+	// ProvisioningStateSucceeded - Resource has Succeeded
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - Resource is updating
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -638,6 +612,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateMoving,
 		ProvisioningStatePatching,
 		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }
 
@@ -692,6 +667,27 @@ func PossibleRegionStorageToNetworkProximityValues() []RegionStorageToNetworkPro
 		RegionStorageToNetworkProximityT1AndT2AndAcrossT2,
 		RegionStorageToNetworkProximityT2,
 		RegionStorageToNetworkProximityT2AndAcrossT2,
+	}
+}
+
+// ReplicationMirrorState - The status of the replication
+type ReplicationMirrorState string
+
+const (
+	// ReplicationMirrorStateBroken - Destination volume is RW, replication relationship has been broken off
+	ReplicationMirrorStateBroken ReplicationMirrorState = "Broken"
+	// ReplicationMirrorStateMirrored - Destination volume has been initialized and is ready
+	ReplicationMirrorStateMirrored ReplicationMirrorState = "Mirrored"
+	// ReplicationMirrorStateUninitialized - Destination volume has not been initialized
+	ReplicationMirrorStateUninitialized ReplicationMirrorState = "Uninitialized"
+)
+
+// PossibleReplicationMirrorStateValues returns the possible values for the ReplicationMirrorState const type.
+func PossibleReplicationMirrorStateValues() []ReplicationMirrorState {
+	return []ReplicationMirrorState{
+		ReplicationMirrorStateBroken,
+		ReplicationMirrorStateMirrored,
+		ReplicationMirrorStateUninitialized,
 	}
 }
 

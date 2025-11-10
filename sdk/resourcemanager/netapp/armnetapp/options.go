@@ -190,39 +190,6 @@ type BackupsUnderVolumeClientBeginMigrateBackupsOptions struct {
 	ResumeToken string
 }
 
-// BucketsClientBeginCreateOrUpdateOptions contains the optional parameters for the BucketsClient.BeginCreateOrUpdate method.
-type BucketsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BucketsClientBeginDeleteOptions contains the optional parameters for the BucketsClient.BeginDelete method.
-type BucketsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BucketsClientBeginUpdateOptions contains the optional parameters for the BucketsClient.BeginUpdate method.
-type BucketsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BucketsClientGenerateCredentialsOptions contains the optional parameters for the BucketsClient.GenerateCredentials method.
-type BucketsClientGenerateCredentialsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BucketsClientGetOptions contains the optional parameters for the BucketsClient.Get method.
-type BucketsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BucketsClientListOptions contains the optional parameters for the BucketsClient.NewListPager method.
-type BucketsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -670,7 +637,8 @@ type VolumesClientListOptions struct {
 
 // VolumesClientListReplicationsOptions contains the optional parameters for the VolumesClient.NewListReplicationsPager method.
 type VolumesClientListReplicationsOptions struct {
-	// placeholder for future optional parameters
+	// The content of the action request
+	Body *ListReplicationsRequest
 }
 
 // VolumesClientReplicationStatusOptions contains the optional parameters for the VolumesClient.ReplicationStatus method.

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/QuotaLimits_Get.json
+// Generated from example definition: 2025-09-01/NetAppResourceQuotaLimits_Get.json
 func ExampleResourceQuotaLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleResourceQuotaLimitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/QuotaLimits_List.json
+// Generated from example definition: 2025-09-01/NetAppResourceQuotaLimits_List.json
 func ExampleResourceQuotaLimitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

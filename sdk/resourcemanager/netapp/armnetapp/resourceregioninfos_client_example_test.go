@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/RegionInfos_Get.json
+// Generated from example definition: 2025-09-01/RegionInfos_Get.json
 func ExampleResourceRegionInfosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleResourceRegionInfosClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/RegionInfos_List.json
+// Generated from example definition: 2025-09-01/RegionInfos_List.json
 func ExampleResourceRegionInfosClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

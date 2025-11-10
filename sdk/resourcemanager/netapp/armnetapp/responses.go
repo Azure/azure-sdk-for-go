@@ -174,41 +174,6 @@ type BackupsUnderVolumeClientMigrateBackupsResponse struct {
 	// placeholder for future response values
 }
 
-// BucketsClientCreateOrUpdateResponse contains the response from method BucketsClient.BeginCreateOrUpdate.
-type BucketsClientCreateOrUpdateResponse struct {
-	// Bucket resource
-	Bucket
-}
-
-// BucketsClientDeleteResponse contains the response from method BucketsClient.BeginDelete.
-type BucketsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// BucketsClientGenerateCredentialsResponse contains the response from method BucketsClient.GenerateCredentials.
-type BucketsClientGenerateCredentialsResponse struct {
-	// Bucket Access Key, Secret Key, and Expiry date and time of the key pair
-	BucketGenerateCredentials
-}
-
-// BucketsClientGetResponse contains the response from method BucketsClient.Get.
-type BucketsClientGetResponse struct {
-	// Bucket resource
-	Bucket
-}
-
-// BucketsClientListResponse contains the response from method BucketsClient.NewListPager.
-type BucketsClientListResponse struct {
-	// List of volume bucket resources
-	BucketList
-}
-
-// BucketsClientUpdateResponse contains the response from method BucketsClient.BeginUpdate.
-type BucketsClientUpdateResponse struct {
-	// Bucket resource
-	Bucket
-}
-
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

@@ -1,7 +1,6 @@
 # SDK release
 
 There are two tools to help with SDK releases:
-- Verify Setup
 - Check SDK release readiness
 - Release SDK
 

@@ -1,14 +1,10 @@
 # Release History
 
-## 1.13.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.13.1 (2025-11-10)
 
 ### Bugs Fixed
 
-### Other Changes
+- `AzureCLICredential` quoted arguments incorrectly on Windows
 
 ## 1.13.0 (2025-10-07)
 

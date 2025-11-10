@@ -58,7 +58,7 @@ Examples:
 			}
 
 			// Perform build and vet
-			result, err := buildAndVet(folderPath, verbose)
+			result, err := buildAndVet(folderPath)
 			if err != nil {
 				return fmt.Errorf("build operation failed: %v", err)
 			}
@@ -113,7 +113,7 @@ func validatePath(path string) error {
 }
 
 // buildAndVet performs go build and go vet operations on the specified folder
-func buildAndVet(folderPath string, verbose bool) (*BuildResult, error) {
+func buildAndVet(folderPath string) (*BuildResult, error) {
 	result := &BuildResult{
 		Path: folderPath,
 	}
@@ -128,11 +128,11 @@ func buildAndVet(folderPath string, verbose bool) (*BuildResult, error) {
 	result.Path = absPath
 
 	// Run go build
-	buildSuccess, buildOutput := runGoBuild(absPath, verbose)
+	buildSuccess, buildOutput := runGoBuild(absPath)
 	result.BuildOutput = buildOutput
 
 	// Run go vet
-	vetSuccess, vetOutput := runGoVet(absPath, verbose)
+	vetSuccess, vetOutput := runGoVet(absPath)
 	result.VetOutput = vetOutput
 
 	// Determine overall success
@@ -154,7 +154,7 @@ func buildAndVet(folderPath string, verbose bool) (*BuildResult, error) {
 }
 
 // runGoBuild executes go build and returns success status and output
-func runGoBuild(path string, verbose bool) (bool, string) {
+func runGoBuild(path string) (bool, string) {
 	cmd := exec.Command("go", "build", "./...")
 	cmd.Dir = path
 
@@ -169,7 +169,7 @@ func runGoBuild(path string, verbose bool) (bool, string) {
 }
 
 // runGoVet executes go vet and returns success status and output
-func runGoVet(path string, verbose bool) (bool, string) {
+func runGoVet(path string) (bool, string) {
 	cmd := exec.Command("go", "vet", "./...")
 	cmd.Dir = path
 

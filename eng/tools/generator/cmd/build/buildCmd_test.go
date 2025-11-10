@@ -80,7 +80,7 @@ func main() {
 	}
 
 	// Test build and vet
-	result, err := buildAndVet(tempDir, false)
+	result, err := buildAndVet(tempDir)
 	if err != nil {
 		t.Errorf("buildAndVet failed: %v", err)
 	}
@@ -123,7 +123,7 @@ func main() {
 	}
 
 	// Test build and vet
-	result, err := buildAndVet(tempDir, false)
+	result, err := buildAndVet(tempDir)
 	if err != nil {
 		t.Errorf("buildAndVet failed: %v", err)
 	}

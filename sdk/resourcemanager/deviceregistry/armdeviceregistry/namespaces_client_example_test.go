@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistry"
 	"log"
 )
 
@@ -28,11 +28,11 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 		Properties: &armdeviceregistry.NamespaceProperties{
 			Messaging: &armdeviceregistry.Messaging{
 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"eventGridEndpoint": {
+					"eventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 						Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 					},
-					"anotherEventGridEndpoint": {
+					"anotherEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 						Address:      to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
 					},
@@ -350,7 +350,7 @@ func ExampleNamespacesClient_BeginUpdate() {
 		Properties: &armdeviceregistry.NamespaceUpdateProperties{
 			Messaging: &armdeviceregistry.Messaging{
 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"eventGridEndpoint": {
+					"eventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 						Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 					},

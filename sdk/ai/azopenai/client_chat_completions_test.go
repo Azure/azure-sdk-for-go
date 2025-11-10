@@ -39,7 +39,7 @@ var expectedContent = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10."
 var expectedRole = constant.ValueOf[constant.Assistant]()
 
 func TestClient_GetChatCompletions(t *testing.T) {
-	testFn := func(t *testing.T, client *openai.ChatCompletionService, deployment string, returnedModel string, checkRAI bool) {
+	testFn := func(t *testing.T, client *openai.ChatCompletionService, deployment string, checkRAI bool) {
 		resp, err := client.New(context.Background(), newStainlessTestChatCompletionOptions(deployment))
 		skipNowIfThrottled(t, err)
 		require.NoError(t, err)
@@ -76,12 +76,12 @@ func TestClient_GetChatCompletions(t *testing.T) {
 	t.Run("AzureOpenAI", func(t *testing.T) {
 		client := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
-		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletionsRAI.Model, "gpt-4", true)
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletionsRAI.Model, true)
 	})
 
 	t.Run("AzureOpenAI.DefaultAzureCredential", func(t *testing.T) {
 		client := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
-		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletions.Model, "gpt-4", true)
+		testFn(t, &client.Chat.Completions, azureOpenAI.ChatCompletions.Model, true)
 	})
 }
 

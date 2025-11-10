@@ -31,11 +31,6 @@ import (
 // - Managed Identity
 // - Azure CLI credentials
 func Example_usingDefaultAzureCredential() {
-	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_ENDPOINT")
 	model := os.Getenv("AOAI_MODEL")
 	tenantID := os.Getenv("AZURE_TENANT_ID")
@@ -79,11 +74,6 @@ func Example_usingDefaultAzureCredential() {
 func Example_usingManagedIdentityCredential() {
 	endpoint := os.Getenv("AOAI_ENDPOINT")
 	model := os.Getenv("AOAI_MODEL")
-
-	if endpoint == "" || model == "" {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
 
 	var credential *azidentity.ManagedIdentityCredential
 	var err error

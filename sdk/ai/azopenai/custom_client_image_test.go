@@ -42,7 +42,9 @@ func TestImageGeneration_AzureOpenAI(t *testing.T) {
 		headResp, err := http.DefaultClient.Head(resp.Data[0].URL)
 		require.NoError(t, err)
 
-		headResp.Body.Close()
+		err = headResp.Body.Close()
+		require.NoError(t, err)
+
 		require.Equal(t, http.StatusOK, headResp.StatusCode)
 		require.NotEmpty(t, resp.Data[0].RevisedPrompt)
 	}

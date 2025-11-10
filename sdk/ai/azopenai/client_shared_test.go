@@ -74,14 +74,8 @@ func getEnvVariable(varName string, playbackValue string) string {
 	return val
 }
 
-func getEndpoint(ev string, azure bool) string {
-	fakeEP := fakeAzureEndpoint
-
-	if !azure {
-		fakeEP = fakeOpenAIEndpoint
-	}
-
-	v := getEnvVariable(ev, fakeEP)
+func getEndpoint(ev string) string {
+	v := getEnvVariable(ev, fakeAzureEndpoint)
 
 	if !strings.HasSuffix(v, "/") {
 		// (this just makes recording replacement easier)
@@ -116,22 +110,22 @@ var azureOpenAI = func() testVars {
 		OpenAI         endpoint
 	}{
 		USEast: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USEAST", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
@@ -223,9 +217,9 @@ var azureOpenAI = func() testVars {
 		}
 
 		for area, epm := range remaps {
-			os.Setenv("AOAI_"+area+"_ENDPOINT", epm.Endpoint.URL)
-			os.Setenv("AOAI_"+area+"_API_KEY", epm.Endpoint.APIKey)
-			os.Setenv("AOAI_"+area+"_MODEL", epm.Model)
+			_ = os.Setenv("AOAI_"+area+"_ENDPOINT", epm.Endpoint.URL)
+			_ = os.Setenv("AOAI_"+area+"_API_KEY", epm.Endpoint.APIKey)
+			_ = os.Setenv("AOAI_"+area+"_MODEL", epm.Model)
 		}
 	}
 
@@ -275,7 +269,6 @@ func newStainlessTestClientWithV1URL(t *testing.T, ep endpoint) openai.Client {
 }
 
 const fakeAzureEndpoint = "https://Sanitized.openai.azure.com/"
-const fakeOpenAIEndpoint = "https://Sanitized.openai.com/v1"
 const fakeAPIKey = "redacted"
 const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
 const fakeCognitiveIndexName = "index"

@@ -9,7 +9,9 @@ import (
 	"io"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
 )
 
 // Example_audioTranscription demonstrates how to transcribe speech to text using Azure OpenAI's Whisper model.
@@ -22,30 +24,38 @@ import (
 // The example uses environment variables for configuration:
 // - AOAI_WHISPER_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_WHISPER_MODEL: The deployment name of your Whisper model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Audio transcription is useful for accessibility features, creating searchable archives of audio content,
 // generating captions or subtitles, and enabling voice commands in applications.
 func Example_audioTranscription() {
-	if !CheckRequiredEnvVars("AOAI_WHISPER_ENDPOINT", "AOAI_WHISPER_MODEL") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_WHISPER_ENDPOINT")
 	model := os.Getenv("AOAI_WHISPER_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	audio_file, err := os.Open("testdata/sampledata_audiofiles_myVoiceIsMyPassportVerifyMe01.mp3")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-	defer audio_file.Close()
+
+	defer func() {
+		if err := audio_file.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+		}
+	}()
 
 	resp, err := client.Audio.Transcriptions.New(context.TODO(), openai.AudioTranscriptionNewParams{
 		Model:          openai.AudioModel(model),
@@ -71,23 +81,25 @@ func Example_audioTranscription() {
 // The example uses environment variables for configuration:
 // - AOAI_TTS_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_TTS_MODEL: The deployment name of your text-to-speech model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Text-to-speech conversion is valuable for creating audiobooks, virtual assistants,
 // accessibility tools, and adding voice interfaces to applications.
 func Example_generateSpeechFromText() {
-	if !CheckRequiredEnvVars("AOAI_TTS_ENDPOINT", "AOAI_TTS_MODEL") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_TTS_ENDPOINT")
 	model := os.Getenv("AOAI_TTS_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	audioResp, err := client.Audio.Speech.New(context.Background(), openai.AudioSpeechNewParams{
 		Model:          openai.SpeechModel(model),
@@ -101,7 +113,11 @@ func Example_generateSpeechFromText() {
 		return
 	}
 
-	defer audioResp.Body.Close()
+	defer func() {
+		if err := audioResp.Body.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+		}
+	}()
 
 	audioBytes, err := io.ReadAll(audioResp.Body)
 
@@ -124,30 +140,37 @@ func Example_generateSpeechFromText() {
 // The example uses environment variables for configuration:
 // - AOAI_WHISPER_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_WHISPER_MODEL: The deployment name of your Whisper model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Speech translation is essential for cross-language communication, creating multilingual content,
 // and building applications that break down language barriers.
 func Example_audioTranslation() {
-	if !CheckRequiredEnvVars("AOAI_WHISPER_ENDPOINT", "AOAI_WHISPER_MODEL") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_WHISPER_ENDPOINT")
 	model := os.Getenv("AOAI_WHISPER_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	audio_file, err := os.Open("testdata/sampleaudio_hindi_myVoiceIsMyPassportVerifyMe.mp3")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
-	defer audio_file.Close()
+
+	defer func() {
+		if err := audio_file.Close(); err != nil {
+			fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
+		}
+	}()
 
 	resp, err := client.Audio.Translations.New(context.TODO(), openai.AudioTranslationNewParams{
 		Model:  openai.AudioModel(model),

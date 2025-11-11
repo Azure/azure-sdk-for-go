@@ -200,6 +200,12 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 	return exported.TransferValidationTypeComputeCRC64()
 }
 
+// TransferValidationTypeStructuredMessage is a TransferValidationType that wraps data in structured message format
+// for large uploads (>4MB). For smaller uploads (<4MB), it uses simple CRC64 header validation.
+func TransferValidationTypeStructuredMessage() TransferValidationType {
+	return exported.TransferValidationTypeStructuredMessage()
+}
+
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
 

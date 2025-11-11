@@ -4,7 +4,7 @@ applyTo: '**/go.mod'
 
 go.mod should only have direct reference to:
 - modules within the azure-sdk-for-go (ie: github.com/Azure/azure-sdk-for-go/sdk/<modules>)
-- Go standard library modules or modules that begin with `golang.org/x/`  
+- Go standard library modules or modules that begin with `golang.org/x/`
 - 3rd party modules, but within this list:
   - github.com/stretchr/testify
   - github.com/joho/godotenv

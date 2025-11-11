@@ -23,11 +23,15 @@ import (
 type TuningOptionsServer struct {
 	// Get is the fake for method TuningOptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, serverName string, tuningOption armpostgresqlflexibleservers.TuningOptionEnum, options *armpostgresqlflexibleservers.TuningOptionsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.TuningOptionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, serverName string, tuningOption armpostgresqlflexibleservers.TuningOption, options *armpostgresqlflexibleservers.TuningOptionsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.TuningOptionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByServerPager is the fake for method TuningOptionsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.TuningOptionsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListByServerResponse])
+
+	// NewListRecommendationsPager is the fake for method TuningOptionsClient.NewListRecommendationsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListRecommendationsPager func(resourceGroupName string, serverName string, tuningOption armpostgresqlflexibleservers.TuningOption, options *armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsResponse])
 }
 
 // NewTuningOptionsServerTransport creates a new instance of TuningOptionsServerTransport with the provided implementation.
@@ -35,16 +39,18 @@ type TuningOptionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTuningOptionsServerTransport(srv *TuningOptionsServer) *TuningOptionsServerTransport {
 	return &TuningOptionsServerTransport{
-		srv:                  srv,
-		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListByServerResponse]](),
+		srv:                         srv,
+		newListByServerPager:        newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListByServerResponse]](),
+		newListRecommendationsPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsResponse]](),
 	}
 }
 
 // TuningOptionsServerTransport connects instances of armpostgresqlflexibleservers.TuningOptionsClient to instances of TuningOptionsServer.
 // Don't use this type directly, use NewTuningOptionsServerTransport instead.
 type TuningOptionsServerTransport struct {
-	srv                  *TuningOptionsServer
-	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListByServerResponse]]
+	srv                         *TuningOptionsServer
+	newListByServerPager        *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListByServerResponse]]
+	newListRecommendationsPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for TuningOptionsServerTransport.
@@ -74,6 +80,8 @@ func (t *TuningOptionsServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = t.dispatchGet(req)
 			case "TuningOptionsClient.NewListByServerPager":
 				res.resp, res.err = t.dispatchNewListByServerPager(req)
+			case "TuningOptionsClient.NewListRecommendationsPager":
+				res.resp, res.err = t.dispatchNewListRecommendationsPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,7 +108,7 @@ func (t *TuningOptionsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tuningOptions/(?P<tuningOption>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -111,12 +119,12 @@ func (t *TuningOptionsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	tuningOptionParam, err := parseWithCast(matches[regex.SubexpIndex("tuningOption")], func(v string) (armpostgresqlflexibleservers.TuningOptionEnum, error) {
+	tuningOptionParam, err := parseWithCast(matches[regex.SubexpIndex("tuningOption")], func(v string) (armpostgresqlflexibleservers.TuningOption, error) {
 		p, unescapeErr := url.PathUnescape(v)
 		if unescapeErr != nil {
 			return "", unescapeErr
 		}
-		return armpostgresqlflexibleservers.TuningOptionEnum(p), nil
+		return armpostgresqlflexibleservers.TuningOption(p), nil
 	})
 	if err != nil {
 		return nil, err
@@ -129,7 +137,7 @@ func (t *TuningOptionsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TuningOptionsResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TuningOptions, req)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +153,7 @@ func (t *TuningOptionsServerTransport) dispatchNewListByServerPager(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tuningOptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -173,6 +181,69 @@ func (t *TuningOptionsServerTransport) dispatchNewListByServerPager(req *http.Re
 	}
 	if !server.PagerResponderMore(newListByServerPager) {
 		t.newListByServerPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TuningOptionsServerTransport) dispatchNewListRecommendationsPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListRecommendationsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListRecommendationsPager not implemented")}
+	}
+	newListRecommendationsPager := t.newListRecommendationsPager.get(req)
+	if newListRecommendationsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tuningOptions/(?P<tuningOption>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		tuningOptionParam, err := parseWithCast(matches[regex.SubexpIndex("tuningOption")], func(v string) (armpostgresqlflexibleservers.TuningOption, error) {
+			p, unescapeErr := url.PathUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armpostgresqlflexibleservers.TuningOption(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		recommendationTypeUnescaped, err := url.QueryUnescape(qp.Get("recommendationType"))
+		if err != nil {
+			return nil, err
+		}
+		recommendationTypeParam := getOptional(armpostgresqlflexibleservers.RecommendationType(recommendationTypeUnescaped))
+		var options *armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions
+		if recommendationTypeParam != nil {
+			options = &armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsOptions{
+				RecommendationType: recommendationTypeParam,
+			}
+		}
+		resp := t.srv.NewListRecommendationsPager(resourceGroupNameParam, serverNameParam, tuningOptionParam, options)
+		newListRecommendationsPager = &resp
+		t.newListRecommendationsPager.add(req, newListRecommendationsPager)
+		server.PagerResponderInjectNextLinks(newListRecommendationsPager, req, func(page *armpostgresqlflexibleservers.TuningOptionsClientListRecommendationsResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListRecommendationsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListRecommendationsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListRecommendationsPager) {
+		t.newListRecommendationsPager.remove(req)
 	}
 	return resp, nil
 }

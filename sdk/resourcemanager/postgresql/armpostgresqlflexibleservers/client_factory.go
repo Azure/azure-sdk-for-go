@@ -33,33 +33,57 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAdministratorsClient creates a new instance of AdministratorsClient.
-func (c *ClientFactory) NewAdministratorsClient() *AdministratorsClient {
-	return &AdministratorsClient{
+// NewAdministratorsMicrosoftEntraClient creates a new instance of AdministratorsMicrosoftEntraClient.
+func (c *ClientFactory) NewAdministratorsMicrosoftEntraClient() *AdministratorsMicrosoftEntraClient {
+	return &AdministratorsMicrosoftEntraClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewBackupsClient creates a new instance of BackupsClient.
-func (c *ClientFactory) NewBackupsClient() *BackupsClient {
-	return &BackupsClient{
+// NewAdvancedThreatProtectionSettingsClient creates a new instance of AdvancedThreatProtectionSettingsClient.
+func (c *ClientFactory) NewAdvancedThreatProtectionSettingsClient() *AdvancedThreatProtectionSettingsClient {
+	return &AdvancedThreatProtectionSettingsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient.
-func (c *ClientFactory) NewCheckNameAvailabilityClient() *CheckNameAvailabilityClient {
-	return &CheckNameAvailabilityClient{
+// NewBackupsAutomaticAndOnDemandClient creates a new instance of BackupsAutomaticAndOnDemandClient.
+func (c *ClientFactory) NewBackupsAutomaticAndOnDemandClient() *BackupsAutomaticAndOnDemandClient {
+	return &BackupsAutomaticAndOnDemandClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewCheckNameAvailabilityWithLocationClient creates a new instance of CheckNameAvailabilityWithLocationClient.
-func (c *ClientFactory) NewCheckNameAvailabilityWithLocationClient() *CheckNameAvailabilityWithLocationClient {
-	return &CheckNameAvailabilityWithLocationClient{
+// NewBackupsLongTermRetentionClient creates a new instance of BackupsLongTermRetentionClient.
+func (c *ClientFactory) NewBackupsLongTermRetentionClient() *BackupsLongTermRetentionClient {
+	return &BackupsLongTermRetentionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCapabilitiesByLocationClient creates a new instance of CapabilitiesByLocationClient.
+func (c *ClientFactory) NewCapabilitiesByLocationClient() *CapabilitiesByLocationClient {
+	return &CapabilitiesByLocationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCapabilitiesByServerClient creates a new instance of CapabilitiesByServerClient.
+func (c *ClientFactory) NewCapabilitiesByServerClient() *CapabilitiesByServerClient {
+	return &CapabilitiesByServerClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewCapturedLogsClient creates a new instance of CapturedLogsClient.
+func (c *ClientFactory) NewCapturedLogsClient() *CapturedLogsClient {
+	return &CapturedLogsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -89,49 +113,19 @@ func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	}
 }
 
-// NewFlexibleServerClient creates a new instance of FlexibleServerClient.
-func (c *ClientFactory) NewFlexibleServerClient() *FlexibleServerClient {
-	return &FlexibleServerClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient.
-func (c *ClientFactory) NewGetPrivateDNSZoneSuffixClient() *GetPrivateDNSZoneSuffixClient {
-	return &GetPrivateDNSZoneSuffixClient{
-		internal: c.internal,
-	}
-}
-
-// NewLocationBasedCapabilitiesClient creates a new instance of LocationBasedCapabilitiesClient.
-func (c *ClientFactory) NewLocationBasedCapabilitiesClient() *LocationBasedCapabilitiesClient {
-	return &LocationBasedCapabilitiesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewLogFilesClient creates a new instance of LogFilesClient.
-func (c *ClientFactory) NewLogFilesClient() *LogFilesClient {
-	return &LogFilesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewLtrBackupOperationsClient creates a new instance of LtrBackupOperationsClient.
-func (c *ClientFactory) NewLtrBackupOperationsClient() *LtrBackupOperationsClient {
-	return &LtrBackupOperationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewMigrationsClient creates a new instance of MigrationsClient.
 func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
 	return &MigrationsClient{
-		internal: c.internal,
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNameAvailabilityClient creates a new instance of NameAvailabilityClient.
+func (c *ClientFactory) NewNameAvailabilityClient() *NameAvailabilityClient {
+	return &NameAvailabilityClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 
@@ -142,18 +136,10 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPostgreSQLManagementClient creates a new instance of PostgreSQLManagementClient.
-func (c *ClientFactory) NewPostgreSQLManagementClient() *PostgreSQLManagementClient {
-	return &PostgreSQLManagementClient{
+// NewPrivateDNSZoneSuffixClient creates a new instance of PrivateDNSZoneSuffixClient.
+func (c *ClientFactory) NewPrivateDNSZoneSuffixClient() *PrivateDNSZoneSuffixClient {
+	return &PrivateDNSZoneSuffixClient{
 		internal: c.internal,
-	}
-}
-
-// NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient.
-func (c *ClientFactory) NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient {
-	return &PrivateEndpointConnectionClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
 	}
 }
 
@@ -189,14 +175,6 @@ func (c *ClientFactory) NewReplicasClient() *ReplicasClient {
 	}
 }
 
-// NewServerCapabilitiesClient creates a new instance of ServerCapabilitiesClient.
-func (c *ClientFactory) NewServerCapabilitiesClient() *ServerCapabilitiesClient {
-	return &ServerCapabilitiesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewServerThreatProtectionSettingsClient creates a new instance of ServerThreatProtectionSettingsClient.
 func (c *ClientFactory) NewServerThreatProtectionSettingsClient() *ServerThreatProtectionSettingsClient {
 	return &ServerThreatProtectionSettingsClient{
@@ -208,22 +186,6 @@ func (c *ClientFactory) NewServerThreatProtectionSettingsClient() *ServerThreatP
 // NewServersClient creates a new instance of ServersClient.
 func (c *ClientFactory) NewServersClient() *ServersClient {
 	return &ServersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewTuningConfigurationClient creates a new instance of TuningConfigurationClient.
-func (c *ClientFactory) NewTuningConfigurationClient() *TuningConfigurationClient {
-	return &TuningConfigurationClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewTuningIndexClient creates a new instance of TuningIndexClient.
-func (c *ClientFactory) NewTuningIndexClient() *TuningIndexClient {
-	return &TuningIndexClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

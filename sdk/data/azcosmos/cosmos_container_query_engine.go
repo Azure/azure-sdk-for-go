@@ -155,19 +155,19 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 				// If there are no requests, the pipeline should return true for IsComplete, so we'll stop on the next iteration.
 				// Parallelize request execution using shared driver.
 				concurrency := determineConcurrency(nil)
-				charge, err := runEngineRequests(ctx, c, path, queryPipeline, operationContext, result.Requests, concurrency, func(req queryengine.QueryRequest) (string, []QueryParameter, bool) {
+				charge, err := runEngineRequests(ctx, c, path, queryPipeline, operationContext, result.Requests, concurrency, func(qryRequest queryengine.QueryRequest) (string, []QueryParameter, bool) {
 					// Override query if present;
 					localQuery := query
-					if req.Query != "" {
-						localQuery = req.Query
+					if qryRequest.Query != "" {
+						localQuery = qryRequest.Query
 					}
-					var params []QueryParameter
-					if req.IncludeParameters || req.Query == "" {
+					var queryParameters []QueryParameter
+					if qryRequest.IncludeParameters || qryRequest.Query == "" {
 						// use query options parameters only if IncludeParameters is true or no override query is specified
-						params = queryOptions.QueryParameters
+						queryParameters = queryOptions.QueryParameters
 					}
 					// Drain if request.Drain is true.
-					return localQuery, params, req.Drain
+					return localQuery, queryParameters, qryRequest.Drain
 				})
 				_ = charge // totalRequestCharge currently unused for query path;
 				if err != nil {
@@ -178,19 +178,6 @@ func (c *ContainerClient) executeQueryWithEngine(queryEngine queryengine.QueryEn
 			}
 		},
 	})
-}
-
-// Wrapper type because we can't define 'toHeaders' on DataRequest directly, nor can we define it in the queryengine package (because it's not a public method).
-type queryRequest queryengine.QueryRequest
-
-func (r *queryRequest) toHeaders() *map[string]string {
-	headers := make(map[string]string)
-
-	if r.Continuation != "" {
-		headers[cosmosHeaderContinuationToken] = r.Continuation
-	}
-	headers[cosmosHeaderPartitionKeyRangeId] = r.PartitionKeyRangeID
-	return &headers
 }
 
 // runEngineRequests concurrently executes per-partition QueryRequests for either query or readMany pipelines.
@@ -262,7 +249,7 @@ func runEngineRequests(
 					fetchMorePages := true
 					for fetchMorePages {
 						qr := queryRequest(req)
-						azResponse, rerr := c.database.client.sendQueryRequest(
+						azResponse, err := c.database.client.sendQueryRequest(
 							path,
 							ctx,
 							queryText,
@@ -271,18 +258,18 @@ func runEngineRequests(
 							&qr,
 							nil,
 						)
-						if rerr != nil {
+						if err != nil {
 							select {
-							case errCh <- rerr:
+							case errCh <- err:
 							default:
 							}
 							return
 						}
 
-						qResp, qErr := newQueryResponse(azResponse)
-						if qErr != nil {
+						qResp, err := newQueryResponse(azResponse)
+						if err != nil {
 							select {
-							case errCh <- qErr:
+							case errCh <- err:
 							default:
 							}
 							return
@@ -293,28 +280,29 @@ func runEngineRequests(
 
 						// Load the data into a buffer to send it to the pipeline
 						buf := new(bytes.Buffer)
-						if _, rdErr := buf.ReadFrom(azResponse.Body); rdErr != nil {
+						if _, err := buf.ReadFrom(azResponse.Body); err != nil {
 							select {
-							case errCh <- rdErr:
+							case errCh <- err:
 							default:
 							}
 							return
 						}
 						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
-						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", req.PartitionKeyRangeID, continuation != "")
+						data := buf.Bytes()
 						fetchMorePages = continuation != "" && drain
 
 						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
-						qres := queryengine.QueryResult{
+						result := queryengine.QueryResult{
 							PartitionKeyRangeID: req.PartitionKeyRangeID,
 							NextContinuation:    continuation,
+							Data:                data,
 							RequestId:           req.Id,
-							Data:                buf.Bytes(),
 						}
+						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", req.PartitionKeyRangeID, continuation != "")
 						select {
 						case <-done:
 							return
-						case provideCh <- []queryengine.QueryResult{qres}:
+						case provideCh <- []queryengine.QueryResult{result}:
 						}
 					}
 				}
@@ -370,4 +358,17 @@ func determineConcurrency(max *int32) int {
 		c = 1
 	}
 	return c
+}
+
+// Wrapper type because we can't define 'toHeaders' on DataRequest directly, nor can we define it in the queryengine package (because it's not a public method).
+type queryRequest queryengine.QueryRequest
+
+func (r *queryRequest) toHeaders() *map[string]string {
+	headers := make(map[string]string)
+
+	if r.Continuation != "" {
+		headers[cosmosHeaderContinuationToken] = r.Continuation
+	}
+	headers[cosmosHeaderPartitionKeyRangeId] = r.PartitionKeyRangeID
+	return &headers
 }

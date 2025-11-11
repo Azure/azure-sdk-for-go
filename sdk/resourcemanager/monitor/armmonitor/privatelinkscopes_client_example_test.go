@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesList.json
 func ExamplePrivateLinkScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExamplePrivateLinkScopesClient_NewListPager() {
 		// 					IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 					QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 				},
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -81,7 +81,7 @@ func ExamplePrivateLinkScopesClient_NewListPager() {
 		// 					IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 					QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 				},
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -96,7 +96,7 @@ func ExamplePrivateLinkScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesListByResourceGroup.json
 func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 		// 					IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 					QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 				},
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -159,7 +159,7 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 		// 					IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 					QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 		// 				},
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -174,7 +174,7 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesDelete.json
 func ExamplePrivateLinkScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExamplePrivateLinkScopesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesGet.json
 func ExamplePrivateLinkScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// 			IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 			QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 		},
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -240,7 +240,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesCreate.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// 			IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 			QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 		},
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -294,7 +294,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesUpdate.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,7 +339,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// 			IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 			QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 		},
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -352,7 +352,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopesUpdateTagsOnly.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopesUpdateTagsOnly.json
 func ExamplePrivateLinkScopesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +391,7 @@ func ExamplePrivateLinkScopesClient_UpdateTags() {
 	// 			IngestionAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 			QueryAccessMode: to.Ptr(armmonitor.AccessModeOpen),
 	// 		},
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armmonitor.PrivateLinkScopeProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),

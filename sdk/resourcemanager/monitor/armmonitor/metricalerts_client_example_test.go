@@ -20,7 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/listMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/listMetricAlert.json
 func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +76,11 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 		// 					}},
 		// 				},
 		// 				Enabled: to.Ptr(true),
-		// 				EvaluationFrequency: to.Ptr("Pt1m"),
+		// 				EvaluationFrequency: to.Ptr("PT1M"),
 		// 				Scopes: []*string{
 		// 					to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 		// 					Severity: to.Ptr[int32](3),
-		// 					WindowSize: to.Ptr("Pt15m"),
+		// 					WindowSize: to.Ptr("PT15M"),
 		// 				},
 		// 			},
 		// 			{
@@ -115,18 +115,124 @@ func ExampleMetricAlertsClient_NewListBySubscriptionPager() {
 		// 						}},
 		// 					},
 		// 					Enabled: to.Ptr(true),
-		// 					EvaluationFrequency: to.Ptr("Pt1m"),
+		// 					EvaluationFrequency: to.Ptr("PT1M"),
 		// 					Scopes: []*string{
 		// 						to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 		// 						Severity: to.Ptr[int32](4),
-		// 						WindowSize: to.Ptr("Pt15m"),
+		// 						WindowSize: to.Ptr("PT15M"),
 		// 					},
 		// 			}},
 		// 		}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertMultipleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/listMetricAlert.json
+func ExampleMetricAlertsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewMetricAlertsClient().NewListByResourceGroupPager("gigtest", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.MetricAlertResourceCollection = armmonitor.MetricAlertResourceCollection{
+		// 	Value: []*armmonitor.MetricAlertResource{
+		// 		{
+		// 			Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+		// 			ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/highcpu"),
+		// 			Location: to.Ptr("global"),
+		// 			Tags: map[string]*string{
+		// 				"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+		// 			},
+		// 			Properties: &armmonitor.MetricAlertProperties{
+		// 				Description: to.Ptr("This is the description of the rule1"),
+		// 				Actions: []*armmonitor.MetricAlertAction{
+		// 					{
+		// 						ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+		// 						WebHookProperties: map[string]*string{
+		// 							"key11": to.Ptr("value11"),
+		// 							"key12": to.Ptr("value12"),
+		// 						},
+		// 				}},
+		// 				Criteria: &armmonitor.MetricAlertSingleResourceMultipleMetricCriteria{
+		// 					ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria),
+		// 					AllOf: []*armmonitor.MetricCriteria{
+		// 						{
+		// 							Name: to.Ptr("High_CPU_80"),
+		// 							CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+		// 							Dimensions: []*armmonitor.MetricDimension{
+		// 							},
+		// 							MetricName: to.Ptr("CustomMetric_\\Processor(_Total)\\% Processor Time"),
+		// 							TimeAggregation: to.Ptr(armmonitor.AggregationTypeEnumAverage),
+		// 							Operator: to.Ptr(armmonitor.OperatorGreaterThan),
+		// 							Threshold: to.Ptr[float64](80.5),
+		// 					}},
+		// 				},
+		// 				Enabled: to.Ptr(true),
+		// 				EvaluationFrequency: to.Ptr("PT1M"),
+		// 				Scopes: []*string{
+		// 					to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
+		// 					Severity: to.Ptr[int32](3),
+		// 					WindowSize: to.Ptr("PT15M"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+		// 				ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/mediumcpu"),
+		// 				Location: to.Ptr("global"),
+		// 				Tags: map[string]*string{
+		// 					"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+		// 				},
+		// 				Properties: &armmonitor.MetricAlertProperties{
+		// 					Description: to.Ptr("Med cpu alert"),
+		// 					Actions: []*armmonitor.MetricAlertAction{
+		// 						{
+		// 							ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+		// 							WebHookProperties: map[string]*string{
+		// 								"key11": to.Ptr("value11"),
+		// 								"key12": to.Ptr("value12"),
+		// 							},
+		// 					}},
+		// 					Criteria: &armmonitor.MetricAlertSingleResourceMultipleMetricCriteria{
+		// 						ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria),
+		// 						AllOf: []*armmonitor.MetricCriteria{
+		// 							{
+		// 								Name: to.Ptr("Medium_CPU_50"),
+		// 								CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+		// 								Dimensions: []*armmonitor.MetricDimension{
+		// 								},
+		// 								MetricName: to.Ptr("CustomMetric_\\Processor(_Total)\\% Processor Time"),
+		// 								TimeAggregation: to.Ptr(armmonitor.AggregationTypeEnumAverage),
+		// 								Operator: to.Ptr(armmonitor.OperatorGreaterThan),
+		// 								Threshold: to.Ptr[float64](50.5),
+		// 						}},
+		// 					},
+		// 					Enabled: to.Ptr(true),
+		// 					EvaluationFrequency: to.Ptr("PT1M"),
+		// 					Scopes: []*string{
+		// 						to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
+		// 						Severity: to.Ptr[int32](4),
+		// 						WindowSize: to.Ptr("PT15M"),
+		// 					},
+		// 			}},
+		// 		}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getDynamicMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +300,7 @@ func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForMultipleResources() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getDynamicMetricAlertSingleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getDynamicMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,16 +356,83 @@ func ExampleMetricAlertsClient_Get_getADynamicAlertRuleForSingleResource() {
 	// 			}},
 	// 		},
 	// 		Enabled: to.Ptr(true),
-	// 		EvaluationFrequency: to.Ptr("Pt1m"),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
 	// 		Scopes: []*string{
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 	// 			Severity: to.Ptr[int32](3),
-	// 			WindowSize: to.Ptr("Pt15m"),
+	// 			WindowSize: to.Ptr("PT15M"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getWebTestMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getMetricAlertQuery.json
+func ExampleMetricAlertsClient_Get_getAQueryBasedAlertRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMetricAlertsClient().Get(ctx, "gigtest", "chiricutin", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricAlertResource = armmonitor.MetricAlertResource{
+	// 	Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+	// 	ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 	Identity: &armmonitor.Identity{
+	// 		Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+	// 			"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": &armmonitor.UserIdentityProperties{
+	// 				ClientID: to.Ptr("778f4d04-3c60-4622-a839-5cf05866c983"),
+	// 				PrincipalID: to.Ptr("669dd76d-cde8-4dc3-b882-1de566b0c628"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+	// 	},
+	// 	Properties: &armmonitor.MetricAlertProperties{
+	// 		Description: to.Ptr("This is the description of the rule1"),
+	// 		Actions: []*armmonitor.MetricAlertAction{
+	// 			{
+	// 				ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+	// 				WebHookProperties: map[string]*string{
+	// 					"key11": to.Ptr("value11"),
+	// 					"key12": to.Ptr("value12"),
+	// 				},
+	// 		}},
+	// 		Criteria: &armmonitor.PromQLCriteria{
+	// 			ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+	// 			AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+	// 				&armmonitor.StaticPromQLCriteria{
+	// 					Name: to.Ptr("Metric1"),
+	// 					CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+	// 					Query: to.Ptr("floor(minute(vector(time())) / 10 ) % 2 == 1"),
+	// 			}},
+	// 		},
+	// 		Enabled: to.Ptr(true),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
+	// 		ResolveConfiguration: &armmonitor.ResolveConfiguration{
+	// 			AutoResolved: to.Ptr(true),
+	// 			TimeToResolve: to.Ptr("PT10M"),
+	// 		},
+	// 		Scopes: []*string{
+	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme")},
+	// 			Severity: to.Ptr[int32](3),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getWebTestMetricAlert.json
 func ExampleMetricAlertsClient_Get_getAWebTestAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +480,7 @@ func ExampleMetricAlertsClient_Get_getAWebTestAlertRule() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertMultipleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,7 +544,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleForMultipleResources() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSingleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,16 +595,16 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleForSingleResource() {
 	// 			}},
 	// 		},
 	// 		Enabled: to.Ptr(true),
-	// 		EvaluationFrequency: to.Ptr("Pt1m"),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
 	// 		Scopes: []*string{
 	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 	// 			Severity: to.Ptr[int32](3),
-	// 			WindowSize: to.Ptr("Pt15m"),
+	// 			WindowSize: to.Ptr("PT15M"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getMetricAlertResourceGroup.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -495,7 +668,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleOnResourceGroupS() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/getMetricAlertSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/getMetricAlertSubscription.json
 func ExampleMetricAlertsClient_Get_getAnAlertRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -558,7 +731,7 @@ func ExampleMetricAlertsClient_Get_getAnAlertRuleOnSubscription() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateDynamicMetricAlertMultipleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateDynamicMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleForMultipleResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -668,7 +841,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateDynamicMetricAlertSingleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateDynamicMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -776,7 +949,481 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateADynamicAlertRuleFor
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateWebTestMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertQuery.json
+func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMetricAlertsClient().CreateOrUpdate(ctx, "gigtest", "chiricutin", armmonitor.MetricAlertResource{
+		Identity: &armmonitor.Identity{
+			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+				"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": {},
+			},
+		},
+		Location: to.Ptr("eastus"),
+		Tags:     map[string]*string{},
+		Properties: &armmonitor.MetricAlertProperties{
+			Description: to.Ptr("This is the description of the rule1"),
+			ActionProperties: map[string]*string{
+				"Email.Sujbect": to.Ptr("my custom email subject"),
+			},
+			Actions: []*armmonitor.MetricAlertAction{
+				{
+					ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+				}},
+			Criteria: &armmonitor.PromQLCriteria{
+				ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+				AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+					&armmonitor.StaticPromQLCriteria{
+						Name:          to.Ptr("Metric1"),
+						CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+						Query:         to.Ptr("avg({\"system.cpu.utilization\"}) > 90"),
+					}},
+				FailingPeriods: &armmonitor.QueryFailingPeriods{
+					For: to.Ptr("PT5M"),
+				},
+			},
+			CustomProperties: map[string]*string{
+				"key11": to.Ptr("value11"),
+				"key12": to.Ptr("value12"),
+			},
+			Enabled:             to.Ptr(true),
+			EvaluationFrequency: to.Ptr("PT1M"),
+			ResolveConfiguration: &armmonitor.ResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
+			Scopes: []*string{
+				to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme")},
+			Severity: to.Ptr[int32](3),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricAlertResource = armmonitor.MetricAlertResource{
+	// 	Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+	// 	ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 	Identity: &armmonitor.Identity{
+	// 		Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+	// 			"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": &armmonitor.UserIdentityProperties{
+	// 				ClientID: to.Ptr("778f4d04-3c60-4622-a839-5cf05866c983"),
+	// 				PrincipalID: to.Ptr("669dd76d-cde8-4dc3-b882-1de566b0c628"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+	// 	},
+	// 	Properties: &armmonitor.MetricAlertProperties{
+	// 		Description: to.Ptr("This is the description of the rule1"),
+	// 		ActionProperties: map[string]*string{
+	// 			"Email.Sujbect": to.Ptr("my custom email subject"),
+	// 		},
+	// 		Actions: []*armmonitor.MetricAlertAction{
+	// 			{
+	// 				ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+	// 		}},
+	// 		Criteria: &armmonitor.PromQLCriteria{
+	// 			ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+	// 			AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+	// 				&armmonitor.StaticPromQLCriteria{
+	// 					Name: to.Ptr("Metric1"),
+	// 					CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+	// 					Query: to.Ptr("avg({\"system.cpu.utilization\"}) > 90"),
+	// 			}},
+	// 			FailingPeriods: &armmonitor.QueryFailingPeriods{
+	// 				For: to.Ptr("PT2M"),
+	// 			},
+	// 		},
+	// 		CustomProperties: map[string]*string{
+	// 			"key11": to.Ptr("value11"),
+	// 			"key12": to.Ptr("value12"),
+	// 		},
+	// 		Enabled: to.Ptr(true),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
+	// 		ResolveConfiguration: &armmonitor.ResolveConfiguration{
+	// 			AutoResolved: to.Ptr(true),
+	// 			TimeToResolve: to.Ptr("PT10M"),
+	// 		},
+	// 		Scopes: []*string{
+	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme")},
+	// 			Severity: to.Ptr[int32](3),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertQueryDT.json
+func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAQueryBasedAlertRuleWithDynamicThreshold() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMetricAlertsClient().CreateOrUpdate(ctx, "gigtest", "chiricutin", armmonitor.MetricAlertResource{
+		Identity: &armmonitor.Identity{
+			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+				"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": {},
+			},
+		},
+		Location: to.Ptr("eastus"),
+		Tags:     map[string]*string{},
+		Properties: &armmonitor.MetricAlertProperties{
+			Description: to.Ptr("This is the description of the rule1"),
+			ActionProperties: map[string]*string{
+				"Email.Sujbect": to.Ptr("my custom email subject"),
+			},
+			Actions: []*armmonitor.MetricAlertAction{
+				{
+					ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+				}},
+			Criteria: &armmonitor.PromQLCriteria{
+				ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+				AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+					&armmonitor.DynamicPromQLCriteria{
+						Name:             to.Ptr("Metric1"),
+						CriterionType:    to.Ptr(armmonitor.CriterionTypeDynamicThresholdCriterion),
+						Query:            to.Ptr("avg({\"system.cpu.utilization\"})"),
+						AlertSensitivity: to.Ptr(armmonitor.DynamicThresholdSensitivityMedium),
+						IgnoreDataBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-04T21:00:00.000Z"); return t }()),
+						Operator:         to.Ptr(armmonitor.DynamicThresholdOperatorLessThan),
+					}},
+				FailingPeriods: &armmonitor.QueryFailingPeriods{
+					For: to.Ptr("PT5M"),
+				},
+			},
+			CustomProperties: map[string]*string{
+				"key11": to.Ptr("value11"),
+				"key12": to.Ptr("value12"),
+			},
+			Enabled:             to.Ptr(true),
+			EvaluationFrequency: to.Ptr("PT1M"),
+			ResolveConfiguration: &armmonitor.ResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
+			Scopes: []*string{
+				to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme")},
+			Severity: to.Ptr[int32](3),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricAlertResource = armmonitor.MetricAlertResource{
+	// 	Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+	// 	ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 	Identity: &armmonitor.Identity{
+	// 		Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+	// 			"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": &armmonitor.UserIdentityProperties{
+	// 				ClientID: to.Ptr("778f4d04-3c60-4622-a839-5cf05866c983"),
+	// 				PrincipalID: to.Ptr("669dd76d-cde8-4dc3-b882-1de566b0c628"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+	// 	},
+	// 	Properties: &armmonitor.MetricAlertProperties{
+	// 		Description: to.Ptr("This is the description of the rule1"),
+	// 		ActionProperties: map[string]*string{
+	// 			"Email.Sujbect": to.Ptr("my custom email subject"),
+	// 		},
+	// 		Actions: []*armmonitor.MetricAlertAction{
+	// 			{
+	// 				ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+	// 		}},
+	// 		Criteria: &armmonitor.PromQLCriteria{
+	// 			ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+	// 			AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+	// 				&armmonitor.DynamicPromQLCriteria{
+	// 					Name: to.Ptr("Metric1"),
+	// 					CriterionType: to.Ptr(armmonitor.CriterionTypeDynamicThresholdCriterion),
+	// 					Query: to.Ptr("avg({\"system.cpu.utilization\"})"),
+	// 					AlertSensitivity: to.Ptr(armmonitor.DynamicThresholdSensitivityMedium),
+	// 					IgnoreDataBefore: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-04T21:00:00.000Z"); return t}()),
+	// 					Operator: to.Ptr(armmonitor.DynamicThresholdOperatorLessThan),
+	// 			}},
+	// 			FailingPeriods: &armmonitor.QueryFailingPeriods{
+	// 				For: to.Ptr("PT2M"),
+	// 			},
+	// 		},
+	// 		CustomProperties: map[string]*string{
+	// 			"key11": to.Ptr("value11"),
+	// 			"key12": to.Ptr("value12"),
+	// 		},
+	// 		Enabled: to.Ptr(true),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
+	// 		ResolveConfiguration: &armmonitor.ResolveConfiguration{
+	// 			AutoResolved: to.Ptr(true),
+	// 			TimeToResolve: to.Ptr("PT10M"),
+	// 		},
+	// 		Scopes: []*string{
+	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.monitor/accounts/gigwadme")},
+	// 			Severity: to.Ptr[int32](3),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertQueryResourceCentric.json
+func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQueryBasedAlertRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMetricAlertsClient().CreateOrUpdate(ctx, "gigtest", "chiricutin", armmonitor.MetricAlertResource{
+		Identity: &armmonitor.Identity{
+			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+				"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": {},
+			},
+		},
+		Location: to.Ptr("eastus"),
+		Tags:     map[string]*string{},
+		Properties: &armmonitor.MetricAlertProperties{
+			Description: to.Ptr("This is the description of the rule1"),
+			ActionProperties: map[string]*string{
+				"Email.Sujbect": to.Ptr("my custom email subject"),
+			},
+			Actions: []*armmonitor.MetricAlertAction{
+				{
+					ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+				}},
+			Criteria: &armmonitor.PromQLCriteria{
+				ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+				AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+					&armmonitor.StaticPromQLCriteria{
+						Name:          to.Ptr("Metric1"),
+						CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+						Query:         to.Ptr("avg({\"system.cpu.utilization\"}) > 90"),
+					}},
+				FailingPeriods: &armmonitor.QueryFailingPeriods{
+					For: to.Ptr("PT5M"),
+				},
+			},
+			CustomProperties: map[string]*string{
+				"key11": to.Ptr("value11"),
+				"key12": to.Ptr("value12"),
+			},
+			Enabled:             to.Ptr(true),
+			EvaluationFrequency: to.Ptr("PT1M"),
+			ResolveConfiguration: &armmonitor.ResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
+			Scopes: []*string{
+				to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.compute/virtualMachines/myVmName")},
+			Severity: to.Ptr[int32](3),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricAlertResource = armmonitor.MetricAlertResource{
+	// 	Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+	// 	ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 	Identity: &armmonitor.Identity{
+	// 		Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+	// 			"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": &armmonitor.UserIdentityProperties{
+	// 				ClientID: to.Ptr("778f4d04-3c60-4622-a839-5cf05866c983"),
+	// 				PrincipalID: to.Ptr("669dd76d-cde8-4dc3-b882-1de566b0c628"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+	// 	},
+	// 	Properties: &armmonitor.MetricAlertProperties{
+	// 		Description: to.Ptr("This is the description of the rule1"),
+	// 		ActionProperties: map[string]*string{
+	// 			"Email.Sujbect": to.Ptr("my custom email subject"),
+	// 		},
+	// 		Actions: []*armmonitor.MetricAlertAction{
+	// 			{
+	// 				ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+	// 		}},
+	// 		Criteria: &armmonitor.PromQLCriteria{
+	// 			ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+	// 			AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+	// 				&armmonitor.StaticPromQLCriteria{
+	// 					Name: to.Ptr("Metric1"),
+	// 					CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+	// 					Query: to.Ptr("avg({\"system.cpu.utilization\"}) > 90"),
+	// 			}},
+	// 			FailingPeriods: &armmonitor.QueryFailingPeriods{
+	// 				For: to.Ptr("PT2M"),
+	// 			},
+	// 		},
+	// 		CustomProperties: map[string]*string{
+	// 			"key11": to.Ptr("value11"),
+	// 			"key12": to.Ptr("value12"),
+	// 		},
+	// 		Enabled: to.Ptr(true),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
+	// 		ResolveConfiguration: &armmonitor.ResolveConfiguration{
+	// 			AutoResolved: to.Ptr(true),
+	// 			TimeToResolve: to.Ptr("PT10M"),
+	// 		},
+	// 		Scopes: []*string{
+	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/microsoft.compute/virtualMachines/myVmName")},
+	// 			Severity: to.Ptr[int32](3),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertQueryMultiResource.json
+func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAResourceCentricQueryBasedAlertRuleForMultipleResources() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMetricAlertsClient().CreateOrUpdate(ctx, "gigtest", "chiricutin", armmonitor.MetricAlertResource{
+		Identity: &armmonitor.Identity{
+			Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+				"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": {},
+			},
+		},
+		Location: to.Ptr("eastus"),
+		Tags:     map[string]*string{},
+		Properties: &armmonitor.MetricAlertProperties{
+			Description: to.Ptr("This is the description of the rule1"),
+			ActionProperties: map[string]*string{
+				"Email.Sujbect": to.Ptr("my custom email subject"),
+			},
+			Actions: []*armmonitor.MetricAlertAction{
+				{
+					ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+				}},
+			Criteria: &armmonitor.PromQLCriteria{
+				ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+				AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+					&armmonitor.StaticPromQLCriteria{
+						Name:          to.Ptr("Metric1"),
+						CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+						Query:         to.Ptr("avg({\"system.cpu.utilization\"}) by (\"microsoft.resourceid\") > 90"),
+					}},
+				FailingPeriods: &armmonitor.QueryFailingPeriods{
+					For: to.Ptr("PT5M"),
+				},
+			},
+			CustomProperties: map[string]*string{
+				"key11": to.Ptr("value11"),
+				"key12": to.Ptr("value12"),
+			},
+			Enabled:             to.Ptr(true),
+			EvaluationFrequency: to.Ptr("PT1M"),
+			ResolveConfiguration: &armmonitor.ResolveConfiguration{
+				AutoResolved:  to.Ptr(true),
+				TimeToResolve: to.Ptr("PT10M"),
+			},
+			Scopes: []*string{
+				to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7")},
+			Severity: to.Ptr[int32](3),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MetricAlertResource = armmonitor.MetricAlertResource{
+	// 	Type: to.Ptr("Microsoft.Insights/metricAlerts"),
+	// 	ID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/providers/microsoft.insights/metricalerts/chiricutin"),
+	// 	Identity: &armmonitor.Identity{
+	// 		Type: to.Ptr(armmonitor.IdentityTypeUserAssigned),
+	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		UserAssignedIdentities: map[string]*armmonitor.UserIdentityProperties{
+	// 			"/subscriptions/2f1a501a-6e1d-4f37-a445-462d7f8a563d/resourceGroups/AdisTest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/msi-test-euap": &armmonitor.UserIdentityProperties{
+	// 				ClientID: to.Ptr("778f4d04-3c60-4622-a839-5cf05866c983"),
+	// 				PrincipalID: to.Ptr("669dd76d-cde8-4dc3-b882-1de566b0c628"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"hidden-link:/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/leoalerttest": to.Ptr("Resource"),
+	// 	},
+	// 	Properties: &armmonitor.MetricAlertProperties{
+	// 		Description: to.Ptr("This is the description of the rule1"),
+	// 		ActionProperties: map[string]*string{
+	// 			"Email.Sujbect": to.Ptr("my custom email subject"),
+	// 		},
+	// 		Actions: []*armmonitor.MetricAlertAction{
+	// 			{
+	// 				ActionGroupID: to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2"),
+	// 		}},
+	// 		Criteria: &armmonitor.PromQLCriteria{
+	// 			ODataType: to.Ptr(armmonitor.OdatatypeMicrosoftAzureMonitorPromQLCriteria),
+	// 			AllOf: []armmonitor.MultiPromQLCriteriaClassification{
+	// 				&armmonitor.StaticPromQLCriteria{
+	// 					Name: to.Ptr("Metric1"),
+	// 					CriterionType: to.Ptr(armmonitor.CriterionTypeStaticThresholdCriterion),
+	// 					Query: to.Ptr("avg({\"system.cpu.utilization\"}) by (\"microsoft.resourceid\") > 90"),
+	// 			}},
+	// 			FailingPeriods: &armmonitor.QueryFailingPeriods{
+	// 				For: to.Ptr("PT2M"),
+	// 			},
+	// 		},
+	// 		CustomProperties: map[string]*string{
+	// 			"key11": to.Ptr("value11"),
+	// 			"key12": to.Ptr("value12"),
+	// 		},
+	// 		Enabled: to.Ptr(true),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
+	// 		ResolveConfiguration: &armmonitor.ResolveConfiguration{
+	// 			AutoResolved: to.Ptr(true),
+	// 			TimeToResolve: to.Ptr("PT10M"),
+	// 		},
+	// 		Scopes: []*string{
+	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7")},
+	// 			Severity: to.Ptr[int32](3),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateWebTestMetricAlert.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAWebTestAlertRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -847,7 +1494,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAWebTestAlertRule() 
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateMetricAlertMultipleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertMultipleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForMultipleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -949,7 +1596,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForMultip
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateMetricAlertSingleResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertSingleResource.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForSingleResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -988,11 +1635,11 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForSingle
 					}},
 			},
 			Enabled:             to.Ptr(true),
-			EvaluationFrequency: to.Ptr("Pt1m"),
+			EvaluationFrequency: to.Ptr("PT1M"),
 			Scopes: []*string{
 				to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 			Severity:   to.Ptr[int32](3),
-			WindowSize: to.Ptr("Pt15m"),
+			WindowSize: to.Ptr("PT15M"),
 		},
 	}, nil)
 	if err != nil {
@@ -1034,16 +1681,16 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleForSingle
 	// 			}},
 	// 		},
 	// 		Enabled: to.Ptr(true),
-	// 		EvaluationFrequency: to.Ptr("Pt1m"),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
 	// 		Scopes: []*string{
 	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 	// 			Severity: to.Ptr[int32](3),
-	// 			WindowSize: to.Ptr("Pt15m"),
+	// 			WindowSize: to.Ptr("PT15M"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateMetricAlertResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertResourceGroup.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnResourceGroupS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1145,7 +1792,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnResourc
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateMetricAlertSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertSubscription.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1245,7 +1892,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRuleOnSubscri
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/createOrUpdateMetricAlertWithDimensions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/createOrUpdateMetricAlertWithDimensions.json
 func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRulesWithDimensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1366,7 +2013,7 @@ func ExampleMetricAlertsClient_CreateOrUpdate_createOrUpdateAnAlertRulesWithDime
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/UpdateMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/UpdateMetricAlert.json
 func ExampleMetricAlertsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1403,11 +2050,11 @@ func ExampleMetricAlertsClient_Update() {
 					}},
 			},
 			Enabled:             to.Ptr(true),
-			EvaluationFrequency: to.Ptr("Pt1m"),
+			EvaluationFrequency: to.Ptr("PT1M"),
 			Scopes: []*string{
 				to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 			Severity:   to.Ptr[int32](3),
-			WindowSize: to.Ptr("Pt15m"),
+			WindowSize: to.Ptr("PT15M"),
 		},
 		Tags: map[string]*string{},
 	}, nil)
@@ -1450,16 +2097,16 @@ func ExampleMetricAlertsClient_Update() {
 	// 			}},
 	// 		},
 	// 		Enabled: to.Ptr(true),
-	// 		EvaluationFrequency: to.Ptr("Pt1m"),
+	// 		EvaluationFrequency: to.Ptr("PT1M"),
 	// 		Scopes: []*string{
 	// 			to.Ptr("/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourceGroups/gigtest/providers/Microsoft.Compute/virtualMachines/gigwadme")},
 	// 			Severity: to.Ptr[int32](3),
-	// 			WindowSize: to.Ptr("Pt15m"),
+	// 			WindowSize: to.Ptr("PT15M"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2018-03-01/examples/deleteMetricAlert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/preview/2024-03-01-preview/examples/deleteMetricAlert.json
 func ExampleMetricAlertsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

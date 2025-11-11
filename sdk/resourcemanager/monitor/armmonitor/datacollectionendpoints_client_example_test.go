@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/DataCollectionEndpointsListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsListByResourceGroup.json
 func ExampleDataCollectionEndpointsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,70 +43,75 @@ func ExampleDataCollectionEndpointsClient_NewListByResourceGroupPager() {
 		// page.DataCollectionEndpointResourceListResult = armmonitor.DataCollectionEndpointResourceListResult{
 		// 	Value: []*armmonitor.DataCollectionEndpointResource{
 		// 		{
-		// 			Name: to.Ptr("myCollectionEndpoint"),
+		// 			Name: to.Ptr("myDataCollectionEndpoint"),
 		// 			Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-		// 			Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myCollectionEndpoint"),
+		// 			Etag: to.Ptr("0000ae31-0000-0100-0000-65fd441c0000"),
+		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 		// 				ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-		// 					Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.control.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.handler.control.monitor.azure.com"),
 		// 				},
+		// 				ImmutableID: to.Ptr("dce-cd85a330eb664aa3bc7883cc394b0000"),
 		// 				LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-		// 					Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.ingest.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.ingest.monitor.azure.com"),
+		// 				},
+		// 				MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+		// 					Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.metrics.ingest.monitor.azure.com"),
 		// 				},
 		// 				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
 		// 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 		// 				},
+		// 				ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user1"),
 		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 				"tag1": to.Ptr("A"),
-		// 				"tag2": to.Ptr("B"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("herCollectionEndpoint"),
+		// 			Name: to.Ptr("herDataCollectionEndpoint"),
 		// 			Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-		// 			Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/herCollectionEndpoint"),
-		// 			Location: to.Ptr("westus"),
+		// 			Etag: to.Ptr("0000f831-0000-0100-0000-65fd4c290000"),
+		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/herDataCollectionEndpoint"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 		// 				ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-		// 					Endpoint: to.Ptr("https://hercollectionendpoint-xywz.eastus-1.control.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://herdatacollectionendpoint-6uww.eastus-1.handler.control.monitor.azure.com"),
 		// 				},
+		// 				ImmutableID: to.Ptr("dce-b4ab5f4638d54d38932ac69699e40000"),
 		// 				LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-		// 					Endpoint: to.Ptr("https://hercollectionendpoint-xywz.eastus-1.ingest.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://herdatacollectionendpoint-6uww.eastus-1.ingest.monitor.azure.com"),
+		// 				},
+		// 				MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+		// 					Endpoint: to.Ptr("https://herdatacollectionendpoint-6uww.eastus-1.metrics.ingest.monitor.azure.com"),
 		// 				},
 		// 				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
-		// 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsDisabled),
+		// 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 		// 				},
+		// 				ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user2"),
 		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 			},
 		// 			Tags: map[string]*string{
 		// 				"tag1": to.Ptr("A"),
-		// 				"tag2": to.Ptr("B"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/DataCollectionEndpointsListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsListBySubscription.json
 func ExampleDataCollectionEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,70 +136,75 @@ func ExampleDataCollectionEndpointsClient_NewListBySubscriptionPager() {
 		// page.DataCollectionEndpointResourceListResult = armmonitor.DataCollectionEndpointResourceListResult{
 		// 	Value: []*armmonitor.DataCollectionEndpointResource{
 		// 		{
-		// 			Name: to.Ptr("myCollectionEndpoint"),
+		// 			Name: to.Ptr("myDataCollectionEndpoint"),
 		// 			Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-		// 			Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myCollectionEndpoint"),
+		// 			Etag: to.Ptr("0000ae31-0000-0100-0000-65fd441c0000"),
+		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint"),
 		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 		// 				ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-		// 					Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.control.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.handler.control.monitor.azure.com"),
 		// 				},
+		// 				ImmutableID: to.Ptr("dce-cd85a330eb664aa3bc7883cc394b0000"),
 		// 				LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-		// 					Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.ingest.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.ingest.monitor.azure.com"),
+		// 				},
+		// 				MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+		// 					Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.metrics.ingest.monitor.azure.com"),
 		// 				},
 		// 				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
 		// 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 		// 				},
+		// 				ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
 		// 				CreatedBy: to.Ptr("user1"),
 		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("user2"),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("user1"),
 		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 			},
-		// 			Tags: map[string]*string{
-		// 				"tag1": to.Ptr("A"),
-		// 				"tag2": to.Ptr("B"),
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("herCollectionEndpoint"),
+		// 			Name: to.Ptr("herDataCollectionEndpoint"),
 		// 			Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-		// 			Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/herResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/herCollectionEndpoint"),
-		// 			Location: to.Ptr("westus"),
+		// 			Etag: to.Ptr("0000f831-0000-0100-0000-65fd4c290000"),
+		// 			ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/herDataCollectionEndpoint"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 		// 				ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-		// 					Endpoint: to.Ptr("https://hercollectionendpoint-xywz.eastus-1.control.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://herdatacollectionendpoint-6uww.eastus-1.handler.control.monitor.azure.com"),
 		// 				},
+		// 				ImmutableID: to.Ptr("dce-b4ab5f4638d54d38932ac69699e40000"),
 		// 				LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-		// 					Endpoint: to.Ptr("https://hercollectionendpoint-xywz.eastus-1.ingest.monitor.azure.com"),
+		// 					Endpoint: to.Ptr("https://herdatacollectionendpoint-6uww.eastus-1.ingest.monitor.azure.com"),
+		// 				},
+		// 				MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+		// 					Endpoint: to.Ptr("https://herdatacollectionendpoint-6uww.eastus-1.metrics.ingest.monitor.azure.com"),
 		// 				},
 		// 				NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
-		// 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsDisabled),
+		// 					PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 		// 				},
+		// 				ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
-		// 				CreatedBy: to.Ptr("user1"),
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578Z"); return t}()),
+		// 				CreatedBy: to.Ptr("user2"),
 		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T09:15:20.578Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("user2"),
 		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 		// 			},
 		// 			Tags: map[string]*string{
 		// 				"tag1": to.Ptr("A"),
-		// 				"tag2": to.Ptr("B"),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/DataCollectionEndpointsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsGet.json
 func ExampleDataCollectionEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +215,7 @@ func ExampleDataCollectionEndpointsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDataCollectionEndpointsClient().Get(ctx, "myResourceGroup", "myCollectionEndpoint", nil)
+	res, err := clientFactory.NewDataCollectionEndpointsClient().Get(ctx, "myResourceGroup", "myDataCollectionEndpoint", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -213,39 +223,40 @@ func ExampleDataCollectionEndpointsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DataCollectionEndpointResource = armmonitor.DataCollectionEndpointResource{
-	// 	Name: to.Ptr("myCollectionEndpoint"),
+	// 	Name: to.Ptr("myDataCollectionEndpoint"),
 	// 	Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-	// 	Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myCollectionEndpoint"),
+	// 	Etag: to.Ptr("0000ae31-0000-0100-0000-65fd441c0000"),
+	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 	// 		ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-	// 			Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.control.monitor.azure.com"),
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.handler.control.monitor.azure.com"),
 	// 		},
+	// 		ImmutableID: to.Ptr("dce-cd85a330eb664aa3bc7883cc394b0000"),
 	// 		LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-	// 			Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.ingest.monitor.azure.com"),
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.ingest.monitor.azure.com"),
+	// 		},
+	// 		MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.metrics.ingest.monitor.azure.com"),
 	// 		},
 	// 		NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
 	// 			PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 	// 		},
+	// 		ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user1"),
 	// 		LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"tag1": to.Ptr("A"),
-	// 		"tag2": to.Ptr("B"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/DataCollectionEndpointsCreate.json
-func ExampleDataCollectionEndpointsClient_Create() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsCreate.json
+func ExampleDataCollectionEndpointsClient_Create_createADataCollectionEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -255,7 +266,7 @@ func ExampleDataCollectionEndpointsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDataCollectionEndpointsClient().Create(ctx, "myResourceGroup", "myCollectionEndpoint", &armmonitor.DataCollectionEndpointsClientCreateOptions{Body: &armmonitor.DataCollectionEndpointResource{
+	res, err := clientFactory.NewDataCollectionEndpointsClient().Create(ctx, "myResourceGroup", "myDataCollectionEndpoint", &armmonitor.DataCollectionEndpointsClientCreateOptions{Body: &armmonitor.DataCollectionEndpointResource{
 		Location: to.Ptr("eastus"),
 		Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 			NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
@@ -271,39 +282,40 @@ func ExampleDataCollectionEndpointsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DataCollectionEndpointResource = armmonitor.DataCollectionEndpointResource{
-	// 	Name: to.Ptr("myCollectionEndpoint"),
+	// 	Name: to.Ptr("myDataCollectionEndpoint"),
 	// 	Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-	// 	Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myCollectionEndpoint"),
+	// 	Etag: to.Ptr("0000ae31-0000-0100-0000-65fd441c0000"),
+	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 	// 		ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-	// 			Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.control.monitor.azure.com"),
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.handler.control.monitor.azure.com"),
 	// 		},
+	// 		ImmutableID: to.Ptr("dce-cd85a330eb664aa3bc7883cc394b0000"),
 	// 		LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-	// 			Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.ingest.monitor.azure.com"),
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.ingest.monitor.azure.com"),
+	// 		},
+	// 		MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.metrics.ingest.monitor.azure.com"),
 	// 		},
 	// 		NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
 	// 			PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 	// 		},
+	// 		ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user1"),
 	// 		LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 	},
-	// 	Tags: map[string]*string{
-	// 		"tag1": to.Ptr("A"),
-	// 		"tag2": to.Ptr("B"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/DataCollectionEndpointsUpdate.json
-func ExampleDataCollectionEndpointsClient_Update() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsUpdate.json
+func ExampleDataCollectionEndpointsClient_Create_updateADataCollectionEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -313,7 +325,9 @@ func ExampleDataCollectionEndpointsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDataCollectionEndpointsClient().Update(ctx, "myResourceGroup", "myCollectionEndpoint", &armmonitor.DataCollectionEndpointsClientUpdateOptions{Body: &armmonitor.ResourceForUpdate{
+	res, err := clientFactory.NewDataCollectionEndpointsClient().Create(ctx, "myResourceGroup", "myDataCollectionEndpoint", &armmonitor.DataCollectionEndpointsClientCreateOptions{Body: &armmonitor.DataCollectionEndpointResource{
+		Location:   to.Ptr("eastus"),
+		Properties: &armmonitor.DataCollectionEndpointResourceProperties{},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("A"),
 			"tag2": to.Ptr("B"),
@@ -328,28 +342,33 @@ func ExampleDataCollectionEndpointsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DataCollectionEndpointResource = armmonitor.DataCollectionEndpointResource{
-	// 	Name: to.Ptr("myCollectionEndpoint"),
+	// 	Name: to.Ptr("myDataCollectionEndpoint"),
 	// 	Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
-	// 	Etag: to.Ptr("070057da-0000-0000-0000-5ba70d6c0000"),
-	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myCollectionEndpoint"),
+	// 	Etag: to.Ptr("0000ae31-0000-0100-0000-65fd441c0000"),
+	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint"),
 	// 	Location: to.Ptr("eastus"),
 	// 	Properties: &armmonitor.DataCollectionEndpointResourceProperties{
 	// 		ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
-	// 			Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.control.monitor.azure.com"),
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.handler.control.monitor.azure.com"),
 	// 		},
+	// 		ImmutableID: to.Ptr("dce-cd85a330eb664aa3bc7883cc394b0000"),
 	// 		LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
-	// 			Endpoint: to.Ptr("https://mycollectionendpoint-abcd.eastus-1.ingest.monitor.azure.com"),
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.ingest.monitor.azure.com"),
+	// 		},
+	// 		MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.metrics.ingest.monitor.azure.com"),
 	// 		},
 	// 		NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
 	// 			PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
 	// 		},
+	// 		ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T12:34:56.123Z"); return t}()),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user1"),
 	// 		CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-02T12:34:56.123Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("user2"),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:51:04.551Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user1"),
 	// 		LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
 	// 	},
 	// 	Tags: map[string]*string{
@@ -360,7 +379,66 @@ func ExampleDataCollectionEndpointsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/DataCollectionEndpointsDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsPatch.json
+func ExampleDataCollectionEndpointsClient_Update() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataCollectionEndpointsClient().Update(ctx, "myResourceGroup", "myDataCollectionEndpoint", &armmonitor.DataCollectionEndpointsClientUpdateOptions{Body: &armmonitor.ResourceForUpdate{
+		Tags: map[string]*string{
+			"tag1": to.Ptr("A"),
+		},
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.DataCollectionEndpointResource = armmonitor.DataCollectionEndpointResource{
+	// 	Name: to.Ptr("myDataCollectionEndpoint"),
+	// 	Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints"),
+	// 	Etag: to.Ptr("0000ae31-0000-0100-0000-65fd441c0000"),
+	// 	ID: to.Ptr("/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionEndpoints/myDataCollectionEndpoint"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armmonitor.DataCollectionEndpointResourceProperties{
+	// 		ConfigurationAccess: &armmonitor.DataCollectionEndpointConfigurationAccess{
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.handler.control.monitor.azure.com"),
+	// 		},
+	// 		ImmutableID: to.Ptr("dce-cd85a330eb664aa3bc7883cc394b0000"),
+	// 		LogsIngestion: &armmonitor.DataCollectionEndpointLogsIngestion{
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.ingest.monitor.azure.com"),
+	// 		},
+	// 		MetricsIngestion: &armmonitor.DataCollectionEndpointMetricsIngestion{
+	// 			Endpoint: to.Ptr("https://mydatacollectionendpoint-71ib.eastus-1.metrics.ingest.monitor.azure.com"),
+	// 		},
+	// 		NetworkACLs: &armmonitor.DataCollectionEndpointNetworkACLs{
+	// 			PublicNetworkAccess: to.Ptr(armmonitor.KnownPublicNetworkAccessOptionsEnabled),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armmonitor.KnownDataCollectionEndpointProvisioningStateSucceeded),
+	// 	},
+	// 	SystemData: &armmonitor.DataCollectionEndpointResourceSystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T08:40:59.243Z"); return t}()),
+	// 		CreatedBy: to.Ptr("user1"),
+	// 		CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T11:55:22.507Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("user1"),
+	// 		LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+	// 	},
+	// 	Tags: map[string]*string{
+	// 		"tag1": to.Ptr("A"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-03-11/examples/DataCollectionEndpointsDelete.json
 func ExampleDataCollectionEndpointsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,8 +449,137 @@ func ExampleDataCollectionEndpointsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewDataCollectionEndpointsClient().Delete(ctx, "myResourceGroup", "myCollectionEndpoint", nil)
+	_, err = clientFactory.NewDataCollectionEndpointsClient().Delete(ctx, "myResourceGroup", "myDataCollectionEndpoint", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-10-01/examples/NSPForDataCollectionEndpoints_List.json
+func ExampleDataCollectionEndpointsClient_NewListNSPPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDataCollectionEndpointsClient().NewListNSPPager("exampleRG", "someDataCollectionEndpoint", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.NetworkSecurityPerimeterConfigurationListResult = armmonitor.NetworkSecurityPerimeterConfigurationListResult{
+		// 	Value: []*armmonitor.NetworkSecurityPerimeterConfiguration{
+		// 		{
+		// 			Name: to.Ptr("somePerimeterConfiguration"),
+		// 			Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints/networkSecurityPerimeterConfigurations"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/exampleRG/providers/Microsoft.Insights/dataCollectionEndpoints/someDataCollectionEndpoint/networkSecurityPerimeterConfigurations/somePerimeterConfiguration"),
+		// 			Properties: &armmonitor.NetworkSecurityPerimeterConfigurationProperties{
+		// 				NetworkSecurityPerimeter: &armmonitor.NetworkSecurityPerimeter{
+		// 					ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
+		// 					Location: to.Ptr("japaneast"),
+		// 				},
+		// 				Profile: &armmonitor.NetworkSecurityProfile{
+		// 					Name: to.Ptr("profile1"),
+		// 					AccessRules: []*armmonitor.AccessRule{
+		// 						{
+		// 							Name: to.Ptr("rule1"),
+		// 							Properties: &armmonitor.AccessRuleProperties{
+		// 								AddressPrefixes: []*string{
+		// 									to.Ptr("148.0.0.0/8"),
+		// 									to.Ptr("152.4.6.0/24")},
+		// 									Direction: to.Ptr(armmonitor.AccessRuleDirectionInbound),
+		// 								},
+		// 						}},
+		// 						AccessRulesVersion: to.Ptr[int32](0),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmonitor.NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded),
+		// 					ResourceAssociation: &armmonitor.ResourceAssociation{
+		// 						Name: to.Ptr("assoc1"),
+		// 						AccessMode: to.Ptr(armmonitor.ResourceAssociationAccessModeEnforced),
+		// 					},
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-10-01/examples/NSPForDataCollectionEndpoints_Get.json
+func ExampleDataCollectionEndpointsClient_GetNSP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataCollectionEndpointsClient().GetNSP(ctx, "exampleRG", "someDataCollectionEndpoint", "somePerimeterConfiguration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkSecurityPerimeterConfiguration = armmonitor.NetworkSecurityPerimeterConfiguration{
+	// 	Name: to.Ptr("somePerimeterConfiguration"),
+	// 	Type: to.Ptr("Microsoft.Insights/dataCollectionEndpoints/networkSecurityPerimeterConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/exampleRG/providers/Microsoft.Insights/dataCollectionEndpoints/someDataCollectionEndpoint/networkSecurityPerimeterConfigurations/somePerimeterConfiguration"),
+	// 	Properties: &armmonitor.NetworkSecurityPerimeterConfigurationProperties{
+	// 		NetworkSecurityPerimeter: &armmonitor.NetworkSecurityPerimeter{
+	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
+	// 			Location: to.Ptr("japaneast"),
+	// 		},
+	// 		Profile: &armmonitor.NetworkSecurityProfile{
+	// 			Name: to.Ptr("profile1"),
+	// 			AccessRules: []*armmonitor.AccessRule{
+	// 				{
+	// 					Name: to.Ptr("rule1"),
+	// 					Properties: &armmonitor.AccessRuleProperties{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("148.0.0.0/8"),
+	// 							to.Ptr("152.4.6.0/24")},
+	// 							Direction: to.Ptr(armmonitor.AccessRuleDirectionInbound),
+	// 						},
+	// 				}},
+	// 				AccessRulesVersion: to.Ptr[int32](0),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmonitor.NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded),
+	// 			ResourceAssociation: &armmonitor.ResourceAssociation{
+	// 				Name: to.Ptr("assoc1"),
+	// 				AccessMode: to.Ptr(armmonitor.ResourceAssociationAccessModeEnforced),
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/monitor/resource-manager/Microsoft.Insights/stable/2021-10-01/examples/NSPForDataCollectionEndpoints_Reconcile.json
+func ExampleDataCollectionEndpointsClient_BeginReconcileNSP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDataCollectionEndpointsClient().BeginReconcileNSP(ctx, "exampleRG", "someDataCollectionEndpoint", "somePerimeterConfiguration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

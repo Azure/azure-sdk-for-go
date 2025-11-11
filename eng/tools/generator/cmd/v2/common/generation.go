@@ -16,6 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/typespec"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Masterminds/semver"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type GenerateContext struct {
@@ -54,6 +56,7 @@ type GenerateParam struct {
 	ReleaseDate          string
 	SkipGenerateExample  bool
 	RemoveTagSet         bool
+	ForceStableVersion   bool
 	TypeSpecEmitOption   string
 	TspClientOptions     []string
 	ReleasedTags         []string
@@ -145,6 +148,7 @@ func (ctx *GenerateContext) GenerateFromSwagger(rpMap map[string][]PackageInfo, 
 				RemoveTagSet:         commonGenerateParam.RemoveTagSet,
 				SkipGenerateExample:  commonGenerateParam.SkipGenerateExample,
 				SpecificPackageTitle: commonGenerateParam.SpecificPackageTitle,
+				ForceStableVersion:   commonGenerateParam.ForceStableVersion,
 			})
 			if err != nil {
 				errors = append(errors, fmt.Errorf("failed to generate for rp: %s, namespace: %s: %+v", rpName, packageInfo.Name, err))
@@ -392,6 +396,10 @@ func (t *SwaggerUpdateGenerator) PreChangeLog(generateParam *GenerateParam) (*ex
 	isCurrentPreview, err = changelog.ContainsPreviewAPIVersion(t.PackagePath)
 	if err != nil {
 		return nil, err
+	}
+
+	if generateParam.ForceStableVersion {
+		isCurrentPreview = false
 	}
 
 	log.Printf("Get ori exports for changelog generation...")
@@ -642,11 +650,6 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 		}
 	}
 
-	log.Printf("##[command]Executing gofmt -s -w . in %s\n", modulePath)
-	if err := ExecuteGoFmt(modulePath, "-s", "-w", "."); err != nil {
-		return nil, err
-	}
-
 	if !generateParam.SkipUpdateDep {
 		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.23.0 in %s\n", modulePath)
 		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.23.0"); err != nil {
@@ -678,7 +681,7 @@ func (t *TypeSpecOnBoardGenerator) PreGenerate(generateParam *GenerateParam) err
 	moduleRelativePath := t.ModuleRelativePath
 	log.Printf("Module '%s' changelog not exist, do onboard process", modulePath)
 	if generateParam.SpecificPackageTitle == "" {
-		generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
+		generateParam.SpecificPackageTitle = cases.Title(language.English).String(generateParam.RPName)
 	}
 	log.Printf("Start to use template to generate new rp folder and basic package files...")
 	sdkBasicInfo := map[string]any{
@@ -737,10 +740,6 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam, c
 
 func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
 	log.Printf("Package '%s' existed, do update process", t.PackagePath)
-	log.Printf("Remove all the generated files ...")
-	if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
-		return err
-	}
 	return nil
 }
 

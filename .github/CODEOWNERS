@@ -657,7 +657,7 @@
 /.config/1espt/                    @benbp @weshaggard
 /.github/workflows/                @Azure/azure-sdk-eng
 /.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
-/.github/copilot-instructions.md   @richardpark @praveenkuttappan @maririos
+/.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool
 /eng/tools/generator          @lirenhe @tadelesh @JiaqiZhang-Dev

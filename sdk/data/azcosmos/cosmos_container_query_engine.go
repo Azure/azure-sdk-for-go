@@ -259,8 +259,8 @@ func runEngineRequests(
 					log.Writef(azlog.EventRequest, "Engine pipeline requested data for PKRange: %s", req.PartitionKeyRangeID)
 					queryText, params, drain := prepareFn(req)
 					// Pagination loop
-					fetchMore := true
-					for fetchMore {
+					fetchMorePages := true
+					for fetchMorePages {
 						qr := queryRequest(req)
 						azResponse, rerr := c.database.client.sendQueryRequest(
 							path,
@@ -291,6 +291,7 @@ func runEngineRequests(
 						totalCharge += qResp.RequestCharge
 						chargeMu.Unlock()
 
+						// Load the data into a buffer to send it to the pipeline
 						buf := new(bytes.Buffer)
 						if _, rdErr := buf.ReadFrom(azResponse.Body); rdErr != nil {
 							select {
@@ -300,8 +301,10 @@ func runEngineRequests(
 							return
 						}
 						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
-						fetchMore = continuation != "" && drain
+						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", req.PartitionKeyRangeID, continuation != "")
+						fetchMorePages = continuation != "" && drain
 
+						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
 						qres := queryengine.QueryResult{
 							PartitionKeyRangeID: req.PartitionKeyRangeID,
 							NextContinuation:    continuation,

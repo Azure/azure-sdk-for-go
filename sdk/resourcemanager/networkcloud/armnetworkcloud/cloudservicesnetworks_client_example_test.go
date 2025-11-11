@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/CloudServicesNetworks_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/CloudServicesNetworks_ListBySubscription.json
 func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,9 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCloudServicesNetworksClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewCloudServicesNetworksClient().NewListBySubscriptionPager(&armnetworkcloud.CloudServicesNetworksClientListBySubscriptionOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -90,13 +92,25 @@ func ExampleCloudServicesNetworksClient_NewListBySubscriptionPager() {
 		// 					}},
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
+		// 					StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+		// 						SizeMiB: to.Ptr[int64](1048576),
+		// 						StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+		// 					},
+		// 					StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
+		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+		// 						SizeMiB: to.Ptr[int64](1048576),
+		// 						Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
+		// 						StatusMessage: to.Ptr("Storage is available"),
+		// 						VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
+		// 					},
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/CloudServicesNetworks_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/CloudServicesNetworks_ListByResourceGroup.json
 func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +121,9 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCloudServicesNetworksClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewCloudServicesNetworksClient().NewListByResourceGroupPager("resourceGroupName", &armnetworkcloud.CloudServicesNetworksClientListByResourceGroupOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -168,13 +184,25 @@ func ExampleCloudServicesNetworksClient_NewListByResourceGroupPager() {
 		// 					}},
 		// 					InterfaceName: to.Ptr("eth0"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
+		// 					StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+		// 						SizeMiB: to.Ptr[int64](1048576),
+		// 						StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+		// 					},
+		// 					StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
+		// 						Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+		// 						SizeMiB: to.Ptr[int64](1048576),
+		// 						Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
+		// 						StatusMessage: to.Ptr("Storage is available"),
+		// 						VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
+		// 					},
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/CloudServicesNetworks_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/CloudServicesNetworks_Get.json
 func ExampleCloudServicesNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,11 +268,23 @@ func ExampleCloudServicesNetworksClient_Get() {
 	// 			}},
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
+	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+	// 			},
+	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
+	// 				StatusMessage: to.Ptr("Storage is available"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
+	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/CloudServicesNetworks_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/CloudServicesNetworks_Create.json
 func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,6 +316,11 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 						}},
 				}},
 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+				Mode:               to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+				SizeMiB:            to.Ptr[int64](1048576),
+				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+			},
 		},
 	}, &armnetworkcloud.CloudServicesNetworksClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
@@ -338,11 +383,23 @@ func ExampleCloudServicesNetworksClient_BeginCreateOrUpdate() {
 	// 			}},
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
+	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+	// 			},
+	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
+	// 				StatusMessage: to.Ptr("Storage is available"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
+	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/CloudServicesNetworks_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/CloudServicesNetworks_Delete.json
 func ExampleCloudServicesNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,7 +422,7 @@ func ExampleCloudServicesNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/CloudServicesNetworks_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/CloudServicesNetworks_Patch.json
 func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,6 +445,11 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 						}},
 				}},
 			EnableDefaultEgressEndpoints: to.Ptr(armnetworkcloud.CloudServicesNetworkEnableDefaultEgressEndpointsFalse),
+			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptionsPatch{
+				Mode:               to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+				SizeMiB:            to.Ptr[int64](1048576),
+				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+			},
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("myvalue1"),
@@ -454,6 +516,18 @@ func ExampleCloudServicesNetworksClient_BeginUpdate() {
 	// 			}},
 	// 			InterfaceName: to.Ptr("eth0"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.CloudServicesNetworkProvisioningStateSucceeded),
+	// 			StorageOptions: &armnetworkcloud.CloudServicesNetworkStorageOptions{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
+	// 			},
+	// 			StorageStatus: &armnetworkcloud.CloudServicesNetworkStorageStatus{
+	// 				Mode: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageModeStandard),
+	// 				SizeMiB: to.Ptr[int64](1048576),
+	// 				Status: to.Ptr(armnetworkcloud.CloudServicesNetworkStorageStatusStatusAvailable),
+	// 				StatusMessage: to.Ptr("Storage is available"),
+	// 				VolumeID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/Volumes/volumeName"),
+	// 			},
 	// 		},
 	// 	}
 }

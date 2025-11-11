@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_ListBySubscription.json
 func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,9 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBareMetalMachinesClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewBareMetalMachinesClient().NewListBySubscriptionPager(&armnetworkcloud.BareMetalMachinesClientListBySubscriptionOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,6 +66,30 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.BareMetalMachineProperties{
+		// 				ActionStates: []*armnetworkcloud.ActionState{
+		// 					{
+		// 						ActionType: to.Ptr("Microsoft.NetworkCloud/BareMetalMachines/reimage/action"),
+		// 						CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+		// 						EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+		// 						Message: to.Ptr("Action completed successfully"),
+		// 						StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 						Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+		// 						StepStates: []*armnetworkcloud.StepState{
+		// 							{
+		// 								EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+		// 								Message: to.Ptr("BareMetalMachine was validated as ready for reimage"),
+		// 								StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 								Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+		// 								StepName: to.Ptr("ValidateImageState"),
+		// 							},
+		// 							{
+		// 								EndTime: to.Ptr("2023-04-29T11:45:00Z"),
+		// 								Message: to.Ptr("BareMetalMachine was reimaged successfully"),
+		// 								StartTime: to.Ptr("2023-04-29T11:30:00Z"),
+		// 								Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+		// 								StepName: to.Ptr("Reimage"),
+		// 						}},
+		// 				}},
 		// 				AssociatedResourceIDs: []*string{
 		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 		// 					BmcConnectionString: to.Ptr("bmcconnectionstring"),
@@ -72,6 +98,10 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
 		// 					BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+		// 					CaCertificate: &armnetworkcloud.CertificateInfo{
+		// 						Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
+		// 						Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
+		// 					},
 		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 		// 					CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
@@ -133,7 +163,7 @@ func ExampleBareMetalMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_ListByResourceGroup.json
 func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +174,9 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBareMetalMachinesClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewBareMetalMachinesClient().NewListByResourceGroupPager("resourceGroupName", &armnetworkcloud.BareMetalMachinesClientListByResourceGroupOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -179,6 +211,30 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.BareMetalMachineProperties{
+		// 				ActionStates: []*armnetworkcloud.ActionState{
+		// 					{
+		// 						ActionType: to.Ptr("Microsoft.NetworkCloud/BareMetalMachines/reimage/action"),
+		// 						CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+		// 						EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+		// 						Message: to.Ptr("Action completed successfully"),
+		// 						StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 						Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+		// 						StepStates: []*armnetworkcloud.StepState{
+		// 							{
+		// 								EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+		// 								Message: to.Ptr("BareMetalMachine was validated as ready for reimage"),
+		// 								StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+		// 								Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+		// 								StepName: to.Ptr("ValidateImageState"),
+		// 							},
+		// 							{
+		// 								EndTime: to.Ptr("2023-04-29T11:45:00Z"),
+		// 								Message: to.Ptr("BareMetalMachine was reimaged successfully"),
+		// 								StartTime: to.Ptr("2023-04-29T11:30:00Z"),
+		// 								Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+		// 								StepName: to.Ptr("Reimage"),
+		// 						}},
+		// 				}},
 		// 				AssociatedResourceIDs: []*string{
 		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 		// 					BmcConnectionString: to.Ptr("bmcconnectionstring"),
@@ -187,6 +243,10 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
 		// 					BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+		// 					CaCertificate: &armnetworkcloud.CertificateInfo{
+		// 						Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
+		// 						Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
+		// 					},
 		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 		// 					CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
@@ -248,7 +308,7 @@ func ExampleBareMetalMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Get.json
 func ExampleBareMetalMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,6 +348,30 @@ func ExampleBareMetalMachinesClient_Get() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.BareMetalMachineProperties{
+	// 		ActionStates: []*armnetworkcloud.ActionState{
+	// 			{
+	// 				ActionType: to.Ptr("Microsoft.NetworkCloud/BareMetalMachines/reimage/action"),
+	// 				CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+	// 				EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+	// 				Message: to.Ptr("Action completed successfully"),
+	// 				StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 				Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+	// 				StepStates: []*armnetworkcloud.StepState{
+	// 					{
+	// 						EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 						Message: to.Ptr("BareMetalMachine was validated as ready for reimage"),
+	// 						StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 						Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 						StepName: to.Ptr("ValidateImageState"),
+	// 					},
+	// 					{
+	// 						EndTime: to.Ptr("2023-04-29T11:45:00Z"),
+	// 						Message: to.Ptr("BareMetalMachine was reimaged successfully"),
+	// 						StartTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 						Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 						StepName: to.Ptr("Reimage"),
+	// 				}},
+	// 		}},
 	// 		AssociatedResourceIDs: []*string{
 	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 	// 			BmcConnectionString: to.Ptr("bmcconnectionstring"),
@@ -296,6 +380,10 @@ func ExampleBareMetalMachinesClient_Get() {
 	// 			},
 	// 			BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
 	// 			BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+	// 			CaCertificate: &armnetworkcloud.CertificateInfo{
+	// 				Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
+	// 				Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
+	// 			},
 	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 			CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
@@ -355,7 +443,7 @@ func ExampleBareMetalMachinesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Create.json
 func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,6 +514,30 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.BareMetalMachineProperties{
+	// 		ActionStates: []*armnetworkcloud.ActionState{
+	// 			{
+	// 				ActionType: to.Ptr("Microsoft.NetworkCloud/BareMetalMachines/reimage/action"),
+	// 				CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+	// 				EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+	// 				Message: to.Ptr("Action completed successfully"),
+	// 				StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 				Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+	// 				StepStates: []*armnetworkcloud.StepState{
+	// 					{
+	// 						EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 						Message: to.Ptr("BareMetalMachine was validated as ready for reimage"),
+	// 						StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 						Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 						StepName: to.Ptr("ValidateImageState"),
+	// 					},
+	// 					{
+	// 						EndTime: to.Ptr("2023-04-29T11:45:00Z"),
+	// 						Message: to.Ptr("BareMetalMachine was reimaged successfully"),
+	// 						StartTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 						Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 						StepName: to.Ptr("Reimage"),
+	// 				}},
+	// 		}},
 	// 		AssociatedResourceIDs: []*string{
 	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 	// 			BmcConnectionString: to.Ptr("bmcconnectionstring"),
@@ -434,6 +546,10 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// 			},
 	// 			BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
 	// 			BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+	// 			CaCertificate: &armnetworkcloud.CertificateInfo{
+	// 				Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
+	// 				Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
+	// 			},
 	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 			CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
@@ -493,7 +609,7 @@ func ExampleBareMetalMachinesClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Delete.json
 func ExampleBareMetalMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +632,7 @@ func ExampleBareMetalMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Patch.json
 func ExampleBareMetalMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -570,6 +686,30 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.BareMetalMachineProperties{
+	// 		ActionStates: []*armnetworkcloud.ActionState{
+	// 			{
+	// 				ActionType: to.Ptr("Microsoft.NetworkCloud/BareMetalMachines/reimage/action"),
+	// 				CorrelationID: to.Ptr("a45a00bb-3b02-42d5-baaf-033497574e97"),
+	// 				EndTime: to.Ptr("2023-04-29T12:00:00Z"),
+	// 				Message: to.Ptr("Action completed successfully"),
+	// 				StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 				Status: to.Ptr(armnetworkcloud.ActionStateStatusCompleted),
+	// 				StepStates: []*armnetworkcloud.StepState{
+	// 					{
+	// 						EndTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 						Message: to.Ptr("BareMetalMachine was validated as ready for reimage"),
+	// 						StartTime: to.Ptr("2023-04-29T11:00:00Z"),
+	// 						Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 						StepName: to.Ptr("ValidateImageState"),
+	// 					},
+	// 					{
+	// 						EndTime: to.Ptr("2023-04-29T11:45:00Z"),
+	// 						Message: to.Ptr("BareMetalMachine was reimaged successfully"),
+	// 						StartTime: to.Ptr("2023-04-29T11:30:00Z"),
+	// 						Status: to.Ptr(armnetworkcloud.StepStateStatusCompleted),
+	// 						StepName: to.Ptr("Reimage"),
+	// 				}},
+	// 		}},
 	// 		AssociatedResourceIDs: []*string{
 	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 	// 			BmcConnectionString: to.Ptr("bmcconnectionstring"),
@@ -578,6 +718,10 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// 			},
 	// 			BmcMacAddress: to.Ptr("00:00:4f:00:57:00"),
 	// 			BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
+	// 			CaCertificate: &armnetworkcloud.CertificateInfo{
+	// 				Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
+	// 				Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
+	// 			},
 	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 			CordonStatus: to.Ptr(armnetworkcloud.BareMetalMachineCordonStatusUncordoned),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.BareMetalMachineDetailedStatusAvailable),
@@ -637,7 +781,7 @@ func ExampleBareMetalMachinesClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Cordon.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Cordon.json
 func ExampleBareMetalMachinesClient_BeginCordon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +805,7 @@ func ExampleBareMetalMachinesClient_BeginCordon() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_PowerOff.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_PowerOff.json
 func ExampleBareMetalMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -685,7 +829,7 @@ func ExampleBareMetalMachinesClient_BeginPowerOff() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Reimage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Reimage.json
 func ExampleBareMetalMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,7 +850,7 @@ func ExampleBareMetalMachinesClient_BeginReimage() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Replace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Replace.json
 func ExampleBareMetalMachinesClient_BeginReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,7 +869,9 @@ func ExampleBareMetalMachinesClient_BeginReplace() {
 		BmcMacAddress:  to.Ptr("00:00:4f:00:57:ad"),
 		BootMacAddress: to.Ptr("00:00:4e:00:58:af"),
 		MachineName:    to.Ptr("name"),
+		SafeguardMode:  to.Ptr(armnetworkcloud.BareMetalMachineReplaceSafeguardModeAll),
 		SerialNumber:   to.Ptr("BM1219XXX"),
+		StoragePolicy:  to.Ptr(armnetworkcloud.BareMetalMachineReplaceStoragePolicyDiscardAll),
 	},
 	})
 	if err != nil {
@@ -737,7 +883,7 @@ func ExampleBareMetalMachinesClient_BeginReplace() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Restart.json
 func ExampleBareMetalMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -758,7 +904,7 @@ func ExampleBareMetalMachinesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_RunCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_RunCommand.json
 func ExampleBareMetalMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +931,7 @@ func ExampleBareMetalMachinesClient_BeginRunCommand() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_RunDataExtracts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_RunDataExtracts.json
 func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -815,8 +961,64 @@ func ExampleBareMetalMachinesClient_BeginRunDataExtracts() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_RunReadCommands.json
-func ExampleBareMetalMachinesClient_BeginRunReadCommands() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_RunDataExtractsRestricted.json
+func ExampleBareMetalMachinesClient_BeginRunDataExtractsRestricted() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBareMetalMachinesClient().BeginRunDataExtractsRestricted(ctx, "resourceGroupName", "bareMetalMachineName", armnetworkcloud.BareMetalMachineRunDataExtractsParameters{
+		LimitTimeSeconds: to.Ptr[int64](60),
+		Commands: []*armnetworkcloud.BareMetalMachineCommandSpecification{
+			{
+				Arguments: []*string{
+					to.Ptr("--min-severity=8")},
+				Command: to.Ptr("cluster-cve-report"),
+			}},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_RunReadCommands_Hostname.json
+func ExampleBareMetalMachinesClient_BeginRunReadCommands_runAndRetrieveOutputFromASingleReadOnlyCommandOnBareMetalMachine() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBareMetalMachinesClient().BeginRunReadCommands(ctx, "resourceGroupName", "bareMetalMachineName", armnetworkcloud.BareMetalMachineRunReadCommandsParameters{
+		LimitTimeSeconds: to.Ptr[int64](60),
+		Commands: []*armnetworkcloud.BareMetalMachineCommandSpecification{
+			{
+				Command: to.Ptr("hostname"),
+			}},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_RunReadCommands_Multiple.json
+func ExampleBareMetalMachinesClient_BeginRunReadCommands_runAndRetrieveOutputFromReadOnlyCommandsOnBareMetalMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -852,7 +1054,7 @@ func ExampleBareMetalMachinesClient_BeginRunReadCommands() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Start.json
 func ExampleBareMetalMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,7 +1075,7 @@ func ExampleBareMetalMachinesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/BareMetalMachines_Uncordon.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/BareMetalMachines_Uncordon.json
 func ExampleBareMetalMachinesClient_BeginUncordon() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

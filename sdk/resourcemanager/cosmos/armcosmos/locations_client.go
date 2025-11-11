@@ -25,9 +25,9 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 // Get - Get the properties of an existing Cosmos DB location
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - options - LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
 func (client *LocationsClient) Get(ctx context.Context, location string, options *LocationsClientGetOptions) (LocationsClientGetResponse, error) {
@@ -84,7 +84,7 @@ func (client *LocationsClient) getCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -101,7 +101,7 @@ func (client *LocationsClient) getHandleResponse(resp *http.Response) (Locations
 
 // NewListPager - List Cosmos DB locations and their properties
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
 func (client *LocationsClient) NewListPager(options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LocationsClientListResponse]{
@@ -139,7 +139,7 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, _ *Locatio
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

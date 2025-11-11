@@ -25,9 +25,9 @@ type CassandraResourcesClient struct {
 }
 
 // NewCassandraResourcesClient creates a new instance of CassandraResourcesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCassandraResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CassandraResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewCassandraResourcesClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateUpdateCassandraKeyspace - Create or update an Azure Cosmos DB Cassandra keyspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -70,7 +70,7 @@ func (client *CassandraResourcesClient) BeginCreateUpdateCassandraKeyspace(ctx c
 // CreateUpdateCassandraKeyspace - Create or update an Azure Cosmos DB Cassandra keyspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) createUpdateCassandraKeyspace(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, createUpdateCassandraKeyspaceParameters CassandraKeyspaceCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginCreateUpdateCassandraKeyspace"
@@ -116,7 +116,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspaceCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateCassandraKeyspaceParameters); err != nil {
@@ -125,10 +125,180 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspaceCreateReque
 	return req, nil
 }
 
+// BeginCreateUpdateCassandraRoleAssignment - Creates or updates an Azure Cosmos DB Cassandra Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleAssignmentID - The GUID for the Role Assignment.
+//   - createUpdateCassandraRoleAssignmentParameters - The properties required to create or update a Role Assignment.
+//   - options - CassandraResourcesClientBeginCreateUpdateCassandraRoleAssignmentOptions contains the optional parameters for
+//     the CassandraResourcesClient.BeginCreateUpdateCassandraRoleAssignment method.
+func (client *CassandraResourcesClient) BeginCreateUpdateCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateCassandraRoleAssignmentParameters CassandraRoleAssignmentResource, options *CassandraResourcesClientBeginCreateUpdateCassandraRoleAssignmentOptions) (*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraRoleAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateCassandraRoleAssignment(ctx, resourceGroupName, accountName, roleAssignmentID, createUpdateCassandraRoleAssignmentParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientCreateUpdateCassandraRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientCreateUpdateCassandraRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateUpdateCassandraRoleAssignment - Creates or updates an Azure Cosmos DB Cassandra Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) createUpdateCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateCassandraRoleAssignmentParameters CassandraRoleAssignmentResource, options *CassandraResourcesClientBeginCreateUpdateCassandraRoleAssignmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginCreateUpdateCassandraRoleAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createUpdateCassandraRoleAssignmentCreateRequest(ctx, resourceGroupName, accountName, roleAssignmentID, createUpdateCassandraRoleAssignmentParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createUpdateCassandraRoleAssignmentCreateRequest creates the CreateUpdateCassandraRoleAssignment request.
+func (client *CassandraResourcesClient) createUpdateCassandraRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateCassandraRoleAssignmentParameters CassandraRoleAssignmentResource, _ *CassandraResourcesClientBeginCreateUpdateCassandraRoleAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments/{roleAssignmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleAssignmentID == "" {
+		return nil, errors.New("parameter roleAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", url.PathEscape(roleAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createUpdateCassandraRoleAssignmentParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateUpdateCassandraRoleDefinition - Creates or updates an Azure Cosmos DB Cassandra Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleDefinitionID - The GUID for the Role Definition.
+//   - createUpdateCassandraRoleDefinitionParameters - The properties required to create or update a Role Definition.
+//   - options - CassandraResourcesClientBeginCreateUpdateCassandraRoleDefinitionOptions contains the optional parameters for
+//     the CassandraResourcesClient.BeginCreateUpdateCassandraRoleDefinition method.
+func (client *CassandraResourcesClient) BeginCreateUpdateCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateCassandraRoleDefinitionParameters CassandraRoleDefinitionResource, options *CassandraResourcesClientBeginCreateUpdateCassandraRoleDefinitionOptions) (*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraRoleDefinitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateCassandraRoleDefinition(ctx, resourceGroupName, accountName, roleDefinitionID, createUpdateCassandraRoleDefinitionParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientCreateUpdateCassandraRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientCreateUpdateCassandraRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateUpdateCassandraRoleDefinition - Creates or updates an Azure Cosmos DB Cassandra Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) createUpdateCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateCassandraRoleDefinitionParameters CassandraRoleDefinitionResource, options *CassandraResourcesClientBeginCreateUpdateCassandraRoleDefinitionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginCreateUpdateCassandraRoleDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createUpdateCassandraRoleDefinitionCreateRequest(ctx, resourceGroupName, accountName, roleDefinitionID, createUpdateCassandraRoleDefinitionParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createUpdateCassandraRoleDefinitionCreateRequest creates the CreateUpdateCassandraRoleDefinition request.
+func (client *CassandraResourcesClient) createUpdateCassandraRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateCassandraRoleDefinitionParameters CassandraRoleDefinitionResource, _ *CassandraResourcesClientBeginCreateUpdateCassandraRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions/{roleDefinitionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleDefinitionID == "" {
+		return nil, errors.New("parameter roleDefinitionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createUpdateCassandraRoleDefinitionParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // BeginCreateUpdateCassandraTable - Create or update an Azure Cosmos DB Cassandra Table
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -156,7 +326,7 @@ func (client *CassandraResourcesClient) BeginCreateUpdateCassandraTable(ctx cont
 // CreateUpdateCassandraTable - Create or update an Azure Cosmos DB Cassandra Table
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) createUpdateCassandraTable(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, createUpdateCassandraTableParameters CassandraTableCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraTableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginCreateUpdateCassandraTable"
@@ -206,7 +376,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraTableCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateCassandraTableParameters); err != nil {
@@ -215,10 +385,100 @@ func (client *CassandraResourcesClient) createUpdateCassandraTableCreateRequest(
 	return req, nil
 }
 
+// BeginCreateUpdateCassandraView - Create or update an Azure Cosmos DB Cassandra View
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - createUpdateCassandraViewParameters - The parameters to provide for the current Cassandra View.
+//   - options - CassandraResourcesClientBeginCreateUpdateCassandraViewOptions contains the optional parameters for the CassandraResourcesClient.BeginCreateUpdateCassandraView
+//     method.
+func (client *CassandraResourcesClient) BeginCreateUpdateCassandraView(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, createUpdateCassandraViewParameters CassandraViewCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraViewOptions) (*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraViewResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateCassandraView(ctx, resourceGroupName, accountName, keyspaceName, viewName, createUpdateCassandraViewParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientCreateUpdateCassandraViewResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientCreateUpdateCassandraViewResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateUpdateCassandraView - Create or update an Azure Cosmos DB Cassandra View
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) createUpdateCassandraView(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, createUpdateCassandraViewParameters CassandraViewCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraViewOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginCreateUpdateCassandraView"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createUpdateCassandraViewCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, createUpdateCassandraViewParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createUpdateCassandraViewCreateRequest creates the CreateUpdateCassandraView request.
+func (client *CassandraResourcesClient) createUpdateCassandraViewCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, createUpdateCassandraViewParameters CassandraViewCreateUpdateParameters, _ *CassandraResourcesClientBeginCreateUpdateCassandraViewOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createUpdateCassandraViewParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // BeginDeleteCassandraKeyspace - Deletes an existing Azure Cosmos DB Cassandra keyspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -244,7 +504,7 @@ func (client *CassandraResourcesClient) BeginDeleteCassandraKeyspace(ctx context
 // DeleteCassandraKeyspace - Deletes an existing Azure Cosmos DB Cassandra keyspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) deleteCassandraKeyspace(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginDeleteCassandraKeyspace"
@@ -290,15 +550,177 @@ func (client *CassandraResourcesClient) deleteCassandraKeyspaceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginDeleteCassandraRoleAssignment - Deletes an existing Azure Cosmos DB Cassandra Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleAssignmentID - The GUID for the Role Assignment.
+//   - options - CassandraResourcesClientBeginDeleteCassandraRoleAssignmentOptions contains the optional parameters for the CassandraResourcesClient.BeginDeleteCassandraRoleAssignment
+//     method.
+func (client *CassandraResourcesClient) BeginDeleteCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *CassandraResourcesClientBeginDeleteCassandraRoleAssignmentOptions) (*runtime.Poller[CassandraResourcesClientDeleteCassandraRoleAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteCassandraRoleAssignment(ctx, resourceGroupName, accountName, roleAssignmentID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientDeleteCassandraRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientDeleteCassandraRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// DeleteCassandraRoleAssignment - Deletes an existing Azure Cosmos DB Cassandra Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) deleteCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *CassandraResourcesClientBeginDeleteCassandraRoleAssignmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginDeleteCassandraRoleAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCassandraRoleAssignmentCreateRequest(ctx, resourceGroupName, accountName, roleAssignmentID, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCassandraRoleAssignmentCreateRequest creates the DeleteCassandraRoleAssignment request.
+func (client *CassandraResourcesClient) deleteCassandraRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *CassandraResourcesClientBeginDeleteCassandraRoleAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments/{roleAssignmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleAssignmentID == "" {
+		return nil, errors.New("parameter roleAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", url.PathEscape(roleAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDeleteCassandraRoleDefinition - Deletes an existing Azure Cosmos DB Cassandra Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleDefinitionID - The GUID for the Role Definition.
+//   - options - CassandraResourcesClientBeginDeleteCassandraRoleDefinitionOptions contains the optional parameters for the CassandraResourcesClient.BeginDeleteCassandraRoleDefinition
+//     method.
+func (client *CassandraResourcesClient) BeginDeleteCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *CassandraResourcesClientBeginDeleteCassandraRoleDefinitionOptions) (*runtime.Poller[CassandraResourcesClientDeleteCassandraRoleDefinitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteCassandraRoleDefinition(ctx, resourceGroupName, accountName, roleDefinitionID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientDeleteCassandraRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientDeleteCassandraRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// DeleteCassandraRoleDefinition - Deletes an existing Azure Cosmos DB Cassandra Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) deleteCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *CassandraResourcesClientBeginDeleteCassandraRoleDefinitionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginDeleteCassandraRoleDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCassandraRoleDefinitionCreateRequest(ctx, resourceGroupName, accountName, roleDefinitionID, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCassandraRoleDefinitionCreateRequest creates the DeleteCassandraRoleDefinition request.
+func (client *CassandraResourcesClient) deleteCassandraRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *CassandraResourcesClientBeginDeleteCassandraRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions/{roleDefinitionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleDefinitionID == "" {
+		return nil, errors.New("parameter roleDefinitionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDeleteCassandraTable - Deletes an existing Azure Cosmos DB Cassandra table.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -325,7 +747,7 @@ func (client *CassandraResourcesClient) BeginDeleteCassandraTable(ctx context.Co
 // DeleteCassandraTable - Deletes an existing Azure Cosmos DB Cassandra table.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) deleteCassandraTable(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientBeginDeleteCassandraTableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginDeleteCassandraTable"
@@ -375,7 +797,92 @@ func (client *CassandraResourcesClient) deleteCassandraTableCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginDeleteCassandraView - Deletes an existing Azure Cosmos DB Cassandra view.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - options - CassandraResourcesClientBeginDeleteCassandraViewOptions contains the optional parameters for the CassandraResourcesClient.BeginDeleteCassandraView
+//     method.
+func (client *CassandraResourcesClient) BeginDeleteCassandraView(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginDeleteCassandraViewOptions) (*runtime.Poller[CassandraResourcesClientDeleteCassandraViewResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteCassandraView(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientDeleteCassandraViewResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientDeleteCassandraViewResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// DeleteCassandraView - Deletes an existing Azure Cosmos DB Cassandra view.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) deleteCassandraView(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginDeleteCassandraViewOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginDeleteCassandraView"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCassandraViewCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCassandraViewCreateRequest creates the DeleteCassandraView request.
+func (client *CassandraResourcesClient) deleteCassandraViewCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, _ *CassandraResourcesClientBeginDeleteCassandraViewOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -384,7 +891,7 @@ func (client *CassandraResourcesClient) deleteCassandraTableCreateRequest(ctx co
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -436,7 +943,7 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -455,7 +962,7 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceHandleResponse(resp 
 // account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -507,7 +1014,7 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -522,10 +1029,152 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputHandleResp
 	return result, nil
 }
 
+// GetCassandraRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB Cassandra Role Assignment with the
+// given Id.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleAssignmentID - The GUID for the Role Assignment.
+//   - options - CassandraResourcesClientGetCassandraRoleAssignmentOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraRoleAssignment
+//     method.
+func (client *CassandraResourcesClient) GetCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *CassandraResourcesClientGetCassandraRoleAssignmentOptions) (CassandraResourcesClientGetCassandraRoleAssignmentResponse, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.GetCassandraRoleAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCassandraRoleAssignmentCreateRequest(ctx, resourceGroupName, accountName, roleAssignmentID, options)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
+	}
+	resp, err := client.getCassandraRoleAssignmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCassandraRoleAssignmentCreateRequest creates the GetCassandraRoleAssignment request.
+func (client *CassandraResourcesClient) getCassandraRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *CassandraResourcesClientGetCassandraRoleAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments/{roleAssignmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleAssignmentID == "" {
+		return nil, errors.New("parameter roleAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", url.PathEscape(roleAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCassandraRoleAssignmentHandleResponse handles the GetCassandraRoleAssignment response.
+func (client *CassandraResourcesClient) getCassandraRoleAssignmentHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraRoleAssignmentResponse, error) {
+	result := CassandraResourcesClientGetCassandraRoleAssignmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleAssignmentResource); err != nil {
+		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
+	}
+	return result, nil
+}
+
+// GetCassandraRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB Cassandra Role Definition with the
+// given Id.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleDefinitionID - The GUID for the Role Definition.
+//   - options - CassandraResourcesClientGetCassandraRoleDefinitionOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraRoleDefinition
+//     method.
+func (client *CassandraResourcesClient) GetCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *CassandraResourcesClientGetCassandraRoleDefinitionOptions) (CassandraResourcesClientGetCassandraRoleDefinitionResponse, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.GetCassandraRoleDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCassandraRoleDefinitionCreateRequest(ctx, resourceGroupName, accountName, roleDefinitionID, options)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
+	}
+	resp, err := client.getCassandraRoleDefinitionHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCassandraRoleDefinitionCreateRequest creates the GetCassandraRoleDefinition request.
+func (client *CassandraResourcesClient) getCassandraRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *CassandraResourcesClientGetCassandraRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions/{roleDefinitionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleDefinitionID == "" {
+		return nil, errors.New("parameter roleDefinitionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCassandraRoleDefinitionHandleResponse handles the GetCassandraRoleDefinition response.
+func (client *CassandraResourcesClient) getCassandraRoleDefinitionHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraRoleDefinitionResponse, error) {
+	result := CassandraResourcesClientGetCassandraRoleDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleDefinitionResource); err != nil {
+		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
 // GetCassandraTable - Gets the Cassandra table under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -582,7 +1231,7 @@ func (client *CassandraResourcesClient) getCassandraTableCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -601,7 +1250,7 @@ func (client *CassandraResourcesClient) getCassandraTableHandleResponse(resp *ht
 // account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -658,7 +1307,7 @@ func (client *CassandraResourcesClient) getCassandraTableThroughputCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -673,9 +1322,160 @@ func (client *CassandraResourcesClient) getCassandraTableThroughputHandleRespons
 	return result, nil
 }
 
+// GetCassandraView - Gets the Cassandra view under an existing Azure Cosmos DB database account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - options - CassandraResourcesClientGetCassandraViewOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraView
+//     method.
+func (client *CassandraResourcesClient) GetCassandraView(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientGetCassandraViewOptions) (CassandraResourcesClientGetCassandraViewResponse, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.GetCassandraView"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCassandraViewCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraViewResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraViewResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CassandraResourcesClientGetCassandraViewResponse{}, err
+	}
+	resp, err := client.getCassandraViewHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCassandraViewCreateRequest creates the GetCassandraView request.
+func (client *CassandraResourcesClient) getCassandraViewCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, _ *CassandraResourcesClientGetCassandraViewOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCassandraViewHandleResponse handles the GetCassandraView response.
+func (client *CassandraResourcesClient) getCassandraViewHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraViewResponse, error) {
+	result := CassandraResourcesClientGetCassandraViewResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraViewGetResults); err != nil {
+		return CassandraResourcesClientGetCassandraViewResponse{}, err
+	}
+	return result, nil
+}
+
+// GetCassandraViewThroughput - Gets the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account
+// with the provided name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - options - CassandraResourcesClientGetCassandraViewThroughputOptions contains the optional parameters for the CassandraResourcesClient.GetCassandraViewThroughput
+//     method.
+func (client *CassandraResourcesClient) GetCassandraViewThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientGetCassandraViewThroughputOptions) (CassandraResourcesClientGetCassandraViewThroughputResponse, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.GetCassandraViewThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCassandraViewThroughputCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraViewThroughputResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CassandraResourcesClientGetCassandraViewThroughputResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CassandraResourcesClientGetCassandraViewThroughputResponse{}, err
+	}
+	resp, err := client.getCassandraViewThroughputHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCassandraViewThroughputCreateRequest creates the GetCassandraViewThroughput request.
+func (client *CassandraResourcesClient) getCassandraViewThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, _ *CassandraResourcesClientGetCassandraViewThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}/throughputSettings/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCassandraViewThroughputHandleResponse handles the GetCassandraViewThroughput response.
+func (client *CassandraResourcesClient) getCassandraViewThroughputHandleResponse(resp *http.Response) (CassandraResourcesClientGetCassandraViewThroughputResponse, error) {
+	result := CassandraResourcesClientGetCassandraViewThroughputResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
+		return CassandraResourcesClientGetCassandraViewThroughputResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListCassandraKeyspacesPager - Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - CassandraResourcesClientListCassandraKeyspacesOptions contains the optional parameters for the CassandraResourcesClient.NewListCassandraKeyspacesPager
@@ -724,7 +1524,7 @@ func (client *CassandraResourcesClient) listCassandraKeyspacesCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -739,9 +1539,141 @@ func (client *CassandraResourcesClient) listCassandraKeyspacesHandleResponse(res
 	return result, nil
 }
 
+// NewListCassandraRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB Cassandra Role Assignments.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - options - CassandraResourcesClientListCassandraRoleAssignmentsOptions contains the optional parameters for the CassandraResourcesClient.NewListCassandraRoleAssignmentsPager
+//     method.
+func (client *CassandraResourcesClient) NewListCassandraRoleAssignmentsPager(resourceGroupName string, accountName string, options *CassandraResourcesClientListCassandraRoleAssignmentsOptions) *runtime.Pager[CassandraResourcesClientListCassandraRoleAssignmentsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CassandraResourcesClientListCassandraRoleAssignmentsResponse]{
+		More: func(page CassandraResourcesClientListCassandraRoleAssignmentsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *CassandraResourcesClientListCassandraRoleAssignmentsResponse) (CassandraResourcesClientListCassandraRoleAssignmentsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CassandraResourcesClient.NewListCassandraRoleAssignmentsPager")
+			req, err := client.listCassandraRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCassandraRoleAssignmentsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCassandraRoleAssignmentsCreateRequest creates the ListCassandraRoleAssignments request.
+func (client *CassandraResourcesClient) listCassandraRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CassandraResourcesClientListCassandraRoleAssignmentsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleAssignments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCassandraRoleAssignmentsHandleResponse handles the ListCassandraRoleAssignments response.
+func (client *CassandraResourcesClient) listCassandraRoleAssignmentsHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraRoleAssignmentsResponse, error) {
+	result := CassandraResourcesClientListCassandraRoleAssignmentsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleAssignmentListResult); err != nil {
+		return CassandraResourcesClientListCassandraRoleAssignmentsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListCassandraRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB Cassandra Role Definitions.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - options - CassandraResourcesClientListCassandraRoleDefinitionsOptions contains the optional parameters for the CassandraResourcesClient.NewListCassandraRoleDefinitionsPager
+//     method.
+func (client *CassandraResourcesClient) NewListCassandraRoleDefinitionsPager(resourceGroupName string, accountName string, options *CassandraResourcesClientListCassandraRoleDefinitionsOptions) *runtime.Pager[CassandraResourcesClientListCassandraRoleDefinitionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CassandraResourcesClientListCassandraRoleDefinitionsResponse]{
+		More: func(page CassandraResourcesClientListCassandraRoleDefinitionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *CassandraResourcesClientListCassandraRoleDefinitionsResponse) (CassandraResourcesClientListCassandraRoleDefinitionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CassandraResourcesClient.NewListCassandraRoleDefinitionsPager")
+			req, err := client.listCassandraRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCassandraRoleDefinitionsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCassandraRoleDefinitionsCreateRequest creates the ListCassandraRoleDefinitions request.
+func (client *CassandraResourcesClient) listCassandraRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CassandraResourcesClientListCassandraRoleDefinitionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraRoleDefinitions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCassandraRoleDefinitionsHandleResponse handles the ListCassandraRoleDefinitions response.
+func (client *CassandraResourcesClient) listCassandraRoleDefinitionsHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraRoleDefinitionsResponse, error) {
+	result := CassandraResourcesClientListCassandraRoleDefinitionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraRoleDefinitionListResult); err != nil {
+		return CassandraResourcesClientListCassandraRoleDefinitionsResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListCassandraTablesPager - Lists the Cassandra table under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -795,7 +1727,7 @@ func (client *CassandraResourcesClient) listCassandraTablesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -810,10 +1742,81 @@ func (client *CassandraResourcesClient) listCassandraTablesHandleResponse(resp *
 	return result, nil
 }
 
+// NewListCassandraViewsPager - Lists the Cassandra materialized views under an existing Azure Cosmos DB database account.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - options - CassandraResourcesClientListCassandraViewsOptions contains the optional parameters for the CassandraResourcesClient.NewListCassandraViewsPager
+//     method.
+func (client *CassandraResourcesClient) NewListCassandraViewsPager(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraViewsOptions) *runtime.Pager[CassandraResourcesClientListCassandraViewsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[CassandraResourcesClientListCassandraViewsResponse]{
+		More: func(page CassandraResourcesClientListCassandraViewsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *CassandraResourcesClientListCassandraViewsResponse) (CassandraResourcesClientListCassandraViewsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CassandraResourcesClient.NewListCassandraViewsPager")
+			req, err := client.listCassandraViewsCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, options)
+			if err != nil {
+				return CassandraResourcesClientListCassandraViewsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CassandraResourcesClientListCassandraViewsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return CassandraResourcesClientListCassandraViewsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listCassandraViewsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCassandraViewsCreateRequest creates the ListCassandraViews request.
+func (client *CassandraResourcesClient) listCassandraViewsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, _ *CassandraResourcesClientListCassandraViewsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCassandraViewsHandleResponse handles the ListCassandraViews response.
+func (client *CassandraResourcesClient) listCassandraViewsHandleResponse(resp *http.Response) (CassandraResourcesClientListCassandraViewsResponse, error) {
+	result := CassandraResourcesClientListCassandraViewsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CassandraViewListResult); err != nil {
+		return CassandraResourcesClientListCassandraViewsResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginMigrateCassandraKeyspaceToAutoscale - Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -839,7 +1842,7 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraKeyspaceToAutoscale
 // MigrateCassandraKeyspaceToAutoscale - Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscale(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale"
@@ -885,7 +1888,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscaleCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -895,7 +1898,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscaleCreat
 // throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -921,7 +1924,7 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraKeyspaceToManualThr
 // MigrateCassandraKeyspaceToManualThroughput - Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput"
@@ -967,7 +1970,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -976,7 +1979,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 // BeginMigrateCassandraTableToAutoscale - Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -1003,7 +2006,7 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraTableToAutoscale(ct
 // MigrateCassandraTableToAutoscale - Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) migrateCassandraTableToAutoscale(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginMigrateCassandraTableToAutoscale"
@@ -1053,7 +2056,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscaleCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1062,7 +2065,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscaleCreateRe
 // BeginMigrateCassandraTableToManualThroughput - Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -1089,7 +2092,7 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraTableToManualThroug
 // MigrateCassandraTableToManualThroughput - Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput"
@@ -1139,7 +2142,179 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughputC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginMigrateCassandraViewToAutoscale - Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - options - CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions contains the optional parameters for the
+//     CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale method.
+func (client *CassandraResourcesClient) BeginMigrateCassandraViewToAutoscale(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions) (*runtime.Poller[CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateCassandraViewToAutoscale(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// MigrateCassandraViewToAutoscale - Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) migrateCassandraViewToAutoscale(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateCassandraViewToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// migrateCassandraViewToAutoscaleCreateRequest creates the MigrateCassandraViewToAutoscale request.
+func (client *CassandraResourcesClient) migrateCassandraViewToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, _ *CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}/throughputSettings/default/migrateToAutoscale"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginMigrateCassandraViewToManualThroughput - Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - options - CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions contains the optional parameters for
+//     the CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput method.
+func (client *CassandraResourcesClient) BeginMigrateCassandraViewToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions) (*runtime.Poller[CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.migrateCassandraViewToManualThroughput(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// MigrateCassandraViewToManualThroughput - Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) migrateCassandraViewToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.migrateCassandraViewToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// migrateCassandraViewToManualThroughputCreateRequest creates the MigrateCassandraViewToManualThroughput request.
+func (client *CassandraResourcesClient) migrateCassandraViewToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, _ *CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}/throughputSettings/default/migrateToManualThroughput"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1148,7 +2323,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughputC
 // BeginUpdateCassandraKeyspaceThroughput - Update RUs per second of an Azure Cosmos DB Cassandra Keyspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -1175,7 +2350,7 @@ func (client *CassandraResourcesClient) BeginUpdateCassandraKeyspaceThroughput(c
 // UpdateCassandraKeyspaceThroughput - Update RUs per second of an Azure Cosmos DB Cassandra Keyspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput"
@@ -1221,7 +2396,7 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughputCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
@@ -1233,7 +2408,7 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughputCreateR
 // BeginUpdateCassandraTableThroughput - Update RUs per second of an Azure Cosmos DB Cassandra table
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - keyspaceName - Cosmos DB keyspace name.
@@ -1261,7 +2436,7 @@ func (client *CassandraResourcesClient) BeginUpdateCassandraTableThroughput(ctx 
 // UpdateCassandraTableThroughput - Update RUs per second of an Azure Cosmos DB Cassandra table
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *CassandraResourcesClient) updateCassandraTableThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CassandraResourcesClient.BeginUpdateCassandraTableThroughput"
@@ -1311,7 +2486,97 @@ func (client *CassandraResourcesClient) updateCassandraTableThroughputCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdateCassandraViewThroughput - Update RUs per second of an Azure Cosmos DB Cassandra view
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - keyspaceName - Cosmos DB keyspace name.
+//   - viewName - Cosmos DB view name.
+//   - updateThroughputParameters - The RUs per second of the parameters to provide for the current Cassandra view.
+//   - options - CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions contains the optional parameters for the CassandraResourcesClient.BeginUpdateCassandraViewThroughput
+//     method.
+func (client *CassandraResourcesClient) BeginUpdateCassandraViewThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions) (*runtime.Poller[CassandraResourcesClientUpdateCassandraViewThroughputResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateCassandraViewThroughput(ctx, resourceGroupName, accountName, keyspaceName, viewName, updateThroughputParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CassandraResourcesClientUpdateCassandraViewThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CassandraResourcesClientUpdateCassandraViewThroughputResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// UpdateCassandraViewThroughput - Update RUs per second of an Azure Cosmos DB Cassandra view
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *CassandraResourcesClient) updateCassandraViewThroughput(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CassandraResourcesClient.BeginUpdateCassandraViewThroughput"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCassandraViewThroughputCreateRequest(ctx, resourceGroupName, accountName, keyspaceName, viewName, updateThroughputParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCassandraViewThroughputCreateRequest creates the UpdateCassandraViewThroughput request.
+func (client *CassandraResourcesClient) updateCassandraViewThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/views/{viewName}/throughputSettings/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if keyspaceName == "" {
+		return nil, errors.New("parameter keyspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
+	if viewName == "" {
+		return nil, errors.New("parameter viewName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{viewName}", url.PathEscape(viewName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {

@@ -25,9 +25,9 @@ type GremlinResourcesClient struct {
 }
 
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGremlinResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GremlinResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewGremlinResourcesClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateUpdateGremlinDatabase - Create or update an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -70,7 +70,7 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinDatabase(ctx conte
 // CreateUpdateGremlinDatabase - Create or update an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinDatabase"
@@ -116,7 +116,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGremlinDatabaseParameters); err != nil {
@@ -128,7 +128,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(c
 // BeginCreateUpdateGremlinGraph - Create or update an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -156,7 +156,7 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinGraph(ctx context.
 // CreateUpdateGremlinGraph - Create or update an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinGraph"
@@ -206,7 +206,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGremlinGraphParameters); err != nil {
@@ -215,10 +215,180 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx 
 	return req, nil
 }
 
+// BeginCreateUpdateGremlinRoleAssignment - Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleAssignmentID - The GUID for the Role Assignment.
+//   - createUpdateGremlinRoleAssignmentParameters - The properties required to create or update a Role Assignment.
+//   - options - GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions contains the optional parameters for the
+//     GremlinResourcesClient.BeginCreateUpdateGremlinRoleAssignment method.
+func (client *GremlinResourcesClient) BeginCreateUpdateGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*runtime.Poller[GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateGremlinRoleAssignment(ctx, resourceGroupName, accountName, roleAssignmentID, createUpdateGremlinRoleAssignmentParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateUpdateGremlinRoleAssignment - Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinRoleAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createUpdateGremlinRoleAssignmentCreateRequest(ctx, resourceGroupName, accountName, roleAssignmentID, createUpdateGremlinRoleAssignmentParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createUpdateGremlinRoleAssignmentCreateRequest creates the CreateUpdateGremlinRoleAssignment request.
+func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, _ *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleAssignmentID == "" {
+		return nil, errors.New("parameter roleAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", url.PathEscape(roleAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createUpdateGremlinRoleAssignmentParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginCreateUpdateGremlinRoleDefinition - Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleDefinitionID - The GUID for the Role Definition.
+//   - createUpdateGremlinRoleDefinitionParameters - The properties required to create or update a Role Definition.
+//   - options - GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions contains the optional parameters for the
+//     GremlinResourcesClient.BeginCreateUpdateGremlinRoleDefinition method.
+func (client *GremlinResourcesClient) BeginCreateUpdateGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*runtime.Poller[GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createUpdateGremlinRoleDefinition(ctx, resourceGroupName, accountName, roleDefinitionID, createUpdateGremlinRoleDefinitionParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateUpdateGremlinRoleDefinition - Creates or updates an Azure Cosmos DB Gremlin Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinRoleDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createUpdateGremlinRoleDefinitionCreateRequest(ctx, resourceGroupName, accountName, roleDefinitionID, createUpdateGremlinRoleDefinitionParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createUpdateGremlinRoleDefinitionCreateRequest creates the CreateUpdateGremlinRoleDefinition request.
+func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, _ *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleDefinitionID == "" {
+		return nil, errors.New("parameter roleDefinitionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, createUpdateGremlinRoleDefinitionParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // BeginDeleteGremlinDatabase - Deletes an existing Azure Cosmos DB Gremlin database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -244,7 +414,7 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinDatabase(ctx context.Con
 // DeleteGremlinDatabase - Deletes an existing Azure Cosmos DB Gremlin database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginDeleteGremlinDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginDeleteGremlinDatabase"
@@ -290,7 +460,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabaseCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -298,7 +468,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabaseCreateRequest(ctx con
 // BeginDeleteGremlinGraph - Deletes an existing Azure Cosmos DB Gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -325,7 +495,7 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinGraph(ctx context.Contex
 // DeleteGremlinGraph - Deletes an existing Azure Cosmos DB Gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginDeleteGremlinGraphOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginDeleteGremlinGraph"
@@ -375,15 +545,177 @@ func (client *GremlinResourcesClient) deleteGremlinGraphCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginDeleteGremlinRoleAssignment - Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleAssignmentID - The GUID for the Role Assignment.
+//   - options - GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions contains the optional parameters for the GremlinResourcesClient.BeginDeleteGremlinRoleAssignment
+//     method.
+func (client *GremlinResourcesClient) BeginDeleteGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*runtime.Poller[GremlinResourcesClientDeleteGremlinRoleAssignmentResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteGremlinRoleAssignment(ctx, resourceGroupName, accountName, roleAssignmentID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientDeleteGremlinRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientDeleteGremlinRoleAssignmentResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// DeleteGremlinRoleAssignment - Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginDeleteGremlinRoleAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteGremlinRoleAssignmentCreateRequest(ctx, resourceGroupName, accountName, roleAssignmentID, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteGremlinRoleAssignmentCreateRequest creates the DeleteGremlinRoleAssignment request.
+func (client *GremlinResourcesClient) deleteGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleAssignmentID == "" {
+		return nil, errors.New("parameter roleAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", url.PathEscape(roleAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginDeleteGremlinRoleDefinition - Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleDefinitionID - The GUID for the Role Definition.
+//   - options - GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions contains the optional parameters for the GremlinResourcesClient.BeginDeleteGremlinRoleDefinition
+//     method.
+func (client *GremlinResourcesClient) BeginDeleteGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*runtime.Poller[GremlinResourcesClientDeleteGremlinRoleDefinitionResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteGremlinRoleDefinition(ctx, resourceGroupName, accountName, roleDefinitionID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientDeleteGremlinRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GremlinResourcesClientDeleteGremlinRoleDefinitionResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// DeleteGremlinRoleDefinition - Deletes an existing Azure Cosmos DB Gremlin Role Definition.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.BeginDeleteGremlinRoleDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteGremlinRoleDefinitionCreateRequest(ctx, resourceGroupName, accountName, roleDefinitionID, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteGremlinRoleDefinitionCreateRequest creates the DeleteGremlinRoleDefinition request.
+func (client *GremlinResourcesClient) deleteGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleDefinitionID == "" {
+		return nil, errors.New("parameter roleDefinitionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // GetGremlinDatabase - Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -435,7 +767,7 @@ func (client *GremlinResourcesClient) getGremlinDatabaseCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -454,7 +786,7 @@ func (client *GremlinResourcesClient) getGremlinDatabaseHandleResponse(resp *htt
 // account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -506,7 +838,7 @@ func (client *GremlinResourcesClient) getGremlinDatabaseThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -524,7 +856,7 @@ func (client *GremlinResourcesClient) getGremlinDatabaseThroughputHandleResponse
 // GetGremlinGraph - Gets the Gremlin graph under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -581,7 +913,7 @@ func (client *GremlinResourcesClient) getGremlinGraphCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -600,7 +932,7 @@ func (client *GremlinResourcesClient) getGremlinGraphHandleResponse(resp *http.R
 // provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -657,7 +989,7 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -672,9 +1004,151 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputHandleResponse(re
 	return result, nil
 }
 
+// GetGremlinRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Assignment with the given
+// Id.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleAssignmentID - The GUID for the Role Assignment.
+//   - options - GremlinResourcesClientGetGremlinRoleAssignmentOptions contains the optional parameters for the GremlinResourcesClient.GetGremlinRoleAssignment
+//     method.
+func (client *GremlinResourcesClient) GetGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GremlinResourcesClientGetGremlinRoleAssignmentOptions) (GremlinResourcesClientGetGremlinRoleAssignmentResponse, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.GetGremlinRoleAssignment"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getGremlinRoleAssignmentCreateRequest(ctx, resourceGroupName, accountName, roleAssignmentID, options)
+	if err != nil {
+		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
+	}
+	resp, err := client.getGremlinRoleAssignmentHandleResponse(httpResp)
+	return resp, err
+}
+
+// getGremlinRoleAssignmentCreateRequest creates the GetGremlinRoleAssignment request.
+func (client *GremlinResourcesClient) getGremlinRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *GremlinResourcesClientGetGremlinRoleAssignmentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments/{roleAssignmentId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleAssignmentID == "" {
+		return nil, errors.New("parameter roleAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", url.PathEscape(roleAssignmentID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getGremlinRoleAssignmentHandleResponse handles the GetGremlinRoleAssignment response.
+func (client *GremlinResourcesClient) getGremlinRoleAssignmentHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinRoleAssignmentResponse, error) {
+	result := GremlinResourcesClientGetGremlinRoleAssignmentResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleAssignmentResource); err != nil {
+		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
+	}
+	return result, nil
+}
+
+// GetGremlinRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Definition with the given
+// Id.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - roleDefinitionID - The GUID for the Role Definition.
+//   - options - GremlinResourcesClientGetGremlinRoleDefinitionOptions contains the optional parameters for the GremlinResourcesClient.GetGremlinRoleDefinition
+//     method.
+func (client *GremlinResourcesClient) GetGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GremlinResourcesClientGetGremlinRoleDefinitionOptions) (GremlinResourcesClientGetGremlinRoleDefinitionResponse, error) {
+	var err error
+	const operationName = "GremlinResourcesClient.GetGremlinRoleDefinition"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getGremlinRoleDefinitionCreateRequest(ctx, resourceGroupName, accountName, roleDefinitionID, options)
+	if err != nil {
+		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
+	}
+	resp, err := client.getGremlinRoleDefinitionHandleResponse(httpResp)
+	return resp, err
+}
+
+// getGremlinRoleDefinitionCreateRequest creates the GetGremlinRoleDefinition request.
+func (client *GremlinResourcesClient) getGremlinRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *GremlinResourcesClientGetGremlinRoleDefinitionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions/{roleDefinitionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if roleDefinitionID == "" {
+		return nil, errors.New("parameter roleDefinitionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getGremlinRoleDefinitionHandleResponse handles the GetGremlinRoleDefinition response.
+func (client *GremlinResourcesClient) getGremlinRoleDefinitionHandleResponse(resp *http.Response) (GremlinResourcesClientGetGremlinRoleDefinitionResponse, error) {
+	result := GremlinResourcesClientGetGremlinRoleDefinitionResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleDefinitionResource); err != nil {
+		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListGremlinDatabasesPager - Lists the Gremlin databases under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - GremlinResourcesClientListGremlinDatabasesOptions contains the optional parameters for the GremlinResourcesClient.NewListGremlinDatabasesPager
@@ -723,7 +1197,7 @@ func (client *GremlinResourcesClient) listGremlinDatabasesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -740,7 +1214,7 @@ func (client *GremlinResourcesClient) listGremlinDatabasesHandleResponse(resp *h
 
 // NewListGremlinGraphsPager - Lists the Gremlin graph under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -794,7 +1268,7 @@ func (client *GremlinResourcesClient) listGremlinGraphsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -809,10 +1283,142 @@ func (client *GremlinResourcesClient) listGremlinGraphsHandleResponse(resp *http
 	return result, nil
 }
 
+// NewListGremlinRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB Gremlin Role Assignments.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - options - GremlinResourcesClientListGremlinRoleAssignmentsOptions contains the optional parameters for the GremlinResourcesClient.NewListGremlinRoleAssignmentsPager
+//     method.
+func (client *GremlinResourcesClient) NewListGremlinRoleAssignmentsPager(resourceGroupName string, accountName string, options *GremlinResourcesClientListGremlinRoleAssignmentsOptions) *runtime.Pager[GremlinResourcesClientListGremlinRoleAssignmentsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GremlinResourcesClientListGremlinRoleAssignmentsResponse]{
+		More: func(page GremlinResourcesClientListGremlinRoleAssignmentsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *GremlinResourcesClientListGremlinRoleAssignmentsResponse) (GremlinResourcesClientListGremlinRoleAssignmentsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GremlinResourcesClient.NewListGremlinRoleAssignmentsPager")
+			req, err := client.listGremlinRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGremlinRoleAssignmentsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listGremlinRoleAssignmentsCreateRequest creates the ListGremlinRoleAssignments request.
+func (client *GremlinResourcesClient) listGremlinRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *GremlinResourcesClientListGremlinRoleAssignmentsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleAssignments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listGremlinRoleAssignmentsHandleResponse handles the ListGremlinRoleAssignments response.
+func (client *GremlinResourcesClient) listGremlinRoleAssignmentsHandleResponse(resp *http.Response) (GremlinResourcesClientListGremlinRoleAssignmentsResponse, error) {
+	result := GremlinResourcesClientListGremlinRoleAssignmentsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleAssignmentListResult); err != nil {
+		return GremlinResourcesClientListGremlinRoleAssignmentsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListGremlinRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB Gremlin Role Definitions.
+//
+// Generated from API version 2025-11-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - options - GremlinResourcesClientListGremlinRoleDefinitionsOptions contains the optional parameters for the GremlinResourcesClient.NewListGremlinRoleDefinitionsPager
+//     method.
+func (client *GremlinResourcesClient) NewListGremlinRoleDefinitionsPager(resourceGroupName string, accountName string, options *GremlinResourcesClientListGremlinRoleDefinitionsOptions) *runtime.Pager[GremlinResourcesClientListGremlinRoleDefinitionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GremlinResourcesClientListGremlinRoleDefinitionsResponse]{
+		More: func(page GremlinResourcesClientListGremlinRoleDefinitionsResponse) bool {
+			return false
+		},
+		Fetcher: func(ctx context.Context, page *GremlinResourcesClientListGremlinRoleDefinitionsResponse) (GremlinResourcesClientListGremlinRoleDefinitionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GremlinResourcesClient.NewListGremlinRoleDefinitionsPager")
+			req, err := client.listGremlinRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
+			if err != nil {
+				return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, runtime.NewResponseError(resp)
+			}
+			return client.listGremlinRoleDefinitionsHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listGremlinRoleDefinitionsCreateRequest creates the ListGremlinRoleDefinitions request.
+func (client *GremlinResourcesClient) listGremlinRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *GremlinResourcesClientListGremlinRoleDefinitionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/gremlinRoleDefinitions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listGremlinRoleDefinitionsHandleResponse handles the ListGremlinRoleDefinitions response.
+func (client *GremlinResourcesClient) listGremlinRoleDefinitionsHandleResponse(resp *http.Response) (GremlinResourcesClientListGremlinRoleDefinitionsResponse, error) {
+	result := GremlinResourcesClientListGremlinRoleDefinitionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GremlinRoleDefinitionListResult); err != nil {
+		return GremlinResourcesClientListGremlinRoleDefinitionsResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginMigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -838,7 +1444,7 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToAutoscale(ctx
 // MigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale"
@@ -884,7 +1490,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -893,7 +1499,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateReq
 // BeginMigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -919,7 +1525,7 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToManualThrough
 // MigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput"
@@ -965,7 +1571,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -974,7 +1580,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCr
 // BeginMigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1001,7 +1607,7 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToAutoscale(ctx co
 // MigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale"
@@ -1051,7 +1657,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1060,7 +1666,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateReques
 // BeginMigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1087,7 +1693,7 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToManualThroughput
 // MigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput"
@@ -1137,7 +1743,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1146,7 +1752,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreat
 // BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1175,7 +1781,7 @@ func (client *GremlinResourcesClient) BeginRetrieveContinuousBackupInformation(c
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginRetrieveContinuousBackupInformation"
@@ -1225,7 +1831,7 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, location); err != nil {
@@ -1237,7 +1843,7 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateR
 // BeginUpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1264,7 +1870,7 @@ func (client *GremlinResourcesClient) BeginUpdateGremlinDatabaseThroughput(ctx c
 // UpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput"
@@ -1310,7 +1916,7 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
@@ -1322,7 +1928,7 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateReque
 // BeginUpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1350,7 +1956,7 @@ func (client *GremlinResourcesClient) BeginUpdateGremlinGraphThroughput(ctx cont
 // UpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginUpdateGremlinGraphThroughput"
@@ -1400,7 +2006,7 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {

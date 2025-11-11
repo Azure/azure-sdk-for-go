@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -28,6 +28,14 @@ type GremlinResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateUpdateGremlinGraph func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters armcosmos.GremlinGraphCreateUpdateParameters, options *armcosmos.GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinGraphResponse], errResp azfake.ErrorResponder)
 
+	// BeginCreateUpdateGremlinRoleAssignment is the fake for method GremlinResourcesClient.BeginCreateUpdateGremlinRoleAssignment
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateUpdateGremlinRoleAssignment func(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters armcosmos.GremlinRoleAssignmentResource, options *armcosmos.GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateUpdateGremlinRoleDefinition is the fake for method GremlinResourcesClient.BeginCreateUpdateGremlinRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateUpdateGremlinRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters armcosmos.GremlinRoleDefinitionResource, options *armcosmos.GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse], errResp azfake.ErrorResponder)
+
 	// BeginDeleteGremlinDatabase is the fake for method GremlinResourcesClient.BeginDeleteGremlinDatabase
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteGremlinDatabase func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientBeginDeleteGremlinDatabaseOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinDatabaseResponse], errResp azfake.ErrorResponder)
@@ -35,6 +43,14 @@ type GremlinResourcesServer struct {
 	// BeginDeleteGremlinGraph is the fake for method GremlinResourcesClient.BeginDeleteGremlinGraph
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteGremlinGraph func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *armcosmos.GremlinResourcesClientBeginDeleteGremlinGraphOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinGraphResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteGremlinRoleAssignment is the fake for method GremlinResourcesClient.BeginDeleteGremlinRoleAssignment
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteGremlinRoleAssignment func(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *armcosmos.GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteGremlinRoleDefinition is the fake for method GremlinResourcesClient.BeginDeleteGremlinRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteGremlinRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *armcosmos.GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (resp azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
 	// GetGremlinDatabase is the fake for method GremlinResourcesClient.GetGremlinDatabase
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,6 +68,14 @@ type GremlinResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetGremlinGraphThroughput func(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *armcosmos.GremlinResourcesClientGetGremlinGraphThroughputOptions) (resp azfake.Responder[armcosmos.GremlinResourcesClientGetGremlinGraphThroughputResponse], errResp azfake.ErrorResponder)
 
+	// GetGremlinRoleAssignment is the fake for method GremlinResourcesClient.GetGremlinRoleAssignment
+	// HTTP status codes to indicate success: http.StatusOK
+	GetGremlinRoleAssignment func(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *armcosmos.GremlinResourcesClientGetGremlinRoleAssignmentOptions) (resp azfake.Responder[armcosmos.GremlinResourcesClientGetGremlinRoleAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// GetGremlinRoleDefinition is the fake for method GremlinResourcesClient.GetGremlinRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK
+	GetGremlinRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *armcosmos.GremlinResourcesClientGetGremlinRoleDefinitionOptions) (resp azfake.Responder[armcosmos.GremlinResourcesClientGetGremlinRoleDefinitionResponse], errResp azfake.ErrorResponder)
+
 	// NewListGremlinDatabasesPager is the fake for method GremlinResourcesClient.NewListGremlinDatabasesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGremlinDatabasesPager func(resourceGroupName string, accountName string, options *armcosmos.GremlinResourcesClientListGremlinDatabasesOptions) (resp azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse])
@@ -59,6 +83,14 @@ type GremlinResourcesServer struct {
 	// NewListGremlinGraphsPager is the fake for method GremlinResourcesClient.NewListGremlinGraphsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListGremlinGraphsPager func(resourceGroupName string, accountName string, databaseName string, options *armcosmos.GremlinResourcesClientListGremlinGraphsOptions) (resp azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse])
+
+	// NewListGremlinRoleAssignmentsPager is the fake for method GremlinResourcesClient.NewListGremlinRoleAssignmentsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListGremlinRoleAssignmentsPager func(resourceGroupName string, accountName string, options *armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsOptions) (resp azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse])
+
+	// NewListGremlinRoleDefinitionsPager is the fake for method GremlinResourcesClient.NewListGremlinRoleDefinitionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListGremlinRoleDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse])
 
 	// BeginMigrateGremlinDatabaseToAutoscale is the fake for method GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -97,10 +129,16 @@ func NewGremlinResourcesServerTransport(srv *GremlinResourcesServer) *GremlinRes
 		srv:                                           srv,
 		beginCreateUpdateGremlinDatabase:              newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinDatabaseResponse]](),
 		beginCreateUpdateGremlinGraph:                 newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinGraphResponse]](),
+		beginCreateUpdateGremlinRoleAssignment:        newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse]](),
+		beginCreateUpdateGremlinRoleDefinition:        newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse]](),
 		beginDeleteGremlinDatabase:                    newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinDatabaseResponse]](),
 		beginDeleteGremlinGraph:                       newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinGraphResponse]](),
+		beginDeleteGremlinRoleAssignment:              newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleAssignmentResponse]](),
+		beginDeleteGremlinRoleDefinition:              newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleDefinitionResponse]](),
 		newListGremlinDatabasesPager:                  newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse]](),
 		newListGremlinGraphsPager:                     newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse]](),
+		newListGremlinRoleAssignmentsPager:            newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse]](),
+		newListGremlinRoleDefinitionsPager:            newTracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse]](),
 		beginMigrateGremlinDatabaseToAutoscale:        newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]](),
 		beginMigrateGremlinDatabaseToManualThroughput: newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]](),
 		beginMigrateGremlinGraphToAutoscale:           newTracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]](),
@@ -117,10 +155,16 @@ type GremlinResourcesServerTransport struct {
 	srv                                           *GremlinResourcesServer
 	beginCreateUpdateGremlinDatabase              *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinDatabaseResponse]]
 	beginCreateUpdateGremlinGraph                 *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinGraphResponse]]
+	beginCreateUpdateGremlinRoleAssignment        *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse]]
+	beginCreateUpdateGremlinRoleDefinition        *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse]]
 	beginDeleteGremlinDatabase                    *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinDatabaseResponse]]
 	beginDeleteGremlinGraph                       *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinGraphResponse]]
+	beginDeleteGremlinRoleAssignment              *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleAssignmentResponse]]
+	beginDeleteGremlinRoleDefinition              *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientDeleteGremlinRoleDefinitionResponse]]
 	newListGremlinDatabasesPager                  *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinDatabasesResponse]]
 	newListGremlinGraphsPager                     *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinGraphsResponse]]
+	newListGremlinRoleAssignmentsPager            *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleAssignmentsResponse]]
+	newListGremlinRoleDefinitionsPager            *tracker[azfake.PagerResponder[armcosmos.GremlinResourcesClientListGremlinRoleDefinitionsResponse]]
 	beginMigrateGremlinDatabaseToAutoscale        *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse]]
 	beginMigrateGremlinDatabaseToManualThroughput *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse]]
 	beginMigrateGremlinGraphToAutoscale           *tracker[azfake.PollerResponder[armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse]]
@@ -157,10 +201,18 @@ func (g *GremlinResourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = g.dispatchBeginCreateUpdateGremlinDatabase(req)
 			case "GremlinResourcesClient.BeginCreateUpdateGremlinGraph":
 				res.resp, res.err = g.dispatchBeginCreateUpdateGremlinGraph(req)
+			case "GremlinResourcesClient.BeginCreateUpdateGremlinRoleAssignment":
+				res.resp, res.err = g.dispatchBeginCreateUpdateGremlinRoleAssignment(req)
+			case "GremlinResourcesClient.BeginCreateUpdateGremlinRoleDefinition":
+				res.resp, res.err = g.dispatchBeginCreateUpdateGremlinRoleDefinition(req)
 			case "GremlinResourcesClient.BeginDeleteGremlinDatabase":
 				res.resp, res.err = g.dispatchBeginDeleteGremlinDatabase(req)
 			case "GremlinResourcesClient.BeginDeleteGremlinGraph":
 				res.resp, res.err = g.dispatchBeginDeleteGremlinGraph(req)
+			case "GremlinResourcesClient.BeginDeleteGremlinRoleAssignment":
+				res.resp, res.err = g.dispatchBeginDeleteGremlinRoleAssignment(req)
+			case "GremlinResourcesClient.BeginDeleteGremlinRoleDefinition":
+				res.resp, res.err = g.dispatchBeginDeleteGremlinRoleDefinition(req)
 			case "GremlinResourcesClient.GetGremlinDatabase":
 				res.resp, res.err = g.dispatchGetGremlinDatabase(req)
 			case "GremlinResourcesClient.GetGremlinDatabaseThroughput":
@@ -169,10 +221,18 @@ func (g *GremlinResourcesServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = g.dispatchGetGremlinGraph(req)
 			case "GremlinResourcesClient.GetGremlinGraphThroughput":
 				res.resp, res.err = g.dispatchGetGremlinGraphThroughput(req)
+			case "GremlinResourcesClient.GetGremlinRoleAssignment":
+				res.resp, res.err = g.dispatchGetGremlinRoleAssignment(req)
+			case "GremlinResourcesClient.GetGremlinRoleDefinition":
+				res.resp, res.err = g.dispatchGetGremlinRoleDefinition(req)
 			case "GremlinResourcesClient.NewListGremlinDatabasesPager":
 				res.resp, res.err = g.dispatchNewListGremlinDatabasesPager(req)
 			case "GremlinResourcesClient.NewListGremlinGraphsPager":
 				res.resp, res.err = g.dispatchNewListGremlinGraphsPager(req)
+			case "GremlinResourcesClient.NewListGremlinRoleAssignmentsPager":
+				res.resp, res.err = g.dispatchNewListGremlinRoleAssignmentsPager(req)
+			case "GremlinResourcesClient.NewListGremlinRoleDefinitionsPager":
+				res.resp, res.err = g.dispatchNewListGremlinRoleDefinitionsPager(req)
 			case "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale":
 				res.resp, res.err = g.dispatchBeginMigrateGremlinDatabaseToAutoscale(req)
 			case "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput":
@@ -215,7 +275,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinDataba
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcosmos.GremlinDatabaseCreateUpdateParameters](req)
@@ -267,7 +327,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinGraph(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcosmos.GremlinGraphCreateUpdateParameters](req)
@@ -314,6 +374,110 @@ func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinGraph(
 	return resp, nil
 }
 
+func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinRoleAssignment(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginCreateUpdateGremlinRoleAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateUpdateGremlinRoleAssignment not implemented")}
+	}
+	beginCreateUpdateGremlinRoleAssignment := g.beginCreateUpdateGremlinRoleAssignment.get(req)
+	if beginCreateUpdateGremlinRoleAssignment == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.GremlinRoleAssignmentResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginCreateUpdateGremlinRoleAssignment(req.Context(), resourceGroupNameParam, accountNameParam, roleAssignmentIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateUpdateGremlinRoleAssignment = &respr
+		g.beginCreateUpdateGremlinRoleAssignment.add(req, beginCreateUpdateGremlinRoleAssignment)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateUpdateGremlinRoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginCreateUpdateGremlinRoleAssignment.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateUpdateGremlinRoleAssignment) {
+		g.beginCreateUpdateGremlinRoleAssignment.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginCreateUpdateGremlinRoleDefinition(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginCreateUpdateGremlinRoleDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateUpdateGremlinRoleDefinition not implemented")}
+	}
+	beginCreateUpdateGremlinRoleDefinition := g.beginCreateUpdateGremlinRoleDefinition.get(req)
+	if beginCreateUpdateGremlinRoleDefinition == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.GremlinRoleDefinitionResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginCreateUpdateGremlinRoleDefinition(req.Context(), resourceGroupNameParam, accountNameParam, roleDefinitionIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateUpdateGremlinRoleDefinition = &respr
+		g.beginCreateUpdateGremlinRoleDefinition.add(req, beginCreateUpdateGremlinRoleDefinition)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateUpdateGremlinRoleDefinition, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		g.beginCreateUpdateGremlinRoleDefinition.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateUpdateGremlinRoleDefinition) {
+		g.beginCreateUpdateGremlinRoleDefinition.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinDatabase(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginDeleteGremlinDatabase == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteGremlinDatabase not implemented")}
@@ -323,7 +487,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinDatabase(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -371,7 +535,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinGraph(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -414,6 +578,102 @@ func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinGraph(req *h
 	return resp, nil
 }
 
+func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinRoleAssignment(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginDeleteGremlinRoleAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteGremlinRoleAssignment not implemented")}
+	}
+	beginDeleteGremlinRoleAssignment := g.beginDeleteGremlinRoleAssignment.get(req)
+	if beginDeleteGremlinRoleAssignment == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginDeleteGremlinRoleAssignment(req.Context(), resourceGroupNameParam, accountNameParam, roleAssignmentIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteGremlinRoleAssignment = &respr
+		g.beginDeleteGremlinRoleAssignment.add(req, beginDeleteGremlinRoleAssignment)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteGremlinRoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		g.beginDeleteGremlinRoleAssignment.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteGremlinRoleAssignment) {
+		g.beginDeleteGremlinRoleAssignment.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchBeginDeleteGremlinRoleDefinition(req *http.Request) (*http.Response, error) {
+	if g.srv.BeginDeleteGremlinRoleDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteGremlinRoleDefinition not implemented")}
+	}
+	beginDeleteGremlinRoleDefinition := g.beginDeleteGremlinRoleDefinition.get(req)
+	if beginDeleteGremlinRoleDefinition == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := g.srv.BeginDeleteGremlinRoleDefinition(req.Context(), resourceGroupNameParam, accountNameParam, roleDefinitionIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteGremlinRoleDefinition = &respr
+		g.beginDeleteGremlinRoleDefinition.add(req, beginDeleteGremlinRoleDefinition)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteGremlinRoleDefinition, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		g.beginDeleteGremlinRoleDefinition.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteGremlinRoleDefinition) {
+		g.beginDeleteGremlinRoleDefinition.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (g *GremlinResourcesServerTransport) dispatchGetGremlinDatabase(req *http.Request) (*http.Response, error) {
 	if g.srv.GetGremlinDatabase == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetGremlinDatabase not implemented")}
@@ -421,7 +681,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinDatabase(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -458,7 +718,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinDatabaseThroughput(r
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -495,7 +755,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinGraph(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -536,7 +796,7 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinGraphThroughput(req 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -570,6 +830,80 @@ func (g *GremlinResourcesServerTransport) dispatchGetGremlinGraphThroughput(req 
 	return resp, nil
 }
 
+func (g *GremlinResourcesServerTransport) dispatchGetGremlinRoleAssignment(req *http.Request) (*http.Response, error) {
+	if g.srv.GetGremlinRoleAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetGremlinRoleAssignment not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	roleAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.GetGremlinRoleAssignment(req.Context(), resourceGroupNameParam, accountNameParam, roleAssignmentIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GremlinRoleAssignmentResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchGetGremlinRoleDefinition(req *http.Request) (*http.Response, error) {
+	if g.srv.GetGremlinRoleDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetGremlinRoleDefinition not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	roleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.GetGremlinRoleDefinition(req.Context(), resourceGroupNameParam, accountNameParam, roleDefinitionIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GremlinRoleDefinitionResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (g *GremlinResourcesServerTransport) dispatchNewListGremlinDatabasesPager(req *http.Request) (*http.Response, error) {
 	if g.srv.NewListGremlinDatabasesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListGremlinDatabasesPager not implemented")}
@@ -579,7 +913,7 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinDatabasesPager(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -617,7 +951,7 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinGraphsPager(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -650,6 +984,82 @@ func (g *GremlinResourcesServerTransport) dispatchNewListGremlinGraphsPager(req 
 	return resp, nil
 }
 
+func (g *GremlinResourcesServerTransport) dispatchNewListGremlinRoleAssignmentsPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListGremlinRoleAssignmentsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListGremlinRoleAssignmentsPager not implemented")}
+	}
+	newListGremlinRoleAssignmentsPager := g.newListGremlinRoleAssignmentsPager.get(req)
+	if newListGremlinRoleAssignmentsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListGremlinRoleAssignmentsPager(resourceGroupNameParam, accountNameParam, nil)
+		newListGremlinRoleAssignmentsPager = &resp
+		g.newListGremlinRoleAssignmentsPager.add(req, newListGremlinRoleAssignmentsPager)
+	}
+	resp, err := server.PagerResponderNext(newListGremlinRoleAssignmentsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListGremlinRoleAssignmentsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListGremlinRoleAssignmentsPager) {
+		g.newListGremlinRoleAssignmentsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (g *GremlinResourcesServerTransport) dispatchNewListGremlinRoleDefinitionsPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListGremlinRoleDefinitionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListGremlinRoleDefinitionsPager not implemented")}
+	}
+	newListGremlinRoleDefinitionsPager := g.newListGremlinRoleDefinitionsPager.get(req)
+	if newListGremlinRoleDefinitionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinRoleDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListGremlinRoleDefinitionsPager(resourceGroupNameParam, accountNameParam, nil)
+		newListGremlinRoleDefinitionsPager = &resp
+		g.newListGremlinRoleDefinitionsPager.add(req, newListGremlinRoleDefinitionsPager)
+	}
+	resp, err := server.PagerResponderNext(newListGremlinRoleDefinitionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListGremlinRoleDefinitionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListGremlinRoleDefinitionsPager) {
+		g.newListGremlinRoleDefinitionsPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToAutoscale(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginMigrateGremlinDatabaseToAutoscale == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateGremlinDatabaseToAutoscale not implemented")}
@@ -659,7 +1069,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToA
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -707,7 +1117,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinDatabaseToM
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -755,7 +1165,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToAuto
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -807,7 +1217,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginMigrateGremlinGraphToManu
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -859,7 +1269,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginRetrieveContinuousBackupI
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retrieveContinuousBackupInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcosmos.ContinuousBackupRestoreLocation](req)
@@ -915,7 +1325,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinDatabaseThro
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
@@ -967,7 +1377,7 @@ func (g *GremlinResourcesServerTransport) dispatchBeginUpdateGremlinGraphThrough
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gremlinDatabases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/graphs/(?P<graphName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)

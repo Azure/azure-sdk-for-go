@@ -19,7 +19,7 @@ type ClientFactory struct {
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
@@ -57,6 +57,14 @@ func (c *ClientFactory) NewCassandraResourcesClient() *CassandraResourcesClient 
 	}
 }
 
+// NewChaosFaultClient creates a new instance of ChaosFaultClient.
+func (c *ClientFactory) NewChaosFaultClient() *ChaosFaultClient {
+	return &ChaosFaultClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCollectionClient creates a new instance of CollectionClient.
 func (c *ClientFactory) NewCollectionClient() *CollectionClient {
 	return &CollectionClient{
@@ -89,6 +97,22 @@ func (c *ClientFactory) NewCollectionRegionClient() *CollectionRegionClient {
 	}
 }
 
+// NewCopyJobsClient creates a new instance of CopyJobsClient.
+func (c *ClientFactory) NewCopyJobsClient() *CopyJobsClient {
+	return &CopyJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDataTransferJobsClient creates a new instance of DataTransferJobsClient.
+func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
+	return &DataTransferJobsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDatabaseAccountRegionClient creates a new instance of DatabaseAccountRegionClient.
 func (c *ClientFactory) NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient {
 	return &DatabaseAccountRegionClient{
@@ -113,6 +137,54 @@ func (c *ClientFactory) NewDatabaseClient() *DatabaseClient {
 	}
 }
 
+// NewFleetAnalyticsClient creates a new instance of FleetAnalyticsClient.
+func (c *ClientFactory) NewFleetAnalyticsClient() *FleetAnalyticsClient {
+	return &FleetAnalyticsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFleetClient creates a new instance of FleetClient.
+func (c *ClientFactory) NewFleetClient() *FleetClient {
+	return &FleetClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFleetspaceAccountClient creates a new instance of FleetspaceAccountClient.
+func (c *ClientFactory) NewFleetspaceAccountClient() *FleetspaceAccountClient {
+	return &FleetspaceAccountClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewFleetspaceClient creates a new instance of FleetspaceClient.
+func (c *ClientFactory) NewFleetspaceClient() *FleetspaceClient {
+	return &FleetspaceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGarnetClustersClient creates a new instance of GarnetClustersClient.
+func (c *ClientFactory) NewGarnetClustersClient() *GarnetClustersClient {
+	return &GarnetClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewGraphResourcesClient creates a new instance of GraphResourcesClient.
+func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
+	return &GraphResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient.
 func (c *ClientFactory) NewGremlinResourcesClient() *GremlinResourcesClient {
 	return &GremlinResourcesClient{
@@ -132,6 +204,22 @@ func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 // NewMongoDBResourcesClient creates a new instance of MongoDBResourcesClient.
 func (c *ClientFactory) NewMongoDBResourcesClient() *MongoDBResourcesClient {
 	return &MongoDBResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMongoMIResourcesClient creates a new instance of MongoMIResourcesClient.
+func (c *ClientFactory) NewMongoMIResourcesClient() *MongoMIResourcesClient {
+	return &MongoMIResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
+func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
+	return &NetworkSecurityPerimeterConfigurationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -323,6 +411,38 @@ func (c *ClientFactory) NewServiceClient() *ServiceClient {
 // NewTableResourcesClient creates a new instance of TableResourcesClient.
 func (c *ClientFactory) NewTableResourcesClient() *TableResourcesClient {
 	return &TableResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewThroughputPoolAccountClient creates a new instance of ThroughputPoolAccountClient.
+func (c *ClientFactory) NewThroughputPoolAccountClient() *ThroughputPoolAccountClient {
+	return &ThroughputPoolAccountClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewThroughputPoolAccountsClient creates a new instance of ThroughputPoolAccountsClient.
+func (c *ClientFactory) NewThroughputPoolAccountsClient() *ThroughputPoolAccountsClient {
+	return &ThroughputPoolAccountsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewThroughputPoolClient creates a new instance of ThroughputPoolClient.
+func (c *ClientFactory) NewThroughputPoolClient() *ThroughputPoolClient {
+	return &ThroughputPoolClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewThroughputPoolsClient creates a new instance of ThroughputPoolsClient.
+func (c *ClientFactory) NewThroughputPoolsClient() *ThroughputPoolsClient {
+	return &ThroughputPoolsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

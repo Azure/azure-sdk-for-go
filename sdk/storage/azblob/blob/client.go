@@ -417,6 +417,13 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		return DownloadStreamResponse{}, err
 	}
 
+	// Wrap response body with structured message validator if header is present
+	validatedBody, err := exported.NewStructuredMessageResponseReader(dr.Body, dr.StructuredBodyType)
+	if err != nil {
+		return DownloadStreamResponse{}, err
+	}
+	dr.Body = validatedBody
+
 	return DownloadStreamResponse{
 		client:                 b,
 		DownloadResponse:       dr,

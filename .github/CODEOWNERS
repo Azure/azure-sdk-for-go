@@ -659,8 +659,9 @@
 /.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
 
 # Add owners for go sdk tool
-/eng/tools/generator          @lirenhe @tadelesh @JiaqiZhang-Dev
-/eng/tools/internal           @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/generator            @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/internal             @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
 /eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox

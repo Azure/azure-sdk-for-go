@@ -41,7 +41,7 @@ type APIKVReferenceCollection struct {
 
 // APIKVReferenceProperties - ApiKVReference resource specific properties
 type APIKVReferenceProperties struct {
-	// CONSTANT; undefinedField has constant value "KeyVault", any specified value is ignored.
+	// CONSTANT; Field has constant value "KeyVault", any specified value is ignored.
 	Source        *string
 	ActiveVersion *string
 	Details       *string
@@ -74,27 +74,6 @@ type AbnormalTimePeriod struct {
 
 	// Start time of the downtime
 	StartTime *time.Time
-}
-
-// Address information for domain registration.
-type Address struct {
-	// REQUIRED; First line of an Address.
-	Address1 *string
-
-	// REQUIRED; The city for the address.
-	City *string
-
-	// REQUIRED; The country for the address.
-	Country *string
-
-	// REQUIRED; The postal code for the address.
-	PostalCode *string
-
-	// REQUIRED; The state or province for the address.
-	State *string
-
-	// The second line of the Address. Optional.
-	Address2 *string
 }
 
 // AddressResponse - Describes main public IP address and any extra virtual IPs.
@@ -1048,305 +1027,6 @@ type Capability struct {
 	Value *string
 }
 
-// Certificate - Key Vault container for a certificate that is purchased through Azure.
-type Certificate struct {
-	// Key Vault resource Id.
-	KeyVaultID *string
-
-	// Key Vault secret name.
-	KeyVaultSecretName *string
-
-	// READ-ONLY; Status of the Key Vault secret.
-	ProvisioningState *KeyVaultSecretStatus
-}
-
-// CertificateCollection - Collection of certificate order certificates.
-type CertificateCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*CertificateResource
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
-// CertificateDetails - SSL certificate details.
-type CertificateDetails struct {
-	// READ-ONLY; Certificate Issuer.
-	Issuer *string
-
-	// READ-ONLY; Date Certificate is valid to.
-	NotAfter *time.Time
-
-	// READ-ONLY; Date Certificate is valid from.
-	NotBefore *time.Time
-
-	// READ-ONLY; Raw certificate data.
-	RawData *string
-
-	// READ-ONLY; Certificate Serial Number.
-	SerialNumber *string
-
-	// READ-ONLY; Certificate Signature algorithm.
-	SignatureAlgorithm *string
-
-	// READ-ONLY; Certificate Subject.
-	Subject *string
-
-	// READ-ONLY; Certificate Thumbprint.
-	Thumbprint *string
-
-	// READ-ONLY; Certificate Version.
-	Version *int32
-}
-
-// CertificateEmail - SSL certificate email.
-type CertificateEmail struct {
-	// Email id.
-	EmailID *string
-
-	// Time stamp.
-	TimeStamp *time.Time
-}
-
-// CertificateOrder - SSL certificate purchase order.
-type CertificateOrder struct {
-	// REQUIRED; Resource Location.
-	Location *string
-
-	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
-	// for
-	// details supported values for kind.
-	Kind *string
-
-	// AppServiceCertificateOrder resource specific properties
-	Properties *CertificateOrderProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// CertificateOrderAction - Certificate order action.
-type CertificateOrderAction struct {
-	// READ-ONLY; Action type.
-	ActionType *CertificateOrderActionType
-
-	// READ-ONLY; Time at which the certificate action was performed.
-	CreatedAt *time.Time
-}
-
-// CertificateOrderCollection - Collection of certificate orders.
-type CertificateOrderCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*CertificateOrder
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
-type CertificateOrderContact struct {
-	Email     *string
-	NameFirst *string
-	NameLast  *string
-	Phone     *string
-}
-
-// CertificateOrderPatchResource - ARM resource for a certificate order that is purchased through Azure.
-type CertificateOrderPatchResource struct {
-	// Kind of resource.
-	Kind *string
-
-	// AppServiceCertificateOrderPatchResource resource specific properties
-	Properties *CertificateOrderPatchResourceProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// CertificateOrderPatchResourceProperties - AppServiceCertificateOrderPatchResource resource specific properties
-type CertificateOrderPatchResourceProperties struct {
-	// REQUIRED; Certificate product type.
-	ProductType *CertificateProductType
-
-	// true if the certificate should be automatically renewed when it expires; otherwise, false.
-	AutoRenew *bool
-
-	// State of the Key Vault secret.
-	Certificates map[string]*Certificate
-
-	// Last CSR that was created for this order.
-	Csr *string
-
-	// Certificate distinguished name.
-	DistinguishedName *string
-
-	// Certificate key size.
-	KeySize *int32
-
-	// Duration in years (must be 1).
-	ValidityInYears *int32
-
-	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
-	AppServiceCertificateNotRenewableReasons []*ResourceNotRenewableReason
-
-	// READ-ONLY; Contact info
-	Contact *CertificateOrderContact
-
-	// READ-ONLY; Domain verification token.
-	DomainVerificationToken *string
-
-	// READ-ONLY; Certificate expiration time.
-	ExpirationTime *time.Time
-
-	// READ-ONLY; Intermediate certificate.
-	Intermediate *CertificateDetails
-
-	// READ-ONLY; true if private key is external; otherwise, false.
-	IsPrivateKeyExternal *bool
-
-	// READ-ONLY; Certificate last issuance time.
-	LastCertificateIssuanceTime *time.Time
-
-	// READ-ONLY; Time stamp when the certificate would be auto renewed next
-	NextAutoRenewalTimeStamp *time.Time
-
-	// READ-ONLY; Status of certificate order.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Root certificate.
-	Root *CertificateDetails
-
-	// READ-ONLY; Current serial number of the certificate.
-	SerialNumber *string
-
-	// READ-ONLY; Signed certificate.
-	SignedCertificate *CertificateDetails
-
-	// READ-ONLY; Current order status.
-	Status *CertificateOrderStatus
-}
-
-// CertificateOrderProperties - AppServiceCertificateOrder resource specific properties
-type CertificateOrderProperties struct {
-	// REQUIRED; Certificate product type.
-	ProductType *CertificateProductType
-
-	// true if the certificate should be automatically renewed when it expires; otherwise, false.
-	AutoRenew *bool
-
-	// State of the Key Vault secret.
-	Certificates map[string]*Certificate
-
-	// Last CSR that was created for this order.
-	Csr *string
-
-	// Certificate distinguished name.
-	DistinguishedName *string
-
-	// Certificate key size.
-	KeySize *int32
-
-	// Duration in years (must be 1).
-	ValidityInYears *int32
-
-	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
-	AppServiceCertificateNotRenewableReasons []*ResourceNotRenewableReason
-
-	// READ-ONLY; Contact info
-	Contact *CertificateOrderContact
-
-	// READ-ONLY; Domain verification token.
-	DomainVerificationToken *string
-
-	// READ-ONLY; Certificate expiration time.
-	ExpirationTime *time.Time
-
-	// READ-ONLY; Intermediate certificate.
-	Intermediate *CertificateDetails
-
-	// READ-ONLY; true if private key is external; otherwise, false.
-	IsPrivateKeyExternal *bool
-
-	// READ-ONLY; Certificate last issuance time.
-	LastCertificateIssuanceTime *time.Time
-
-	// READ-ONLY; Time stamp when the certificate would be auto renewed next
-	NextAutoRenewalTimeStamp *time.Time
-
-	// READ-ONLY; Status of certificate order.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Root certificate.
-	Root *CertificateDetails
-
-	// READ-ONLY; Current serial number of the certificate.
-	SerialNumber *string
-
-	// READ-ONLY; Signed certificate.
-	SignedCertificate *CertificateDetails
-
-	// READ-ONLY; Current order status.
-	Status *CertificateOrderStatus
-}
-
-// CertificatePatchResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
-type CertificatePatchResource struct {
-	// Kind of resource.
-	Kind *string
-
-	// Core resource properties
-	Properties *Certificate
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// CertificateResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
-type CertificateResource struct {
-	// REQUIRED; Resource Location.
-	Location *string
-
-	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
-	// for
-	// details supported values for kind.
-	Kind *string
-
-	// Core resource properties
-	Properties *Certificate
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
 // CipherSuites - Describes valid TLS cipher suites.
 type CipherSuites struct {
 	// List of TLS Cipher Suites that are supported by App Service.
@@ -1440,37 +1120,6 @@ type ConnectionStringDictionary struct {
 
 	// READ-ONLY; Resource type.
 	Type *string
-}
-
-// Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information is
-// made publicly available through the Whois directories as per ICANN requirements.
-type Contact struct {
-	// REQUIRED; Email address.
-	Email *string
-
-	// REQUIRED; First name.
-	NameFirst *string
-
-	// REQUIRED; Last name.
-	NameLast *string
-
-	// REQUIRED; Phone number.
-	Phone *string
-
-	// Mailing address.
-	AddressMailing *Address
-
-	// Fax number.
-	Fax *string
-
-	// Job title.
-	JobTitle *string
-
-	// Middle name.
-	NameMiddle *string
-
-	// Organization contact belongs to.
-	Organization *string
 }
 
 // Container App container definition.
@@ -2258,6 +1907,11 @@ type DefaultErrorResponseErrorDetailsItem struct {
 	Target *string
 }
 
+type DefaultIdentity struct {
+	IdentityType                   *ManagedServiceIdentityType
+	UserAssignedIdentityResourceID *string
+}
+
 // DeletedAppRestoreRequest - Details about restoring a deleted app.
 type DeletedAppRestoreRequest struct {
 	// Kind of resource.
@@ -2775,265 +2429,6 @@ type DnlResourceNameAvailabilityRequest struct {
 
 	// Resource group name
 	ResourceGroupName *string
-}
-
-// Domain - Information about a domain.
-type Domain struct {
-	// REQUIRED; Resource Location.
-	Location *string
-
-	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
-	// for
-	// details supported values for kind.
-	Kind *string
-
-	// Domain resource specific properties
-	Properties *DomainProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// DomainAvailabilityCheckResult - Domain availability check result.
-type DomainAvailabilityCheckResult struct {
-	// true if domain can be purchased using CreateDomain API; otherwise, false.
-	Available *bool
-
-	// Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this
-	// domain will simply restore it and this operation will not cost anything.
-	DomainType *DomainType
-
-	// Name of the domain.
-	Name *string
-}
-
-// DomainCollection - Collection of domains.
-type DomainCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*Domain
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
-// DomainControlCenterSsoRequest - Single sign-on request information for domain management.
-type DomainControlCenterSsoRequest struct {
-	// READ-ONLY; Post parameter key.
-	PostParameterKey *string
-
-	// READ-ONLY; Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
-	PostParameterValue *string
-
-	// READ-ONLY; URL where the single sign-on request is to be made.
-	URL *string
-}
-
-// DomainOwnershipIdentifier - Domain ownership Identifier.
-type DomainOwnershipIdentifier struct {
-	// Kind of resource.
-	Kind *string
-
-	// DomainOwnershipIdentifier resource specific properties
-	Properties *DomainOwnershipIdentifierProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// DomainOwnershipIdentifierCollection - Collection of domain ownership identifiers.
-type DomainOwnershipIdentifierCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*DomainOwnershipIdentifier
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
-// DomainOwnershipIdentifierProperties - DomainOwnershipIdentifier resource specific properties
-type DomainOwnershipIdentifierProperties struct {
-	// Ownership Id.
-	OwnershipID *string
-}
-
-// DomainPatchResource - ARM resource for a domain.
-type DomainPatchResource struct {
-	// Kind of resource.
-	Kind *string
-
-	// DomainPatchResource resource specific properties
-	Properties *DomainPatchResourceProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// DomainPatchResourceProperties - DomainPatchResource resource specific properties
-type DomainPatchResourceProperties struct {
-	// REQUIRED; Legal agreement consent.
-	Consent *DomainPurchaseConsent
-
-	// REQUIRED; Administrative contact.
-	ContactAdmin *Contact
-
-	// REQUIRED; Billing contact.
-	ContactBilling *Contact
-
-	// REQUIRED; Registrant contact.
-	ContactRegistrant *Contact
-
-	// REQUIRED; Technical contact.
-	ContactTech *Contact
-	AuthCode    *string
-
-	// true if the domain should be automatically renewed; otherwise, false.
-	AutoRenew *bool
-
-	// Current DNS type
-	DNSType *DNSType
-
-	// Azure DNS Zone to use
-	DNSZoneID *string
-
-	// true if domain privacy is enabled for this domain; otherwise, false.
-	Privacy *bool
-
-	// Target DNS type (would be used for migration)
-	TargetDNSType *DNSType
-
-	// READ-ONLY; Domain creation timestamp.
-	CreatedTime *time.Time
-
-	// READ-ONLY; Reasons why domain is not renewable.
-	DomainNotRenewableReasons []*ResourceNotRenewableReason
-
-	// READ-ONLY; Domain expiration timestamp.
-	ExpirationTime *time.Time
-
-	// READ-ONLY; Timestamp when the domain was renewed last time.
-	LastRenewedTime *time.Time
-
-	// READ-ONLY; All hostnames derived from the domain and assigned to Azure resources.
-	ManagedHostNames []*HostName
-
-	// READ-ONLY; Name servers.
-	NameServers []*string
-
-	// READ-ONLY; Domain provisioning state.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain
-	// registration status is active and it is hosted on name servers Azure has programmatic
-	// access to.
-	ReadyForDNSRecordManagement *bool
-
-	// READ-ONLY; Domain registration status.
-	RegistrationStatus *DomainStatus
-}
-
-// DomainProperties - Domain resource specific properties
-type DomainProperties struct {
-	// REQUIRED; Legal agreement consent.
-	Consent *DomainPurchaseConsent
-
-	// REQUIRED; Administrative contact.
-	ContactAdmin *Contact
-
-	// REQUIRED; Billing contact.
-	ContactBilling *Contact
-
-	// REQUIRED; Registrant contact.
-	ContactRegistrant *Contact
-
-	// REQUIRED; Technical contact.
-	ContactTech *Contact
-	AuthCode    *string
-
-	// true if the domain should be automatically renewed; otherwise, false.
-	AutoRenew *bool
-
-	// Current DNS type
-	DNSType *DNSType
-
-	// Azure DNS Zone to use
-	DNSZoneID *string
-
-	// true if domain privacy is enabled for this domain; otherwise, false.
-	Privacy *bool
-
-	// Target DNS type (would be used for migration)
-	TargetDNSType *DNSType
-
-	// READ-ONLY; Domain creation timestamp.
-	CreatedTime *time.Time
-
-	// READ-ONLY; Reasons why domain is not renewable.
-	DomainNotRenewableReasons []*ResourceNotRenewableReason
-
-	// READ-ONLY; Domain expiration timestamp.
-	ExpirationTime *time.Time
-
-	// READ-ONLY; Timestamp when the domain was renewed last time.
-	LastRenewedTime *time.Time
-
-	// READ-ONLY; All hostnames derived from the domain and assigned to Azure resources.
-	ManagedHostNames []*HostName
-
-	// READ-ONLY; Name servers.
-	NameServers []*string
-
-	// READ-ONLY; Domain provisioning state.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain
-	// registration status is active and it is hosted on name servers Azure has programmatic
-	// access to.
-	ReadyForDNSRecordManagement *bool
-
-	// READ-ONLY; Domain registration status.
-	RegistrationStatus *DomainStatus
-}
-
-// DomainPurchaseConsent - Domain purchase consent object, representing acceptance of applicable legal agreements.
-type DomainPurchaseConsent struct {
-	// Timestamp when the agreements were accepted.
-	AgreedAt *time.Time
-
-	// Client IP address.
-	AgreedBy *string
-
-	// List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under TopLevelDomain
-	// resource.
-	AgreementKeys []*string
-}
-
-// DomainRecommendationSearchParameters - Domain recommendation search parameters.
-type DomainRecommendationSearchParameters struct {
-	// Keywords to be used for generating domain recommendations.
-	Keywords *string
-
-	// Maximum number of recommendations.
-	MaxDomainRecommendations *int32
 }
 
 // EnabledConfig - Enabled configuration.
@@ -3969,29 +3364,6 @@ type HostKeys struct {
 	SystemKeys map[string]*string
 }
 
-// HostName - Details of a hostname derived from a domain.
-type HostName struct {
-	// Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic
-	// Manager name otherwise it will be the app name.
-	AzureResourceName *string
-
-	// Type of the Azure resource the hostname is assigned to.
-	AzureResourceType *AzureResourceType
-
-	// Type of the DNS record.
-	CustomHostNameDNSRecordType *CustomHostNameDNSRecordType
-
-	// Type of the hostname.
-	HostNameType *HostNameType
-
-	// Name of the hostname.
-	Name *string
-
-	// List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic
-	// Manager.
-	SiteNames []*string
-}
-
 // HostNameBinding - A hostname binding object.
 type HostNameBinding struct {
 	// Kind of resource.
@@ -4357,6 +3729,24 @@ type InboundEnvironmentEndpointCollection struct {
 	NextLink *string
 }
 
+// InstallScript - Server farm install script configuration.
+type InstallScript struct {
+	// Name of the install script.
+	Name *string
+
+	// Source of the install script.
+	Source *InstallScriptSource
+}
+
+// InstallScriptSource - Object to hold install script reference.
+type InstallScriptSource struct {
+	// Install script source URI where the install script file will be fetched from.
+	SourceURI *string
+
+	// Type of the install script.
+	Type *InstallScriptType
+}
+
 // JSONSchema - The JSON schema.
 type JSONSchema struct {
 	// The JSON content.
@@ -4390,6 +3780,15 @@ type KeyValuePairStringObject struct {
 
 	// READ-ONLY; Anything
 	Value any
+}
+
+// KeyVaultReferenceWithStatus - Object to hold key vault reference and the resolution status
+type KeyVaultReferenceWithStatus struct {
+	// Reference status of the key vault secret.
+	ReferenceStatus *string
+
+	// Key vault secret URI.
+	SecretURI *string
 }
 
 // KubeEnvironment - A Kubernetes cluster specialized for web workloads by Azure App Service
@@ -4847,15 +4246,6 @@ type NameIdentifier struct {
 	Name *string
 }
 
-// NameIdentifierCollection - Collection of domain name identifiers.
-type NameIdentifierCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*NameIdentifier
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
 // NameValuePair - Name value pair.
 type NameValuePair struct {
 	// Pair name.
@@ -5181,6 +4571,9 @@ type Plan struct {
 	// Extended Location.
 	ExtendedLocation *ExtendedLocation
 
+	// Managed service identity.
+	Identity *ManagedServiceIdentity
+
 	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
 	// for
 	// details supported values for kind.
@@ -5216,6 +4609,9 @@ type PlanCollection struct {
 
 // PlanPatchResource - ARM resource for a app service plan.
 type PlanPatchResource struct {
+	// Managed service identity.
+	Identity *ManagedServiceIdentity
+
 	// Kind of resource.
 	Kind *string
 
@@ -5324,6 +4720,12 @@ type PlanProperties struct {
 	// If Hyper-V container app service plan true, false otherwise.
 	HyperV *bool
 
+	// Install scripts associated with this App Service plan.
+	InstallScripts []*InstallScript
+
+	// Whether this server farm is in custom mode.
+	IsCustomMode *bool
+
 	// If true, this App Service Plan owns spot instances.
 	IsSpot *bool
 
@@ -5336,15 +4738,31 @@ type PlanProperties struct {
 	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
 	MaximumElasticWorkerCount *int32
 
+	// All network settings for the server farm.
+	Network *ServerFarmNetworkSettings
+
 	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service
 	// plan will scale to all instances of the plan.
 	PerSiteScaling *bool
+
+	// Identity to use by platform for various features and integrations using managed identity.
+	PlanDefaultIdentity *DefaultIdentity
+
+	// If true, RDP access is enabled for this App Service plan. Only applicable for IsCustomMode ASPs. If false, RDP access is
+	// disabled.
+	RdpEnabled *bool
+
+	// Registry adapters associated with this App Service plan.
+	RegistryAdapters []*RegistryAdapter
 
 	// If Linux app service plan true, false otherwise.
 	Reserved *bool
 
 	// The time when the server farm expires. Valid only if it is a spot server farm.
 	SpotExpirationTime *time.Time
+
+	// Storage mounts associated with this App Service plan.
+	StorageMounts []*StorageMount
 
 	// Scaling worker count.
 	TargetWorkerCount *int32
@@ -6273,37 +5691,16 @@ type RegenerateActionParameter struct {
 	KeyType *KeyType
 }
 
-// ReissueCertificateOrderRequest - Class representing certificate reissue request.
-type ReissueCertificateOrderRequest struct {
-	// Kind of resource.
-	Kind *string
+// RegistryAdapter - Server farm registry adapter configuration.
+type RegistryAdapter struct {
+	// Key vault reference to the value that will be placed in the registry location
+	KeyVaultSecretReference *KeyVaultReferenceWithStatus
 
-	// ReissueCertificateOrderRequest resource specific properties
-	Properties *ReissueCertificateOrderRequestProperties
+	// Registry key for the adapter.
+	RegistryKey *string
 
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// ReissueCertificateOrderRequestProperties - ReissueCertificateOrderRequest resource specific properties
-type ReissueCertificateOrderRequestProperties struct {
-	// Csr to be used for re-key operation.
-	Csr *string
-
-	// Delay in hours to revoke existing certificate after the new certificate is issued.
-	DelayExistingRevokeInHours *int32
-
-	// Should we change the ASC type (from managed private key to external private key and vice versa).
-	IsPrivateKeyExternal *bool
-
-	// Certificate Key Size.
-	KeySize *int32
+	// Type of the registry adapter.
+	Type *RegistryAdapterType
 }
 
 // RelayServiceConnectionEntity - Hybrid Connection for an App Service app.
@@ -6411,36 +5808,6 @@ type Rendering struct {
 
 	// Rendering Type
 	Type *RenderingType
-}
-
-// RenewCertificateOrderRequest - Class representing certificate renew request.
-type RenewCertificateOrderRequest struct {
-	// Kind of resource.
-	Kind *string
-
-	// RenewCertificateOrderRequest resource specific properties
-	Properties *RenewCertificateOrderRequestProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// RenewCertificateOrderRequestProperties - RenewCertificateOrderRequest resource specific properties
-type RenewCertificateOrderRequestProperties struct {
-	// Csr to be used for re-key operation.
-	Csr *string
-
-	// Should we change the ASC type (from managed private key to external private key and vice versa).
-	IsPrivateKeyExternal *bool
-
-	// Certificate Key Size.
-	KeySize *int32
 }
 
 // RepetitionIndex - The workflow run action repetition index.
@@ -6972,6 +6339,47 @@ type ScaleRuleAuth struct {
 
 	// Trigger Parameter that uses the secret
 	TriggerParameter *string
+}
+
+// ServerFarmInstance - Represents details of a single instance in a server farm.
+type ServerFarmInstance struct {
+	// The instance IP address.
+	IPAddress *string
+
+	// The instance name.
+	InstanceName *string
+
+	// The instance status.
+	Status *string
+}
+
+// ServerFarmInstanceDetails - Represents instance details for an app service plan.
+type ServerFarmInstanceDetails struct {
+	// The total number of instances.
+	InstanceCount *int32
+
+	// The list of server farm instances.
+	Instances []*ServerFarmInstance
+
+	// The server farm name.
+	ServerFarmName *string
+}
+
+// ServerFarmNetworkSettings - Network settings for an app service plan.
+type ServerFarmNetworkSettings struct {
+	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of
+	// the form
+	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
+	VirtualNetworkSubnetID *string
+}
+
+// ServerFarmRdpDetails - Server Farm RDP connection details.
+type ServerFarmRdpDetails struct {
+	// The RDP password for the server farm.
+	RdpPassword *string
+
+	// The RDP password expiry date.
+	RdpPasswordExpiry *time.Time
 }
 
 // ServiceSpecification - Resource metrics service provided by Microsoft.Insights resource provider.
@@ -8177,21 +7585,6 @@ type SiteProperties struct {
 
 	// READ-ONLY; State indicating whether the app has exceeded its quota usage. Read-only.
 	UsageState *UsageState
-}
-
-// SiteSeal - Site seal
-type SiteSeal struct {
-	// REQUIRED; HTML snippet
-	HTML *string
-}
-
-// SiteSealRequest - Site seal request.
-type SiteSealRequest struct {
-	// If true use the light color theme for site seal; otherwise, use the default color theme.
-	LightTheme *bool
-
-	// Locale of site seal.
-	Locale *string
 }
 
 // SiteSourceControl - Source control configuration for an app.
@@ -9430,6 +8823,24 @@ type StorageMigrationResponseProperties struct {
 	OperationID *string
 }
 
+// StorageMount - Server farm storage mount configuration.
+type StorageMount struct {
+	// KV reference to the credentials to connect to the share.
+	CredentialsKeyVaultReference *KeyVaultReferenceWithStatus
+
+	// Path on worker where storage will be mounted.
+	DestinationPath *string
+
+	// Name of the storage mount.
+	Name *string
+
+	// Source of the fileshare/storage.
+	Source *string
+
+	// Type of the storage mount.
+	Type *StorageMountType
+}
+
 // StringDictionary - String dictionary resource.
 type StringDictionary struct {
 	// Kind of resource.
@@ -9526,30 +8937,6 @@ type Template struct {
 	Scale *Scale
 }
 
-// TldLegalAgreement - Legal agreement for a top level domain.
-type TldLegalAgreement struct {
-	// REQUIRED; Unique identifier for the agreement.
-	AgreementKey *string
-
-	// REQUIRED; Agreement details.
-	Content *string
-
-	// REQUIRED; Agreement title.
-	Title *string
-
-	// URL where a copy of the agreement details is hosted.
-	URL *string
-}
-
-// TldLegalAgreementCollection - Collection of top-level domain legal agreements.
-type TldLegalAgreementCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*TldLegalAgreement
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
 // TokenStore - The configuration settings of the token store.
 type TokenStore struct {
 	// The configuration settings of the storage of the tokens if blob storage is used.
@@ -9565,48 +8952,6 @@ type TokenStore struct {
 	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The
 	// default is 72 hours.
 	TokenRefreshExtensionHours *float64
-}
-
-// TopLevelDomain - A top level domain object.
-type TopLevelDomain struct {
-	// Kind of resource.
-	Kind *string
-
-	// TopLevelDomain resource specific properties
-	Properties *TopLevelDomainProperties
-
-	// READ-ONLY; Resource Id.
-	ID *string
-
-	// READ-ONLY; Resource Name.
-	Name *string
-
-	// READ-ONLY; Resource type.
-	Type *string
-}
-
-// TopLevelDomainAgreementOption - Options for retrieving the list of top level domain legal agreements.
-type TopLevelDomainAgreementOption struct {
-	// If true, then the list of agreements will include agreements for domain transfer as well; otherwise, false.
-	ForTransfer *bool
-
-	// If true, then the list of agreements will include agreements for domain privacy as well; otherwise, false.
-	IncludePrivacy *bool
-}
-
-// TopLevelDomainCollection - Collection of Top-level domains.
-type TopLevelDomainCollection struct {
-	// REQUIRED; Collection of resources.
-	Value []*TopLevelDomain
-
-	// READ-ONLY; Link to next page of resources.
-	NextLink *string
-}
-
-// TopLevelDomainProperties - TopLevelDomain resource specific properties
-type TopLevelDomainProperties struct {
-	// If true, then the top level domain supports domain privacy; otherwise, false.
-	Privacy *bool
 }
 
 // TriggeredJobHistory - Triggered Web Job History. List of Triggered Web Job Run Information elements.

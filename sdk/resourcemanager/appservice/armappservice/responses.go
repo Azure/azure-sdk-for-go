@@ -7,138 +7,6 @@ package armappservice
 
 import "io"
 
-// CertificateOrdersClientCreateOrUpdateCertificateResponse contains the response from method CertificateOrdersClient.BeginCreateOrUpdateCertificate.
-type CertificateOrdersClientCreateOrUpdateCertificateResponse struct {
-	// Key Vault container ARM resource for a certificate that is purchased through Azure.
-	CertificateResource
-}
-
-// CertificateOrdersClientCreateOrUpdateResponse contains the response from method CertificateOrdersClient.BeginCreateOrUpdate.
-type CertificateOrdersClientCreateOrUpdateResponse struct {
-	// SSL certificate purchase order.
-	CertificateOrder
-}
-
-// CertificateOrdersClientDeleteCertificateResponse contains the response from method CertificateOrdersClient.DeleteCertificate.
-type CertificateOrdersClientDeleteCertificateResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientDeleteResponse contains the response from method CertificateOrdersClient.Delete.
-type CertificateOrdersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientGetCertificateResponse contains the response from method CertificateOrdersClient.GetCertificate.
-type CertificateOrdersClientGetCertificateResponse struct {
-	// Key Vault container ARM resource for a certificate that is purchased through Azure.
-	CertificateResource
-}
-
-// CertificateOrdersClientGetResponse contains the response from method CertificateOrdersClient.Get.
-type CertificateOrdersClientGetResponse struct {
-	// SSL certificate purchase order.
-	CertificateOrder
-}
-
-// CertificateOrdersClientListByResourceGroupResponse contains the response from method CertificateOrdersClient.NewListByResourceGroupPager.
-type CertificateOrdersClientListByResourceGroupResponse struct {
-	// Collection of certificate orders.
-	CertificateOrderCollection
-}
-
-// CertificateOrdersClientListCertificatesResponse contains the response from method CertificateOrdersClient.NewListCertificatesPager.
-type CertificateOrdersClientListCertificatesResponse struct {
-	// Collection of certificate order certificates.
-	CertificateCollection
-}
-
-// CertificateOrdersClientListResponse contains the response from method CertificateOrdersClient.NewListPager.
-type CertificateOrdersClientListResponse struct {
-	// Collection of certificate orders.
-	CertificateOrderCollection
-}
-
-// CertificateOrdersClientReissueResponse contains the response from method CertificateOrdersClient.Reissue.
-type CertificateOrdersClientReissueResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientRenewResponse contains the response from method CertificateOrdersClient.Renew.
-type CertificateOrdersClientRenewResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientResendEmailResponse contains the response from method CertificateOrdersClient.ResendEmail.
-type CertificateOrdersClientResendEmailResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientResendRequestEmailsResponse contains the response from method CertificateOrdersClient.ResendRequestEmails.
-type CertificateOrdersClientResendRequestEmailsResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientRetrieveCertificateActionsResponse contains the response from method CertificateOrdersClient.RetrieveCertificateActions.
-type CertificateOrdersClientRetrieveCertificateActionsResponse struct {
-	// Array of CertificateOrderAction
-	CertificateOrderActionArray []*CertificateOrderAction
-}
-
-// CertificateOrdersClientRetrieveCertificateEmailHistoryResponse contains the response from method CertificateOrdersClient.RetrieveCertificateEmailHistory.
-type CertificateOrdersClientRetrieveCertificateEmailHistoryResponse struct {
-	// Array of CertificateEmail
-	CertificateEmailArray []*CertificateEmail
-}
-
-// CertificateOrdersClientRetrieveSiteSealResponse contains the response from method CertificateOrdersClient.RetrieveSiteSeal.
-type CertificateOrdersClientRetrieveSiteSealResponse struct {
-	// Site seal
-	SiteSeal
-}
-
-// CertificateOrdersClientUpdateCertificateResponse contains the response from method CertificateOrdersClient.UpdateCertificate.
-type CertificateOrdersClientUpdateCertificateResponse struct {
-	// Key Vault container ARM resource for a certificate that is purchased through Azure.
-	CertificateResource
-}
-
-// CertificateOrdersClientUpdateResponse contains the response from method CertificateOrdersClient.Update.
-type CertificateOrdersClientUpdateResponse struct {
-	// SSL certificate purchase order.
-	CertificateOrder
-}
-
-// CertificateOrdersClientValidatePurchaseInformationResponse contains the response from method CertificateOrdersClient.ValidatePurchaseInformation.
-type CertificateOrdersClientValidatePurchaseInformationResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersClientVerifyDomainOwnershipResponse contains the response from method CertificateOrdersClient.VerifyDomainOwnership.
-type CertificateOrdersClientVerifyDomainOwnershipResponse struct {
-	// placeholder for future response values
-}
-
-// CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse contains the response from method
-// CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse.
-type CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse struct {
-	// Class representing Response from Detector
-	DetectorResponse
-}
-
-// CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse contains the response from method
-// CertificateOrdersDiagnosticsClient.NewListAppServiceCertificateOrderDetectorResponsePager.
-type CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse struct {
-	// Collection of detector responses
-	DetectorResponseCollection
-}
-
-// CertificateRegistrationProviderClientListOperationsResponse contains the response from method CertificateRegistrationProviderClient.NewListOperationsPager.
-type CertificateRegistrationProviderClientListOperationsResponse struct {
-	// Collection of Azure resource manager operation metadata.
-	CsmOperationCollection
-}
-
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
 type CertificatesClientCreateOrUpdateResponse struct {
 	// SSL certificate for an app.
@@ -322,105 +190,6 @@ type DiagnosticsClientListSiteDiagnosticCategoriesResponse struct {
 type DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse struct {
 	// Collection of Diagnostic Categories
 	DiagnosticCategoryCollection
-}
-
-// DomainRegistrationProviderClientListOperationsResponse contains the response from method DomainRegistrationProviderClient.NewListOperationsPager.
-type DomainRegistrationProviderClientListOperationsResponse struct {
-	// Collection of Azure resource manager operation metadata.
-	CsmOperationCollection
-}
-
-// DomainsClientCheckAvailabilityResponse contains the response from method DomainsClient.CheckAvailability.
-type DomainsClientCheckAvailabilityResponse struct {
-	// Domain availability check result.
-	DomainAvailabilityCheckResult
-}
-
-// DomainsClientCreateOrUpdateOwnershipIdentifierResponse contains the response from method DomainsClient.CreateOrUpdateOwnershipIdentifier.
-type DomainsClientCreateOrUpdateOwnershipIdentifierResponse struct {
-	// Domain ownership Identifier.
-	DomainOwnershipIdentifier
-}
-
-// DomainsClientCreateOrUpdateResponse contains the response from method DomainsClient.BeginCreateOrUpdate.
-type DomainsClientCreateOrUpdateResponse struct {
-	// Information about a domain.
-	Domain
-}
-
-// DomainsClientDeleteOwnershipIdentifierResponse contains the response from method DomainsClient.DeleteOwnershipIdentifier.
-type DomainsClientDeleteOwnershipIdentifierResponse struct {
-	// placeholder for future response values
-}
-
-// DomainsClientDeleteResponse contains the response from method DomainsClient.Delete.
-type DomainsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DomainsClientGetControlCenterSsoRequestResponse contains the response from method DomainsClient.GetControlCenterSsoRequest.
-type DomainsClientGetControlCenterSsoRequestResponse struct {
-	// Single sign-on request information for domain management.
-	DomainControlCenterSsoRequest
-}
-
-// DomainsClientGetOwnershipIdentifierResponse contains the response from method DomainsClient.GetOwnershipIdentifier.
-type DomainsClientGetOwnershipIdentifierResponse struct {
-	// Domain ownership Identifier.
-	DomainOwnershipIdentifier
-}
-
-// DomainsClientGetResponse contains the response from method DomainsClient.Get.
-type DomainsClientGetResponse struct {
-	// Information about a domain.
-	Domain
-}
-
-// DomainsClientListByResourceGroupResponse contains the response from method DomainsClient.NewListByResourceGroupPager.
-type DomainsClientListByResourceGroupResponse struct {
-	// Collection of domains.
-	DomainCollection
-}
-
-// DomainsClientListOwnershipIdentifiersResponse contains the response from method DomainsClient.NewListOwnershipIdentifiersPager.
-type DomainsClientListOwnershipIdentifiersResponse struct {
-	// Collection of domain ownership identifiers.
-	DomainOwnershipIdentifierCollection
-}
-
-// DomainsClientListRecommendationsResponse contains the response from method DomainsClient.NewListRecommendationsPager.
-type DomainsClientListRecommendationsResponse struct {
-	// Collection of domain name identifiers.
-	NameIdentifierCollection
-}
-
-// DomainsClientListResponse contains the response from method DomainsClient.NewListPager.
-type DomainsClientListResponse struct {
-	// Collection of domains.
-	DomainCollection
-}
-
-// DomainsClientRenewResponse contains the response from method DomainsClient.Renew.
-type DomainsClientRenewResponse struct {
-	// placeholder for future response values
-}
-
-// DomainsClientTransferOutResponse contains the response from method DomainsClient.TransferOut.
-type DomainsClientTransferOutResponse struct {
-	// Information about a domain.
-	Domain
-}
-
-// DomainsClientUpdateOwnershipIdentifierResponse contains the response from method DomainsClient.UpdateOwnershipIdentifier.
-type DomainsClientUpdateOwnershipIdentifierResponse struct {
-	// Domain ownership Identifier.
-	DomainOwnershipIdentifier
-}
-
-// DomainsClientUpdateResponse contains the response from method DomainsClient.Update.
-type DomainsClientUpdateResponse struct {
-	// Information about a domain.
-	Domain
 }
 
 // EnvironmentsClientApproveOrRejectPrivateEndpointConnectionResponse contains the response from method EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection.
@@ -764,6 +533,119 @@ type KubeEnvironmentsClientUpdateResponse struct {
 	KubeEnvironment
 }
 
+// ManagementClientCheckNameAvailabilityResponse contains the response from method ManagementClient.CheckNameAvailability.
+type ManagementClientCheckNameAvailabilityResponse struct {
+	// Information regarding availability of a resource name.
+	ResourceNameAvailability
+}
+
+// ManagementClientGetPublishingUserResponse contains the response from method ManagementClient.GetPublishingUser.
+type ManagementClientGetPublishingUserResponse struct {
+	// User credentials used for publishing activity.
+	User
+}
+
+// ManagementClientGetSourceControlResponse contains the response from method ManagementClient.GetSourceControl.
+type ManagementClientGetSourceControlResponse struct {
+	// The source control OAuth token.
+	SourceControl
+}
+
+// ManagementClientGetSubscriptionDeploymentLocationsResponse contains the response from method ManagementClient.GetSubscriptionDeploymentLocations.
+type ManagementClientGetSubscriptionDeploymentLocationsResponse struct {
+	// List of available locations (regions or App Service Environments) for
+	// deployment of App Service resources.
+	DeploymentLocations
+}
+
+// ManagementClientListAseRegionsResponse contains the response from method ManagementClient.NewListAseRegionsPager.
+type ManagementClientListAseRegionsResponse struct {
+	// Collection of ASE regions.
+	AseRegionCollection
+}
+
+// ManagementClientListBillingMetersResponse contains the response from method ManagementClient.NewListBillingMetersPager.
+type ManagementClientListBillingMetersResponse struct {
+	// Collection of Billing Meters
+	BillingMeterCollection
+}
+
+// ManagementClientListCustomHostNameSitesResponse contains the response from method ManagementClient.NewListCustomHostNameSitesPager.
+type ManagementClientListCustomHostNameSitesResponse struct {
+	// Collection of custom hostname sites
+	CustomHostnameSitesCollection
+}
+
+// ManagementClientListGeoRegionsResponse contains the response from method ManagementClient.NewListGeoRegionsPager.
+type ManagementClientListGeoRegionsResponse struct {
+	// Collection of geographical regions.
+	GeoRegionCollection
+}
+
+// ManagementClientListPremierAddOnOffersResponse contains the response from method ManagementClient.NewListPremierAddOnOffersPager.
+type ManagementClientListPremierAddOnOffersResponse struct {
+	// Collection of premier add-on offers.
+	PremierAddOnOfferCollection
+}
+
+// ManagementClientListSKUsResponse contains the response from method ManagementClient.ListSKUs.
+type ManagementClientListSKUsResponse struct {
+	// Collection of SKU information.
+	SKUInfos
+}
+
+// ManagementClientListSiteIdentifiersAssignedToHostNameResponse contains the response from method ManagementClient.NewListSiteIdentifiersAssignedToHostNamePager.
+type ManagementClientListSiteIdentifiersAssignedToHostNameResponse struct {
+	// Collection of identifiers.
+	IdentifierCollection
+}
+
+// ManagementClientListSourceControlsResponse contains the response from method ManagementClient.NewListSourceControlsPager.
+type ManagementClientListSourceControlsResponse struct {
+	// Collection of source controls.
+	SourceControlCollection
+}
+
+// ManagementClientMoveResponse contains the response from method ManagementClient.Move.
+type ManagementClientMoveResponse struct {
+	// placeholder for future response values
+}
+
+// ManagementClientRegionalCheckNameAvailabilityResponse contains the response from method ManagementClient.RegionalCheckNameAvailability.
+type ManagementClientRegionalCheckNameAvailabilityResponse struct {
+	// Information regarding availability of a resource name for DNL apps with regionalized default hostnames.
+	DnlResourceNameAvailability
+}
+
+// ManagementClientUpdatePublishingUserResponse contains the response from method ManagementClient.UpdatePublishingUser.
+type ManagementClientUpdatePublishingUserResponse struct {
+	// User credentials used for publishing activity.
+	User
+}
+
+// ManagementClientUpdateSourceControlResponse contains the response from method ManagementClient.UpdateSourceControl.
+type ManagementClientUpdateSourceControlResponse struct {
+	// The source control OAuth token.
+	SourceControl
+}
+
+// ManagementClientValidateMoveResponse contains the response from method ManagementClient.ValidateMove.
+type ManagementClientValidateMoveResponse struct {
+	// placeholder for future response values
+}
+
+// ManagementClientValidateResponse contains the response from method ManagementClient.Validate.
+type ManagementClientValidateResponse struct {
+	// Describes the result of resource validation.
+	ValidateResponse
+}
+
+// ManagementClientVerifyHostingEnvironmentVnetResponse contains the response from method ManagementClient.VerifyHostingEnvironmentVnet.
+type ManagementClientVerifyHostingEnvironmentVnetResponse struct {
+	// A class that describes the reason for a validation failure.
+	VnetValidationFailureDetails
+}
+
 // PlansClientCreateOrUpdateResponse contains the response from method PlansClient.BeginCreateOrUpdate.
 type PlansClientCreateOrUpdateResponse struct {
 	// App Service plan.
@@ -813,6 +695,18 @@ type PlansClientGetResponse struct {
 type PlansClientGetRouteForVnetResponse struct {
 	// Array of VnetRoute
 	VnetRouteArray []*VnetRoute
+}
+
+// PlansClientGetServerFarmInstanceDetailsResponse contains the response from method PlansClient.GetServerFarmInstanceDetails.
+type PlansClientGetServerFarmInstanceDetailsResponse struct {
+	// Represents instance details for an app service plan.
+	ServerFarmInstanceDetails
+}
+
+// PlansClientGetServerFarmRdpPasswordResponse contains the response from method PlansClient.GetServerFarmRdpPassword.
+type PlansClientGetServerFarmRdpPasswordResponse struct {
+	// Server Farm RDP connection details.
+	ServerFarmRdpDetails
 }
 
 // PlansClientGetServerFarmSKUsResponse contains the response from method PlansClient.GetServerFarmSKUs.
@@ -896,6 +790,12 @@ type PlansClientListWebAppsResponse struct {
 // PlansClientRebootWorkerResponse contains the response from method PlansClient.RebootWorker.
 type PlansClientRebootWorkerResponse struct {
 	// placeholder for future response values
+}
+
+// PlansClientRecycleManagedInstanceWorkerResponse contains the response from method PlansClient.RecycleManagedInstanceWorker.
+type PlansClientRecycleManagedInstanceWorkerResponse struct {
+	// An operation on a resource.
+	Operation
 }
 
 // PlansClientRestartWebAppsResponse contains the response from method PlansClient.RestartWebApps.
@@ -1569,24 +1469,6 @@ type StaticSitesClientValidateBackendResponse struct {
 // StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse contains the response from method StaticSitesClient.BeginValidateCustomDomainCanBeAddedToStaticSite.
 type StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse struct {
 	// placeholder for future response values
-}
-
-// TopLevelDomainsClientGetResponse contains the response from method TopLevelDomainsClient.Get.
-type TopLevelDomainsClientGetResponse struct {
-	// A top level domain object.
-	TopLevelDomain
-}
-
-// TopLevelDomainsClientListAgreementsResponse contains the response from method TopLevelDomainsClient.NewListAgreementsPager.
-type TopLevelDomainsClientListAgreementsResponse struct {
-	// Collection of top-level domain legal agreements.
-	TldLegalAgreementCollection
-}
-
-// TopLevelDomainsClientListResponse contains the response from method TopLevelDomainsClient.NewListPager.
-type TopLevelDomainsClientListResponse struct {
-	// Collection of Top-level domains.
-	TopLevelDomainCollection
 }
 
 // WebAppsClientAddPremierAddOnResponse contains the response from method WebAppsClient.AddPremierAddOn.
@@ -3983,119 +3865,6 @@ type WebAppsClientUpdateVnetConnectionResponse struct {
 type WebAppsClientUpdateVnetConnectionSlotResponse struct {
 	// Virtual Network information ARM resource.
 	VnetInfoResource
-}
-
-// WebSiteManagementClientCheckNameAvailabilityResponse contains the response from method WebSiteManagementClient.CheckNameAvailability.
-type WebSiteManagementClientCheckNameAvailabilityResponse struct {
-	// Information regarding availability of a resource name.
-	ResourceNameAvailability
-}
-
-// WebSiteManagementClientGetPublishingUserResponse contains the response from method WebSiteManagementClient.GetPublishingUser.
-type WebSiteManagementClientGetPublishingUserResponse struct {
-	// User credentials used for publishing activity.
-	User
-}
-
-// WebSiteManagementClientGetSourceControlResponse contains the response from method WebSiteManagementClient.GetSourceControl.
-type WebSiteManagementClientGetSourceControlResponse struct {
-	// The source control OAuth token.
-	SourceControl
-}
-
-// WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse contains the response from method WebSiteManagementClient.GetSubscriptionDeploymentLocations.
-type WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse struct {
-	// List of available locations (regions or App Service Environments) for
-	// deployment of App Service resources.
-	DeploymentLocations
-}
-
-// WebSiteManagementClientListAseRegionsResponse contains the response from method WebSiteManagementClient.NewListAseRegionsPager.
-type WebSiteManagementClientListAseRegionsResponse struct {
-	// Collection of ASE regions.
-	AseRegionCollection
-}
-
-// WebSiteManagementClientListBillingMetersResponse contains the response from method WebSiteManagementClient.NewListBillingMetersPager.
-type WebSiteManagementClientListBillingMetersResponse struct {
-	// Collection of Billing Meters
-	BillingMeterCollection
-}
-
-// WebSiteManagementClientListCustomHostNameSitesResponse contains the response from method WebSiteManagementClient.NewListCustomHostNameSitesPager.
-type WebSiteManagementClientListCustomHostNameSitesResponse struct {
-	// Collection of custom hostname sites
-	CustomHostnameSitesCollection
-}
-
-// WebSiteManagementClientListGeoRegionsResponse contains the response from method WebSiteManagementClient.NewListGeoRegionsPager.
-type WebSiteManagementClientListGeoRegionsResponse struct {
-	// Collection of geographical regions.
-	GeoRegionCollection
-}
-
-// WebSiteManagementClientListPremierAddOnOffersResponse contains the response from method WebSiteManagementClient.NewListPremierAddOnOffersPager.
-type WebSiteManagementClientListPremierAddOnOffersResponse struct {
-	// Collection of premier add-on offers.
-	PremierAddOnOfferCollection
-}
-
-// WebSiteManagementClientListSKUsResponse contains the response from method WebSiteManagementClient.ListSKUs.
-type WebSiteManagementClientListSKUsResponse struct {
-	// Collection of SKU information.
-	SKUInfos
-}
-
-// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse contains the response from method WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager.
-type WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse struct {
-	// Collection of identifiers.
-	IdentifierCollection
-}
-
-// WebSiteManagementClientListSourceControlsResponse contains the response from method WebSiteManagementClient.NewListSourceControlsPager.
-type WebSiteManagementClientListSourceControlsResponse struct {
-	// Collection of source controls.
-	SourceControlCollection
-}
-
-// WebSiteManagementClientMoveResponse contains the response from method WebSiteManagementClient.Move.
-type WebSiteManagementClientMoveResponse struct {
-	// placeholder for future response values
-}
-
-// WebSiteManagementClientRegionalCheckNameAvailabilityResponse contains the response from method WebSiteManagementClient.RegionalCheckNameAvailability.
-type WebSiteManagementClientRegionalCheckNameAvailabilityResponse struct {
-	// Information regarding availability of a resource name for DNL apps with regionalized default hostnames.
-	DnlResourceNameAvailability
-}
-
-// WebSiteManagementClientUpdatePublishingUserResponse contains the response from method WebSiteManagementClient.UpdatePublishingUser.
-type WebSiteManagementClientUpdatePublishingUserResponse struct {
-	// User credentials used for publishing activity.
-	User
-}
-
-// WebSiteManagementClientUpdateSourceControlResponse contains the response from method WebSiteManagementClient.UpdateSourceControl.
-type WebSiteManagementClientUpdateSourceControlResponse struct {
-	// The source control OAuth token.
-	SourceControl
-}
-
-// WebSiteManagementClientValidateMoveResponse contains the response from method WebSiteManagementClient.ValidateMove.
-type WebSiteManagementClientValidateMoveResponse struct {
-	// placeholder for future response values
-}
-
-// WebSiteManagementClientValidateResponse contains the response from method WebSiteManagementClient.Validate.
-type WebSiteManagementClientValidateResponse struct {
-	// Describes the result of resource validation.
-	ValidateResponse
-}
-
-// WebSiteManagementClientVerifyHostingEnvironmentVnetResponse contains the response from method WebSiteManagementClient.VerifyHostingEnvironmentVnet.
-type WebSiteManagementClientVerifyHostingEnvironmentVnetResponse struct {
-	// A class that describes the reason for a validation failure.
-	VnetValidationFailureDetails
 }
 
 // WorkflowRunActionRepetitionsClientGetResponse contains the response from method WorkflowRunActionRepetitionsClient.Get.

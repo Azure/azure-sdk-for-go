@@ -1,5 +1,177 @@
 # Release History
 
+## 6.0.0 (2025-11-12)
+### Breaking Changes
+
+- Enum `CertificateOrderActionType` has been removed
+- Enum `CertificateOrderStatus` has been removed
+- Enum `CertificateProductType` has been removed
+- Enum `DNSType` has been removed
+- Enum `DomainStatus` has been removed
+- Enum `DomainType` has been removed
+- Enum `ResourceNotRenewableReason` has been removed
+- Function `NewCertificateOrdersClient` has been removed
+- Function `*CertificateOrdersClient.BeginCreateOrUpdate` has been removed
+- Function `*CertificateOrdersClient.BeginCreateOrUpdateCertificate` has been removed
+- Function `*CertificateOrdersClient.Delete` has been removed
+- Function `*CertificateOrdersClient.DeleteCertificate` has been removed
+- Function `*CertificateOrdersClient.Get` has been removed
+- Function `*CertificateOrdersClient.GetCertificate` has been removed
+- Function `*CertificateOrdersClient.NewListByResourceGroupPager` has been removed
+- Function `*CertificateOrdersClient.NewListCertificatesPager` has been removed
+- Function `*CertificateOrdersClient.NewListPager` has been removed
+- Function `*CertificateOrdersClient.Reissue` has been removed
+- Function `*CertificateOrdersClient.Renew` has been removed
+- Function `*CertificateOrdersClient.ResendEmail` has been removed
+- Function `*CertificateOrdersClient.ResendRequestEmails` has been removed
+- Function `*CertificateOrdersClient.RetrieveCertificateActions` has been removed
+- Function `*CertificateOrdersClient.RetrieveCertificateEmailHistory` has been removed
+- Function `*CertificateOrdersClient.RetrieveSiteSeal` has been removed
+- Function `*CertificateOrdersClient.Update` has been removed
+- Function `*CertificateOrdersClient.UpdateCertificate` has been removed
+- Function `*CertificateOrdersClient.ValidatePurchaseInformation` has been removed
+- Function `*CertificateOrdersClient.VerifyDomainOwnership` has been removed
+- Function `NewCertificateOrdersDiagnosticsClient` has been removed
+- Function `*CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse` has been removed
+- Function `*CertificateOrdersDiagnosticsClient.NewListAppServiceCertificateOrderDetectorResponsePager` has been removed
+- Function `NewCertificateRegistrationProviderClient` has been removed
+- Function `*CertificateRegistrationProviderClient.NewListOperationsPager` has been removed
+- Function `*ClientFactory.NewCertificateOrdersClient` has been removed
+- Function `*ClientFactory.NewCertificateOrdersDiagnosticsClient` has been removed
+- Function `*ClientFactory.NewCertificateRegistrationProviderClient` has been removed
+- Function `*ClientFactory.NewDomainRegistrationProviderClient` has been removed
+- Function `*ClientFactory.NewDomainsClient` has been removed
+- Function `*ClientFactory.NewTopLevelDomainsClient` has been removed
+- Function `*ClientFactory.NewWebSiteManagementClient` has been removed
+- Function `NewDomainRegistrationProviderClient` has been removed
+- Function `*DomainRegistrationProviderClient.NewListOperationsPager` has been removed
+- Function `NewDomainsClient` has been removed
+- Function `*DomainsClient.CheckAvailability` has been removed
+- Function `*DomainsClient.BeginCreateOrUpdate` has been removed
+- Function `*DomainsClient.CreateOrUpdateOwnershipIdentifier` has been removed
+- Function `*DomainsClient.Delete` has been removed
+- Function `*DomainsClient.DeleteOwnershipIdentifier` has been removed
+- Function `*DomainsClient.Get` has been removed
+- Function `*DomainsClient.GetControlCenterSsoRequest` has been removed
+- Function `*DomainsClient.GetOwnershipIdentifier` has been removed
+- Function `*DomainsClient.NewListByResourceGroupPager` has been removed
+- Function `*DomainsClient.NewListOwnershipIdentifiersPager` has been removed
+- Function `*DomainsClient.NewListPager` has been removed
+- Function `*DomainsClient.NewListRecommendationsPager` has been removed
+- Function `*DomainsClient.Renew` has been removed
+- Function `*DomainsClient.TransferOut` has been removed
+- Function `*DomainsClient.Update` has been removed
+- Function `*DomainsClient.UpdateOwnershipIdentifier` has been removed
+- Function `NewTopLevelDomainsClient` has been removed
+- Function `*TopLevelDomainsClient.Get` has been removed
+- Function `*TopLevelDomainsClient.NewListAgreementsPager` has been removed
+- Function `*TopLevelDomainsClient.NewListPager` has been removed
+- Function `NewWebSiteManagementClient` has been removed
+- Function `*WebSiteManagementClient.CheckNameAvailability` has been removed
+- Function `*WebSiteManagementClient.GetPublishingUser` has been removed
+- Function `*WebSiteManagementClient.GetSourceControl` has been removed
+- Function `*WebSiteManagementClient.GetSubscriptionDeploymentLocations` has been removed
+- Function `*WebSiteManagementClient.NewListAseRegionsPager` has been removed
+- Function `*WebSiteManagementClient.NewListBillingMetersPager` has been removed
+- Function `*WebSiteManagementClient.NewListCustomHostNameSitesPager` has been removed
+- Function `*WebSiteManagementClient.NewListGeoRegionsPager` has been removed
+- Function `*WebSiteManagementClient.NewListPremierAddOnOffersPager` has been removed
+- Function `*WebSiteManagementClient.ListSKUs` has been removed
+- Function `*WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager` has been removed
+- Function `*WebSiteManagementClient.NewListSourceControlsPager` has been removed
+- Function `*WebSiteManagementClient.Move` has been removed
+- Function `*WebSiteManagementClient.RegionalCheckNameAvailability` has been removed
+- Function `*WebSiteManagementClient.UpdatePublishingUser` has been removed
+- Function `*WebSiteManagementClient.UpdateSourceControl` has been removed
+- Function `*WebSiteManagementClient.Validate` has been removed
+- Function `*WebSiteManagementClient.ValidateMove` has been removed
+- Function `*WebSiteManagementClient.VerifyHostingEnvironmentVnet` has been removed
+- Struct `Address` has been removed
+- Struct `Certificate` has been removed
+- Struct `CertificateCollection` has been removed
+- Struct `CertificateDetails` has been removed
+- Struct `CertificateEmail` has been removed
+- Struct `CertificateOrder` has been removed
+- Struct `CertificateOrderAction` has been removed
+- Struct `CertificateOrderCollection` has been removed
+- Struct `CertificateOrderContact` has been removed
+- Struct `CertificateOrderPatchResource` has been removed
+- Struct `CertificateOrderPatchResourceProperties` has been removed
+- Struct `CertificateOrderProperties` has been removed
+- Struct `CertificatePatchResource` has been removed
+- Struct `CertificateResource` has been removed
+- Struct `Contact` has been removed
+- Struct `Domain` has been removed
+- Struct `DomainAvailabilityCheckResult` has been removed
+- Struct `DomainCollection` has been removed
+- Struct `DomainControlCenterSsoRequest` has been removed
+- Struct `DomainOwnershipIdentifier` has been removed
+- Struct `DomainOwnershipIdentifierCollection` has been removed
+- Struct `DomainOwnershipIdentifierProperties` has been removed
+- Struct `DomainPatchResource` has been removed
+- Struct `DomainPatchResourceProperties` has been removed
+- Struct `DomainProperties` has been removed
+- Struct `DomainPurchaseConsent` has been removed
+- Struct `DomainRecommendationSearchParameters` has been removed
+- Struct `HostName` has been removed
+- Struct `NameIdentifierCollection` has been removed
+- Struct `ReissueCertificateOrderRequest` has been removed
+- Struct `ReissueCertificateOrderRequestProperties` has been removed
+- Struct `RenewCertificateOrderRequest` has been removed
+- Struct `RenewCertificateOrderRequestProperties` has been removed
+- Struct `SiteSeal` has been removed
+- Struct `SiteSealRequest` has been removed
+- Struct `TldLegalAgreement` has been removed
+- Struct `TldLegalAgreementCollection` has been removed
+- Struct `TopLevelDomain` has been removed
+- Struct `TopLevelDomainAgreementOption` has been removed
+- Struct `TopLevelDomainCollection` has been removed
+- Struct `TopLevelDomainProperties` has been removed
+
+### Features Added
+
+- New enum type `InstallScriptType` with values `InstallScriptTypePlatformStorage`, `InstallScriptTypeRemoteAzureBlob`
+- New enum type `RegistryAdapterType` with values `RegistryAdapterTypeBinary`, `RegistryAdapterTypeDWord`, `RegistryAdapterTypeExpandString`, `RegistryAdapterTypeMultiString`, `RegistryAdapterTypeQWord`, `RegistryAdapterTypeString`
+- New enum type `StorageMountType` with values `StorageMountTypeAzureFiles`, `StorageMountTypeFileShare`, `StorageMountTypeLocalStorage`
+- New function `*ClientFactory.NewManagementClient() *ManagementClient`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagementClient, error)`
+- New function `*ManagementClient.CheckNameAvailability(context.Context, ResourceNameAvailabilityRequest, *ManagementClientCheckNameAvailabilityOptions) (ManagementClientCheckNameAvailabilityResponse, error)`
+- New function `*ManagementClient.GetPublishingUser(context.Context, *ManagementClientGetPublishingUserOptions) (ManagementClientGetPublishingUserResponse, error)`
+- New function `*ManagementClient.GetSourceControl(context.Context, string, *ManagementClientGetSourceControlOptions) (ManagementClientGetSourceControlResponse, error)`
+- New function `*ManagementClient.GetSubscriptionDeploymentLocations(context.Context, *ManagementClientGetSubscriptionDeploymentLocationsOptions) (ManagementClientGetSubscriptionDeploymentLocationsResponse, error)`
+- New function `*ManagementClient.NewListAseRegionsPager(*ManagementClientListAseRegionsOptions) *runtime.Pager[ManagementClientListAseRegionsResponse]`
+- New function `*ManagementClient.NewListBillingMetersPager(*ManagementClientListBillingMetersOptions) *runtime.Pager[ManagementClientListBillingMetersResponse]`
+- New function `*ManagementClient.NewListCustomHostNameSitesPager(*ManagementClientListCustomHostNameSitesOptions) *runtime.Pager[ManagementClientListCustomHostNameSitesResponse]`
+- New function `*ManagementClient.NewListGeoRegionsPager(*ManagementClientListGeoRegionsOptions) *runtime.Pager[ManagementClientListGeoRegionsResponse]`
+- New function `*ManagementClient.NewListPremierAddOnOffersPager(*ManagementClientListPremierAddOnOffersOptions) *runtime.Pager[ManagementClientListPremierAddOnOffersResponse]`
+- New function `*ManagementClient.ListSKUs(context.Context, *ManagementClientListSKUsOptions) (ManagementClientListSKUsResponse, error)`
+- New function `*ManagementClient.NewListSiteIdentifiersAssignedToHostNamePager(NameIdentifier, *ManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[ManagementClientListSiteIdentifiersAssignedToHostNameResponse]`
+- New function `*ManagementClient.NewListSourceControlsPager(*ManagementClientListSourceControlsOptions) *runtime.Pager[ManagementClientListSourceControlsResponse]`
+- New function `*ManagementClient.Move(context.Context, string, CsmMoveResourceEnvelope, *ManagementClientMoveOptions) (ManagementClientMoveResponse, error)`
+- New function `*ManagementClient.RegionalCheckNameAvailability(context.Context, string, DnlResourceNameAvailabilityRequest, *ManagementClientRegionalCheckNameAvailabilityOptions) (ManagementClientRegionalCheckNameAvailabilityResponse, error)`
+- New function `*ManagementClient.UpdatePublishingUser(context.Context, User, *ManagementClientUpdatePublishingUserOptions) (ManagementClientUpdatePublishingUserResponse, error)`
+- New function `*ManagementClient.UpdateSourceControl(context.Context, string, SourceControl, *ManagementClientUpdateSourceControlOptions) (ManagementClientUpdateSourceControlResponse, error)`
+- New function `*ManagementClient.Validate(context.Context, string, ValidateRequest, *ManagementClientValidateOptions) (ManagementClientValidateResponse, error)`
+- New function `*ManagementClient.ValidateMove(context.Context, string, CsmMoveResourceEnvelope, *ManagementClientValidateMoveOptions) (ManagementClientValidateMoveResponse, error)`
+- New function `*ManagementClient.VerifyHostingEnvironmentVnet(context.Context, VnetParameters, *ManagementClientVerifyHostingEnvironmentVnetOptions) (ManagementClientVerifyHostingEnvironmentVnetResponse, error)`
+- New function `*PlansClient.GetServerFarmInstanceDetails(context.Context, string, string, *PlansClientGetServerFarmInstanceDetailsOptions) (PlansClientGetServerFarmInstanceDetailsResponse, error)`
+- New function `*PlansClient.GetServerFarmRdpPassword(context.Context, string, string, *PlansClientGetServerFarmRdpPasswordOptions) (PlansClientGetServerFarmRdpPasswordResponse, error)`
+- New function `*PlansClient.RecycleManagedInstanceWorker(context.Context, string, string, string, *PlansClientRecycleManagedInstanceWorkerOptions) (PlansClientRecycleManagedInstanceWorkerResponse, error)`
+- New struct `DefaultIdentity`
+- New struct `InstallScript`
+- New struct `InstallScriptSource`
+- New struct `KeyVaultReferenceWithStatus`
+- New struct `RegistryAdapter`
+- New struct `ServerFarmInstance`
+- New struct `ServerFarmInstanceDetails`
+- New struct `ServerFarmNetworkSettings`
+- New struct `ServerFarmRdpDetails`
+- New struct `StorageMount`
+- New field `Identity` in struct `Plan`
+- New field `Identity` in struct `PlanPatchResource`
+- New field `InstallScripts`, `IsCustomMode`, `Network`, `PlanDefaultIdentity`, `RdpEnabled`, `RegistryAdapters`, `StorageMounts` in struct `PlanProperties`
+
+
 ## 5.0.0 (2025-06-12)
 ### Breaking Changes
 

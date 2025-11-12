@@ -17,61 +17,62 @@ import (
 	"strings"
 )
 
-// TrustedAccessRolesClient contains the methods for the TrustedAccessRoles group.
-// Don't use this type directly, use NewTrustedAccessRolesClient() instead.
-type TrustedAccessRolesClient struct {
+// Client contains the methods for the ContainerService group.
+// Don't use this type directly, use NewClient() instead.
+type Client struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewTrustedAccessRolesClient creates a new instance of TrustedAccessRolesClient with the specified values.
+// NewClient creates a new instance of Client with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrustedAccessRolesClient, error) {
+func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &TrustedAccessRolesClient{
+	client := &Client{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListPager - List supported trusted access roles.
+// NewListNodeImageVersionsPager - Only returns the latest version of each node image. For example there may be an AKSUbuntu-1804gen2containerd-2024.01.26,
+// but only AKSUbuntu-1804gen2containerd-2024.02.02 is visible in this list.
 //
 // Generated from API version 2025-09-02-preview
 //   - location - The name of the Azure region.
-//   - options - TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager
+//   - options - ClientListNodeImageVersionsOptions contains the optional parameters for the Client.NewListNodeImageVersionsPager
 //     method.
-func (client *TrustedAccessRolesClient) NewListPager(location string, options *TrustedAccessRolesClientListOptions) *runtime.Pager[TrustedAccessRolesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TrustedAccessRolesClientListResponse]{
-		More: func(page TrustedAccessRolesClientListResponse) bool {
+func (client *Client) NewListNodeImageVersionsPager(location string, options *ClientListNodeImageVersionsOptions) *runtime.Pager[ClientListNodeImageVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ClientListNodeImageVersionsResponse]{
+		More: func(page ClientListNodeImageVersionsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *TrustedAccessRolesClientListResponse) (TrustedAccessRolesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TrustedAccessRolesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ClientListNodeImageVersionsResponse) (ClientListNodeImageVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "Client.NewListNodeImageVersionsPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, options)
+				return client.listNodeImageVersionsCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return TrustedAccessRolesClientListResponse{}, err
+				return ClientListNodeImageVersionsResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			return client.listNodeImageVersionsHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listCreateRequest creates the List request.
-func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, location string, _ *TrustedAccessRolesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/trustedAccessRoles"
+// listNodeImageVersionsCreateRequest creates the ListNodeImageVersions request.
+func (client *Client) listNodeImageVersionsCreateRequest(ctx context.Context, location string, _ *ClientListNodeImageVersionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/nodeImageVersions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -91,11 +92,11 @@ func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, l
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *TrustedAccessRolesClient) listHandleResponse(resp *http.Response) (TrustedAccessRolesClientListResponse, error) {
-	result := TrustedAccessRolesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TrustedAccessRoleListResult); err != nil {
-		return TrustedAccessRolesClientListResponse{}, err
+// listNodeImageVersionsHandleResponse handles the ListNodeImageVersions response.
+func (client *Client) listNodeImageVersionsHandleResponse(resp *http.Response) (ClientListNodeImageVersionsResponse, error) {
+	result := ClientListNodeImageVersionsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NodeImageVersionsListResult); err != nil {
+		return ClientListNodeImageVersionsResponse{}, err
 	}
 	return result, nil
 }

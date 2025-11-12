@@ -19,46 +19,46 @@ import (
 	"regexp"
 )
 
-// RaiPoliciesServer is a fake server for instances of the armcognitiveservices.RaiPoliciesClient type.
-type RaiPoliciesServer struct {
-	// CreateOrUpdate is the fake for method RaiPoliciesClient.CreateOrUpdate
+// RaiTopicsServer is a fake server for instances of the armcognitiveservices.RaiTopicsClient type.
+type RaiTopicsServer struct {
+	// CreateOrUpdate is the fake for method RaiTopicsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy armcognitiveservices.RaiPolicy, options *armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, raiTopic armcognitiveservices.RaiTopic, options *armcognitiveservices.RaiTopicsClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.RaiTopicsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method RaiPoliciesClient.BeginDelete
+	// BeginDelete is the fake for method RaiTopicsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *armcognitiveservices.RaiPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.RaiPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *armcognitiveservices.RaiTopicsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.RaiTopicsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method RaiPoliciesClient.Get
+	// Get is the fake for method RaiTopicsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *armcognitiveservices.RaiPoliciesClientGetOptions) (resp azfake.Responder[armcognitiveservices.RaiPoliciesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *armcognitiveservices.RaiTopicsClientGetOptions) (resp azfake.Responder[armcognitiveservices.RaiTopicsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method RaiPoliciesClient.NewListPager
+	// NewListPager is the fake for method RaiTopicsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.RaiPoliciesClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.RaiPoliciesClientListResponse])
+	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.RaiTopicsClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.RaiTopicsClientListResponse])
 }
 
-// NewRaiPoliciesServerTransport creates a new instance of RaiPoliciesServerTransport with the provided implementation.
-// The returned RaiPoliciesServerTransport instance is connected to an instance of armcognitiveservices.RaiPoliciesClient via the
+// NewRaiTopicsServerTransport creates a new instance of RaiTopicsServerTransport with the provided implementation.
+// The returned RaiTopicsServerTransport instance is connected to an instance of armcognitiveservices.RaiTopicsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewRaiPoliciesServerTransport(srv *RaiPoliciesServer) *RaiPoliciesServerTransport {
-	return &RaiPoliciesServerTransport{
+func NewRaiTopicsServerTransport(srv *RaiTopicsServer) *RaiTopicsServerTransport {
+	return &RaiTopicsServerTransport{
 		srv:          srv,
-		beginDelete:  newTracker[azfake.PollerResponder[armcognitiveservices.RaiPoliciesClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.RaiPoliciesClientListResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcognitiveservices.RaiTopicsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.RaiTopicsClientListResponse]](),
 	}
 }
 
-// RaiPoliciesServerTransport connects instances of armcognitiveservices.RaiPoliciesClient to instances of RaiPoliciesServer.
-// Don't use this type directly, use NewRaiPoliciesServerTransport instead.
-type RaiPoliciesServerTransport struct {
-	srv          *RaiPoliciesServer
-	beginDelete  *tracker[azfake.PollerResponder[armcognitiveservices.RaiPoliciesClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.RaiPoliciesClientListResponse]]
+// RaiTopicsServerTransport connects instances of armcognitiveservices.RaiTopicsClient to instances of RaiTopicsServer.
+// Don't use this type directly, use NewRaiTopicsServerTransport instead.
+type RaiTopicsServerTransport struct {
+	srv          *RaiTopicsServer
+	beginDelete  *tracker[azfake.PollerResponder[armcognitiveservices.RaiTopicsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.RaiTopicsClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for RaiPoliciesServerTransport.
-func (r *RaiPoliciesServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for RaiTopicsServerTransport.
+func (r *RaiTopicsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -68,25 +68,25 @@ func (r *RaiPoliciesServerTransport) Do(req *http.Request) (*http.Response, erro
 	return r.dispatchToMethodFake(req, method)
 }
 
-func (r *RaiPoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (r *RaiTopicsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if raiPoliciesServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = raiPoliciesServerTransportInterceptor.Do(req)
+		if raiTopicsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = raiTopicsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "RaiPoliciesClient.CreateOrUpdate":
+			case "RaiTopicsClient.CreateOrUpdate":
 				res.resp, res.err = r.dispatchCreateOrUpdate(req)
-			case "RaiPoliciesClient.BeginDelete":
+			case "RaiTopicsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
-			case "RaiPoliciesClient.Get":
+			case "RaiTopicsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "RaiPoliciesClient.NewListPager":
+			case "RaiTopicsClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -107,17 +107,17 @@ func (r *RaiPoliciesServerTransport) dispatchToMethodFake(req *http.Request, met
 	}
 }
 
-func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (r *RaiTopicsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if r.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raiPolicies/(?P<raiPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raitopics/(?P<raiTopicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.RaiPolicy](req)
+	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.RaiTopic](req)
 	if err != nil {
 		return nil, err
 	}
@@ -129,11 +129,11 @@ func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
+	raiTopicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiTopicName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, body, nil)
+	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, raiTopicNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -141,20 +141,20 @@ func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiTopic, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (r *RaiPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (r *RaiTopicsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raiPolicies/(?P<raiPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raitopics/(?P<raiTopicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -168,11 +168,11 @@ func (r *RaiPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
+		raiTopicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiTopicName")])
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, nil)
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, raiTopicNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -196,11 +196,11 @@ func (r *RaiPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (r *RaiPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (r *RaiTopicsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raiPolicies/(?P<raiPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raitopics/(?P<raiTopicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -214,11 +214,11 @@ func (r *RaiPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	raiPolicyNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiPolicyName")])
+	raiTopicNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("raiTopicName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, nil)
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, raiTopicNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -226,20 +226,20 @@ func (r *RaiPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiTopic, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (r *RaiPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (r *RaiTopicsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raiPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/raitopics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -256,7 +256,7 @@ func (r *RaiPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*h
 		resp := r.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.RaiPoliciesClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.RaiTopicsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -274,8 +274,8 @@ func (r *RaiPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to RaiPoliciesServerTransport
-var raiPoliciesServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to RaiTopicsServerTransport
+var raiTopicsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -172,6 +172,7 @@ const (
 	ConnectionCategoryAzurePostgresDb          ConnectionCategory = "AzurePostgresDb"
 	ConnectionCategoryAzureSQLDb               ConnectionCategory = "AzureSqlDb"
 	ConnectionCategoryAzureSQLMi               ConnectionCategory = "AzureSqlMi"
+	ConnectionCategoryAzureStorageAccount      ConnectionCategory = "AzureStorageAccount"
 	ConnectionCategoryAzureSynapseAnalytics    ConnectionCategory = "AzureSynapseAnalytics"
 	ConnectionCategoryAzureTableStorage        ConnectionCategory = "AzureTableStorage"
 	ConnectionCategoryBingLLMSearch            ConnectionCategory = "BingLLMSearch"
@@ -282,6 +283,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryAzurePostgresDb,
 		ConnectionCategoryAzureSQLDb,
 		ConnectionCategoryAzureSQLMi,
+		ConnectionCategoryAzureStorageAccount,
 		ConnectionCategoryAzureSynapseAnalytics,
 		ConnectionCategoryAzureTableStorage,
 		ConnectionCategoryBingLLMSearch,
@@ -514,6 +516,24 @@ func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
 	}
 }
 
+// DeprecationStatus - Indicates whether the deprecation date is a confirmed planned end-of-life date or an estimated deprecation
+// date. When 'Planned', the deprecation date represents a confirmed and communicated model
+// end-of-life date. When 'Tentative', the deprecation date is an estimated timeline that may be subject to change.
+type DeprecationStatus string
+
+const (
+	DeprecationStatusPlanned   DeprecationStatus = "Planned"
+	DeprecationStatusTentative DeprecationStatus = "Tentative"
+)
+
+// PossibleDeprecationStatusValues returns the possible values for the DeprecationStatus const type.
+func PossibleDeprecationStatusValues() []DeprecationStatus {
+	return []DeprecationStatus{
+		DeprecationStatusPlanned,
+		DeprecationStatusTentative,
+	}
+}
+
 // EncryptionScopeProvisioningState - Gets the status of the resource at the time the operation was called.
 type EncryptionScopeProvisioningState string
 
@@ -646,11 +666,21 @@ func PossibleManagedPEStatusValues() []ManagedPEStatus {
 type ModelLifecycleStatus string
 
 const (
-	ModelLifecycleStatusDeprecated         ModelLifecycleStatus = "Deprecated"
-	ModelLifecycleStatusDeprecating        ModelLifecycleStatus = "Deprecating"
+	// ModelLifecycleStatusDeprecated - Model has been deprecated, also known as retired, and is no longer supported. Inference
+	// calls to deployments of models in this lifecycle state will return 410 errors.
+	ModelLifecycleStatusDeprecated ModelLifecycleStatus = "Deprecated"
+	// ModelLifecycleStatusDeprecating - Model is being deprecated and will be removed in the future. Only customers with existing
+	// deployments can create new deployments with this model.
+	ModelLifecycleStatusDeprecating ModelLifecycleStatus = "Deprecating"
+	// ModelLifecycleStatusGenerallyAvailable - Model is generally available for production use.
 	ModelLifecycleStatusGenerallyAvailable ModelLifecycleStatus = "GenerallyAvailable"
-	ModelLifecycleStatusPreview            ModelLifecycleStatus = "Preview"
-	ModelLifecycleStatusStable             ModelLifecycleStatus = "Stable"
+	// ModelLifecycleStatusLegacy - Model is a legacy version that is no longer recommended for use. Customers should migrate
+	// to newer models. Check replacementConfig for upgrade information.
+	ModelLifecycleStatusLegacy ModelLifecycleStatus = "Legacy"
+	// ModelLifecycleStatusPreview - Model is in preview and may be subject to changes.
+	ModelLifecycleStatusPreview ModelLifecycleStatus = "Preview"
+	// ModelLifecycleStatusStable - Legacy state. Replaced with GenerallyAvailable going forward.
+	ModelLifecycleStatusStable ModelLifecycleStatus = "Stable"
 )
 
 // PossibleModelLifecycleStatusValues returns the possible values for the ModelLifecycleStatus const type.
@@ -659,6 +689,7 @@ func PossibleModelLifecycleStatusValues() []ModelLifecycleStatus {
 		ModelLifecycleStatusDeprecated,
 		ModelLifecycleStatusDeprecating,
 		ModelLifecycleStatusGenerallyAvailable,
+		ModelLifecycleStatusLegacy,
 		ModelLifecycleStatusPreview,
 		ModelLifecycleStatusStable,
 	}
@@ -982,6 +1013,22 @@ func PossibleScenarioTypeValues() []ScenarioType {
 	}
 }
 
+// TierUpgradePolicy - Gets the tier upgrade policy for the subscription.
+type TierUpgradePolicy string
+
+const (
+	TierUpgradePolicyNoAutoUpgrade          TierUpgradePolicy = "NoAutoUpgrade"
+	TierUpgradePolicyOnceUpgradeIsAvailable TierUpgradePolicy = "OnceUpgradeIsAvailable"
+)
+
+// PossibleTierUpgradePolicyValues returns the possible values for the TierUpgradePolicy const type.
+func PossibleTierUpgradePolicyValues() []TierUpgradePolicy {
+	return []TierUpgradePolicy{
+		TierUpgradePolicyNoAutoUpgrade,
+		TierUpgradePolicyOnceUpgradeIsAvailable,
+	}
+}
+
 // UnitType - The unit of the metric.
 type UnitType string
 
@@ -1005,5 +1052,21 @@ func PossibleUnitTypeValues() []UnitType {
 		UnitTypeMilliseconds,
 		UnitTypePercent,
 		UnitTypeSeconds,
+	}
+}
+
+// UpgradeAvailabilityStatus - Specifies whether an upgrade to the next quota tier is available.
+type UpgradeAvailabilityStatus string
+
+const (
+	UpgradeAvailabilityStatusAvailable    UpgradeAvailabilityStatus = "Available"
+	UpgradeAvailabilityStatusNotAvailable UpgradeAvailabilityStatus = "NotAvailable"
+)
+
+// PossibleUpgradeAvailabilityStatusValues returns the possible values for the UpgradeAvailabilityStatus const type.
+func PossibleUpgradeAvailabilityStatusValues() []UpgradeAvailabilityStatus {
+	return []UpgradeAvailabilityStatus{
+		UpgradeAvailabilityStatusAvailable,
+		UpgradeAvailabilityStatusNotAvailable,
 	}
 }

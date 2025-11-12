@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CreateAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/CreateAccountMin.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/UpdateAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/UpdateAccount.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/DeleteAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListAccountsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListAccountsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -410,7 +410,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,7 +434,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -460,7 +460,7 @@ func ExampleAccountsClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListSkus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -497,7 +497,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/GetUsages.json
 func ExampleAccountsClient_ListUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +532,7 @@ func ExampleAccountsClient_ListUsages() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListAccountModels.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -566,26 +566,165 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				Version: to.Ptr("1"),
 		// 			},
 		// 			Capabilities: map[string]*string{
+		// 				"completion": to.Ptr("true"),
 		// 				"fineTune": to.Ptr("true"),
+		// 				"inference": to.Ptr("false"),
 		// 			},
 		// 			Deprecation: &armcognitiveservices.ModelDeprecationInfo{
+		// 				DeprecationStatus: to.Ptr(armcognitiveservices.DeprecationStatusPlanned),
 		// 				FineTune: to.Ptr("2024-01-01T00:00:00Z"),
 		// 				Inference: to.Ptr("2024-01-01T00:00:00Z"),
 		// 			},
+		// 			IsDefaultVersion: to.Ptr(false),
+		// 			LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusLegacy),
 		// 			MaxCapacity: to.Ptr[int32](10),
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("Microsoft"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("Microsoft"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("davinci"),
+		// 			Name: to.Ptr("dall-e-3"),
 		// 			Format: to.Ptr("OpenAI"),
-		// 			Version: to.Ptr("1"),
+		// 			Version: to.Ptr("3.0"),
 		// 			Capabilities: map[string]*string{
-		// 				"fineTune": to.Ptr("true"),
+		// 				"imageGenerations": to.Ptr("true"),
+		// 				"inference": to.Ptr("true"),
 		// 			},
 		// 			Deprecation: &armcognitiveservices.ModelDeprecationInfo{
-		// 				FineTune: to.Ptr("2024-01-01T00:00:00Z"),
-		// 				Inference: to.Ptr("2024-01-01T00:00:00Z"),
+		// 				DeprecationStatus: to.Ptr(armcognitiveservices.DeprecationStatusTentative),
+		// 				Inference: to.Ptr("2025-06-30T00:00:00Z"),
 		// 			},
-		// 			MaxCapacity: to.Ptr[int32](10),
+		// 			IsDefaultVersion: to.Ptr(true),
+		// 			LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusGenerallyAvailable),
+		// 			MaxCapacity: to.Ptr[int32](2),
+		// 			ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/dall-e-3/versions/3.0"),
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-11T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("Microsoft"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-11T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("Microsoft"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("gpt-35-turbo"),
+		// 			Format: to.Ptr("OpenAI"),
+		// 			Version: to.Ptr("0301"),
+		// 			Capabilities: map[string]*string{
+		// 				"chatCompletion": to.Ptr("true"),
+		// 				"completion": to.Ptr("true"),
+		// 				"fineTune": to.Ptr("false"),
+		// 				"scaleType": to.Ptr("Manual,Standard"),
+		// 			},
+		// 			Deprecation: &armcognitiveservices.ModelDeprecationInfo{
+		// 				DeprecationStatus: to.Ptr(armcognitiveservices.DeprecationStatusPlanned),
+		// 				Inference: to.Ptr("2025-04-30T00:00:00Z"),
+		// 			},
+		// 			IsDefaultVersion: to.Ptr(false),
+		// 			LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusDeprecated),
+		// 			MaxCapacity: to.Ptr[int32](9),
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-09T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("Microsoft"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-06T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("Microsoft"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("gpt-4o"),
+		// 			Format: to.Ptr("OpenAI"),
+		// 			Version: to.Ptr("2024-05-13"),
+		// 			Capabilities: map[string]*string{
+		// 				"chat": to.Ptr("true"),
+		// 				"completion": to.Ptr("true"),
+		// 				"fineTune": to.Ptr("false"),
+		// 				"inference": to.Ptr("true"),
+		// 				"vision": to.Ptr("true"),
+		// 			},
+		// 			Deprecation: &armcognitiveservices.ModelDeprecationInfo{
+		// 				DeprecationStatus: to.Ptr(armcognitiveservices.DeprecationStatusTentative),
+		// 				Inference: to.Ptr("2025-09-15T00:00:00Z"),
+		// 			},
+		// 			LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusDeprecating),
+		// 			MaxCapacity: to.Ptr[int32](50),
+		// 			ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/gpt-4o/versions/2024-05-13"),
+		// 			ReplacementConfig: &armcognitiveservices.ReplacementConfig{
+		// 				AutoUpgradeStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-26T07:00:00.000Z"); return t}()),
+		// 				TargetModelName: to.Ptr("gpt-4.1"),
+		// 				TargetModelVersion: to.Ptr("2025-04-14"),
+		// 				UpgradeOnExpiryLeadTimeDays: to.Ptr[int32](7),
+		// 			},
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-13T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("Microsoft"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-15T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("Microsoft"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Llama-3.2-90B-Vision-Instruct"),
+		// 			Format: to.Ptr("Meta"),
+		// 			Version: to.Ptr("2"),
+		// 			Capabilities: map[string]*string{
+		// 				"chatCompletion": to.Ptr("true"),
+		// 			},
+		// 			Deprecation: &armcognitiveservices.ModelDeprecationInfo{
+		// 				DeprecationStatus: to.Ptr(armcognitiveservices.DeprecationStatusTentative),
+		// 				Inference: to.Ptr("2099-12-31T00:00:00Z"),
+		// 			},
+		// 			IsDefaultVersion: to.Ptr(false),
+		// 			LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusStable),
+		// 			MaxCapacity: to.Ptr[int32](3),
+		// 			ModelCatalogAssetID: to.Ptr("azureml://registries/azureml-meta/models/Llama-3.2-90B-Vision-Instruct/versions/2"),
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("Microsoft"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-16T04:45:33.936Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("MaaSModelConverter"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("gpt-4o"),
+		// 			Format: to.Ptr("OpenAI"),
+		// 			Version: to.Ptr("2024-08-06"),
+		// 			Capabilities: map[string]*string{
+		// 				"chat": to.Ptr("true"),
+		// 				"completion": to.Ptr("true"),
+		// 				"fineTune": to.Ptr("false"),
+		// 				"functionCalling": to.Ptr("true"),
+		// 				"inference": to.Ptr("true"),
+		// 				"vision": to.Ptr("true"),
+		// 			},
+		// 			FinetuneCapabilities: map[string]*string{
+		// 				"chat": to.Ptr("true"),
+		// 				"completion": to.Ptr("true"),
+		// 				"fineTune": to.Ptr("true"),
+		// 				"inference": to.Ptr("true"),
+		// 				"scaleType": to.Ptr("Manual"),
+		// 			},
+		// 			LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusGenerallyAvailable),
+		// 			MaxCapacity: to.Ptr[int32](50),
+		// 			ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/gpt-4o/versions/2024-08-06"),
+		// 			SystemData: &armcognitiveservices.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-06T00:00:00.000Z"); return t}()),
+		// 				CreatedBy: to.Ptr("Microsoft"),
+		// 				CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00.000Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("Microsoft"),
+		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
+		// 			},
 		// 	}},
 		// }
 	}

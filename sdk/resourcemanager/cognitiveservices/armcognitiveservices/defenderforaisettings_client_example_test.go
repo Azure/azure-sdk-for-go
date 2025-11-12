@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/ListDefenderForAISetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/ListDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,10 +46,6 @@ func ExampleDefenderForAISettingsClient_NewListPager() {
 		// 			Name: to.Ptr("Default"),
 		// 			Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/defenderForAISettings/Default"),
-		// 			Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
-		// 			Properties: &armcognitiveservices.DefenderForAISettingProperties{
-		// 				State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
-		// 			},
 		// 			SystemData: &armcognitiveservices.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
 		// 				CreatedBy: to.Ptr("xxx@microsoft.com"),
@@ -58,12 +54,16 @@ func ExampleDefenderForAISettingsClient_NewListPager() {
 		// 				LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 		// 				LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 		// 			},
+		// 			Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+		// 			Properties: &armcognitiveservices.DefenderForAISettingProperties{
+		// 				State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
+		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/GetDefenderForAISetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/GetDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,10 +85,6 @@ func ExampleDefenderForAISettingsClient_Get() {
 	// 	Name: to.Ptr("Default"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/defenderForAISettings/Default"),
-	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
-	// 	Properties: &armcognitiveservices.DefenderForAISettingProperties{
-	// 		State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
-	// 	},
 	// 	SystemData: &armcognitiveservices.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
 	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
@@ -97,10 +93,14 @@ func ExampleDefenderForAISettingsClient_Get() {
 	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+	// 	Properties: &armcognitiveservices.DefenderForAISettingProperties{
+	// 		State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/PutDefenderForAISetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/PutDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,10 +126,6 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("Default"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/defenderForAISettings/Default"),
-	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
-	// 	Properties: &armcognitiveservices.DefenderForAISettingProperties{
-	// 		State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
-	// 	},
 	// 	SystemData: &armcognitiveservices.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
 	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
@@ -138,10 +134,14 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
 	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+	// 	Properties: &armcognitiveservices.DefenderForAISettingProperties{
+	// 		State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1004eed4202d64b48157c084fe2830760f8190f4/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-06-01/examples/UpdateDefenderForAISetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2025-09-01/examples/UpdateDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,10 +167,6 @@ func ExampleDefenderForAISettingsClient_Update() {
 	// 	Name: to.Ptr("Default"),
 	// 	Type: to.Ptr("Microsoft.CognitiveServices/accounts/defenderForAISettings"),
 	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/defenderForAISettings/Default"),
-	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
-	// 	Properties: &armcognitiveservices.DefenderForAISettingProperties{
-	// 		State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
-	// 	},
 	// 	SystemData: &armcognitiveservices.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
 	// 		CreatedBy: to.Ptr("xxx@microsoft.com"),
@@ -178,6 +174,10 @@ func ExampleDefenderForAISettingsClient_Update() {
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-03T04:41:33.937Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("xxx@microsoft.com"),
 	// 		LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeUser),
+	// 	},
+	// 	Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
+	// 	Properties: &armcognitiveservices.DefenderForAISettingProperties{
+	// 		State: to.Ptr(armcognitiveservices.DefenderForAISettingStateEnabled),
 	// 	},
 	// }
 }

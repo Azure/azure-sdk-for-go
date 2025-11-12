@@ -27,7 +27,7 @@ type DatabasesClient struct {
 // NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabasesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,14 +40,15 @@ func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// BeginCreate - Creates a new database or updates an existing database.
+// BeginCreate - Creates a new database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database.
-//   - parameters - The required parameters for creating or updating a database.
+//   - databaseName - Name of the database (case-sensitive). Exact database names can be retrieved by getting the list of all
+//     existing databases in a server.
+//   - parameters - Parameters required to create a new database.
 //   - options - DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
 func (client *DatabasesClient) BeginCreate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*runtime.Poller[DatabasesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -67,10 +68,10 @@ func (client *DatabasesClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Creates a new database or updates an existing database.
+// Create - Creates a new database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 func (client *DatabasesClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginCreate"
@@ -85,7 +86,7 @@ func (client *DatabasesClient) create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -116,7 +117,7 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -125,13 +126,14 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// BeginDelete - Deletes a database.
+// BeginDelete - Deletes an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database.
+//   - databaseName - Name of the database (case-sensitive). Exact database names can be retrieved by getting the list of all
+//     existing databases in a server.
 //   - options - DatabasesClientBeginDeleteOptions contains the optional parameters for the DatabasesClient.BeginDelete method.
 func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*runtime.Poller[DatabasesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -151,10 +153,10 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a database.
+// Delete - Deletes an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginDelete"
@@ -169,7 +171,7 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -200,19 +202,20 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets information about a database.
+// Get - Gets information about an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
-//   - databaseName - The name of the database.
+//   - databaseName - Name of the database (case-sensitive). Exact database names can be retrieved by getting the list of all
+//     existing databases in a server.
 //   - options - DatabasesClientGetOptions contains the optional parameters for the DatabasesClient.Get method.
 func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientGetOptions) (DatabasesClientGetResponse, error) {
 	var err error
@@ -260,7 +263,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,9 +278,9 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 	return result, nil
 }
 
-// NewListByServerPager - List all the databases in a given server.
+// NewListByServerPager - Lists all databases in a server.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.NewListByServerPager
@@ -325,7 +328,7 @@ func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +337,7 @@ func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, re
 // listByServerHandleResponse handles the ListByServer response.
 func (client *DatabasesClient) listByServerHandleResponse(resp *http.Response) (DatabasesClientListByServerResponse, error) {
 	result := DatabasesClientListByServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseList); err != nil {
 		return DatabasesClientListByServerResponse{}, err
 	}
 	return result, nil

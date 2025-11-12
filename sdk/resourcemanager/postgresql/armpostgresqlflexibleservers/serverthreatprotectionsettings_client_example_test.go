@@ -18,73 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/ServerThreatProtectionSettingsListByServer.json
-func ExampleServerThreatProtectionSettingsClient_NewListByServerPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServerThreatProtectionSettingsClient().NewListByServerPager("threatprotection-6852", "threatprotection-2080", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ServerThreatProtectionListResult = armpostgresqlflexibleservers.ServerThreatProtectionListResult{
-		// 	Value: []*armpostgresqlflexibleservers.ServerThreatProtectionSettingsModel{
-		// 		{
-		// 			Name: to.Ptr("Default"),
-		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/advancedThreatProtectionSettings"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-6852/providers/Microsoft.DBforPostgreSQL/flexibleServers/threatprotection-2080/advancedThreatProtectionSettings/Default"),
-		// 			Properties: &armpostgresqlflexibleservers.ServerThreatProtectionProperties{
-		// 				CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-03T04:41:33.937Z"); return t}()),
-		// 				State: to.Ptr(armpostgresqlflexibleservers.ThreatProtectionStateEnabled),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/ServerThreatProtectionSettingsGet.json
-func ExampleServerThreatProtectionSettingsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServerThreatProtectionSettingsClient().Get(ctx, "threatprotection-6852", "threatprotection-2080", armpostgresqlflexibleservers.ThreatProtectionNameDefault, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ServerThreatProtectionSettingsModel = armpostgresqlflexibleservers.ServerThreatProtectionSettingsModel{
-	// 	Name: to.Ptr("Default"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/advancedThreatProtectionSettings"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforPostgreSQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),
-	// 	Properties: &armpostgresqlflexibleservers.ServerThreatProtectionProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-03T04:41:33.937Z"); return t}()),
-	// 		State: to.Ptr(armpostgresqlflexibleservers.ThreatProtectionStateEnabled),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/ServerThreatProtectionSettingsCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/735d21dbd7e1cc446babf58860af4cca757d620d/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/AdvancedThreatProtectionSettingsCreateOrUpdate.json
 func ExampleServerThreatProtectionSettingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,28 +29,16 @@ func ExampleServerThreatProtectionSettingsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewServerThreatProtectionSettingsClient().BeginCreateOrUpdate(ctx, "threatprotection-4799", "threatprotection-6440", armpostgresqlflexibleservers.ThreatProtectionNameDefault, armpostgresqlflexibleservers.ServerThreatProtectionSettingsModel{
-		Properties: &armpostgresqlflexibleservers.ServerThreatProtectionProperties{
+	poller, err := clientFactory.NewServerThreatProtectionSettingsClient().BeginCreateOrUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ThreatProtectionNameDefault, armpostgresqlflexibleservers.AdvancedThreatProtectionSettingsModel{
+		Properties: &armpostgresqlflexibleservers.AdvancedThreatProtectionSettingsProperties{
 			State: to.Ptr(armpostgresqlflexibleservers.ThreatProtectionStateEnabled),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ServerThreatProtectionSettingsModel = armpostgresqlflexibleservers.ServerThreatProtectionSettingsModel{
-	// 	Name: to.Ptr("Default"),
-	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/advancedThreatProtectionSettings"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforPostgreSQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),
-	// 	Properties: &armpostgresqlflexibleservers.ServerThreatProtectionProperties{
-	// 		CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-03T04:41:33.937Z"); return t}()),
-	// 		State: to.Ptr(armpostgresqlflexibleservers.ThreatProtectionStateEnabled),
-	// 	},
-	// }
 }

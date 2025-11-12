@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/ReplicasListByServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/735d21dbd7e1cc446babf58860af4cca757d620d/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewReplicasClient().NewListByServerPager("testrg", "sourcepgservername", nil)
+	pager := clientFactory.NewReplicasClient().NewListByServerPager("exampleresourcegroup", "exampleserver", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -39,35 +39,32 @@ func ExampleReplicasClient_NewListByServerPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.ServerListResult = armpostgresqlflexibleservers.ServerListResult{
+		// page.ServerList = armpostgresqlflexibleservers.ServerList{
 		// 	Value: []*armpostgresqlflexibleservers.Server{
 		// 		{
-		// 			Name: to.Ptr("pgtestsvc5rep"),
+		// 			Name: to.Ptr("exampleserver"),
 		// 			Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5rep"),
-		// 			Location: to.Ptr("westus"),
-		// 			Tags: map[string]*string{
-		// 				"ElasticServer": to.Ptr("1"),
-		// 			},
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
+		// 			Location: to.Ptr("eastus"),
 		// 			Properties: &armpostgresqlflexibleservers.ServerProperties{
-		// 				AdministratorLogin: to.Ptr("login"),
+		// 				AdministratorLogin: to.Ptr("exampleadministratorlogin"),
 		// 				AuthConfig: &armpostgresqlflexibleservers.AuthConfig{
-		// 					ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.ActiveDirectoryAuthEnumDisabled),
-		// 					PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordAuthEnumEnabled),
+		// 					ActiveDirectoryAuth: to.Ptr(armpostgresqlflexibleservers.MicrosoftEntraAuthDisabled),
+		// 					PasswordAuth: to.Ptr(armpostgresqlflexibleservers.PasswordBasedAuthEnabled),
 		// 				},
 		// 				AvailabilityZone: to.Ptr("2"),
 		// 				Backup: &armpostgresqlflexibleservers.Backup{
 		// 					BackupRetentionDays: to.Ptr[int32](7),
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-03T00:28:17.727Z"); return t}()),
-		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeoRedundantBackupEnumDisabled),
+		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:35:22.123Z"); return t}()),
+		// 					GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 				},
 		// 				DataEncryption: &armpostgresqlflexibleservers.DataEncryption{
-		// 					Type: to.Ptr(armpostgresqlflexibleservers.ArmServerKeyTypeSystemManaged),
+		// 					Type: to.Ptr(armpostgresqlflexibleservers.DataEncryptionTypeSystemManaged),
 		// 				},
-		// 				FullyQualifiedDomainName: to.Ptr("pgtestsvc5rep.postgres.database.azure.com"),
+		// 				FullyQualifiedDomainName: to.Ptr("exampleserver.postgres.database.azure.com"),
 		// 				HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 					Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
-		// 					State: to.Ptr(armpostgresqlflexibleservers.ServerHAStateNotEnabled),
+		// 					Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityMode("Disabled")),
+		// 					State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 		// 				},
 		// 				MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
 		// 					CustomWindow: to.Ptr("Disabled"),
@@ -75,7 +72,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					StartHour: to.Ptr[int32](0),
 		// 					StartMinute: to.Ptr[int32](0),
 		// 				},
-		// 				MinorVersion: to.Ptr("6"),
+		// 				MinorVersion: to.Ptr("5"),
 		// 				Network: &armpostgresqlflexibleservers.Network{
 		// 					PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateEnabled),
 		// 				},
@@ -91,9 +88,9 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					AutoGrow: to.Ptr(armpostgresqlflexibleservers.StorageAutoGrowDisabled),
 		// 					Iops: to.Ptr[int32](2300),
 		// 					StorageSizeGB: to.Ptr[int32](512),
-		// 					Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTiersP20),
+		// 					Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 		// 				},
-		// 				Version: to.Ptr(armpostgresqlflexibleservers.ServerVersionSixteen),
+		// 				Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 			},
 		// 			SKU: &armpostgresqlflexibleservers.SKU{
 		// 				Name: to.Ptr("Standard_D4ds_v5"),

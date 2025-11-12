@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopedResourceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopedResourceGet.json
 func ExamplePrivateLinkScopedResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,8 +41,9 @@ func ExamplePrivateLinkScopedResourcesClient_Get() {
 	// 	Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name"),
 	// 	Properties: &armmonitor.ScopedResourceProperties{
+	// 		Kind: to.Ptr(armmonitor.ScopedResourceKindResource),
 	// 		LinkedResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/components/my-component"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -55,8 +56,8 @@ func ExamplePrivateLinkScopedResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopedResourceUpdate.json
-func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopedResourceUpdatePlatformMetrics.json
+func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate_updateAScopedPlatformMetricsSubscriptionInAPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -68,6 +69,56 @@ func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewPrivateLinkScopedResourcesClient().BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", armmonitor.ScopedResource{
 		Properties: &armmonitor.ScopedResourceProperties{
+			Kind:                 to.Ptr(armmonitor.ScopedResourceKind("PlatformMetrics")),
+			LinkedResourceID:     to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444"),
+			SubscriptionLocation: to.Ptr("eastus"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ScopedResource = armmonitor.ScopedResource{
+	// 	Name: to.Ptr("scoped-resource-name"),
+	// 	Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name"),
+	// 	Properties: &armmonitor.ScopedResourceProperties{
+	// 		Kind: to.Ptr(armmonitor.ScopedResourceKind("PlatformMetrics")),
+	// 		LinkedResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444"),
+	// 		ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
+	// 		SubscriptionLocation: to.Ptr("eastus"),
+	// 	},
+	// 	SystemData: &armmonitor.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+	// 		CreatedBy: to.Ptr("bobby@contoso.com"),
+	// 		CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("bobby@contoso.com"),
+	// 		LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopedResourceUpdate.json
+func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate_updateAScopedResourceInAPrivateLinkScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPrivateLinkScopedResourcesClient().BeginCreateOrUpdate(ctx, "MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", armmonitor.ScopedResource{
+		Properties: &armmonitor.ScopedResourceProperties{
+			Kind:             to.Ptr(armmonitor.ScopedResourceKindResource),
 			LinkedResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/components/my-component"),
 		},
 	}, nil)
@@ -86,8 +137,9 @@ func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name"),
 	// 	Properties: &armmonitor.ScopedResourceProperties{
+	// 		Kind: to.Ptr(armmonitor.ScopedResourceKindResource),
 	// 		LinkedResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/components/my-component"),
-	// 		ProvisioningState: to.Ptr("Succeeded"),
+	// 		ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
 	// 	},
 	// 	SystemData: &armmonitor.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -100,7 +152,7 @@ func ExamplePrivateLinkScopedResourcesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopedResourceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopedResourceDelete.json
 func ExamplePrivateLinkScopedResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,8 +173,8 @@ func ExamplePrivateLinkScopedResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopedResourceList.json
-func ExamplePrivateLinkScopedResourcesClient_NewListByPrivateLinkScopePager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopedResourceListKindFilter.json
+func ExamplePrivateLinkScopedResourcesClient_NewListByPrivateLinkScopePager_getsListOfScopedResourcesInAPrivateLinkScopeFilteredByKind() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -132,7 +184,7 @@ func ExamplePrivateLinkScopedResourcesClient_NewListByPrivateLinkScopePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPrivateLinkScopedResourcesClient().NewListByPrivateLinkScopePager("MyResourceGroup", "MyPrivateLinkScope", nil)
+	pager := clientFactory.NewPrivateLinkScopedResourcesClient().NewListByPrivateLinkScopePager("MyResourceGroup", "MyPrivateLinkScope", &armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions{Kind: to.Ptr("Resource")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -146,12 +198,13 @@ func ExamplePrivateLinkScopedResourcesClient_NewListByPrivateLinkScopePager() {
 		// page.ScopedResourceListResult = armmonitor.ScopedResourceListResult{
 		// 	Value: []*armmonitor.ScopedResource{
 		// 		{
-		// 			Name: to.Ptr("scoped-resource-name"),
+		// 			Name: to.Ptr("scoped-resource-name-one"),
 		// 			Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name-one"),
 		// 			Properties: &armmonitor.ScopedResourceProperties{
+		// 				Kind: to.Ptr(armmonitor.ScopedResourceKindResource),
 		// 				LinkedResourceID: to.Ptr("/subscriptions/00000000-0000-2222-3333-444444444444/resourceGroups/MyComponentResourceGroup/providers/Microsoft.Insights/components/my-component"),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
 		// 			},
 		// 			SystemData: &armmonitor.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
@@ -163,12 +216,97 @@ func ExamplePrivateLinkScopedResourcesClient_NewListByPrivateLinkScopePager() {
 		// 			},
 		// 		},
 		// 		{
-		// 			Name: to.Ptr("other-scoped-resource-name"),
+		// 			Name: to.Ptr("scoped-resource-name-two"),
 		// 			Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/other-scoped-resource-name"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name-two"),
 		// 			Properties: &armmonitor.ScopedResourceProperties{
+		// 				Kind: to.Ptr(armmonitor.ScopedResourceKindResource),
 		// 				LinkedResourceID: to.Ptr("/subscriptions/00000000-3333-2222-5555-444444444444/resourceGroups/MyWorkspaceResourceGroup/providers/Microsoft.OperationalInsights/workspaces/my-workspace"),
-		// 				ProvisioningState: to.Ptr("Succeeded"),
+		// 				ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
+		// 			},
+		// 			SystemData: &armmonitor.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+		// 				CreatedBy: to.Ptr("bobby@contoso.com"),
+		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("bobby@contoso.com"),
+		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/373200d3bec8b090f3d2e4c5a838d9fa5ff4828b/specification/monitor/resource-manager/Microsoft.Insights/PrivateLinkScopes/preview/2023-06-01-preview/examples/PrivateLinkScopedResourceList.json
+func ExamplePrivateLinkScopedResourcesClient_NewListByPrivateLinkScopePager_getsListOfScopedResourcesInAPrivateLinkScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmonitor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateLinkScopedResourcesClient().NewListByPrivateLinkScopePager("MyResourceGroup", "MyPrivateLinkScope", &armmonitor.PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions{Kind: nil})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ScopedResourceListResult = armmonitor.ScopedResourceListResult{
+		// 	Value: []*armmonitor.ScopedResource{
+		// 		{
+		// 			Name: to.Ptr("scoped-resource-name-one"),
+		// 			Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name-one"),
+		// 			Properties: &armmonitor.ScopedResourceProperties{
+		// 				Kind: to.Ptr(armmonitor.ScopedResourceKindResource),
+		// 				LinkedResourceID: to.Ptr("/subscriptions/00000000-0000-2222-3333-444444444444/resourceGroups/MyComponentResourceGroup/providers/Microsoft.Insights/components/my-component"),
+		// 				ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
+		// 			},
+		// 			SystemData: &armmonitor.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+		// 				CreatedBy: to.Ptr("bobby@contoso.com"),
+		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("bobby@contoso.com"),
+		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("scoped-resource-name-two"),
+		// 			Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name-two"),
+		// 			Properties: &armmonitor.ScopedResourceProperties{
+		// 				Kind: to.Ptr(armmonitor.ScopedResourceKind("PlatformMetrics")),
+		// 				LinkedResourceID: to.Ptr("/subscriptions/00000000-3333-2222-5555-444444444444"),
+		// 				ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
+		// 				SubscriptionLocation: to.Ptr("westus"),
+		// 			},
+		// 			SystemData: &armmonitor.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+		// 				CreatedBy: to.Ptr("bobby@contoso.com"),
+		// 				CreatedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("bobby@contoso.com"),
+		// 				LastModifiedByType: to.Ptr(armmonitor.CreatedByTypeUser),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("scoped-resource-name-three"),
+		// 			Type: to.Ptr("Microsoft.Insights/privateLinkScopes/scopedResources"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/privateLinkScopes/MyPrivateLinkScope/scopedResources/scoped-resource-name-three"),
+		// 			Properties: &armmonitor.ScopedResourceProperties{
+		// 				Kind: to.Ptr(armmonitor.ScopedResourceKind("PlatformMetrics")),
+		// 				LinkedResourceID: to.Ptr("/subscriptions/00000000-3333-2222-5555-444444444444"),
+		// 				ProvisioningState: to.Ptr(armmonitor.ScopedResourceProvisioningStateSucceeded),
+		// 				SubscriptionLocation: to.Ptr("eastus"),
 		// 			},
 		// 			SystemData: &armmonitor.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T12:59:57.051Z"); return t}()),

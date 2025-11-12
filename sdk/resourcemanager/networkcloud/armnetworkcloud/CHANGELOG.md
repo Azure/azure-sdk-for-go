@@ -1,5 +1,75 @@
 # Release History
 
+## 1.4.0-beta.1 (2025-11-11)
+### Features Added
+
+- New value `BareMetalMachineKeySetPrivilegeLevelOther` added to enum type `BareMetalMachineKeySetPrivilegeLevel`
+- New enum type `ActionStateStatus` with values `ActionStateStatusCompleted`, `ActionStateStatusFailed`, `ActionStateStatusInProgress`
+- New enum type `BareMetalMachineReplaceSafeguardMode` with values `BareMetalMachineReplaceSafeguardModeAll`, `BareMetalMachineReplaceSafeguardModeNone`
+- New enum type `BareMetalMachineReplaceStoragePolicy` with values `BareMetalMachineReplaceStoragePolicyDiscardAll`, `BareMetalMachineReplaceStoragePolicyPreserve`
+- New enum type `CloudServicesNetworkStorageMode` with values `CloudServicesNetworkStorageModeNone`, `CloudServicesNetworkStorageModeStandard`
+- New enum type `CloudServicesNetworkStorageStatusStatus` with values `CloudServicesNetworkStorageStatusStatusAvailable`, `CloudServicesNetworkStorageStatusStatusExpandingVolume`, `CloudServicesNetworkStorageStatusStatusExpansionFailed`
+- New enum type `CommandOutputType` with values `CommandOutputTypeBareMetalMachineRunCommand`, `CommandOutputTypeBareMetalMachineRunDataExtracts`, `CommandOutputTypeBareMetalMachineRunReadCommands`, `CommandOutputTypeStorageRunReadCommands`
+- New enum type `RelayType` with values `RelayTypePlatform`, `RelayTypePublic`
+- New enum type `StepStateStatus` with values `StepStateStatusCompleted`, `StepStateStatusFailed`, `StepStateStatusInProgress`, `StepStateStatusNotStarted`
+- New function `*BareMetalMachinesClient.BeginRunDataExtractsRestricted(context.Context, string, string, BareMetalMachineRunDataExtractsParameters, *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsRestrictedResponse], error)`
+- New function `*StorageAppliancesClient.BeginRunReadCommands(context.Context, string, string, StorageApplianceRunReadCommandsParameters, *StorageAppliancesClientBeginRunReadCommandsOptions) (*runtime.Poller[StorageAppliancesClientRunReadCommandsResponse], error)`
+- New function `*VirtualMachinesClient.BeginAssignRelay(context.Context, string, string, *VirtualMachinesClientBeginAssignRelayOptions) (*runtime.Poller[VirtualMachinesClientAssignRelayResponse], error)`
+- New struct `ActionState`
+- New struct `CertificateInfo`
+- New struct `CloudServicesNetworkStorageOptions`
+- New struct `CloudServicesNetworkStorageOptionsPatch`
+- New struct `CloudServicesNetworkStorageStatus`
+- New struct `CommandOutputOverride`
+- New struct `StepState`
+- New struct `StorageApplianceCommandSpecification`
+- New struct `StorageApplianceRunReadCommandsParameters`
+- New struct `VirtualMachineAssignRelayParameters`
+- New field `SkipToken`, `Top` in struct `AgentPoolsClientListByKubernetesClusterOptions`
+- New field `PrivilegeLevelName` in struct `BareMetalMachineKeySetProperties`
+- New field `SkipToken`, `Top` in struct `BareMetalMachineKeySetsClientListByClusterOptions`
+- New field `ActionStates`, `CaCertificate` in struct `BareMetalMachineProperties`
+- New field `SafeguardMode`, `StoragePolicy` in struct `BareMetalMachineReplaceParameters`
+- New field `SkipToken`, `Top` in struct `BareMetalMachinesClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `BareMetalMachinesClientListBySubscriptionOptions`
+- New field `SkipToken`, `Top` in struct `BmcKeySetsClientListByClusterOptions`
+- New field `StorageOptions` in struct `CloudServicesNetworkPatchProperties`
+- New field `StorageOptions`, `StorageStatus` in struct `CloudServicesNetworkProperties`
+- New field `SkipToken`, `Top` in struct `CloudServicesNetworksClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `CloudServicesNetworksClientListBySubscriptionOptions`
+- New field `SkipToken`, `Top` in struct `ClusterManagersClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `ClusterManagersClientListBySubscriptionOptions`
+- New field `ActionStates` in struct `ClusterProperties`
+- New field `SkipToken`, `Top` in struct `ClustersClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `ClustersClientListBySubscriptionOptions`
+- New field `Overrides` in struct `CommandOutputSettings`
+- New field `SkipToken`, `Top` in struct `ConsolesClientListByVirtualMachineOptions`
+- New field `SkipToken`, `Top` in struct `KubernetesClusterFeaturesClientListByKubernetesClusterOptions`
+- New field `SkipToken`, `Top` in struct `KubernetesClustersClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `KubernetesClustersClientListBySubscriptionOptions`
+- New field `SkipToken`, `Top` in struct `L2NetworksClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `L2NetworksClientListBySubscriptionOptions`
+- New field `SkipToken`, `Top` in struct `L3NetworksClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `L3NetworksClientListBySubscriptionOptions`
+- New field `SkipToken`, `Top` in struct `MetricsConfigurationsClientListByClusterOptions`
+- New field `SkipToken`, `Top` in struct `RacksClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `RacksClientListBySubscriptionOptions`
+- New field `KeyVaultURI` in struct `SecretArchiveReference`
+- New field `CaCertificate` in struct `StorageApplianceProperties`
+- New field `SkipToken`, `Top` in struct `StorageAppliancesClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `StorageAppliancesClientListBySubscriptionOptions`
+- New field `SkipToken`, `Top` in struct `TrunkedNetworksClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `TrunkedNetworksClientListBySubscriptionOptions`
+- New field `Identity` in struct `VirtualMachine`
+- New field `Identity` in struct `VirtualMachinePatchParameters`
+- New field `NetworkDataContent`, `UserDataContent` in struct `VirtualMachineProperties`
+- New field `SkipToken`, `Top` in struct `VirtualMachinesClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `VirtualMachinesClientListBySubscriptionOptions`
+- New field `AllocatedSizeMiB`, `StorageApplianceID` in struct `VolumeProperties`
+- New field `SkipToken`, `Top` in struct `VolumesClientListByResourceGroupOptions`
+- New field `SkipToken`, `Top` in struct `VolumesClientListBySubscriptionOptions`
+
+
 ## 1.3.0 (2025-06-13)
 ### Features Added
 

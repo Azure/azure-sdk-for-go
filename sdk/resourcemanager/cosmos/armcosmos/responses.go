@@ -354,6 +354,93 @@ type DatabaseClientListUsagesResponse struct {
 	UsagesResult
 }
 
+// FleetClientCreateResponse contains the response from method FleetClient.Create.
+type FleetClientCreateResponse struct {
+	// An Azure Cosmos DB FleetResource.
+	FleetResource
+}
+
+// FleetClientDeleteResponse contains the response from method FleetClient.BeginDelete.
+type FleetClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetClientGetResponse contains the response from method FleetClient.Get.
+type FleetClientGetResponse struct {
+	// An Azure Cosmos DB FleetResource.
+	FleetResource
+}
+
+// FleetClientListByResourceGroupResponse contains the response from method FleetClient.NewListByResourceGroupPager.
+type FleetClientListByResourceGroupResponse struct {
+	// The response of the List operation that contains the fleets and their properties.
+	FleetListResult
+}
+
+// FleetClientListResponse contains the response from method FleetClient.NewListPager.
+type FleetClientListResponse struct {
+	// The response of the List operation that contains the fleets and their properties.
+	FleetListResult
+}
+
+// FleetClientUpdateResponse contains the response from method FleetClient.Update.
+type FleetClientUpdateResponse struct {
+	// An Azure Cosmos DB FleetResource.
+	FleetResource
+}
+
+// FleetspaceAccountClientCreateResponse contains the response from method FleetspaceAccountClient.BeginCreate.
+type FleetspaceAccountClientCreateResponse struct {
+	// An Azure Cosmos DB Fleetspace Account
+	FleetspaceAccountResource
+}
+
+// FleetspaceAccountClientDeleteResponse contains the response from method FleetspaceAccountClient.BeginDelete.
+type FleetspaceAccountClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetspaceAccountClientGetResponse contains the response from method FleetspaceAccountClient.Get.
+type FleetspaceAccountClientGetResponse struct {
+	// An Azure Cosmos DB Fleetspace Account
+	FleetspaceAccountResource
+}
+
+// FleetspaceAccountClientListResponse contains the response from method FleetspaceAccountClient.NewListPager.
+type FleetspaceAccountClientListResponse struct {
+	// The List operation response, that contains the global database accounts and their properties.
+	FleetspaceAccountListResult
+}
+
+// FleetspaceClientCreateResponse contains the response from method FleetspaceClient.BeginCreate.
+type FleetspaceClientCreateResponse struct {
+	// An Azure Cosmos DB Fleetspace.
+	FleetspaceResource
+}
+
+// FleetspaceClientDeleteResponse contains the response from method FleetspaceClient.BeginDelete.
+type FleetspaceClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetspaceClientGetResponse contains the response from method FleetspaceClient.Get.
+type FleetspaceClientGetResponse struct {
+	// An Azure Cosmos DB Fleetspace.
+	FleetspaceResource
+}
+
+// FleetspaceClientListResponse contains the response from method FleetspaceClient.NewListPager.
+type FleetspaceClientListResponse struct {
+	// The response of the List operation that contains the fleetspaces and their properties.
+	FleetspaceListResult
+}
+
+// FleetspaceClientUpdateResponse contains the response from method FleetspaceClient.BeginUpdate.
+type FleetspaceClientUpdateResponse struct {
+	// An Azure Cosmos DB Fleetspace.
+	FleetspaceResource
+}
+
 // GremlinResourcesClientCreateUpdateGremlinDatabaseResponse contains the response from method GremlinResourcesClient.BeginCreateUpdateGremlinDatabase.
 type GremlinResourcesClientCreateUpdateGremlinDatabaseResponse struct {
 	// An Azure Cosmos DB Gremlin database.

@@ -1097,45 +1097,6 @@ type QuotaAvailabilityRequest struct {
 	Type *CheckQuotaNameResourceTypes
 }
 
-// QuotaItem - Information regarding Quota Item.
-type QuotaItem struct {
-	// QuotaItem properties
-	Properties *QuotaItemProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// QuotaItemList - List of Quota Items
-type QuotaItemList struct {
-	// REQUIRED; The QuotaItem items on this page
-	Value []*QuotaItem
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// QuotaItemProperties - QuotaItem Properties
-type QuotaItemProperties struct {
-	// READ-ONLY; The current quota value.
-	Current *int32
-
-	// READ-ONLY; The default quota value.
-	Default *int32
-
-	// READ-ONLY; The usage quota value.
-	Usage *int32
-}
-
 // QuotaReport - Quota report record properties
 type QuotaReport struct {
 	// Flag to indicate whether the quota is derived from default quota.
@@ -1494,6 +1455,45 @@ type SnapshotsList struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// SubscriptionQuotaItem - Information regarding Quota Item.
+type SubscriptionQuotaItem struct {
+	// QuotaItem properties
+	Properties *SubscriptionQuotaItemProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionQuotaItemList - List of Quota Items
+type SubscriptionQuotaItemList struct {
+	// REQUIRED; The QuotaItem items on this page
+	Value []*SubscriptionQuotaItem
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SubscriptionQuotaItemProperties - QuotaItem Properties
+type SubscriptionQuotaItemProperties struct {
+	// READ-ONLY; The current quota value.
+	Current *int32
+
+	// READ-ONLY; The default quota value.
+	Default *int32
+
+	// READ-ONLY; The usage quota value.
+	Usage *int32
 }
 
 // SubvolumeInfo - Subvolume Information properties

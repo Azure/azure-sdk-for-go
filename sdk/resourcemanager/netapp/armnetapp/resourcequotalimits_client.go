@@ -97,7 +97,7 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 // getHandleResponse handles the Get response.
 func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) (ResourceQuotaLimitsClientGetResponse, error) {
 	result := ResourceQuotaLimitsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaItem); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItem); err != nil {
 		return ResourceQuotaLimitsClientGetResponse{}, err
 	}
 	return result, nil
@@ -157,7 +157,7 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 // listHandleResponse handles the List response.
 func (client *ResourceQuotaLimitsClient) listHandleResponse(resp *http.Response) (ResourceQuotaLimitsClientListResponse, error) {
 	result := ResourceQuotaLimitsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaItemList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItemList); err != nil {
 		return ResourceQuotaLimitsClientListResponse{}, err
 	}
 	return result, nil

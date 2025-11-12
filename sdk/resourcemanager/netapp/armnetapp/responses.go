@@ -248,25 +248,25 @@ type ResourceClientUpdateNetworkSiblingSetResponse struct {
 // ResourceQuotaLimitsAccountClientGetResponse contains the response from method ResourceQuotaLimitsAccountClient.Get.
 type ResourceQuotaLimitsAccountClientGetResponse struct {
 	// Information regarding Quota Item.
-	QuotaItem
+	SubscriptionQuotaItem
 }
 
 // ResourceQuotaLimitsAccountClientListResponse contains the response from method ResourceQuotaLimitsAccountClient.NewListPager.
 type ResourceQuotaLimitsAccountClientListResponse struct {
 	// List of Quota Items
-	QuotaItemList
+	SubscriptionQuotaItemList
 }
 
 // ResourceQuotaLimitsClientGetResponse contains the response from method ResourceQuotaLimitsClient.Get.
 type ResourceQuotaLimitsClientGetResponse struct {
 	// Information regarding Quota Item.
-	QuotaItem
+	SubscriptionQuotaItem
 }
 
 // ResourceQuotaLimitsClientListResponse contains the response from method ResourceQuotaLimitsClient.NewListPager.
 type ResourceQuotaLimitsClientListResponse struct {
 	// List of Quota Items
-	QuotaItemList
+	SubscriptionQuotaItemList
 }
 
 // ResourceRegionInfosClientGetResponse contains the response from method ResourceRegionInfosClient.Get.

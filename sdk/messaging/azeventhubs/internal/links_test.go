@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -88,8 +89,8 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
 	// now recover like normal
-
-	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID))
+	args := &utils.RetryFnArgs{}
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(err, oldLWID), args)
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -183,13 +184,15 @@ func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
-	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID))
+	args := &utils.RetryFnArgs{}
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(&amqp.LinkError{}, oldLWID), args)
 	var connErr *amqp.ConnError
 	require.ErrorAs(t, err, &connErr)
 	require.Nil(t, connErr.RemoteErr, "is the forwarded error from the closed connection")
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(connErr), "next recovery would force a connection level recovery")
 
-	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID))
+	args = &utils.RetryFnArgs{}
+	err = links.lr.RecoverIfNeeded(context.Background(), lwidToError(connErr, oldLWID), args)
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
@@ -223,7 +226,8 @@ func TestLinkFailure(t *testing.T) {
 	cancelledCtx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-time.Hour))
 	defer cancel()
 
-	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID))
+	args := &utils.RetryFnArgs{}
+	err = links.lr.RecoverIfNeeded(cancelledCtx, lwidToError(err, oldLWID), args)
 	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")

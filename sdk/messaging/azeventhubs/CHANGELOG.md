@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.2 (2025-11-17)
+
+### Features Added
+
+- Support for a configurable link recovery delay.
+
 ## 2.0.1 (2025-10-08)
 
 ### Bugs Fixed

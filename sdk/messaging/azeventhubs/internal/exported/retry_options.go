@@ -23,4 +23,15 @@ type RetryOptions struct {
 	// Typically the value is greater than or equal to the value specified in RetryDelay.
 	// The default Value is 120 seconds.  A value less than zero means there is no cap.
 	MaxRetryDelay time.Duration
+
+	// LinkRecoveryDelay specifies a fixed delay to use after a link recovery failure, instead of
+	// the normal exponential backoff specified by RetryDelay. This only applies when an AMQP link
+	// needs to be recovered (e.g., link detached errors). For other types of failures, the normal
+	// RetryDelay with exponential backoff is used.
+	// The default value is zero, which means link recovery retries will use the normal RetryDelay
+	// exponential backoff behavior. A value less than zero means no delay after link recovery.
+	// Positive values let you slow down repeated link recovery attempts if, for example, recreating
+	// links is putting pressure on your namespace, while negative values let you immediately try
+	// again when link recovery failures happen.
+	LinkRecoveryDelay time.Duration
 }

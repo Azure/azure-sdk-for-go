@@ -1,9 +1,26 @@
 # Azure App Configuration Client Module for Go
 
-Azure App Configuration is a managed service that helps developers centralize their application and feature settings simply and securely.
-It allows you to create and manage application configuration settings and retrieve their revisions from a specific point in time.
-
 [Source code][azappconfig_src] | [Package (pkg.go.dev)][azappconfig] | [Product documentation][appconfig_docs]
+
+Azure App Configuration is a managed service that helps developers centralize their application and feature settings simply and securely.
+
+Use `azappconfig` (this package) to:
+
+- Manage configuration settings and snapshots in Azure App Configuration
+- Perform granular reads that operate outside the realm of normal configuration consumption
+
+Most applications should start with the [azureappconfiguration](https://pkg.go.dev/github.com/Azure/AppConfiguration-GoProvider/azureappconfiguration) package, which builds on this low-level client library and is the recommended way to consume configuration at runtime. It adds:
+
+- Strongly-typed struct data binding
+- Returning key-values as raw JSON bytes
+- Configuration refresh during runtime
+- High reliability with caching, replica discovery, failover, and load balancing
+- Key vault reference resolution and auto-refresh
+- Feature flag integration for the [featuremanagement](https://pkg.go.dev/github.com/microsoft/Featuremanagement-Go/featuremanagement) library
+
+For more information, please go to [configuration provider](https://learn.microsoft.com/azure/azure-app-configuration/configuration-provider-overview).
+
+
 
 ## Getting started
 

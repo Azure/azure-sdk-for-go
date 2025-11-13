@@ -27,7 +27,7 @@ type RackSKUsClient struct {
 // NewRackSKUsClient creates a new instance of RackSKUsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RackSKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential,
 // Get - Get the properties of the provided rack SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-02-01
+// Generated from API version 2025-07-01-preview
 //   - rackSKUName - The name of the rack SKU.
 //   - options - RackSKUsClientGetOptions contains the optional parameters for the RackSKUsClient.Get method.
 func (client *RackSKUsClient) Get(ctx context.Context, rackSKUName string, options *RackSKUsClientGetOptions) (RackSKUsClientGetResponse, error) {
@@ -84,7 +84,7 @@ func (client *RackSKUsClient) getCreateRequest(ctx context.Context, rackSKUName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -101,7 +101,7 @@ func (client *RackSKUsClient) getHandleResponse(resp *http.Response) (RackSKUsCl
 
 // NewListBySubscriptionPager - Get a list of rack SKUs in the provided subscription.
 //
-// Generated from API version 2025-02-01
+// Generated from API version 2025-07-01-preview
 //   - options - RackSKUsClientListBySubscriptionOptions contains the optional parameters for the RackSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClientListBySubscriptionOptions) *runtime.Pager[RackSKUsClientListBySubscriptionResponse] {
@@ -139,7 +139,7 @@ func (client *RackSKUsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

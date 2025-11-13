@@ -1,6 +1,6 @@
 # Release History
 
-## 1.14.0-beta.2 (Unreleased)
+## 1.14.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.0-beta.2 (2025-11-10)
+
+### Breaking Changes
+
+> These changes affect only code written against a beta version such as v1.13.0-beta.1
+- `WorkloadIdentityCredential` identity binding mode is disabled by default. To enable it, set
+  `WorkloadIdentityCredentialOptions.EnableAzureTokenProxy` to `true`
+- Removed identity binding mode support from `DefaultAzureCredential`. To use this feature, use
+  `WorkloadIdentityCredential` directly instead and set
+  `WorkloadIdentityCredentialOptions.EnableAzureTokenProxy` to `true`
+
+### Bugs Fixed
+
+- `AzureCLICredential` quoted arguments incorrectly on Windows
+
+## 1.13.1 (2025-11-10)
+
+### Bugs Fixed
+
+- `AzureCLICredential` quoted arguments incorrectly on Windows
 
 ## 1.14.0-beta.1 (2025-10-07)
 

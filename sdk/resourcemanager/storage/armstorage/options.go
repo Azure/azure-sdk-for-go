@@ -643,7 +643,7 @@ type TaskAssignmentsClientGetOptions struct {
 // TaskAssignmentsClientListOptions contains the optional parameters for the TaskAssignmentsClient.NewListPager method.
 type TaskAssignmentsClientListOptions struct {
 	// Optional, specifies the maximum number of storage task assignment Ids to be included in the list response.
-	Maxpagesize *int32
+	Top *int32
 }
 
 // TaskAssignmentsInstancesReportClientListOptions contains the optional parameters for the TaskAssignmentsInstancesReportClient.NewListPager

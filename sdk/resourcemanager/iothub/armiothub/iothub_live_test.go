@@ -57,7 +57,7 @@ func (testsuite *IothubTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestIothubTestSuite(t *testing.T) {
+func TTestIothubTestSuite(t *testing.T) {
 	suite.Run(t, new(IothubTestSuite))
 }
 

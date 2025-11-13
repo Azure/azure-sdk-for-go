@@ -26,7 +26,7 @@ type PublicCloudConnectorsClient struct {
 // NewPublicCloudConnectorsClient creates a new instance of PublicCloudConnectorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPublicCloudConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PublicCloudConnectorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -171,7 +171,6 @@ func (client *PublicCloudConnectorsClient) deleteCreateRequest(ctx context.Conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2024-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -440,7 +439,7 @@ func (client *PublicCloudConnectorsClient) testPermissionsCreateRequest(ctx cont
 //   - properties - The resource properties to be updated.
 //   - options - PublicCloudConnectorsClientUpdateOptions contains the optional parameters for the PublicCloudConnectorsClient.Update
 //     method.
-func (client *PublicCloudConnectorsClient) Update(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties PublicCloudConnector, options *PublicCloudConnectorsClientUpdateOptions) (PublicCloudConnectorsClientUpdateResponse, error) {
+func (client *PublicCloudConnectorsClient) Update(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties PublicCloudConnectorUpdate, options *PublicCloudConnectorsClientUpdateOptions) (PublicCloudConnectorsClientUpdateResponse, error) {
 	var err error
 	const operationName = "PublicCloudConnectorsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -463,7 +462,7 @@ func (client *PublicCloudConnectorsClient) Update(ctx context.Context, resourceG
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PublicCloudConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties PublicCloudConnector, _ *PublicCloudConnectorsClientUpdateOptions) (*policy.Request, error) {
+func (client *PublicCloudConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties PublicCloudConnectorUpdate, _ *PublicCloudConnectorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

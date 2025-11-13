@@ -307,6 +307,9 @@ type AccountProperties struct {
 	// NFS 3.0 protocol support enabled if set to true.
 	EnableNfsV3 *bool
 
+	// Status indicating whether Geo Priority Replication is enabled for the account.
+	GeoPriorityReplicationStatus *GeoPriorityReplicationStatus
+
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
 	// level immutability for all the containers in the account by default.
 	ImmutableStorageWithVersioning *ImmutableStorageAccount
@@ -466,6 +469,9 @@ type AccountPropertiesCreateParameters struct {
 	// Encryption settings to be used for server-side encryption for the storage account.
 	Encryption *Encryption
 
+	// Status indicating whether Geo Priority Replication is enabled for the account.
+	GeoPriorityReplicationStatus *GeoPriorityReplicationStatus
+
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
 	// level immutability for all the new containers in the account by default.
 	ImmutableStorageWithVersioning *ImmutableStorageAccount
@@ -555,6 +561,9 @@ type AccountPropertiesUpdateParameters struct {
 
 	// Not applicable. Azure Storage encryption at rest is enabled by default for all storage accounts and cannot be disabled.
 	Encryption *Encryption
+
+	// Status indicating whether Geo Priority Replication is enabled for the account.
+	GeoPriorityReplicationStatus *GeoPriorityReplicationStatus
 
 	// The property is immutable and can only be set to true at the account creation time. When set to true, it enables object
 	// level immutability for all the containers in the account by default.
@@ -1798,6 +1807,12 @@ type FileShareRecommendations struct {
 	IoScalar *float64
 }
 
+// GeoPriorityReplicationStatus - Geo Priority Replication enablement status for the storage account.
+type GeoPriorityReplicationStatus struct {
+	// Indicates whether Blob Geo Priority Replication is enabled for the storage account.
+	IsBlobEnabled *bool
+}
+
 // GeoReplicationStats - Statistics related to replication for storage account's Blob, Table, Queue and File services. It
 // is only available when geo-redundant replication is enabled for the storage account.
 type GeoReplicationStats struct {
@@ -2610,6 +2625,9 @@ type ObjectReplicationPolicyProperties struct {
 	// Optional. The object replication policy metrics feature options.
 	Metrics *ObjectReplicationPolicyPropertiesMetrics
 
+	// Optional. The object replication policy priority replication feature options.
+	PriorityReplication *ObjectReplicationPolicyPropertiesPriorityReplication
+
 	// The storage account object replication rules.
 	Rules []*ObjectReplicationPolicyRule
 
@@ -2623,6 +2641,13 @@ type ObjectReplicationPolicyProperties struct {
 // ObjectReplicationPolicyPropertiesMetrics - Optional. The object replication policy metrics feature options.
 type ObjectReplicationPolicyPropertiesMetrics struct {
 	// Indicates whether object replication metrics feature is enabled for the policy.
+	Enabled *bool
+}
+
+// ObjectReplicationPolicyPropertiesPriorityReplication - Optional. The object replication policy priority replication feature
+// options.
+type ObjectReplicationPolicyPropertiesPriorityReplication struct {
+	// Indicates whether object replication priority replication feature is enabled for the policy.
 	Enabled *bool
 }
 

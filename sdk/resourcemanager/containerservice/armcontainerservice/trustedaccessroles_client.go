@@ -42,7 +42,7 @@ func NewTrustedAccessRolesClient(subscriptionID string, credential azcore.TokenC
 
 // NewListPager - List supported trusted access roles.
 //
-// Generated from API version 2025-07-02-preview
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - TrustedAccessRolesClientListOptions contains the optional parameters for the TrustedAccessRolesClient.NewListPager
 //     method.
@@ -85,7 +85,7 @@ func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-02-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

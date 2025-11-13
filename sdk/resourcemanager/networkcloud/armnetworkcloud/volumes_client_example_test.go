@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Volumes_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/Volumes_ListBySubscription.json
 func ExampleVolumesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,9 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumesClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewVolumesClient().NewListBySubscriptionPager(&armnetworkcloud.VolumesClientListBySubscriptionOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,20 +66,22 @@ func ExampleVolumesClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.VolumeProperties{
+		// 				AllocatedSizeMiB: to.Ptr[int64](1048576),
 		// 				AttachedTo: []*string{
 		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
 		// 					DetailedStatusMessage: to.Ptr("Volume is available"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 		// 					SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-		// 					SizeMiB: to.Ptr[int64](10000),
+		// 					SizeMiB: to.Ptr[int64](1048576),
+		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Volumes_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/Volumes_ListByResourceGroup.json
 func ExampleVolumesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +92,9 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVolumesClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewVolumesClient().NewListByResourceGroupPager("resourceGroupName", &armnetworkcloud.VolumesClientListByResourceGroupOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -123,20 +129,22 @@ func ExampleVolumesClient_NewListByResourceGroupPager() {
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
 		// 			Properties: &armnetworkcloud.VolumeProperties{
+		// 				AllocatedSizeMiB: to.Ptr[int64](1048576),
 		// 				AttachedTo: []*string{
 		// 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
 		// 					DetailedStatusMessage: to.Ptr("Volume is available"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 		// 					SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-		// 					SizeMiB: to.Ptr[int64](10000),
+		// 					SizeMiB: to.Ptr[int64](1048576),
+		// 					StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		// 				},
 		// 		}},
 		// 	}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Volumes_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/Volumes_Get.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,18 +184,20 @@ func ExampleVolumesClient_Get() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.VolumeProperties{
+	// 		AllocatedSizeMiB: to.Ptr[int64](1048576),
 	// 		AttachedTo: []*string{
 	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
 	// 			DetailedStatusMessage: to.Ptr("Volume is available"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-	// 			SizeMiB: to.Ptr[int64](10000),
+	// 			SizeMiB: to.Ptr[int64](1048576),
+	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Volumes_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/Volumes_Create.json
 func ExampleVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +219,8 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 			Type: to.Ptr("CustomLocation"),
 		},
 		Properties: &armnetworkcloud.VolumeProperties{
-			SizeMiB: to.Ptr[int64](10000),
+			SizeMiB:            to.Ptr[int64](1048576),
+			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 		},
 	}, &armnetworkcloud.VolumesClientBeginCreateOrUpdateOptions{IfMatch: nil,
 		IfNoneMatch: nil,
@@ -246,18 +257,20 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.VolumeProperties{
+	// 		AllocatedSizeMiB: to.Ptr[int64](1048576),
 	// 		AttachedTo: []*string{
 	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
 	// 			DetailedStatusMessage: to.Ptr("Volume is available"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-	// 			SizeMiB: to.Ptr[int64](10000),
+	// 			SizeMiB: to.Ptr[int64](1048576),
+	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Volumes_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/Volumes_Delete.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +293,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/Volumes_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/Volumes_Patch.json
 func ExampleVolumesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,13 +340,15 @@ func ExampleVolumesClient_Update() {
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
 	// 	Properties: &armnetworkcloud.VolumeProperties{
+	// 		AllocatedSizeMiB: to.Ptr[int64](1048576),
 	// 		AttachedTo: []*string{
 	// 			to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/virtualMachines/virtualMachineName")},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.VolumeDetailedStatusActive),
 	// 			DetailedStatusMessage: to.Ptr("Volume is available"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.VolumeProvisioningStateSucceeded),
 	// 			SerialNumber: to.Ptr("XXXX-XXXX-XXXX-XXXX"),
-	// 			SizeMiB: to.Ptr[int64](10000),
+	// 			SizeMiB: to.Ptr[int64](1048576),
+	// 			StorageApplianceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/StorageAppliances/storageApplianceName"),
 	// 		},
 	// 	}
 }

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Job_Execution_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Job_Execution_Get.json
 func ExampleContainerAppsAPIClient_JobExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleContainerAppsAPIClient_JobExecution() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewContainerAppsAPIClient().JobExecution(ctx, "rg", "testcontainerAppsJob0", "jobExecution1", nil)
+	res, err := clientFactory.NewContainerAppsAPIClient().JobExecution(ctx, "rg", "testcontainerappsjob0", "jobExecution1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -70,7 +70,7 @@ func ExampleContainerAppsAPIClient_JobExecution() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d2097f1ed03e8a61eed4fe63602a641bedd77ae/specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/Subscriptions_GetCustomDomainVerificationId.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/Subscriptions_GetCustomDomainVerificationId.json
 func ExampleContainerAppsAPIClient_GetCustomDomainVerificationID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

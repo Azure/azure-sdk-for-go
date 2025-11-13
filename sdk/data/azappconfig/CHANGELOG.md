@@ -1,6 +1,16 @@
 # Release History
 
-## 2.0.0 (Unreleased)
+## 2.0.1-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.0.0 (2025-10-15)
 
 ### Features Added
 
@@ -11,10 +21,6 @@
 ### Breaking Changes
 
 * Changed `Tags` field type in `Setting` from `map[string]string` to `map[string]*string` to support null tag values and maintain compatibility with the Azure App Configuration service backend.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.2.0 (2025-05-06)
 

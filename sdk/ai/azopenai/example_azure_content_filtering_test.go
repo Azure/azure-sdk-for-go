@@ -9,7 +9,9 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
 )
 
 // Example_usingAzureContentFiltering demonstrates how to use Azure OpenAI's content filtering capabilities.
@@ -23,6 +25,7 @@ import (
 // The example uses environment variables for configuration:
 // - AOAI_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_MODEL: The deployment name of your model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Content filtering is essential for:
 // - Maintaining content safety and compliance
@@ -30,19 +33,20 @@ import (
 // - Implementing content moderation policies
 // - Handling filtered content gracefully
 func Example_usingAzureContentFiltering() {
-	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_ENDPOINT")
 	model := os.Getenv("AOAI_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Standard OpenAI chat completion request
 	chatParams := openai.ChatCompletionNewParams{
@@ -135,6 +139,7 @@ func Example_usingAzureContentFiltering() {
 // The example uses environment variables for configuration:
 // - AOAI_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_MODEL: The deployment name of your model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Streaming with prompt filtering is useful for:
 // - Real-time content moderation
@@ -142,19 +147,20 @@ func Example_usingAzureContentFiltering() {
 // - Monitoring content safety during generation
 // - Building responsive applications with content safety checks
 func Example_usingAzurePromptFilteringWithStreaming() {
-	if !CheckRequiredEnvVars("AOAI_ENDPOINT", "AOAI_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not running example.")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_ENDPOINT")
 	model := os.Getenv("AOAI_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Example of streaming with Azure extensions
 	fmt.Fprintf(os.Stderr, "Streaming example:\n")

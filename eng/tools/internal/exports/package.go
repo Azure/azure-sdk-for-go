@@ -157,13 +157,17 @@ func (pkg Package) getText(start token.Pos, end token.Pos) string {
 // name can be nil, e.g. anonymous fields in structs, unnamed return types etc.
 func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string, *ast.Field)) {
 	for _, f := range fl {
-		var name *string
-		if f.Names != nil {
-			n := pkg.getText(f.Names[0].Pos(), f.Names[0].End())
-			name = &n
-		}
 		t := pkg.getText(f.Type.Pos(), f.Type.End())
-		cb(name, t, f)
+		if f.Names != nil {
+			// Handle multiple parameter names with the same type (e.g., func Foo(a, b string))
+			for _, name := range f.Names {
+				n := pkg.getText(name.Pos(), name.End())
+				cb(&n, t, f)
+			}
+		} else {
+			// Unnamed parameter
+			cb(nil, t, f)
+		}
 	}
 }
 

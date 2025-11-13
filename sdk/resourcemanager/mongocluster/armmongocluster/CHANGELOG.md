@@ -1,5 +1,44 @@
 # Release History
 
+## 1.1.0 (2025-10-21)
+### Features Added
+
+- New enum type `AuthenticationMode` with values `AuthenticationModeMicrosoftEntraID`, `AuthenticationModeNativeAuth`
+- New enum type `DataAPIMode` with values `DataAPIModeDisabled`, `DataAPIModeEnabled`
+- New enum type `EntraPrincipalType` with values `EntraPrincipalTypeServicePrincipal`, `EntraPrincipalTypeUser`
+- New enum type `IdentityProviderType` with values `IdentityProviderTypeMicrosoftEntraID`
+- New enum type `KeyEncryptionKeyIdentityType` with values `KeyEncryptionKeyIdentityTypeUserAssignedIdentity`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `StorageType` with values `StorageTypePremiumSSD`, `StorageTypePremiumSSDv2`
+- New enum type `UserRole` with values `UserRoleRoot`
+- New function `*ClientFactory.NewUsersClient() *UsersClient`
+- New function `*EntraIdentityProvider.GetIdentityProvider() *IdentityProvider`
+- New function `*IdentityProvider.GetIdentityProvider() *IdentityProvider`
+- New function `NewUsersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*UsersClient, error)`
+- New function `*UsersClient.BeginCreateOrUpdate(context.Context, string, string, string, User, *UsersClientBeginCreateOrUpdateOptions) (*runtime.Poller[UsersClientCreateOrUpdateResponse], error)`
+- New function `*UsersClient.BeginDelete(context.Context, string, string, string, *UsersClientBeginDeleteOptions) (*runtime.Poller[UsersClientDeleteResponse], error)`
+- New function `*UsersClient.Get(context.Context, string, string, string, *UsersClientGetOptions) (UsersClientGetResponse, error)`
+- New function `*UsersClient.NewListByMongoClusterPager(string, string, *UsersClientListByMongoClusterOptions) *runtime.Pager[UsersClientListByMongoClusterResponse]`
+- New struct `AuthConfigProperties`
+- New struct `CustomerManagedKeyEncryptionProperties`
+- New struct `DataAPIProperties`
+- New struct `DatabaseRole`
+- New struct `EncryptionProperties`
+- New struct `EntraIdentityProvider`
+- New struct `EntraIdentityProviderProperties`
+- New struct `KeyEncryptionKeyIdentity`
+- New struct `ManagedServiceIdentity`
+- New struct `User`
+- New struct `UserAssignedIdentity`
+- New struct `UserListResult`
+- New struct `UserProperties`
+- New field `Identity` in struct `MongoCluster`
+- New field `AuthConfig`, `DataAPI`, `Encryption` in struct `Properties`
+- New field `Type` in struct `StorageProperties`
+- New field `Identity` in struct `Update`
+- New field `AuthConfig`, `DataAPI`, `Encryption` in struct `UpdateProperties`
+
+
 ## 1.1.0 (2025-10-15)
 ### Features Added
 

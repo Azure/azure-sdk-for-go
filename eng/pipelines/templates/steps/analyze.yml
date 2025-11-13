@@ -20,6 +20,10 @@ steps:
       IncludeIndirect: false
 
   - pwsh: |
+      Get-ChildItem -Recurse $(Build.ArtifactStagingDirectory) | ForEach-Object { $_.FullName }
+    displayName: BEFORE artifact state
+
+  - pwsh: |
       . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
       . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
 
@@ -47,6 +51,10 @@ steps:
 
       Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
     displayName: 'Create Go APIView Artifact'
+
+  - pwsh: |
+      Get-ChildItem -Recurse $(Build.ArtifactStagingDirectory) | ForEach-Object { $_.FullName }
+    displayName: AFTER artifact state
 
   - ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
     # in a PR context, always publish the artifacts, even if they are not shipping

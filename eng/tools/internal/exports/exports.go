@@ -47,10 +47,19 @@ type Const struct {
 	Value string `json:"value"`
 }
 
+// Param represents a function parameter with its name and type.
+type Param struct {
+	// Name is the parameter name, may be empty for unnamed parameters
+	Name string `json:"name,omitempty"`
+
+	// Type is the parameter type
+	Type string `json:"type"`
+}
+
 // Func contains parameter and return types of a function/method.
 type Func struct {
-	// a comma-delimited list of the param types
-	Params *string `json:"params,omitempty"`
+	// Params is the list of function parameters
+	Params []Param `json:"params,omitempty"`
 
 	// a comma-delimited list of the return types
 	Returns *string `json:"returns,omitempty"`

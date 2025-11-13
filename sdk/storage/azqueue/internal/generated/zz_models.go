@@ -102,6 +102,15 @@ type GeoReplication struct {
 	Status *GeoReplicationStatus `xml:"Status"`
 }
 
+// KeyInfo - Key information
+type KeyInfo struct {
+	// REQUIRED; The date-time the key expires in ISO 8601 UTC time
+	Expiry *string `xml:"Expiry"`
+
+	// The date-time the key is active in ISO 8601 UTC time
+	Start *string `xml:"Start"`
+}
+
 // ListQueuesSegmentResponse - The object returned when calling List Queues on a Queue Service.
 type ListQueuesSegmentResponse struct {
 	// REQUIRED
@@ -360,6 +369,15 @@ type ServiceClientGetStatisticsOptions struct {
 	Timeout *int32
 }
 
+// ServiceClientGetUserDelegationKeyOptions contains the optional parameters for the ServiceClient.GetUserDelegationKey method.
+type ServiceClientGetUserDelegationKeyOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+	// The The timeout parameter is expressed in seconds. For more information, see
+	Timeout *int32
+}
+
 // ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.NewListQueuesSegmentPager
 // method.
 type ServiceClientListQueuesSegmentOptions struct {
@@ -427,4 +445,28 @@ type StorageServiceProperties struct {
 type StorageServiceStats struct {
 	// Geo-Replication information for the Secondary Storage Service
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
+}
+
+// UserDelegationKey - A user delegation key
+type UserDelegationKey struct {
+	// REQUIRED; The date-time the key expires
+	SignedExpiry *time.Time `xml:"SignedExpiry"`
+
+	// REQUIRED; The Azure Active Directory object ID in GUID format.
+	SignedOid *string `xml:"SignedOid"`
+
+	// REQUIRED; Abbreviation of the Azure Storage service that accepts the key
+	SignedService *string `xml:"SignedService"`
+
+	// REQUIRED; The date-time the key is active
+	SignedStart *time.Time `xml:"SignedStart"`
+
+	// REQUIRED; The Azure Active Directory tenant ID in GUID format
+	SignedTid *string `xml:"SignedTid"`
+
+	// REQUIRED; The service version that created the key
+	SignedVersion *string `xml:"SignedVersion"`
+
+	// REQUIRED; The key as a base64 string
+	Value *string `xml:"Value"`
 }

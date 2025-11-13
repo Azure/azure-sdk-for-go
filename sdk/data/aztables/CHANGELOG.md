@@ -1,15 +1,12 @@
 # Release History
 
-## 1.4.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.4.1 (2025-11-13)
 
 ### Bugs Fixed
 * Fix an issue that the Storage Table token audiences for sovereign clouds are incorrect.
 
 ### Other Changes
+* Updated dependencies.
 
 ## 1.4.0 (2025-06-19)
 

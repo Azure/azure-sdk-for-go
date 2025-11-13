@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- fix the error occured in parsing module name from `track2` section
+- Fix wrong parsing logic for module name config for swagger with major version suffix.
 
 ## 0.3.0 (2025-11-11)
 

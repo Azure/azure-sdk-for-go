@@ -1,5 +1,5 @@
 # Azure Hdinsight Containers Module for Go
-Please note, this package has been deprecated. The service backing this library is retired on January 31, 2025. For more details on the Azure Service Azure HDInsight on AKS retirement, please visit: <https://azure.microsoft.com/en-us/updates?id=azure-hdinsight-on-aks-retirement/>.
+Please note, this package has been deprecated. The service backing this library is retired on January 31, 2025. For more details on the Azure Service Azure HDInsight on AKS retirement, please visit: <https://azure.microsoft.com/en-us/updates?id=azure-hdinsight-on-aks-retirement>.
 
 The `armhdinsightcontainers` module provides operations for working with Azure Hdinsight Containers.
 

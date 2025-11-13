@@ -49,7 +49,7 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 		pkVersion = int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version)
 	}
 
-	readManyPipeline, err := queryEngine.CreateReadManyPipeline(string(rawPartitionKeyRanges), newItemIdentities, string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)
+	readManyPipeline, err := queryEngine.CreateReadManyPipeline(newItemIdentities, string(rawPartitionKeyRanges), string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}

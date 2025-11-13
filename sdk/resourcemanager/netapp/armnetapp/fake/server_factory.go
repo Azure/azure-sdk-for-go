@@ -36,9 +36,6 @@ type ServerFactory struct {
 	// BackupsUnderVolumeServer contains the fakes for client BackupsUnderVolumeClient
 	BackupsUnderVolumeServer BackupsUnderVolumeServer
 
-	// BucketsServer contains the fakes for client BucketsClient
-	BucketsServer BucketsServer
-
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -100,7 +97,6 @@ type ServerFactoryTransport struct {
 	trBackupsUnderAccountServer        *BackupsUnderAccountServerTransport
 	trBackupsUnderBackupVaultServer    *BackupsUnderBackupVaultServerTransport
 	trBackupsUnderVolumeServer         *BackupsUnderVolumeServerTransport
-	trBucketsServer                    *BucketsServerTransport
 	trOperationsServer                 *OperationsServerTransport
 	trPoolsServer                      *PoolsServerTransport
 	trResourceServer                   *ResourceServerTransport
@@ -158,9 +154,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewBackupsUnderVolumeServerTransport(&s.srv.BackupsUnderVolumeServer)
 		})
 		resp, err = s.trBackupsUnderVolumeServer.Do(req)
-	case "BucketsClient":
-		initServer(s, &s.trBucketsServer, func() *BucketsServerTransport { return NewBucketsServerTransport(&s.srv.BucketsServer) })
-		resp, err = s.trBucketsServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

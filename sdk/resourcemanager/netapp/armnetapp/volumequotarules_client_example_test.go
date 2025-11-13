@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/VolumeQuotaRules_Create.json
+// Generated from example definition: 2025-09-01/VolumeQuotaRules_Create.json
 func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/VolumeQuotaRules_Delete.json
+// Generated from example definition: 2025-09-01/VolumeQuotaRules_Delete.json
 func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/VolumeQuotaRules_Get.json
+// Generated from example definition: 2025-09-01/VolumeQuotaRules_Get.json
 func ExampleVolumeQuotaRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/VolumeQuotaRules_List.json
+// Generated from example definition: 2025-09-01/VolumeQuotaRules_List.json
 func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/VolumeQuotaRules_Update.json
+// Generated from example definition: 2025-09-01/VolumeQuotaRules_Update.json
 func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

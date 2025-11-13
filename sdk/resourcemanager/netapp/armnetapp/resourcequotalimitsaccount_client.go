@@ -42,7 +42,7 @@ func NewResourceQuotaLimitsAccountClient(subscriptionID string, credential azcor
 // Get - Get the default, current and usages account quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - quotaLimitName - The name of the Quota Limit
@@ -94,7 +94,7 @@ func (client *ResourceQuotaLimitsAccountClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +103,7 @@ func (client *ResourceQuotaLimitsAccountClient) getCreateRequest(ctx context.Con
 // getHandleResponse handles the Get response.
 func (client *ResourceQuotaLimitsAccountClient) getHandleResponse(resp *http.Response) (ResourceQuotaLimitsAccountClientGetResponse, error) {
 	result := ResourceQuotaLimitsAccountClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaItem); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItem); err != nil {
 		return ResourceQuotaLimitsAccountClientGetResponse{}, err
 	}
 	return result, nil
@@ -112,7 +112,7 @@ func (client *ResourceQuotaLimitsAccountClient) getHandleResponse(resp *http.Res
 // NewListPager - Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only
 // one.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - ResourceQuotaLimitsAccountClientListOptions contains the optional parameters for the ResourceQuotaLimitsAccountClient.NewListPager
@@ -160,7 +160,7 @@ func (client *ResourceQuotaLimitsAccountClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -169,7 +169,7 @@ func (client *ResourceQuotaLimitsAccountClient) listCreateRequest(ctx context.Co
 // listHandleResponse handles the List response.
 func (client *ResourceQuotaLimitsAccountClient) listHandleResponse(resp *http.Response) (ResourceQuotaLimitsAccountClientListResponse, error) {
 	result := ResourceQuotaLimitsAccountClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaItemList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItemList); err != nil {
 		return ResourceQuotaLimitsAccountClientListResponse{}, err
 	}
 	return result, nil

@@ -471,146 +471,6 @@ type BreakReplicationRequest struct {
 	ForceBreakReplication *bool
 }
 
-// Bucket resource
-type Bucket struct {
-	// Bucket properties
-	Properties *BucketProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// BucketCredentialsExpiry - The bucket's Access and Secret key pair Expiry Time expressed as the number of days from now.
-type BucketCredentialsExpiry struct {
-	// The number of days from now until the newly generated Access and Secret key pair will expire.
-	KeyPairExpiryDays *int32
-}
-
-// BucketGenerateCredentials - Bucket Access Key, Secret Key, and Expiry date and time of the key pair
-type BucketGenerateCredentials struct {
-	// READ-ONLY; The Access Key that is required along with the Secret Key to access the bucket.
-	AccessKey *string
-
-	// READ-ONLY; The bucket's Access and Secret key pair expiry date and time (in UTC).
-	KeyPairExpiry *time.Time
-
-	// READ-ONLY; The Secret Key that is required along with the Access Key to access the bucket.
-	SecretKey *string
-}
-
-// BucketList - List of volume bucket resources
-type BucketList struct {
-	// REQUIRED; The Bucket items on this page
-	Value []*Bucket
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// BucketPatch - Bucket resource
-type BucketPatch struct {
-	// Bucket properties
-	Properties *BucketPatchProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// BucketPatchProperties - Bucket resource properties for a Patch operation
-type BucketPatchProperties struct {
-	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
-	// username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be supplied, but
-	// not both.
-	FileSystemUser *FileSystemUser
-
-	// The volume path mounted inside the bucket.
-	Path *string
-
-	// Access permissions for the bucket. Either ReadOnly or ReadWrite.
-	Permissions *BucketPatchPermissions
-
-	// Properties of the server managing the lifecycle of volume buckets
-	Server *BucketServerPatchProperties
-
-	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState
-}
-
-// BucketProperties - Bucket resource properties
-type BucketProperties struct {
-	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
-	// username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be supplied, but
-	// not both.
-	FileSystemUser *FileSystemUser
-
-	// The volume path mounted inside the bucket. The default is the root path '/' if no value is provided when the bucket is
-	// created.
-	Path *string
-
-	// Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is ReadOnly if no value is provided during
-	// bucket creation.
-	Permissions *BucketPermissions
-
-	// Properties of the server managing the lifecycle of volume buckets
-	Server *BucketServerProperties
-
-	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The bucket credentials status. There states:
-	// "NoCredentialsSet": Access and Secret key pair have not been generated.
-	// "CredentialsExpired": Access and Secret key pair have expired.
-	// "Active": The certificate has been installed and credentials are unexpired.
-	Status *CredentialsStatus
-}
-
-// BucketServerPatchProperties - Properties of the server managing the lifecycle of volume buckets
-type BucketServerPatchProperties struct {
-	// A base64-encoded PEM file, which includes both the bucket server's certificate and private key. It is used to authenticate
-	// the user and allows access to volume data in a read-only manner.
-	CertificateObject *string
-
-	// The host part of the bucket URL, resolving to the bucket IP address and allowed by the server certificate.
-	Fqdn *string
-}
-
-// BucketServerProperties - Properties of the server managing the lifecycle of volume buckets
-type BucketServerProperties struct {
-	// A base64-encoded PEM file, which includes both the bucket server's certificate and private key. It is used to authenticate
-	// the user and allows access to volume data in a read-only manner.
-	CertificateObject *string
-
-	// The host part of the bucket URL, resolving to the bucket IP address and allowed by the server certificate.
-	Fqdn *string
-
-	// READ-ONLY; Certificate Common Name taken from the certificate installed on the bucket server
-	CertificateCommonName *string
-
-	// READ-ONLY; The bucket server's certificate expiry date.
-	CertificateExpiryDate *time.Time
-
-	// READ-ONLY; The bucket server's IPv4 address
-	IPAddress *string
-}
-
 // CapacityPool - Capacity pool resource
 type CapacityPool struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -701,12 +561,6 @@ type CheckAvailabilityResponse struct {
 	// <code>Invalid</code> indicates the name provided does not match Azure App Service naming requirements. <code>AlreadyExists</code>
 	// indicates that the name is already in use and is therefore unavailable.
 	Reason *InAvailabilityReasonType
-}
-
-// CifsUser - The effective CIFS username when accessing the volume data.
-type CifsUser struct {
-	// The CIFS user's username
-	Username *string
 }
 
 // ClusterPeerCommandResponse - Information about cluster peering process
@@ -839,17 +693,6 @@ type FilePathAvailabilityRequest struct {
 	AvailabilityZone *string
 }
 
-// FileSystemUser - File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows,
-// this is the user's username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must
-// be supplied, but not both.
-type FileSystemUser struct {
-	// The effective CIFS username when accessing the volume data.
-	CifsUser *CifsUser
-
-	// The effective NFS User ID and Group ID when accessing the volume data.
-	NfsUser *NfsUser
-}
-
 // GetGroupIDListForLDAPUserRequest - Get group Id list for LDAP User request
 type GetGroupIDListForLDAPUserRequest struct {
 	// REQUIRED; username is required to fetch the group to which user is part of
@@ -967,6 +810,13 @@ type ListReplications struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// ListReplicationsRequest - Body for the list replications endpoint. If supplied, the body will be used as a filter for example
+// to exclude deleted replications. If omitted, the endpoint returns all replications
+type ListReplicationsRequest struct {
+	// Exclude Replications filter. 'None' returns all replications, 'Deleted' excludes deleted replications. Default is 'None'
+	Exclude *Exclude
 }
 
 // LogSpecification - Log Definition of a single resource metric.
@@ -1097,15 +947,6 @@ type NetworkSiblingSet struct {
 
 	// READ-ONLY; Gets the status of the NetworkSiblingSet at the time the operation was called.
 	ProvisioningState *NetworkSiblingSetProvisioningState
-}
-
-// NfsUser - The effective NFS User ID and Group ID when accessing the volume data.
-type NfsUser struct {
-	// The NFS user's GID
-	GroupID *int64
-
-	// The NFS user's UID
-	UserID *int64
 }
 
 // NicInfo - NIC information and list of volumes for which the NIC has the primary mount ip address.
@@ -1256,45 +1097,6 @@ type QuotaAvailabilityRequest struct {
 	Type *CheckQuotaNameResourceTypes
 }
 
-// QuotaItem - Information regarding Quota Item.
-type QuotaItem struct {
-	// QuotaItem properties
-	Properties *QuotaItemProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// QuotaItemList - List of Quota Items
-type QuotaItemList struct {
-	// REQUIRED; The QuotaItem items on this page
-	Value []*QuotaItem
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// QuotaItemProperties - QuotaItem Properties
-type QuotaItemProperties struct {
-	// READ-ONLY; The current quota value.
-	Current *int32
-
-	// READ-ONLY; The default quota value.
-	Default *int32
-
-	// READ-ONLY; The usage quota value.
-	Usage *int32
-}
-
 // QuotaReport - Quota report record properties
 type QuotaReport struct {
 	// Flag to indicate whether the quota is derived from default quota.
@@ -1398,6 +1200,15 @@ type Replication struct {
 
 	// Schedule
 	ReplicationSchedule *ReplicationSchedule
+
+	// READ-ONLY; The status of the replication
+	MirrorState *ReplicationMirrorState
+
+	// READ-ONLY; Replication creation time
+	ReplicationCreationTime *time.Time
+
+	// READ-ONLY; Replication deletion time
+	ReplicationDeletionTime *time.Time
 
 	// READ-ONLY; UUID v4 used to identify the replication.
 	ReplicationID *string
@@ -1644,6 +1455,45 @@ type SnapshotsList struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// SubscriptionQuotaItem - Information regarding Quota Item.
+type SubscriptionQuotaItem struct {
+	// QuotaItem properties
+	Properties *SubscriptionQuotaItemProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SubscriptionQuotaItemList - List of Quota Items
+type SubscriptionQuotaItemList struct {
+	// REQUIRED; The QuotaItem items on this page
+	Value []*SubscriptionQuotaItem
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SubscriptionQuotaItemProperties - QuotaItem Properties
+type SubscriptionQuotaItemProperties struct {
+	// READ-ONLY; The current quota value.
+	Current *int32
+
+	// READ-ONLY; The default quota value.
+	Default *int32
+
+	// READ-ONLY; The usage quota value.
+	Usage *int32
 }
 
 // SubvolumeInfo - Subvolume Information properties

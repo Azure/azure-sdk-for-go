@@ -1,5 +1,11 @@
 # Release History
 
+## 0.3.1 (2025-11-13)
+
+### Bugs Fixed
+
+- fix the error occured in parsing module name from `track2` section
+
 ## 0.3.0 (2025-11-11)
 
 ### Features Added

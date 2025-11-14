@@ -17,64 +17,64 @@ import (
 	"strings"
 )
 
-// MaintenanceConfigurationsClient contains the methods for the MaintenanceConfigurations group.
-// Don't use this type directly, use NewMaintenanceConfigurationsClient() instead.
-type MaintenanceConfigurationsClient struct {
+// LoadBalancersClient contains the methods for the LoadBalancers group.
+// Don't use this type directly, use NewLoadBalancersClient() instead.
+type LoadBalancersClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewMaintenanceConfigurationsClient creates a new instance of MaintenanceConfigurationsClient with the specified values.
+// NewLoadBalancersClient creates a new instance of LoadBalancersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewMaintenanceConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceConfigurationsClient, error) {
+func NewLoadBalancersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &MaintenanceConfigurationsClient{
+	client := &LoadBalancersClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates a maintenance configuration in the specified managed cluster.
+// CreateOrUpdate - Creates or updates a load balancer in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - configName - The name of the maintenance configuration.
-//   - parameters - The maintenance configuration to create or update.
-//   - options - MaintenanceConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the MaintenanceConfigurationsClient.CreateOrUpdate
+//   - loadBalancerName - The name of the load balancer.
+//   - parameters - The load balancer to create or update.
+//   - options - LoadBalancersClientCreateOrUpdateOptions contains the optional parameters for the LoadBalancersClient.CreateOrUpdate
 //     method.
-func (client *MaintenanceConfigurationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configName string, parameters MaintenanceConfiguration, options *MaintenanceConfigurationsClientCreateOrUpdateOptions) (MaintenanceConfigurationsClientCreateOrUpdateResponse, error) {
+func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, parameters LoadBalancer, options *LoadBalancersClientCreateOrUpdateOptions) (LoadBalancersClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "MaintenanceConfigurationsClient.CreateOrUpdate"
+	const operationName = "LoadBalancersClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, configName, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, loadBalancerName, parameters, options)
 	if err != nil {
-		return MaintenanceConfigurationsClientCreateOrUpdateResponse{}, err
+		return LoadBalancersClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return MaintenanceConfigurationsClientCreateOrUpdateResponse{}, err
+		return LoadBalancersClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return MaintenanceConfigurationsClientCreateOrUpdateResponse{}, err
+		return LoadBalancersClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configName string, parameters MaintenanceConfiguration, _ *MaintenanceConfigurationsClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}"
+func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, parameters LoadBalancer, _ *LoadBalancersClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/loadBalancers/{loadBalancerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -87,10 +87,10 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if configName == "" {
-		return nil, errors.New("parameter configName cannot be empty")
+	if loadBalancerName == "" {
+		return nil, errors.New("parameter loadBalancerName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{configName}", url.PathEscape(configName))
+	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -106,47 +106,68 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (MaintenanceConfigurationsClientCreateOrUpdateResponse, error) {
-	result := MaintenanceConfigurationsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfiguration); err != nil {
-		return MaintenanceConfigurationsClientCreateOrUpdateResponse{}, err
+func (client *LoadBalancersClient) createOrUpdateHandleResponse(resp *http.Response) (LoadBalancersClientCreateOrUpdateResponse, error) {
+	result := LoadBalancersClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancer); err != nil {
+		return LoadBalancersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Deletes a maintenance configuration.
+// BeginDelete - Deletes a load balancer in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - configName - The name of the maintenance configuration.
-//   - options - MaintenanceConfigurationsClientDeleteOptions contains the optional parameters for the MaintenanceConfigurationsClient.Delete
+//   - loadBalancerName - The name of the load balancer.
+//   - options - LoadBalancersClientBeginDeleteOptions contains the optional parameters for the LoadBalancersClient.BeginDelete
 //     method.
-func (client *MaintenanceConfigurationsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, configName string, options *MaintenanceConfigurationsClientDeleteOptions) (MaintenanceConfigurationsClientDeleteResponse, error) {
+func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*runtime.Poller[LoadBalancersClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, loadBalancerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[LoadBalancersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[LoadBalancersClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Deletes a load balancer in the specified managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-02-preview
+func (client *LoadBalancersClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *LoadBalancersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "MaintenanceConfigurationsClient.Delete"
+	const operationName = "LoadBalancersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, configName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, loadBalancerName, options)
 	if err != nil {
-		return MaintenanceConfigurationsClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return MaintenanceConfigurationsClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return MaintenanceConfigurationsClientDeleteResponse{}, err
+		return nil, err
 	}
-	return MaintenanceConfigurationsClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configName string, _ *MaintenanceConfigurationsClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}"
+func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, _ *LoadBalancersClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/loadBalancers/{loadBalancerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -159,10 +180,10 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if configName == "" {
-		return nil, errors.New("parameter configName cannot be empty")
+	if loadBalancerName == "" {
+		return nil, errors.New("parameter loadBalancerName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{configName}", url.PathEscape(configName))
+	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -174,40 +195,39 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// Get - Gets the specified maintenance configuration of a managed cluster.
+// Get - Gets the specified load balancer.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - configName - The name of the maintenance configuration.
-//   - options - MaintenanceConfigurationsClientGetOptions contains the optional parameters for the MaintenanceConfigurationsClient.Get
-//     method.
-func (client *MaintenanceConfigurationsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, configName string, options *MaintenanceConfigurationsClientGetOptions) (MaintenanceConfigurationsClientGetResponse, error) {
+//   - loadBalancerName - The name of the load balancer.
+//   - options - LoadBalancersClientGetOptions contains the optional parameters for the LoadBalancersClient.Get method.
+func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *LoadBalancersClientGetOptions) (LoadBalancersClientGetResponse, error) {
 	var err error
-	const operationName = "MaintenanceConfigurationsClient.Get"
+	const operationName = "LoadBalancersClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, configName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, loadBalancerName, options)
 	if err != nil {
-		return MaintenanceConfigurationsClientGetResponse{}, err
+		return LoadBalancersClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return MaintenanceConfigurationsClientGetResponse{}, err
+		return LoadBalancersClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return MaintenanceConfigurationsClientGetResponse{}, err
+		return LoadBalancersClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, configName string, _ *MaintenanceConfigurationsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations/{configName}"
+func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, _ *LoadBalancersClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/loadBalancers/{loadBalancerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -220,10 +240,10 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if configName == "" {
-		return nil, errors.New("parameter configName cannot be empty")
+	if loadBalancerName == "" {
+		return nil, errors.New("parameter loadBalancerName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{configName}", url.PathEscape(configName))
+	urlPath = strings.ReplaceAll(urlPath, "{loadBalancerName}", url.PathEscape(loadBalancerName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -236,28 +256,28 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *http.Response) (MaintenanceConfigurationsClientGetResponse, error) {
-	result := MaintenanceConfigurationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfiguration); err != nil {
-		return MaintenanceConfigurationsClientGetResponse{}, err
+func (client *LoadBalancersClient) getHandleResponse(resp *http.Response) (LoadBalancersClientGetResponse, error) {
+	result := LoadBalancersClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancer); err != nil {
+		return LoadBalancersClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByManagedClusterPager - Gets a list of maintenance configurations in the specified managed cluster.
+// NewListByManagedClusterPager - Gets a list of load balancers in the specified managed cluster.
 //
 // Generated from API version 2025-09-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - options - MaintenanceConfigurationsClientListByManagedClusterOptions contains the optional parameters for the MaintenanceConfigurationsClient.NewListByManagedClusterPager
+//   - options - LoadBalancersClientListByManagedClusterOptions contains the optional parameters for the LoadBalancersClient.NewListByManagedClusterPager
 //     method.
-func (client *MaintenanceConfigurationsClient) NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsClientListByManagedClusterOptions) *runtime.Pager[MaintenanceConfigurationsClientListByManagedClusterResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MaintenanceConfigurationsClientListByManagedClusterResponse]{
-		More: func(page MaintenanceConfigurationsClientListByManagedClusterResponse) bool {
+func (client *LoadBalancersClient) NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *LoadBalancersClientListByManagedClusterOptions) *runtime.Pager[LoadBalancersClientListByManagedClusterResponse] {
+	return runtime.NewPager(runtime.PagingHandler[LoadBalancersClientListByManagedClusterResponse]{
+		More: func(page LoadBalancersClientListByManagedClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *MaintenanceConfigurationsClientListByManagedClusterResponse) (MaintenanceConfigurationsClientListByManagedClusterResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MaintenanceConfigurationsClient.NewListByManagedClusterPager")
+		Fetcher: func(ctx context.Context, page *LoadBalancersClientListByManagedClusterResponse) (LoadBalancersClientListByManagedClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "LoadBalancersClient.NewListByManagedClusterPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -266,7 +286,7 @@ func (client *MaintenanceConfigurationsClient) NewListByManagedClusterPager(reso
 				return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
 			}, nil)
 			if err != nil {
-				return MaintenanceConfigurationsClientListByManagedClusterResponse{}, err
+				return LoadBalancersClientListByManagedClusterResponse{}, err
 			}
 			return client.listByManagedClusterHandleResponse(resp)
 		},
@@ -275,8 +295,8 @@ func (client *MaintenanceConfigurationsClient) NewListByManagedClusterPager(reso
 }
 
 // listByManagedClusterCreateRequest creates the ListByManagedCluster request.
-func (client *MaintenanceConfigurationsClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *MaintenanceConfigurationsClientListByManagedClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/maintenanceConfigurations"
+func (client *LoadBalancersClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *LoadBalancersClientListByManagedClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/loadBalancers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -301,10 +321,10 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterCreateRequest
 }
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
-func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleResponse(resp *http.Response) (MaintenanceConfigurationsClientListByManagedClusterResponse, error) {
-	result := MaintenanceConfigurationsClientListByManagedClusterResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceConfigurationListResult); err != nil {
-		return MaintenanceConfigurationsClientListByManagedClusterResponse{}, err
+func (client *LoadBalancersClient) listByManagedClusterHandleResponse(resp *http.Response) (LoadBalancersClientListByManagedClusterResponse, error) {
+	result := LoadBalancersClientListByManagedClusterResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancerListResult); err != nil {
+		return LoadBalancersClientListByManagedClusterResponse{}, err
 	}
 	return result, nil
 }

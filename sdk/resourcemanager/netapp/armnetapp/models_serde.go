@@ -193,7 +193,6 @@ func (a AccountProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "activeDirectories", a.ActiveDirectories)
 	populate(objectMap, "disableShowmount", a.DisableShowmount)
 	populate(objectMap, "encryption", a.Encryption)
-	populate(objectMap, "ldapConfiguration", a.LdapConfiguration)
 	populate(objectMap, "multiAdStatus", a.MultiAdStatus)
 	populate(objectMap, "nfsV4IDDomain", a.NfsV4IDDomain)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
@@ -217,9 +216,6 @@ func (a *AccountProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "encryption":
 			err = unpopulate(val, "Encryption", &a.Encryption)
-			delete(rawMsg, key)
-		case "ldapConfiguration":
-			err = unpopulate(val, "LdapConfiguration", &a.LdapConfiguration)
 			delete(rawMsg, key)
 		case "multiAdStatus":
 			err = unpopulate(val, "MultiAdStatus", &a.MultiAdStatus)
@@ -1846,49 +1842,6 @@ func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LdapConfiguration.
-func (l LdapConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "certificateCNHost", l.CertificateCNHost)
-	populate(objectMap, "domain", l.Domain)
-	populate(objectMap, "ldapOverTLS", l.LdapOverTLS)
-	populate(objectMap, "ldapServers", l.LdapServers)
-	populate(objectMap, "serverCACertificate", l.ServerCACertificate)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type LdapConfiguration.
-func (l *LdapConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", l, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "certificateCNHost":
-			err = unpopulate(val, "CertificateCNHost", &l.CertificateCNHost)
-			delete(rawMsg, key)
-		case "domain":
-			err = unpopulate(val, "Domain", &l.Domain)
-			delete(rawMsg, key)
-		case "ldapOverTLS":
-			err = unpopulate(val, "LdapOverTLS", &l.LdapOverTLS)
-			delete(rawMsg, key)
-		case "ldapServers":
-			err = unpopulate(val, "LdapServers", &l.LdapServers)
-			delete(rawMsg, key)
-		case "serverCACertificate":
-			err = unpopulate(val, "ServerCACertificate", &l.ServerCACertificate)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", l, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type LdapSearchScopeOpt.
 func (l LdapSearchScopeOpt) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1915,33 +1868,6 @@ func (l *LdapSearchScopeOpt) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "userDN":
 			err = unpopulate(val, "UserDN", &l.UserDN)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", l, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListQuotaReportResponse.
-func (l ListQuotaReportResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ListQuotaReportResponse.
-func (l *ListQuotaReportResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", l, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = unpopulate(val, "Value", &l.Value)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2715,53 +2641,6 @@ func (q *QuotaAvailabilityRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type QuotaReport.
-func (q QuotaReport) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "isDerivedQuota", q.IsDerivedQuota)
-	populate(objectMap, "percentageUsed", q.PercentageUsed)
-	populate(objectMap, "quotaLimitTotalInKiBs", q.QuotaLimitTotalInKiBs)
-	populate(objectMap, "quotaLimitUsedInKiBs", q.QuotaLimitUsedInKiBs)
-	populate(objectMap, "quotaTarget", q.QuotaTarget)
-	populate(objectMap, "quotaType", q.QuotaType)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type QuotaReport.
-func (q *QuotaReport) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", q, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "isDerivedQuota":
-			err = unpopulate(val, "IsDerivedQuota", &q.IsDerivedQuota)
-			delete(rawMsg, key)
-		case "percentageUsed":
-			err = unpopulate(val, "PercentageUsed", &q.PercentageUsed)
-			delete(rawMsg, key)
-		case "quotaLimitTotalInKiBs":
-			err = unpopulate(val, "QuotaLimitTotalInKiBs", &q.QuotaLimitTotalInKiBs)
-			delete(rawMsg, key)
-		case "quotaLimitUsedInKiBs":
-			err = unpopulate(val, "QuotaLimitUsedInKiBs", &q.QuotaLimitUsedInKiBs)
-			delete(rawMsg, key)
-		case "quotaTarget":
-			err = unpopulate(val, "QuotaTarget", &q.QuotaTarget)
-			delete(rawMsg, key)
-		case "quotaType":
-			err = unpopulate(val, "QuotaType", &q.QuotaType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", q, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ReestablishReplicationRequest.
 func (r ReestablishReplicationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3047,10 +2926,6 @@ func (r ReplicationObject) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "destinationReplications", r.DestinationReplications)
 	populate(objectMap, "endpointType", r.EndpointType)
-	populate(objectMap, "externalReplicationSetupInfo", r.ExternalReplicationSetupInfo)
-	populate(objectMap, "externalReplicationSetupStatus", r.ExternalReplicationSetupStatus)
-	populate(objectMap, "mirrorState", r.MirrorState)
-	populate(objectMap, "relationshipStatus", r.RelationshipStatus)
 	populate(objectMap, "remotePath", r.RemotePath)
 	populate(objectMap, "remoteVolumeRegion", r.RemoteVolumeRegion)
 	populate(objectMap, "remoteVolumeResourceId", r.RemoteVolumeResourceID)
@@ -3073,18 +2948,6 @@ func (r *ReplicationObject) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "endpointType":
 			err = unpopulate(val, "EndpointType", &r.EndpointType)
-			delete(rawMsg, key)
-		case "externalReplicationSetupInfo":
-			err = unpopulate(val, "ExternalReplicationSetupInfo", &r.ExternalReplicationSetupInfo)
-			delete(rawMsg, key)
-		case "externalReplicationSetupStatus":
-			err = unpopulate(val, "ExternalReplicationSetupStatus", &r.ExternalReplicationSetupStatus)
-			delete(rawMsg, key)
-		case "mirrorState":
-			err = unpopulate(val, "MirrorState", &r.MirrorState)
-			delete(rawMsg, key)
-		case "relationshipStatus":
-			err = unpopulate(val, "RelationshipStatus", &r.RelationshipStatus)
 			delete(rawMsg, key)
 		case "remotePath":
 			err = unpopulate(val, "RemotePath", &r.RemotePath)
@@ -4948,9 +4811,7 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isRestoring", v.IsRestoring)
 	populate(objectMap, "kerberosEnabled", v.KerberosEnabled)
 	populate(objectMap, "keyVaultPrivateEndpointResourceId", v.KeyVaultPrivateEndpointResourceID)
-	populate(objectMap, "language", v.Language)
 	populate(objectMap, "ldapEnabled", v.LdapEnabled)
-	populate(objectMap, "ldapServerType", v.LdapServerType)
 	populate(objectMap, "maximumNumberOfFiles", v.MaximumNumberOfFiles)
 	populate(objectMap, "mountTargets", v.MountTargets)
 	populate(objectMap, "networkFeatures", v.NetworkFeatures)
@@ -5080,14 +4941,8 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 		case "keyVaultPrivateEndpointResourceId":
 			err = unpopulate(val, "KeyVaultPrivateEndpointResourceID", &v.KeyVaultPrivateEndpointResourceID)
 			delete(rawMsg, key)
-		case "language":
-			err = unpopulate(val, "Language", &v.Language)
-			delete(rawMsg, key)
 		case "ldapEnabled":
 			err = unpopulate(val, "LdapEnabled", &v.LdapEnabled)
-			delete(rawMsg, key)
-		case "ldapServerType":
-			err = unpopulate(val, "LdapServerType", &v.LdapServerType)
 			delete(rawMsg, key)
 		case "maximumNumberOfFiles":
 			err = unpopulate(val, "MaximumNumberOfFiles", &v.MaximumNumberOfFiles)

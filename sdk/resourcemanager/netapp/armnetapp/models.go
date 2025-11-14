@@ -92,9 +92,6 @@ type AccountProperties struct {
 	// Encryption settings
 	Encryption *AccountEncryption
 
-	// LDAP Configuration for the account.
-	LdapConfiguration *LdapConfiguration
-
 	// Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and region and
 	// only affect non ldap NFSv4 volumes.
 	NfsV4IDDomain *string
@@ -767,24 +764,6 @@ type KeyVaultProperties struct {
 	Status *KeyVaultStatus
 }
 
-// LdapConfiguration - LDAP configuration
-type LdapConfiguration struct {
-	// The CN host name used while generating the certificate, LDAP Over TLS requires the CN host name to create DNS host entry.
-	CertificateCNHost *string
-
-	// Name of the LDAP configuration domain
-	Domain *string
-
-	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
-	LdapOverTLS *bool
-
-	// List of LDAP server IP addresses (IPv4 only) for the LDAP domain.
-	LdapServers []*string
-
-	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
-	ServerCACertificate *string
-}
-
 // LdapSearchScopeOpt - LDAP search scope
 type LdapSearchScopeOpt struct {
 	// This specifies the group DN, which overrides the base DN for group lookups.
@@ -795,12 +774,6 @@ type LdapSearchScopeOpt struct {
 
 	// This specifies the user DN, which overrides the base DN for user lookups.
 	UserDN *string
-}
-
-// ListQuotaReportResponse - Quota Report for volume
-type ListQuotaReportResponse struct {
-	// List of quota reports
-	Value []*QuotaReport
 }
 
 // ListReplications - List Replications
@@ -1097,28 +1070,6 @@ type QuotaAvailabilityRequest struct {
 	Type *CheckQuotaNameResourceTypes
 }
 
-// QuotaReport - Quota report record properties
-type QuotaReport struct {
-	// Flag to indicate whether the quota is derived from default quota.
-	IsDerivedQuota *bool
-
-	// Percentage of used size compared to total size.
-	PercentageUsed *float32
-
-	// Specifies the total size limit in kibibytes for the user/group quota.
-	QuotaLimitTotalInKiBs *int64
-
-	// Specifies the current usage in kibibytes for the user/group quota.
-	QuotaLimitUsedInKiBs *int64
-
-	// UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command
-	// for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>
-	QuotaTarget *string
-
-	// Type of quota
-	QuotaType *Type
-}
-
 // ReestablishReplicationRequest - Re-establish request object supplied in the body of the operation.
 type ReestablishReplicationRequest struct {
 	// Resource id of the source volume for the replication
@@ -1233,20 +1184,6 @@ type ReplicationObject struct {
 
 	// READ-ONLY; Indicates whether the local volume is the source or destination for the Volume Replication
 	EndpointType *EndpointType
-
-	// READ-ONLY; Contains human-readable instructions on what the next step is to finish the external replication setup.
-	ExternalReplicationSetupInfo *string
-
-	// READ-ONLY; Property that only applies to external replications. Provides a machine-readable value for the status of the
-	// external replication setup.
-	ExternalReplicationSetupStatus *ExternalReplicationSetupStatus
-
-	// READ-ONLY; The mirror state property describes the current status of data replication for a replication. It provides insight
-	// into whether the data is actively being mirrored, if the replication process has been paused, or if it has yet to be initialized.
-	MirrorState *MirrorState
-
-	// READ-ONLY; The status of the Volume Replication
-	RelationshipStatus *VolumeReplicationRelationshipStatus
 
 	// READ-ONLY; Id
 	ReplicationID *string
@@ -2058,14 +1995,8 @@ type VolumeProperties struct {
 	// = 'Microsoft.KeyVault'.
 	KeyVaultPrivateEndpointResourceID *string
 
-	// Language supported for volume.
-	Language *VolumeLanguage
-
 	// Specifies whether LDAP is enabled or not for a given NFS volume.
 	LdapEnabled *bool
-
-	// Specifies the type of LDAP server for a given NFS volume.
-	LdapServerType *LdapServerType
 
 	// The original value of the network features type available to the volume at the time it was created.
 	NetworkFeatures *NetworkFeatures

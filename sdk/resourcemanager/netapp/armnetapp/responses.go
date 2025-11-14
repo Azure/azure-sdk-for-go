@@ -508,12 +508,6 @@ type VolumesClientListGetGroupIDListForLdapUserResponse struct {
 	GetGroupIDListForLDAPUserResponse
 }
 
-// VolumesClientListQuotaReportResponse contains the response from method VolumesClient.BeginListQuotaReport.
-type VolumesClientListQuotaReportResponse struct {
-	// Quota Report for volume
-	ListQuotaReportResponse
-}
-
 // VolumesClientListReplicationsResponse contains the response from method VolumesClient.NewListReplicationsPager.
 type VolumesClientListReplicationsResponse struct {
 	// List Replications

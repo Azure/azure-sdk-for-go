@@ -529,12 +529,6 @@ type VolumesClientBeginListGetGroupIDListForLdapUserOptions struct {
 	ResumeToken string
 }
 
-// VolumesClientBeginListQuotaReportOptions contains the optional parameters for the VolumesClient.BeginListQuotaReport method.
-type VolumesClientBeginListQuotaReportOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // VolumesClientBeginPeerExternalClusterOptions contains the optional parameters for the VolumesClient.BeginPeerExternalCluster
 // method.
 type VolumesClientBeginPeerExternalClusterOptions struct {

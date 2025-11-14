@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/NodeTypeSkusListOperation_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypeSkusListOperation_example.json
 func ExampleNodeTypeSKUsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

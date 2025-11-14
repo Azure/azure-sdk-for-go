@@ -299,6 +299,37 @@ func PossibleFaultSimulationStatusValues() []FaultSimulationStatus {
 	}
 }
 
+// HealthFilter - Enum for filtering health events.
+type HealthFilter string
+
+const (
+	// HealthFilterAll - Filter that matches input with any health state.
+	HealthFilterAll HealthFilter = "All"
+	// HealthFilterDefault - Default value. Matches any health state.
+	HealthFilterDefault HealthFilter = "Default"
+	// HealthFilterError - Filter for health state Error.
+	HealthFilterError HealthFilter = "Error"
+	// HealthFilterNone - Filter that doesn't match any health state. Used to return no results on a given collection of health
+	// entities.
+	HealthFilterNone HealthFilter = "None"
+	// HealthFilterOk - Filter for health state Ok.
+	HealthFilterOk HealthFilter = "Ok"
+	// HealthFilterWarning - Filter for health state Warning.
+	HealthFilterWarning HealthFilter = "Warning"
+)
+
+// PossibleHealthFilterValues returns the possible values for the HealthFilter const type.
+func PossibleHealthFilterValues() []HealthFilter {
+	return []HealthFilter{
+		HealthFilterAll,
+		HealthFilterDefault,
+		HealthFilterError,
+		HealthFilterNone,
+		HealthFilterOk,
+		HealthFilterWarning,
+	}
+}
+
 // IPAddressType - The IP address type.
 type IPAddressType string
 
@@ -646,6 +677,21 @@ func PossiblePublicIPAddressVersionValues() []PublicIPAddressVersion {
 	return []PublicIPAddressVersion{
 		PublicIPAddressVersionIPv4,
 		PublicIPAddressVersionIPv6,
+	}
+}
+
+// RestartKind - The kind of restart to perform.
+type RestartKind string
+
+const (
+	// RestartKindSimultaneous - Restart all listed replicas at the same time.
+	RestartKindSimultaneous RestartKind = "Simultaneous"
+)
+
+// PossibleRestartKindValues returns the possible values for the RestartKind const type.
+func PossibleRestartKindValues() []RestartKind {
+	return []RestartKind{
+		RestartKindSimultaneous,
 	}
 }
 

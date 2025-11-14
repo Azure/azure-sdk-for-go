@@ -16,15 +16,6 @@ import (
 
 // ServerFactory is a fake server for instances of the armappservice.ClientFactory type.
 type ServerFactory struct {
-	// CertificateOrdersServer contains the fakes for client CertificateOrdersClient
-	CertificateOrdersServer CertificateOrdersServer
-
-	// CertificateOrdersDiagnosticsServer contains the fakes for client CertificateOrdersDiagnosticsClient
-	CertificateOrdersDiagnosticsServer CertificateOrdersDiagnosticsServer
-
-	// CertificateRegistrationProviderServer contains the fakes for client CertificateRegistrationProviderClient
-	CertificateRegistrationProviderServer CertificateRegistrationProviderServer
-
 	// CertificatesServer contains the fakes for client CertificatesClient
 	CertificatesServer CertificatesServer
 
@@ -33,12 +24,6 @@ type ServerFactory struct {
 
 	// DiagnosticsServer contains the fakes for client DiagnosticsClient
 	DiagnosticsServer DiagnosticsServer
-
-	// DomainRegistrationProviderServer contains the fakes for client DomainRegistrationProviderClient
-	DomainRegistrationProviderServer DomainRegistrationProviderServer
-
-	// DomainsServer contains the fakes for client DomainsClient
-	DomainsServer DomainsServer
 
 	// EnvironmentsServer contains the fakes for client EnvironmentsClient
 	EnvironmentsServer EnvironmentsServer
@@ -51,6 +36,9 @@ type ServerFactory struct {
 
 	// KubeEnvironmentsServer contains the fakes for client KubeEnvironmentsClient
 	KubeEnvironmentsServer KubeEnvironmentsServer
+
+	// ManagementServer contains the fakes for client ManagementClient
+	ManagementServer ManagementServer
 
 	// PlansServer contains the fakes for client PlansClient
 	PlansServer PlansServer
@@ -70,14 +58,8 @@ type ServerFactory struct {
 	// StaticSitesServer contains the fakes for client StaticSitesClient
 	StaticSitesServer StaticSitesServer
 
-	// TopLevelDomainsServer contains the fakes for client TopLevelDomainsClient
-	TopLevelDomainsServer TopLevelDomainsServer
-
 	// WebAppsServer contains the fakes for client WebAppsClient
 	WebAppsServer WebAppsServer
-
-	// WebSiteManagementServer contains the fakes for client WebSiteManagementClient
-	WebSiteManagementServer WebSiteManagementServer
 
 	// WorkflowRunActionRepetitionsServer contains the fakes for client WorkflowRunActionRepetitionsClient
 	WorkflowRunActionRepetitionsServer WorkflowRunActionRepetitionsServer
@@ -121,27 +103,21 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
-	trCertificateOrdersServer                            *CertificateOrdersServerTransport
-	trCertificateOrdersDiagnosticsServer                 *CertificateOrdersDiagnosticsServerTransport
-	trCertificateRegistrationProviderServer              *CertificateRegistrationProviderServerTransport
 	trCertificatesServer                                 *CertificatesServerTransport
 	trDeletedWebAppsServer                               *DeletedWebAppsServerTransport
 	trDiagnosticsServer                                  *DiagnosticsServerTransport
-	trDomainRegistrationProviderServer                   *DomainRegistrationProviderServerTransport
-	trDomainsServer                                      *DomainsServerTransport
 	trEnvironmentsServer                                 *EnvironmentsServerTransport
 	trGetUsagesInLocationServer                          *GetUsagesInLocationServerTransport
 	trGlobalServer                                       *GlobalServerTransport
 	trKubeEnvironmentsServer                             *KubeEnvironmentsServerTransport
+	trManagementServer                                   *ManagementServerTransport
 	trPlansServer                                        *PlansServerTransport
 	trProviderServer                                     *ProviderServerTransport
 	trRecommendationsServer                              *RecommendationsServerTransport
 	trResourceHealthMetadataServer                       *ResourceHealthMetadataServerTransport
 	trSiteCertificatesServer                             *SiteCertificatesServerTransport
 	trStaticSitesServer                                  *StaticSitesServerTransport
-	trTopLevelDomainsServer                              *TopLevelDomainsServerTransport
 	trWebAppsServer                                      *WebAppsServerTransport
-	trWebSiteManagementServer                            *WebSiteManagementServerTransport
 	trWorkflowRunActionRepetitionsServer                 *WorkflowRunActionRepetitionsServerTransport
 	trWorkflowRunActionRepetitionsRequestHistoriesServer *WorkflowRunActionRepetitionsRequestHistoriesServerTransport
 	trWorkflowRunActionScopeRepetitionsServer            *WorkflowRunActionScopeRepetitionsServerTransport
@@ -166,21 +142,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "CertificateOrdersClient":
-		initServer(s, &s.trCertificateOrdersServer, func() *CertificateOrdersServerTransport {
-			return NewCertificateOrdersServerTransport(&s.srv.CertificateOrdersServer)
-		})
-		resp, err = s.trCertificateOrdersServer.Do(req)
-	case "CertificateOrdersDiagnosticsClient":
-		initServer(s, &s.trCertificateOrdersDiagnosticsServer, func() *CertificateOrdersDiagnosticsServerTransport {
-			return NewCertificateOrdersDiagnosticsServerTransport(&s.srv.CertificateOrdersDiagnosticsServer)
-		})
-		resp, err = s.trCertificateOrdersDiagnosticsServer.Do(req)
-	case "CertificateRegistrationProviderClient":
-		initServer(s, &s.trCertificateRegistrationProviderServer, func() *CertificateRegistrationProviderServerTransport {
-			return NewCertificateRegistrationProviderServerTransport(&s.srv.CertificateRegistrationProviderServer)
-		})
-		resp, err = s.trCertificateRegistrationProviderServer.Do(req)
 	case "CertificatesClient":
 		initServer(s, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)
@@ -192,14 +153,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DiagnosticsClient":
 		initServer(s, &s.trDiagnosticsServer, func() *DiagnosticsServerTransport { return NewDiagnosticsServerTransport(&s.srv.DiagnosticsServer) })
 		resp, err = s.trDiagnosticsServer.Do(req)
-	case "DomainRegistrationProviderClient":
-		initServer(s, &s.trDomainRegistrationProviderServer, func() *DomainRegistrationProviderServerTransport {
-			return NewDomainRegistrationProviderServerTransport(&s.srv.DomainRegistrationProviderServer)
-		})
-		resp, err = s.trDomainRegistrationProviderServer.Do(req)
-	case "DomainsClient":
-		initServer(s, &s.trDomainsServer, func() *DomainsServerTransport { return NewDomainsServerTransport(&s.srv.DomainsServer) })
-		resp, err = s.trDomainsServer.Do(req)
 	case "EnvironmentsClient":
 		initServer(s, &s.trEnvironmentsServer, func() *EnvironmentsServerTransport { return NewEnvironmentsServerTransport(&s.srv.EnvironmentsServer) })
 		resp, err = s.trEnvironmentsServer.Do(req)
@@ -216,6 +169,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewKubeEnvironmentsServerTransport(&s.srv.KubeEnvironmentsServer)
 		})
 		resp, err = s.trKubeEnvironmentsServer.Do(req)
+	case "ManagementClient":
+		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
+		resp, err = s.trManagementServer.Do(req)
 	case "PlansClient":
 		initServer(s, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
 		resp, err = s.trPlansServer.Do(req)
@@ -240,19 +196,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "StaticSitesClient":
 		initServer(s, &s.trStaticSitesServer, func() *StaticSitesServerTransport { return NewStaticSitesServerTransport(&s.srv.StaticSitesServer) })
 		resp, err = s.trStaticSitesServer.Do(req)
-	case "TopLevelDomainsClient":
-		initServer(s, &s.trTopLevelDomainsServer, func() *TopLevelDomainsServerTransport {
-			return NewTopLevelDomainsServerTransport(&s.srv.TopLevelDomainsServer)
-		})
-		resp, err = s.trTopLevelDomainsServer.Do(req)
 	case "WebAppsClient":
 		initServer(s, &s.trWebAppsServer, func() *WebAppsServerTransport { return NewWebAppsServerTransport(&s.srv.WebAppsServer) })
 		resp, err = s.trWebAppsServer.Do(req)
-	case "WebSiteManagementClient":
-		initServer(s, &s.trWebSiteManagementServer, func() *WebSiteManagementServerTransport {
-			return NewWebSiteManagementServerTransport(&s.srv.WebSiteManagementServer)
-		})
-		resp, err = s.trWebSiteManagementServer.Do(req)
 	case "WorkflowRunActionRepetitionsClient":
 		initServer(s, &s.trWorkflowRunActionRepetitionsServer, func() *WorkflowRunActionRepetitionsServerTransport {
 			return NewWorkflowRunActionRepetitionsServerTransport(&s.srv.WorkflowRunActionRepetitionsServer)

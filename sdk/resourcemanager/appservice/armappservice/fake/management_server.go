@@ -13,182 +13,182 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 	"net/http"
 	"net/url"
 	"regexp"
 	"strconv"
 )
 
-// WebSiteManagementServer is a fake server for instances of the armappservice.WebSiteManagementClient type.
-type WebSiteManagementServer struct {
-	// CheckNameAvailability is the fake for method WebSiteManagementClient.CheckNameAvailability
+// ManagementServer is a fake server for instances of the armappservice.ManagementClient type.
+type ManagementServer struct {
+	// CheckNameAvailability is the fake for method ManagementClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, request armappservice.ResourceNameAvailabilityRequest, options *armappservice.WebSiteManagementClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, request armappservice.ResourceNameAvailabilityRequest, options *armappservice.ManagementClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.ManagementClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// GetPublishingUser is the fake for method WebSiteManagementClient.GetPublishingUser
+	// GetPublishingUser is the fake for method ManagementClient.GetPublishingUser
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPublishingUser func(ctx context.Context, options *armappservice.WebSiteManagementClientGetPublishingUserOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetPublishingUserResponse], errResp azfake.ErrorResponder)
+	GetPublishingUser func(ctx context.Context, options *armappservice.ManagementClientGetPublishingUserOptions) (resp azfake.Responder[armappservice.ManagementClientGetPublishingUserResponse], errResp azfake.ErrorResponder)
 
-	// GetSourceControl is the fake for method WebSiteManagementClient.GetSourceControl
+	// GetSourceControl is the fake for method ManagementClient.GetSourceControl
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSourceControl func(ctx context.Context, sourceControlType string, options *armappservice.WebSiteManagementClientGetSourceControlOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSourceControlResponse], errResp azfake.ErrorResponder)
+	GetSourceControl func(ctx context.Context, sourceControlType string, options *armappservice.ManagementClientGetSourceControlOptions) (resp azfake.Responder[armappservice.ManagementClientGetSourceControlResponse], errResp azfake.ErrorResponder)
 
-	// GetSubscriptionDeploymentLocations is the fake for method WebSiteManagementClient.GetSubscriptionDeploymentLocations
+	// GetSubscriptionDeploymentLocations is the fake for method ManagementClient.GetSubscriptionDeploymentLocations
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSubscriptionDeploymentLocations func(ctx context.Context, options *armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse], errResp azfake.ErrorResponder)
+	GetSubscriptionDeploymentLocations func(ctx context.Context, options *armappservice.ManagementClientGetSubscriptionDeploymentLocationsOptions) (resp azfake.Responder[armappservice.ManagementClientGetSubscriptionDeploymentLocationsResponse], errResp azfake.ErrorResponder)
 
-	// NewListAseRegionsPager is the fake for method WebSiteManagementClient.NewListAseRegionsPager
+	// NewListAseRegionsPager is the fake for method ManagementClient.NewListAseRegionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAseRegionsPager func(options *armappservice.WebSiteManagementClientListAseRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse])
+	NewListAseRegionsPager func(options *armappservice.ManagementClientListAseRegionsOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListAseRegionsResponse])
 
-	// NewListBillingMetersPager is the fake for method WebSiteManagementClient.NewListBillingMetersPager
+	// NewListBillingMetersPager is the fake for method ManagementClient.NewListBillingMetersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBillingMetersPager func(options *armappservice.WebSiteManagementClientListBillingMetersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse])
+	NewListBillingMetersPager func(options *armappservice.ManagementClientListBillingMetersOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListBillingMetersResponse])
 
-	// NewListCustomHostNameSitesPager is the fake for method WebSiteManagementClient.NewListCustomHostNameSitesPager
+	// NewListCustomHostNameSitesPager is the fake for method ManagementClient.NewListCustomHostNameSitesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListCustomHostNameSitesPager func(options *armappservice.WebSiteManagementClientListCustomHostNameSitesOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse])
+	NewListCustomHostNameSitesPager func(options *armappservice.ManagementClientListCustomHostNameSitesOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListCustomHostNameSitesResponse])
 
-	// NewListGeoRegionsPager is the fake for method WebSiteManagementClient.NewListGeoRegionsPager
+	// NewListGeoRegionsPager is the fake for method ManagementClient.NewListGeoRegionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListGeoRegionsPager func(options *armappservice.WebSiteManagementClientListGeoRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse])
+	NewListGeoRegionsPager func(options *armappservice.ManagementClientListGeoRegionsOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListGeoRegionsResponse])
 
-	// NewListPremierAddOnOffersPager is the fake for method WebSiteManagementClient.NewListPremierAddOnOffersPager
+	// NewListPremierAddOnOffersPager is the fake for method ManagementClient.NewListPremierAddOnOffersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPremierAddOnOffersPager func(options *armappservice.WebSiteManagementClientListPremierAddOnOffersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse])
+	NewListPremierAddOnOffersPager func(options *armappservice.ManagementClientListPremierAddOnOffersOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListPremierAddOnOffersResponse])
 
-	// ListSKUs is the fake for method WebSiteManagementClient.ListSKUs
+	// ListSKUs is the fake for method ManagementClient.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSKUs func(ctx context.Context, options *armappservice.WebSiteManagementClientListSKUsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientListSKUsResponse], errResp azfake.ErrorResponder)
+	ListSKUs func(ctx context.Context, options *armappservice.ManagementClientListSKUsOptions) (resp azfake.Responder[armappservice.ManagementClientListSKUsResponse], errResp azfake.ErrorResponder)
 
-	// NewListSiteIdentifiersAssignedToHostNamePager is the fake for method WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager
+	// NewListSiteIdentifiersAssignedToHostNamePager is the fake for method ManagementClient.NewListSiteIdentifiersAssignedToHostNamePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteIdentifiersAssignedToHostNamePager func(nameIdentifier armappservice.NameIdentifier, options *armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse])
+	NewListSiteIdentifiersAssignedToHostNamePager func(nameIdentifier armappservice.NameIdentifier, options *armappservice.ManagementClientListSiteIdentifiersAssignedToHostNameOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListSiteIdentifiersAssignedToHostNameResponse])
 
-	// NewListSourceControlsPager is the fake for method WebSiteManagementClient.NewListSourceControlsPager
+	// NewListSourceControlsPager is the fake for method ManagementClient.NewListSourceControlsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSourceControlsPager func(options *armappservice.WebSiteManagementClientListSourceControlsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse])
+	NewListSourceControlsPager func(options *armappservice.ManagementClientListSourceControlsOptions) (resp azfake.PagerResponder[armappservice.ManagementClientListSourceControlsResponse])
 
-	// Move is the fake for method WebSiteManagementClient.Move
+	// Move is the fake for method ManagementClient.Move
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Move func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientMoveResponse], errResp azfake.ErrorResponder)
+	Move func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.ManagementClientMoveOptions) (resp azfake.Responder[armappservice.ManagementClientMoveResponse], errResp azfake.ErrorResponder)
 
-	// RegionalCheckNameAvailability is the fake for method WebSiteManagementClient.RegionalCheckNameAvailability
+	// RegionalCheckNameAvailability is the fake for method ManagementClient.RegionalCheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	RegionalCheckNameAvailability func(ctx context.Context, location string, request armappservice.DnlResourceNameAvailabilityRequest, options *armappservice.WebSiteManagementClientRegionalCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientRegionalCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	RegionalCheckNameAvailability func(ctx context.Context, location string, request armappservice.DnlResourceNameAvailabilityRequest, options *armappservice.ManagementClientRegionalCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.ManagementClientRegionalCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// UpdatePublishingUser is the fake for method WebSiteManagementClient.UpdatePublishingUser
+	// UpdatePublishingUser is the fake for method ManagementClient.UpdatePublishingUser
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdatePublishingUser func(ctx context.Context, userDetails armappservice.User, options *armappservice.WebSiteManagementClientUpdatePublishingUserOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientUpdatePublishingUserResponse], errResp azfake.ErrorResponder)
+	UpdatePublishingUser func(ctx context.Context, userDetails armappservice.User, options *armappservice.ManagementClientUpdatePublishingUserOptions) (resp azfake.Responder[armappservice.ManagementClientUpdatePublishingUserResponse], errResp azfake.ErrorResponder)
 
-	// UpdateSourceControl is the fake for method WebSiteManagementClient.UpdateSourceControl
+	// UpdateSourceControl is the fake for method ManagementClient.UpdateSourceControl
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSourceControl func(ctx context.Context, sourceControlType string, requestMessage armappservice.SourceControl, options *armappservice.WebSiteManagementClientUpdateSourceControlOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientUpdateSourceControlResponse], errResp azfake.ErrorResponder)
+	UpdateSourceControl func(ctx context.Context, sourceControlType string, requestMessage armappservice.SourceControl, options *armappservice.ManagementClientUpdateSourceControlOptions) (resp azfake.Responder[armappservice.ManagementClientUpdateSourceControlResponse], errResp azfake.ErrorResponder)
 
-	// Validate is the fake for method WebSiteManagementClient.Validate
+	// Validate is the fake for method ManagementClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
-	Validate func(ctx context.Context, resourceGroupName string, validateRequest armappservice.ValidateRequest, options *armappservice.WebSiteManagementClientValidateOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientValidateResponse], errResp azfake.ErrorResponder)
+	Validate func(ctx context.Context, resourceGroupName string, validateRequest armappservice.ValidateRequest, options *armappservice.ManagementClientValidateOptions) (resp azfake.Responder[armappservice.ManagementClientValidateResponse], errResp azfake.ErrorResponder)
 
-	// ValidateMove is the fake for method WebSiteManagementClient.ValidateMove
+	// ValidateMove is the fake for method ManagementClient.ValidateMove
 	// HTTP status codes to indicate success: http.StatusNoContent
-	ValidateMove func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientValidateMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientValidateMoveResponse], errResp azfake.ErrorResponder)
+	ValidateMove func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.ManagementClientValidateMoveOptions) (resp azfake.Responder[armappservice.ManagementClientValidateMoveResponse], errResp azfake.ErrorResponder)
 
-	// VerifyHostingEnvironmentVnet is the fake for method WebSiteManagementClient.VerifyHostingEnvironmentVnet
+	// VerifyHostingEnvironmentVnet is the fake for method ManagementClient.VerifyHostingEnvironmentVnet
 	// HTTP status codes to indicate success: http.StatusOK
-	VerifyHostingEnvironmentVnet func(ctx context.Context, parameters armappservice.VnetParameters, options *armappservice.WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientVerifyHostingEnvironmentVnetResponse], errResp azfake.ErrorResponder)
+	VerifyHostingEnvironmentVnet func(ctx context.Context, parameters armappservice.VnetParameters, options *armappservice.ManagementClientVerifyHostingEnvironmentVnetOptions) (resp azfake.Responder[armappservice.ManagementClientVerifyHostingEnvironmentVnetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewWebSiteManagementServerTransport creates a new instance of WebSiteManagementServerTransport with the provided implementation.
-// The returned WebSiteManagementServerTransport instance is connected to an instance of armappservice.WebSiteManagementClient via the
+// NewManagementServerTransport creates a new instance of ManagementServerTransport with the provided implementation.
+// The returned ManagementServerTransport instance is connected to an instance of armappservice.ManagementClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewWebSiteManagementServerTransport(srv *WebSiteManagementServer) *WebSiteManagementServerTransport {
-	return &WebSiteManagementServerTransport{
+func NewManagementServerTransport(srv *ManagementServer) *ManagementServerTransport {
+	return &ManagementServerTransport{
 		srv:                             srv,
-		newListAseRegionsPager:          newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse]](),
-		newListBillingMetersPager:       newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse]](),
-		newListCustomHostNameSitesPager: newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse]](),
-		newListGeoRegionsPager:          newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse]](),
-		newListPremierAddOnOffersPager:  newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse]](),
-		newListSiteIdentifiersAssignedToHostNamePager: newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]](),
-		newListSourceControlsPager:                    newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse]](),
+		newListAseRegionsPager:          newTracker[azfake.PagerResponder[armappservice.ManagementClientListAseRegionsResponse]](),
+		newListBillingMetersPager:       newTracker[azfake.PagerResponder[armappservice.ManagementClientListBillingMetersResponse]](),
+		newListCustomHostNameSitesPager: newTracker[azfake.PagerResponder[armappservice.ManagementClientListCustomHostNameSitesResponse]](),
+		newListGeoRegionsPager:          newTracker[azfake.PagerResponder[armappservice.ManagementClientListGeoRegionsResponse]](),
+		newListPremierAddOnOffersPager:  newTracker[azfake.PagerResponder[armappservice.ManagementClientListPremierAddOnOffersResponse]](),
+		newListSiteIdentifiersAssignedToHostNamePager: newTracker[azfake.PagerResponder[armappservice.ManagementClientListSiteIdentifiersAssignedToHostNameResponse]](),
+		newListSourceControlsPager:                    newTracker[azfake.PagerResponder[armappservice.ManagementClientListSourceControlsResponse]](),
 	}
 }
 
-// WebSiteManagementServerTransport connects instances of armappservice.WebSiteManagementClient to instances of WebSiteManagementServer.
-// Don't use this type directly, use NewWebSiteManagementServerTransport instead.
-type WebSiteManagementServerTransport struct {
-	srv                                           *WebSiteManagementServer
-	newListAseRegionsPager                        *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse]]
-	newListBillingMetersPager                     *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse]]
-	newListCustomHostNameSitesPager               *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse]]
-	newListGeoRegionsPager                        *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse]]
-	newListPremierAddOnOffersPager                *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse]]
-	newListSiteIdentifiersAssignedToHostNamePager *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]]
-	newListSourceControlsPager                    *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse]]
+// ManagementServerTransport connects instances of armappservice.ManagementClient to instances of ManagementServer.
+// Don't use this type directly, use NewManagementServerTransport instead.
+type ManagementServerTransport struct {
+	srv                                           *ManagementServer
+	newListAseRegionsPager                        *tracker[azfake.PagerResponder[armappservice.ManagementClientListAseRegionsResponse]]
+	newListBillingMetersPager                     *tracker[azfake.PagerResponder[armappservice.ManagementClientListBillingMetersResponse]]
+	newListCustomHostNameSitesPager               *tracker[azfake.PagerResponder[armappservice.ManagementClientListCustomHostNameSitesResponse]]
+	newListGeoRegionsPager                        *tracker[azfake.PagerResponder[armappservice.ManagementClientListGeoRegionsResponse]]
+	newListPremierAddOnOffersPager                *tracker[azfake.PagerResponder[armappservice.ManagementClientListPremierAddOnOffersResponse]]
+	newListSiteIdentifiersAssignedToHostNamePager *tracker[azfake.PagerResponder[armappservice.ManagementClientListSiteIdentifiersAssignedToHostNameResponse]]
+	newListSourceControlsPager                    *tracker[azfake.PagerResponder[armappservice.ManagementClientListSourceControlsResponse]]
 }
 
-// Do implements the policy.Transporter interface for WebSiteManagementServerTransport.
-func (w *WebSiteManagementServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ManagementServerTransport.
+func (m *ManagementServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return w.dispatchToMethodFake(req, method)
+	return m.dispatchToMethodFake(req, method)
 }
 
-func (w *WebSiteManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (m *ManagementServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if webSiteManagementServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = webSiteManagementServerTransportInterceptor.Do(req)
+		if managementServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = managementServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "WebSiteManagementClient.CheckNameAvailability":
-				res.resp, res.err = w.dispatchCheckNameAvailability(req)
-			case "WebSiteManagementClient.GetPublishingUser":
-				res.resp, res.err = w.dispatchGetPublishingUser(req)
-			case "WebSiteManagementClient.GetSourceControl":
-				res.resp, res.err = w.dispatchGetSourceControl(req)
-			case "WebSiteManagementClient.GetSubscriptionDeploymentLocations":
-				res.resp, res.err = w.dispatchGetSubscriptionDeploymentLocations(req)
-			case "WebSiteManagementClient.NewListAseRegionsPager":
-				res.resp, res.err = w.dispatchNewListAseRegionsPager(req)
-			case "WebSiteManagementClient.NewListBillingMetersPager":
-				res.resp, res.err = w.dispatchNewListBillingMetersPager(req)
-			case "WebSiteManagementClient.NewListCustomHostNameSitesPager":
-				res.resp, res.err = w.dispatchNewListCustomHostNameSitesPager(req)
-			case "WebSiteManagementClient.NewListGeoRegionsPager":
-				res.resp, res.err = w.dispatchNewListGeoRegionsPager(req)
-			case "WebSiteManagementClient.NewListPremierAddOnOffersPager":
-				res.resp, res.err = w.dispatchNewListPremierAddOnOffersPager(req)
-			case "WebSiteManagementClient.ListSKUs":
-				res.resp, res.err = w.dispatchListSKUs(req)
-			case "WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager":
-				res.resp, res.err = w.dispatchNewListSiteIdentifiersAssignedToHostNamePager(req)
-			case "WebSiteManagementClient.NewListSourceControlsPager":
-				res.resp, res.err = w.dispatchNewListSourceControlsPager(req)
-			case "WebSiteManagementClient.Move":
-				res.resp, res.err = w.dispatchMove(req)
-			case "WebSiteManagementClient.RegionalCheckNameAvailability":
-				res.resp, res.err = w.dispatchRegionalCheckNameAvailability(req)
-			case "WebSiteManagementClient.UpdatePublishingUser":
-				res.resp, res.err = w.dispatchUpdatePublishingUser(req)
-			case "WebSiteManagementClient.UpdateSourceControl":
-				res.resp, res.err = w.dispatchUpdateSourceControl(req)
-			case "WebSiteManagementClient.Validate":
-				res.resp, res.err = w.dispatchValidate(req)
-			case "WebSiteManagementClient.ValidateMove":
-				res.resp, res.err = w.dispatchValidateMove(req)
-			case "WebSiteManagementClient.VerifyHostingEnvironmentVnet":
-				res.resp, res.err = w.dispatchVerifyHostingEnvironmentVnet(req)
+			case "ManagementClient.CheckNameAvailability":
+				res.resp, res.err = m.dispatchCheckNameAvailability(req)
+			case "ManagementClient.GetPublishingUser":
+				res.resp, res.err = m.dispatchGetPublishingUser(req)
+			case "ManagementClient.GetSourceControl":
+				res.resp, res.err = m.dispatchGetSourceControl(req)
+			case "ManagementClient.GetSubscriptionDeploymentLocations":
+				res.resp, res.err = m.dispatchGetSubscriptionDeploymentLocations(req)
+			case "ManagementClient.NewListAseRegionsPager":
+				res.resp, res.err = m.dispatchNewListAseRegionsPager(req)
+			case "ManagementClient.NewListBillingMetersPager":
+				res.resp, res.err = m.dispatchNewListBillingMetersPager(req)
+			case "ManagementClient.NewListCustomHostNameSitesPager":
+				res.resp, res.err = m.dispatchNewListCustomHostNameSitesPager(req)
+			case "ManagementClient.NewListGeoRegionsPager":
+				res.resp, res.err = m.dispatchNewListGeoRegionsPager(req)
+			case "ManagementClient.NewListPremierAddOnOffersPager":
+				res.resp, res.err = m.dispatchNewListPremierAddOnOffersPager(req)
+			case "ManagementClient.ListSKUs":
+				res.resp, res.err = m.dispatchListSKUs(req)
+			case "ManagementClient.NewListSiteIdentifiersAssignedToHostNamePager":
+				res.resp, res.err = m.dispatchNewListSiteIdentifiersAssignedToHostNamePager(req)
+			case "ManagementClient.NewListSourceControlsPager":
+				res.resp, res.err = m.dispatchNewListSourceControlsPager(req)
+			case "ManagementClient.Move":
+				res.resp, res.err = m.dispatchMove(req)
+			case "ManagementClient.RegionalCheckNameAvailability":
+				res.resp, res.err = m.dispatchRegionalCheckNameAvailability(req)
+			case "ManagementClient.UpdatePublishingUser":
+				res.resp, res.err = m.dispatchUpdatePublishingUser(req)
+			case "ManagementClient.UpdateSourceControl":
+				res.resp, res.err = m.dispatchUpdateSourceControl(req)
+			case "ManagementClient.Validate":
+				res.resp, res.err = m.dispatchValidate(req)
+			case "ManagementClient.ValidateMove":
+				res.resp, res.err = m.dispatchValidateMove(req)
+			case "ManagementClient.VerifyHostingEnvironmentVnet":
+				res.resp, res.err = m.dispatchVerifyHostingEnvironmentVnet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -208,21 +208,21 @@ func (w *WebSiteManagementServerTransport) dispatchToMethodFake(req *http.Reques
 	}
 }
 
-func (w *WebSiteManagementServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if w.srv.CheckNameAvailability == nil {
+func (m *ManagementServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/checknameavailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.ResourceNameAvailabilityRequest](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.CheckNameAvailability(req.Context(), body, nil)
+	respr, errRespr := m.srv.CheckNameAvailability(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -237,11 +237,11 @@ func (w *WebSiteManagementServerTransport) dispatchCheckNameAvailability(req *ht
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchGetPublishingUser(req *http.Request) (*http.Response, error) {
-	if w.srv.GetPublishingUser == nil {
+func (m *ManagementServerTransport) dispatchGetPublishingUser(req *http.Request) (*http.Response, error) {
+	if m.srv.GetPublishingUser == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPublishingUser not implemented")}
 	}
-	respr, errRespr := w.srv.GetPublishingUser(req.Context(), nil)
+	respr, errRespr := m.srv.GetPublishingUser(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -256,21 +256,21 @@ func (w *WebSiteManagementServerTransport) dispatchGetPublishingUser(req *http.R
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchGetSourceControl(req *http.Request) (*http.Response, error) {
-	if w.srv.GetSourceControl == nil {
+func (m *ManagementServerTransport) dispatchGetSourceControl(req *http.Request) (*http.Response, error) {
+	if m.srv.GetSourceControl == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSourceControl not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	sourceControlTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("sourceControlType")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.GetSourceControl(req.Context(), sourceControlTypeParam, nil)
+	respr, errRespr := m.srv.GetSourceControl(req.Context(), sourceControlTypeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -285,17 +285,17 @@ func (w *WebSiteManagementServerTransport) dispatchGetSourceControl(req *http.Re
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchGetSubscriptionDeploymentLocations(req *http.Request) (*http.Response, error) {
-	if w.srv.GetSubscriptionDeploymentLocations == nil {
+func (m *ManagementServerTransport) dispatchGetSubscriptionDeploymentLocations(req *http.Request) (*http.Response, error) {
+	if m.srv.GetSubscriptionDeploymentLocations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscriptionDeploymentLocations not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/deploymentLocations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := w.srv.GetSubscriptionDeploymentLocations(req.Context(), nil)
+	respr, errRespr := m.srv.GetSubscriptionDeploymentLocations(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -310,22 +310,22 @@ func (w *WebSiteManagementServerTransport) dispatchGetSubscriptionDeploymentLoca
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListAseRegionsPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListAseRegionsPager == nil {
+func (m *ManagementServerTransport) dispatchNewListAseRegionsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListAseRegionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAseRegionsPager not implemented")}
 	}
-	newListAseRegionsPager := w.newListAseRegionsPager.get(req)
+	newListAseRegionsPager := m.newListAseRegionsPager.get(req)
 	if newListAseRegionsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/aseRegions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := w.srv.NewListAseRegionsPager(nil)
+		resp := m.srv.NewListAseRegionsPager(nil)
 		newListAseRegionsPager = &resp
-		w.newListAseRegionsPager.add(req, newListAseRegionsPager)
-		server.PagerResponderInjectNextLinks(newListAseRegionsPager, req, func(page *armappservice.WebSiteManagementClientListAseRegionsResponse, createLink func() string) {
+		m.newListAseRegionsPager.add(req, newListAseRegionsPager)
+		server.PagerResponderInjectNextLinks(newListAseRegionsPager, req, func(page *armappservice.ManagementClientListAseRegionsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -334,25 +334,25 @@ func (w *WebSiteManagementServerTransport) dispatchNewListAseRegionsPager(req *h
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListAseRegionsPager.remove(req)
+		m.newListAseRegionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListAseRegionsPager) {
-		w.newListAseRegionsPager.remove(req)
+		m.newListAseRegionsPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListBillingMetersPager == nil {
+func (m *ManagementServerTransport) dispatchNewListBillingMetersPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListBillingMetersPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBillingMetersPager not implemented")}
 	}
-	newListBillingMetersPager := w.newListBillingMetersPager.get(req)
+	newListBillingMetersPager := m.newListBillingMetersPager.get(req)
 	if newListBillingMetersPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/billingMeters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -366,17 +366,17 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 			return nil, err
 		}
 		oSTypeParam := getOptional(oSTypeUnescaped)
-		var options *armappservice.WebSiteManagementClientListBillingMetersOptions
+		var options *armappservice.ManagementClientListBillingMetersOptions
 		if billingLocationParam != nil || oSTypeParam != nil {
-			options = &armappservice.WebSiteManagementClientListBillingMetersOptions{
+			options = &armappservice.ManagementClientListBillingMetersOptions{
 				BillingLocation: billingLocationParam,
 				OSType:          oSTypeParam,
 			}
 		}
-		resp := w.srv.NewListBillingMetersPager(options)
+		resp := m.srv.NewListBillingMetersPager(options)
 		newListBillingMetersPager = &resp
-		w.newListBillingMetersPager.add(req, newListBillingMetersPager)
-		server.PagerResponderInjectNextLinks(newListBillingMetersPager, req, func(page *armappservice.WebSiteManagementClientListBillingMetersResponse, createLink func() string) {
+		m.newListBillingMetersPager.add(req, newListBillingMetersPager)
+		server.PagerResponderInjectNextLinks(newListBillingMetersPager, req, func(page *armappservice.ManagementClientListBillingMetersResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -385,25 +385,25 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListBillingMetersPager.remove(req)
+		m.newListBillingMetersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListBillingMetersPager) {
-		w.newListBillingMetersPager.remove(req)
+		m.newListBillingMetersPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListCustomHostNameSitesPager == nil {
+func (m *ManagementServerTransport) dispatchNewListCustomHostNameSitesPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListCustomHostNameSitesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListCustomHostNameSitesPager not implemented")}
 	}
-	newListCustomHostNameSitesPager := w.newListCustomHostNameSitesPager.get(req)
+	newListCustomHostNameSitesPager := m.newListCustomHostNameSitesPager.get(req)
 	if newListCustomHostNameSitesPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/customhostnameSites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -412,16 +412,16 @@ func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPag
 			return nil, err
 		}
 		hostnameParam := getOptional(hostnameUnescaped)
-		var options *armappservice.WebSiteManagementClientListCustomHostNameSitesOptions
+		var options *armappservice.ManagementClientListCustomHostNameSitesOptions
 		if hostnameParam != nil {
-			options = &armappservice.WebSiteManagementClientListCustomHostNameSitesOptions{
+			options = &armappservice.ManagementClientListCustomHostNameSitesOptions{
 				Hostname: hostnameParam,
 			}
 		}
-		resp := w.srv.NewListCustomHostNameSitesPager(options)
+		resp := m.srv.NewListCustomHostNameSitesPager(options)
 		newListCustomHostNameSitesPager = &resp
-		w.newListCustomHostNameSitesPager.add(req, newListCustomHostNameSitesPager)
-		server.PagerResponderInjectNextLinks(newListCustomHostNameSitesPager, req, func(page *armappservice.WebSiteManagementClientListCustomHostNameSitesResponse, createLink func() string) {
+		m.newListCustomHostNameSitesPager.add(req, newListCustomHostNameSitesPager)
+		server.PagerResponderInjectNextLinks(newListCustomHostNameSitesPager, req, func(page *armappservice.ManagementClientListCustomHostNameSitesResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -430,25 +430,25 @@ func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPag
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListCustomHostNameSitesPager.remove(req)
+		m.newListCustomHostNameSitesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListCustomHostNameSitesPager) {
-		w.newListCustomHostNameSitesPager.remove(req)
+		m.newListCustomHostNameSitesPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListGeoRegionsPager == nil {
+func (m *ManagementServerTransport) dispatchNewListGeoRegionsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListGeoRegionsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListGeoRegionsPager not implemented")}
 	}
-	newListGeoRegionsPager := w.newListGeoRegionsPager.get(req)
+	newListGeoRegionsPager := m.newListGeoRegionsPager.get(req)
 	if newListGeoRegionsPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/geoRegions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -481,19 +481,28 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 		if err != nil {
 			return nil, err
 		}
-		var options *armappservice.WebSiteManagementClientListGeoRegionsOptions
-		if sKUParam != nil || linuxWorkersEnabledParam != nil || xenonWorkersEnabledParam != nil || linuxDynamicWorkersEnabledParam != nil {
-			options = &armappservice.WebSiteManagementClientListGeoRegionsOptions{
+		customModeWorkersEnabledUnescaped, err := url.QueryUnescape(qp.Get("customModeWorkersEnabled "))
+		if err != nil {
+			return nil, err
+		}
+		customModeWorkersEnabledParam, err := parseOptional(customModeWorkersEnabledUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armappservice.ManagementClientListGeoRegionsOptions
+		if sKUParam != nil || linuxWorkersEnabledParam != nil || xenonWorkersEnabledParam != nil || linuxDynamicWorkersEnabledParam != nil || customModeWorkersEnabledParam != nil {
+			options = &armappservice.ManagementClientListGeoRegionsOptions{
 				SKU:                        sKUParam,
 				LinuxWorkersEnabled:        linuxWorkersEnabledParam,
 				XenonWorkersEnabled:        xenonWorkersEnabledParam,
 				LinuxDynamicWorkersEnabled: linuxDynamicWorkersEnabledParam,
+				CustomModeWorkersEnabled:   customModeWorkersEnabledParam,
 			}
 		}
-		resp := w.srv.NewListGeoRegionsPager(options)
+		resp := m.srv.NewListGeoRegionsPager(options)
 		newListGeoRegionsPager = &resp
-		w.newListGeoRegionsPager.add(req, newListGeoRegionsPager)
-		server.PagerResponderInjectNextLinks(newListGeoRegionsPager, req, func(page *armappservice.WebSiteManagementClientListGeoRegionsResponse, createLink func() string) {
+		m.newListGeoRegionsPager.add(req, newListGeoRegionsPager)
+		server.PagerResponderInjectNextLinks(newListGeoRegionsPager, req, func(page *armappservice.ManagementClientListGeoRegionsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -502,31 +511,31 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListGeoRegionsPager.remove(req)
+		m.newListGeoRegionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListGeoRegionsPager) {
-		w.newListGeoRegionsPager.remove(req)
+		m.newListGeoRegionsPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListPremierAddOnOffersPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPremierAddOnOffersPager == nil {
+func (m *ManagementServerTransport) dispatchNewListPremierAddOnOffersPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPremierAddOnOffersPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPremierAddOnOffersPager not implemented")}
 	}
-	newListPremierAddOnOffersPager := w.newListPremierAddOnOffersPager.get(req)
+	newListPremierAddOnOffersPager := m.newListPremierAddOnOffersPager.get(req)
 	if newListPremierAddOnOffersPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/premieraddonoffers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := w.srv.NewListPremierAddOnOffersPager(nil)
+		resp := m.srv.NewListPremierAddOnOffersPager(nil)
 		newListPremierAddOnOffersPager = &resp
-		w.newListPremierAddOnOffersPager.add(req, newListPremierAddOnOffersPager)
-		server.PagerResponderInjectNextLinks(newListPremierAddOnOffersPager, req, func(page *armappservice.WebSiteManagementClientListPremierAddOnOffersResponse, createLink func() string) {
+		m.newListPremierAddOnOffersPager.add(req, newListPremierAddOnOffersPager)
+		server.PagerResponderInjectNextLinks(newListPremierAddOnOffersPager, req, func(page *armappservice.ManagementClientListPremierAddOnOffersResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -535,26 +544,26 @@ func (w *WebSiteManagementServerTransport) dispatchNewListPremierAddOnOffersPage
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPremierAddOnOffersPager.remove(req)
+		m.newListPremierAddOnOffersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPremierAddOnOffersPager) {
-		w.newListPremierAddOnOffersPager.remove(req)
+		m.newListPremierAddOnOffersPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
-	if w.srv.ListSKUs == nil {
+func (m *ManagementServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
+	if m.srv.ListSKUs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	respr, errRespr := w.srv.ListSKUs(req.Context(), nil)
+	respr, errRespr := m.srv.ListSKUs(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -569,26 +578,26 @@ func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListSiteIdentifiersAssignedToHostNamePager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListSiteIdentifiersAssignedToHostNamePager == nil {
+func (m *ManagementServerTransport) dispatchNewListSiteIdentifiersAssignedToHostNamePager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListSiteIdentifiersAssignedToHostNamePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSiteIdentifiersAssignedToHostNamePager not implemented")}
 	}
-	newListSiteIdentifiersAssignedToHostNamePager := w.newListSiteIdentifiersAssignedToHostNamePager.get(req)
+	newListSiteIdentifiersAssignedToHostNamePager := m.newListSiteIdentifiersAssignedToHostNamePager.get(req)
 	if newListSiteIdentifiersAssignedToHostNamePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/listSitesAssignedToHostName`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armappservice.NameIdentifier](req)
 		if err != nil {
 			return nil, err
 		}
-		resp := w.srv.NewListSiteIdentifiersAssignedToHostNamePager(body, nil)
+		resp := m.srv.NewListSiteIdentifiersAssignedToHostNamePager(body, nil)
 		newListSiteIdentifiersAssignedToHostNamePager = &resp
-		w.newListSiteIdentifiersAssignedToHostNamePager.add(req, newListSiteIdentifiersAssignedToHostNamePager)
-		server.PagerResponderInjectNextLinks(newListSiteIdentifiersAssignedToHostNamePager, req, func(page *armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, createLink func() string) {
+		m.newListSiteIdentifiersAssignedToHostNamePager.add(req, newListSiteIdentifiersAssignedToHostNamePager)
+		server.PagerResponderInjectNextLinks(newListSiteIdentifiersAssignedToHostNamePager, req, func(page *armappservice.ManagementClientListSiteIdentifiersAssignedToHostNameResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -597,25 +606,25 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSiteIdentifiersAssigne
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListSiteIdentifiersAssignedToHostNamePager.remove(req)
+		m.newListSiteIdentifiersAssignedToHostNamePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListSiteIdentifiersAssignedToHostNamePager) {
-		w.newListSiteIdentifiersAssignedToHostNamePager.remove(req)
+		m.newListSiteIdentifiersAssignedToHostNamePager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchNewListSourceControlsPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListSourceControlsPager == nil {
+func (m *ManagementServerTransport) dispatchNewListSourceControlsPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListSourceControlsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListSourceControlsPager not implemented")}
 	}
-	newListSourceControlsPager := w.newListSourceControlsPager.get(req)
+	newListSourceControlsPager := m.newListSourceControlsPager.get(req)
 	if newListSourceControlsPager == nil {
-		resp := w.srv.NewListSourceControlsPager(nil)
+		resp := m.srv.NewListSourceControlsPager(nil)
 		newListSourceControlsPager = &resp
-		w.newListSourceControlsPager.add(req, newListSourceControlsPager)
-		server.PagerResponderInjectNextLinks(newListSourceControlsPager, req, func(page *armappservice.WebSiteManagementClientListSourceControlsResponse, createLink func() string) {
+		m.newListSourceControlsPager.add(req, newListSourceControlsPager)
+		server.PagerResponderInjectNextLinks(newListSourceControlsPager, req, func(page *armappservice.ManagementClientListSourceControlsResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -624,23 +633,23 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSourceControlsPager(re
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListSourceControlsPager.remove(req)
+		m.newListSourceControlsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListSourceControlsPager) {
-		w.newListSourceControlsPager.remove(req)
+		m.newListSourceControlsPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
-	if w.srv.Move == nil {
+func (m *ManagementServerTransport) dispatchMove(req *http.Request) (*http.Response, error) {
+	if m.srv.Move == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Move not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/moveResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmMoveResourceEnvelope](req)
@@ -651,7 +660,7 @@ func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.Move(req.Context(), resourceGroupNameParam, body, nil)
+	respr, errRespr := m.srv.Move(req.Context(), resourceGroupNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -666,14 +675,14 @@ func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchRegionalCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if w.srv.RegionalCheckNameAvailability == nil {
+func (m *ManagementServerTransport) dispatchRegionalCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if m.srv.RegionalCheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegionalCheckNameAvailability not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checknameavailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.DnlResourceNameAvailabilityRequest](req)
@@ -684,7 +693,7 @@ func (w *WebSiteManagementServerTransport) dispatchRegionalCheckNameAvailability
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.RegionalCheckNameAvailability(req.Context(), locationParam, body, nil)
+	respr, errRespr := m.srv.RegionalCheckNameAvailability(req.Context(), locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -699,15 +708,15 @@ func (w *WebSiteManagementServerTransport) dispatchRegionalCheckNameAvailability
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchUpdatePublishingUser(req *http.Request) (*http.Response, error) {
-	if w.srv.UpdatePublishingUser == nil {
+func (m *ManagementServerTransport) dispatchUpdatePublishingUser(req *http.Request) (*http.Response, error) {
+	if m.srv.UpdatePublishingUser == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdatePublishingUser not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.User](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.UpdatePublishingUser(req.Context(), body, nil)
+	respr, errRespr := m.srv.UpdatePublishingUser(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -722,14 +731,14 @@ func (w *WebSiteManagementServerTransport) dispatchUpdatePublishingUser(req *htt
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchUpdateSourceControl(req *http.Request) (*http.Response, error) {
-	if w.srv.UpdateSourceControl == nil {
+func (m *ManagementServerTransport) dispatchUpdateSourceControl(req *http.Request) (*http.Response, error) {
+	if m.srv.UpdateSourceControl == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateSourceControl not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.SourceControl](req)
@@ -740,7 +749,7 @@ func (w *WebSiteManagementServerTransport) dispatchUpdateSourceControl(req *http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.UpdateSourceControl(req.Context(), sourceControlTypeParam, body, nil)
+	respr, errRespr := m.srv.UpdateSourceControl(req.Context(), sourceControlTypeParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -755,14 +764,14 @@ func (w *WebSiteManagementServerTransport) dispatchUpdateSourceControl(req *http
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchValidate(req *http.Request) (*http.Response, error) {
-	if w.srv.Validate == nil {
+func (m *ManagementServerTransport) dispatchValidate(req *http.Request) (*http.Response, error) {
+	if m.srv.Validate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Validate not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.ValidateRequest](req)
@@ -773,7 +782,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.Validate(req.Context(), resourceGroupNameParam, body, nil)
+	respr, errRespr := m.srv.Validate(req.Context(), resourceGroupNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -788,14 +797,14 @@ func (w *WebSiteManagementServerTransport) dispatchValidate(req *http.Request) (
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchValidateMove(req *http.Request) (*http.Response, error) {
-	if w.srv.ValidateMove == nil {
+func (m *ManagementServerTransport) dispatchValidateMove(req *http.Request) (*http.Response, error) {
+	if m.srv.ValidateMove == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateMove not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMoveResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmMoveResourceEnvelope](req)
@@ -806,7 +815,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidateMove(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.ValidateMove(req.Context(), resourceGroupNameParam, body, nil)
+	respr, errRespr := m.srv.ValidateMove(req.Context(), resourceGroupNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -821,21 +830,21 @@ func (w *WebSiteManagementServerTransport) dispatchValidateMove(req *http.Reques
 	return resp, nil
 }
 
-func (w *WebSiteManagementServerTransport) dispatchVerifyHostingEnvironmentVnet(req *http.Request) (*http.Response, error) {
-	if w.srv.VerifyHostingEnvironmentVnet == nil {
+func (m *ManagementServerTransport) dispatchVerifyHostingEnvironmentVnet(req *http.Request) (*http.Response, error) {
+	if m.srv.VerifyHostingEnvironmentVnet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VerifyHostingEnvironmentVnet not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/verifyHostingEnvironmentVnet`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.VnetParameters](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.VerifyHostingEnvironmentVnet(req.Context(), body, nil)
+	respr, errRespr := m.srv.VerifyHostingEnvironmentVnet(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -850,8 +859,8 @@ func (w *WebSiteManagementServerTransport) dispatchVerifyHostingEnvironmentVnet(
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to WebSiteManagementServerTransport
-var webSiteManagementServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to ManagementServerTransport
+var managementServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

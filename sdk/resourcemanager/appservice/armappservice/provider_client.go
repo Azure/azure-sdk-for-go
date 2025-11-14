@@ -27,7 +27,7 @@ type ProviderClient struct {
 // NewProviderClient creates a new instance of ProviderClient with the specified values.
 //   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewProviderClient(subscriptionID string, credential azcore.TokenCredential,
 
 // NewGetAvailableStacksPager - Description for Get available application frameworks and their versions
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
 //     method.
 func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
@@ -76,7 +76,7 @@ func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.OSTypeSelected != nil {
 		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 	}
@@ -96,7 +96,7 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 
 // NewGetAvailableStacksOnPremPager - Description for Get available application frameworks and their versions
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksOnPremPager
 //     method.
 func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *ProviderClientGetAvailableStacksOnPremOptions) *runtime.Pager[ProviderClientGetAvailableStacksOnPremResponse] {
@@ -134,7 +134,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.OSTypeSelected != nil {
 		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 	}
@@ -154,7 +154,7 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 
 // NewGetFunctionAppStacksPager - Description for Get available Function app frameworks and their versions
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksPager
 //     method.
 func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse] {
@@ -188,7 +188,7 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
@@ -209,7 +209,7 @@ func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Resp
 // NewGetFunctionAppStacksForLocationPager - Description for Get available Function app frameworks and their versions for
 // location
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - location - Function App stack location.
 //   - options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksForLocationPager
 //     method.
@@ -248,7 +248,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
@@ -268,7 +268,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp
 
 // NewGetWebAppStacksPager - Description for Get available Web app frameworks and their versions
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksPager
 //     method.
 func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGetWebAppStacksOptions) *runtime.Pager[ProviderClientGetWebAppStacksResponse] {
@@ -302,7 +302,7 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
@@ -322,7 +322,7 @@ func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response)
 
 // NewGetWebAppStacksForLocationPager - Description for Get available Web app frameworks and their versions for location
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - location - Web App stack location.
 //   - options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksForLocationPager
 //     method.
@@ -361,7 +361,7 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
@@ -382,7 +382,7 @@ func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *htt
 // NewListOperationsPager - Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes
 // resource metric definitions
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.NewListOperationsPager
 //     method.
 func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {
@@ -416,7 +416,7 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -27,7 +27,7 @@ type GetUsagesInLocationClient struct {
 // NewGetUsagesInLocationClient creates a new instance of GetUsagesInLocationClient with the specified values.
 //   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGetUsagesInLocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GetUsagesInLocationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewGetUsagesInLocationClient(subscriptionID string, credential azcore.Token
 
 // NewListPager - List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - location - The name of the Azure region.
 //   - options - GetUsagesInLocationClientListOptions contains the optional parameters for the GetUsagesInLocationClient.NewListPager
 //     method.
@@ -85,7 +85,7 @@ func (client *GetUsagesInLocationClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,0 +1,4 @@
+directory: specification/paloaltonetworks/PaloAltoNetworks.Management
+commit: b50fa8e117938fd72cbb3e66bb49324661dd1dcc
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,10 +49,10 @@ func NewBillingInfoClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// Get - Get marketplace and organization info mapped to the given monitor.
+// Get - Retrieve marketplace and organization billing information mapped to the given Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
@@ -82,7 +79,7 @@ func (client *BillingInfoClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *BillingInfoClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *BillingInfoClientGetOptions) (*policy.Request, error) {
+func (client *BillingInfoClient) getCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *BillingInfoClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/getBillingInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +98,7 @@ func (client *BillingInfoClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

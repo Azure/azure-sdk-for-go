@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,10 +49,10 @@ func NewConnectedPartnerResourcesClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
-// NewListPager - List of all active deployments that are associated with the marketplace subscription linked to the given
-// monitor.
+// NewListPager - List all active deployments associated with the marketplace subscription linked to the given Elastic monitor
+// resource.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - ConnectedPartnerResourcesClientListOptions contains the optional parameters for the ConnectedPartnerResourcesClient.NewListPager
@@ -84,7 +81,7 @@ func (client *ConnectedPartnerResourcesClient) NewListPager(resourceGroupName st
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *ConnectedPartnerResourcesClientListOptions) (*policy.Request, error) {
+func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *ConnectedPartnerResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listConnectedPartnerResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -103,7 +100,7 @@ func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

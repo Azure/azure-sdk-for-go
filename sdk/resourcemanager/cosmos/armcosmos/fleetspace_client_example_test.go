@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/fleet/CosmosDBFleetspaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/fleet/CosmosDBFleetspaceList.json
 func ExampleFleetspaceClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,10 +48,14 @@ func ExampleFleetspaceClient_NewListPager() {
 		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1"),
 		// 			Properties: &armcosmos.FleetspaceProperties{
 		// 				DataRegions: []*string{
-		// 					to.Ptr("westus2")},
+		// 					to.Ptr("westus2"),
+		// 					to.Ptr("eastus2")},
+		// 					FleetspaceAPIKind: to.Ptr(armcosmos.FleetspacePropertiesFleetspaceAPIKindNoSQL),
 		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 					ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierBusinessCritical),
 		// 					ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
+		// 						DedicatedRUs: to.Ptr[int64](200000),
+		// 						MaxConsumableRUs: to.Ptr[int64](800000),
 		// 						MaxThroughput: to.Ptr[int32](500000),
 		// 						MinThroughput: to.Ptr[int32](100000),
 		// 					},
@@ -64,9 +68,12 @@ func ExampleFleetspaceClient_NewListPager() {
 		// 				Properties: &armcosmos.FleetspaceProperties{
 		// 					DataRegions: []*string{
 		// 						to.Ptr("eastus")},
+		// 						FleetspaceAPIKind: to.Ptr(armcosmos.FleetspacePropertiesFleetspaceAPIKindNoSQL),
 		// 						ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 						ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierGeneralPurpose),
 		// 						ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
+		// 							DedicatedRUs: to.Ptr[int64](300000),
+		// 							MaxConsumableRUs: to.Ptr[int64](700000),
 		// 							MaxThroughput: to.Ptr[int32](600000),
 		// 							MinThroughput: to.Ptr[int32](200000),
 		// 						},
@@ -76,7 +83,7 @@ func ExampleFleetspaceClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/fleet/CosmosDBFleetspaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/fleet/CosmosDBFleetspaceGet.json
 func ExampleFleetspaceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,6 +111,8 @@ func ExampleFleetspaceClient_Get() {
 	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 			ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierGeneralPurpose),
 	// 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
+	// 				DedicatedRUs: to.Ptr[int64](200000),
+	// 				MaxConsumableRUs: to.Ptr[int64](800000),
 	// 				MaxThroughput: to.Ptr[int32](500000),
 	// 				MinThroughput: to.Ptr[int32](100000),
 	// 			},
@@ -111,7 +120,7 @@ func ExampleFleetspaceClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/fleet/CosmosDBFleetspaceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/fleet/CosmosDBFleetspaceCreate.json
 func ExampleFleetspaceClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,6 +164,8 @@ func ExampleFleetspaceClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 			ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierGeneralPurpose),
 	// 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
+	// 				DedicatedRUs: to.Ptr[int64](0),
+	// 				MaxConsumableRUs: to.Ptr[int64](0),
 	// 				MaxThroughput: to.Ptr[int32](500000),
 	// 				MinThroughput: to.Ptr[int32](100000),
 	// 			},
@@ -162,7 +173,7 @@ func ExampleFleetspaceClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/fleet/CosmosDBFleetspaceUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/fleet/CosmosDBFleetspaceUpdate.json
 func ExampleFleetspaceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,12 +186,10 @@ func ExampleFleetspaceClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewFleetspaceClient().BeginUpdate(ctx, "rg1", "fleet1", "fleetspace1", &armcosmos.FleetspaceClientBeginUpdateOptions{Body: &armcosmos.FleetspaceUpdate{
 		Properties: &armcosmos.FleetspaceProperties{
-			DataRegions: []*string{
-				to.Ptr("westus2")},
 			FleetspaceAPIKind: to.Ptr(armcosmos.FleetspacePropertiesFleetspaceAPIKindNoSQL),
 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
-				MaxThroughput: to.Ptr[int32](4000),
-				MinThroughput: to.Ptr[int32](3000),
+				MaxThroughput: to.Ptr[int32](1000000),
+				MinThroughput: to.Ptr[int32](100000),
 			},
 		},
 	},
@@ -206,14 +215,16 @@ func ExampleFleetspaceClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 			ServiceTier: to.Ptr(armcosmos.FleetspacePropertiesServiceTierGeneralPurpose),
 	// 			ThroughputPoolConfiguration: &armcosmos.FleetspacePropertiesThroughputPoolConfiguration{
-	// 				MaxThroughput: to.Ptr[int32](4000),
-	// 				MinThroughput: to.Ptr[int32](3000),
+	// 				DedicatedRUs: to.Ptr[int64](2000),
+	// 				MaxConsumableRUs: to.Ptr[int64](8000),
+	// 				MaxThroughput: to.Ptr[int32](1000000),
+	// 				MinThroughput: to.Ptr[int32](100000),
 	// 			},
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/fleet/CosmosDBFleetspaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/fleet/CosmosDBFleetspaceDelete.json
 func ExampleFleetspaceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

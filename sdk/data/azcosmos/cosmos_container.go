@@ -457,6 +457,14 @@ func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
 	itemIdentities []ItemIdentity,
 	o *ReadManyOptions) (ReadManyItemsResponse, error) {
+	// if empty list of items, return empty list
+	if len(itemIdentities) == 0 {
+		return ReadManyItemsResponse{}, nil
+	}
+	correlatedActivityId, _ := uuid.New()
+	h := headerOptionsOverride{
+		correlatedActivityId: &correlatedActivityId,
+	}
 
 	readManyOptions := &ReadManyOptions{}
 	if o != nil {
@@ -468,7 +476,10 @@ func (c *ContainerClient) ReadManyItems(
 		resourceType:    resourceTypeDocument,
 		resourceAddress: c.link,
 	}
+
 	if readManyOptions.QueryEngine != nil {
+		// use correlated activity id header for read many queries
+		operationContext.headerOptionsOverride = &h
 		return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
 	}
 

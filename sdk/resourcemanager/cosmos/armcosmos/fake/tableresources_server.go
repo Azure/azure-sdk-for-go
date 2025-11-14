@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,17 +24,49 @@ type TableResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateUpdateTable func(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters armcosmos.TableCreateUpdateParameters, options *armcosmos.TableResourcesClientBeginCreateUpdateTableOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableResponse], errResp azfake.ErrorResponder)
 
+	// BeginCreateUpdateTableRoleAssignment is the fake for method TableResourcesClient.BeginCreateUpdateTableRoleAssignment
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateUpdateTableRoleAssignment func(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateTableRoleAssignmentParameters armcosmos.TableRoleAssignmentResource, options *armcosmos.TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableRoleAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateUpdateTableRoleDefinition is the fake for method TableResourcesClient.BeginCreateUpdateTableRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateUpdateTableRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateTableRoleDefinitionParameters armcosmos.TableRoleDefinitionResource, options *armcosmos.TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableRoleDefinitionResponse], errResp azfake.ErrorResponder)
+
 	// BeginDeleteTable is the fake for method TableResourcesClient.BeginDeleteTable
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteTable func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientBeginDeleteTableOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteTableRoleAssignment is the fake for method TableResourcesClient.BeginDeleteTableRoleAssignment
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteTableRoleAssignment func(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *armcosmos.TableResourcesClientBeginDeleteTableRoleAssignmentOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteTableRoleDefinition is the fake for method TableResourcesClient.BeginDeleteTableRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteTableRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *armcosmos.TableResourcesClientBeginDeleteTableRoleDefinitionOptions) (resp azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleDefinitionResponse], errResp azfake.ErrorResponder)
 
 	// GetTable is the fake for method TableResourcesClient.GetTable
 	// HTTP status codes to indicate success: http.StatusOK
 	GetTable func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientGetTableOptions) (resp azfake.Responder[armcosmos.TableResourcesClientGetTableResponse], errResp azfake.ErrorResponder)
 
+	// GetTableRoleAssignment is the fake for method TableResourcesClient.GetTableRoleAssignment
+	// HTTP status codes to indicate success: http.StatusOK
+	GetTableRoleAssignment func(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *armcosmos.TableResourcesClientGetTableRoleAssignmentOptions) (resp azfake.Responder[armcosmos.TableResourcesClientGetTableRoleAssignmentResponse], errResp azfake.ErrorResponder)
+
+	// GetTableRoleDefinition is the fake for method TableResourcesClient.GetTableRoleDefinition
+	// HTTP status codes to indicate success: http.StatusOK
+	GetTableRoleDefinition func(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *armcosmos.TableResourcesClientGetTableRoleDefinitionOptions) (resp azfake.Responder[armcosmos.TableResourcesClientGetTableRoleDefinitionResponse], errResp azfake.ErrorResponder)
+
 	// GetTableThroughput is the fake for method TableResourcesClient.GetTableThroughput
 	// HTTP status codes to indicate success: http.StatusOK
 	GetTableThroughput func(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *armcosmos.TableResourcesClientGetTableThroughputOptions) (resp azfake.Responder[armcosmos.TableResourcesClientGetTableThroughputResponse], errResp azfake.ErrorResponder)
+
+	// NewListTableRoleAssignmentsPager is the fake for method TableResourcesClient.NewListTableRoleAssignmentsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListTableRoleAssignmentsPager func(resourceGroupName string, accountName string, options *armcosmos.TableResourcesClientListTableRoleAssignmentsOptions) (resp azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse])
+
+	// NewListTableRoleDefinitionsPager is the fake for method TableResourcesClient.NewListTableRoleDefinitionsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListTableRoleDefinitionsPager func(resourceGroupName string, accountName string, options *armcosmos.TableResourcesClientListTableRoleDefinitionsOptions) (resp azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse])
 
 	// NewListTablesPager is the fake for method TableResourcesClient.NewListTablesPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -64,7 +96,13 @@ func NewTableResourcesServerTransport(srv *TableResourcesServer) *TableResources
 	return &TableResourcesServerTransport{
 		srv:                                      srv,
 		beginCreateUpdateTable:                   newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableResponse]](),
+		beginCreateUpdateTableRoleAssignment:     newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableRoleAssignmentResponse]](),
+		beginCreateUpdateTableRoleDefinition:     newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableRoleDefinitionResponse]](),
 		beginDeleteTable:                         newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableResponse]](),
+		beginDeleteTableRoleAssignment:           newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleAssignmentResponse]](),
+		beginDeleteTableRoleDefinition:           newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleDefinitionResponse]](),
+		newListTableRoleAssignmentsPager:         newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse]](),
+		newListTableRoleDefinitionsPager:         newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse]](),
 		newListTablesPager:                       newTracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse]](),
 		beginMigrateTableToAutoscale:             newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse]](),
 		beginMigrateTableToManualThroughput:      newTracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse]](),
@@ -78,7 +116,13 @@ func NewTableResourcesServerTransport(srv *TableResourcesServer) *TableResources
 type TableResourcesServerTransport struct {
 	srv                                      *TableResourcesServer
 	beginCreateUpdateTable                   *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableResponse]]
+	beginCreateUpdateTableRoleAssignment     *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableRoleAssignmentResponse]]
+	beginCreateUpdateTableRoleDefinition     *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientCreateUpdateTableRoleDefinitionResponse]]
 	beginDeleteTable                         *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableResponse]]
+	beginDeleteTableRoleAssignment           *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleAssignmentResponse]]
+	beginDeleteTableRoleDefinition           *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientDeleteTableRoleDefinitionResponse]]
+	newListTableRoleAssignmentsPager         *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleAssignmentsResponse]]
+	newListTableRoleDefinitionsPager         *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTableRoleDefinitionsResponse]]
 	newListTablesPager                       *tracker[azfake.PagerResponder[armcosmos.TableResourcesClientListTablesResponse]]
 	beginMigrateTableToAutoscale             *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse]]
 	beginMigrateTableToManualThroughput      *tracker[azfake.PollerResponder[armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse]]
@@ -111,12 +155,28 @@ func (t *TableResourcesServerTransport) dispatchToMethodFake(req *http.Request, 
 			switch method {
 			case "TableResourcesClient.BeginCreateUpdateTable":
 				res.resp, res.err = t.dispatchBeginCreateUpdateTable(req)
+			case "TableResourcesClient.BeginCreateUpdateTableRoleAssignment":
+				res.resp, res.err = t.dispatchBeginCreateUpdateTableRoleAssignment(req)
+			case "TableResourcesClient.BeginCreateUpdateTableRoleDefinition":
+				res.resp, res.err = t.dispatchBeginCreateUpdateTableRoleDefinition(req)
 			case "TableResourcesClient.BeginDeleteTable":
 				res.resp, res.err = t.dispatchBeginDeleteTable(req)
+			case "TableResourcesClient.BeginDeleteTableRoleAssignment":
+				res.resp, res.err = t.dispatchBeginDeleteTableRoleAssignment(req)
+			case "TableResourcesClient.BeginDeleteTableRoleDefinition":
+				res.resp, res.err = t.dispatchBeginDeleteTableRoleDefinition(req)
 			case "TableResourcesClient.GetTable":
 				res.resp, res.err = t.dispatchGetTable(req)
+			case "TableResourcesClient.GetTableRoleAssignment":
+				res.resp, res.err = t.dispatchGetTableRoleAssignment(req)
+			case "TableResourcesClient.GetTableRoleDefinition":
+				res.resp, res.err = t.dispatchGetTableRoleDefinition(req)
 			case "TableResourcesClient.GetTableThroughput":
 				res.resp, res.err = t.dispatchGetTableThroughput(req)
+			case "TableResourcesClient.NewListTableRoleAssignmentsPager":
+				res.resp, res.err = t.dispatchNewListTableRoleAssignmentsPager(req)
+			case "TableResourcesClient.NewListTableRoleDefinitionsPager":
+				res.resp, res.err = t.dispatchNewListTableRoleDefinitionsPager(req)
 			case "TableResourcesClient.NewListTablesPager":
 				res.resp, res.err = t.dispatchNewListTablesPager(req)
 			case "TableResourcesClient.BeginMigrateTableToAutoscale":
@@ -198,6 +258,110 @@ func (t *TableResourcesServerTransport) dispatchBeginCreateUpdateTable(req *http
 	return resp, nil
 }
 
+func (t *TableResourcesServerTransport) dispatchBeginCreateUpdateTableRoleAssignment(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreateUpdateTableRoleAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateUpdateTableRoleAssignment not implemented")}
+	}
+	beginCreateUpdateTableRoleAssignment := t.beginCreateUpdateTableRoleAssignment.get(req)
+	if beginCreateUpdateTableRoleAssignment == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.TableRoleAssignmentResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreateUpdateTableRoleAssignment(req.Context(), resourceGroupNameParam, accountNameParam, roleAssignmentIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateUpdateTableRoleAssignment = &respr
+		t.beginCreateUpdateTableRoleAssignment.add(req, beginCreateUpdateTableRoleAssignment)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateUpdateTableRoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginCreateUpdateTableRoleAssignment.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateUpdateTableRoleAssignment) {
+		t.beginCreateUpdateTableRoleAssignment.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchBeginCreateUpdateTableRoleDefinition(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreateUpdateTableRoleDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateUpdateTableRoleDefinition not implemented")}
+	}
+	beginCreateUpdateTableRoleDefinition := t.beginCreateUpdateTableRoleDefinition.get(req)
+	if beginCreateUpdateTableRoleDefinition == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcosmos.TableRoleDefinitionResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreateUpdateTableRoleDefinition(req.Context(), resourceGroupNameParam, accountNameParam, roleDefinitionIDParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateUpdateTableRoleDefinition = &respr
+		t.beginCreateUpdateTableRoleDefinition.add(req, beginCreateUpdateTableRoleDefinition)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateUpdateTableRoleDefinition, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		t.beginCreateUpdateTableRoleDefinition.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateUpdateTableRoleDefinition) {
+		t.beginCreateUpdateTableRoleDefinition.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *TableResourcesServerTransport) dispatchBeginDeleteTable(req *http.Request) (*http.Response, error) {
 	if t.srv.BeginDeleteTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteTable not implemented")}
@@ -246,6 +410,102 @@ func (t *TableResourcesServerTransport) dispatchBeginDeleteTable(req *http.Reque
 	return resp, nil
 }
 
+func (t *TableResourcesServerTransport) dispatchBeginDeleteTableRoleAssignment(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginDeleteTableRoleAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteTableRoleAssignment not implemented")}
+	}
+	beginDeleteTableRoleAssignment := t.beginDeleteTableRoleAssignment.get(req)
+	if beginDeleteTableRoleAssignment == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginDeleteTableRoleAssignment(req.Context(), resourceGroupNameParam, accountNameParam, roleAssignmentIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteTableRoleAssignment = &respr
+		t.beginDeleteTableRoleAssignment.add(req, beginDeleteTableRoleAssignment)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteTableRoleAssignment, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDeleteTableRoleAssignment.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteTableRoleAssignment) {
+		t.beginDeleteTableRoleAssignment.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchBeginDeleteTableRoleDefinition(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginDeleteTableRoleDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteTableRoleDefinition not implemented")}
+	}
+	beginDeleteTableRoleDefinition := t.beginDeleteTableRoleDefinition.get(req)
+	if beginDeleteTableRoleDefinition == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		roleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginDeleteTableRoleDefinition(req.Context(), resourceGroupNameParam, accountNameParam, roleDefinitionIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteTableRoleDefinition = &respr
+		t.beginDeleteTableRoleDefinition.add(req, beginDeleteTableRoleDefinition)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteTableRoleDefinition, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDeleteTableRoleDefinition.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteTableRoleDefinition) {
+		t.beginDeleteTableRoleDefinition.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *TableResourcesServerTransport) dispatchGetTable(req *http.Request) (*http.Response, error) {
 	if t.srv.GetTable == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetTable not implemented")}
@@ -277,6 +537,80 @@ func (t *TableResourcesServerTransport) dispatchGetTable(req *http.Request) (*ht
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TableGetResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchGetTableRoleAssignment(req *http.Request) (*http.Response, error) {
+	if t.srv.GetTableRoleAssignment == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetTableRoleAssignment not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleAssignments/(?P<roleAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	roleAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.GetTableRoleAssignment(req.Context(), resourceGroupNameParam, accountNameParam, roleAssignmentIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TableRoleAssignmentResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchGetTableRoleDefinition(req *http.Request) (*http.Response, error) {
+	if t.srv.GetTableRoleDefinition == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetTableRoleDefinition not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleDefinitions/(?P<roleDefinitionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	roleDefinitionIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleDefinitionId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.GetTableRoleDefinition(req.Context(), resourceGroupNameParam, accountNameParam, roleDefinitionIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TableRoleDefinitionResource, req)
 	if err != nil {
 		return nil, err
 	}
@@ -316,6 +650,82 @@ func (t *TableResourcesServerTransport) dispatchGetTableThroughput(req *http.Req
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputSettingsGetResults, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchNewListTableRoleAssignmentsPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListTableRoleAssignmentsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListTableRoleAssignmentsPager not implemented")}
+	}
+	newListTableRoleAssignmentsPager := t.newListTableRoleAssignmentsPager.get(req)
+	if newListTableRoleAssignmentsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleAssignments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := t.srv.NewListTableRoleAssignmentsPager(resourceGroupNameParam, accountNameParam, nil)
+		newListTableRoleAssignmentsPager = &resp
+		t.newListTableRoleAssignmentsPager.add(req, newListTableRoleAssignmentsPager)
+	}
+	resp, err := server.PagerResponderNext(newListTableRoleAssignmentsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListTableRoleAssignmentsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListTableRoleAssignmentsPager) {
+		t.newListTableRoleAssignmentsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TableResourcesServerTransport) dispatchNewListTableRoleDefinitionsPager(req *http.Request) (*http.Response, error) {
+	if t.srv.NewListTableRoleDefinitionsPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListTableRoleDefinitionsPager not implemented")}
+	}
+	newListTableRoleDefinitionsPager := t.newListTableRoleDefinitionsPager.get(req)
+	if newListTableRoleDefinitionsPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tableRoleDefinitions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := t.srv.NewListTableRoleDefinitionsPager(resourceGroupNameParam, accountNameParam, nil)
+		newListTableRoleDefinitionsPager = &resp
+		t.newListTableRoleDefinitionsPager.add(req, newListTableRoleDefinitionsPager)
+	}
+	resp, err := server.PagerResponderNext(newListTableRoleDefinitionsPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		t.newListTableRoleDefinitionsPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListTableRoleDefinitionsPager) {
+		t.newListTableRoleDefinitionsPager.remove(req)
 	}
 	return resp, nil
 }

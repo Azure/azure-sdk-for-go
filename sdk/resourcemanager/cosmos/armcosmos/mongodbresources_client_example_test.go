@@ -13,12 +13,14 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseList.json
 func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +61,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBDatabasesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,8 +97,8 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
-func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseCreateUpdate.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMongoDbDatabaseCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -141,7 +143,59 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseRestore.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMongoDbDatabaseRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.MongoDBDatabaseCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.MongoDBDatabaseCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.MongoDBDatabaseResource{
+				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+				ID:         to.Ptr("databaseName"),
+				RestoreParameters: &armcosmos.ResourceRestoreParameters{
+					RestoreSource:          to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
+					RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-20T18:28:00.000Z"); return t }()),
+					RestoreWithTTLDisabled: to.Ptr(false),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MongoDBDatabaseGetResults = armcosmos.MongoDBDatabaseGetResults{
+	// 	Name: to.Ptr("databaseName"),
+	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armcosmos.MongoDBDatabaseGetProperties{
+	// 		Resource: &armcosmos.MongoDBDatabaseGetPropertiesResource{
+	// 			ID: to.Ptr("updatedDatabaseName"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +216,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +256,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +306,7 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +345,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +381,261 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseRetrieveThroughputDistribution.json
+func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRetrieveThroughputDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabaseRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", armcosmos.RetrieveThroughputParameters{
+		Properties: &armcosmos.RetrieveThroughputProperties{
+			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
+				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
+					{
+						ID: to.Ptr("0"),
+					},
+					{
+						ID: to.Ptr("1"),
+					}},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 				{
+	// 					ID: to.Ptr("0"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("1"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabaseRedistributeThroughput.json
+func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRedistributeThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabaseRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.RedistributeThroughputParameters{
+		Properties: &armcosmos.RedistributeThroughputProperties{
+			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
+				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("2"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID: to.Ptr("3"),
+					}},
+				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("0"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID:         to.Ptr("1"),
+						Throughput: to.Ptr[float64](5000),
+					}},
+				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 				{
+	// 					ID: to.Ptr("0"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("1"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("2"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("3"),
+	// 					TargetThroughput: to.Ptr[float64](3000),
+	// 					Throughput: to.Ptr[float64](3000),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionRetrieveThroughputDistribution.json
+func ExampleMongoDBResourcesClient_BeginMongoDBContainerRetrieveThroughputDistribution() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBContainerRetrieveThroughputDistribution(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RetrieveThroughputParameters{
+		Properties: &armcosmos.RetrieveThroughputProperties{
+			Resource: &armcosmos.RetrieveThroughputPropertiesResource{
+				PhysicalPartitionIDs: []*armcosmos.PhysicalPartitionID{
+					{
+						ID: to.Ptr("0"),
+					},
+					{
+						ID: to.Ptr("1"),
+					}},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 				{
+	// 					ID: to.Ptr("0"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("1"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionRedistributeThroughput.json
+func ExampleMongoDBResourcesClient_BeginMongoDBContainerRedistributeThroughput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBContainerRedistributeThroughput(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.RedistributeThroughputParameters{
+		Properties: &armcosmos.RedistributeThroughputProperties{
+			Resource: &armcosmos.RedistributeThroughputPropertiesResource{
+				SourcePhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("2"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID: to.Ptr("3"),
+					}},
+				TargetPhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+					{
+						ID:         to.Ptr("0"),
+						Throughput: to.Ptr[float64](5000),
+					},
+					{
+						ID:         to.Ptr("1"),
+						Throughput: to.Ptr[float64](5000),
+					}},
+				ThroughputPolicy: to.Ptr(armcosmos.ThroughputPolicyTypeCustom),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PhysicalPartitionThroughputInfoResult = armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
+	// 		Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
+	// 			PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
+	// 				{
+	// 					ID: to.Ptr("0"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("1"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("2"),
+	// 					TargetThroughput: to.Ptr[float64](5000),
+	// 					Throughput: to.Ptr[float64](5000),
+	// 				},
+	// 				{
+	// 					ID: to.Ptr("3"),
+	// 					TargetThroughput: to.Ptr[float64](3000),
+	// 					Throughput: to.Ptr[float64](3000),
+	// 			}},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionList.json
 func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,6 +668,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 		// 			},
 		// 			Properties: &armcosmos.MongoDBCollectionGetProperties{
 		// 				Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
+		// 					AnalyticalStorageTTL: to.Ptr[int32](500),
 		// 					ID: to.Ptr("testcoll"),
 		// 					Indexes: []*armcosmos.MongoIndex{
 		// 						{
@@ -382,7 +691,7 @@ func ExampleMongoDBResourcesClient_NewListMongoDBCollectionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,6 +721,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	// 			Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			Rid: to.Ptr("PD5DALigDgw="),
 	// 			Ts: to.Ptr[float32](1459200611),
+	// 			AnalyticalStorageTTL: to.Ptr[int32](500),
 	// 			ID: to.Ptr("testcoll"),
 	// 			Indexes: []*armcosmos.MongoIndex{
 	// 				{
@@ -432,8 +742,8 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionCreateUpdate.json
-func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionCreateUpdate.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMongoDbCollectionCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -449,7 +759,8 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 		Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.MongoDBCollectionResource{
-				ID: to.Ptr("collectionName"),
+				AnalyticalStorageTTL: to.Ptr[int32](500),
+				ID:                   to.Ptr("collectionName"),
 				Indexes: []*armcosmos.MongoIndex{
 					{
 						Key: &armcosmos.MongoIndexKeys{
@@ -492,6 +803,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 	// 	},
 	// 	Properties: &armcosmos.MongoDBCollectionGetProperties{
 	// 		Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
+	// 			AnalyticalStorageTTL: to.Ptr[int32](500),
 	// 			ID: to.Ptr("collectionName"),
 	// 			Indexes: []*armcosmos.MongoIndex{
 	// 				{
@@ -518,7 +830,80 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionRestore.json
+func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMongoDbCollectionRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginCreateUpdateMongoDBCollection(ctx, "rg1", "ddb1", "databaseName", "collectionName", armcosmos.MongoDBCollectionCreateUpdateParameters{
+		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
+		Properties: &armcosmos.MongoDBCollectionCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
+			Resource: &armcosmos.MongoDBCollectionResource{
+				CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+				ID:         to.Ptr("collectionName"),
+				RestoreParameters: &armcosmos.ResourceRestoreParameters{
+					RestoreSource:          to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId"),
+					RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-20T18:28:00.000Z"); return t }()),
+					RestoreWithTTLDisabled: to.Ptr(false),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MongoDBCollectionGetResults = armcosmos.MongoDBCollectionGetResults{
+	// 	Name: to.Ptr("collectionName"),
+	// 	Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
+	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
+	// 	Location: to.Ptr("West US"),
+	// 	Tags: map[string]*string{
+	// 	},
+	// 	Properties: &armcosmos.MongoDBCollectionGetProperties{
+	// 		Resource: &armcosmos.MongoDBCollectionGetPropertiesResource{
+	// 			AnalyticalStorageTTL: to.Ptr[int32](500),
+	// 			ID: to.Ptr("collectionName"),
+	// 			Indexes: []*armcosmos.MongoIndex{
+	// 				{
+	// 					Key: &armcosmos.MongoIndexKeys{
+	// 						Keys: []*string{
+	// 							to.Ptr("_ts")},
+	// 						},
+	// 						Options: &armcosmos.MongoIndexOptions{
+	// 							ExpireAfterSeconds: to.Ptr[int32](100),
+	// 							Unique: to.Ptr(true),
+	// 						},
+	// 					},
+	// 					{
+	// 						Key: &armcosmos.MongoIndexKeys{
+	// 							Keys: []*string{
+	// 								to.Ptr("_id")},
+	// 							},
+	// 					}},
+	// 					ShardKey: map[string]*string{
+	// 						"testKey": to.Ptr("Hash"),
+	// 					},
+	// 				},
+	// 			},
+	// 		}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,7 +924,129 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionThroughputGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBDatabasePartitionMerge.json
+func ExampleMongoDBResourcesClient_BeginMongoDBDatabasePartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginMongoDBDatabasePartitionMerge(ctx, "rgName", "ddb1", "databaseName", armcosmos.MergeParameters{
+		IsDryRun: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PhysicalPartitionStorageInfoCollection = armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
+	// 		{
+	// 			ID: to.Ptr("0"),
+	// 			StorageInKB: to.Ptr[float64](333),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("1"),
+	// 			StorageInKB: to.Ptr[float64](305),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("177"),
+	// 			StorageInKB: to.Ptr[float64](368),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("178"),
+	// 			StorageInKB: to.Ptr[float64](96313),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("5"),
+	// 			StorageInKB: to.Ptr[float64](194),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("6"),
+	// 			StorageInKB: to.Ptr[float64](331),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("7"),
+	// 			StorageInKB: to.Ptr[float64](384),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("8"),
+	// 			StorageInKB: to.Ptr[float64](246),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionPartitionMerge.json
+func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoDBResourcesClient().BeginListMongoDBCollectionPartitionMerge(ctx, "rgName", "ddb1", "databaseName", "collectionName", armcosmos.MergeParameters{
+		IsDryRun: to.Ptr(false),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.PhysicalPartitionStorageInfoCollection = armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
+	// 		{
+	// 			ID: to.Ptr("0"),
+	// 			StorageInKB: to.Ptr[float64](333),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("1"),
+	// 			StorageInKB: to.Ptr[float64](305),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("177"),
+	// 			StorageInKB: to.Ptr[float64](368),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("178"),
+	// 			StorageInKB: to.Ptr[float64](96313),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("5"),
+	// 			StorageInKB: to.Ptr[float64](194),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("6"),
+	// 			StorageInKB: to.Ptr[float64](331),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("7"),
+	// 			StorageInKB: to.Ptr[float64](384),
+	// 		},
+	// 		{
+	// 			ID: to.Ptr("8"),
+	// 			StorageInKB: to.Ptr[float64](246),
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionThroughputGet.json
 func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -579,7 +1086,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionThroughputUpdate.json
 func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -629,7 +1136,7 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionMigrateToAutoscale.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -668,7 +1175,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
 func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -704,7 +1211,7 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBRoleDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBRoleDefinitionGet.json
 func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +1256,7 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBRoleDefinitionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -818,7 +1325,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBRoleDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBRoleDefinitionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +1346,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBRoleDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBRoleDefinitionList.json
 func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -892,7 +1399,7 @@ func ExampleMongoDBResourcesClient_NewListMongoRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBUserDefinitionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBUserDefinitionGet.json
 func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -928,7 +1435,7 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
 func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -981,7 +1488,7 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBUserDefinitionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBUserDefinitionDelete.json
 func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1002,7 +1509,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBUserDefinitionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBUserDefinitionList.json
 func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1046,7 +1553,7 @@ func ExampleMongoDBResourcesClient_NewListMongoUserDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8b53f9cfc1fdb24dbfa28e311d3be4c645169297/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/stable/2025-10-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b99dfe6606f232f454660bf361bc32c0dfade9fb/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/DocumentDB/preview/2025-11-01-preview/examples/CosmosDBMongoDBCollectionBackupInformation.json
 func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

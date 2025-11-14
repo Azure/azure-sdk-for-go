@@ -1,5 +1,9 @@
 # Release History
 
+## 0.4.1 (2025-11-13)
+### Other Changes
+Please note, this package has been deprecated. The service backing this library is retired on January 31, 2025. For more details on the Azure Service Azure HDInsight on AKS retirement, please visit: https://azure.microsoft.com/updates?id=azure-hdinsight-on-aks-retirement.
+
 ## 0.4.0 (2024-08-22)
 ### Breaking Changes
 

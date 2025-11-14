@@ -5,60 +5,109 @@
 
 package armpostgresqlflexibleservers
 
-// AdministratorsClientBeginCreateOptions contains the optional parameters for the AdministratorsClient.BeginCreate method.
-type AdministratorsClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete method.
-type AdministratorsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
-type AdministratorsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdministratorsClientListByServerOptions contains the optional parameters for the AdministratorsClient.NewListByServerPager
+// AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions contains the optional parameters for the AdministratorsMicrosoftEntraClient.BeginCreateOrUpdate
 // method.
-type AdministratorsClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackupsClientBeginCreateOptions contains the optional parameters for the BackupsClient.BeginCreate method.
-type BackupsClientBeginCreateOptions struct {
+type AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// BackupsClientBeginDeleteOptions contains the optional parameters for the BackupsClient.BeginDelete method.
-type BackupsClientBeginDeleteOptions struct {
+// AdministratorsMicrosoftEntraClientBeginDeleteOptions contains the optional parameters for the AdministratorsMicrosoftEntraClient.BeginDelete
+// method.
+type AdministratorsMicrosoftEntraClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// BackupsClientGetOptions contains the optional parameters for the BackupsClient.Get method.
-type BackupsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BackupsClientListByServerOptions contains the optional parameters for the BackupsClient.NewListByServerPager method.
-type BackupsClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CheckNameAvailabilityClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityClient.Execute
+// AdministratorsMicrosoftEntraClientGetOptions contains the optional parameters for the AdministratorsMicrosoftEntraClient.Get
 // method.
-type CheckNameAvailabilityClientExecuteOptions struct {
+type AdministratorsMicrosoftEntraClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CheckNameAvailabilityWithLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithLocationClient.Execute
+// AdministratorsMicrosoftEntraClientListByServerOptions contains the optional parameters for the AdministratorsMicrosoftEntraClient.NewListByServerPager
 // method.
-type CheckNameAvailabilityWithLocationClientExecuteOptions struct {
+type AdministratorsMicrosoftEntraClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdvancedThreatProtectionSettingsClientGetOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.Get
+// method.
+type AdvancedThreatProtectionSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdvancedThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.NewListByServerPager
+// method.
+type AdvancedThreatProtectionSettingsClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsAutomaticAndOnDemandClientBeginCreateOptions contains the optional parameters for the BackupsAutomaticAndOnDemandClient.BeginCreate
+// method.
+type BackupsAutomaticAndOnDemandClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BackupsAutomaticAndOnDemandClientBeginDeleteOptions contains the optional parameters for the BackupsAutomaticAndOnDemandClient.BeginDelete
+// method.
+type BackupsAutomaticAndOnDemandClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BackupsAutomaticAndOnDemandClientGetOptions contains the optional parameters for the BackupsAutomaticAndOnDemandClient.Get
+// method.
+type BackupsAutomaticAndOnDemandClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsAutomaticAndOnDemandClientListByServerOptions contains the optional parameters for the BackupsAutomaticAndOnDemandClient.NewListByServerPager
+// method.
+type BackupsAutomaticAndOnDemandClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsLongTermRetentionClientBeginStartOptions contains the optional parameters for the BackupsLongTermRetentionClient.BeginStart
+// method.
+type BackupsLongTermRetentionClientBeginStartOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BackupsLongTermRetentionClientCheckPrerequisitesOptions contains the optional parameters for the BackupsLongTermRetentionClient.CheckPrerequisites
+// method.
+type BackupsLongTermRetentionClientCheckPrerequisitesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsLongTermRetentionClientGetOptions contains the optional parameters for the BackupsLongTermRetentionClient.Get method.
+type BackupsLongTermRetentionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BackupsLongTermRetentionClientListByServerOptions contains the optional parameters for the BackupsLongTermRetentionClient.NewListByServerPager
+// method.
+type BackupsLongTermRetentionClientListByServerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapabilitiesByLocationClientListOptions contains the optional parameters for the CapabilitiesByLocationClient.NewListPager
+// method.
+type CapabilitiesByLocationClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapabilitiesByServerClientListOptions contains the optional parameters for the CapabilitiesByServerClient.NewListPager
+// method.
+type CapabilitiesByServerClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapturedLogsClientListByServerOptions contains the optional parameters for the CapturedLogsClient.NewListByServerPager
+// method.
+type CapturedLogsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -131,54 +180,19 @@ type FirewallRulesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FlexibleServerClientBeginStartLtrBackupOptions contains the optional parameters for the FlexibleServerClient.BeginStartLtrBackup
-// method.
-type FlexibleServerClientBeginStartLtrBackupOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// FlexibleServerClientTriggerLtrPreBackupOptions contains the optional parameters for the FlexibleServerClient.TriggerLtrPreBackup
-// method.
-type FlexibleServerClientTriggerLtrPreBackupOptions struct {
+// MigrationsClientCancelOptions contains the optional parameters for the MigrationsClient.Cancel method.
+type MigrationsClientCancelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
+// MigrationsClientCheckNameAvailabilityOptions contains the optional parameters for the MigrationsClient.CheckNameAvailability
 // method.
-type GetPrivateDNSZoneSuffixClientExecuteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LocationBasedCapabilitiesClientExecuteOptions contains the optional parameters for the LocationBasedCapabilitiesClient.NewExecutePager
-// method.
-type LocationBasedCapabilitiesClientExecuteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager method.
-type LogFilesClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LtrBackupOperationsClientGetOptions contains the optional parameters for the LtrBackupOperationsClient.Get method.
-type LtrBackupOperationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LtrBackupOperationsClientListByServerOptions contains the optional parameters for the LtrBackupOperationsClient.NewListByServerPager
-// method.
-type LtrBackupOperationsClientListByServerOptions struct {
+type MigrationsClientCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
 // MigrationsClientCreateOptions contains the optional parameters for the MigrationsClient.Create method.
 type MigrationsClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// MigrationsClientDeleteOptions contains the optional parameters for the MigrationsClient.Delete method.
-type MigrationsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -190,7 +204,7 @@ type MigrationsClientGetOptions struct {
 // MigrationsClientListByTargetServerOptions contains the optional parameters for the MigrationsClient.NewListByTargetServerPager
 // method.
 type MigrationsClientListByTargetServerOptions struct {
-	// Migration list filter. Retrieves either active migrations or all migrations.
+	// Migration list filter. Indicates if the request should retrieve only active migrations or all migrations. Defaults to Active.
 	MigrationListFilter *MigrationListFilter
 }
 
@@ -199,27 +213,38 @@ type MigrationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NameAvailabilityClientCheckGloballyOptions contains the optional parameters for the NameAvailabilityClient.CheckGlobally
+// method.
+type NameAvailabilityClientCheckGloballyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NameAvailabilityClientCheckWithLocationOptions contains the optional parameters for the NameAvailabilityClient.CheckWithLocation
+// method.
+type NameAvailabilityClientCheckWithLocationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions contains the optional parameters for the PostgreSQLManagementClient.CheckMigrationNameAvailability
-// method.
-type PostgreSQLManagementClientCheckMigrationNameAvailabilityOptions struct {
+// PrivateDNSZoneSuffixClientGetOptions contains the optional parameters for the PrivateDNSZoneSuffixClient.Get method.
+type PrivateDNSZoneSuffixClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginDelete
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
-type PrivateEndpointConnectionClientBeginDeleteOptions struct {
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// PrivateEndpointConnectionClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginUpdate
+// PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
 // method.
-type PrivateEndpointConnectionClientBeginUpdateOptions struct {
+type PrivateEndpointConnectionsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -257,11 +282,6 @@ type ReplicasClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerCapabilitiesClientListOptions contains the optional parameters for the ServerCapabilitiesClient.NewListPager method.
-type ServerCapabilitiesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.BeginCreateOrUpdate
 // method.
 type ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions struct {
@@ -269,20 +289,8 @@ type ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions struct {
 	ResumeToken string
 }
 
-// ServerThreatProtectionSettingsClientGetOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.Get
-// method.
-type ServerThreatProtectionSettingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServerThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerThreatProtectionSettingsClient.NewListByServerPager
-// method.
-type ServerThreatProtectionSettingsClientListByServerOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.
-type ServersClientBeginCreateOptions struct {
+// ServersClientBeginCreateOrUpdateOptions contains the optional parameters for the ServersClient.BeginCreateOrUpdate method.
+type ServersClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -295,7 +303,7 @@ type ServersClientBeginDeleteOptions struct {
 
 // ServersClientBeginRestartOptions contains the optional parameters for the ServersClient.BeginRestart method.
 type ServersClientBeginRestartOptions struct {
-	// The parameters for restarting a server.
+	// Parameters to restart a server.
 	Parameters *RestartParameter
 
 	// Resumes the long-running operation from the provided token.
@@ -331,56 +339,10 @@ type ServersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListOptions contains the optional parameters for the ServersClient.NewListPager method.
-type ServersClientListOptions struct {
+// ServersClientListBySubscriptionOptions contains the optional parameters for the ServersClient.NewListBySubscriptionPager
+// method.
+type ServersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
-}
-
-// TuningConfigurationClientBeginDisableOptions contains the optional parameters for the TuningConfigurationClient.BeginDisable
-// method.
-type TuningConfigurationClientBeginDisableOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TuningConfigurationClientBeginEnableOptions contains the optional parameters for the TuningConfigurationClient.BeginEnable
-// method.
-type TuningConfigurationClientBeginEnableOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TuningConfigurationClientBeginStartSessionOptions contains the optional parameters for the TuningConfigurationClient.BeginStartSession
-// method.
-type TuningConfigurationClientBeginStartSessionOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TuningConfigurationClientBeginStopSessionOptions contains the optional parameters for the TuningConfigurationClient.BeginStopSession
-// method.
-type TuningConfigurationClientBeginStopSessionOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TuningConfigurationClientListSessionDetailsOptions contains the optional parameters for the TuningConfigurationClient.NewListSessionDetailsPager
-// method.
-type TuningConfigurationClientListSessionDetailsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TuningConfigurationClientListSessionsOptions contains the optional parameters for the TuningConfigurationClient.NewListSessionsPager
-// method.
-type TuningConfigurationClientListSessionsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TuningIndexClientListRecommendationsOptions contains the optional parameters for the TuningIndexClient.NewListRecommendationsPager
-// method.
-type TuningIndexClientListRecommendationsOptions struct {
-	// Recommendations list filter. Retrieves recommendations based on type.
-	RecommendationType *RecommendationType
 }
 
 // TuningOptionsClientGetOptions contains the optional parameters for the TuningOptionsClient.Get method.
@@ -392,6 +354,13 @@ type TuningOptionsClientGetOptions struct {
 // method.
 type TuningOptionsClientListByServerOptions struct {
 	// placeholder for future optional parameters
+}
+
+// TuningOptionsClientListRecommendationsOptions contains the optional parameters for the TuningOptionsClient.NewListRecommendationsPager
+// method.
+type TuningOptionsClientListRecommendationsOptions struct {
+	// Recommendations list filter. Retrieves recommendations based on type.
+	RecommendationType *RecommendationTypeParameterEnum
 }
 
 // VirtualEndpointsClientBeginCreateOptions contains the optional parameters for the VirtualEndpointsClient.BeginCreate method.
@@ -423,8 +392,8 @@ type VirtualEndpointsClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute
+// VirtualNetworkSubnetUsageClientListOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.List
 // method.
-type VirtualNetworkSubnetUsageClientExecuteOptions struct {
+type VirtualNetworkSubnetUsageClientListOptions struct {
 	// placeholder for future optional parameters
 }

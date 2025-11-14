@@ -1,5 +1,46 @@
 # Release History
 
+## 8.0.0 (2025-11-14)
+### Breaking Changes
+
+- Function `*SnapshotsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, any, *SnapshotsClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, SnapshotPatch, *SnapshotsClientBeginUpdateOptions)`
+- Type of `BackupStatus.RelationshipStatus` has been changed from `*RelationshipStatus` to `*VolumeBackupRelationshipStatus`
+- Type of `PoolPatchProperties.CustomThroughputMibps` has been changed from `*float32` to `*int32`
+- Type of `PoolProperties.CustomThroughputMibps` has been changed from `*float32` to `*int32`
+- Type of `ReplicationStatus.RelationshipStatus` has been changed from `*RelationshipStatus` to `*VolumeReplicationRelationshipStatus`
+- Type of `RestoreStatus.RelationshipStatus` has been changed from `*RelationshipStatus` to `*VolumeRestoreRelationshipStatus`
+- Enum `RelationshipStatus` has been removed
+
+### Features Added
+
+- New value `CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups`, `CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups` added to enum type `CheckNameResourceTypes`
+- New value `CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups`, `CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups` added to enum type `CheckQuotaNameResourceTypes`
+- New value `ProvisioningStateUpdating` added to enum type `ProvisioningState`
+- New enum type `Exclude` with values `ExcludeDeleted`, `ExcludeNone`
+- New enum type `ReplicationMirrorState` with values `ReplicationMirrorStateBroken`, `ReplicationMirrorStateMirrored`, `ReplicationMirrorStateUninitialized`
+- New enum type `VolumeBackupRelationshipStatus` with values `VolumeBackupRelationshipStatusFailed`, `VolumeBackupRelationshipStatusIdle`, `VolumeBackupRelationshipStatusTransferring`, `VolumeBackupRelationshipStatusUnknown`
+- New enum type `VolumeReplicationRelationshipStatus` with values `VolumeReplicationRelationshipStatusIdle`, `VolumeReplicationRelationshipStatusTransferring`
+- New enum type `VolumeRestoreRelationshipStatus` with values `VolumeRestoreRelationshipStatusFailed`, `VolumeRestoreRelationshipStatusIdle`, `VolumeRestoreRelationshipStatusTransferring`, `VolumeRestoreRelationshipStatusUnknown`
+- New function `*ClientFactory.NewResourceQuotaLimitsAccountClient() *ResourceQuotaLimitsAccountClient`
+- New function `NewResourceQuotaLimitsAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceQuotaLimitsAccountClient, error)`
+- New function `*ResourceQuotaLimitsAccountClient.Get(context.Context, string, string, string, *ResourceQuotaLimitsAccountClientGetOptions) (ResourceQuotaLimitsAccountClientGetResponse, error)`
+- New function `*ResourceQuotaLimitsAccountClient.NewListPager(string, string, *ResourceQuotaLimitsAccountClientListOptions) *runtime.Pager[ResourceQuotaLimitsAccountClientListResponse]`
+- New struct `ListReplicationsRequest`
+- New struct `SnapshotPatch`
+- New field `NextLink` in struct `BackupPoliciesList`
+- New field `NextLink` in struct `ListReplications`
+- New field `MirrorState`, `ReplicationCreationTime`, `ReplicationDeletionTime` in struct `Replication`
+- New field `NextLink` in struct `SnapshotPoliciesList`
+- New field `NextLink` in struct `SnapshotPolicyVolumeList`
+- New field `NextLink` in struct `SnapshotsList`
+- New field `Usage` in struct `SubscriptionQuotaItemProperties`
+- New field `SystemData` in struct `VolumeGroupDetails`
+- New field `NextLink` in struct `VolumeGroupList`
+- New field `NextLink` in struct `VolumeQuotaRulesList`
+- New field `Body` in struct `VolumesClientListReplicationsOptions`
+- New anonymous field `Volume` in struct `VolumesClientSplitCloneFromParentResponse`
+
+
 ## 8.0.0 (2025-11-13)
 ### Breaking Changes
 

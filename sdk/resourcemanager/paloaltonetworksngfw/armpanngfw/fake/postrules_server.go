@@ -22,31 +22,31 @@ import (
 type PostRulesServer struct {
 	// BeginCreateOrUpdate is the fake for method PostRulesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, globalRulestackName string, priority string, resource armpanngfw.PostRulesResource, options *armpanngfw.PostRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.PostRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, globalRulestackName string, priority string, resource armpanngfw.PostRulesResource, options *armpanngfw.PostRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.PostRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PostRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.PostRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.PostRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PostRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientGetOptions) (resp azfake.Responder[armpanngfw.PostRulesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientGetOptions) (resp azfake.Responder[armpanngfw.PostRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetCounters is the fake for method PostRulesClient.GetCounters
 	// HTTP status codes to indicate success: http.StatusOK
-	GetCounters	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientGetCountersOptions) (resp azfake.Responder[armpanngfw.PostRulesClientGetCountersResponse], errResp azfake.ErrorResponder)
+	GetCounters func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientGetCountersOptions) (resp azfake.Responder[armpanngfw.PostRulesClientGetCountersResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method PostRulesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(globalRulestackName string, options *armpanngfw.PostRulesClientListOptions) (resp azfake.PagerResponder[armpanngfw.PostRulesClientListResponse])
+	NewListPager func(globalRulestackName string, options *armpanngfw.PostRulesClientListOptions) (resp azfake.PagerResponder[armpanngfw.PostRulesClientListResponse])
 
 	// RefreshCounters is the fake for method PostRulesClient.RefreshCounters
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RefreshCounters	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientRefreshCountersOptions) (resp azfake.Responder[armpanngfw.PostRulesClientRefreshCountersResponse], errResp azfake.ErrorResponder)
+	RefreshCounters func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientRefreshCountersOptions) (resp azfake.Responder[armpanngfw.PostRulesClientRefreshCountersResponse], errResp azfake.ErrorResponder)
 
 	// ResetCounters is the fake for method PostRulesClient.ResetCounters
 	// HTTP status codes to indicate success: http.StatusOK
-	ResetCounters	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientResetCountersOptions) (resp azfake.Responder[armpanngfw.PostRulesClientResetCountersResponse], errResp azfake.ErrorResponder)
+	ResetCounters func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PostRulesClientResetCountersOptions) (resp azfake.Responder[armpanngfw.PostRulesClientResetCountersResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPostRulesServerTransport creates a new instance of PostRulesServerTransport with the provided implementation.
@@ -54,20 +54,20 @@ type PostRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPostRulesServerTransport(srv *PostRulesServer) *PostRulesServerTransport {
 	return &PostRulesServerTransport{
-		srv:			srv,
-		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armpanngfw.PostRulesClientCreateOrUpdateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armpanngfw.PostRulesClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armpanngfw.PostRulesClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armpanngfw.PostRulesClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armpanngfw.PostRulesClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armpanngfw.PostRulesClientListResponse]](),
 	}
 }
 
 // PostRulesServerTransport connects instances of armpanngfw.PostRulesClient to instances of PostRulesServer.
 // Don't use this type directly, use NewPostRulesServerTransport instead.
 type PostRulesServerTransport struct {
-	srv			*PostRulesServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.PostRulesClientCreateOrUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.PostRulesClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armpanngfw.PostRulesClientListResponse]]
+	srv                 *PostRulesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armpanngfw.PostRulesClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armpanngfw.PostRulesClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armpanngfw.PostRulesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PostRulesServerTransport.

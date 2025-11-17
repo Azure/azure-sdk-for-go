@@ -25,14 +25,14 @@ func ExampleFqdnListLocalRulestackClient_BeginCreateOrUpdate_fqdnListLocalRulest
 	}
 	poller, err := clientFactory.NewFqdnListLocalRulestackClient().BeginCreateOrUpdate(ctx, "rgopenapi", "lrs1", "armid1", armpanngfw.FqdnListLocalRulestackResource{
 		Properties: &armpanngfw.FqdnObject{
-			Description:	to.Ptr("string"),
-			AuditComment:	to.Ptr("string"),
-			Etag:		to.Ptr("aaaaaaaaaaaaaaaaaa"),
+			Description:  to.Ptr("string"),
+			AuditComment: to.Ptr("string"),
+			Etag:         to.Ptr("aaaaaaaaaaaaaaaaaa"),
 			FqdnList: []*string{
 				to.Ptr("string1"),
 				to.Ptr("string2"),
 			},
-			ProvisioningState:	to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateAccepted),
 		},
 	}, nil)
 	if err != nil {

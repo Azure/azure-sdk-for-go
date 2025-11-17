@@ -25,13 +25,13 @@ func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobal
 	}
 	poller, err := clientFactory.NewPrefixListGlobalRulestackClient().BeginCreateOrUpdate(ctx, "praval", "armid1", armpanngfw.PrefixListGlobalRulestackResource{
 		Properties: &armpanngfw.PrefixObject{
-			Description:	to.Ptr("string"),
-			AuditComment:	to.Ptr("comment"),
-			Etag:		to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
+			Description:  to.Ptr("string"),
+			AuditComment: to.Ptr("comment"),
+			Etag:         to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
 			PrefixList: []*string{
 				to.Ptr("1.0.0.0/24"),
 			},
-			ProvisioningState:	to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateAccepted),
 		},
 	}, nil)
 	if err != nil {

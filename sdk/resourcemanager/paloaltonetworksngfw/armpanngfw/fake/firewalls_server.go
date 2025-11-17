@@ -23,43 +23,43 @@ import (
 type FirewallsServer struct {
 	// BeginCreateOrUpdate is the fake for method FirewallsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, firewallName string, resource armpanngfw.FirewallResource, options *armpanngfw.FirewallsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.FirewallsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, firewallName string, resource armpanngfw.FirewallResource, options *armpanngfw.FirewallsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.FirewallsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FirewallsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.FirewallsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.FirewallsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FirewallsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetGlobalRulestack is the fake for method FirewallsClient.GetGlobalRulestack
 	// HTTP status codes to indicate success: http.StatusOK
-	GetGlobalRulestack	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetGlobalRulestackOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetGlobalRulestackResponse], errResp azfake.ErrorResponder)
+	GetGlobalRulestack func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetGlobalRulestackOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetGlobalRulestackResponse], errResp azfake.ErrorResponder)
 
 	// GetLogProfile is the fake for method FirewallsClient.GetLogProfile
 	// HTTP status codes to indicate success: http.StatusOK
-	GetLogProfile	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetLogProfileOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetLogProfileResponse], errResp azfake.ErrorResponder)
+	GetLogProfile func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetLogProfileOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetLogProfileResponse], errResp azfake.ErrorResponder)
 
 	// GetSupportInfo is the fake for method FirewallsClient.GetSupportInfo
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSupportInfo	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetSupportInfoOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetSupportInfoResponse], errResp azfake.ErrorResponder)
+	GetSupportInfo func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientGetSupportInfoOptions) (resp azfake.Responder[armpanngfw.FirewallsClientGetSupportInfoResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method FirewallsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armpanngfw.FirewallsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpanngfw.FirewallsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armpanngfw.FirewallsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpanngfw.FirewallsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method FirewallsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager	func(options *armpanngfw.FirewallsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpanngfw.FirewallsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(options *armpanngfw.FirewallsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpanngfw.FirewallsClientListBySubscriptionResponse])
 
 	// SaveLogProfile is the fake for method FirewallsClient.SaveLogProfile
 	// HTTP status codes to indicate success: http.StatusNoContent
-	SaveLogProfile	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientSaveLogProfileOptions) (resp azfake.Responder[armpanngfw.FirewallsClientSaveLogProfileResponse], errResp azfake.ErrorResponder)
+	SaveLogProfile func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallsClientSaveLogProfileOptions) (resp azfake.Responder[armpanngfw.FirewallsClientSaveLogProfileResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method FirewallsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update	func(ctx context.Context, resourceGroupName string, firewallName string, properties armpanngfw.FirewallResourceUpdate, options *armpanngfw.FirewallsClientUpdateOptions) (resp azfake.Responder[armpanngfw.FirewallsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, firewallName string, properties armpanngfw.FirewallResourceUpdate, options *armpanngfw.FirewallsClientUpdateOptions) (resp azfake.Responder[armpanngfw.FirewallsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewFirewallsServerTransport creates a new instance of FirewallsServerTransport with the provided implementation.
@@ -67,22 +67,22 @@ type FirewallsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallsServerTransport(srv *FirewallsServer) *FirewallsServerTransport {
 	return &FirewallsServerTransport{
-		srv:				srv,
-		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armpanngfw.FirewallsClientCreateOrUpdateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armpanngfw.FirewallsClientDeleteResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armpanngfw.FirewallsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armpanngfw.FirewallsClientListBySubscriptionResponse]](),
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armpanngfw.FirewallsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armpanngfw.FirewallsClientDeleteResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpanngfw.FirewallsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armpanngfw.FirewallsClientListBySubscriptionResponse]](),
 	}
 }
 
 // FirewallsServerTransport connects instances of armpanngfw.FirewallsClient to instances of FirewallsServer.
 // Don't use this type directly, use NewFirewallsServerTransport instead.
 type FirewallsServerTransport struct {
-	srv				*FirewallsServer
-	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armpanngfw.FirewallsClientCreateOrUpdateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armpanngfw.FirewallsClientDeleteResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armpanngfw.FirewallsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armpanngfw.FirewallsClientListBySubscriptionResponse]]
+	srv                         *FirewallsServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armpanngfw.FirewallsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armpanngfw.FirewallsClientDeleteResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpanngfw.FirewallsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armpanngfw.FirewallsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for FirewallsServerTransport.

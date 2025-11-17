@@ -67,35 +67,35 @@ func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpd
 	}
 	poller, err := clientFactory.NewLocalRulestacksClient().BeginCreateOrUpdate(ctx, "rgopenapi", "lrs1", armpanngfw.LocalRulestackResource{
 		Identity: &armpanngfw.AzureResourceManagerManagedIdentityProperties{
-			Type:	to.Ptr(armpanngfw.ManagedIdentityTypeNone),
+			Type: to.Ptr(armpanngfw.ManagedIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpanngfw.AzureResourceManagerUserAssignedIdentity{
-				"key16": &armpanngfw.AzureResourceManagerUserAssignedIdentity{
-					ClientID:	to.Ptr("aaaa"),
-					PrincipalID:	to.Ptr("aaaaaaaaaaaaaaa"),
+				"key16": {
+					ClientID:    to.Ptr("aaaa"),
+					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
 				},
 			},
 		},
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Properties: &armpanngfw.RulestackProperties{
-			Description:	to.Ptr("local rulestacks"),
+			Description: to.Ptr("local rulestacks"),
 			AssociatedSubscriptions: []*string{
 				to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
 			},
-			DefaultMode:		to.Ptr(armpanngfw.DefaultModeIPS),
-			MinAppIDVersion:	to.Ptr("8.5.3"),
-			PanEtag:		to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-			PanLocation:		to.Ptr("eastus"),
-			ProvisioningState:	to.Ptr(armpanngfw.ProvisioningStateAccepted),
-			Scope:			to.Ptr(armpanngfw.ScopeTypeLOCAL),
+			DefaultMode:       to.Ptr(armpanngfw.DefaultModeIPS),
+			MinAppIDVersion:   to.Ptr("8.5.3"),
+			PanEtag:           to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+			PanLocation:       to.Ptr("eastus"),
+			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			Scope:             to.Ptr(armpanngfw.ScopeTypeLOCAL),
 			SecurityServices: &armpanngfw.SecurityServices{
-				AntiSpywareProfile:		to.Ptr("default"),
-				AntiVirusProfile:		to.Ptr("default"),
-				DNSSubscription:		to.Ptr("default"),
-				FileBlockingProfile:		to.Ptr("default"),
-				OutboundTrustCertificate:	to.Ptr("default"),
-				OutboundUnTrustCertificate:	to.Ptr("default"),
-				URLFilteringProfile:		to.Ptr("default"),
-				VulnerabilityProfile:		to.Ptr("default"),
+				AntiSpywareProfile:         to.Ptr("default"),
+				AntiVirusProfile:           to.Ptr("default"),
+				DNSSubscription:            to.Ptr("default"),
+				FileBlockingProfile:        to.Ptr("default"),
+				OutboundTrustCertificate:   to.Ptr("default"),
+				OutboundUnTrustCertificate: to.Ptr("default"),
+				URLFilteringProfile:        to.Ptr("default"),
+				VulnerabilityProfile:       to.Ptr("default"),
 			},
 		},
 		Tags: map[string]*string{
@@ -178,8 +178,8 @@ func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpd
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewLocalRulestacksClient().BeginCreateOrUpdate(ctx, "rgopenapi", "lrs1", armpanngfw.LocalRulestackResource{
-		Location:	to.Ptr("eastus"),
-		Properties:	&armpanngfw.RulestackProperties{},
+		Location:   to.Ptr("eastus"),
+		Properties: &armpanngfw.RulestackProperties{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -482,8 +482,8 @@ func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksLis
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewLocalRulestacksClient().ListAdvancedSecurityObjects(ctx, "rgopenapi", "lrs1", armpanngfw.AdvSecurityObjectTypeEnum("localRulestacks"), &armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsOptions{
-		Skip:	to.Ptr("a6a321"),
-		Top:	to.Ptr[int32](20)})
+		Skip: to.Ptr("a6a321"),
+		Top:  to.Ptr[int32](20)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -549,10 +549,10 @@ func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMa
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewLocalRulestacksClient().NewListAppIDsPager("rgopenapi", "lrs1", &armpanngfw.LocalRulestacksClientListAppIDsOptions{
-		AppIDVersion:	to.Ptr("8543"),
-		AppPrefix:	to.Ptr("pref"),
-		Skip:		to.Ptr("a6a321"),
-		Top:		to.Ptr[int32](20)})
+		AppIDVersion: to.Ptr("8543"),
+		AppPrefix:    to.Ptr("pref"),
+		Skip:         to.Ptr("a6a321"),
+		Top:          to.Ptr[int32](20)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -856,8 +856,8 @@ func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCount
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewLocalRulestacksClient().NewListCountriesPager("rgopenapi", "lrs1", &armpanngfw.LocalRulestacksClientListCountriesOptions{
-		Skip:	to.Ptr("a6a321"),
-		Top:	to.Ptr[int32](20)})
+		Skip: to.Ptr("a6a321"),
+		Top:  to.Ptr[int32](20)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -983,8 +983,8 @@ func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRules
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewLocalRulestacksClient().NewListPredefinedURLCategoriesPager("rgopenapi", "lrs1", &armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesOptions{
-		Skip:	to.Ptr("a6a321"),
-		Top:	to.Ptr[int32](20)})
+		Skip: to.Ptr("a6a321"),
+		Top:  to.Ptr[int32](20)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1056,8 +1056,8 @@ func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecuri
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewLocalRulestacksClient().ListSecurityServices(ctx, "rgopenapi", "lrs1", armpanngfw.SecurityServicesTypeEnum("localRulestacks"), &armpanngfw.LocalRulestacksClientListSecurityServicesOptions{
-		Skip:	to.Ptr("a6a321"),
-		Top:	to.Ptr[int32](20)})
+		Skip: to.Ptr("a6a321"),
+		Top:  to.Ptr[int32](20)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1158,33 +1158,33 @@ func ExampleLocalRulestacksClient_Update_localRulestacksUpdateMaximumSetGen() {
 	}
 	res, err := clientFactory.NewLocalRulestacksClient().Update(ctx, "rgopenapi", "lrs1", armpanngfw.LocalRulestackResourceUpdate{
 		Identity: &armpanngfw.AzureResourceManagerManagedIdentityProperties{
-			Type:	to.Ptr(armpanngfw.ManagedIdentityTypeNone),
+			Type: to.Ptr(armpanngfw.ManagedIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpanngfw.AzureResourceManagerUserAssignedIdentity{
-				"key16": &armpanngfw.AzureResourceManagerUserAssignedIdentity{
-					ClientID:	to.Ptr("aaaa"),
-					PrincipalID:	to.Ptr("aaaaaaaaaaaaaaa"),
+				"key16": {
+					ClientID:    to.Ptr("aaaa"),
+					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
 				},
 			},
 		},
 		Properties: &armpanngfw.LocalRulestackResourceUpdateProperties{
-			Description:	to.Ptr("local rulestacks"),
+			Description: to.Ptr("local rulestacks"),
 			AssociatedSubscriptions: []*string{
 				to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
 			},
-			DefaultMode:		to.Ptr(armpanngfw.DefaultModeIPS),
-			MinAppIDVersion:	to.Ptr("8.5.3"),
-			PanEtag:		to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
-			PanLocation:		to.Ptr("eastus"),
-			Scope:			to.Ptr(armpanngfw.ScopeTypeLOCAL),
+			DefaultMode:     to.Ptr(armpanngfw.DefaultModeIPS),
+			MinAppIDVersion: to.Ptr("8.5.3"),
+			PanEtag:         to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+			PanLocation:     to.Ptr("eastus"),
+			Scope:           to.Ptr(armpanngfw.ScopeTypeLOCAL),
 			SecurityServices: &armpanngfw.SecurityServices{
-				AntiSpywareProfile:		to.Ptr("default"),
-				AntiVirusProfile:		to.Ptr("default"),
-				DNSSubscription:		to.Ptr("default"),
-				FileBlockingProfile:		to.Ptr("default"),
-				OutboundTrustCertificate:	to.Ptr("default"),
-				OutboundUnTrustCertificate:	to.Ptr("default"),
-				URLFilteringProfile:		to.Ptr("default"),
-				VulnerabilityProfile:		to.Ptr("default"),
+				AntiSpywareProfile:         to.Ptr("default"),
+				AntiVirusProfile:           to.Ptr("default"),
+				DNSSubscription:            to.Ptr("default"),
+				FileBlockingProfile:        to.Ptr("default"),
+				OutboundTrustCertificate:   to.Ptr("default"),
+				OutboundUnTrustCertificate: to.Ptr("default"),
+				URLFilteringProfile:        to.Ptr("default"),
+				VulnerabilityProfile:       to.Ptr("default"),
 			},
 		},
 		Tags: map[string]*string{

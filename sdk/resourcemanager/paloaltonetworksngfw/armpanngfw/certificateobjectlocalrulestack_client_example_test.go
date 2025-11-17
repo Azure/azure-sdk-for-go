@@ -25,12 +25,12 @@ func ExampleCertificateObjectLocalRulestackClient_BeginCreateOrUpdate_certificat
 	}
 	poller, err := clientFactory.NewCertificateObjectLocalRulestackClient().BeginCreateOrUpdate(ctx, "rgopenapi", "lrs1", "armid1", armpanngfw.CertificateObjectLocalRulestackResource{
 		Properties: &armpanngfw.CertificateObject{
-			Description:			to.Ptr("description"),
-			AuditComment:			to.Ptr("comment"),
-			CertificateSelfSigned:		to.Ptr(armpanngfw.BooleanEnumTRUE),
-			CertificateSignerResourceID:	to.Ptr(""),
-			Etag:				to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
-			ProvisioningState:		to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			Description:                 to.Ptr("description"),
+			AuditComment:                to.Ptr("comment"),
+			CertificateSelfSigned:       to.Ptr(armpanngfw.BooleanEnumTRUE),
+			CertificateSignerResourceID: to.Ptr(""),
+			Etag:                        to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
+			ProvisioningState:           to.Ptr(armpanngfw.ProvisioningStateAccepted),
 		},
 	}, nil)
 	if err != nil {

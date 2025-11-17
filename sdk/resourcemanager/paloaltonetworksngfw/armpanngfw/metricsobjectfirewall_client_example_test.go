@@ -25,9 +25,9 @@ func ExampleMetricsObjectFirewallClient_BeginCreateOrUpdate_metricsObjectFirewal
 	}
 	poller, err := clientFactory.NewMetricsObjectFirewallClient().BeginCreateOrUpdate(ctx, "rgopenapi", "aaaaaaaaaaaaaaaaaaaaaaaa", armpanngfw.MetricsObjectFirewallResource{
 		Properties: &armpanngfw.MetricsObject{
-			ApplicationInsightsConnectionString:	to.Ptr("aaa"),
-			ApplicationInsightsResourceID:		to.Ptr("aaaaaaaaaaaaaaa"),
-			PanEtag:				to.Ptr("aaaaaaaaaa"),
+			ApplicationInsightsConnectionString: to.Ptr("aaa"),
+			ApplicationInsightsResourceID:       to.Ptr("aaaaaaaaaaaaaaa"),
+			PanEtag:                             to.Ptr("aaaaaaaaaa"),
 		},
 	}, nil)
 	if err != nil {
@@ -76,8 +76,8 @@ func ExampleMetricsObjectFirewallClient_BeginCreateOrUpdate_metricsObjectFirewal
 	}
 	poller, err := clientFactory.NewMetricsObjectFirewallClient().BeginCreateOrUpdate(ctx, "rgopenapi", "aaaaaaaaaaaaaaaaaaaaaaaa", armpanngfw.MetricsObjectFirewallResource{
 		Properties: &armpanngfw.MetricsObject{
-			ApplicationInsightsConnectionString:	to.Ptr("aaa"),
-			ApplicationInsightsResourceID:		to.Ptr("aaaaaaaaaaaaaaa"),
+			ApplicationInsightsConnectionString: to.Ptr("aaa"),
+			ApplicationInsightsResourceID:       to.Ptr("aaaaaaaaaaaaaaa"),
 		},
 	}, nil)
 	if err != nil {

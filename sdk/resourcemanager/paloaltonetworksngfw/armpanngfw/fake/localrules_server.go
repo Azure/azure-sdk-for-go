@@ -22,31 +22,31 @@ import (
 type LocalRulesServer struct {
 	// BeginCreateOrUpdate is the fake for method LocalRulesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource armpanngfw.LocalRulesResource, options *armpanngfw.LocalRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, resource armpanngfw.LocalRulesResource, options *armpanngfw.LocalRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method LocalRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method LocalRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientGetOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientGetOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetCounters is the fake for method LocalRulesClient.GetCounters
 	// HTTP status codes to indicate success: http.StatusOK
-	GetCounters	func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientGetCountersOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientGetCountersResponse], errResp azfake.ErrorResponder)
+	GetCounters func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientGetCountersOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientGetCountersResponse], errResp azfake.ErrorResponder)
 
 	// NewListByLocalRulestacksPager is the fake for method LocalRulesClient.NewListByLocalRulestacksPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByLocalRulestacksPager	func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulesClientListByLocalRulestacksOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulesClientListByLocalRulestacksResponse])
+	NewListByLocalRulestacksPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulesClientListByLocalRulestacksOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulesClientListByLocalRulestacksResponse])
 
 	// RefreshCounters is the fake for method LocalRulesClient.RefreshCounters
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RefreshCounters	func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientRefreshCountersOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientRefreshCountersResponse], errResp azfake.ErrorResponder)
+	RefreshCounters func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientRefreshCountersOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientRefreshCountersResponse], errResp azfake.ErrorResponder)
 
 	// ResetCounters is the fake for method LocalRulesClient.ResetCounters
 	// HTTP status codes to indicate success: http.StatusOK
-	ResetCounters	func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientResetCountersOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientResetCountersResponse], errResp azfake.ErrorResponder)
+	ResetCounters func(ctx context.Context, resourceGroupName string, localRulestackName string, priority string, options *armpanngfw.LocalRulesClientResetCountersOptions) (resp azfake.Responder[armpanngfw.LocalRulesClientResetCountersResponse], errResp azfake.ErrorResponder)
 }
 
 // NewLocalRulesServerTransport creates a new instance of LocalRulesServerTransport with the provided implementation.
@@ -54,20 +54,20 @@ type LocalRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLocalRulesServerTransport(srv *LocalRulesServer) *LocalRulesServerTransport {
 	return &LocalRulesServerTransport{
-		srv:				srv,
-		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armpanngfw.LocalRulesClientCreateOrUpdateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armpanngfw.LocalRulesClientDeleteResponse]](),
-		newListByLocalRulestacksPager:	newTracker[azfake.PagerResponder[armpanngfw.LocalRulesClientListByLocalRulestacksResponse]](),
+		srv:                           srv,
+		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armpanngfw.LocalRulesClientCreateOrUpdateResponse]](),
+		beginDelete:                   newTracker[azfake.PollerResponder[armpanngfw.LocalRulesClientDeleteResponse]](),
+		newListByLocalRulestacksPager: newTracker[azfake.PagerResponder[armpanngfw.LocalRulesClientListByLocalRulestacksResponse]](),
 	}
 }
 
 // LocalRulesServerTransport connects instances of armpanngfw.LocalRulesClient to instances of LocalRulesServer.
 // Don't use this type directly, use NewLocalRulesServerTransport instead.
 type LocalRulesServerTransport struct {
-	srv				*LocalRulesServer
-	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armpanngfw.LocalRulesClientCreateOrUpdateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armpanngfw.LocalRulesClientDeleteResponse]]
-	newListByLocalRulestacksPager	*tracker[azfake.PagerResponder[armpanngfw.LocalRulesClientListByLocalRulestacksResponse]]
+	srv                           *LocalRulesServer
+	beginCreateOrUpdate           *tracker[azfake.PollerResponder[armpanngfw.LocalRulesClientCreateOrUpdateResponse]]
+	beginDelete                   *tracker[azfake.PollerResponder[armpanngfw.LocalRulesClientDeleteResponse]]
+	newListByLocalRulestacksPager *tracker[azfake.PagerResponder[armpanngfw.LocalRulesClientListByLocalRulestacksResponse]]
 }
 
 // Do implements the policy.Transporter interface for LocalRulesServerTransport.

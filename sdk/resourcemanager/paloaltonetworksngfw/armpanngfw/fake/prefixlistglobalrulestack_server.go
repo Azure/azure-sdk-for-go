@@ -22,19 +22,19 @@ import (
 type PrefixListGlobalRulestackServer struct {
 	// BeginCreateOrUpdate is the fake for method PrefixListGlobalRulestackClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, globalRulestackName string, name string, resource armpanngfw.PrefixListGlobalRulestackResource, options *armpanngfw.PrefixListGlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, globalRulestackName string, name string, resource armpanngfw.PrefixListGlobalRulestackResource, options *armpanngfw.PrefixListGlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrefixListGlobalRulestackClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.PrefixListGlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.PrefixListGlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrefixListGlobalRulestackClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.PrefixListGlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.PrefixListGlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.PrefixListGlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.PrefixListGlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method PrefixListGlobalRulestackClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(globalRulestackName string, options *armpanngfw.PrefixListGlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.PrefixListGlobalRulestackClientListResponse])
+	NewListPager func(globalRulestackName string, options *armpanngfw.PrefixListGlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.PrefixListGlobalRulestackClientListResponse])
 }
 
 // NewPrefixListGlobalRulestackServerTransport creates a new instance of PrefixListGlobalRulestackServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type PrefixListGlobalRulestackServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrefixListGlobalRulestackServerTransport(srv *PrefixListGlobalRulestackServer) *PrefixListGlobalRulestackServerTransport {
 	return &PrefixListGlobalRulestackServerTransport{
-		srv:			srv,
-		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armpanngfw.PrefixListGlobalRulestackClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armpanngfw.PrefixListGlobalRulestackClientListResponse]](),
 	}
 }
 
 // PrefixListGlobalRulestackServerTransport connects instances of armpanngfw.PrefixListGlobalRulestackClient to instances of PrefixListGlobalRulestackServer.
 // Don't use this type directly, use NewPrefixListGlobalRulestackServerTransport instead.
 type PrefixListGlobalRulestackServerTransport struct {
-	srv			*PrefixListGlobalRulestackServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armpanngfw.PrefixListGlobalRulestackClientListResponse]]
+	srv                 *PrefixListGlobalRulestackServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armpanngfw.PrefixListGlobalRulestackClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armpanngfw.PrefixListGlobalRulestackClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrefixListGlobalRulestackServerTransport.

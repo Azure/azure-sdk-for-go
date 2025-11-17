@@ -20,19 +20,19 @@ import (
 type PaloAltoNetworksCloudngfwOperationsServer struct {
 	// CreateProductSerialNumber is the fake for method PaloAltoNetworksCloudngfwOperationsClient.CreateProductSerialNumber
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateProductSerialNumber	func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse], errResp azfake.ErrorResponder)
+	CreateProductSerialNumber func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse], errResp azfake.ErrorResponder)
 
 	// ListCloudManagerTenants is the fake for method PaloAltoNetworksCloudngfwOperationsClient.ListCloudManagerTenants
 	// HTTP status codes to indicate success: http.StatusOK
-	ListCloudManagerTenants	func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse], errResp azfake.ErrorResponder)
+	ListCloudManagerTenants func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse], errResp azfake.ErrorResponder)
 
 	// ListProductSerialNumberStatus is the fake for method PaloAltoNetworksCloudngfwOperationsClient.ListProductSerialNumberStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNotFound
-	ListProductSerialNumberStatus	func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse], errResp azfake.ErrorResponder)
+	ListProductSerialNumberStatus func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse], errResp azfake.ErrorResponder)
 
 	// ListSupportInfo is the fake for method PaloAltoNetworksCloudngfwOperationsClient.ListSupportInfo
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSupportInfo	func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListSupportInfoOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse], errResp azfake.ErrorResponder)
+	ListSupportInfo func(ctx context.Context, options *armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListSupportInfoOptions) (resp azfake.Responder[armpanngfw.PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPaloAltoNetworksCloudngfwOperationsServerTransport creates a new instance of PaloAltoNetworksCloudngfwOperationsServerTransport with the provided implementation.

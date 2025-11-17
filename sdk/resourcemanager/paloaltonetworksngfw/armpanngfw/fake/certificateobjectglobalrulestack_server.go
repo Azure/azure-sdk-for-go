@@ -22,19 +22,19 @@ import (
 type CertificateObjectGlobalRulestackServer struct {
 	// BeginCreateOrUpdate is the fake for method CertificateObjectGlobalRulestackClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, globalRulestackName string, name string, resource armpanngfw.CertificateObjectGlobalRulestackResource, options *armpanngfw.CertificateObjectGlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, globalRulestackName string, name string, resource armpanngfw.CertificateObjectGlobalRulestackResource, options *armpanngfw.CertificateObjectGlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CertificateObjectGlobalRulestackClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.CertificateObjectGlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.CertificateObjectGlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CertificateObjectGlobalRulestackClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.CertificateObjectGlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.CertificateObjectGlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.CertificateObjectGlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.CertificateObjectGlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CertificateObjectGlobalRulestackClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(globalRulestackName string, options *armpanngfw.CertificateObjectGlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.CertificateObjectGlobalRulestackClientListResponse])
+	NewListPager func(globalRulestackName string, options *armpanngfw.CertificateObjectGlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.CertificateObjectGlobalRulestackClientListResponse])
 }
 
 // NewCertificateObjectGlobalRulestackServerTransport creates a new instance of CertificateObjectGlobalRulestackServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type CertificateObjectGlobalRulestackServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCertificateObjectGlobalRulestackServerTransport(srv *CertificateObjectGlobalRulestackServer) *CertificateObjectGlobalRulestackServerTransport {
 	return &CertificateObjectGlobalRulestackServerTransport{
-		srv:			srv,
-		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armpanngfw.CertificateObjectGlobalRulestackClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armpanngfw.CertificateObjectGlobalRulestackClientListResponse]](),
 	}
 }
 
 // CertificateObjectGlobalRulestackServerTransport connects instances of armpanngfw.CertificateObjectGlobalRulestackClient to instances of CertificateObjectGlobalRulestackServer.
 // Don't use this type directly, use NewCertificateObjectGlobalRulestackServerTransport instead.
 type CertificateObjectGlobalRulestackServerTransport struct {
-	srv			*CertificateObjectGlobalRulestackServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armpanngfw.CertificateObjectGlobalRulestackClientListResponse]]
+	srv                 *CertificateObjectGlobalRulestackServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armpanngfw.CertificateObjectGlobalRulestackClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armpanngfw.CertificateObjectGlobalRulestackClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CertificateObjectGlobalRulestackServerTransport.

@@ -22,19 +22,19 @@ import (
 type MetricsObjectFirewallServer struct {
 	// BeginCreateOrUpdate is the fake for method MetricsObjectFirewallClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, firewallName string, resource armpanngfw.MetricsObjectFirewallResource, options *armpanngfw.MetricsObjectFirewallClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, firewallName string, resource armpanngfw.MetricsObjectFirewallResource, options *armpanngfw.MetricsObjectFirewallClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method MetricsObjectFirewallClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.MetricsObjectFirewallClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.MetricsObjectFirewallClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MetricsObjectFirewallClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.MetricsObjectFirewallClientGetOptions) (resp azfake.Responder[armpanngfw.MetricsObjectFirewallClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.MetricsObjectFirewallClientGetOptions) (resp azfake.Responder[armpanngfw.MetricsObjectFirewallClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByFirewallsPager is the fake for method MetricsObjectFirewallClient.NewListByFirewallsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByFirewallsPager	func(resourceGroupName string, firewallName string, options *armpanngfw.MetricsObjectFirewallClientListByFirewallsOptions) (resp azfake.PagerResponder[armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse])
+	NewListByFirewallsPager func(resourceGroupName string, firewallName string, options *armpanngfw.MetricsObjectFirewallClientListByFirewallsOptions) (resp azfake.PagerResponder[armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse])
 }
 
 // NewMetricsObjectFirewallServerTransport creates a new instance of MetricsObjectFirewallServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type MetricsObjectFirewallServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMetricsObjectFirewallServerTransport(srv *MetricsObjectFirewallServer) *MetricsObjectFirewallServerTransport {
 	return &MetricsObjectFirewallServerTransport{
-		srv:				srv,
-		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientCreateOrUpdateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientDeleteResponse]](),
-		newListByFirewallsPager:	newTracker[azfake.PagerResponder[armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse]](),
+		srv:                     srv,
+		beginCreateOrUpdate:     newTracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientCreateOrUpdateResponse]](),
+		beginDelete:             newTracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientDeleteResponse]](),
+		newListByFirewallsPager: newTracker[azfake.PagerResponder[armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse]](),
 	}
 }
 
 // MetricsObjectFirewallServerTransport connects instances of armpanngfw.MetricsObjectFirewallClient to instances of MetricsObjectFirewallServer.
 // Don't use this type directly, use NewMetricsObjectFirewallServerTransport instead.
 type MetricsObjectFirewallServerTransport struct {
-	srv			*MetricsObjectFirewallServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientCreateOrUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientDeleteResponse]]
-	newListByFirewallsPager	*tracker[azfake.PagerResponder[armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse]]
+	srv                     *MetricsObjectFirewallServer
+	beginCreateOrUpdate     *tracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientCreateOrUpdateResponse]]
+	beginDelete             *tracker[azfake.PollerResponder[armpanngfw.MetricsObjectFirewallClientDeleteResponse]]
+	newListByFirewallsPager *tracker[azfake.PagerResponder[armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse]]
 }
 
 // Do implements the policy.Transporter interface for MetricsObjectFirewallServerTransport.

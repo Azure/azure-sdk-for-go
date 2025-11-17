@@ -22,31 +22,31 @@ import (
 type PreRulesServer struct {
 	// BeginCreateOrUpdate is the fake for method PreRulesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, globalRulestackName string, priority string, resource armpanngfw.PreRulesResource, options *armpanngfw.PreRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.PreRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, globalRulestackName string, priority string, resource armpanngfw.PreRulesResource, options *armpanngfw.PreRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.PreRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PreRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.PreRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.PreRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PreRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientGetOptions) (resp azfake.Responder[armpanngfw.PreRulesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientGetOptions) (resp azfake.Responder[armpanngfw.PreRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetCounters is the fake for method PreRulesClient.GetCounters
 	// HTTP status codes to indicate success: http.StatusOK
-	GetCounters	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientGetCountersOptions) (resp azfake.Responder[armpanngfw.PreRulesClientGetCountersResponse], errResp azfake.ErrorResponder)
+	GetCounters func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientGetCountersOptions) (resp azfake.Responder[armpanngfw.PreRulesClientGetCountersResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method PreRulesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(globalRulestackName string, options *armpanngfw.PreRulesClientListOptions) (resp azfake.PagerResponder[armpanngfw.PreRulesClientListResponse])
+	NewListPager func(globalRulestackName string, options *armpanngfw.PreRulesClientListOptions) (resp azfake.PagerResponder[armpanngfw.PreRulesClientListResponse])
 
 	// RefreshCounters is the fake for method PreRulesClient.RefreshCounters
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RefreshCounters	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientRefreshCountersOptions) (resp azfake.Responder[armpanngfw.PreRulesClientRefreshCountersResponse], errResp azfake.ErrorResponder)
+	RefreshCounters func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientRefreshCountersOptions) (resp azfake.Responder[armpanngfw.PreRulesClientRefreshCountersResponse], errResp azfake.ErrorResponder)
 
 	// ResetCounters is the fake for method PreRulesClient.ResetCounters
 	// HTTP status codes to indicate success: http.StatusOK
-	ResetCounters	func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientResetCountersOptions) (resp azfake.Responder[armpanngfw.PreRulesClientResetCountersResponse], errResp azfake.ErrorResponder)
+	ResetCounters func(ctx context.Context, globalRulestackName string, priority string, options *armpanngfw.PreRulesClientResetCountersOptions) (resp azfake.Responder[armpanngfw.PreRulesClientResetCountersResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPreRulesServerTransport creates a new instance of PreRulesServerTransport with the provided implementation.
@@ -54,20 +54,20 @@ type PreRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPreRulesServerTransport(srv *PreRulesServer) *PreRulesServerTransport {
 	return &PreRulesServerTransport{
-		srv:			srv,
-		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armpanngfw.PreRulesClientCreateOrUpdateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armpanngfw.PreRulesClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armpanngfw.PreRulesClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armpanngfw.PreRulesClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armpanngfw.PreRulesClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armpanngfw.PreRulesClientListResponse]](),
 	}
 }
 
 // PreRulesServerTransport connects instances of armpanngfw.PreRulesClient to instances of PreRulesServer.
 // Don't use this type directly, use NewPreRulesServerTransport instead.
 type PreRulesServerTransport struct {
-	srv			*PreRulesServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.PreRulesClientCreateOrUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.PreRulesClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armpanngfw.PreRulesClientListResponse]]
+	srv                 *PreRulesServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armpanngfw.PreRulesClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armpanngfw.PreRulesClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armpanngfw.PreRulesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PreRulesServerTransport.

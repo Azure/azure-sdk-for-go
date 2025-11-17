@@ -22,19 +22,19 @@ import (
 type CertificateObjectLocalRulestackServer struct {
 	// BeginCreateOrUpdate is the fake for method CertificateObjectLocalRulestackClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource armpanngfw.CertificateObjectLocalRulestackResource, options *armpanngfw.CertificateObjectLocalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource armpanngfw.CertificateObjectLocalRulestackResource, options *armpanngfw.CertificateObjectLocalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CertificateObjectLocalRulestackClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *armpanngfw.CertificateObjectLocalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *armpanngfw.CertificateObjectLocalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CertificateObjectLocalRulestackClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *armpanngfw.CertificateObjectLocalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.CertificateObjectLocalRulestackClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *armpanngfw.CertificateObjectLocalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.CertificateObjectLocalRulestackClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByLocalRulestacksPager is the fake for method CertificateObjectLocalRulestackClient.NewListByLocalRulestacksPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByLocalRulestacksPager	func(resourceGroupName string, localRulestackName string, options *armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksOptions) (resp azfake.PagerResponder[armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksResponse])
+	NewListByLocalRulestacksPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksOptions) (resp azfake.PagerResponder[armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksResponse])
 }
 
 // NewCertificateObjectLocalRulestackServerTransport creates a new instance of CertificateObjectLocalRulestackServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type CertificateObjectLocalRulestackServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCertificateObjectLocalRulestackServerTransport(srv *CertificateObjectLocalRulestackServer) *CertificateObjectLocalRulestackServerTransport {
 	return &CertificateObjectLocalRulestackServerTransport{
-		srv:				srv,
-		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientCreateOrUpdateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientDeleteResponse]](),
-		newListByLocalRulestacksPager:	newTracker[azfake.PagerResponder[armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksResponse]](),
+		srv:                           srv,
+		beginCreateOrUpdate:           newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientCreateOrUpdateResponse]](),
+		beginDelete:                   newTracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientDeleteResponse]](),
+		newListByLocalRulestacksPager: newTracker[azfake.PagerResponder[armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksResponse]](),
 	}
 }
 
 // CertificateObjectLocalRulestackServerTransport connects instances of armpanngfw.CertificateObjectLocalRulestackClient to instances of CertificateObjectLocalRulestackServer.
 // Don't use this type directly, use NewCertificateObjectLocalRulestackServerTransport instead.
 type CertificateObjectLocalRulestackServerTransport struct {
-	srv				*CertificateObjectLocalRulestackServer
-	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientCreateOrUpdateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientDeleteResponse]]
-	newListByLocalRulestacksPager	*tracker[azfake.PagerResponder[armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksResponse]]
+	srv                           *CertificateObjectLocalRulestackServer
+	beginCreateOrUpdate           *tracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientCreateOrUpdateResponse]]
+	beginDelete                   *tracker[azfake.PollerResponder[armpanngfw.CertificateObjectLocalRulestackClientDeleteResponse]]
+	newListByLocalRulestacksPager *tracker[azfake.PagerResponder[armpanngfw.CertificateObjectLocalRulestackClientListByLocalRulestacksResponse]]
 }
 
 // Do implements the policy.Transporter interface for CertificateObjectLocalRulestackServerTransport.

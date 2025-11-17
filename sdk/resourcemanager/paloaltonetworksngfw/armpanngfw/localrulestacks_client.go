@@ -560,7 +560,9 @@ func (client *LocalRulestacksClient) NewListAppIDsPager(resourceGroupName string
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listAppIDsCreateRequest(ctx, resourceGroupName, localRulestackName, options)
-			}, nil)
+			}, &runtime.FetcherForNextLinkOptions{
+				HTTPVerb: http.MethodPost,
+			})
 			if err != nil {
 				return LocalRulestacksClientListAppIDsResponse{}, err
 			}
@@ -752,7 +754,9 @@ func (client *LocalRulestacksClient) NewListCountriesPager(resourceGroupName str
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listCountriesCreateRequest(ctx, resourceGroupName, localRulestackName, options)
-			}, nil)
+			}, &runtime.FetcherForNextLinkOptions{
+				HTTPVerb: http.MethodPost,
+			})
 			if err != nil {
 				return LocalRulestacksClientListCountriesResponse{}, err
 			}
@@ -888,7 +892,9 @@ func (client *LocalRulestacksClient) NewListPredefinedURLCategoriesPager(resourc
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
 				return client.listPredefinedURLCategoriesCreateRequest(ctx, resourceGroupName, localRulestackName, options)
-			}, nil)
+			}, &runtime.FetcherForNextLinkOptions{
+				HTTPVerb: http.MethodPost,
+			})
 			if err != nil {
 				return LocalRulestacksClientListPredefinedURLCategoriesResponse{}, err
 			}

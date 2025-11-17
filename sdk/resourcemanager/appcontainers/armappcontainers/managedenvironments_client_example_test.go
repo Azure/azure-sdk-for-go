@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_ListBySubscription.json
 func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleManagedEnvironmentsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_ListByResourceGroup.json
 func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,6 +163,11 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 		// 				DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
 		// 				EventStreamEndpoint: to.Ptr("testEndpoint"),
 		// 				InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
+		// 				IngressConfiguration: &armappcontainers.IngressConfiguration{
+		// 					HeaderCountLimit: to.Ptr[int32](50),
+		// 					TerminationGracePeriodSeconds: to.Ptr[int32](600),
+		// 					WorkloadProfileName: to.Ptr("My-GP-01"),
+		// 				},
 		// 				ProvisioningState: to.Ptr(armappcontainers.EnvironmentProvisioningStateSucceeded),
 		// 				StaticIP: to.Ptr("20.42.33.145"),
 		// 				VnetConfiguration: &armappcontainers.VnetConfiguration{
@@ -224,7 +229,7 @@ func ExampleManagedEnvironmentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_Get.json
 func ExampleManagedEnvironmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,6 +268,12 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// 		DefaultDomain: to.Ptr("jlaw-demo1.k4apps.io"),
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
 	// 		InfrastructureResourceGroup: to.Ptr("capp-svc-jlaw-demo1-northcentralus"),
+	// 		IngressConfiguration: &armappcontainers.IngressConfiguration{
+	// 			HeaderCountLimit: to.Ptr[int32](30),
+	// 			RequestIdleTimeout: to.Ptr[int32](5),
+	// 			TerminationGracePeriodSeconds: to.Ptr[int32](3600),
+	// 			WorkloadProfileName: to.Ptr("My-CO-01"),
+	// 		},
 	// 		KedaConfiguration: &armappcontainers.KedaConfiguration{
 	// 			Version: to.Ptr("2.8.1"),
 	// 		},
@@ -309,7 +320,7 @@ func ExampleManagedEnvironmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_CustomInfrastructureResourceGroup_Create.json
 func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithCustomInfrastructureResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +440,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironmentWithC
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_CreateOrUpdate.json
 func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,6 +472,12 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 				DNSSuffix:           to.Ptr("www.my-name.com"),
 			},
 			DaprAIConnectionString: to.Ptr("InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/"),
+			IngressConfiguration: &armappcontainers.IngressConfiguration{
+				HeaderCountLimit:              to.Ptr[int32](30),
+				RequestIdleTimeout:            to.Ptr[int32](5),
+				TerminationGracePeriodSeconds: to.Ptr[int32](3600),
+				WorkloadProfileName:           to.Ptr("My-CO-01"),
+			},
 			PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
 				Mtls: &armappcontainers.Mtls{
 					Enabled: to.Ptr(true),
@@ -542,6 +559,12 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// 		DefaultDomain: to.Ptr("testcontainerenv.k4apps.io"),
 	// 		EventStreamEndpoint: to.Ptr("testEndpoint"),
 	// 		InfrastructureResourceGroup: to.Ptr("capp-svc-testcontainerenv-eastus"),
+	// 		IngressConfiguration: &armappcontainers.IngressConfiguration{
+	// 			HeaderCountLimit: to.Ptr[int32](30),
+	// 			RequestIdleTimeout: to.Ptr[int32](5),
+	// 			TerminationGracePeriodSeconds: to.Ptr[int32](3600),
+	// 			WorkloadProfileName: to.Ptr("My-CO-01"),
+	// 		},
 	// 		PeerAuthentication: &armappcontainers.ManagedEnvironmentPropertiesPeerAuthentication{
 	// 			Mtls: &armappcontainers.Mtls{
 	// 				Enabled: to.Ptr(true),
@@ -580,7 +603,7 @@ func ExampleManagedEnvironmentsClient_BeginCreateOrUpdate_createEnvironments() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_Delete.json
 func ExampleManagedEnvironmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +624,7 @@ func ExampleManagedEnvironmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_Patch.json
 func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -677,7 +700,7 @@ func ExampleManagedEnvironmentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_GetAuthToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_GetAuthToken.json
 func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -707,7 +730,7 @@ func ExampleManagedEnvironmentsClient_GetAuthToken() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/ManagedEnvironments_ListWorkloadProfileStates.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b2965096067d6f8374b5485b0568fd36e7c9d099/specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/ManagedEnvironments_ListWorkloadProfileStates.json
 func ExampleManagedEnvironmentsClient_NewListWorkloadProfileStatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -79,7 +79,7 @@ func (testsuite *RedisenterpriseTestSuite) Prepare() {
 		Identity: &armredisenterprise.ManagedServiceIdentity{
 			Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeSystemAssigned),
 		},
-		Properties: &armredisenterprise.ClusterProperties{
+		Properties: &armredisenterprise.ClusterCreateProperties{
 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 		},
 		SKU: &armredisenterprise.SKU{
@@ -147,7 +147,7 @@ func (testsuite *RedisenterpriseTestSuite) TestDatabases() {
 	databasesClient, err := armredisenterprise.NewDatabasesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	databasesClientCreateResponsePoller, err := databasesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, testsuite.databaseName, armredisenterprise.Database{
-		Properties: &armredisenterprise.DatabaseProperties{
+		Properties: &armredisenterprise.DatabaseCreateProperties{
 			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),

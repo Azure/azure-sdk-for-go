@@ -26,7 +26,7 @@ type AutonomousDatabaseCharacterSetsClient struct {
 // NewAutonomousDatabaseCharacterSetsClient creates a new instance of AutonomousDatabaseCharacterSetsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutonomousDatabaseCharacterSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutonomousDatabaseCharacterSetsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewAutonomousDatabaseCharacterSetsClient(subscriptionID string, credential 
 // Get - Get a AutonomousDatabaseCharacterSet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - adbscharsetname - AutonomousDatabaseCharacterSet name
 //   - options - AutonomousDatabaseCharacterSetsClientGetOptions contains the optional parameters for the AutonomousDatabaseCharacterSetsClient.Get
@@ -89,7 +89,7 @@ func (client *AutonomousDatabaseCharacterSetsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,7 +106,7 @@ func (client *AutonomousDatabaseCharacterSetsClient) getHandleResponse(resp *htt
 
 // NewListByLocationPager - List AutonomousDatabaseCharacterSet resources by SubscriptionLocationResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - AutonomousDatabaseCharacterSetsClientListByLocationOptions contains the optional parameters for the AutonomousDatabaseCharacterSetsClient.NewListByLocationPager
 //     method.
@@ -149,7 +149,7 @@ func (client *AutonomousDatabaseCharacterSetsClient) listByLocationCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

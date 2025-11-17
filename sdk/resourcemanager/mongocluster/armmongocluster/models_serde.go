@@ -1523,9 +1523,7 @@ func (s *ShardingProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StorageProperties.
 func (s StorageProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "iops", s.Iops)
 	populate(objectMap, "sizeGb", s.SizeGb)
-	populate(objectMap, "throughput", s.Throughput)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
@@ -1539,14 +1537,8 @@ func (s *StorageProperties) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "iops":
-			err = unpopulate(val, "Iops", &s.Iops)
-			delete(rawMsg, key)
 		case "sizeGb":
 			err = unpopulate(val, "SizeGb", &s.SizeGb)
-			delete(rawMsg, key)
-		case "throughput":
-			err = unpopulate(val, "Throughput", &s.Throughput)
 			delete(rawMsg, key)
 		case "type":
 			err = unpopulate(val, "Type", &s.Type)
@@ -1649,6 +1641,7 @@ func (u UpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backup", u.Backup)
 	populate(objectMap, "compute", u.Compute)
 	populate(objectMap, "dataApi", u.DataAPI)
+	populate(objectMap, "encryption", u.Encryption)
 	populate(objectMap, "highAvailability", u.HighAvailability)
 	populate(objectMap, "previewFeatures", u.PreviewFeatures)
 	populate(objectMap, "publicNetworkAccess", u.PublicNetworkAccess)
@@ -1681,6 +1674,9 @@ func (u *UpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "dataApi":
 			err = unpopulate(val, "DataAPI", &u.DataAPI)
+			delete(rawMsg, key)
+		case "encryption":
+			err = unpopulate(val, "Encryption", &u.Encryption)
 			delete(rawMsg, key)
 		case "highAvailability":
 			err = unpopulate(val, "HighAvailability", &u.HighAvailability)

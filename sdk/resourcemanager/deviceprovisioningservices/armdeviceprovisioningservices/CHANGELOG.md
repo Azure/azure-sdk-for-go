@@ -1,5 +1,14 @@
 # Release History
 
+## 1.3.0-beta.2 (2025-10-21)
+### Features Added
+
+- New enum type `DeviceRegistryNamespaceAuthenticationType` with values `DeviceRegistryNamespaceAuthenticationTypeSystemAssigned`, `DeviceRegistryNamespaceAuthenticationTypeUserAssigned`
+- New struct `DeviceRegistryNamespaceDescription`
+- New field `SystemData` in struct `GroupIDInformation`
+- New field `DeviceRegistryNamespace` in struct `IotDpsPropertiesDescription`
+
+
 ## 1.3.0-beta.1 (2023-11-30)
 ### Features Added
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_FirewallRuleCreate.json
+// Generated from example definition: 2025-09-01/MongoClusters_FirewallRuleCreate.json
 func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_FirewallRuleDelete.json
+// Generated from example definition: 2025-09-01/MongoClusters_FirewallRuleDelete.json
 func ExampleFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_FirewallRuleGet.json
+// Generated from example definition: 2025-09-01/MongoClusters_FirewallRuleGet.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/MongoClusters_FirewallRuleList.json
+// Generated from example definition: 2025-09-01/MongoClusters_FirewallRuleList.json
 func ExampleFirewallRulesClient_NewListByMongoClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -42,7 +42,7 @@ func NewJobsExecutionsClient(subscriptionID string, credential azcore.TokenCrede
 
 // NewListPager - Get a Container Apps Job's executions
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - options - JobsExecutionsClientListOptions contains the optional parameters for the JobsExecutionsClient.NewListPager method.
@@ -92,7 +92,7 @@ func (client *JobsExecutionsClient) listCreateRequest(ctx context.Context, resou
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -64,6 +64,9 @@ type ServerFactory struct {
 	// DaprComponentsServer contains the fakes for client DaprComponentsClient
 	DaprComponentsServer DaprComponentsServer
 
+	// HTTPRouteConfigServer contains the fakes for client HTTPRouteConfigClient
+	HTTPRouteConfigServer HTTPRouteConfigServer
+
 	// JavaComponentsServer contains the fakes for client JavaComponentsClient
 	JavaComponentsServer JavaComponentsServer
 
@@ -73,11 +76,23 @@ type ServerFactory struct {
 	// JobsExecutionsServer contains the fakes for client JobsExecutionsClient
 	JobsExecutionsServer JobsExecutionsServer
 
+	// LogicAppsServer contains the fakes for client LogicAppsClient
+	LogicAppsServer LogicAppsServer
+
+	// MaintenanceConfigurationsServer contains the fakes for client MaintenanceConfigurationsClient
+	MaintenanceConfigurationsServer MaintenanceConfigurationsServer
+
 	// ManagedCertificatesServer contains the fakes for client ManagedCertificatesClient
 	ManagedCertificatesServer ManagedCertificatesServer
 
 	// ManagedEnvironmentDiagnosticsServer contains the fakes for client ManagedEnvironmentDiagnosticsClient
 	ManagedEnvironmentDiagnosticsServer ManagedEnvironmentDiagnosticsServer
+
+	// ManagedEnvironmentPrivateEndpointConnectionsServer contains the fakes for client ManagedEnvironmentPrivateEndpointConnectionsClient
+	ManagedEnvironmentPrivateEndpointConnectionsServer ManagedEnvironmentPrivateEndpointConnectionsServer
+
+	// ManagedEnvironmentPrivateLinkResourcesServer contains the fakes for client ManagedEnvironmentPrivateLinkResourcesClient
+	ManagedEnvironmentPrivateLinkResourcesServer ManagedEnvironmentPrivateLinkResourcesServer
 
 	// ManagedEnvironmentUsagesServer contains the fakes for client ManagedEnvironmentUsagesClient
 	ManagedEnvironmentUsagesServer ManagedEnvironmentUsagesServer
@@ -113,36 +128,41 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armappcontainers.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                         *ServerFactory
-	trMu                                        sync.Mutex
-	trAvailableWorkloadProfilesServer           *AvailableWorkloadProfilesServerTransport
-	trBillingMetersServer                       *BillingMetersServerTransport
-	trCertificatesServer                        *CertificatesServerTransport
-	trConnectedEnvironmentsCertificatesServer   *ConnectedEnvironmentsCertificatesServerTransport
-	trConnectedEnvironmentsServer               *ConnectedEnvironmentsServerTransport
-	trConnectedEnvironmentsDaprComponentsServer *ConnectedEnvironmentsDaprComponentsServerTransport
-	trConnectedEnvironmentsStoragesServer       *ConnectedEnvironmentsStoragesServerTransport
-	trContainerAppsAPIServer                    *ContainerAppsAPIServerTransport
-	trContainerAppsAuthConfigsServer            *ContainerAppsAuthConfigsServerTransport
-	trContainerAppsServer                       *ContainerAppsServerTransport
-	trContainerAppsDiagnosticsServer            *ContainerAppsDiagnosticsServerTransport
-	trContainerAppsRevisionReplicasServer       *ContainerAppsRevisionReplicasServerTransport
-	trContainerAppsRevisionsServer              *ContainerAppsRevisionsServerTransport
-	trContainerAppsSessionPoolsServer           *ContainerAppsSessionPoolsServerTransport
-	trContainerAppsSourceControlsServer         *ContainerAppsSourceControlsServerTransport
-	trDaprComponentsServer                      *DaprComponentsServerTransport
-	trJavaComponentsServer                      *JavaComponentsServerTransport
-	trJobsServer                                *JobsServerTransport
-	trJobsExecutionsServer                      *JobsExecutionsServerTransport
-	trManagedCertificatesServer                 *ManagedCertificatesServerTransport
-	trManagedEnvironmentDiagnosticsServer       *ManagedEnvironmentDiagnosticsServerTransport
-	trManagedEnvironmentUsagesServer            *ManagedEnvironmentUsagesServerTransport
-	trManagedEnvironmentsServer                 *ManagedEnvironmentsServerTransport
-	trManagedEnvironmentsDiagnosticsServer      *ManagedEnvironmentsDiagnosticsServerTransport
-	trManagedEnvironmentsStoragesServer         *ManagedEnvironmentsStoragesServerTransport
-	trNamespacesServer                          *NamespacesServerTransport
-	trOperationsServer                          *OperationsServerTransport
-	trUsagesServer                              *UsagesServerTransport
+	srv                                                  *ServerFactory
+	trMu                                                 sync.Mutex
+	trAvailableWorkloadProfilesServer                    *AvailableWorkloadProfilesServerTransport
+	trBillingMetersServer                                *BillingMetersServerTransport
+	trCertificatesServer                                 *CertificatesServerTransport
+	trConnectedEnvironmentsCertificatesServer            *ConnectedEnvironmentsCertificatesServerTransport
+	trConnectedEnvironmentsServer                        *ConnectedEnvironmentsServerTransport
+	trConnectedEnvironmentsDaprComponentsServer          *ConnectedEnvironmentsDaprComponentsServerTransport
+	trConnectedEnvironmentsStoragesServer                *ConnectedEnvironmentsStoragesServerTransport
+	trContainerAppsAPIServer                             *ContainerAppsAPIServerTransport
+	trContainerAppsAuthConfigsServer                     *ContainerAppsAuthConfigsServerTransport
+	trContainerAppsServer                                *ContainerAppsServerTransport
+	trContainerAppsDiagnosticsServer                     *ContainerAppsDiagnosticsServerTransport
+	trContainerAppsRevisionReplicasServer                *ContainerAppsRevisionReplicasServerTransport
+	trContainerAppsRevisionsServer                       *ContainerAppsRevisionsServerTransport
+	trContainerAppsSessionPoolsServer                    *ContainerAppsSessionPoolsServerTransport
+	trContainerAppsSourceControlsServer                  *ContainerAppsSourceControlsServerTransport
+	trDaprComponentsServer                               *DaprComponentsServerTransport
+	trHTTPRouteConfigServer                              *HTTPRouteConfigServerTransport
+	trJavaComponentsServer                               *JavaComponentsServerTransport
+	trJobsServer                                         *JobsServerTransport
+	trJobsExecutionsServer                               *JobsExecutionsServerTransport
+	trLogicAppsServer                                    *LogicAppsServerTransport
+	trMaintenanceConfigurationsServer                    *MaintenanceConfigurationsServerTransport
+	trManagedCertificatesServer                          *ManagedCertificatesServerTransport
+	trManagedEnvironmentDiagnosticsServer                *ManagedEnvironmentDiagnosticsServerTransport
+	trManagedEnvironmentPrivateEndpointConnectionsServer *ManagedEnvironmentPrivateEndpointConnectionsServerTransport
+	trManagedEnvironmentPrivateLinkResourcesServer       *ManagedEnvironmentPrivateLinkResourcesServerTransport
+	trManagedEnvironmentUsagesServer                     *ManagedEnvironmentUsagesServerTransport
+	trManagedEnvironmentsServer                          *ManagedEnvironmentsServerTransport
+	trManagedEnvironmentsDiagnosticsServer               *ManagedEnvironmentsDiagnosticsServerTransport
+	trManagedEnvironmentsStoragesServer                  *ManagedEnvironmentsStoragesServerTransport
+	trNamespacesServer                                   *NamespacesServerTransport
+	trOperationsServer                                   *OperationsServerTransport
+	trUsagesServer                                       *UsagesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -236,6 +256,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDaprComponentsServerTransport(&s.srv.DaprComponentsServer)
 		})
 		resp, err = s.trDaprComponentsServer.Do(req)
+	case "HTTPRouteConfigClient":
+		initServer(s, &s.trHTTPRouteConfigServer, func() *HTTPRouteConfigServerTransport {
+			return NewHTTPRouteConfigServerTransport(&s.srv.HTTPRouteConfigServer)
+		})
+		resp, err = s.trHTTPRouteConfigServer.Do(req)
 	case "JavaComponentsClient":
 		initServer(s, &s.trJavaComponentsServer, func() *JavaComponentsServerTransport {
 			return NewJavaComponentsServerTransport(&s.srv.JavaComponentsServer)
@@ -249,6 +274,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewJobsExecutionsServerTransport(&s.srv.JobsExecutionsServer)
 		})
 		resp, err = s.trJobsExecutionsServer.Do(req)
+	case "LogicAppsClient":
+		initServer(s, &s.trLogicAppsServer, func() *LogicAppsServerTransport { return NewLogicAppsServerTransport(&s.srv.LogicAppsServer) })
+		resp, err = s.trLogicAppsServer.Do(req)
+	case "MaintenanceConfigurationsClient":
+		initServer(s, &s.trMaintenanceConfigurationsServer, func() *MaintenanceConfigurationsServerTransport {
+			return NewMaintenanceConfigurationsServerTransport(&s.srv.MaintenanceConfigurationsServer)
+		})
+		resp, err = s.trMaintenanceConfigurationsServer.Do(req)
 	case "ManagedCertificatesClient":
 		initServer(s, &s.trManagedCertificatesServer, func() *ManagedCertificatesServerTransport {
 			return NewManagedCertificatesServerTransport(&s.srv.ManagedCertificatesServer)
@@ -259,6 +292,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedEnvironmentDiagnosticsServerTransport(&s.srv.ManagedEnvironmentDiagnosticsServer)
 		})
 		resp, err = s.trManagedEnvironmentDiagnosticsServer.Do(req)
+	case "ManagedEnvironmentPrivateEndpointConnectionsClient":
+		initServer(s, &s.trManagedEnvironmentPrivateEndpointConnectionsServer, func() *ManagedEnvironmentPrivateEndpointConnectionsServerTransport {
+			return NewManagedEnvironmentPrivateEndpointConnectionsServerTransport(&s.srv.ManagedEnvironmentPrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trManagedEnvironmentPrivateEndpointConnectionsServer.Do(req)
+	case "ManagedEnvironmentPrivateLinkResourcesClient":
+		initServer(s, &s.trManagedEnvironmentPrivateLinkResourcesServer, func() *ManagedEnvironmentPrivateLinkResourcesServerTransport {
+			return NewManagedEnvironmentPrivateLinkResourcesServerTransport(&s.srv.ManagedEnvironmentPrivateLinkResourcesServer)
+		})
+		resp, err = s.trManagedEnvironmentPrivateLinkResourcesServer.Do(req)
 	case "ManagedEnvironmentUsagesClient":
 		initServer(s, &s.trManagedEnvironmentUsagesServer, func() *ManagedEnvironmentUsagesServerTransport {
 			return NewManagedEnvironmentUsagesServerTransport(&s.srv.ManagedEnvironmentUsagesServer)

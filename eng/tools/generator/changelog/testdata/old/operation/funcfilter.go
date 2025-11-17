@@ -3,6 +3,8 @@
 
 package operation
 
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+
 type Client struct{}
 
 func (client *Client) Update(resourceGroupName string, options *ClientUpdateOptions) (ClientUpdateResponse, error) {
@@ -30,3 +32,10 @@ func (client *Client) NewListPager(resourceGroupName string, options *ClientList
 type ClientListOptions struct{}
 
 type ClientListResponse struct{}
+
+// This function has same params but different return type - creates breaking change with nil params
+func (client *Client) Get(resourceGroupName string, options *ClientGetOptions) error {
+	return nil
+}
+
+type ClientGetOptions struct{}

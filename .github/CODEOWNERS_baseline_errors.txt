@@ -23,6 +23,7 @@ rajkumar-rangaraj is not a public member of Azure.
 robch is not a public member of Azure.
 romahamu is not a public member of Azure.
 ryogok is not a public member of Azure.
+sarathys is not a public member of Azure.
 seanmck is not a public member of Azure.
 sgellock is not a public member of Azure.
 shahbj79 is not a public member of Azure.
@@ -185,6 +186,7 @@ sarathys is an invalid user. Ensure the user exists, is public member of Azure a
 savjani is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 sffamily is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 shefymk is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
+sgellock is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 shenmuxiaosen is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 Sharmistha-Rai is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 shijojoy is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
@@ -217,5 +219,6 @@ vwansuppgithub is an invalid user. Ensure the user exists, is public member of A
 xgithubtriage is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 yegu-ms is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 yuzorMa is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
+zesluo is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 zjalexander is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 zoharHenMicrosoft is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.

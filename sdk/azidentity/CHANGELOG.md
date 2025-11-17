@@ -1,14 +1,62 @@
 # Release History
 
-## 1.11.1-beta.1 (Unreleased)
+## 1.14.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
+> These changes affect only code written against a beta version such as v1.13.0-beta.1
+- `WorkloadIdentityCredential` identity binding mode is disabled by default. To enable it, set
+  `WorkloadIdentityCredentialOptions.EnableAzureTokenProxy` to `true`
+- Removed identity binding mode support from `DefaultAzureCredential`. To use this feature, use
+  `WorkloadIdentityCredential` directly instead and set
+  `WorkloadIdentityCredentialOptions.EnableAzureTokenProxy` to `true`
+
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.0-beta.1 (2025-10-07)
+
+### Features Added
+
+- Restored the `WorkloadIdentityCredential` identity binding mode support removed in v1.13.0
+
+## 1.13.0 (2025-10-07)
+
+### Features Added
+
+- Added `AzurePowerShellCredential`, which authenticates as the identity logged in to Azure PowerShell
+  (thanks [ArmaanMcleod](https://github.com/ArmaanMcleod))
+- When `AZURE_TOKEN_CREDENTIALS` is set to `ManagedIdentityCredential`, `DefaultAzureCredential` behaves the same as
+  does `ManagedIdentityCredential` when used directly. It doesn't apply special retry configuration or attempt to
+  determine whether IMDS is available. ([#25265](https://github.com/Azure/azure-sdk-for-go/issues/25265))
+
+### Breaking Changes
+
+* Removed the `WorkloadIdentityCredential` support for identity binding mode added in v1.13.0-beta.1.
+  It will return in v1.14.0-beta.1
+
+## 1.13.0-beta.1 (2025-09-17)
+
+### Features Added
+
+- Added `AzurePowerShellCredential`, which authenticates as the identity logged in to Azure PowerShell
+  (thanks [ArmaanMcleod](https://github.com/ArmaanMcleod))
+- `WorkloadIdentityCredential` supports identity binding mode ([#25056](https://github.com/Azure/azure-sdk-for-go/issues/25056))
+
+## 1.12.0 (2025-09-16)
+
+### Features Added
+- Added `DefaultAzureCredentialOptions.RequireAzureTokenCredentials`. `NewDefaultAzureCredential` returns an
+  error when this option is true and the environment variable `AZURE_TOKEN_CREDENTIALS` has no value.
+
+### Other Changes
+- `AzureDeveloperCLICredential` no longer hangs when AZD_DEBUG is set
+- `GetToken` methods of `AzureCLICredential` and `AzureDeveloperCLICredential` return an error when
+  `TokenRequestOptions.Claims` has a value because these credentials can't acquire a token in that
+  case. The error messages describe the action required to get a token.
 
 ## 1.11.0 (2025-08-05)
 

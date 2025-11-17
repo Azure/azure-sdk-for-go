@@ -199,6 +199,15 @@ func TestTenantID(t *testing.T) {
 			tenantOptional: true,
 		},
 		{
+			name: credNameAzurePowerShell,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
 			name: credNameAzureDeveloperCLI,
 			ctor: func(tenant string) (azcore.TokenCredential, error) {
 				return NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
@@ -296,6 +305,20 @@ func (c *testCache) Export(_ context.Context, m cache.Marshaler, _ cache.ExportH
 
 func (c *testCache) Replace(_ context.Context, u cache.Unmarshaler, _ cache.ReplaceHints) error {
 	return u.Unmarshal(*c)
+}
+
+func TestUnavailableIfInDAC(t *testing.T) {
+	err := newAuthenticationFailedError(credNameOBO, "it didn't work", nil)
+	err = unavailableIfInDAC(err, false)
+	require.ErrorAs(t, err, new(*AuthenticationFailedError))
+
+	err = unavailableIfInDAC(err, true)
+	require.ErrorAs(t, err, new(credentialUnavailable))
+
+	err = unavailableIfInDAC(err, false)
+	require.ErrorAs(t, err, new(credentialUnavailable))
+
+	require.Equal(t, 1, strings.Count(err.Error(), credNameOBO))
 }
 
 func TestUserAuthentication(t *testing.T) {
@@ -555,6 +578,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 func TestGetTokenRequiresScopes(t *testing.T) {
 	for _, ctor := range []func() (azcore.TokenCredential, error){
 		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewAzurePowerShellCredential(nil) },
 		func() (azcore.TokenCredential, error) { return NewAzureDeveloperCLICredential(nil) },
 		func() (azcore.TokenCredential, error) {
 			return NewClientAssertionCredential(
@@ -671,12 +695,31 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				o := AzureCLICredentialOptions{
 					AdditionallyAllowedTenants: tc.allowed,
 					TenantID:                   tc.ctorTenant,
-					tokenProvider: func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
-						require.Equal(t, tc.expected, tenant)
-						return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+					exec: func(ctx context.Context, credName string, commandLine string) ([]byte, error) {
+						require.Contains(t, commandLine, " --tenant "+tc.expected)
+						return mockAzSuccess(ctx, credName, commandLine)
 					},
 				}
 				return NewAzureCLICredential(&o)
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameAzurePowerShell,
+			ctor: func(_ azcore.ClientOptions, tc testCase, t *testing.T) (azcore.TokenCredential, error) {
+				o := AzurePowerShellCredentialOptions{
+					AdditionallyAllowedTenants: tc.allowed,
+					TenantID:                   tc.ctorTenant,
+					exec: func(ctx context.Context, credName string, commandLine string) ([]byte, error) {
+						splitCommand := strings.Split(commandLine, " ")
+						encodedScript := splitCommand[len(splitCommand)-1]
+						decodedScript, err := base64DecodeUTF16LE(encodedScript)
+						require.NoError(t, err)
+						require.Contains(t, decodedScript, fmt.Sprintf("$params['TenantId'] = '%s'", tc.expected))
+						return mockAzurePowerShellSuccess(ctx, credName, commandLine)
+					},
+				}
+				return NewAzurePowerShellCredential(&o)
 			},
 			tenantOptional: true,
 		},
@@ -685,11 +728,9 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			ctor: func(_ azcore.ClientOptions, tc testCase, t *testing.T) (azcore.TokenCredential, error) {
 				o := AzureDeveloperCLICredentialOptions{
 					AdditionallyAllowedTenants: tc.allowed,
-					tokenProvider: func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
-						if tenant != tc.expected {
-							t.Errorf("unexpected tenantID %q", tenant)
-						}
-						return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+					exec: func(ctx context.Context, credName string, command string) ([]byte, error) {
+						require.Contains(t, command, " --tenant-id "+tc.expected)
+						return mockAzdSuccess(ctx, credName, command)
 					},
 				}
 				return NewAzureDeveloperCLICredential(&o)
@@ -783,10 +824,10 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				})
 				for _, source := range c.chain.sources {
 					if c, ok := source.(*AzureCLICredential); ok {
-						c.opts.tokenProvider = func(ctx context.Context, scopes []string, tenant, subscription string) ([]byte, error) {
+						c.opts.exec = func(ctx context.Context, credName string, commandLine string) ([]byte, error) {
 							called = true
-							require.Equal(t, tc.expected, tenant)
-							return mockAzTokenProviderSuccess(ctx, scopes, tenant, subscription)
+							require.Contains(t, commandLine, " --tenant "+tc.expected)
+							return mockAzSuccess(ctx, credName, commandLine)
 						}
 						break
 					}
@@ -818,14 +859,14 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 				for _, source := range c.chain.sources {
 					switch c := source.(type) {
 					case *AzureCLICredential:
-						c.opts.tokenProvider = func(context.Context, []string, string, string) ([]byte, error) {
+						c.opts.exec = func(context.Context, string, string) ([]byte, error) {
 							return nil, newCredentialUnavailableError(credNameAzureCLI, "...")
 						}
 					case *AzureDeveloperCLICredential:
-						c.opts.tokenProvider = func(ctx context.Context, scopes []string, tenant string) ([]byte, error) {
+						c.opts.exec = func(ctx context.Context, credName string, command string) ([]byte, error) {
 							called = true
-							require.Equal(t, tc.expected, tenant)
-							return mockAzdTokenProviderSuccess(ctx, scopes, tenant)
+							require.Contains(t, command, " --tenant-id "+tc.expected)
+							return mockAzdSuccess(ctx, credName, command)
 						}
 					}
 				}
@@ -1154,6 +1195,12 @@ func TestCLIArgumentValidation(t *testing.T) {
 				return NewAzureCLICredential(nil)
 			},
 			name: credNameAzureCLI,
+		},
+		{
+			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzurePowerShellCredential(nil)
+			},
+			name: credNameAzurePowerShell,
 		},
 		{
 			ctor: func() (azcore.TokenCredential, error) {

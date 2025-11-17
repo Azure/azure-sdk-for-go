@@ -27,7 +27,7 @@ type JobClient struct {
 // NewJobClient creates a new instance of JobClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -162,8 +162,8 @@ func (client *JobClient) listCreateRequest(ctx context.Context, resourceGroupNam
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	if options != nil && options.OdataOptions != nil {
-		reqQP.Set("odataOptions", *options.OdataOptions)
+	if options != nil && options.ODataOptions != nil {
+		reqQP.Set("odataOptions", *options.ODataOptions)
 	}
 	if options != nil && options.PageSize != nil {
 		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))

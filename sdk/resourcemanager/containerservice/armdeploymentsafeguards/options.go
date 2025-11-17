@@ -4,28 +4,25 @@
 
 package armdeploymentsafeguards
 
-// DeploymentSafeguardsClientBeginCreateOptions contains the optional parameters for the DeploymentSafeguardsClient.BeginCreate
-// method.
-type DeploymentSafeguardsClientBeginCreateOptions struct {
+// ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
+type ClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// DeploymentSafeguardsClientBeginDeleteOptions contains the optional parameters for the DeploymentSafeguardsClient.BeginDelete
-// method.
-type DeploymentSafeguardsClientBeginDeleteOptions struct {
+// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+type ClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// DeploymentSafeguardsClientGetOptions contains the optional parameters for the DeploymentSafeguardsClient.Get method.
-type DeploymentSafeguardsClientGetOptions struct {
+// ClientGetOptions contains the optional parameters for the Client.Get method.
+type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeploymentSafeguardsClientListOptions contains the optional parameters for the DeploymentSafeguardsClient.NewListPager
-// method.
-type DeploymentSafeguardsClientListOptions struct {
+// ClientListOptions contains the optional parameters for the Client.NewListPager method.
+type ClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

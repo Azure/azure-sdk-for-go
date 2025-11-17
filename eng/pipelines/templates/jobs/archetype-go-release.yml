@@ -123,6 +123,10 @@ stages:
               ReleaseSha: $(Build.SourceVersion)
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
+          - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
+            parameters:
+              ConfigFileDir: $(Pipeline.Workspace)/PackageInfo
+              PackageArtifactName: sdk/${{ parameters.ServiceDirectory }}
 
       - ${{ if not(and(startsWith(parameters.ServiceDirectory, 'resourcemanager'), ne(parameters.ServiceDirectory, 'resourcemanager/internal'))) }}:
         - job: UpdatePackageVersion

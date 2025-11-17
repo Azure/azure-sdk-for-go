@@ -3110,6 +3110,45 @@ func (r *RollingUpgradeMonitoringPolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RuntimeApplicationHealthPolicy.
+func (r RuntimeApplicationHealthPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "considerWarningAsError", r.ConsiderWarningAsError)
+	populate(objectMap, "defaultServiceTypeHealthPolicy", r.DefaultServiceTypeHealthPolicy)
+	populate(objectMap, "maxPercentUnhealthyDeployedApplications", r.MaxPercentUnhealthyDeployedApplications)
+	populate(objectMap, "serviceTypeHealthPolicyMap", r.ServiceTypeHealthPolicyMap)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuntimeApplicationHealthPolicy.
+func (r *RuntimeApplicationHealthPolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "considerWarningAsError":
+			err = unpopulate(val, "ConsiderWarningAsError", &r.ConsiderWarningAsError)
+			delete(rawMsg, key)
+		case "defaultServiceTypeHealthPolicy":
+			err = unpopulate(val, "DefaultServiceTypeHealthPolicy", &r.DefaultServiceTypeHealthPolicy)
+			delete(rawMsg, key)
+		case "maxPercentUnhealthyDeployedApplications":
+			err = unpopulate(val, "MaxPercentUnhealthyDeployedApplications", &r.MaxPercentUnhealthyDeployedApplications)
+			delete(rawMsg, key)
+		case "serviceTypeHealthPolicyMap":
+			err = unpopulate(val, "ServiceTypeHealthPolicyMap", &r.ServiceTypeHealthPolicyMap)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type RuntimeResumeApplicationUpgradeParameters.
 func (r RuntimeResumeApplicationUpgradeParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3128,6 +3167,143 @@ func (r *RuntimeResumeApplicationUpgradeParameters) UnmarshalJSON(data []byte) e
 		switch key {
 		case "upgradeDomainName":
 			err = unpopulate(val, "UpgradeDomainName", &r.UpgradeDomainName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RuntimeRollingUpgradeUpdateMonitoringPolicy.
+func (r RuntimeRollingUpgradeUpdateMonitoringPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "failureAction", r.FailureAction)
+	populate(objectMap, "forceRestart", r.ForceRestart)
+	populate(objectMap, "healthCheckRetryTimeoutInMilliseconds", r.HealthCheckRetryTimeoutInMilliseconds)
+	populate(objectMap, "healthCheckStableDurationInMilliseconds", r.HealthCheckStableDurationInMilliseconds)
+	populate(objectMap, "healthCheckWaitDurationInMilliseconds", r.HealthCheckWaitDurationInMilliseconds)
+	populate(objectMap, "instanceCloseDelayDurationInSeconds", r.InstanceCloseDelayDurationInSeconds)
+	populate(objectMap, "replicaSetCheckTimeoutInMilliseconds", r.ReplicaSetCheckTimeoutInMilliseconds)
+	populate(objectMap, "rollingUpgradeMode", r.RollingUpgradeMode)
+	populate(objectMap, "upgradeDomainTimeoutInMilliseconds", r.UpgradeDomainTimeoutInMilliseconds)
+	populate(objectMap, "upgradeTimeoutInMilliseconds", r.UpgradeTimeoutInMilliseconds)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuntimeRollingUpgradeUpdateMonitoringPolicy.
+func (r *RuntimeRollingUpgradeUpdateMonitoringPolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "failureAction":
+			err = unpopulate(val, "FailureAction", &r.FailureAction)
+			delete(rawMsg, key)
+		case "forceRestart":
+			err = unpopulate(val, "ForceRestart", &r.ForceRestart)
+			delete(rawMsg, key)
+		case "healthCheckRetryTimeoutInMilliseconds":
+			err = unpopulate(val, "HealthCheckRetryTimeoutInMilliseconds", &r.HealthCheckRetryTimeoutInMilliseconds)
+			delete(rawMsg, key)
+		case "healthCheckStableDurationInMilliseconds":
+			err = unpopulate(val, "HealthCheckStableDurationInMilliseconds", &r.HealthCheckStableDurationInMilliseconds)
+			delete(rawMsg, key)
+		case "healthCheckWaitDurationInMilliseconds":
+			err = unpopulate(val, "HealthCheckWaitDurationInMilliseconds", &r.HealthCheckWaitDurationInMilliseconds)
+			delete(rawMsg, key)
+		case "instanceCloseDelayDurationInSeconds":
+			err = unpopulate(val, "InstanceCloseDelayDurationInSeconds", &r.InstanceCloseDelayDurationInSeconds)
+			delete(rawMsg, key)
+		case "replicaSetCheckTimeoutInMilliseconds":
+			err = unpopulate(val, "ReplicaSetCheckTimeoutInMilliseconds", &r.ReplicaSetCheckTimeoutInMilliseconds)
+			delete(rawMsg, key)
+		case "rollingUpgradeMode":
+			err = unpopulate(val, "RollingUpgradeMode", &r.RollingUpgradeMode)
+			delete(rawMsg, key)
+		case "upgradeDomainTimeoutInMilliseconds":
+			err = unpopulate(val, "UpgradeDomainTimeoutInMilliseconds", &r.UpgradeDomainTimeoutInMilliseconds)
+			delete(rawMsg, key)
+		case "upgradeTimeoutInMilliseconds":
+			err = unpopulate(val, "UpgradeTimeoutInMilliseconds", &r.UpgradeTimeoutInMilliseconds)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RuntimeServiceTypeHealthPolicy.
+func (r RuntimeServiceTypeHealthPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "maxPercentUnhealthyPartitionsPerService", r.MaxPercentUnhealthyPartitionsPerService)
+	populate(objectMap, "maxPercentUnhealthyReplicasPerPartition", r.MaxPercentUnhealthyReplicasPerPartition)
+	populate(objectMap, "maxPercentUnhealthyServices", r.MaxPercentUnhealthyServices)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuntimeServiceTypeHealthPolicy.
+func (r *RuntimeServiceTypeHealthPolicy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "maxPercentUnhealthyPartitionsPerService":
+			err = unpopulate(val, "MaxPercentUnhealthyPartitionsPerService", &r.MaxPercentUnhealthyPartitionsPerService)
+			delete(rawMsg, key)
+		case "maxPercentUnhealthyReplicasPerPartition":
+			err = unpopulate(val, "MaxPercentUnhealthyReplicasPerPartition", &r.MaxPercentUnhealthyReplicasPerPartition)
+			delete(rawMsg, key)
+		case "maxPercentUnhealthyServices":
+			err = unpopulate(val, "MaxPercentUnhealthyServices", &r.MaxPercentUnhealthyServices)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RuntimeUpdateApplicationUpgradeParameters.
+func (r RuntimeUpdateApplicationUpgradeParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "applicationHealthPolicy", r.ApplicationHealthPolicy)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "updateDescription", r.UpdateDescription)
+	populate(objectMap, "upgradeKind", r.UpgradeKind)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RuntimeUpdateApplicationUpgradeParameters.
+func (r *RuntimeUpdateApplicationUpgradeParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "applicationHealthPolicy":
+			err = unpopulate(val, "ApplicationHealthPolicy", &r.ApplicationHealthPolicy)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &r.Name)
+			delete(rawMsg, key)
+		case "updateDescription":
+			err = unpopulate(val, "UpdateDescription", &r.UpdateDescription)
+			delete(rawMsg, key)
+		case "upgradeKind":
+			err = unpopulate(val, "UpgradeKind", &r.UpgradeKind)
 			delete(rawMsg, key)
 		}
 		if err != nil {

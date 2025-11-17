@@ -1,4 +1,4 @@
 directory: specification/liftrhyperexecute/LambdaTest.HyperExecute.Management
-commit: c269b7b78cac2808d7acc55124a9653b2e904e4b
+commit: 6fb604853ab1c56f2adbe6e4922c31e772425cba
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

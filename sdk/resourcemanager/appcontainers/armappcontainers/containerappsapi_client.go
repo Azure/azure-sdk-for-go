@@ -43,7 +43,7 @@ func NewContainerAppsAPIClient(subscriptionID string, credential azcore.TokenCre
 // GetCustomDomainVerificationID - Get the verification id of a subscription used for verifying custom domains
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - options - ContainerAppsAPIClientGetCustomDomainVerificationIDOptions contains the optional parameters for the ContainerAppsAPIClient.GetCustomDomainVerificationID
 //     method.
 func (client *ContainerAppsAPIClient) GetCustomDomainVerificationID(ctx context.Context, options *ContainerAppsAPIClientGetCustomDomainVerificationIDOptions) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
@@ -80,7 +80,7 @@ func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -98,7 +98,7 @@ func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleRespons
 // JobExecution - Get details of a single job execution
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - jobName - Job Name
 //   - jobExecutionName - Job execution name.
@@ -150,7 +150,7 @@ func (client *ContainerAppsAPIClient) jobExecutionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-02/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenGeneratedBy
 		// 	OperationListResult: armiotfirmwaredefense.OperationListResult{
 		// 		Value: []*armiotfirmwaredefense.Operation{
 		// 			{
-		// 				Name: to.Ptr("wdbuw"),
+		// 				Name: to.Ptr("Microsoft.IoTFirmwareDefense/register/action"),
 		// 				IsDataAction: to.Ptr(true),
 		// 				Display: &armiotfirmwaredefense.OperationDisplay{
-		// 					Provider: to.Ptr("avfdrxtfudhdoyhlpwldgzq"),
-		// 					Resource: to.Ptr("udukhbh"),
-		// 					Operation: to.Ptr("ljpkuvkasdmwjxwibaeuhorzqy"),
-		// 					Description: to.Ptr("hlsaojlacqrucpys"),
+		// 					Provider: to.Ptr("Microsoft.IoTFirmwareDefense"),
+		// 					Resource: to.Ptr("Microsoft.IoTFirmwareDefense"),
+		// 					Operation: to.Ptr("Register the Microsoft.IoTFirmwareDefense"),
+		// 					Description: to.Ptr("Register the subscription for Microsoft.IoTFirmwareDefense"),
 		// 				},
 		// 				Origin: to.Ptr(armiotfirmwaredefense.OriginUser),
 		// 				ActionType: to.Ptr(armiotfirmwaredefense.ActionTypeInternal),
@@ -55,7 +55,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenGeneratedBy
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2025-08-02/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

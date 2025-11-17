@@ -11,11 +11,11 @@ type AttestationStatus struct {
 	// The resource-specific properties for this resource.
 	Properties *AttestationStatusProperties
 
-	// READ-ONLY; Name of attestation status
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -98,9 +98,6 @@ type GalleryImage struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the gallery image
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -112,6 +109,9 @@ type GalleryImage struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -248,11 +248,11 @@ type GuestAgent struct {
 	// The resource-specific properties for this resource.
 	Properties *GuestAgentProperties
 
-	// READ-ONLY; guestAgent name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -347,11 +347,11 @@ type HybridIdentityMetadata struct {
 	// The resource-specific properties for this resource.
 	Properties *HybridIdentityMetadataProperties
 
-	// READ-ONLY; Name of the hybrididentitymetadata
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -483,9 +483,6 @@ type LogicalNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the logical network
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -497,6 +494,9 @@ type LogicalNetwork struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -597,9 +597,6 @@ type MarketplaceGalleryImage struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the marketplace gallery image
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -611,6 +608,9 @@ type MarketplaceGalleryImage struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -699,9 +699,6 @@ type NetworkInterface struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the network interface
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -713,6 +710,9 @@ type NetworkInterface struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -810,9 +810,6 @@ type NetworkSecurityGroup struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the network security group
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -830,6 +827,9 @@ type NetworkSecurityGroup struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -986,9 +986,6 @@ type SSHPublicKey struct {
 
 // SecurityRule - Security Rule resource.
 type SecurityRule struct {
-	// READ-ONLY; Name of the security rule.
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -997,6 +994,9 @@ type SecurityRule struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1053,9 +1053,6 @@ type StorageContainer struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the storage container
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -1067,6 +1064,9 @@ type StorageContainer struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1229,9 +1229,6 @@ type VirtualHardDisk struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the virtual hard disk
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -1243,6 +1240,9 @@ type VirtualHardDisk struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1414,9 +1414,6 @@ type VirtualMachineConfigAgentInstanceView struct {
 
 // VirtualMachineInstance - The virtual machine instance resource definition.
 type VirtualMachineInstance struct {
-	// READ-ONLY; name of virtual machine
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -1428,6 +1425,9 @@ type VirtualMachineInstance struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

@@ -43,7 +43,7 @@ func NewSnapshotsClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrUpdate - Creates or updates a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - parameters - The snapshot to create or update.
@@ -91,7 +91,7 @@ func (client *SnapshotsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -112,7 +112,7 @@ func (client *SnapshotsClient) createOrUpdateHandleResponse(resp *http.Response)
 // Delete - Deletes a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - SnapshotsClientDeleteOptions contains the optional parameters for the SnapshotsClient.Delete method.
@@ -157,7 +157,7 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +166,7 @@ func (client *SnapshotsClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - SnapshotsClientGetOptions contains the optional parameters for the SnapshotsClient.Get method.
@@ -212,7 +212,7 @@ func (client *SnapshotsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,7 +229,7 @@ func (client *SnapshotsClient) getHandleResponse(resp *http.Response) (Snapshots
 
 // NewListPager - Gets a list of snapshots in the specified subscription.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-08-02-preview
 //   - options - SnapshotsClientListOptions contains the optional parameters for the SnapshotsClient.NewListPager method.
 func (client *SnapshotsClient) NewListPager(options *SnapshotsClientListOptions) *runtime.Pager[SnapshotsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SnapshotsClientListResponse]{
@@ -266,7 +266,7 @@ func (client *SnapshotsClient) listCreateRequest(ctx context.Context, _ *Snapsho
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *SnapshotsClient) listHandleResponse(resp *http.Response) (Snapshot
 
 // NewListByResourceGroupPager - Lists snapshots in the specified subscription and resource group.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SnapshotsClientListByResourceGroupOptions contains the optional parameters for the SnapshotsClient.NewListByResourceGroupPager
 //     method.
@@ -326,7 +326,7 @@ func (client *SnapshotsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,7 +344,7 @@ func (client *SnapshotsClient) listByResourceGroupHandleResponse(resp *http.Resp
 // UpdateTags - Updates tags on a snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-05-02-preview
+// Generated from API version 2025-08-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - parameters - Parameters supplied to the Update snapshot Tags operation.
@@ -391,7 +391,7 @@ func (client *SnapshotsClient) updateTagsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-02-preview")
+	reqQP.Set("api-version", "2025-08-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

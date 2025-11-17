@@ -9,5 +9,5 @@ const (
 	ModuleName = "github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents"
 
 	// ModuleVersion is the semantic version (see http://semver.org) of this module.
-	ModuleVersion = "v1.0.0"
+	ModuleVersion = "v1.0.1-beta.1"
 )

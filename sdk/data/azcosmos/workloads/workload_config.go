@@ -10,8 +10,8 @@ import (
 	"strings"
 )
 
-// Configuration loaded from environment (mirrors the Python version)
-type workloadConfig struct {
+// WorkloadConfig is the configuration loaded from environment (mirrors the Python version)
+type WorkloadConfig struct {
 	Endpoint              string
 	Key                   string
 	PreferredLocations    []string
@@ -28,7 +28,7 @@ const defaultContainerName = "scale_cont"
 const defaultDatabaseName = "scale_db"
 const defaultPKField = "pk"
 
-func LoadConfig() (workloadConfig, error) {
+func LoadConfig() (WorkloadConfig, error) {
 	get := func(name string) (string, error) {
 		v := os.Getenv(name)
 		if v == "" {
@@ -37,7 +37,7 @@ func LoadConfig() (workloadConfig, error) {
 		return v, nil
 	}
 
-	var cfg workloadConfig
+	var cfg WorkloadConfig
 	var err error
 
 	if cfg.Endpoint, err = get("COSMOS_URI"); err != nil {

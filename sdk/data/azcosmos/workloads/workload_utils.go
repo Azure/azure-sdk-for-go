@@ -197,7 +197,7 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 	})
 }
 
-func CreateClient(cfg workloadConfig) (*azcosmos.Client, error) {
+func CreateClient(cfg WorkloadConfig) (*azcosmos.Client, error) {
 	log.Printf("Creating client for endpoint %s with preferred regions: %v", cfg.Endpoint, cfg.PreferredLocations)
 	telemetryOpts := policy.TelemetryOptions{
 		// create a random guid for the application ID to distinguish this workload's telemetry

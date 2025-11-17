@@ -25,14 +25,14 @@ func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRule
 	}
 	poller, err := clientFactory.NewFqdnListGlobalRulestackClient().BeginCreateOrUpdate(ctx, "praval", "armid1", armpanngfw.FqdnListGlobalRulestackResource{
 		Properties: &armpanngfw.FqdnObject{
-			Description:  to.Ptr("string"),
-			AuditComment: to.Ptr("string"),
-			Etag:         to.Ptr("aaaaaaaaaaaaaaaaaa"),
+			Description:	to.Ptr("string"),
+			AuditComment:	to.Ptr("string"),
+			Etag:		to.Ptr("aaaaaaaaaaaaaaaaaa"),
 			FqdnList: []*string{
 				to.Ptr("string1"),
 				to.Ptr("string2"),
 			},
-			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			ProvisioningState:	to.Ptr(armpanngfw.ProvisioningStateAccepted),
 		},
 	}, nil)
 	if err != nil {

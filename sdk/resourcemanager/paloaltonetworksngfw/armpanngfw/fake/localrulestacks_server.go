@@ -23,67 +23,67 @@ import (
 type LocalRulestacksServer struct {
 	// BeginCommit is the fake for method LocalRulestacksClient.BeginCommit
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginCommit func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientBeginCommitOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulestacksClientCommitResponse], errResp azfake.ErrorResponder)
+	BeginCommit	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientBeginCommitOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulestacksClientCommitResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method LocalRulestacksClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, localRulestackName string, resource armpanngfw.LocalRulestackResource, options *armpanngfw.LocalRulestacksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulestacksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, localRulestackName string, resource armpanngfw.LocalRulestackResource, options *armpanngfw.LocalRulestacksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulestacksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method LocalRulestacksClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulestacksClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.LocalRulestacksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method LocalRulestacksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientGetOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientGetOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetChangeLog is the fake for method LocalRulestacksClient.GetChangeLog
 	// HTTP status codes to indicate success: http.StatusOK
-	GetChangeLog func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientGetChangeLogOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientGetChangeLogResponse], errResp azfake.ErrorResponder)
+	GetChangeLog	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientGetChangeLogOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientGetChangeLogResponse], errResp azfake.ErrorResponder)
 
 	// GetSupportInfo is the fake for method LocalRulestacksClient.GetSupportInfo
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSupportInfo func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientGetSupportInfoOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientGetSupportInfoResponse], errResp azfake.ErrorResponder)
+	GetSupportInfo	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientGetSupportInfoOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientGetSupportInfoResponse], errResp azfake.ErrorResponder)
 
 	// ListAdvancedSecurityObjects is the fake for method LocalRulestacksClient.ListAdvancedSecurityObjects
 	// HTTP status codes to indicate success: http.StatusOK
-	ListAdvancedSecurityObjects func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.AdvSecurityObjectTypeEnum, options *armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsResponse], errResp azfake.ErrorResponder)
+	ListAdvancedSecurityObjects	func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.AdvSecurityObjectTypeEnum, options *armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsResponse], errResp azfake.ErrorResponder)
 
 	// NewListAppIDsPager is the fake for method LocalRulestacksClient.NewListAppIDsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAppIDsPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListAppIDsOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse])
+	NewListAppIDsPager	func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListAppIDsOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse])
 
 	// NewListByResourceGroupPager is the fake for method LocalRulestacksClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armpanngfw.LocalRulestacksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armpanngfw.LocalRulestacksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method LocalRulestacksClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armpanngfw.LocalRulestacksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListBySubscriptionResponse])
+	NewListBySubscriptionPager	func(options *armpanngfw.LocalRulestacksClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListBySubscriptionResponse])
 
 	// NewListCountriesPager is the fake for method LocalRulestacksClient.NewListCountriesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListCountriesPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListCountriesOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse])
+	NewListCountriesPager	func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListCountriesOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse])
 
 	// ListFirewalls is the fake for method LocalRulestacksClient.ListFirewalls
 	// HTTP status codes to indicate success: http.StatusOK
-	ListFirewalls func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListFirewallsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListFirewallsResponse], errResp azfake.ErrorResponder)
+	ListFirewalls	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListFirewallsOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListFirewallsResponse], errResp azfake.ErrorResponder)
 
 	// NewListPredefinedURLCategoriesPager is the fake for method LocalRulestacksClient.NewListPredefinedURLCategoriesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPredefinedURLCategoriesPager func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse])
+	NewListPredefinedURLCategoriesPager	func(resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesOptions) (resp azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse])
 
 	// ListSecurityServices is the fake for method LocalRulestacksClient.ListSecurityServices
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSecurityServices func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
+	ListSecurityServices	func(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
 
 	// Revert is the fake for method LocalRulestacksClient.Revert
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Revert func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientRevertOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientRevertResponse], errResp azfake.ErrorResponder)
+	Revert	func(ctx context.Context, resourceGroupName string, localRulestackName string, options *armpanngfw.LocalRulestacksClientRevertOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientRevertResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method LocalRulestacksClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, localRulestackName string, properties armpanngfw.LocalRulestackResourceUpdate, options *armpanngfw.LocalRulestacksClientUpdateOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, localRulestackName string, properties armpanngfw.LocalRulestackResourceUpdate, options *armpanngfw.LocalRulestacksClientUpdateOptions) (resp azfake.Responder[armpanngfw.LocalRulestacksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewLocalRulestacksServerTransport creates a new instance of LocalRulestacksServerTransport with the provided implementation.
@@ -91,30 +91,30 @@ type LocalRulestacksServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLocalRulestacksServerTransport(srv *LocalRulestacksServer) *LocalRulestacksServerTransport {
 	return &LocalRulestacksServerTransport{
-		srv:                                 srv,
-		beginCommit:                         newTracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCommitResponse]](),
-		beginCreateOrUpdate:                 newTracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCreateOrUpdateResponse]](),
-		beginDelete:                         newTracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientDeleteResponse]](),
-		newListAppIDsPager:                  newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse]](),
-		newListByResourceGroupPager:         newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:          newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListBySubscriptionResponse]](),
-		newListCountriesPager:               newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse]](),
-		newListPredefinedURLCategoriesPager: newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse]](),
+		srv:					srv,
+		beginCommit:				newTracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCommitResponse]](),
+		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCreateOrUpdateResponse]](),
+		beginDelete:				newTracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientDeleteResponse]](),
+		newListAppIDsPager:			newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse]](),
+		newListByResourceGroupPager:		newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:		newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListBySubscriptionResponse]](),
+		newListCountriesPager:			newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse]](),
+		newListPredefinedURLCategoriesPager:	newTracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse]](),
 	}
 }
 
 // LocalRulestacksServerTransport connects instances of armpanngfw.LocalRulestacksClient to instances of LocalRulestacksServer.
 // Don't use this type directly, use NewLocalRulestacksServerTransport instead.
 type LocalRulestacksServerTransport struct {
-	srv                                 *LocalRulestacksServer
-	beginCommit                         *tracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCommitResponse]]
-	beginCreateOrUpdate                 *tracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCreateOrUpdateResponse]]
-	beginDelete                         *tracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientDeleteResponse]]
-	newListAppIDsPager                  *tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse]]
-	newListByResourceGroupPager         *tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListByResourceGroupResponse]]
-	newListBySubscriptionPager          *tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListBySubscriptionResponse]]
-	newListCountriesPager               *tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse]]
-	newListPredefinedURLCategoriesPager *tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse]]
+	srv					*LocalRulestacksServer
+	beginCommit				*tracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCommitResponse]]
+	beginCreateOrUpdate			*tracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientCreateOrUpdateResponse]]
+	beginDelete				*tracker[azfake.PollerResponder[armpanngfw.LocalRulestacksClientDeleteResponse]]
+	newListAppIDsPager			*tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListAppIDsResponse]]
+	newListByResourceGroupPager		*tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListByResourceGroupResponse]]
+	newListBySubscriptionPager		*tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListBySubscriptionResponse]]
+	newListCountriesPager			*tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListCountriesResponse]]
+	newListPredefinedURLCategoriesPager	*tracker[azfake.PagerResponder[armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse]]
 }
 
 // Do implements the policy.Transporter interface for LocalRulestacksServerTransport.
@@ -489,8 +489,8 @@ func (l *LocalRulestacksServerTransport) dispatchListAdvancedSecurityObjects(req
 	var options *armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsOptions
 	if skipParam != nil || topParam != nil {
 		options = &armpanngfw.LocalRulestacksClientListAdvancedSecurityObjectsOptions{
-			Skip: skipParam,
-			Top:  topParam,
+			Skip:	skipParam,
+			Top:	topParam,
 		}
 	}
 	respr, errRespr := l.srv.ListAdvancedSecurityObjects(req.Context(), resourceGroupNameParam, localRulestackNameParam, typeParamParam, options)
@@ -561,10 +561,10 @@ func (l *LocalRulestacksServerTransport) dispatchNewListAppIDsPager(req *http.Re
 		var options *armpanngfw.LocalRulestacksClientListAppIDsOptions
 		if appIDVersionParam != nil || appPrefixParam != nil || skipParam != nil || topParam != nil {
 			options = &armpanngfw.LocalRulestacksClientListAppIDsOptions{
-				AppIDVersion: appIDVersionParam,
-				AppPrefix:    appPrefixParam,
-				Skip:         skipParam,
-				Top:          topParam,
+				AppIDVersion:	appIDVersionParam,
+				AppPrefix:	appPrefixParam,
+				Skip:		skipParam,
+				Top:		topParam,
 			}
 		}
 		resp := l.srv.NewListAppIDsPager(resourceGroupNameParam, localRulestackNameParam, options)
@@ -701,8 +701,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListCountriesPager(req *http
 		var options *armpanngfw.LocalRulestacksClientListCountriesOptions
 		if skipParam != nil || topParam != nil {
 			options = &armpanngfw.LocalRulestacksClientListCountriesOptions{
-				Skip: skipParam,
-				Top:  topParam,
+				Skip:	skipParam,
+				Top:	topParam,
 			}
 		}
 		resp := l.srv.NewListCountriesPager(resourceGroupNameParam, localRulestackNameParam, options)
@@ -802,8 +802,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesP
 		var options *armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesOptions
 		if skipParam != nil || topParam != nil {
 			options = &armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesOptions{
-				Skip: skipParam,
-				Top:  topParam,
+				Skip:	skipParam,
+				Top:	topParam,
 			}
 		}
 		resp := l.srv.NewListPredefinedURLCategoriesPager(resourceGroupNameParam, localRulestackNameParam, options)
@@ -878,8 +878,8 @@ func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.
 	var options *armpanngfw.LocalRulestacksClientListSecurityServicesOptions
 	if skipParam != nil || topParam != nil {
 		options = &armpanngfw.LocalRulestacksClientListSecurityServicesOptions{
-			Skip: skipParam,
-			Top:  topParam,
+			Skip:	skipParam,
+			Top:	topParam,
 		}
 	}
 	respr, errRespr := l.srv.ListSecurityServices(req.Context(), resourceGroupNameParam, localRulestackNameParam, typeParamParam, options)

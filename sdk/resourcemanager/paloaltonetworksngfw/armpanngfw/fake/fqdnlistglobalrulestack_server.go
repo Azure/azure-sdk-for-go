@@ -22,19 +22,19 @@ import (
 type FqdnListGlobalRulestackServer struct {
 	// BeginCreateOrUpdate is the fake for method FqdnListGlobalRulestackClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, globalRulestackName string, name string, resource armpanngfw.FqdnListGlobalRulestackResource, options *armpanngfw.FqdnListGlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, globalRulestackName string, name string, resource armpanngfw.FqdnListGlobalRulestackResource, options *armpanngfw.FqdnListGlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method FqdnListGlobalRulestackClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.FqdnListGlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.FqdnListGlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FqdnListGlobalRulestackClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.FqdnListGlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.FqdnListGlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, globalRulestackName string, name string, options *armpanngfw.FqdnListGlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.FqdnListGlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method FqdnListGlobalRulestackClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(globalRulestackName string, options *armpanngfw.FqdnListGlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.FqdnListGlobalRulestackClientListResponse])
+	NewListPager	func(globalRulestackName string, options *armpanngfw.FqdnListGlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.FqdnListGlobalRulestackClientListResponse])
 }
 
 // NewFqdnListGlobalRulestackServerTransport creates a new instance of FqdnListGlobalRulestackServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type FqdnListGlobalRulestackServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFqdnListGlobalRulestackServerTransport(srv *FqdnListGlobalRulestackServer) *FqdnListGlobalRulestackServerTransport {
 	return &FqdnListGlobalRulestackServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armpanngfw.FqdnListGlobalRulestackClientListResponse]](),
+		srv:			srv,
+		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse]](),
+		beginDelete:		newTracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientDeleteResponse]](),
+		newListPager:		newTracker[azfake.PagerResponder[armpanngfw.FqdnListGlobalRulestackClientListResponse]](),
 	}
 }
 
 // FqdnListGlobalRulestackServerTransport connects instances of armpanngfw.FqdnListGlobalRulestackClient to instances of FqdnListGlobalRulestackServer.
 // Don't use this type directly, use NewFqdnListGlobalRulestackServerTransport instead.
 type FqdnListGlobalRulestackServerTransport struct {
-	srv                 *FqdnListGlobalRulestackServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armpanngfw.FqdnListGlobalRulestackClientListResponse]]
+	srv			*FqdnListGlobalRulestackServer
+	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse]]
+	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.FqdnListGlobalRulestackClientDeleteResponse]]
+	newListPager		*tracker[azfake.PagerResponder[armpanngfw.FqdnListGlobalRulestackClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for FqdnListGlobalRulestackServerTransport.

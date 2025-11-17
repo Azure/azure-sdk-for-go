@@ -23,59 +23,59 @@ import (
 type GlobalRulestackServer struct {
 	// BeginCommit is the fake for method GlobalRulestackClient.BeginCommit
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginCommit func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientBeginCommitOptions) (resp azfake.PollerResponder[armpanngfw.GlobalRulestackClientCommitResponse], errResp azfake.ErrorResponder)
+	BeginCommit	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientBeginCommitOptions) (resp azfake.PollerResponder[armpanngfw.GlobalRulestackClientCommitResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method GlobalRulestackClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, globalRulestackName string, resource armpanngfw.GlobalRulestackResource, options *armpanngfw.GlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.GlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, globalRulestackName string, resource armpanngfw.GlobalRulestackResource, options *armpanngfw.GlobalRulestackClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpanngfw.GlobalRulestackClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method GlobalRulestackClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.GlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientBeginDeleteOptions) (resp azfake.PollerResponder[armpanngfw.GlobalRulestackClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method GlobalRulestackClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientGetOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetChangeLog is the fake for method GlobalRulestackClient.GetChangeLog
 	// HTTP status codes to indicate success: http.StatusOK
-	GetChangeLog func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientGetChangeLogOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientGetChangeLogResponse], errResp azfake.ErrorResponder)
+	GetChangeLog	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientGetChangeLogOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientGetChangeLogResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method GlobalRulestackClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armpanngfw.GlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse])
+	NewListPager	func(options *armpanngfw.GlobalRulestackClientListOptions) (resp azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse])
 
 	// ListAdvancedSecurityObjects is the fake for method GlobalRulestackClient.ListAdvancedSecurityObjects
 	// HTTP status codes to indicate success: http.StatusOK
-	ListAdvancedSecurityObjects func(ctx context.Context, globalRulestackName string, typeParam armpanngfw.AdvSecurityObjectTypeEnum, options *armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsResponse], errResp azfake.ErrorResponder)
+	ListAdvancedSecurityObjects	func(ctx context.Context, globalRulestackName string, typeParam armpanngfw.AdvSecurityObjectTypeEnum, options *armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsResponse], errResp azfake.ErrorResponder)
 
 	// ListAppIDs is the fake for method GlobalRulestackClient.ListAppIDs
 	// HTTP status codes to indicate success: http.StatusOK
-	ListAppIDs func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListAppIDsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListAppIDsResponse], errResp azfake.ErrorResponder)
+	ListAppIDs	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListAppIDsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListAppIDsResponse], errResp azfake.ErrorResponder)
 
 	// ListCountries is the fake for method GlobalRulestackClient.ListCountries
 	// HTTP status codes to indicate success: http.StatusOK
-	ListCountries func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListCountriesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListCountriesResponse], errResp azfake.ErrorResponder)
+	ListCountries	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListCountriesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListCountriesResponse], errResp azfake.ErrorResponder)
 
 	// ListFirewalls is the fake for method GlobalRulestackClient.ListFirewalls
 	// HTTP status codes to indicate success: http.StatusOK
-	ListFirewalls func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListFirewallsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListFirewallsResponse], errResp azfake.ErrorResponder)
+	ListFirewalls	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListFirewallsOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListFirewallsResponse], errResp azfake.ErrorResponder)
 
 	// ListPredefinedURLCategories is the fake for method GlobalRulestackClient.ListPredefinedURLCategories
 	// HTTP status codes to indicate success: http.StatusOK
-	ListPredefinedURLCategories func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesResponse], errResp azfake.ErrorResponder)
+	ListPredefinedURLCategories	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesResponse], errResp azfake.ErrorResponder)
 
 	// ListSecurityServices is the fake for method GlobalRulestackClient.ListSecurityServices
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSecurityServices func(ctx context.Context, globalRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.GlobalRulestackClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
+	ListSecurityServices	func(ctx context.Context, globalRulestackName string, typeParam armpanngfw.SecurityServicesTypeEnum, options *armpanngfw.GlobalRulestackClientListSecurityServicesOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientListSecurityServicesResponse], errResp azfake.ErrorResponder)
 
 	// Revert is the fake for method GlobalRulestackClient.Revert
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Revert func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientRevertOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientRevertResponse], errResp azfake.ErrorResponder)
+	Revert	func(ctx context.Context, globalRulestackName string, options *armpanngfw.GlobalRulestackClientRevertOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientRevertResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method GlobalRulestackClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, globalRulestackName string, properties armpanngfw.GlobalRulestackResourceUpdate, options *armpanngfw.GlobalRulestackClientUpdateOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, globalRulestackName string, properties armpanngfw.GlobalRulestackResourceUpdate, options *armpanngfw.GlobalRulestackClientUpdateOptions) (resp azfake.Responder[armpanngfw.GlobalRulestackClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGlobalRulestackServerTransport creates a new instance of GlobalRulestackServerTransport with the provided implementation.
@@ -83,22 +83,22 @@ type GlobalRulestackServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGlobalRulestackServerTransport(srv *GlobalRulestackServer) *GlobalRulestackServerTransport {
 	return &GlobalRulestackServerTransport{
-		srv:                 srv,
-		beginCommit:         newTracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCommitResponse]](),
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse]](),
+		srv:			srv,
+		beginCommit:		newTracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCommitResponse]](),
+		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCreateOrUpdateResponse]](),
+		beginDelete:		newTracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientDeleteResponse]](),
+		newListPager:		newTracker[azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse]](),
 	}
 }
 
 // GlobalRulestackServerTransport connects instances of armpanngfw.GlobalRulestackClient to instances of GlobalRulestackServer.
 // Don't use this type directly, use NewGlobalRulestackServerTransport instead.
 type GlobalRulestackServerTransport struct {
-	srv                 *GlobalRulestackServer
-	beginCommit         *tracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCommitResponse]]
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse]]
+	srv			*GlobalRulestackServer
+	beginCommit		*tracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCommitResponse]]
+	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientCreateOrUpdateResponse]]
+	beginDelete		*tracker[azfake.PollerResponder[armpanngfw.GlobalRulestackClientDeleteResponse]]
+	newListPager		*tracker[azfake.PagerResponder[armpanngfw.GlobalRulestackClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for GlobalRulestackServerTransport.
@@ -427,8 +427,8 @@ func (g *GlobalRulestackServerTransport) dispatchListAdvancedSecurityObjects(req
 	var options *armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions
 	if skipParam != nil || topParam != nil {
 		options = &armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsOptions{
-			Skip: skipParam,
-			Top:  topParam,
+			Skip:	skipParam,
+			Top:	topParam,
 		}
 	}
 	respr, errRespr := g.srv.ListAdvancedSecurityObjects(req.Context(), globalRulestackNameParam, typeParamParam, options)
@@ -493,10 +493,10 @@ func (g *GlobalRulestackServerTransport) dispatchListAppIDs(req *http.Request) (
 	var options *armpanngfw.GlobalRulestackClientListAppIDsOptions
 	if appIDVersionParam != nil || appPrefixParam != nil || skipParam != nil || topParam != nil {
 		options = &armpanngfw.GlobalRulestackClientListAppIDsOptions{
-			AppIDVersion: appIDVersionParam,
-			AppPrefix:    appPrefixParam,
-			Skip:         skipParam,
-			Top:          topParam,
+			AppIDVersion:	appIDVersionParam,
+			AppPrefix:	appPrefixParam,
+			Skip:		skipParam,
+			Top:		topParam,
 		}
 	}
 	respr, errRespr := g.srv.ListAppIDs(req.Context(), globalRulestackNameParam, options)
@@ -551,8 +551,8 @@ func (g *GlobalRulestackServerTransport) dispatchListCountries(req *http.Request
 	var options *armpanngfw.GlobalRulestackClientListCountriesOptions
 	if skipParam != nil || topParam != nil {
 		options = &armpanngfw.GlobalRulestackClientListCountriesOptions{
-			Skip: skipParam,
-			Top:  topParam,
+			Skip:	skipParam,
+			Top:	topParam,
 		}
 	}
 	respr, errRespr := g.srv.ListCountries(req.Context(), globalRulestackNameParam, options)
@@ -636,8 +636,8 @@ func (g *GlobalRulestackServerTransport) dispatchListPredefinedURLCategories(req
 	var options *armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions
 	if skipParam != nil || topParam != nil {
 		options = &armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesOptions{
-			Skip: skipParam,
-			Top:  topParam,
+			Skip:	skipParam,
+			Top:	topParam,
 		}
 	}
 	respr, errRespr := g.srv.ListPredefinedURLCategories(req.Context(), globalRulestackNameParam, options)
@@ -702,8 +702,8 @@ func (g *GlobalRulestackServerTransport) dispatchListSecurityServices(req *http.
 	var options *armpanngfw.GlobalRulestackClientListSecurityServicesOptions
 	if skipParam != nil || topParam != nil {
 		options = &armpanngfw.GlobalRulestackClientListSecurityServicesOptions{
-			Skip: skipParam,
-			Top:  topParam,
+			Skip:	skipParam,
+			Top:	topParam,
 		}
 	}
 	respr, errRespr := g.srv.ListSecurityServices(req.Context(), globalRulestackNameParam, typeParamParam, options)

@@ -25,12 +25,12 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 	}
 	poller, err := clientFactory.NewPostRulesClient().BeginCreateOrUpdate(ctx, "lrs1", "1", armpanngfw.PostRulesResource{
 		Properties: &armpanngfw.RuleEntry{
-			Description: to.Ptr("description of post rule"),
-			ActionType:  to.Ptr(armpanngfw.ActionEnumAllow),
+			Description:	to.Ptr("description of post rule"),
+			ActionType:	to.Ptr(armpanngfw.ActionEnumAllow),
 			Applications: []*string{
 				to.Ptr("app1"),
 			},
-			AuditComment: to.Ptr("example comment"),
+			AuditComment:	to.Ptr("example comment"),
 			Category: &armpanngfw.Category{
 				Feeds: []*string{
 					to.Ptr("feed"),
@@ -39,7 +39,7 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 					to.Ptr("https://microsoft.com"),
 				},
 			},
-			DecryptionRuleType: to.Ptr(armpanngfw.DecryptionRuleTypeEnumSSLOutboundInspection),
+			DecryptionRuleType:	to.Ptr(armpanngfw.DecryptionRuleTypeEnumSSLOutboundInspection),
 			Destination: &armpanngfw.DestinationAddr{
 				Cidrs: []*string{
 					to.Ptr("1.0.0.1/10"),
@@ -57,17 +57,17 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 					to.Ptr("PL1"),
 				},
 			},
-			EnableLogging:                to.Ptr(armpanngfw.StateEnumDISABLED),
-			Etag:                         to.Ptr("c18e6eef-ba3e-49ee-8a85-2b36c863a9d0"),
-			InboundInspectionCertificate: to.Ptr("cert1"),
-			NegateDestination:            to.Ptr(armpanngfw.BooleanEnumTRUE),
-			NegateSource:                 to.Ptr(armpanngfw.BooleanEnumTRUE),
+			EnableLogging:			to.Ptr(armpanngfw.StateEnumDISABLED),
+			Etag:				to.Ptr("c18e6eef-ba3e-49ee-8a85-2b36c863a9d0"),
+			InboundInspectionCertificate:	to.Ptr("cert1"),
+			NegateDestination:		to.Ptr(armpanngfw.BooleanEnumTRUE),
+			NegateSource:			to.Ptr(armpanngfw.BooleanEnumTRUE),
 			ProtocolPortList: []*string{
 				to.Ptr("80"),
 			},
-			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateAccepted),
-			RuleName:          to.Ptr("postRule1"),
-			RuleState:         to.Ptr(armpanngfw.StateEnumDISABLED),
+			ProvisioningState:	to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			RuleName:		to.Ptr("postRule1"),
+			RuleState:		to.Ptr(armpanngfw.StateEnumDISABLED),
 			Source: &armpanngfw.SourceAddr{
 				Cidrs: []*string{
 					to.Ptr("1.0.0.1/10"),
@@ -84,11 +84,11 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 			},
 			Tags: []*armpanngfw.TagInfo{
 				{
-					Key:   to.Ptr("keyName"),
-					Value: to.Ptr("value"),
+					Key:	to.Ptr("keyName"),
+					Value:	to.Ptr("value"),
 				},
 			},
-			Protocol: to.Ptr("HTTP"),
+			Protocol:	to.Ptr("HTTP"),
 		},
 	}, nil)
 	if err != nil {

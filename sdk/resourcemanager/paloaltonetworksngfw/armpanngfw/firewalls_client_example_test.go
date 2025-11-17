@@ -25,73 +25,73 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	}
 	poller, err := clientFactory.NewFirewallsClient().BeginCreateOrUpdate(ctx, "firewall-rg", "firewall1", armpanngfw.FirewallResource{
 		Identity: &armpanngfw.AzureResourceManagerManagedIdentityProperties{
-			Type: to.Ptr(armpanngfw.ManagedIdentityTypeNone),
+			Type:	to.Ptr(armpanngfw.ManagedIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpanngfw.AzureResourceManagerUserAssignedIdentity{
-				"key16": {
-					ClientID:    to.Ptr("aaaa"),
-					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
+				"key16": &armpanngfw.AzureResourceManagerUserAssignedIdentity{
+					ClientID:	to.Ptr("aaaa"),
+					PrincipalID:	to.Ptr("aaaaaaaaaaaaaaa"),
 				},
 			},
 		},
-		Location: to.Ptr("eastus"),
+		Location:	to.Ptr("eastus"),
 		Properties: &armpanngfw.FirewallDeploymentProperties{
 			AssociatedRulestack: &armpanngfw.RulestackDetails{
-				Location:    to.Ptr("eastus"),
-				ResourceID:  to.Ptr("lrs1"),
-				RulestackID: to.Ptr("PANRSID"),
+				Location:	to.Ptr("eastus"),
+				ResourceID:	to.Ptr("lrs1"),
+				RulestackID:	to.Ptr("PANRSID"),
 			},
 			DNSSettings: &armpanngfw.DNSSettings{
 				DNSServers: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.111"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
+						Address:	to.Ptr("20.22.92.111"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
 					},
 				},
-				EnableDNSProxy: to.Ptr(armpanngfw.DNSProxyDISABLED),
-				EnabledDNSType: to.Ptr(armpanngfw.EnabledDNSTypeCUSTOM),
+				EnableDNSProxy:	to.Ptr(armpanngfw.DNSProxyDISABLED),
+				EnabledDNSType:	to.Ptr(armpanngfw.EnabledDNSTypeCUSTOM),
 			},
 			FrontEndSettings: []*armpanngfw.FrontendSetting{
 				{
-					Name: to.Ptr("frontendsetting11"),
+					Name:	to.Ptr("frontendsetting11"),
 					BackendConfiguration: &armpanngfw.EndpointConfiguration{
 						Address: &armpanngfw.IPAddress{
-							Address:    to.Ptr("20.22.32.136"),
-							ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2"),
+							Address:	to.Ptr("20.22.32.136"),
+							ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2"),
 						},
-						Port: to.Ptr("80"),
+						Port:	to.Ptr("80"),
 					},
 					FrontendConfiguration: &armpanngfw.EndpointConfiguration{
 						Address: &armpanngfw.IPAddress{
-							Address:    to.Ptr("20.22.91.251"),
-							ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp1"),
+							Address:	to.Ptr("20.22.91.251"),
+							ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp1"),
 						},
-						Port: to.Ptr("80"),
+						Port:	to.Ptr("80"),
 					},
-					Protocol: to.Ptr(armpanngfw.ProtocolTypeTCP),
+					Protocol:	to.Ptr(armpanngfw.ProtocolTypeTCP),
 				},
 			},
-			IsPanoramaManaged: to.Ptr(armpanngfw.BooleanEnumTRUE),
+			IsPanoramaManaged:	to.Ptr(armpanngfw.BooleanEnumTRUE),
 			MarketplaceDetails: &armpanngfw.MarketplaceDetails{
-				MarketplaceSubscriptionStatus: to.Ptr(armpanngfw.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-				OfferID:                       to.Ptr("liftr-pan-ame-test"),
-				PublisherID:                   to.Ptr("isvtestuklegacy"),
+				MarketplaceSubscriptionStatus:	to.Ptr(armpanngfw.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+				OfferID:			to.Ptr("liftr-pan-ame-test"),
+				PublisherID:			to.Ptr("isvtestuklegacy"),
 			},
 			NetworkProfile: &armpanngfw.NetworkProfile{
 				EgressNatIP: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.111"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
+						Address:	to.Ptr("20.22.92.111"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
 					},
 				},
-				EnableEgressNat: to.Ptr(armpanngfw.EgressNatENABLED),
-				NetworkType:     to.Ptr(armpanngfw.NetworkTypeVNET),
+				EnableEgressNat:	to.Ptr(armpanngfw.EgressNatENABLED),
+				NetworkType:		to.Ptr(armpanngfw.NetworkTypeVNET),
 				PrivateSourceNatRulesDestination: []*string{
 					to.Ptr("20.22.92.11"),
 				},
 				PublicIPs: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.11"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
+						Address:	to.Ptr("20.22.92.11"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 					},
 				},
 				TrustedRanges: []*string{
@@ -99,52 +99,52 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 				},
 				VnetConfiguration: &armpanngfw.VnetConfiguration{
 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-						Address:    to.Ptr("10.1.1.0/24"),
-						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						Address:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 					TrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
 					},
 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 					Vnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.0.0/16"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+						AddressSpace:	to.Ptr("10.1.0.0/16"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
 					},
 				},
 				VwanConfiguration: &armpanngfw.VwanConfiguration{
 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-						Address:    to.Ptr("10.1.1.0/24"),
-						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						Address:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
-					NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+					NetworkVirtualApplianceID:	to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
 					TrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
 					},
 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 					VHub: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 				},
 			},
-			PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+			PanEtag:	to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
 			PanoramaConfig: &armpanngfw.PanoramaConfig{
 				ConfigString: to.Ptr("bas64EncodedString"),
 			},
 			PlanData: &armpanngfw.PlanData{
-				BillingCycle: to.Ptr(armpanngfw.BillingCycleMONTHLY),
-				PlanID:       to.Ptr("liftrpantestplan"),
-				UsageType:    to.Ptr(armpanngfw.UsageTypePAYG),
+				BillingCycle:	to.Ptr(armpanngfw.BillingCycleMONTHLY),
+				PlanID:		to.Ptr("liftrpantestplan"),
+				UsageType:	to.Ptr(armpanngfw.UsageTypePAYG),
 			},
-			ProvisioningState: to.Ptr(armpanngfw.ProvisioningStateAccepted),
+			ProvisioningState:	to.Ptr(armpanngfw.ProvisioningStateAccepted),
 		},
 		Tags: map[string]*string{
 			"tagName": to.Ptr("value"),
@@ -325,26 +325,26 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSe
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewFirewallsClient().BeginCreateOrUpdate(ctx, "firewall-rg", "firewall1", armpanngfw.FirewallResource{
-		Location: to.Ptr("eastus"),
+		Location:	to.Ptr("eastus"),
 		Properties: &armpanngfw.FirewallDeploymentProperties{
-			DNSSettings: &armpanngfw.DNSSettings{},
+			DNSSettings:	&armpanngfw.DNSSettings{},
 			MarketplaceDetails: &armpanngfw.MarketplaceDetails{
-				OfferID:     to.Ptr("liftr-pan-ame-test"),
-				PublisherID: to.Ptr("isvtestuklegacy"),
+				OfferID:	to.Ptr("liftr-pan-ame-test"),
+				PublisherID:	to.Ptr("isvtestuklegacy"),
 			},
 			NetworkProfile: &armpanngfw.NetworkProfile{
-				EnableEgressNat: to.Ptr(armpanngfw.EgressNatENABLED),
-				NetworkType:     to.Ptr(armpanngfw.NetworkTypeVNET),
+				EnableEgressNat:	to.Ptr(armpanngfw.EgressNatENABLED),
+				NetworkType:		to.Ptr(armpanngfw.NetworkTypeVNET),
 				PublicIPs: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.11"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
+						Address:	to.Ptr("20.22.92.11"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 					},
 				},
 			},
 			PlanData: &armpanngfw.PlanData{
-				BillingCycle: to.Ptr(armpanngfw.BillingCycleMONTHLY),
-				PlanID:       to.Ptr("liftrpantestplan"),
+				BillingCycle:	to.Ptr(armpanngfw.BillingCycleMONTHLY),
+				PlanID:		to.Ptr("liftrpantestplan"),
 			},
 		},
 	}, nil)
@@ -1398,93 +1398,93 @@ func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen(
 	_, err = clientFactory.NewFirewallsClient().SaveLogProfile(ctx, "firewall-rg", "firewall1", &armpanngfw.FirewallsClientSaveLogProfileOptions{
 		LogSettings: &armpanngfw.LogSettings{
 			ApplicationInsights: &armpanngfw.ApplicationInsights{
-				ID:  to.Ptr("aaaaaaaaaaaaaaaa"),
-				Key: to.Ptr("aaaaaaaaaaaaa"),
+				ID:	to.Ptr("aaaaaaaaaaaaaaaa"),
+				Key:	to.Ptr("aaaaaaaaaaaaa"),
 			},
 			CommonDestination: &armpanngfw.LogDestination{
 				EventHubConfigurations: &armpanngfw.EventHub{
-					Name:           to.Ptr("aaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaa"),
-					NameSpace:      to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-					PolicyName:     to.Ptr("aaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaaa"),
+					Name:		to.Ptr("aaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaa"),
+					NameSpace:	to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+					PolicyName:	to.Ptr("aaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaa"),
 				},
 				MonitorConfigurations: &armpanngfw.MonitorLog{
-					ID:             to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-					PrimaryKey:     to.Ptr("aaaaaaaaaaaaa"),
-					SecondaryKey:   to.Ptr("a"),
-					SubscriptionID: to.Ptr("aaaaaaaaaaaaa"),
-					Workspace:      to.Ptr("aaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+					PrimaryKey:	to.Ptr("aaaaaaaaaaaaa"),
+					SecondaryKey:	to.Ptr("a"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaaaaa"),
+					Workspace:	to.Ptr("aaaaaaaaaaa"),
 				},
 				StorageConfigurations: &armpanngfw.StorageAccount{
-					AccountName:    to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaa"),
+					AccountName:	to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaa"),
 				},
 			},
 			DecryptLogDestination: &armpanngfw.LogDestination{
 				EventHubConfigurations: &armpanngfw.EventHub{
-					Name:           to.Ptr("aaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaa"),
-					NameSpace:      to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-					PolicyName:     to.Ptr("aaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaaa"),
+					Name:		to.Ptr("aaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaa"),
+					NameSpace:	to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+					PolicyName:	to.Ptr("aaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaa"),
 				},
 				MonitorConfigurations: &armpanngfw.MonitorLog{
-					ID:             to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-					PrimaryKey:     to.Ptr("aaaaaaaaaaaaa"),
-					SecondaryKey:   to.Ptr("a"),
-					SubscriptionID: to.Ptr("aaaaaaaaaaaaa"),
-					Workspace:      to.Ptr("aaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+					PrimaryKey:	to.Ptr("aaaaaaaaaaaaa"),
+					SecondaryKey:	to.Ptr("a"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaaaaa"),
+					Workspace:	to.Ptr("aaaaaaaaaaa"),
 				},
 				StorageConfigurations: &armpanngfw.StorageAccount{
-					AccountName:    to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaa"),
+					AccountName:	to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaa"),
 				},
 			},
-			LogOption: to.Ptr(armpanngfw.LogOptionSAMEDESTINATION),
-			LogType:   to.Ptr(armpanngfw.LogTypeTRAFFIC),
+			LogOption:	to.Ptr(armpanngfw.LogOptionSAMEDESTINATION),
+			LogType:	to.Ptr(armpanngfw.LogTypeTRAFFIC),
 			ThreatLogDestination: &armpanngfw.LogDestination{
 				EventHubConfigurations: &armpanngfw.EventHub{
-					Name:           to.Ptr("aaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaa"),
-					NameSpace:      to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-					PolicyName:     to.Ptr("aaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaaa"),
+					Name:		to.Ptr("aaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaa"),
+					NameSpace:	to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+					PolicyName:	to.Ptr("aaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaa"),
 				},
 				MonitorConfigurations: &armpanngfw.MonitorLog{
-					ID:             to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-					PrimaryKey:     to.Ptr("aaaaaaaaaaaaa"),
-					SecondaryKey:   to.Ptr("a"),
-					SubscriptionID: to.Ptr("aaaaaaaaaaaaa"),
-					Workspace:      to.Ptr("aaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+					PrimaryKey:	to.Ptr("aaaaaaaaaaaaa"),
+					SecondaryKey:	to.Ptr("a"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaaaaa"),
+					Workspace:	to.Ptr("aaaaaaaaaaa"),
 				},
 				StorageConfigurations: &armpanngfw.StorageAccount{
-					AccountName:    to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaa"),
+					AccountName:	to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaa"),
 				},
 			},
 			TrafficLogDestination: &armpanngfw.LogDestination{
 				EventHubConfigurations: &armpanngfw.EventHub{
-					Name:           to.Ptr("aaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaa"),
-					NameSpace:      to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
-					PolicyName:     to.Ptr("aaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaaa"),
+					Name:		to.Ptr("aaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaa"),
+					NameSpace:	to.Ptr("aaaaaaaaaaaaaaaaaaaaa"),
+					PolicyName:	to.Ptr("aaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaa"),
 				},
 				MonitorConfigurations: &armpanngfw.MonitorLog{
-					ID:             to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-					PrimaryKey:     to.Ptr("aaaaaaaaaaaaa"),
-					SecondaryKey:   to.Ptr("a"),
-					SubscriptionID: to.Ptr("aaaaaaaaaaaaa"),
-					Workspace:      to.Ptr("aaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaaaaaa"),
+					PrimaryKey:	to.Ptr("aaaaaaaaaaaaa"),
+					SecondaryKey:	to.Ptr("a"),
+					SubscriptionID:	to.Ptr("aaaaaaaaaaaaa"),
+					Workspace:	to.Ptr("aaaaaaaaaaa"),
 				},
 				StorageConfigurations: &armpanngfw.StorageAccount{
-					AccountName:    to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-					ID:             to.Ptr("aaaaaaaaaaaaaaa"),
-					SubscriptionID: to.Ptr("aaaaaaaaa"),
+					AccountName:	to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
+					ID:		to.Ptr("aaaaaaaaaaaaaaa"),
+					SubscriptionID:	to.Ptr("aaaaaaaaa"),
 				},
 			},
 		}})
@@ -1523,72 +1523,72 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	}
 	res, err := clientFactory.NewFirewallsClient().Update(ctx, "firewall-rg", "firewall1", armpanngfw.FirewallResourceUpdate{
 		Identity: &armpanngfw.AzureResourceManagerManagedIdentityProperties{
-			Type: to.Ptr(armpanngfw.ManagedIdentityTypeNone),
+			Type:	to.Ptr(armpanngfw.ManagedIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armpanngfw.AzureResourceManagerUserAssignedIdentity{
-				"key16": {
-					ClientID:    to.Ptr("aaaa"),
-					PrincipalID: to.Ptr("aaaaaaaaaaaaaaa"),
+				"key16": &armpanngfw.AzureResourceManagerUserAssignedIdentity{
+					ClientID:	to.Ptr("aaaa"),
+					PrincipalID:	to.Ptr("aaaaaaaaaaaaaaa"),
 				},
 			},
 		},
 		Properties: &armpanngfw.FirewallResourceUpdateProperties{
 			AssociatedRulestack: &armpanngfw.RulestackDetails{
-				Location:    to.Ptr("eastus"),
-				ResourceID:  to.Ptr("aaaaaaaaaa"),
-				RulestackID: to.Ptr("aaaaaaaaaaaaaaaa"),
+				Location:	to.Ptr("eastus"),
+				ResourceID:	to.Ptr("aaaaaaaaaa"),
+				RulestackID:	to.Ptr("aaaaaaaaaaaaaaaa"),
 			},
 			DNSSettings: &armpanngfw.DNSSettings{
 				DNSServers: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.111"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
+						Address:	to.Ptr("20.22.92.111"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
 					},
 				},
-				EnableDNSProxy: to.Ptr(armpanngfw.DNSProxyDISABLED),
-				EnabledDNSType: to.Ptr(armpanngfw.EnabledDNSTypeCUSTOM),
+				EnableDNSProxy:	to.Ptr(armpanngfw.DNSProxyDISABLED),
+				EnabledDNSType:	to.Ptr(armpanngfw.EnabledDNSTypeCUSTOM),
 			},
 			FrontEndSettings: []*armpanngfw.FrontendSetting{
 				{
-					Name: to.Ptr("frontendsetting11"),
+					Name:	to.Ptr("frontendsetting11"),
 					BackendConfiguration: &armpanngfw.EndpointConfiguration{
 						Address: &armpanngfw.IPAddress{
-							Address:    to.Ptr("20.22.32.136"),
-							ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2"),
+							Address:	to.Ptr("20.22.32.136"),
+							ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2"),
 						},
-						Port: to.Ptr("80"),
+						Port:	to.Ptr("80"),
 					},
 					FrontendConfiguration: &armpanngfw.EndpointConfiguration{
 						Address: &armpanngfw.IPAddress{
-							Address:    to.Ptr("20.22.91.251"),
-							ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp1"),
+							Address:	to.Ptr("20.22.91.251"),
+							ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp1"),
 						},
-						Port: to.Ptr("80"),
+						Port:	to.Ptr("80"),
 					},
-					Protocol: to.Ptr(armpanngfw.ProtocolTypeTCP),
+					Protocol:	to.Ptr(armpanngfw.ProtocolTypeTCP),
 				},
 			},
-			IsPanoramaManaged: to.Ptr(armpanngfw.BooleanEnumTRUE),
+			IsPanoramaManaged:	to.Ptr(armpanngfw.BooleanEnumTRUE),
 			MarketplaceDetails: &armpanngfw.MarketplaceDetails{
-				MarketplaceSubscriptionStatus: to.Ptr(armpanngfw.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-				OfferID:                       to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-				PublisherID:                   to.Ptr("aaaa"),
+				MarketplaceSubscriptionStatus:	to.Ptr(armpanngfw.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+				OfferID:			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+				PublisherID:			to.Ptr("aaaa"),
 			},
 			NetworkProfile: &armpanngfw.NetworkProfile{
 				EgressNatIP: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.111"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
+						Address:	to.Ptr("20.22.92.111"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-egressNatIp1"),
 					},
 				},
-				EnableEgressNat: to.Ptr(armpanngfw.EgressNatENABLED),
-				NetworkType:     to.Ptr(armpanngfw.NetworkTypeVNET),
+				EnableEgressNat:	to.Ptr(armpanngfw.EgressNatENABLED),
+				NetworkType:		to.Ptr(armpanngfw.NetworkTypeVNET),
 				PrivateSourceNatRulesDestination: []*string{
 					to.Ptr("20.22.92.11"),
 				},
 				PublicIPs: []*armpanngfw.IPAddress{
 					{
-						Address:    to.Ptr("20.22.92.11"),
-						ResourceID: to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
+						Address:	to.Ptr("20.22.92.11"),
+						ResourceID:	to.Ptr("/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-PublicIp1"),
 					},
 				},
 				TrustedRanges: []*string{
@@ -1596,50 +1596,50 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 				},
 				VnetConfiguration: &armpanngfw.VnetConfiguration{
 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-						Address:    to.Ptr("10.1.1.0/24"),
-						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						Address:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 					TrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
 					},
 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 					Vnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.0.0/16"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
+						AddressSpace:	to.Ptr("10.1.0.0/16"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet"),
 					},
 				},
 				VwanConfiguration: &armpanngfw.VwanConfiguration{
 					IPOfTrustSubnetForUdr: &armpanngfw.IPAddress{
-						Address:    to.Ptr("10.1.1.0/24"),
-						ResourceID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						Address:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
-					NetworkVirtualApplianceID: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+					NetworkVirtualApplianceID:	to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
 					TrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-trust-subnet"),
 					},
 					UnTrustSubnet: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 					VHub: &armpanngfw.IPAddressSpace{
-						AddressSpace: to.Ptr("10.1.1.0/24"),
-						ResourceID:   to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
+						AddressSpace:	to.Ptr("10.1.1.0/24"),
+						ResourceID:	to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/os-liftr-integration/providers/Microsoft.Network/virtualNetworks/os-liftr-integration-vnet/subnets/os-liftr-integration-untrust-subnet"),
 					},
 				},
 			},
-			PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+			PanEtag:	to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
 			PanoramaConfig: &armpanngfw.PanoramaConfig{
 				ConfigString: to.Ptr("bas64EncodedString"),
 			},
 			PlanData: &armpanngfw.PlanData{
-				BillingCycle: to.Ptr(armpanngfw.BillingCycleWEEKLY),
-				PlanID:       to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-				UsageType:    to.Ptr(armpanngfw.UsageTypePAYG),
+				BillingCycle:	to.Ptr(armpanngfw.BillingCycleWEEKLY),
+				PlanID:		to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+				UsageType:	to.Ptr(armpanngfw.UsageTypePAYG),
 			},
 		},
 		Tags: map[string]*string{

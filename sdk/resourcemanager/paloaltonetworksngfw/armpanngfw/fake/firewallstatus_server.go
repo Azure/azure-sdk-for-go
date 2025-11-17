@@ -22,11 +22,11 @@ import (
 type FirewallStatusServer struct {
 	// Get is the fake for method FirewallStatusClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallStatusClientGetOptions) (resp azfake.Responder[armpanngfw.FirewallStatusClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, firewallName string, options *armpanngfw.FirewallStatusClientGetOptions) (resp azfake.Responder[armpanngfw.FirewallStatusClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByFirewallsPager is the fake for method FirewallStatusClient.NewListByFirewallsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByFirewallsPager func(resourceGroupName string, firewallName string, options *armpanngfw.FirewallStatusClientListByFirewallsOptions) (resp azfake.PagerResponder[armpanngfw.FirewallStatusClientListByFirewallsResponse])
+	NewListByFirewallsPager	func(resourceGroupName string, firewallName string, options *armpanngfw.FirewallStatusClientListByFirewallsOptions) (resp azfake.PagerResponder[armpanngfw.FirewallStatusClientListByFirewallsResponse])
 }
 
 // NewFirewallStatusServerTransport creates a new instance of FirewallStatusServerTransport with the provided implementation.
@@ -34,16 +34,16 @@ type FirewallStatusServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewFirewallStatusServerTransport(srv *FirewallStatusServer) *FirewallStatusServerTransport {
 	return &FirewallStatusServerTransport{
-		srv:                     srv,
-		newListByFirewallsPager: newTracker[azfake.PagerResponder[armpanngfw.FirewallStatusClientListByFirewallsResponse]](),
+		srv:				srv,
+		newListByFirewallsPager:	newTracker[azfake.PagerResponder[armpanngfw.FirewallStatusClientListByFirewallsResponse]](),
 	}
 }
 
 // FirewallStatusServerTransport connects instances of armpanngfw.FirewallStatusClient to instances of FirewallStatusServer.
 // Don't use this type directly, use NewFirewallStatusServerTransport instead.
 type FirewallStatusServerTransport struct {
-	srv                     *FirewallStatusServer
-	newListByFirewallsPager *tracker[azfake.PagerResponder[armpanngfw.FirewallStatusClientListByFirewallsResponse]]
+	srv			*FirewallStatusServer
+	newListByFirewallsPager	*tracker[azfake.PagerResponder[armpanngfw.FirewallStatusClientListByFirewallsResponse]]
 }
 
 // Do implements the policy.Transporter interface for FirewallStatusServerTransport.

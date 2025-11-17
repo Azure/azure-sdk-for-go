@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/build"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/environment"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/generate"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/issue"
@@ -44,6 +45,7 @@ func command() *cobra.Command {
 	rootCmd.SetVersionTemplate("{{.Version}}\n")
 
 	rootCmd.AddCommand(
+		build.Command(),
 		environment.Command(),
 		generate.Command(),
 		issue.Command(),

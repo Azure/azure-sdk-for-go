@@ -172,7 +172,9 @@ func getGoModelsWithByteSliceFields(goFile string, allowed map[string]bool) ([]s
 		return nil, err
 	}
 
-	defer file.Close()
+	defer func() {
+		_ = file.Close()
+	}()
 
 	scanner := bufio.NewScanner(file)
 

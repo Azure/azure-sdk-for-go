@@ -12,7 +12,7 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 )
 
 // ContentFilterError can be extracted from an openai.Error using [ExtractContentFilterError].

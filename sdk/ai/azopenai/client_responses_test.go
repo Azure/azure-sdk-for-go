@@ -14,13 +14,13 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/responses"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/responses"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_ResponsesTextGeneration(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Assistants.Endpoint)
 	model := azureOpenAI.Assistants.Model
 
 	resp, err := client.Responses.New(
@@ -52,7 +52,7 @@ func TestClient_ResponsesTextGeneration(t *testing.T) {
 }
 
 func TestClient_ResponsesChaining(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Assistants.Endpoint)
 
 	// Disable the sanitizer for the response ID to allow chaining
 	err := recording.RemoveRegisteredSanitizers([]string{"AZSDK3430"}, getRecordingOptions(t))
@@ -104,7 +104,7 @@ func TestClient_ResponsesChaining(t *testing.T) {
 }
 
 func TestClient_ResponsesStreaming(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Assistants.Endpoint)
 	model := azureOpenAI.Assistants.Model
 
 	stream := client.Responses.NewStreaming(
@@ -122,7 +122,7 @@ func TestClient_ResponsesStreaming(t *testing.T) {
 	for stream.Next() {
 		event := stream.Current()
 		if event.Type == "response.output_text.delta" {
-			combinedOutput += event.Delta.OfString
+			combinedOutput += event.Delta
 		}
 	}
 
@@ -135,7 +135,7 @@ func TestClient_ResponsesStreaming(t *testing.T) {
 }
 
 func TestClient_ResponsesFunctionCalling(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Assistants.Endpoint)
 	model := azureOpenAI.Assistants.Model
 
 	// Disable the sanitizer for the response ID to allow chaining
@@ -215,7 +215,9 @@ func TestClient_ResponsesFunctionCalling(t *testing.T) {
 					{
 						OfFunctionCallOutput: &responses.ResponseInputItemFunctionCallOutputParam{
 							CallID: functionCallID,
-							Output: functionOutput,
+							Output: responses.ResponseInputItemFunctionCallOutputOutputUnionParam{
+								OfString: openai.String(functionOutput),
+							},
 						},
 					},
 				},
@@ -242,7 +244,7 @@ func TestClient_ResponsesFunctionCalling(t *testing.T) {
 }
 
 func TestClient_ResponsesImageInput(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Assistants.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Assistants.Endpoint)
 	model := azureOpenAI.Assistants.Model
 
 	// Load the sample image file of two deer
@@ -301,7 +303,7 @@ func TestClient_ResponsesImageInput(t *testing.T) {
 }
 
 func TestClient_ResponsesReasoning(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Reasoning.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Reasoning.Endpoint)
 	model := azureOpenAI.Reasoning.Model
 
 	// Create a response with reasoning enabled

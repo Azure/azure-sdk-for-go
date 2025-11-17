@@ -42,7 +42,7 @@ func NewBackupsClient(subscriptionID string, credential azcore.TokenCredential, 
 // BeginCreate - Create a backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -69,7 +69,7 @@ func (client *BackupsClient) BeginCreate(ctx context.Context, resourceGroupName 
 // Create - Create a backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BackupsClient) create(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body Backup, options *BackupsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsClient.BeginCreate"
@@ -119,7 +119,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -132,7 +132,7 @@ func (client *BackupsClient) createCreateRequest(ctx context.Context, resourceGr
 // BeginDelete - Delete a Backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -158,7 +158,7 @@ func (client *BackupsClient) BeginDelete(ctx context.Context, resourceGroupName 
 // Delete - Delete a Backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, options *BackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsClient.BeginDelete"
@@ -208,7 +208,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -216,7 +216,7 @@ func (client *BackupsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Get the specified Backup under Backup Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -272,7 +272,7 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClie
 // GetLatestStatus - Get the latest status of the backup for a volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -346,7 +346,7 @@ func (client *BackupsClient) getLatestStatusCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +364,7 @@ func (client *BackupsClient) getLatestStatusHandleResponse(resp *http.Response) 
 // GetVolumeLatestRestoreStatus - Get the latest status of the restore for a volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -421,7 +421,7 @@ func (client *BackupsClient) getVolumeLatestRestoreStatusCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -438,7 +438,7 @@ func (client *BackupsClient) getVolumeLatestRestoreStatusHandleResponse(resp *ht
 
 // NewListByVaultPager - List all backups Under a Backup Vault
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -493,7 +493,7 @@ func (client *BackupsClient) listByVaultCreateRequest(ctx context.Context, resou
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -511,7 +511,7 @@ func (client *BackupsClient) listByVaultHandleResponse(resp *http.Response) (Bac
 // BeginUpdate - Patch a Backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -538,7 +538,7 @@ func (client *BackupsClient) BeginUpdate(ctx context.Context, resourceGroupName 
 // Update - Patch a Backup under the Backup Vault
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BackupsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupPatch, options *BackupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsClient.BeginUpdate"
@@ -588,7 +588,7 @@ func (client *BackupsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -187,17 +187,6 @@ func ExecuteGo(dir string, args ...string) error {
 	return nil
 }
 
-func ExecuteGoFmt(dir string, args ...string) error {
-	cmd := exec.Command("gofmt", args...)
-	cmd.Dir = dir
-	combinedOutput, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
-	}
-
-	return nil
-}
-
 // execute tsp-client command
 func ExecuteTspClient(path string, args ...string) error {
 	// Use pinned tsp-client from eng/common/tsp-client instead of global npx

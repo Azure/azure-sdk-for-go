@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_ListBySubscription.json
 func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,9 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualMachinesClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewVirtualMachinesClient().NewListBySubscriptionPager(&armnetworkcloud.VirtualMachinesClientListBySubscriptionOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -63,6 +65,13 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
+		// 			Identity: &armnetworkcloud.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+		// 				UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+		// 					"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armnetworkcloud.VirtualMachineProperties{
 		// 				AdminUsername: to.Ptr("username"),
 		// 				AvailabilityZone: to.Ptr("1"),
@@ -91,7 +100,6 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		// 						MacAddress: to.Ptr("bf:1c:29:31:31:1f"),
 		// 						NetworkAttachmentName: to.Ptr("netAttachName01"),
 		// 				}},
-		// 				NetworkData: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
 		// 				PlacementHints: []*armnetworkcloud.VirtualMachinePlacementHint{
 		// 					{
 		// 						HintType: to.Ptr(armnetworkcloud.VirtualMachinePlacementHintTypeAffinity),
@@ -114,7 +122,6 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 		// 					VolumeAttachments: []*string{
 		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")},
 		// 					},
-		// 					UserData: to.Ptr("dXNlckRhdGVTYW1wbGU="),
 		// 					VMDeviceModel: to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
 		// 					VMImage: to.Ptr("myacr.azurecr.io/foobar:latest"),
 		// 					VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
@@ -129,7 +136,7 @@ func ExampleVirtualMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_ListByResourceGroup.json
 func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +147,9 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVirtualMachinesClient().NewListByResourceGroupPager("resourceGroupName", nil)
+	pager := clientFactory.NewVirtualMachinesClient().NewListByResourceGroupPager("resourceGroupName", &armnetworkcloud.VirtualMachinesClientListByResourceGroupOptions{Top: nil,
+		SkipToken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -174,6 +183,13 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		// 				Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 		// 				Type: to.Ptr("CustomLocation"),
 		// 			},
+		// 			Identity: &armnetworkcloud.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+		// 				UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+		// 					"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+		// 					},
+		// 				},
+		// 			},
 		// 			Properties: &armnetworkcloud.VirtualMachineProperties{
 		// 				AdminUsername: to.Ptr("username"),
 		// 				AvailabilityZone: to.Ptr("1"),
@@ -202,7 +218,6 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		// 						MacAddress: to.Ptr("bf:1c:29:31:31:1f"),
 		// 						NetworkAttachmentName: to.Ptr("netAttachName01"),
 		// 				}},
-		// 				NetworkData: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
 		// 				PlacementHints: []*armnetworkcloud.VirtualMachinePlacementHint{
 		// 					{
 		// 						HintType: to.Ptr(armnetworkcloud.VirtualMachinePlacementHintTypeAffinity),
@@ -225,7 +240,6 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 		// 					VolumeAttachments: []*string{
 		// 						to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")},
 		// 					},
-		// 					UserData: to.Ptr("dXNlckRhdGVTYW1wbGU="),
 		// 					VMDeviceModel: to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
 		// 					VMImage: to.Ptr("myacr.azurecr.io/foobar:latest"),
 		// 					VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
@@ -240,7 +254,7 @@ func ExampleVirtualMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Get.json
 func ExampleVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,6 +293,13 @@ func ExampleVirtualMachinesClient_Get() {
 	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
+	// 	Identity: &armnetworkcloud.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+	// 			"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armnetworkcloud.VirtualMachineProperties{
 	// 		AdminUsername: to.Ptr("username"),
 	// 		AvailabilityZone: to.Ptr("1"),
@@ -307,7 +328,6 @@ func ExampleVirtualMachinesClient_Get() {
 	// 				MacAddress: to.Ptr("bf:1c:29:31:31:1f"),
 	// 				NetworkAttachmentName: to.Ptr("netAttachName01"),
 	// 		}},
-	// 		NetworkData: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
 	// 		PlacementHints: []*armnetworkcloud.VirtualMachinePlacementHint{
 	// 			{
 	// 				HintType: to.Ptr(armnetworkcloud.VirtualMachinePlacementHintTypeAffinity),
@@ -330,7 +350,6 @@ func ExampleVirtualMachinesClient_Get() {
 	// 			VolumeAttachments: []*string{
 	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")},
 	// 			},
-	// 			UserData: to.Ptr("dXNlckRhdGVTYW1wbGU="),
 	// 			VMDeviceModel: to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
 	// 			VMImage: to.Ptr("myacr.azurecr.io/foobar:latest"),
 	// 			VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
@@ -343,7 +362,7 @@ func ExampleVirtualMachinesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Create.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,6 +383,12 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 			Type: to.Ptr("CustomLocation"),
 		},
+		Identity: &armnetworkcloud.ManagedServiceIdentity{
+			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": {},
+			},
+		},
 		Properties: &armnetworkcloud.VirtualMachineProperties{
 			AdminUsername: to.Ptr("username"),
 			BootMethod:    to.Ptr(armnetworkcloud.VirtualMachineBootMethodUEFI),
@@ -382,7 +407,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 					IPv6Address:           to.Ptr("2001:0db8:0000:0000:0000:0000:0000:0000"),
 					NetworkAttachmentName: to.Ptr("netAttachName01"),
 				}},
-			NetworkData: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
+			NetworkDataContent: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
 			PlacementHints: []*armnetworkcloud.VirtualMachinePlacementHint{
 				{
 					HintType:            to.Ptr(armnetworkcloud.VirtualMachinePlacementHintTypeAffinity),
@@ -403,9 +428,9 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 				VolumeAttachments: []*string{
 					to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")},
 			},
-			UserData:      to.Ptr("dXNlckRhdGVTYW1wbGU="),
-			VMDeviceModel: to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
-			VMImage:       to.Ptr("myacr.azurecr.io/foobar:latest"),
+			UserDataContent: to.Ptr("dXNlckRhdGVTYW1wbGU="),
+			VMDeviceModel:   to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
+			VMImage:         to.Ptr("myacr.azurecr.io/foobar:latest"),
 			VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
 				Password:    to.Ptr("{password}"),
 				RegistryURL: to.Ptr("myacr.azurecr.io"),
@@ -446,6 +471,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
+	// 	Identity: &armnetworkcloud.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+	// 			"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armnetworkcloud.VirtualMachineProperties{
 	// 		AdminUsername: to.Ptr("username"),
 	// 		AvailabilityZone: to.Ptr("1"),
@@ -474,7 +506,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 				MacAddress: to.Ptr("bf:1c:29:31:31:1f"),
 	// 				NetworkAttachmentName: to.Ptr("netAttachName01"),
 	// 		}},
-	// 		NetworkData: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
 	// 		PlacementHints: []*armnetworkcloud.VirtualMachinePlacementHint{
 	// 			{
 	// 				HintType: to.Ptr(armnetworkcloud.VirtualMachinePlacementHintTypeAffinity),
@@ -497,7 +528,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 			VolumeAttachments: []*string{
 	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")},
 	// 			},
-	// 			UserData: to.Ptr("dXNlckRhdGVTYW1wbGU="),
 	// 			VMDeviceModel: to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
 	// 			VMImage: to.Ptr("myacr.azurecr.io/foobar:latest"),
 	// 			VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
@@ -510,7 +540,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Delete.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -533,7 +563,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Patch.json
 func ExampleVirtualMachinesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -545,6 +575,12 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewVirtualMachinesClient().BeginUpdate(ctx, "resourceGroupName", "virtualMachineName", armnetworkcloud.VirtualMachinePatchParameters{
+		Identity: &armnetworkcloud.ManagedServiceIdentity{
+			Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": {},
+			},
+		},
 		Properties: &armnetworkcloud.VirtualMachinePatchProperties{
 			VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
 				Password:    to.Ptr("{password}"),
@@ -590,6 +626,13 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	// 		Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 		Type: to.Ptr("CustomLocation"),
 	// 	},
+	// 	Identity: &armnetworkcloud.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armnetworkcloud.ManagedServiceIdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armnetworkcloud.UserAssignedIdentity{
+	// 			"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": &armnetworkcloud.UserAssignedIdentity{
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armnetworkcloud.VirtualMachineProperties{
 	// 		AdminUsername: to.Ptr("username"),
 	// 		AvailabilityZone: to.Ptr("1"),
@@ -618,7 +661,6 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	// 				MacAddress: to.Ptr("bf:1c:29:31:31:1f"),
 	// 				NetworkAttachmentName: to.Ptr("netAttachName01"),
 	// 		}},
-	// 		NetworkData: to.Ptr("bmV0d29ya0RhdGVTYW1wbGU="),
 	// 		PlacementHints: []*armnetworkcloud.VirtualMachinePlacementHint{
 	// 			{
 	// 				HintType: to.Ptr(armnetworkcloud.VirtualMachinePlacementHintTypeAffinity),
@@ -641,7 +683,6 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	// 			VolumeAttachments: []*string{
 	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/volumes/volumeName")},
 	// 			},
-	// 			UserData: to.Ptr("dXNlckRhdGVTYW1wbGU="),
 	// 			VMDeviceModel: to.Ptr(armnetworkcloud.VirtualMachineDeviceModelTypeT2),
 	// 			VMImage: to.Ptr("myacr.azurecr.io/foobar:latest"),
 	// 			VMImageRepositoryCredentials: &armnetworkcloud.ImageRepositoryCredentials{
@@ -654,7 +695,32 @@ func ExampleVirtualMachinesClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_PowerOff.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_AssignRelay.json
+func ExampleVirtualMachinesClient_BeginAssignRelay() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginAssignRelay(ctx, "resourceGroupName", "virtualMachineName", &armnetworkcloud.VirtualMachinesClientBeginAssignRelayOptions{VirtualMachineAssignRelayParameters: &armnetworkcloud.VirtualMachineAssignRelayParameters{
+		MachineID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.HybridCompute/machines/machineName"),
+		RelayType: to.Ptr(armnetworkcloud.RelayTypePlatform),
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_PowerOff.json
 func ExampleVirtualMachinesClient_BeginPowerOff() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -678,7 +744,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Reimage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Reimage.json
 func ExampleVirtualMachinesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -699,7 +765,7 @@ func ExampleVirtualMachinesClient_BeginReimage() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Restart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Restart.json
 func ExampleVirtualMachinesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -720,7 +786,7 @@ func ExampleVirtualMachinesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d0d3a9b4fe0fce880fded7a617e71f84406bacbd/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-02-01/examples/VirtualMachines_Start.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1d3ac611f503e05650fb85520582b06140d2599e/specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2025-07-01-preview/examples/VirtualMachines_Start.json
 func ExampleVirtualMachinesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

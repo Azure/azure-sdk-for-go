@@ -2,9 +2,11 @@ module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/
 
 go 1.24.0
 
+toolchain go1.24.7
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.19.1
-	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.12.0
+	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.1.0
 	github.com/stretchr/testify v1.11.1

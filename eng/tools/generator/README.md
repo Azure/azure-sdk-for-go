@@ -257,6 +257,7 @@ generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `--skip-generate-example`: Skip generating examples
 - `--package-config`: Additional package configuration
 - `-t, --token`: Personal access token for GitHub operations
+- `--force-stable-version`: Force generation of stable SDK versions even when input files contain preview API versions. The tag must not contain preview when using this flag
 - `--tsp-config`: Path to TypeSpec tspconfig.yaml
 - `--tsp-option`: TypeSpec-go emit options (format: option1=value1;option2=value2)
 - `--tsp-client-option`: tsp-client options (e.g., --save-inputs, --debug)
@@ -283,6 +284,10 @@ generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs con
 # Skip branch creation and examples
 generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs compute \
   --skip-create-branch --skip-generate-example
+
+# Force stable version generation even with preview input files
+generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs network \
+  --force-stable-version
 ```
 
 ### The `refresh-v2` command

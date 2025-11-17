@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/BackupsUnderBackupVault_SingleFileRestore.json
+// Generated from example definition: 2025-09-01/BackupsUnderBackupVault_SingleFileRestore.json
 func ExampleBackupsUnderBackupVaultClient_BeginRestoreFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

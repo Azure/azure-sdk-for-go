@@ -958,7 +958,7 @@ func PossibleMeshMembershipProvisioningStateValues() []MeshMembershipProvisionin
 	}
 }
 
-// Mode - Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+// Mode - Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES')
 type Mode string
 
 const (
@@ -966,6 +966,8 @@ const (
 	ModeIPTABLES Mode = "IPTABLES"
 	// ModeIPVS - IPVS proxy mode. Must be using Kubernetes version >= 1.22.
 	ModeIPVS Mode = "IPVS"
+	// ModeNFTABLES - NFTables proxy mode. Must be using Kubernetes version >= 1.33.
+	ModeNFTABLES Mode = "NFTABLES"
 )
 
 // PossibleModeValues returns the possible values for the Mode const type.
@@ -973,6 +975,7 @@ func PossibleModeValues() []Mode {
 	return []Mode{
 		ModeIPTABLES,
 		ModeIPVS,
+		ModeNFTABLES,
 	}
 }
 
@@ -1914,8 +1917,13 @@ type WorkloadRuntime string
 const (
 	// WorkloadRuntimeKataMshvVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods (Preview).
 	// Due to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
-	// that support Nested Virtualization such as Dv3 series.
+	// that support Nested Virtualization such as Dv3 series. This naming convention will be deprecated in future releases in
+	// favor of KataVmIsolation.
 	WorkloadRuntimeKataMshvVMIsolation WorkloadRuntime = "KataMshvVmIsolation"
+	// WorkloadRuntimeKataVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods. Due
+	// to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
+	// that support Nested Virtualization such as Dv3 series.
+	WorkloadRuntimeKataVMIsolation WorkloadRuntime = "KataVmIsolation"
 	// WorkloadRuntimeOCIContainer - Nodes will use Kubelet to run standard OCI container workloads.
 	WorkloadRuntimeOCIContainer WorkloadRuntime = "OCIContainer"
 	// WorkloadRuntimeWasmWasi - Nodes will use Krustlet to run WASM workloads using the WASI provider (Preview).
@@ -1926,6 +1934,7 @@ const (
 func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
 	return []WorkloadRuntime{
 		WorkloadRuntimeKataMshvVMIsolation,
+		WorkloadRuntimeKataVMIsolation,
 		WorkloadRuntimeOCIContainer,
 		WorkloadRuntimeWasmWasi,
 	}

@@ -1,18 +1,12 @@
 # Release History
 
-## 1.5.0-beta.3 (Unreleased)
+## 1.5.0-beta.3 (2025-11-10)
 
 ### Features Added
 
 * Adjusted the query engine abstraction to support future enhancements and optimizations. See [PR 25503](https://github.com/Azure/azure-sdk-for-go/pull/25503)
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.5.0-beta.2 (2025-11-11)
+## 1.5.0-beta.2 (2025-11-03)
 
 ### Features Added
 

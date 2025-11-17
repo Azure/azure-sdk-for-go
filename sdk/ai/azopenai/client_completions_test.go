@@ -13,12 +13,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetCompletions(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	resp, err := client.Completions.New(context.Background(), openai.CompletionNewParams{
 		Prompt: openai.CompletionNewParamsPromptUnion{
@@ -58,7 +58,7 @@ func TestClient_GetCompletions(t *testing.T) {
 }
 
 func TestGetCompletionsStream(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	stream := client.Completions.NewStreaming(context.TODO(), openai.CompletionNewParams{
 		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),

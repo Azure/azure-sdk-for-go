@@ -1,5 +1,18 @@
 # Release History
 
+## 0.3.1 (2025-11-13)
+
+### Bugs Fixed
+
+- Fix wrong parsing logic for module name config for swagger with major version suffix.
+
+## 0.3.0 (2025-11-11)
+
+### Features Added
+
+- Add `build` command to build the SDK package.
+- Add back `force-stable-version` flag to `release-v2` command to support generating stable version even if input-files contains preview version.
+
 ## 0.2.2 (2025-10-14)
 
 ### Other Changes

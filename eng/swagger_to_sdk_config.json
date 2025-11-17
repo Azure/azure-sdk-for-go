@@ -30,6 +30,10 @@
   },
   "packageOptions": {
     "breakingChangeLabel": "CI-BreakingChange-Go",
-    "breakingChangesLabel": "BreakingChange-Go-Sdk"
+    "breakingChangesLabel": "BreakingChange-Go-Sdk",
+    "buildScript": {
+      "command": "generator build {packagePath}",
+      "path": ""
+    }
   }
 }

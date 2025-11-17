@@ -41,57 +41,6 @@
 - New anonymous field `Volume` in struct `VolumesClientSplitCloneFromParentResponse`
 
 
-## 8.0.0 (2025-11-13)
-### Breaking Changes
-
-- Function `*SnapshotsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, string, any, *SnapshotsClientBeginUpdateOptions)` to `(context.Context, string, string, string, string, string, SnapshotPatch, *SnapshotsClientBeginUpdateOptions)`
-- Type of `BackupStatus.RelationshipStatus` has been changed from `*RelationshipStatus` to `*VolumeBackupRelationshipStatus`
-- Type of `PoolPatchProperties.CustomThroughputMibps` has been changed from `*float32` to `*int32`
-- Type of `PoolProperties.CustomThroughputMibps` has been changed from `*float32` to `*int32`
-- Type of `ReplicationStatus.RelationshipStatus` has been changed from `*RelationshipStatus` to `*VolumeReplicationRelationshipStatus`
-- Type of `RestoreStatus.RelationshipStatus` has been changed from `*RelationshipStatus` to `*VolumeRestoreRelationshipStatus`
-- Enum `RelationshipStatus` has been removed
-
-### Features Added
-
-- New value `CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups`, `CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups` added to enum type `CheckNameResourceTypes`
-- New value `CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups`, `CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups` added to enum type `CheckQuotaNameResourceTypes`
-- New value `ProvisioningStateUpdating` added to enum type `ProvisioningState`
-- New enum type `Exclude` with values `ExcludeDeleted`, `ExcludeNone`
-- New enum type `ExternalReplicationSetupStatus` with values `ExternalReplicationSetupStatusClusterPeerPending`, `ExternalReplicationSetupStatusClusterPeerRequired`, `ExternalReplicationSetupStatusNoActionRequired`, `ExternalReplicationSetupStatusReplicationCreateRequired`, `ExternalReplicationSetupStatusVServerPeerRequired`
-- New enum type `LdapServerType` with values `LdapServerTypeActiveDirectory`, `LdapServerTypeOpenLDAP`
-- New enum type `ReplicationMirrorState` with values `ReplicationMirrorStateBroken`, `ReplicationMirrorStateMirrored`, `ReplicationMirrorStateUninitialized`
-- New enum type `VolumeBackupRelationshipStatus` with values `VolumeBackupRelationshipStatusFailed`, `VolumeBackupRelationshipStatusIdle`, `VolumeBackupRelationshipStatusTransferring`, `VolumeBackupRelationshipStatusUnknown`
-- New enum type `VolumeLanguage` with values `VolumeLanguageAr`, `VolumeLanguageArUTF8`, `VolumeLanguageC`, `VolumeLanguageCUTF8`, `VolumeLanguageCs`, `VolumeLanguageCsUTF8`, `VolumeLanguageDa`, `VolumeLanguageDaUTF8`, `VolumeLanguageDe`, `VolumeLanguageDeUTF8`, `VolumeLanguageEn`, `VolumeLanguageEnUTF8`, `VolumeLanguageEnUs`, `VolumeLanguageEnUsUTF8`, `VolumeLanguageEs`, `VolumeLanguageEsUTF8`, `VolumeLanguageFi`, `VolumeLanguageFiUTF8`, `VolumeLanguageFr`, `VolumeLanguageFrUTF8`, `VolumeLanguageHe`, `VolumeLanguageHeUTF8`, `VolumeLanguageHr`, `VolumeLanguageHrUTF8`, `VolumeLanguageHu`, `VolumeLanguageHuUTF8`, `VolumeLanguageIt`, `VolumeLanguageItUTF8`, `VolumeLanguageJa`, `VolumeLanguageJaJp932`, `VolumeLanguageJaJp932UTF8`, `VolumeLanguageJaJpPck`, `VolumeLanguageJaJpPckUTF8`, `VolumeLanguageJaJpPckV2`, `VolumeLanguageJaJpPckV2UTF8`, `VolumeLanguageJaUTF8`, `VolumeLanguageJaV1`, `VolumeLanguageJaV1UTF8`, `VolumeLanguageKo`, `VolumeLanguageKoUTF8`, `VolumeLanguageNl`, `VolumeLanguageNlUTF8`, `VolumeLanguageNo`, `VolumeLanguageNoUTF8`, `VolumeLanguagePl`, `VolumeLanguagePlUTF8`, `VolumeLanguagePt`, `VolumeLanguagePtUTF8`, `VolumeLanguageRo`, `VolumeLanguageRoUTF8`, `VolumeLanguageRu`, `VolumeLanguageRuUTF8`, `VolumeLanguageSk`, `VolumeLanguageSkUTF8`, `VolumeLanguageSl`, `VolumeLanguageSlUTF8`, `VolumeLanguageSv`, `VolumeLanguageSvUTF8`, `VolumeLanguageTr`, `VolumeLanguageTrUTF8`, `VolumeLanguageUTF8Mb4`, `VolumeLanguageZh`, `VolumeLanguageZhGbk`, `VolumeLanguageZhGbkUTF8`, `VolumeLanguageZhTw`, `VolumeLanguageZhTwBig5`, `VolumeLanguageZhTwBig5UTF8`, `VolumeLanguageZhTwUTF8`, `VolumeLanguageZhUTF8`
-- New enum type `VolumeReplicationRelationshipStatus` with values `VolumeReplicationRelationshipStatusIdle`, `VolumeReplicationRelationshipStatusTransferring`
-- New enum type `VolumeRestoreRelationshipStatus` with values `VolumeRestoreRelationshipStatusFailed`, `VolumeRestoreRelationshipStatusIdle`, `VolumeRestoreRelationshipStatusTransferring`, `VolumeRestoreRelationshipStatusUnknown`
-- New function `*ClientFactory.NewResourceQuotaLimitsAccountClient() *ResourceQuotaLimitsAccountClient`
-- New function `NewResourceQuotaLimitsAccountClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ResourceQuotaLimitsAccountClient, error)`
-- New function `*ResourceQuotaLimitsAccountClient.Get(context.Context, string, string, string, *ResourceQuotaLimitsAccountClientGetOptions) (ResourceQuotaLimitsAccountClientGetResponse, error)`
-- New function `*ResourceQuotaLimitsAccountClient.NewListPager(string, string, *ResourceQuotaLimitsAccountClientListOptions) *runtime.Pager[ResourceQuotaLimitsAccountClientListResponse]`
-- New function `*VolumesClient.BeginListQuotaReport(context.Context, string, string, string, string, *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
-- New struct `LdapConfiguration`
-- New struct `ListQuotaReportResponse`
-- New struct `ListReplicationsRequest`
-- New struct `QuotaReport`
-- New struct `SnapshotPatch`
-- New field `LdapConfiguration` in struct `AccountProperties`
-- New field `NextLink` in struct `BackupPoliciesList`
-- New field `NextLink` in struct `ListReplications`
-- New field `MirrorState`, `ReplicationCreationTime`, `ReplicationDeletionTime` in struct `Replication`
-- New field `ExternalReplicationSetupInfo`, `ExternalReplicationSetupStatus`, `MirrorState`, `RelationshipStatus` in struct `ReplicationObject`
-- New field `NextLink` in struct `SnapshotPoliciesList`
-- New field `NextLink` in struct `SnapshotPolicyVolumeList`
-- New field `NextLink` in struct `SnapshotsList`
-- New field `Usage` in struct `SubscriptionQuotaItemProperties`
-- New field `SystemData` in struct `VolumeGroupDetails`
-- New field `NextLink` in struct `VolumeGroupList`
-- New field `Language`, `LdapServerType` in struct `VolumeProperties`
-- New field `NextLink` in struct `VolumeQuotaRulesList`
-- New field `Body` in struct `VolumesClientListReplicationsOptions`
-- New anonymous field `Volume` in struct `VolumesClientSplitCloneFromParentResponse`
-
-
 ## 8.0.0-beta.2 (2025-10-20)
 ### Breaking Changes
 

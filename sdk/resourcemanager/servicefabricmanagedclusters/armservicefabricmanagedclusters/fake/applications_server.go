@@ -48,9 +48,9 @@ type ApplicationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStartRollback func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *armservicefabricmanagedclusters.ApplicationsClientBeginStartRollbackOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientStartRollbackResponse], errResp azfake.ErrorResponder)
 
-	// Update is the fake for method ApplicationsClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters armservicefabricmanagedclusters.ApplicationUpdateParameters, options *armservicefabricmanagedclusters.ApplicationsClientUpdateOptions) (resp azfake.Responder[armservicefabricmanagedclusters.ApplicationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// BeginUpdate is the fake for method ApplicationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters armservicefabricmanagedclusters.ApplicationUpdateParameters, options *armservicefabricmanagedclusters.ApplicationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateUpgrade is the fake for method ApplicationsClient.BeginUpdateUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -69,6 +69,7 @@ func NewApplicationsServerTransport(srv *ApplicationsServer) *ApplicationsServer
 		beginReadUpgrade:    newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientReadUpgradeResponse]](),
 		beginResumeUpgrade:  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientResumeUpgradeResponse]](),
 		beginStartRollback:  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientStartRollbackResponse]](),
+		beginUpdate:         newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateResponse]](),
 		beginUpdateUpgrade:  newTracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateUpgradeResponse]](),
 	}
 }
@@ -83,6 +84,7 @@ type ApplicationsServerTransport struct {
 	beginReadUpgrade    *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientReadUpgradeResponse]]
 	beginResumeUpgrade  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientResumeUpgradeResponse]]
 	beginStartRollback  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientStartRollbackResponse]]
+	beginUpdate         *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateResponse]]
 	beginUpdateUpgrade  *tracker[azfake.PollerResponder[armservicefabricmanagedclusters.ApplicationsClientUpdateUpgradeResponse]]
 }
 
@@ -123,8 +125,8 @@ func (a *ApplicationsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = a.dispatchBeginResumeUpgrade(req)
 			case "ApplicationsClient.BeginStartRollback":
 				res.resp, res.err = a.dispatchBeginStartRollback(req)
-			case "ApplicationsClient.Update":
-				res.resp, res.err = a.dispatchUpdate(req)
+			case "ApplicationsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "ApplicationsClient.BeginUpdateUpgrade":
 				res.resp, res.err = a.dispatchBeginUpdateUpgrade(req)
 			default:
@@ -472,44 +474,55 @@ func (a *ApplicationsServerTransport) dispatchBeginStartRollback(req *http.Reque
 	return resp, nil
 }
 
-func (a *ApplicationsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+func (a *ApplicationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ServiceFabric/managedClusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applications/(?P<applicationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.ApplicationUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, clusterNameParam, applicationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armservicefabricmanagedclusters.ApplicationUpdateParameters](req)
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
 	}
-	applicationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("applicationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Update(req.Context(), resourceGroupNameParam, clusterNameParam, applicationNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ApplicationResource, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

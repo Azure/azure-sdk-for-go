@@ -591,7 +591,7 @@ func (client *ApplicationsClient) startRollbackCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// Update - Updates the tags of an application resource of a given managed cluster.
+// BeginUpdate - Updates an application resource of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01-preview
@@ -599,31 +599,52 @@ func (client *ApplicationsClient) startRollbackCreateRequest(ctx context.Context
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
 //   - parameters - The application resource updated tags.
-//   - options - ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
-func (client *ApplicationsClient) Update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, options *ApplicationsClientUpdateOptions) (ApplicationsClientUpdateResponse, error) {
+//   - options - ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate
+//     method.
+func (client *ApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, options *ApplicationsClientBeginUpdateOptions) (*runtime.Poller[ApplicationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Updates an application resource of a given managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
+func (client *ApplicationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, options *ApplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ApplicationsClient.Update"
+	const operationName = "ApplicationsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
 	if err != nil {
-		return ApplicationsClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ApplicationsClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ApplicationsClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, _ *ApplicationsClientUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, _ *ApplicationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -654,15 +675,6 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	return req, nil
-}
-
-// updateHandleResponse handles the Update response.
-func (client *ApplicationsClient) updateHandleResponse(resp *http.Response) (ApplicationsClientUpdateResponse, error) {
-	result := ApplicationsClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResource); err != nil {
-		return ApplicationsClientUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdateUpgrade - Send a request to update the current application upgrade.

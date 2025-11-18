@@ -324,6 +324,7 @@ func (c ConfigTemplateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "latestVersion", c.LatestVersion)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "uniqueIdentifier", c.UniqueIdentifier)
 	return json.Marshal(objectMap)
 }
 
@@ -344,6 +345,9 @@ func (c *ConfigTemplateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "uniqueIdentifier":
+			err = unpopulate(val, "UniqueIdentifier", &c.UniqueIdentifier)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3031,6 +3035,7 @@ func (s SolutionTemplateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "latestVersion", s.LatestVersion)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "state", s.State)
+	populate(objectMap, "uniqueIdentifier", s.UniqueIdentifier)
 	return json.Marshal(objectMap)
 }
 
@@ -3060,6 +3065,9 @@ func (s *SolutionTemplateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "state":
 			err = unpopulate(val, "State", &s.State)
+			delete(rawMsg, key)
+		case "uniqueIdentifier":
+			err = unpopulate(val, "UniqueIdentifier", &s.UniqueIdentifier)
 			delete(rawMsg, key)
 		}
 		if err != nil {

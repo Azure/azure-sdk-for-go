@@ -1171,7 +1171,7 @@ func (client *NodeTypesClient) stopFaultSimulationCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// BeginUpdate - Update the configuration of a node type of a given managed cluster, only updating tags.
+// BeginUpdate - Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01-preview
@@ -1197,7 +1197,7 @@ func (client *NodeTypesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Update - Update the configuration of a node type of a given managed cluster, only updating tags.
+// Update - Update the configuration of a node type of a given managed cluster, only updating tags or capacity.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01-preview

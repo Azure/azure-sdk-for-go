@@ -976,7 +976,7 @@ func ExampleManagedClustersClient_BeginStopFaultSimulation() {
 }
 
 // Generated from example definition: 2025-06-01-preview/ManagedClusterPatchOperation_example.json
-func ExampleManagedClustersClient_Update() {
+func ExampleManagedClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -986,13 +986,17 @@ func ExampleManagedClustersClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedClustersClient().Update(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.ManagedClusterUpdateParameters{
+	poller, err := clientFactory.NewManagedClustersClient().BeginUpdate(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.ManagedClusterUpdateParameters{
 		Tags: map[string]*string{
 			"a": to.Ptr("b"),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

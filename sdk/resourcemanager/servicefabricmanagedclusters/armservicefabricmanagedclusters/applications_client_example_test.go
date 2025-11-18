@@ -39,7 +39,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 					},
 					MaxPercentUnhealthyDeployedApplications: to.Ptr[int32](0),
 					ServiceTypeHealthPolicyMap: map[string]*armservicefabricmanagedclusters.ServiceTypeHealthPolicy{
-						"service1": {
+						"service1": &armservicefabricmanagedclusters.ServiceTypeHealthPolicy{
 							MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](30),
 							MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](30),
 							MaxPercentUnhealthyServices:             to.Ptr[int32](30),
@@ -398,7 +398,7 @@ func ExampleApplicationsClient_BeginStartRollback() {
 }
 
 // Generated from example definition: 2025-06-01-preview/ApplicationPatchOperation_example.json
-func ExampleApplicationsClient_Update() {
+func ExampleApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -408,13 +408,17 @@ func ExampleApplicationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewApplicationsClient().Update(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.ApplicationUpdateParameters{
+	poller, err := clientFactory.NewApplicationsClient().BeginUpdate(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.ApplicationUpdateParameters{
 		Tags: map[string]*string{
 			"a": to.Ptr("b"),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -503,7 +507,7 @@ func ExampleApplicationsClient_BeginUpdateUpgrade() {
 				MaxPercentUnhealthyServices:             to.Ptr[int32](12),
 			},
 			ServiceTypeHealthPolicyMap: map[string]*armservicefabricmanagedclusters.RuntimeServiceTypeHealthPolicy{
-				"VotingWeb": {
+				"VotingWeb": &armservicefabricmanagedclusters.RuntimeServiceTypeHealthPolicy{
 					MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](13),
 					MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](14),
 					MaxPercentUnhealthyServices:             to.Ptr[int32](15),

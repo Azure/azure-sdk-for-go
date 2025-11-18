@@ -96,6 +96,12 @@ type ApplicationsClientBeginStartRollbackOptions struct {
 	ResumeToken string
 }
 
+// ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate method.
+type ApplicationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ApplicationsClientBeginUpdateUpgradeOptions contains the optional parameters for the ApplicationsClient.BeginUpdateUpgrade
 // method.
 type ApplicationsClientBeginUpdateUpgradeOptions struct {
@@ -110,11 +116,6 @@ type ApplicationsClientGetOptions struct {
 
 // ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.NewListPager method.
 type ApplicationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
-type ApplicationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -179,6 +180,12 @@ type ManagedClustersClientBeginStopFaultSimulationOptions struct {
 	ResumeToken string
 }
 
+// ManagedClustersClientBeginUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginUpdate method.
+type ManagedClustersClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ManagedClustersClientGetFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.GetFaultSimulation
 // method.
 type ManagedClustersClientGetFaultSimulationOptions struct {
@@ -205,11 +212,6 @@ type ManagedClustersClientListBySubscriptionOptions struct {
 // ManagedClustersClientListFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.NewListFaultSimulationPager
 // method.
 type ManagedClustersClientListFaultSimulationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedClustersClientUpdateOptions contains the optional parameters for the ManagedClustersClient.Update method.
-type ManagedClustersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

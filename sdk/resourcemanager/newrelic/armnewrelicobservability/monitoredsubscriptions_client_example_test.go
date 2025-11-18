@@ -6,9 +6,10 @@ package armnewrelicobservability_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2"
-	"log"
 )
 
 // Generated from example definition: 2025-05-01-preview/MonitoredSubscriptions_CreateOrUpdate.json
@@ -22,7 +23,7 @@ func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginCreateorUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, nil)
+	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginCreateorUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, armnewrelicobservability.MonitoredSubscriptionProperties{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -323,7 +324,7 @@ func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, nil)
+	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, armnewrelicobservability.MonitoredSubscriptionProperties{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -28,7 +28,7 @@ type WorkflowRunActionRepetitionsRequestHistoriesClient struct {
 // NewWorkflowRunActionRepetitionsRequestHistoriesClient creates a new instance of WorkflowRunActionRepetitionsRequestHistoriesClient with the specified values.
 //   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunActionRepetitionsRequestHistoriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkflowRunActionRepetitionsRequestHistoriesClient(subscriptionID string
 // Get - Gets a workflow run repetition request history.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -116,7 +116,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -133,7 +133,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) getHandleRespo
 
 // NewListPager - List a workflow run repetition request history.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -201,7 +201,7 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) listCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -57,6 +57,14 @@ type PlansServer struct {
 	// GetRouteForVnet is the fake for method PlansClient.GetRouteForVnet
 	// HTTP status codes to indicate success: http.StatusOK
 	GetRouteForVnet func(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *armappservice.PlansClientGetRouteForVnetOptions) (resp azfake.Responder[armappservice.PlansClientGetRouteForVnetResponse], errResp azfake.ErrorResponder)
+
+	// GetServerFarmInstanceDetails is the fake for method PlansClient.GetServerFarmInstanceDetails
+	// HTTP status codes to indicate success: http.StatusOK
+	GetServerFarmInstanceDetails func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientGetServerFarmInstanceDetailsOptions) (resp azfake.Responder[armappservice.PlansClientGetServerFarmInstanceDetailsResponse], errResp azfake.ErrorResponder)
+
+	// GetServerFarmRdpPassword is the fake for method PlansClient.GetServerFarmRdpPassword
+	// HTTP status codes to indicate success: http.StatusOK
+	GetServerFarmRdpPassword func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientGetServerFarmRdpPasswordOptions) (resp azfake.Responder[armappservice.PlansClientGetServerFarmRdpPasswordResponse], errResp azfake.ErrorResponder)
 
 	// GetServerFarmSKUs is the fake for method PlansClient.GetServerFarmSKUs
 	// HTTP status codes to indicate success: http.StatusOK
@@ -113,6 +121,10 @@ type PlansServer struct {
 	// RebootWorker is the fake for method PlansClient.RebootWorker
 	// HTTP status codes to indicate success: http.StatusNoContent
 	RebootWorker func(ctx context.Context, resourceGroupName string, name string, workerName string, options *armappservice.PlansClientRebootWorkerOptions) (resp azfake.Responder[armappservice.PlansClientRebootWorkerResponse], errResp azfake.ErrorResponder)
+
+	// RecycleManagedInstanceWorker is the fake for method PlansClient.RecycleManagedInstanceWorker
+	// HTTP status codes to indicate success: http.StatusOK
+	RecycleManagedInstanceWorker func(ctx context.Context, resourceGroupName string, name string, workerName string, options *armappservice.PlansClientRecycleManagedInstanceWorkerOptions) (resp azfake.Responder[armappservice.PlansClientRecycleManagedInstanceWorkerResponse], errResp azfake.ErrorResponder)
 
 	// RestartWebApps is the fake for method PlansClient.RestartWebApps
 	// HTTP status codes to indicate success: http.StatusNoContent
@@ -201,6 +213,10 @@ func (p *PlansServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = p.dispatchGetHybridConnectionPlanLimit(req)
 			case "PlansClient.GetRouteForVnet":
 				res.resp, res.err = p.dispatchGetRouteForVnet(req)
+			case "PlansClient.GetServerFarmInstanceDetails":
+				res.resp, res.err = p.dispatchGetServerFarmInstanceDetails(req)
+			case "PlansClient.GetServerFarmRdpPassword":
+				res.resp, res.err = p.dispatchGetServerFarmRdpPassword(req)
 			case "PlansClient.GetServerFarmSKUs":
 				res.resp, res.err = p.dispatchGetServerFarmSKUs(req)
 			case "PlansClient.GetVnetFromServerFarm":
@@ -229,6 +245,8 @@ func (p *PlansServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = p.dispatchNewListWebAppsByHybridConnectionPager(req)
 			case "PlansClient.RebootWorker":
 				res.resp, res.err = p.dispatchRebootWorker(req)
+			case "PlansClient.RecycleManagedInstanceWorker":
+				res.resp, res.err = p.dispatchRecycleManagedInstanceWorker(req)
 			case "PlansClient.RestartWebApps":
 				res.resp, res.err = p.dispatchRestartWebApps(req)
 			case "PlansClient.Update":
@@ -265,7 +283,7 @@ func (p *PlansServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armappservice.Plan](req)
@@ -311,7 +329,7 @@ func (p *PlansServerTransport) dispatchCreateOrUpdateVnetRoute(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.VnetRoute](req)
@@ -356,7 +374,7 @@ func (p *PlansServerTransport) dispatchDelete(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -389,7 +407,7 @@ func (p *PlansServerTransport) dispatchDeleteHybridConnection(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -430,7 +448,7 @@ func (p *PlansServerTransport) dispatchDeleteVnetRoute(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -471,7 +489,7 @@ func (p *PlansServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -504,7 +522,7 @@ func (p *PlansServerTransport) dispatchGetHybridConnection(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -545,7 +563,7 @@ func (p *PlansServerTransport) dispatchGetHybridConnectionPlanLimit(req *http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionPlanLimits/limit`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -578,7 +596,7 @@ func (p *PlansServerTransport) dispatchGetRouteForVnet(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -612,6 +630,72 @@ func (p *PlansServerTransport) dispatchGetRouteForVnet(req *http.Request) (*http
 	return resp, nil
 }
 
+func (p *PlansServerTransport) dispatchGetServerFarmInstanceDetails(req *http.Request) (*http.Response, error) {
+	if p.srv.GetServerFarmInstanceDetails == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmInstanceDetails not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listinstances`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GetServerFarmInstanceDetails(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerFarmInstanceDetails, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PlansServerTransport) dispatchGetServerFarmRdpPassword(req *http.Request) (*http.Response, error) {
+	if p.srv.GetServerFarmRdpPassword == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmRdpPassword not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getrdppassword`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.GetServerFarmRdpPassword(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerFarmRdpDetails, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PlansServerTransport) dispatchGetServerFarmSKUs(req *http.Request) (*http.Response, error) {
 	if p.srv.GetServerFarmSKUs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmSKUs not implemented")}
@@ -619,7 +703,7 @@ func (p *PlansServerTransport) dispatchGetServerFarmSKUs(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -652,7 +736,7 @@ func (p *PlansServerTransport) dispatchGetVnetFromServerFarm(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -689,7 +773,7 @@ func (p *PlansServerTransport) dispatchGetVnetGateway(req *http.Request) (*http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -732,7 +816,7 @@ func (p *PlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -780,7 +864,7 @@ func (p *PlansServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -815,7 +899,7 @@ func (p *PlansServerTransport) dispatchListCapabilities(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -848,7 +932,7 @@ func (p *PlansServerTransport) dispatchListHybridConnectionKeys(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -891,7 +975,7 @@ func (p *PlansServerTransport) dispatchNewListHybridConnectionsPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionRelays`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -930,7 +1014,7 @@ func (p *PlansServerTransport) dispatchListRoutesForVnet(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -969,7 +1053,7 @@ func (p *PlansServerTransport) dispatchNewListUsagesPager(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1020,7 +1104,7 @@ func (p *PlansServerTransport) dispatchListVnets(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1055,7 +1139,7 @@ func (p *PlansServerTransport) dispatchNewListWebAppsPager(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1120,7 +1204,7 @@ func (p *PlansServerTransport) dispatchNewListWebAppsByHybridConnectionPager(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1167,7 +1251,7 @@ func (p *PlansServerTransport) dispatchRebootWorker(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workers/(?P<workerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reboot`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -1197,6 +1281,43 @@ func (p *PlansServerTransport) dispatchRebootWorker(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (p *PlansServerTransport) dispatchRecycleManagedInstanceWorker(req *http.Request) (*http.Response, error) {
+	if p.srv.RecycleManagedInstanceWorker == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RecycleManagedInstanceWorker not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workers/(?P<workerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recycleinstance`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	workerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.RecycleManagedInstanceWorker(req.Context(), resourceGroupNameParam, nameParam, workerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Operation, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PlansServerTransport) dispatchRestartWebApps(req *http.Request) (*http.Response, error) {
 	if p.srv.RestartWebApps == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RestartWebApps not implemented")}
@@ -1204,7 +1325,7 @@ func (p *PlansServerTransport) dispatchRestartWebApps(req *http.Request) (*http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restartSites`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -1252,7 +1373,7 @@ func (p *PlansServerTransport) dispatchUpdate(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.PlanPatchResource](req)
@@ -1289,7 +1410,7 @@ func (p *PlansServerTransport) dispatchUpdateVnetGateway(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.VnetGateway](req)
@@ -1334,7 +1455,7 @@ func (p *PlansServerTransport) dispatchUpdateVnetRoute(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.VnetRoute](req)

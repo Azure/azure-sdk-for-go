@@ -22,23 +22,23 @@ import (
 type TagRulesServer struct {
 	// BeginCreateOrUpdate is the fake for method TagRulesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource armnewrelicobservability.TagRule, options *armnewrelicobservability.TagRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.TagRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource armnewrelicobservability.TagRule, options *armnewrelicobservability.TagRulesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.TagRulesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method TagRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *armnewrelicobservability.TagRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.TagRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *armnewrelicobservability.TagRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.TagRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TagRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *armnewrelicobservability.TagRulesClientGetOptions) (resp azfake.Responder[armnewrelicobservability.TagRulesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *armnewrelicobservability.TagRulesClientGetOptions) (resp azfake.Responder[armnewrelicobservability.TagRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByNewRelicMonitorResourcePager is the fake for method TagRulesClient.NewListByNewRelicMonitorResourcePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByNewRelicMonitorResourcePager	func(resourceGroupName string, monitorName string, options *armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceOptions) (resp azfake.PagerResponder[armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceResponse])
+	NewListByNewRelicMonitorResourcePager func(resourceGroupName string, monitorName string, options *armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceOptions) (resp azfake.PagerResponder[armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceResponse])
 
 	// Update is the fake for method TagRulesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update	func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, properties armnewrelicobservability.TagRuleUpdate, options *armnewrelicobservability.TagRulesClientUpdateOptions) (resp azfake.Responder[armnewrelicobservability.TagRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, properties armnewrelicobservability.TagRuleUpdate, options *armnewrelicobservability.TagRulesClientUpdateOptions) (resp azfake.Responder[armnewrelicobservability.TagRulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTagRulesServerTransport creates a new instance of TagRulesServerTransport with the provided implementation.
@@ -46,20 +46,20 @@ type TagRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewTagRulesServerTransport(srv *TagRulesServer) *TagRulesServerTransport {
 	return &TagRulesServerTransport{
-		srv:					srv,
-		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientCreateOrUpdateResponse]](),
-		beginDelete:				newTracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientDeleteResponse]](),
-		newListByNewRelicMonitorResourcePager:	newTracker[azfake.PagerResponder[armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceResponse]](),
+		srv:                                   srv,
+		beginCreateOrUpdate:                   newTracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientCreateOrUpdateResponse]](),
+		beginDelete:                           newTracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientDeleteResponse]](),
+		newListByNewRelicMonitorResourcePager: newTracker[azfake.PagerResponder[armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceResponse]](),
 	}
 }
 
 // TagRulesServerTransport connects instances of armnewrelicobservability.TagRulesClient to instances of TagRulesServer.
 // Don't use this type directly, use NewTagRulesServerTransport instead.
 type TagRulesServerTransport struct {
-	srv					*TagRulesServer
-	beginCreateOrUpdate			*tracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientCreateOrUpdateResponse]]
-	beginDelete				*tracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientDeleteResponse]]
-	newListByNewRelicMonitorResourcePager	*tracker[azfake.PagerResponder[armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceResponse]]
+	srv                                   *TagRulesServer
+	beginCreateOrUpdate                   *tracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientCreateOrUpdateResponse]]
+	beginDelete                           *tracker[azfake.PollerResponder[armnewrelicobservability.TagRulesClientDeleteResponse]]
+	newListByNewRelicMonitorResourcePager *tracker[azfake.PagerResponder[armnewrelicobservability.TagRulesClientListByNewRelicMonitorResourceResponse]]
 }
 
 // Do implements the policy.Transporter interface for TagRulesServerTransport.

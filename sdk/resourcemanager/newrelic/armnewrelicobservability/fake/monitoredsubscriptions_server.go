@@ -22,23 +22,23 @@ import (
 type MonitoredSubscriptionsServer struct {
 	// BeginCreateorUpdate is the fake for method MonitoredSubscriptionsClient.BeginCreateorUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateorUpdate	func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, body armnewrelicobservability.MonitoredSubscriptionProperties, options *armnewrelicobservability.MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientCreateorUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateorUpdate func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, body armnewrelicobservability.MonitoredSubscriptionProperties, options *armnewrelicobservability.MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientCreateorUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method MonitoredSubscriptionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, options *armnewrelicobservability.MonitoredSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, options *armnewrelicobservability.MonitoredSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MonitoredSubscriptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, options *armnewrelicobservability.MonitoredSubscriptionsClientGetOptions) (resp azfake.Responder[armnewrelicobservability.MonitoredSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, options *armnewrelicobservability.MonitoredSubscriptionsClientGetOptions) (resp azfake.Responder[armnewrelicobservability.MonitoredSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method MonitoredSubscriptionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitoredSubscriptionsClientListOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitoredSubscriptionsClientListResponse])
+	NewListPager func(resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitoredSubscriptionsClientListOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitoredSubscriptionsClientListResponse])
 
 	// BeginUpdate is the fake for method MonitoredSubscriptionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, body armnewrelicobservability.MonitoredSubscriptionProperties, options *armnewrelicobservability.MonitoredSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, configurationName armnewrelicobservability.ConfigurationName, body armnewrelicobservability.MonitoredSubscriptionProperties, options *armnewrelicobservability.MonitoredSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitoredSubscriptionsServerTransport creates a new instance of MonitoredSubscriptionsServerTransport with the provided implementation.
@@ -46,22 +46,22 @@ type MonitoredSubscriptionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMonitoredSubscriptionsServerTransport(srv *MonitoredSubscriptionsServer) *MonitoredSubscriptionsServerTransport {
 	return &MonitoredSubscriptionsServerTransport{
-		srv:			srv,
-		beginCreateorUpdate:	newTracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientCreateorUpdateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armnewrelicobservability.MonitoredSubscriptionsClientListResponse]](),
-		beginUpdate:		newTracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientUpdateResponse]](),
+		srv:                 srv,
+		beginCreateorUpdate: newTracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientCreateorUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnewrelicobservability.MonitoredSubscriptionsClientListResponse]](),
+		beginUpdate:         newTracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientUpdateResponse]](),
 	}
 }
 
 // MonitoredSubscriptionsServerTransport connects instances of armnewrelicobservability.MonitoredSubscriptionsClient to instances of MonitoredSubscriptionsServer.
 // Don't use this type directly, use NewMonitoredSubscriptionsServerTransport instead.
 type MonitoredSubscriptionsServerTransport struct {
-	srv			*MonitoredSubscriptionsServer
-	beginCreateorUpdate	*tracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientCreateorUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armnewrelicobservability.MonitoredSubscriptionsClientListResponse]]
-	beginUpdate		*tracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientUpdateResponse]]
+	srv                 *MonitoredSubscriptionsServer
+	beginCreateorUpdate *tracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientCreateorUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnewrelicobservability.MonitoredSubscriptionsClientListResponse]]
+	beginUpdate         *tracker[azfake.PollerResponder[armnewrelicobservability.MonitoredSubscriptionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitoredSubscriptionsServerTransport.

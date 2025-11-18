@@ -30,16 +30,16 @@ type ConnectedPartnerResourcesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConnectedPartnerResourcesServerTransport(srv *ConnectedPartnerResourcesServer) *ConnectedPartnerResourcesServerTransport {
 	return &ConnectedPartnerResourcesServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.ConnectedPartnerResourcesClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnewrelicobservability.ConnectedPartnerResourcesClientListResponse]](),
 	}
 }
 
 // ConnectedPartnerResourcesServerTransport connects instances of armnewrelicobservability.ConnectedPartnerResourcesClient to instances of ConnectedPartnerResourcesServer.
 // Don't use this type directly, use NewConnectedPartnerResourcesServerTransport instead.
 type ConnectedPartnerResourcesServerTransport struct {
-	srv		*ConnectedPartnerResourcesServer
-	newListPager	*tracker[azfake.PagerResponder[armnewrelicobservability.ConnectedPartnerResourcesClientListResponse]]
+	srv          *ConnectedPartnerResourcesServer
+	newListPager *tracker[azfake.PagerResponder[armnewrelicobservability.ConnectedPartnerResourcesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConnectedPartnerResourcesServerTransport.

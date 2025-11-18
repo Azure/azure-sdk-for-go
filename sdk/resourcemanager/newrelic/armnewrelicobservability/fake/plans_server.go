@@ -29,16 +29,16 @@ type PlansServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPlansServerTransport(srv *PlansServer) *PlansServerTransport {
 	return &PlansServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.PlansClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnewrelicobservability.PlansClientListResponse]](),
 	}
 }
 
 // PlansServerTransport connects instances of armnewrelicobservability.PlansClient to instances of PlansServer.
 // Don't use this type directly, use NewPlansServerTransport instead.
 type PlansServerTransport struct {
-	srv		*PlansServer
-	newListPager	*tracker[azfake.PagerResponder[armnewrelicobservability.PlansClientListResponse]]
+	srv          *PlansServer
+	newListPager *tracker[azfake.PagerResponder[armnewrelicobservability.PlansClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PlansServerTransport.
@@ -111,8 +111,8 @@ func (p *PlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		var options *armnewrelicobservability.PlansClientListOptions
 		if accountIDParam != nil || organizationIDParam != nil {
 			options = &armnewrelicobservability.PlansClientListOptions{
-				AccountID:	accountIDParam,
-				OrganizationID:	organizationIDParam,
+				AccountID:      accountIDParam,
+				OrganizationID: organizationIDParam,
 			}
 		}
 		resp := p.srv.NewListPager(options)

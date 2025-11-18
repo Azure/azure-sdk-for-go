@@ -29,16 +29,16 @@ type AccountsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 	return &AccountsServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.AccountsClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnewrelicobservability.AccountsClientListResponse]](),
 	}
 }
 
 // AccountsServerTransport connects instances of armnewrelicobservability.AccountsClient to instances of AccountsServer.
 // Don't use this type directly, use NewAccountsServerTransport instead.
 type AccountsServerTransport struct {
-	srv		*AccountsServer
-	newListPager	*tracker[azfake.PagerResponder[armnewrelicobservability.AccountsClientListResponse]]
+	srv          *AccountsServer
+	newListPager *tracker[azfake.PagerResponder[armnewrelicobservability.AccountsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccountsServerTransport.

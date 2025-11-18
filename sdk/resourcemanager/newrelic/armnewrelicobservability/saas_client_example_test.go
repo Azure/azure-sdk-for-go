@@ -24,8 +24,8 @@ func ExampleSaaSClient_ActivateResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSaaSClient().ActivateResource(ctx, armnewrelicobservability.ActivateSaaSParameterRequest{
-		PublisherID:	to.Ptr("publisherId"),
-		SaasGUID:	to.Ptr("00000000-0000-0000-0000-000005430000"),
+		PublisherID: to.Ptr("publisherId"),
+		SaasGUID:    to.Ptr("00000000-0000-0000-0000-000005430000"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

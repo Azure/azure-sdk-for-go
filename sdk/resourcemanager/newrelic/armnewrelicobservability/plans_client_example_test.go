@@ -24,8 +24,8 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewPlansClient().NewListPager(&armnewrelicobservability.PlansClientListOptions{
-		AccountID:	to.Ptr("pwuxgvrmkk"),
-		OrganizationID:	to.Ptr("hilawwjz")})
+		AccountID:      to.Ptr("pwuxgvrmkk"),
+		OrganizationID: to.Ptr("hilawwjz")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

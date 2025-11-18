@@ -23,75 +23,75 @@ import (
 type MonitorsServer struct {
 	// BeginCreateOrUpdate is the fake for method MonitorsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, monitorName string, resource armnewrelicobservability.NewRelicMonitorResource, options *armnewrelicobservability.MonitorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, monitorName string, resource armnewrelicobservability.NewRelicMonitorResource, options *armnewrelicobservability.MonitorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method MonitorsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, monitorName string, userEmail string, options *armnewrelicobservability.MonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, userEmail string, options *armnewrelicobservability.MonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MonitorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientGetOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientGetOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetMetricRules is the fake for method MonitorsClient.GetMetricRules
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMetricRules	func(ctx context.Context, resourceGroupName string, monitorName string, request armnewrelicobservability.MetricsRequest, options *armnewrelicobservability.MonitorsClientGetMetricRulesOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientGetMetricRulesResponse], errResp azfake.ErrorResponder)
+	GetMetricRules func(ctx context.Context, resourceGroupName string, monitorName string, request armnewrelicobservability.MetricsRequest, options *armnewrelicobservability.MonitorsClientGetMetricRulesOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientGetMetricRulesResponse], errResp azfake.ErrorResponder)
 
 	// GetMetricStatus is the fake for method MonitorsClient.GetMetricStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMetricStatus	func(ctx context.Context, resourceGroupName string, monitorName string, request armnewrelicobservability.MetricsStatusRequest, options *armnewrelicobservability.MonitorsClientGetMetricStatusOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientGetMetricStatusResponse], errResp azfake.ErrorResponder)
+	GetMetricStatus func(ctx context.Context, resourceGroupName string, monitorName string, request armnewrelicobservability.MetricsStatusRequest, options *armnewrelicobservability.MonitorsClientGetMetricStatusOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientGetMetricStatusResponse], errResp azfake.ErrorResponder)
 
 	// LatestLinkedSaaS is the fake for method MonitorsClient.LatestLinkedSaaS
 	// HTTP status codes to indicate success: http.StatusOK
-	LatestLinkedSaaS	func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientLatestLinkedSaaSOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
+	LatestLinkedSaaS func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientLatestLinkedSaaSOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientLatestLinkedSaaSResponse], errResp azfake.ErrorResponder)
 
 	// BeginLinkSaaS is the fake for method MonitorsClient.BeginLinkSaaS
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginLinkSaaS	func(ctx context.Context, resourceGroupName string, monitorName string, body armnewrelicobservability.SaaSData, options *armnewrelicobservability.MonitorsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
+	BeginLinkSaaS func(ctx context.Context, resourceGroupName string, monitorName string, body armnewrelicobservability.SaaSData, options *armnewrelicobservability.MonitorsClientBeginLinkSaaSOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientLinkSaaSResponse], errResp azfake.ErrorResponder)
 
 	// NewListAppServicesPager is the fake for method MonitorsClient.NewListAppServicesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAppServicesPager	func(resourceGroupName string, monitorName string, request armnewrelicobservability.AppServicesGetRequest, options *armnewrelicobservability.MonitorsClientListAppServicesOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListAppServicesResponse])
+	NewListAppServicesPager func(resourceGroupName string, monitorName string, request armnewrelicobservability.AppServicesGetRequest, options *armnewrelicobservability.MonitorsClientListAppServicesOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListAppServicesResponse])
 
 	// NewListByResourceGroupPager is the fake for method MonitorsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armnewrelicobservability.MonitorsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armnewrelicobservability.MonitorsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method MonitorsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager	func(options *armnewrelicobservability.MonitorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(options *armnewrelicobservability.MonitorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListBySubscriptionResponse])
 
 	// NewListHostsPager is the fake for method MonitorsClient.NewListHostsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListHostsPager	func(resourceGroupName string, monitorName string, request armnewrelicobservability.HostsGetRequest, options *armnewrelicobservability.MonitorsClientListHostsOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListHostsResponse])
+	NewListHostsPager func(resourceGroupName string, monitorName string, request armnewrelicobservability.HostsGetRequest, options *armnewrelicobservability.MonitorsClientListHostsOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListHostsResponse])
 
 	// NewListLinkedResourcesPager is the fake for method MonitorsClient.NewListLinkedResourcesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListLinkedResourcesPager	func(resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientListLinkedResourcesOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListLinkedResourcesResponse])
+	NewListLinkedResourcesPager func(resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientListLinkedResourcesOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListLinkedResourcesResponse])
 
 	// NewListMonitoredResourcesPager is the fake for method MonitorsClient.NewListMonitoredResourcesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListMonitoredResourcesPager	func(resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientListMonitoredResourcesOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListMonitoredResourcesResponse])
+	NewListMonitoredResourcesPager func(resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientListMonitoredResourcesOptions) (resp azfake.PagerResponder[armnewrelicobservability.MonitorsClientListMonitoredResourcesResponse])
 
 	// RefreshIngestionKey is the fake for method MonitorsClient.RefreshIngestionKey
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RefreshIngestionKey	func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientRefreshIngestionKeyOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientRefreshIngestionKeyResponse], errResp azfake.ErrorResponder)
+	RefreshIngestionKey func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientRefreshIngestionKeyOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientRefreshIngestionKeyResponse], errResp azfake.ErrorResponder)
 
 	// BeginResubscribe is the fake for method MonitorsClient.BeginResubscribe
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginResubscribe	func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientBeginResubscribeOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientResubscribeResponse], errResp azfake.ErrorResponder)
+	BeginResubscribe func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientBeginResubscribeOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientResubscribeResponse], errResp azfake.ErrorResponder)
 
 	// SwitchBilling is the fake for method MonitorsClient.SwitchBilling
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	SwitchBilling	func(ctx context.Context, resourceGroupName string, monitorName string, request armnewrelicobservability.SwitchBillingRequest, options *armnewrelicobservability.MonitorsClientSwitchBillingOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientSwitchBillingResponse], errResp azfake.ErrorResponder)
+	SwitchBilling func(ctx context.Context, resourceGroupName string, monitorName string, request armnewrelicobservability.SwitchBillingRequest, options *armnewrelicobservability.MonitorsClientSwitchBillingOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientSwitchBillingResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method MonitorsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, monitorName string, properties armnewrelicobservability.NewRelicMonitorResourceUpdate, options *armnewrelicobservability.MonitorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, monitorName string, properties armnewrelicobservability.NewRelicMonitorResourceUpdate, options *armnewrelicobservability.MonitorsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// VMHostPayload is the fake for method MonitorsClient.VMHostPayload
 	// HTTP status codes to indicate success: http.StatusOK
-	VMHostPayload	func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientVMHostPayloadOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientVMHostPayloadResponse], errResp azfake.ErrorResponder)
+	VMHostPayload func(ctx context.Context, resourceGroupName string, monitorName string, options *armnewrelicobservability.MonitorsClientVMHostPayloadOptions) (resp azfake.Responder[armnewrelicobservability.MonitorsClientVMHostPayloadResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMonitorsServerTransport creates a new instance of MonitorsServerTransport with the provided implementation.
@@ -99,36 +99,36 @@ type MonitorsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMonitorsServerTransport(srv *MonitorsServer) *MonitorsServerTransport {
 	return &MonitorsServerTransport{
-		srv:				srv,
-		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientCreateOrUpdateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse]](),
-		beginLinkSaaS:			newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientLinkSaaSResponse]](),
-		newListAppServicesPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListAppServicesResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListBySubscriptionResponse]](),
-		newListHostsPager:		newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListHostsResponse]](),
-		newListLinkedResourcesPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListLinkedResourcesResponse]](),
-		newListMonitoredResourcesPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListMonitoredResourcesResponse]](),
-		beginResubscribe:		newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientResubscribeResponse]](),
-		beginUpdate:			newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientUpdateResponse]](),
+		srv:                            srv,
+		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientCreateOrUpdateResponse]](),
+		beginDelete:                    newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse]](),
+		beginLinkSaaS:                  newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientLinkSaaSResponse]](),
+		newListAppServicesPager:        newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListAppServicesResponse]](),
+		newListByResourceGroupPager:    newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:     newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListBySubscriptionResponse]](),
+		newListHostsPager:              newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListHostsResponse]](),
+		newListLinkedResourcesPager:    newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListLinkedResourcesResponse]](),
+		newListMonitoredResourcesPager: newTracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListMonitoredResourcesResponse]](),
+		beginResubscribe:               newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientResubscribeResponse]](),
+		beginUpdate:                    newTracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientUpdateResponse]](),
 	}
 }
 
 // MonitorsServerTransport connects instances of armnewrelicobservability.MonitorsClient to instances of MonitorsServer.
 // Don't use this type directly, use NewMonitorsServerTransport instead.
 type MonitorsServerTransport struct {
-	srv				*MonitorsServer
-	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientCreateOrUpdateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse]]
-	beginLinkSaaS			*tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientLinkSaaSResponse]]
-	newListAppServicesPager		*tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListAppServicesResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListBySubscriptionResponse]]
-	newListHostsPager		*tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListHostsResponse]]
-	newListLinkedResourcesPager	*tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListLinkedResourcesResponse]]
-	newListMonitoredResourcesPager	*tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListMonitoredResourcesResponse]]
-	beginResubscribe		*tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientResubscribeResponse]]
-	beginUpdate			*tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientUpdateResponse]]
+	srv                            *MonitorsServer
+	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientCreateOrUpdateResponse]]
+	beginDelete                    *tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse]]
+	beginLinkSaaS                  *tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientLinkSaaSResponse]]
+	newListAppServicesPager        *tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListAppServicesResponse]]
+	newListByResourceGroupPager    *tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager     *tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListBySubscriptionResponse]]
+	newListHostsPager              *tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListHostsResponse]]
+	newListLinkedResourcesPager    *tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListLinkedResourcesResponse]]
+	newListMonitoredResourcesPager *tracker[azfake.PagerResponder[armnewrelicobservability.MonitorsClientListMonitoredResourcesResponse]]
+	beginResubscribe               *tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientResubscribeResponse]]
+	beginUpdate                    *tracker[azfake.PollerResponder[armnewrelicobservability.MonitorsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for MonitorsServerTransport.

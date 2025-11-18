@@ -82,7 +82,7 @@ func (m *MockQueryEngine) CreateQueryPipeline(query string, plan string, pkrange
 // CreateReadManyPipeline creates a read-many pipeline which returns the provided item identities
 // serialized as JSON documents. This is a simplified pipeline used by tests to exercise the
 // SDK's ReadMany->QueryEngine glue without making network calls for each item.
-func (m *MockQueryEngine) CreateReadManyPipeline(items []queryengine.ItemIdentity, pkranges string, pkKind string, pkVersion int32) (queryengine.QueryPipeline, error) {
+func (m *MockQueryEngine) CreateReadManyPipeline(items []queryengine.ItemIdentity, pkranges string, pkKind string, pkVersion uint8) (queryengine.QueryPipeline, error) {
 	return &MockReadManyPipeline{items: items, completed: false, resultingItems: make([][]byte, 0, len(items))}, nil
 }
 

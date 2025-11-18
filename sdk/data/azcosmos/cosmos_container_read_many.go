@@ -42,11 +42,11 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 			ID:                items[i].ID,
 		}
 	}
-	var pkVersion int32
+	var pkVersion uint8
 	if containerRsp.ContainerProperties.PartitionKeyDefinition.Version == 0 {
-		pkVersion = int32(1)
+		pkVersion = uint8(1)
 	} else {
-		pkVersion = int32(containerRsp.ContainerProperties.PartitionKeyDefinition.Version)
+		pkVersion = uint8(containerRsp.ContainerProperties.PartitionKeyDefinition.Version)
 	}
 
 	readManyPipeline, err := queryEngine.CreateReadManyPipeline(newItemIdentities, string(rawPartitionKeyRanges), string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)

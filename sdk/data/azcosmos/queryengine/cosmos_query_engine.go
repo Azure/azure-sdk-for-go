@@ -6,7 +6,7 @@ package queryengine
 // QueryEngine is an interface that defines the methods for a query engine.
 type QueryEngine interface {
 	CreateQueryPipeline(query string, plan string, pkranges string) (QueryPipeline, error)
-	CreateReadManyPipeline(items []ItemIdentity, pkranges string, pkKind string, pkVersion uint8) (QueryPipeline, error)
+	CreateReadManyPipeline(items []ItemIdentity, pkranges string, pkKind string, pkVersion uint8, pkPaths []string) (QueryPipeline, error)
 	SupportedFeatures() string
 }
 

@@ -43,13 +43,14 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 		}
 	}
 	var pkVersion uint8
-	if containerRsp.ContainerProperties.PartitionKeyDefinition.Version == 0 {
+	pkDefinition := containerRsp.ContainerProperties.PartitionKeyDefinition
+	if pkDefinition.Version == 0 {
 		pkVersion = uint8(1)
 	} else {
-		pkVersion = uint8(containerRsp.ContainerProperties.PartitionKeyDefinition.Version)
+		pkVersion = uint8(pkDefinition.Version)
 	}
 
-	readManyPipeline, err := queryEngine.CreateReadManyPipeline(newItemIdentities, string(rawPartitionKeyRanges), string(containerRsp.ContainerProperties.PartitionKeyDefinition.Kind), pkVersion)
+	readManyPipeline, err := queryEngine.CreateReadManyPipeline(newItemIdentities, string(rawPartitionKeyRanges), string(pkDefinition.Kind), pkVersion, pkDefinition.Paths)
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}

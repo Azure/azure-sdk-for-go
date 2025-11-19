@@ -1,5 +1,80 @@
 # Release History
 
+## 2.2.0 (2025-11-19)
+### Features Added
+
+- New enum type `BlockedDatesConstraintCategory` with values `BlockedDatesConstraintCategoryHiPriorityEvent`, `BlockedDatesConstraintCategoryHoliday`, `BlockedDatesConstraintCategoryQuotaExhausted`
+- New enum type `LicenseKind` with values `LicenseKindVmwareFirewall`
+- New enum type `LicenseName` with values `LicenseNameVmwareFirewall`
+- New enum type `LicenseProvisioningState` with values `LicenseProvisioningStateCanceled`, `LicenseProvisioningStateFailed`, `LicenseProvisioningStateSucceeded`
+- New enum type `MaintenanceCheckType` with values `MaintenanceCheckTypePrecheck`, `MaintenanceCheckTypePreflight`
+- New enum type `MaintenanceManagementOperationKind` with values `MaintenanceManagementOperationKindMaintenanceReadinessRefresh`, `MaintenanceManagementOperationKindReschedule`, `MaintenanceManagementOperationKindSchedule`
+- New enum type `MaintenanceProvisioningState` with values `MaintenanceProvisioningStateCanceled`, `MaintenanceProvisioningStateFailed`, `MaintenanceProvisioningStateSucceeded`, `MaintenanceProvisioningStateUpdating`
+- New enum type `MaintenanceReadinessRefreshOperationStatus` with values `MaintenanceReadinessRefreshOperationStatusFailed`, `MaintenanceReadinessRefreshOperationStatusInProgress`, `MaintenanceReadinessRefreshOperationStatusNotApplicable`, `MaintenanceReadinessRefreshOperationStatusNotStarted`
+- New enum type `MaintenanceReadinessStatus` with values `MaintenanceReadinessStatusDataNotAvailable`, `MaintenanceReadinessStatusNotApplicable`, `MaintenanceReadinessStatusNotReady`, `MaintenanceReadinessStatusReady`
+- New enum type `MaintenanceStateName` with values `MaintenanceStateNameCanceled`, `MaintenanceStateNameFailed`, `MaintenanceStateNameInProgress`, `MaintenanceStateNameNotScheduled`, `MaintenanceStateNameScheduled`, `MaintenanceStateNameSuccess`
+- New enum type `MaintenanceStatusFilter` with values `MaintenanceStatusFilterActive`, `MaintenanceStatusFilterInactive`
+- New enum type `MaintenanceType` with values `MaintenanceTypeESXI`, `MaintenanceTypeNSXT`, `MaintenanceTypeVCSA`
+- New enum type `RescheduleOperationConstraintKind` with values `RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation`, `RescheduleOperationConstraintKindBlockedWhileRescheduleOperation`
+- New enum type `ScheduleOperationConstraintKind` with values `ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation`, `ScheduleOperationConstraintKindBlockedWhileScheduleOperation`, `ScheduleOperationConstraintKindSchedulingWindow`
+- New enum type `VcfLicenseKind` with values `VcfLicenseKindVcf5`
+- New function `*AvailableWindowForMaintenanceWhileRescheduleOperation.GetRescheduleOperationConstraint() *RescheduleOperationConstraint`
+- New function `*AvailableWindowForMaintenanceWhileScheduleOperation.GetScheduleOperationConstraint() *ScheduleOperationConstraint`
+- New function `*BlockedWhileRescheduleOperation.GetRescheduleOperationConstraint() *RescheduleOperationConstraint`
+- New function `*BlockedWhileScheduleOperation.GetScheduleOperationConstraint() *ScheduleOperationConstraint`
+- New function `*ClientFactory.NewLicensesClient() *LicensesClient`
+- New function `*ClientFactory.NewMaintenancesClient() *MaintenancesClient`
+- New function `*LicenseProperties.GetLicenseProperties() *LicenseProperties`
+- New function `NewLicensesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LicensesClient, error)`
+- New function `*LicensesClient.BeginCreateOrUpdate(context.Context, string, string, LicenseName, License, *LicensesClientBeginCreateOrUpdateOptions) (*runtime.Poller[LicensesClientCreateOrUpdateResponse], error)`
+- New function `*LicensesClient.BeginDelete(context.Context, string, string, LicenseName, *LicensesClientBeginDeleteOptions) (*runtime.Poller[LicensesClientDeleteResponse], error)`
+- New function `*LicensesClient.Get(context.Context, string, string, LicenseName, *LicensesClientGetOptions) (LicensesClientGetResponse, error)`
+- New function `*LicensesClient.GetProperties(context.Context, string, string, LicenseName, *LicensesClientGetPropertiesOptions) (LicensesClientGetPropertiesResponse, error)`
+- New function `*LicensesClient.NewListPager(string, string, *LicensesClientListOptions) *runtime.Pager[LicensesClientListResponse]`
+- New function `*MaintenanceManagementOperation.GetMaintenanceManagementOperation() *MaintenanceManagementOperation`
+- New function `*MaintenanceReadinessRefreshOperation.GetMaintenanceManagementOperation() *MaintenanceManagementOperation`
+- New function `NewMaintenancesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MaintenancesClient, error)`
+- New function `*MaintenancesClient.Get(context.Context, string, string, string, *MaintenancesClientGetOptions) (MaintenancesClientGetResponse, error)`
+- New function `*MaintenancesClient.InitiateChecks(context.Context, string, string, string, *MaintenancesClientInitiateChecksOptions) (MaintenancesClientInitiateChecksResponse, error)`
+- New function `*MaintenancesClient.NewListPager(string, string, *MaintenancesClientListOptions) *runtime.Pager[MaintenancesClientListResponse]`
+- New function `*MaintenancesClient.Reschedule(context.Context, string, string, string, MaintenanceReschedule, *MaintenancesClientRescheduleOptions) (MaintenancesClientRescheduleResponse, error)`
+- New function `*MaintenancesClient.Schedule(context.Context, string, string, string, MaintenanceSchedule, *MaintenancesClientScheduleOptions) (MaintenancesClientScheduleResponse, error)`
+- New function `*PrivateCloudsClient.GetVcfLicense(context.Context, string, string, *PrivateCloudsClientGetVcfLicenseOptions) (PrivateCloudsClientGetVcfLicenseResponse, error)`
+- New function `*RescheduleOperation.GetMaintenanceManagementOperation() *MaintenanceManagementOperation`
+- New function `*RescheduleOperationConstraint.GetRescheduleOperationConstraint() *RescheduleOperationConstraint`
+- New function `*ScheduleOperation.GetMaintenanceManagementOperation() *MaintenanceManagementOperation`
+- New function `*ScheduleOperationConstraint.GetScheduleOperationConstraint() *ScheduleOperationConstraint`
+- New function `*SchedulingWindow.GetScheduleOperationConstraint() *ScheduleOperationConstraint`
+- New function `*Vcf5License.GetVcfLicense() *VcfLicense`
+- New function `*VcfLicense.GetVcfLicense() *VcfLicense`
+- New function `*VmwareFirewallLicenseProperties.GetLicenseProperties() *LicenseProperties`
+- New struct `AvailableWindowForMaintenanceWhileRescheduleOperation`
+- New struct `AvailableWindowForMaintenanceWhileScheduleOperation`
+- New struct `BlockedDatesConstraintTimeRange`
+- New struct `BlockedWhileRescheduleOperation`
+- New struct `BlockedWhileScheduleOperation`
+- New struct `ImpactedMaintenanceResource`
+- New struct `ImpactedMaintenanceResourceError`
+- New struct `Label`
+- New struct `License`
+- New struct `LicenseListResult`
+- New struct `Maintenance`
+- New struct `MaintenanceFailedCheck`
+- New struct `MaintenanceListResult`
+- New struct `MaintenanceProperties`
+- New struct `MaintenanceReadiness`
+- New struct `MaintenanceReadinessRefreshOperation`
+- New struct `MaintenanceReschedule`
+- New struct `MaintenanceSchedule`
+- New struct `MaintenanceState`
+- New struct `RescheduleOperation`
+- New struct `ScheduleOperation`
+- New struct `SchedulingWindow`
+- New struct `Vcf5License`
+- New struct `VmwareFirewallLicenseProperties`
+- New field `VcfLicense` in struct `PrivateCloudProperties`
+
+
 ## 2.2.0 (2025-10-21)
 ### Features Added
 

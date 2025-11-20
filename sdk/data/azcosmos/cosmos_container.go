@@ -449,7 +449,7 @@ func (c *ContainerClient) ReadItem(
 	return response, err
 }
 
-// ReadManyItems reads multiple items in a Cosmos container.
+// ReadManyItems reads multiple items in a Cosmos container. Note that the items returned in the response are unordered.
 // ctx - The context for the request.
 // itemIdentities - The identities of the items to read.
 // o - Options for the operation.

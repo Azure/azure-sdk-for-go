@@ -47,9 +47,6 @@ type AzureDevOpsOrganizationProfile struct {
 	// REQUIRED; The list of Azure DevOps organizations the pool should be present in.
 	Organizations []*Organization
 
-	// An alias to reference the Azure DevOps pool name.
-	Alias *string
-
 	// The type of permission which determines which accounts are admins on the Azure DevOps pool.
 	PermissionProfile *AzureDevOpsPermissionProfile
 }
@@ -73,30 +70,6 @@ type AzureDevOpsPermissionProfile struct {
 	Users []*string
 }
 
-// CheckNameAvailability - The parameters used to check the availability of a resource.
-type CheckNameAvailability struct {
-	// REQUIRED; The name of the resource.
-	Name *string
-
-	// REQUIRED; The type of resource that is used as the scope of the availability check.
-	Type *ResourceType
-}
-
-// CheckNameAvailabilityResult - The CheckNameAvailability operation response.
-type CheckNameAvailabilityResult struct {
-	// REQUIRED; Availability status of the name.
-	Available *AvailabilityStatus
-
-	// REQUIRED; A message explaining why the name is unavailable. Will be null if the name is available.
-	Message *string
-
-	// REQUIRED; The name whose availability was checked.
-	Name *string
-
-	// REQUIRED; The reason code explaining why the name is unavailable. Will be null if the name is available.
-	Reason *CheckNameAvailabilityReason
-}
-
 // DataDisk - The data disk of the VMSS.
 type DataDisk struct {
 	// The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information about
@@ -111,12 +84,6 @@ type DataDisk struct {
 
 	// The storage Account type to be used for the data disk. If omitted, the default is "standard_lrs".
 	StorageAccountType *StorageAccountType
-}
-
-// DeleteResourcesDetails - Request body for deleting many resources by their IDs.
-type DeleteResourcesDetails struct {
-	// REQUIRED; List of resource IDs to delete.
-	ResourceIDs []*string
 }
 
 // DevOpsAzureSKU - The Azure SKU of the machines in the pool.
@@ -165,11 +132,11 @@ type ImageVersion struct {
 	// The resource-specific properties for this resource.
 	Properties *ImageVersionProperties
 
+	// READ-ONLY; The name of the image version.
+	Name *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -225,25 +192,17 @@ func (m *ManualResourcePredictionsProfile) GetResourcePredictionsProfile() *Reso
 
 // NetworkProfile - The network profile of the machines in the pool.
 type NetworkProfile struct {
-	// The number of static public IP addresses for outgoing connections assigned to the pool.
-	StaticIPAddressCount *int32
-
-	// The subnet id on which to put all machines created in the pool.
+	// REQUIRED; The subnet id on which to put all machines created in the pool.
 	SubnetID *string
-
-	// READ-ONLY; Read only. The list of static public IP addresses for outgoing connections assigned to the pool.
-	IPAddresses []*string
 }
 
-// Operation - REST API Operation
-//
-// Details of a REST API operation, returned from the Resource Provider Operations API
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
-	// Localized display information for this particular operation.
-	Display *OperationDisplay
-
-	// READ-ONLY; Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	// Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 	ActionType *ActionType
+
+	// READ-ONLY; Localized display information for this particular operation.
+	Display *OperationDisplay
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
 	// Resource Manager/control-plane operations.
@@ -291,12 +250,6 @@ type Organization struct {
 	// REQUIRED; The Azure DevOps organization URL in which the pool should be created.
 	URL *string
 
-	// An alias to reference the Azure DevOps pool name.
-	Alias *string
-
-	// Determines if the pool should have open access to all projects in this organization.
-	OpenAccess *bool
-
 	// How many machines can be created at maximum in this organization out of the maximumConcurrency of the pool.
 	Parallelism *int32
 
@@ -336,6 +289,9 @@ type Pool struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
+	// READ-ONLY; Name of the pool. It needs to be globally unique.
+	Name *string
+
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
@@ -347,9 +303,6 @@ type Pool struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -366,17 +319,11 @@ type PoolImage struct {
 	// The percentage of the buffer to be allocated to this image.
 	Buffer *string
 
-	// The ephemeral type of the image.
-	EphemeralType *EphemeralType
-
 	// The resource id of the image.
 	ResourceID *string
 
 	// The image to use from a well-known set of images made available to customers.
 	WellKnownImageName *string
-
-	// READ-ONLY; Read only. Determines if the image is ephemeral.
-	IsEphemeral *bool
 }
 
 // PoolListResult - The response of a Pool list operation.
@@ -407,9 +354,6 @@ type PoolProperties struct {
 
 	// The status of the current operation.
 	ProvisioningState *ProvisioningState
-
-	// The runtime configuration of the pool.
-	RuntimeConfiguration *RuntimeConfiguration
 }
 
 // PoolUpdate - The type used for update operations of the Pool.
@@ -443,9 +387,6 @@ type PoolUpdateProperties struct {
 
 	// The status of the current operation.
 	ProvisioningState *ProvisioningState
-
-	// The runtime configuration of the pool.
-	RuntimeConfiguration *RuntimeConfiguration
 }
 
 // Quota - Describes Resource Quota
@@ -480,11 +421,11 @@ type ResourceDetailsObject struct {
 	// The resource-specific properties for this resource.
 	Properties *ResourceDetailsObjectProperties
 
+	// READ-ONLY; The name of the resource.
+	Name *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -534,11 +475,11 @@ type ResourceSKU struct {
 	// The resource-specific properties for this resource.
 	Properties *ResourceSKUProperties
 
+	// READ-ONLY; The name of the SKU.
+	Name *string
+
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -638,12 +579,6 @@ type ResourceSKUZoneDetails struct {
 	Name []*string
 }
 
-// RuntimeConfiguration - The runtime configuration of the pool.
-type RuntimeConfiguration struct {
-	// The target work folder of the task agent on the machine.
-	WorkFolder *string
-}
-
 // SecretsManagementSettings - The secret management settings of the machines in the pool.
 type SecretsManagementSettings struct {
 	// REQUIRED; Defines if the key of the certificates should be exportable.
@@ -654,9 +589,6 @@ type SecretsManagementSettings struct {
 
 	// Where to store certificates on the machine.
 	CertificateStoreLocation *string
-
-	// Name of the certificate store to use on the machine, currently 'My' and 'Root' are supported.
-	CertificateStoreName *CertificateStoreNameOption
 }
 
 // Stateful profile meaning that the machines will be returned to the pool after running a job.

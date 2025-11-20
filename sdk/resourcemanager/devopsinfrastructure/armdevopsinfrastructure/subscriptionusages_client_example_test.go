@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-20/SubscriptionUsages_Usages.json
+// Generated from example definition: 2024-10-19/SubscriptionUsages_Usages.json
 func ExampleSubscriptionUsagesClient_NewUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

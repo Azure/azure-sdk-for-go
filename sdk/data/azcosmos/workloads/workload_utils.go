@@ -197,6 +197,8 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 	})
 }
 
+// CreateClient creates a Cosmos DB client based on the workload configuration.
+// cfg - The workload configuration
 func CreateClient(cfg WorkloadConfig) (*azcosmos.Client, error) {
 	log.Printf("Creating client for endpoint %s with preferred regions: %v", cfg.Endpoint, cfg.PreferredLocations)
 	telemetryOpts := policy.TelemetryOptions{

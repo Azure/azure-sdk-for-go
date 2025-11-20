@@ -94,6 +94,9 @@ func createContainerIfNotExists(ctx context.Context, db *azcosmos.DatabaseClient
 }
 
 // RunSetup creates the database/container and performs the concurrent upserts.
+// ctx - The context for the requests
+// client - The Cosmos DB client
+// cfg - The workload configuration
 func RunSetup(ctx context.Context, client *azcosmos.Client, cfg WorkloadConfig) error {
 
 	dbClient, err := createDatabaseIfNotExists(ctx, client, cfg.DatabaseID)

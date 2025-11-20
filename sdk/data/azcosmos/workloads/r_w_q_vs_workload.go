@@ -9,11 +9,14 @@ import (
 	"log"
 	"runtime"
 	"sync"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
 
+// RunWorkload starts up a workload that performs several opertations.
+// ctx - The context for the requests
+// client - The Cosmos DB client
+// cfg - The workload configuration
 func RunWorkload(ctx context.Context, client *azcosmos.Client, cfg WorkloadConfig) error {
 
 	dbClient, err := client.NewDatabase(cfg.DatabaseID)
@@ -52,8 +55,6 @@ func RunWorkload(ctx context.Context, client *azcosmos.Client, cfg WorkloadConfi
 				log.Printf("read/write/queries failed: %v", err)
 			}
 
-			// small jitter to avoid tight loop in case of immediate errors
-			time.Sleep(10 * time.Millisecond)
 		}
 	}()
 
@@ -73,8 +74,6 @@ func RunWorkload(ctx context.Context, client *azcosmos.Client, cfg WorkloadConfi
 			if err := vectorSearchQueries(ctx, container, count, cfg.PartitionKeyFieldName); err != nil {
 				log.Printf("vector search queries failed: %v", err)
 			}
-
-			time.Sleep(10 * time.Millisecond)
 		}
 	}()
 

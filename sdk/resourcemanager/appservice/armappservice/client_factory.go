@@ -33,29 +33,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewCertificateOrdersClient creates a new instance of CertificateOrdersClient.
-func (c *ClientFactory) NewCertificateOrdersClient() *CertificateOrdersClient {
-	return &CertificateOrdersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewCertificateOrdersDiagnosticsClient creates a new instance of CertificateOrdersDiagnosticsClient.
-func (c *ClientFactory) NewCertificateOrdersDiagnosticsClient() *CertificateOrdersDiagnosticsClient {
-	return &CertificateOrdersDiagnosticsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewCertificateRegistrationProviderClient creates a new instance of CertificateRegistrationProviderClient.
-func (c *ClientFactory) NewCertificateRegistrationProviderClient() *CertificateRegistrationProviderClient {
-	return &CertificateRegistrationProviderClient{
-		internal: c.internal,
-	}
-}
-
 // NewCertificatesClient creates a new instance of CertificatesClient.
 func (c *ClientFactory) NewCertificatesClient() *CertificatesClient {
 	return &CertificatesClient{
@@ -75,21 +52,6 @@ func (c *ClientFactory) NewDeletedWebAppsClient() *DeletedWebAppsClient {
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient.
 func (c *ClientFactory) NewDiagnosticsClient() *DiagnosticsClient {
 	return &DiagnosticsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDomainRegistrationProviderClient creates a new instance of DomainRegistrationProviderClient.
-func (c *ClientFactory) NewDomainRegistrationProviderClient() *DomainRegistrationProviderClient {
-	return &DomainRegistrationProviderClient{
-		internal: c.internal,
-	}
-}
-
-// NewDomainsClient creates a new instance of DomainsClient.
-func (c *ClientFactory) NewDomainsClient() *DomainsClient {
-	return &DomainsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -122,6 +84,14 @@ func (c *ClientFactory) NewGlobalClient() *GlobalClient {
 // NewKubeEnvironmentsClient creates a new instance of KubeEnvironmentsClient.
 func (c *ClientFactory) NewKubeEnvironmentsClient() *KubeEnvironmentsClient {
 	return &KubeEnvironmentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagementClient creates a new instance of ManagementClient.
+func (c *ClientFactory) NewManagementClient() *ManagementClient {
+	return &ManagementClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -175,25 +145,9 @@ func (c *ClientFactory) NewStaticSitesClient() *StaticSitesClient {
 	}
 }
 
-// NewTopLevelDomainsClient creates a new instance of TopLevelDomainsClient.
-func (c *ClientFactory) NewTopLevelDomainsClient() *TopLevelDomainsClient {
-	return &TopLevelDomainsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewWebAppsClient creates a new instance of WebAppsClient.
 func (c *ClientFactory) NewWebAppsClient() *WebAppsClient {
 	return &WebAppsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewWebSiteManagementClient creates a new instance of WebSiteManagementClient.
-func (c *ClientFactory) NewWebSiteManagementClient() *WebSiteManagementClient {
-	return &WebSiteManagementClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

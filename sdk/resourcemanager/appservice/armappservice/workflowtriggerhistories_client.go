@@ -28,7 +28,7 @@ type WorkflowTriggerHistoriesClient struct {
 // NewWorkflowTriggerHistoriesClient creates a new instance of WorkflowTriggerHistoriesClient with the specified values.
 //   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowTriggerHistoriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.
 // Get - Gets a workflow trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -106,7 +106,7 @@ func (client *WorkflowTriggerHistoriesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,7 +123,7 @@ func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Respo
 
 // NewListPager - Gets a list of workflow trigger histories.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -187,7 +187,7 @@ func (client *WorkflowTriggerHistoriesClient) listCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *WorkflowTriggerHistoriesClient) listHandleResponse(resp *http.Resp
 // BeginResubmit - Resubmits a workflow run based on the trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -233,7 +233,7 @@ func (client *WorkflowTriggerHistoriesClient) BeginResubmit(ctx context.Context,
 // Resubmit - Resubmits a workflow run based on the trigger history.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 func (client *WorkflowTriggerHistoriesClient) resubmit(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *WorkflowTriggerHistoriesClientBeginResubmitOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkflowTriggerHistoriesClient.BeginResubmit"
@@ -287,7 +287,7 @@ func (client *WorkflowTriggerHistoriesClient) resubmitCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

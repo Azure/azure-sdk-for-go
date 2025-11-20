@@ -100,7 +100,7 @@ type ApplicationsClientStartRollbackResponse struct {
 	// placeholder for future response values
 }
 
-// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.Update.
+// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.BeginUpdate.
 type ApplicationsClientUpdateResponse struct {
 	// The application resource.
 	ApplicationResource
@@ -197,7 +197,7 @@ type ManagedClustersClientStopFaultSimulationResponse struct {
 	FaultSimulation
 }
 
-// ManagedClustersClientUpdateResponse contains the response from method ManagedClustersClient.Update.
+// ManagedClustersClientUpdateResponse contains the response from method ManagedClustersClient.BeginUpdate.
 type ManagedClustersClientUpdateResponse struct {
 	// The managed cluster resource
 	ManagedCluster

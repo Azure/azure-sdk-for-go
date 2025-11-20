@@ -672,38 +672,59 @@ func (client *ManagedClustersClient) stopFaultSimulationCreateRequest(ctx contex
 	return req, nil
 }
 
-// Update - Update the tags of of a Service Fabric managed cluster resource with the specified name.
+// BeginUpdate - Update the tags of of a Service Fabric managed cluster resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - parameters - The managed cluster resource updated tags.
-//   - options - ManagedClustersClientUpdateOptions contains the optional parameters for the ManagedClustersClient.Update method.
-func (client *ManagedClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientUpdateOptions) (ManagedClustersClientUpdateResponse, error) {
+//   - options - ManagedClustersClientBeginUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginUpdate
+//     method.
+func (client *ManagedClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*runtime.Poller[ManagedClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Update the tags of of a Service Fabric managed cluster resource with the specified name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01-preview
+func (client *ManagedClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, options *ManagedClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ManagedClustersClient.Update"
+	const operationName = "ManagedClustersClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
-		return ManagedClustersClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ManagedClustersClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, _ *ManagedClustersClientUpdateOptions) (*policy.Request, error) {
+func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ManagedClusterUpdateParameters, _ *ManagedClustersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -730,13 +751,4 @@ func (client *ManagedClustersClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	return req, nil
-}
-
-// updateHandleResponse handles the Update response.
-func (client *ManagedClustersClient) updateHandleResponse(resp *http.Response) (ManagedClustersClientUpdateResponse, error) {
-	result := ManagedClustersClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedCluster); err != nil {
-		return ManagedClustersClientUpdateResponse{}, err
-	}
-	return result, nil
 }

@@ -355,7 +355,6 @@ func (g GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", g.ProvisioningState)
 	populate(objectMap, "sourceVirtualMachineId", g.SourceVirtualMachineID)
 	populate(objectMap, "status", g.Status)
-	populate(objectMap, "vmImageRepositoryCredentials", g.VMImageRepositoryCredentials)
 	populate(objectMap, "version", g.Version)
 	return json.Marshal(objectMap)
 }
@@ -395,9 +394,6 @@ func (g *GalleryImageProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &g.Status)
-			delete(rawMsg, key)
-		case "vmImageRepositoryCredentials":
-			err = unpopulate(val, "VMImageRepositoryCredentials", &g.VMImageRepositoryCredentials)
 			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, "Version", &g.Version)
@@ -3344,37 +3340,6 @@ func (v *VMDiskSecurityProfile) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "securityEncryptionType":
 			err = unpopulate(val, "SecurityEncryptionType", &v.SecurityEncryptionType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", v, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VMImageRepositoryCredentials.
-func (v VMImageRepositoryCredentials) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "password", v.Password)
-	populate(objectMap, "username", v.Username)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type VMImageRepositoryCredentials.
-func (v *VMImageRepositoryCredentials) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", v, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "password":
-			err = unpopulate(val, "Password", &v.Password)
-			delete(rawMsg, key)
-		case "username":
-			err = unpopulate(val, "Username", &v.Username)
 			delete(rawMsg, key)
 		}
 		if err != nil {

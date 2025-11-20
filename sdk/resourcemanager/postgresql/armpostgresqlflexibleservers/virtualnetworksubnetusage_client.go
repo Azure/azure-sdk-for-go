@@ -27,7 +27,7 @@ type VirtualNetworkSubnetUsageClient struct {
 // NewVirtualNetworkSubnetUsageClient creates a new instance of VirtualNetworkSubnetUsageClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkSubnetUsageClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,38 +40,38 @@ func NewVirtualNetworkSubnetUsageClient(subscriptionID string, credential azcore
 	return client, nil
 }
 
-// Execute - Get virtual network subnet usage for a given vNet resource id.
+// List - Lists the virtual network subnet usage for a given virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
+// Generated from API version 2025-08-01
 //   - locationName - The name of the location.
 //   - parameters - The required parameters for creating or updating a server.
-//   - options - VirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.Execute
+//   - options - VirtualNetworkSubnetUsageClientListOptions contains the optional parameters for the VirtualNetworkSubnetUsageClient.List
 //     method.
-func (client *VirtualNetworkSubnetUsageClient) Execute(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageClientExecuteOptions) (VirtualNetworkSubnetUsageClientExecuteResponse, error) {
+func (client *VirtualNetworkSubnetUsageClient) List(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, options *VirtualNetworkSubnetUsageClientListOptions) (VirtualNetworkSubnetUsageClientListResponse, error) {
 	var err error
-	const operationName = "VirtualNetworkSubnetUsageClient.Execute"
+	const operationName = "VirtualNetworkSubnetUsageClient.List"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.executeCreateRequest(ctx, locationName, parameters, options)
+	req, err := client.listCreateRequest(ctx, locationName, parameters, options)
 	if err != nil {
-		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
+		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
+		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
+		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
-	resp, err := client.executeHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp)
 	return resp, err
 }
 
-// executeCreateRequest creates the Execute request.
-func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, _ *VirtualNetworkSubnetUsageClientExecuteOptions) (*policy.Request, error) {
+// listCreateRequest creates the List request.
+func (client *VirtualNetworkSubnetUsageClient) listCreateRequest(ctx context.Context, locationName string, parameters VirtualNetworkSubnetUsageParameter, _ *VirtualNetworkSubnetUsageClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkVirtualNetworkSubnetUsage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -86,7 +86,7 @@ func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -95,11 +95,11 @@ func (client *VirtualNetworkSubnetUsageClient) executeCreateRequest(ctx context.
 	return req, nil
 }
 
-// executeHandleResponse handles the Execute response.
-func (client *VirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (VirtualNetworkSubnetUsageClientExecuteResponse, error) {
-	result := VirtualNetworkSubnetUsageClientExecuteResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
-		return VirtualNetworkSubnetUsageClientExecuteResponse{}, err
+// listHandleResponse handles the List response.
+func (client *VirtualNetworkSubnetUsageClient) listHandleResponse(resp *http.Response) (VirtualNetworkSubnetUsageClientListResponse, error) {
+	result := VirtualNetworkSubnetUsageClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageModel); err != nil {
+		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
 	return result, nil
 }

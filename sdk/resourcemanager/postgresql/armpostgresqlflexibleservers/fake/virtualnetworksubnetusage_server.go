@@ -20,9 +20,9 @@ import (
 
 // VirtualNetworkSubnetUsageServer is a fake server for instances of the armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClient type.
 type VirtualNetworkSubnetUsageServer struct {
-	// Execute is the fake for method VirtualNetworkSubnetUsageClient.Execute
+	// List is the fake for method VirtualNetworkSubnetUsageClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	Execute func(ctx context.Context, locationName string, parameters armpostgresqlflexibleservers.VirtualNetworkSubnetUsageParameter, options *armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClientExecuteOptions) (resp azfake.Responder[armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClientExecuteResponse], errResp azfake.ErrorResponder)
+	List func(ctx context.Context, locationName string, parameters armpostgresqlflexibleservers.VirtualNetworkSubnetUsageParameter, options *armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClientListOptions) (resp azfake.Responder[armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClientListResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualNetworkSubnetUsageServerTransport creates a new instance of VirtualNetworkSubnetUsageServerTransport with the provided implementation.
@@ -61,8 +61,8 @@ func (v *VirtualNetworkSubnetUsageServerTransport) dispatchToMethodFake(req *htt
 		}
 		if !intercepted {
 			switch method {
-			case "VirtualNetworkSubnetUsageClient.Execute":
-				res.resp, res.err = v.dispatchExecute(req)
+			case "VirtualNetworkSubnetUsageClient.List":
+				res.resp, res.err = v.dispatchList(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -82,14 +82,14 @@ func (v *VirtualNetworkSubnetUsageServerTransport) dispatchToMethodFake(req *htt
 	}
 }
 
-func (v *VirtualNetworkSubnetUsageServerTransport) dispatchExecute(req *http.Request) (*http.Response, error) {
-	if v.srv.Execute == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Execute not implemented")}
+func (v *VirtualNetworkSubnetUsageServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
+	if v.srv.List == nil {
+		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkVirtualNetworkSubnetUsage`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.VirtualNetworkSubnetUsageParameter](req)
@@ -100,7 +100,7 @@ func (v *VirtualNetworkSubnetUsageServerTransport) dispatchExecute(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := v.srv.Execute(req.Context(), locationNameParam, body, nil)
+	respr, errRespr := v.srv.List(req.Context(), locationNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -108,7 +108,7 @@ func (v *VirtualNetworkSubnetUsageServerTransport) dispatchExecute(req *http.Req
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualNetworkSubnetUsageResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualNetworkSubnetUsageModel, req)
 	if err != nil {
 		return nil, err
 	}

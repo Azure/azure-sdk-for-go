@@ -20,40 +20,180 @@ import (
 // MigrationsClient contains the methods for the Migrations group.
 // Don't use this type directly, use NewMigrationsClient() instead.
 type MigrationsClient struct {
-	internal *arm.Client
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewMigrationsClient creates a new instance of MigrationsClient with the specified values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
-func NewMigrationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error) {
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
+func NewMigrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MigrationsClient{
-		internal: cl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
+}
+
+// Cancel - Cancels an active migration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - migrationName - Name of migration.
+//   - options - MigrationsClientCancelOptions contains the optional parameters for the MigrationsClient.Cancel method.
+func (client *MigrationsClient) Cancel(ctx context.Context, resourceGroupName string, serverName string, migrationName string, options *MigrationsClientCancelOptions) (MigrationsClientCancelResponse, error) {
+	var err error
+	const operationName = "MigrationsClient.Cancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelCreateRequest(ctx, resourceGroupName, serverName, migrationName, options)
+	if err != nil {
+		return MigrationsClientCancelResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MigrationsClientCancelResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return MigrationsClientCancelResponse{}, err
+	}
+	resp, err := client.cancelHandleResponse(httpResp)
+	return resp, err
+}
+
+// cancelCreateRequest creates the Cancel request.
+func (client *MigrationsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, serverName string, migrationName string, _ *MigrationsClientCancelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if migrationName == "" {
+		return nil, errors.New("parameter migrationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{migrationName}", url.PathEscape(migrationName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// cancelHandleResponse handles the Cancel response.
+func (client *MigrationsClient) cancelHandleResponse(resp *http.Response) (MigrationsClientCancelResponse, error) {
+	result := MigrationsClientCancelResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
+		return MigrationsClientCancelResponse{}, err
+	}
+	return result, nil
+}
+
+// CheckNameAvailability - Checks if a proposed migration name is valid and available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - parameters - Parameters required to check if a migration name is valid and available.
+//   - options - MigrationsClientCheckNameAvailabilityOptions contains the optional parameters for the MigrationsClient.CheckNameAvailability
+//     method.
+func (client *MigrationsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, serverName string, parameters MigrationNameAvailability, options *MigrationsClientCheckNameAvailabilityOptions) (MigrationsClientCheckNameAvailabilityResponse, error) {
+	var err error
+	const operationName = "MigrationsClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
+	if err != nil {
+		return MigrationsClientCheckNameAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MigrationsClientCheckNameAvailabilityResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return MigrationsClientCheckNameAvailabilityResponse{}, err
+	}
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
+	return resp, err
+}
+
+// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
+func (client *MigrationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters MigrationNameAvailability, _ *MigrationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/checkMigrationNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
+func (client *MigrationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (MigrationsClientCheckNameAvailabilityResponse, error) {
+	result := MigrationsClientCheckNameAvailabilityResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationNameAvailability); err != nil {
+		return MigrationsClientCheckNameAvailabilityResponse{}, err
+	}
+	return result, nil
 }
 
 // Create - Creates a new migration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
-//   - subscriptionID - The subscription ID of the target database server.
-//   - resourceGroupName - The resource group name of the target database server.
-//   - targetDbServerName - The name of the target database server.
-//   - migrationName - The name of the migration.
-//   - parameters - The required parameters for creating a migration.
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - migrationName - Name of migration.
+//   - parameters - Parameters required for creating a migration.
 //   - options - MigrationsClientCreateOptions contains the optional parameters for the MigrationsClient.Create method.
-func (client *MigrationsClient) Create(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters MigrationResource, options *MigrationsClientCreateOptions) (MigrationsClientCreateResponse, error) {
+func (client *MigrationsClient) Create(ctx context.Context, resourceGroupName string, serverName string, migrationName string, parameters Migration, options *MigrationsClientCreateOptions) (MigrationsClientCreateResponse, error) {
 	var err error
 	const operationName = "MigrationsClient.Create"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, parameters, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, serverName, migrationName, parameters, options)
 	if err != nil {
 		return MigrationsClientCreateResponse{}, err
 	}
@@ -70,20 +210,20 @@ func (client *MigrationsClient) Create(ctx context.Context, subscriptionID strin
 }
 
 // createCreateRequest creates the Create request.
-func (client *MigrationsClient) createCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters MigrationResource, _ *MigrationsClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+func (client *MigrationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, migrationName string, parameters Migration, _ *MigrationsClientCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetDbServerName == "" {
-		return nil, errors.New("parameter targetDbServerName cannot be empty")
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetDbServerName}", url.PathEscape(targetDbServerName))
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
 	if migrationName == "" {
 		return nil, errors.New("parameter migrationName cannot be empty")
 	}
@@ -93,7 +233,7 @@ func (client *MigrationsClient) createCreateRequest(ctx context.Context, subscri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -105,88 +245,27 @@ func (client *MigrationsClient) createCreateRequest(ctx context.Context, subscri
 // createHandleResponse handles the Create response.
 func (client *MigrationsClient) createHandleResponse(resp *http.Response) (MigrationsClientCreateResponse, error) {
 	result := MigrationsClientCreateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationResource); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientCreateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Deletes a migration.
+// Get - Gets information about a migration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
-//   - subscriptionID - The subscription ID of the target database server.
-//   - resourceGroupName - The resource group name of the target database server.
-//   - targetDbServerName - The name of the target database server.
-//   - migrationName - The name of the migration.
-//   - options - MigrationsClientDeleteOptions contains the optional parameters for the MigrationsClient.Delete method.
-func (client *MigrationsClient) Delete(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, options *MigrationsClientDeleteOptions) (MigrationsClientDeleteResponse, error) {
-	var err error
-	const operationName = "MigrationsClient.Delete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, options)
-	if err != nil {
-		return MigrationsClientDeleteResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return MigrationsClientDeleteResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientDeleteResponse{}, err
-	}
-	return MigrationsClientDeleteResponse{}, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *MigrationsClient) deleteCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, _ *MigrationsClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetDbServerName == "" {
-		return nil, errors.New("parameter targetDbServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetDbServerName}", url.PathEscape(targetDbServerName))
-	if migrationName == "" {
-		return nil, errors.New("parameter migrationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{migrationName}", url.PathEscape(migrationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// Get - Gets details of a migration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01-preview
-//   - subscriptionID - The subscription ID of the target database server.
-//   - resourceGroupName - The resource group name of the target database server.
-//   - targetDbServerName - The name of the target database server.
-//   - migrationName - The name of the migration.
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - migrationName - Name of migration.
 //   - options - MigrationsClientGetOptions contains the optional parameters for the MigrationsClient.Get method.
-func (client *MigrationsClient) Get(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, options *MigrationsClientGetOptions) (MigrationsClientGetResponse, error) {
+func (client *MigrationsClient) Get(ctx context.Context, resourceGroupName string, serverName string, migrationName string, options *MigrationsClientGetOptions) (MigrationsClientGetResponse, error) {
 	var err error
 	const operationName = "MigrationsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, migrationName, options)
 	if err != nil {
 		return MigrationsClientGetResponse{}, err
 	}
@@ -203,20 +282,20 @@ func (client *MigrationsClient) Get(ctx context.Context, subscriptionID string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *MigrationsClient) getCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, _ *MigrationsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+func (client *MigrationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, migrationName string, _ *MigrationsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetDbServerName == "" {
-		return nil, errors.New("parameter targetDbServerName cannot be empty")
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetDbServerName}", url.PathEscape(targetDbServerName))
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
 	if migrationName == "" {
 		return nil, errors.New("parameter migrationName cannot be empty")
 	}
@@ -226,7 +305,7 @@ func (client *MigrationsClient) getCreateRequest(ctx context.Context, subscripti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,21 +314,20 @@ func (client *MigrationsClient) getCreateRequest(ctx context.Context, subscripti
 // getHandleResponse handles the Get response.
 func (client *MigrationsClient) getHandleResponse(resp *http.Response) (MigrationsClientGetResponse, error) {
 	result := MigrationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationResource); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByTargetServerPager - List all the migrations on a given target server.
+// NewListByTargetServerPager - Lists all migrations of a target flexible server.
 //
-// Generated from API version 2025-01-01-preview
-//   - subscriptionID - The subscription ID of the target database server.
-//   - resourceGroupName - The resource group name of the target database server.
-//   - targetDbServerName - The name of the target database server.
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
 //   - options - MigrationsClientListByTargetServerOptions contains the optional parameters for the MigrationsClient.NewListByTargetServerPager
 //     method.
-func (client *MigrationsClient) NewListByTargetServerPager(subscriptionID string, resourceGroupName string, targetDbServerName string, options *MigrationsClientListByTargetServerOptions) *runtime.Pager[MigrationsClientListByTargetServerResponse] {
+func (client *MigrationsClient) NewListByTargetServerPager(resourceGroupName string, serverName string, options *MigrationsClientListByTargetServerOptions) *runtime.Pager[MigrationsClientListByTargetServerResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MigrationsClientListByTargetServerResponse]{
 		More: func(page MigrationsClientListByTargetServerResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -261,7 +339,7 @@ func (client *MigrationsClient) NewListByTargetServerPager(subscriptionID string
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTargetServerCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, options)
+				return client.listByTargetServerCreateRequest(ctx, resourceGroupName, serverName, options)
 			}, nil)
 			if err != nil {
 				return MigrationsClientListByTargetServerResponse{}, err
@@ -273,26 +351,26 @@ func (client *MigrationsClient) NewListByTargetServerPager(subscriptionID string
 }
 
 // listByTargetServerCreateRequest creates the ListByTargetServer request.
-func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, options *MigrationsClientListByTargetServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *MigrationsClientListByTargetServerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetDbServerName == "" {
-		return nil, errors.New("parameter targetDbServerName cannot be empty")
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetDbServerName}", url.PathEscape(targetDbServerName))
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.MigrationListFilter != nil {
 		reqQP.Set("migrationListFilter", string(*options.MigrationListFilter))
 	}
@@ -304,7 +382,7 @@ func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Cont
 // listByTargetServerHandleResponse handles the ListByTargetServer response.
 func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Response) (MigrationsClientListByTargetServerResponse, error) {
 	result := MigrationsClientListByTargetServerResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationResourceListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationList); err != nil {
 		return MigrationsClientListByTargetServerResponse{}, err
 	}
 	return result, nil
@@ -314,20 +392,19 @@ func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Resp
 // migration definition. Certain property updates initiate migration state transitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01-preview
-//   - subscriptionID - The subscription ID of the target database server.
-//   - resourceGroupName - The resource group name of the target database server.
-//   - targetDbServerName - The name of the target database server.
-//   - migrationName - The name of the migration.
-//   - parameters - The required parameters for updating a migration.
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - migrationName - Name of migration.
+//   - parameters - Parameters required to update an existing migration.
 //   - options - MigrationsClientUpdateOptions contains the optional parameters for the MigrationsClient.Update method.
-func (client *MigrationsClient) Update(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters MigrationResourceForPatch, options *MigrationsClientUpdateOptions) (MigrationsClientUpdateResponse, error) {
+func (client *MigrationsClient) Update(ctx context.Context, resourceGroupName string, serverName string, migrationName string, parameters MigrationResourceForPatch, options *MigrationsClientUpdateOptions) (MigrationsClientUpdateResponse, error) {
 	var err error
 	const operationName = "MigrationsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, subscriptionID, resourceGroupName, targetDbServerName, migrationName, parameters, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, migrationName, parameters, options)
 	if err != nil {
 		return MigrationsClientUpdateResponse{}, err
 	}
@@ -344,20 +421,20 @@ func (client *MigrationsClient) Update(ctx context.Context, subscriptionID strin
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MigrationsClient) updateCreateRequest(ctx context.Context, subscriptionID string, resourceGroupName string, targetDbServerName string, migrationName string, parameters MigrationResourceForPatch, _ *MigrationsClientUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+func (client *MigrationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, migrationName string, parameters MigrationResourceForPatch, _ *MigrationsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations/{migrationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetDbServerName == "" {
-		return nil, errors.New("parameter targetDbServerName cannot be empty")
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetDbServerName}", url.PathEscape(targetDbServerName))
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
 	if migrationName == "" {
 		return nil, errors.New("parameter migrationName cannot be empty")
 	}
@@ -367,7 +444,7 @@ func (client *MigrationsClient) updateCreateRequest(ctx context.Context, subscri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01-preview")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -379,7 +456,7 @@ func (client *MigrationsClient) updateCreateRequest(ctx context.Context, subscri
 // updateHandleResponse handles the Update response.
 func (client *MigrationsClient) updateHandleResponse(resp *http.Response) (MigrationsClientUpdateResponse, error) {
 	result := MigrationsClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationResource); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientUpdateResponse{}, err
 	}
 	return result, nil

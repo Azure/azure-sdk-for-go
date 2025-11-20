@@ -121,7 +121,7 @@ func ExampleFleetsClient_BeginCreate_createsAFleetResourceWithALongRunningOperat
 		Identity: &armcontainerservicefleet.ManagedServiceIdentity{
 			Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-				"key126": &armcontainerservicefleet.UserAssignedIdentity{},
+				"key126": {},
 			},
 		},
 	}, &armcontainerservicefleet.FleetsClientBeginCreateOptions{
@@ -808,7 +808,7 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleetGeneratedByMaximumSetRule(
 		Identity: &armcontainerservicefleet.ManagedServiceIdentity{
 			Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-				"key126": &armcontainerservicefleet.UserAssignedIdentity{},
+				"key126": {},
 			},
 		},
 	}, &armcontainerservicefleet.FleetsClientBeginUpdateAsyncOptions{

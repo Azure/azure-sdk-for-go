@@ -1157,42 +1157,42 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 						DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
 						DiskConfiguration: &armworkloadssapvirtualinstance.DiskConfiguration{
 							DiskVolumeConfigurations: map[string]*armworkloadssapvirtualinstance.DiskVolumeConfiguration{
-								"backup": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"backup": {
 									Count:  to.Ptr[int64](2),
 									SizeGB: to.Ptr[int64](256),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"hana/data": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/data": {
 									Count:  to.Ptr[int64](4),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 									},
 								},
-								"hana/log": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/log": {
 									Count:  to.Ptr[int64](3),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 									},
 								},
-								"hana/shared": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/shared": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](256),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"os": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"os": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](64),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"usr/sap": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"usr/sap": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
@@ -1471,42 +1471,42 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 						DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
 						DiskConfiguration: &armworkloadssapvirtualinstance.DiskConfiguration{
 							DiskVolumeConfigurations: map[string]*armworkloadssapvirtualinstance.DiskVolumeConfiguration{
-								"backup": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"backup": {
 									Count:  to.Ptr[int64](2),
 									SizeGB: to.Ptr[int64](256),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"hana/data": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/data": {
 									Count:  to.Ptr[int64](4),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 									},
 								},
-								"hana/log": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/log": {
 									Count:  to.Ptr[int64](3),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 									},
 								},
-								"hana/shared": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/shared": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](256),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"os": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"os": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](64),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"usr/sap": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"usr/sap": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
@@ -1791,42 +1791,42 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 						DatabaseType: to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
 						DiskConfiguration: &armworkloadssapvirtualinstance.DiskConfiguration{
 							DiskVolumeConfigurations: map[string]*armworkloadssapvirtualinstance.DiskVolumeConfiguration{
-								"backup": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"backup": {
 									Count:  to.Ptr[int64](2),
 									SizeGB: to.Ptr[int64](256),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"hana/data": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/data": {
 									Count:  to.Ptr[int64](4),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 									},
 								},
-								"hana/log": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/log": {
 									Count:  to.Ptr[int64](3),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 									},
 								},
-								"hana/shared": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"hana/shared": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](256),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"os": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"os": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](64),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
 										Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 									},
 								},
-								"usr/sap": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+								"usr/sap": {
 									Count:  to.Ptr[int64](1),
 									SizeGB: to.Ptr[int64](128),
 									SKU: &armworkloadssapvirtualinstance.DiskSKU{
@@ -2062,42 +2062,42 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithDiskAn
 					DatabaseType:     to.Ptr(armworkloadssapvirtualinstance.SAPDatabaseTypeHANA),
 					DbDiskConfiguration: &armworkloadssapvirtualinstance.DiskConfiguration{
 						DiskVolumeConfigurations: map[string]*armworkloadssapvirtualinstance.DiskVolumeConfiguration{
-							"backup": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+							"backup": {
 								Count:  to.Ptr[int64](2),
 								SizeGB: to.Ptr[int64](256),
 								SKU: &armworkloadssapvirtualinstance.DiskSKU{
 									Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 								},
 							},
-							"hana/data": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+							"hana/data": {
 								Count:  to.Ptr[int64](4),
 								SizeGB: to.Ptr[int64](128),
 								SKU: &armworkloadssapvirtualinstance.DiskSKU{
 									Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 								},
 							},
-							"hana/log": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+							"hana/log": {
 								Count:  to.Ptr[int64](3),
 								SizeGB: to.Ptr[int64](128),
 								SKU: &armworkloadssapvirtualinstance.DiskSKU{
 									Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNamePremiumLRS),
 								},
 							},
-							"hana/shared": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+							"hana/shared": {
 								Count:  to.Ptr[int64](1),
 								SizeGB: to.Ptr[int64](256),
 								SKU: &armworkloadssapvirtualinstance.DiskSKU{
 									Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 								},
 							},
-							"os": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+							"os": {
 								Count:  to.Ptr[int64](1),
 								SizeGB: to.Ptr[int64](64),
 								SKU: &armworkloadssapvirtualinstance.DiskSKU{
 									Name: to.Ptr(armworkloadssapvirtualinstance.DiskSKUNameStandardSSDLRS),
 								},
 							},
-							"usr/sap": &armworkloadssapvirtualinstance.DiskVolumeConfiguration{
+							"usr/sap": {
 								Count:  to.Ptr[int64](1),
 								SizeGB: to.Ptr[int64](128),
 								SKU: &armworkloadssapvirtualinstance.DiskSKU{
@@ -3044,7 +3044,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("app0disk0"),
 										},
 									},
@@ -3059,7 +3059,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 								},
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("app1disk0"),
 										},
 									},
@@ -3078,7 +3078,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("ascsdisk0"),
 										},
 									},
@@ -3097,20 +3097,20 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"hanaData": []*string{
+										"hanaData": {
 											to.Ptr("hanadata0"),
 											to.Ptr("hanadata1"),
 										},
-										"hanaLog": []*string{
+										"hanaLog": {
 											to.Ptr("hanalog0"),
 											to.Ptr("hanalog1"),
 											to.Ptr("hanalog2"),
 										},
-										"hanaShared": []*string{
+										"hanaShared": {
 											to.Ptr("hanashared0"),
 											to.Ptr("hanashared1"),
 										},
-										"usrSap": []*string{
+										"usrSap": {
 											to.Ptr("usrsap0"),
 										},
 									},
@@ -3452,7 +3452,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("app0disk0"),
 										},
 									},
@@ -3467,7 +3467,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 								},
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("app1disk0"),
 										},
 									},
@@ -3538,20 +3538,20 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"hanaData": []*string{
+										"hanaData": {
 											to.Ptr("hanadatapr0"),
 											to.Ptr("hanadatapr1"),
 										},
-										"hanaLog": []*string{
+										"hanaLog": {
 											to.Ptr("hanalogpr0"),
 											to.Ptr("hanalogpr1"),
 											to.Ptr("hanalogpr2"),
 										},
-										"hanaShared": []*string{
+										"hanaShared": {
 											to.Ptr("hanasharedpr0"),
 											to.Ptr("hanasharedpr1"),
 										},
-										"usrSap": []*string{
+										"usrSap": {
 											to.Ptr("usrsappr0"),
 										},
 									},
@@ -3566,20 +3566,20 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 								},
 								{
 									DataDiskNames: map[string][]*string{
-										"hanaData": []*string{
+										"hanaData": {
 											to.Ptr("hanadatasr0"),
 											to.Ptr("hanadatasr1"),
 										},
-										"hanaLog": []*string{
+										"hanaLog": {
 											to.Ptr("hanalogsr0"),
 											to.Ptr("hanalogsr1"),
 											to.Ptr("hanalogsr2"),
 										},
-										"hanaShared": []*string{
+										"hanaShared": {
 											to.Ptr("hanasharedsr0"),
 											to.Ptr("hanasharedsr1"),
 										},
-										"usrSap": []*string{
+										"usrSap": {
 											to.Ptr("usrsapsr0"),
 										},
 									},
@@ -3987,7 +3987,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("app0disk0"),
 										},
 									},
@@ -4002,7 +4002,7 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 								},
 								{
 									DataDiskNames: map[string][]*string{
-										"default": []*string{
+										"default": {
 											to.Ptr("app1disk0"),
 										},
 									},
@@ -4071,20 +4071,20 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 							VirtualMachines: []*armworkloadssapvirtualinstance.VirtualMachineResourceNames{
 								{
 									DataDiskNames: map[string][]*string{
-										"hanaData": []*string{
+										"hanaData": {
 											to.Ptr("hanadatapr0"),
 											to.Ptr("hanadatapr1"),
 										},
-										"hanaLog": []*string{
+										"hanaLog": {
 											to.Ptr("hanalogpr0"),
 											to.Ptr("hanalogpr1"),
 											to.Ptr("hanalogpr2"),
 										},
-										"hanaShared": []*string{
+										"hanaShared": {
 											to.Ptr("hanasharedpr0"),
 											to.Ptr("hanasharedpr1"),
 										},
-										"usrSap": []*string{
+										"usrSap": {
 											to.Ptr("usrsappr0"),
 										},
 									},
@@ -4099,20 +4099,20 @@ func ExampleSAPVirtualInstancesClient_BeginCreate_createInfrastructureWithOSConf
 								},
 								{
 									DataDiskNames: map[string][]*string{
-										"hanaData": []*string{
+										"hanaData": {
 											to.Ptr("hanadatasr0"),
 											to.Ptr("hanadatasr1"),
 										},
-										"hanaLog": []*string{
+										"hanaLog": {
 											to.Ptr("hanalogsr0"),
 											to.Ptr("hanalogsr1"),
 											to.Ptr("hanalogsr2"),
 										},
-										"hanaShared": []*string{
+										"hanaShared": {
 											to.Ptr("hanasharedsr0"),
 											to.Ptr("hanasharedsr1"),
 										},
-										"usrSap": []*string{
+										"usrSap": {
 											to.Ptr("usrsapsr0"),
 										},
 									},

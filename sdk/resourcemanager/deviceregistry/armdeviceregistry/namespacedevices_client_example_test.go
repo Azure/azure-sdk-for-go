@@ -29,7 +29,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespace
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Outbound: &armdeviceregistry.OutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
+						"eventGridEndpoint": {
 							EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 							Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},
@@ -116,7 +116,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 		Properties: &armdeviceregistry.NamespaceDeviceProperties{
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
-					"theOnlyOPCUABroker": &armdeviceregistry.InboundEndpoints{
+					"theOnlyOPCUABroker": {
 						Address:      to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
 						EndpointType: to.Ptr("microsoft.opcua"),
 						Version:      to.Ptr("2"),
@@ -208,7 +208,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 		Properties: &armdeviceregistry.NamespaceDeviceProperties{
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
-					"theOnlyOPCUABroker": &armdeviceregistry.InboundEndpoints{
+					"theOnlyOPCUABroker": {
 						Address:      to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
 						EndpointType: to.Ptr("microsoft.opcua"),
 						Version:      to.Ptr("2"),
@@ -308,7 +308,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 		Properties: &armdeviceregistry.NamespaceDeviceProperties{
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Inbound: map[string]*armdeviceregistry.InboundEndpoints{
-					"theV1OPCUAEndpoint": &armdeviceregistry.InboundEndpoints{
+					"theV1OPCUAEndpoint": {
 						Address:      to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
 						EndpointType: to.Ptr("microsoft.opcua"),
 						Version:      to.Ptr("2"),
@@ -321,7 +321,7 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 							},
 						},
 					},
-					"theV2OPCUAEndpoint": &armdeviceregistry.InboundEndpoints{
+					"theV2OPCUAEndpoint": {
 						Address:      to.Ptr("opc.tcp://192.168.86.23:51211/UA/SampleServer"),
 						EndpointType: to.Ptr("microsoft.opcua"),
 						Version:      to.Ptr("2"),
@@ -688,7 +688,7 @@ func ExampleNamespaceDevicesClient_BeginUpdate() {
 			Endpoints: &armdeviceregistry.MessagingEndpoints{
 				Outbound: &armdeviceregistry.OutboundEndpoints{
 					Assigned: map[string]*armdeviceregistry.DeviceMessagingEndpoint{
-						"eventGridEndpoint": &armdeviceregistry.DeviceMessagingEndpoint{
+						"eventGridEndpoint": {
 							EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
 							Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
 						},

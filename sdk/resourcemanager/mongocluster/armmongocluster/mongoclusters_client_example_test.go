@@ -274,7 +274,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
 		Location: to.Ptr("centralus"),
@@ -486,7 +486,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
 		Location: to.Ptr("westus2"),
@@ -692,7 +692,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armmongocluster.UserAssignedIdentity{},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
 		Location: to.Ptr("westus2"),
@@ -1385,7 +1385,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 		Identity: &armmongocluster.ManagedServiceIdentity{
 			Type: to.Ptr(armmongocluster.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armmongocluster.UserAssignedIdentity{
-				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2": &armmongocluster.UserAssignedIdentity{},
+				"/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity2": {},
 			},
 		},
 		Properties: &armmongocluster.UpdateProperties{

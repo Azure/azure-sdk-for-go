@@ -235,7 +235,7 @@ func TestNewClientIPv6(t *testing.T) {
 	listener, err := net.Listen("tcp6", "[::1]:0")
 	require.NoError(t, err)
 	defer func() {
-		require.NoError(t, listener.Close())
+		_ = listener.Close()
 	}()
 
 	mux := http.NewServeMux()

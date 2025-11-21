@@ -388,6 +388,34 @@ func (c *customTokenRequestPolicyFlowCheck) Validate(t testing.TB, req *http.Req
 	require.Equal(t, c.requiredHeaderValue, req.Header.Get(c.requiredHeaderKey))
 }
 
+func TestWorkloadIdentityCredential_GetFederatedTokenOverride(t *testing.T) {
+	const overrideToken = "override-token"
+	called := new(atomic.Int32)
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID: fakeClientID,
+		TenantID: fakeTenantID,
+		ClientOptions: policy.ClientOptions{
+			Transport: &mockSTS{
+				tokenRequestCallback: func(req *http.Request) *http.Response {
+					require.NoError(t, req.ParseForm())
+					require.Equal(t, overrideToken, req.PostForm.Get("client_assertion"))
+					called.Add(1)
+					return nil
+				},
+			},
+		},
+		GetFederatedToken: func(ctx context.Context) (string, error) {
+			return overrideToken, nil
+		},
+	})
+	require.NoError(t, err)
+
+	tk, err := cred.GetToken(context.Background(), testTRO)
+	require.NoError(t, err)
+	require.Equal(t, tokenValue, tk.Token)
+	require.Equal(t, int32(1), called.Load())
+}
+
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithOptions(t *testing.T) {
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {

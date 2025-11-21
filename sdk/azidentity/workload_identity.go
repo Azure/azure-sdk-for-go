@@ -23,10 +23,11 @@ const credNameWorkloadIdentity = "WorkloadIdentityCredential"
 //
 // [Azure Kubernetes Service documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 type WorkloadIdentityCredential struct {
-	assertion, file string
-	cred            *ClientAssertionCredential
-	expires         time.Time
-	mtx             *sync.RWMutex
+	assertion, file      string
+	getAssertionOverride func(ctx context.Context) (string, error)
+	cred                 *ClientAssertionCredential
+	expires              time.Time
+	mtx                  *sync.RWMutex
 }
 
 type WorkloadIdentityAzureProxyOptions = customtokenproxy.Options
@@ -73,7 +74,12 @@ type WorkloadIdentityCredentialOptions struct {
 
 	// TokenFilePath is the path of a file containing a Kubernetes service account token. Defaults to the value of the
 	// environment variable AZURE_FEDERATED_TOKEN_FILE.
+	// If GetFederatedToken is set, this field is ignored.
 	TokenFilePath string
+
+	// GetFederatedToken defines an optional func to get the Kubernetes service account token.
+	// If this function is set, it will be used to get the token instead of reading it from TokenFilePath.
+	GetFederatedToken func(ctx context.Context) (string, error)
 }
 
 // NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. Service principal configuration is read
@@ -90,9 +96,9 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		}
 	}
 	file := options.TokenFilePath
-	if file == "" {
+	if file == "" && options.GetFederatedToken == nil {
 		if file, ok = os.LookupEnv(azureFederatedTokenFile); !ok {
-			return nil, errors.New("no token file specified. Check pod configuration or set TokenFilePath in the options")
+			return nil, errors.New("no token file specified. Check pod configuration or set TokenFilePath or GetFederatedToken in the options")
 		}
 	}
 	tenantID := options.TenantID
@@ -102,7 +108,11 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		}
 	}
 
-	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
+	w := WorkloadIdentityCredential{
+		file:                 file,
+		getAssertionOverride: options.GetFederatedToken,
+		mtx:                  &sync.RWMutex{},
+	}
 	caco := &ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
@@ -139,7 +149,11 @@ func (w *WorkloadIdentityCredential) GetToken(ctx context.Context, opts policy.T
 
 // getAssertion returns the specified file's content, which is expected to be a Kubernetes service account token.
 // Kubernetes is responsible for updating the file as service account tokens expire.
-func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, error) {
+func (w *WorkloadIdentityCredential) getAssertion(ctx context.Context) (string, error) {
+	if w.getAssertionOverride != nil {
+		return w.getAssertionOverride(ctx)
+	}
+
 	w.mtx.RLock()
 	if w.expires.Before(time.Now()) {
 		// ensure only one goroutine at a time updates the assertion

@@ -16,20 +16,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups/v2"
 	"github.com/stretchr/testify/suite"
 )
 
 type ManagementTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	groupId           string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	groupId			string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ManagementTestSuite) SetupSuite() {
@@ -64,8 +64,8 @@ func (testsuite *ManagementTestSuite) TestManagementGroups() {
 	aPIClient, err := armmanagementgroups.NewAPIClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = aPIClient.CheckNameAvailability(testsuite.ctx, armmanagementgroups.CheckNameAvailabilityRequest{
-		Name: to.Ptr(testsuite.groupId),
-		Type: to.Ptr("Microsoft.Management/managementGroups"),
+		Name:	to.Ptr(testsuite.groupId),
+		Type:	to.Ptr("Microsoft.Management/managementGroups"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
@@ -85,7 +85,7 @@ func (testsuite *ManagementTestSuite) TestManagementGroups() {
 	// From step ManagementGroups_List
 	fmt.Println("Call operation: ManagementGroups_List")
 	clientNewListPager := client.NewListPager(&armmanagementgroups.ClientListOptions{CacheControl: to.Ptr("no-cache"),
-		Skiptoken: nil,
+		Skiptoken:	nil,
 	})
 	for clientNewListPager.More() {
 		_, err := clientNewListPager.NextPage(testsuite.ctx)
@@ -96,7 +96,7 @@ func (testsuite *ManagementTestSuite) TestManagementGroups() {
 	// From step ManagementGroups_GetDescendants
 	fmt.Println("Call operation: ManagementGroups_GetDescendants")
 	clientNewGetDescendantsPager := client.NewGetDescendantsPager(testsuite.groupId, &armmanagementgroups.ClientGetDescendantsOptions{Skiptoken: nil,
-		Top: nil,
+		Top:	nil,
 	})
 	for clientNewGetDescendantsPager.More() {
 		_, err := clientNewGetDescendantsPager.NextPage(testsuite.ctx)
@@ -107,9 +107,9 @@ func (testsuite *ManagementTestSuite) TestManagementGroups() {
 	// From step ManagementGroups_Get
 	fmt.Println("Call operation: ManagementGroups_Get")
 	_, err = client.Get(testsuite.ctx, testsuite.groupId, &armmanagementgroups.ClientGetOptions{Expand: nil,
-		Recurse:      nil,
-		Filter:       nil,
-		CacheControl: to.Ptr("no-cache"),
+		Recurse:	nil,
+		Filter:		nil,
+		CacheControl:	to.Ptr("no-cache"),
 	})
 	testsuite.Require().NoError(err)
 
@@ -134,14 +134,14 @@ func (testsuite *ManagementTestSuite) TestEntities() {
 	entitiesClient, err := armmanagementgroups.NewEntitiesClient(testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	entitiesClientNewListPager := entitiesClient.NewListPager(&armmanagementgroups.EntitiesClientListOptions{Skiptoken: nil,
-		Skip:         nil,
-		Top:          nil,
-		Select:       nil,
-		Search:       nil,
-		Filter:       nil,
-		View:         nil,
-		GroupName:    nil,
-		CacheControl: nil,
+		Skip:		nil,
+		Top:		nil,
+		Select:		nil,
+		Search:		nil,
+		Filter:		nil,
+		View:		nil,
+		GroupName:	nil,
+		CacheControl:	nil,
 	})
 	for entitiesClientNewListPager.More() {
 		_, err := entitiesClientNewListPager.NextPage(testsuite.ctx)

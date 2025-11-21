@@ -231,11 +231,11 @@ func GetClientOptions[T any](o *T) *T {
 // http(s)://IP(:port)/storageaccount/container/...
 // As url's Host property, host could be both host or host:port
 func IsIPEndpointStyle(host string) bool {
-	if host == "" {
-		return false
-	}
 	if h, _, err := net.SplitHostPort(host); err == nil {
 		host = h
+	}
+	if host == "" {
+		return false
 	}
 	// For IPv6, there could be case where SplitHostPort fails for cannot finding port.
 	// In this case, eliminate the '[' and ']' in the URL.

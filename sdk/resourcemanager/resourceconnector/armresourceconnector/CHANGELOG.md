@@ -1,5 +1,17 @@
 # Release History
 
+## 1.2.0-beta.1 (2025-11-21)
+### Features Added
+
+- New value `StatusArcGatewayUpdateComplete`, `StatusArcGatewayUpdateFailed`, `StatusArcGatewayUpdatePreparing`, `StatusArcGatewayUpdating`, `StatusNetworkDNSUpdateComplete`, `StatusNetworkDNSUpdateFailed`, `StatusNetworkDNSUpdatePreparing`, `StatusNetworkDNSUpdating`, `StatusNetworkProxyUpdateComplete`, `StatusNetworkProxyUpdateFailed`, `StatusNetworkProxyUpdatePreparing`, `StatusNetworkProxyUpdating` added to enum type `Status`
+- New struct `DNSConfiguration`
+- New struct `Event`
+- New struct `GatewayConfiguration`
+- New struct `NetworkProfile`
+- New struct `ProxyConfiguration`
+- New field `Events`, `NetworkProfile` in struct `ApplianceProperties`
+
+
 ## 1.1.0 (2023-11-24)
 ### Features Added
 

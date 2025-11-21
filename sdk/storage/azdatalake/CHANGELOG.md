@@ -1,14 +1,9 @@
 # Release History
 
-## 1.4.4-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.4 (Unreleased)
 
 ### Other Changes
+* Updated `azidentity` version to `1.13.0`
 
 ## 1.4.3 (2025-10-16)
 

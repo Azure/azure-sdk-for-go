@@ -98,7 +98,10 @@ func unmarshal[T any](resp *http.Response) (T, error) {
 	if err != nil {
 		return t, err
 	}
-	resp.Body.Close()
+
+	if err := resp.Body.Close(); err != nil {
+		return t, err
+	}
 
 	err = json.Unmarshal(body, &t)
 	return t, err

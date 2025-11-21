@@ -190,11 +190,12 @@ func TestStartSpansDontNest(t *testing.T) {
 	httpSpanCount := 0
 	endCalled := 0
 	tr := tracing.NewTracer(func(ctx context.Context, spanName string, options *tracing.SpanOptions) (context.Context, tracing.Span) {
-		if spanName == "HTTP GET" {
+		switch spanName {
+		case "HTTP GET":
 			httpSpanCount++
-		} else if spanName == "FooMethod" {
+		case "FooMethod":
 			apiSpanCount++
-		} else {
+		default:
 			t.Fatalf("unexpected span name %s", spanName)
 		}
 		spanImpl := tracing.SpanImpl{

@@ -237,12 +237,14 @@ func TestNewClientIPv6(t *testing.T) {
 	// Create an IPv6-only listener
 	listener, err := net.Listen("tcp6", "[::1]:0")
 	require.NoError(t, err)
-	defer listener.Close()
+	defer func() {
+		require.NoError(t, listener.Close())
+	}()
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprint(w, `{"message":"IPv6 connection successful"}`)
+		_, _ = fmt.Fprint(w, `{"message":"IPv6 connection successful"}`)
 	})
 	server := &http.Server{
 		Handler: mux,
@@ -272,7 +274,9 @@ func TestNewClientIPv6(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 	require.Equal(t, http.StatusOK, resp.StatusCode)
-	defer resp.Body.Close()
+	defer func() {
+		require.NoError(t, resp.Body.Close())
+	}()
 
 	body, err := io.ReadAll(resp.Body)
 	require.NoError(t, err)

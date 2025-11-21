@@ -488,7 +488,7 @@ func TestRetryPolicySuccessNoDownload(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 }
 
 func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
@@ -508,7 +508,7 @@ func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 }
 
 func TestRetryPolicySuccessWithRetryReadingResponse(t *testing.T) {

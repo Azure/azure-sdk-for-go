@@ -84,8 +84,9 @@ func UnmarshalAsXML(resp *http.Response, v any) error {
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
 func Drain(resp *http.Response) {
 	if resp != nil && resp.Body != nil {
+		// TODO: this might not be necessary when the bodyDownloadPolicy is in play
 		_, _ = io.Copy(io.Discard, resp.Body)
-		resp.Body.Close()
+		_ = resp.Body.Close()
 	}
 }
 

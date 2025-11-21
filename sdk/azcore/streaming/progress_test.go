@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestProgressReporting(t *testing.T) {
@@ -51,7 +52,9 @@ func TestProgressReporting(t *testing.T) {
 	respRpt := streaming.NewResponseProgress(resp.Body, func(bytesTransferred int64) {
 		bytesReceived = bytesTransferred
 	})
-	defer respRpt.Close()
+	defer func() {
+		require.NoError(t, respRpt.Close())
+	}()
 	b, err := io.ReadAll(respRpt)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

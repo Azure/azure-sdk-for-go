@@ -3,7 +3,7 @@
 ## 1.6.4 (Unreleased)
 
 ### Other Changes
-* Updated `azidentity` version to `1.13.0`
+* Updated `azidentity` version to `1.13.1`
 
 ## 1.6.3 (2025-10-16)
 

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -488,7 +485,7 @@ func TestRetryPolicySuccessNoDownload(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 }
 
 func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
@@ -508,7 +505,7 @@ func TestRetryPolicySuccessNoDownloadNoBody(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	resp.Body.Close()
+	require.NoError(t, resp.Body.Close())
 }
 
 func TestRetryPolicySuccessWithRetryReadingResponse(t *testing.T) {

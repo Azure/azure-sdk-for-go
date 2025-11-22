@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -115,7 +112,9 @@ func UnmarshalRequestAsByteArray(req *http.Request, format azexported.Base64Enco
 	if err != nil {
 		return nil, errorinfo.NonRetriableError(err)
 	}
-	req.Body.Close()
+	if err := req.Body.Close(); err != nil {
+		return nil, err
+	}
 	var val []byte
 	if err := azexported.DecodeByteArray(string(body), &val, format); err != nil {
 		return nil, errorinfo.NonRetriableError(err)
@@ -134,7 +133,9 @@ func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 	if err != nil {
 		return tt, errorinfo.NonRetriableError(err)
 	}
-	req.Body.Close()
+	if err := req.Body.Close(); err != nil {
+		return tt, err
+	}
 	if err = json.Unmarshal(body, &tt); err != nil {
 		err = errorinfo.NonRetriableError(err)
 	}
@@ -151,7 +152,9 @@ func UnmarshalRequestAsText(req *http.Request) (string, error) {
 	if err != nil {
 		return "", errorinfo.NonRetriableError(err)
 	}
-	req.Body.Close()
+	if err := req.Body.Close(); err != nil {
+		return "", err
+	}
 	return string(body), nil
 }
 
@@ -166,7 +169,9 @@ func UnmarshalRequestAsXML[T any](req *http.Request) (T, error) {
 	if err != nil {
 		return tt, errorinfo.NonRetriableError(err)
 	}
-	req.Body.Close()
+	if err := req.Body.Close(); err != nil {
+		return tt, err
+	}
 	if err = xml.Unmarshal(body, &tt); err != nil {
 		err = errorinfo.NonRetriableError(err)
 	}

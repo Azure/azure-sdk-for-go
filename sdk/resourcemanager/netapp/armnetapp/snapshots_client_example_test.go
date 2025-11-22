@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/Snapshots_Create.json
+// Generated from example definition: 2025-09-01-preview/Snapshots_Create.json
 func ExampleSnapshotsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleSnapshotsClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Snapshots_Delete.json
+// Generated from example definition: 2025-09-01-preview/Snapshots_Delete.json
 func ExampleSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Snapshots_Get.json
+// Generated from example definition: 2025-09-01-preview/Snapshots_Get.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Snapshots_List.json
+// Generated from example definition: 2025-09-01-preview/Snapshots_List.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Snapshots_SingleFileRestore.json
+// Generated from example definition: 2025-09-01-preview/Snapshots_SingleFileRestore.json
 func ExampleSnapshotsClient_BeginRestoreFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleSnapshotsClient_BeginRestoreFiles() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Snapshots_Update.json
+// Generated from example definition: 2025-09-01-preview/Snapshots_Update.json
 func ExampleSnapshotsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

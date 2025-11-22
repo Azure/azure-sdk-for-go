@@ -44,7 +44,7 @@ func NewResourceUsagesClient(subscriptionID string, credential azcore.TokenCrede
 // Get current subscription usage of the specific type
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-09-01-preview
 //   - location - The name of the Azure region.
 //   - usageType - The type of usage
 //   - options - ResourceUsagesClientGetOptions contains the optional parameters for the ResourceUsagesClient.Get method.
@@ -90,7 +90,7 @@ func (client *ResourceUsagesClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -109,7 +109,7 @@ func (client *ResourceUsagesClient) getHandleResponse(resp *http.Response) (Reso
 //
 // # Get current subscription usages
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-09-01-preview
 //   - location - The location name.
 //   - options - ResourceUsagesClientListOptions contains the optional parameters for the ResourceUsagesClient.NewListPager method.
 func (client *ResourceUsagesClient) NewListPager(location string, options *ResourceUsagesClientListOptions) *runtime.Pager[ResourceUsagesClientListResponse] {
@@ -151,7 +151,7 @@ func (client *ResourceUsagesClient) listCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

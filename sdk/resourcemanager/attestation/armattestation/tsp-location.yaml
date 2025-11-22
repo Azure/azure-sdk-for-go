@@ -1,0 +1,4 @@
+directory: specification/attestation/resource-manager/Microsoft.Attestation/Attestation
+commit: baa05d0899d6b74a4d32cdcae6be6f3e24b26952
+repo: i-specs
+additionalDirectories: 

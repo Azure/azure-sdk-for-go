@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Management Groups module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups/v2
 ```
 
 ## Authorization
@@ -36,7 +36,7 @@ For more information on authentication, please see the documentation for `aziden
 Azure Management Groups module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-clientFactory, err := armmanagementgroups.NewClientFactory(cred, nil)
+clientFactory, err := armmanagementgroups.NewClientFactory(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -47,7 +47,7 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-clientFactory, err := armmanagementgroups.NewClientFactory(cred, &options)
+clientFactory, err := armmanagementgroups.NewClientFactory(<subscription ID>, cred, &options)
 ```
 
 ## Clients
@@ -55,7 +55,7 @@ clientFactory, err := armmanagementgroups.NewClientFactory(cred, &options)
 A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewClient()
+client := clientFactory.NewManagementGroupSubscriptionsClient()
 ```
 
 ## Fakes

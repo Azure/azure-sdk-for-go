@@ -79,6 +79,58 @@ func (m *MockQueryEngine) CreateQueryPipeline(query string, plan string, pkrange
 	return newMockQueryPipeline(query, ranges.PartitionKeyRanges, cfg), nil
 }
 
+// CreateReadManyPipeline creates a read-many pipeline which returns the provided item identities
+// serialized as JSON documents. This is a simplified pipeline used by tests to exercise the
+// SDK's ReadMany->QueryEngine glue without making network calls for each item.
+func (m *MockQueryEngine) CreateReadManyPipeline(items []queryengine.ItemIdentity, pkranges string, pkKind string, pkVersion uint8, pkPaths []string) (queryengine.QueryPipeline, error) {
+	return &MockReadManyPipeline{items: items, completed: false, resultingItems: make([][]byte, 0, len(items))}, nil
+}
+
+// MockReadManyPipeline is a minimal QueryPipeline implementation for ReadMany tests.
+type MockReadManyPipeline struct {
+	items          []queryengine.ItemIdentity
+	completed      bool
+	resultingItems [][]byte
+}
+
+func (m *MockReadManyPipeline) Close() {
+	m.completed = true
+}
+
+func (m *MockReadManyPipeline) IsComplete() bool {
+	return m.completed
+}
+
+func (m *MockReadManyPipeline) Run() (*queryengine.PipelineResult, error) {
+	if m.IsComplete() {
+		return &queryengine.PipelineResult{IsCompleted: true, Items: m.resultingItems, Requests: nil}, nil
+	}
+	// first run return queries to execute
+	requests := make([]queryengine.QueryRequest, 0, len(m.items))
+	for i := range m.items {
+		pk := m.items[i].PartitionKeyValue
+		create_query := fmt.Sprintf("Select * from c where c.id = '%s' and c.pk = '%s'", m.items[i].ID, pk)
+		requests = append(requests, queryengine.QueryRequest{
+			Query: create_query,
+		})
+	}
+
+	// second run return result
+	m.completed = true
+	return &queryengine.PipelineResult{IsCompleted: true, Items: nil, Requests: requests}, nil
+}
+
+func (m *MockReadManyPipeline) ProvideData(data []queryengine.QueryResult) error {
+	for _, res := range data {
+		m.resultingItems = append(m.resultingItems, res.Data)
+	}
+	return nil
+}
+
+func (m *MockReadManyPipeline) Query() string {
+	return ""
+}
+
 func (m *MockQueryEngine) SupportedFeatures() string {
 	// We need to return whatever is necessary for the gateway to return a query plan for the query `SELECT * FROM c ORDER BY c.mergeOrder`
 	return "OrderBy"

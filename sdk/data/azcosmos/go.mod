@@ -1,6 +1,8 @@
 module github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
 
-go 1.23.0
+go 1.23.3
+
+toolchain go1.24.4
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.1

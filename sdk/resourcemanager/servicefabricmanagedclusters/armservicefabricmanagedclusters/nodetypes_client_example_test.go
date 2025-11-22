@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperationAutoScale_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperationAutoScale_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParamet
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperationCustomImage_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperationCustomImage_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCustomVMImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCu
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperationDedicatedHost_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperationDedicatedHost_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() 
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperationStateless_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperationStateless_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTemporaryDiskForServiceFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,7 +426,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTempor
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperationVmImagePlan_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperationVmImagePlan_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -497,7 +497,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperation_example_max.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperation_example_max.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -847,7 +847,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePutOperation_example_min.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePutOperation_example_min.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -908,7 +908,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameter
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/DeallocateNodes_example.json
+// Generated from example definition: 2025-10-01-preview/DeallocateNodes_example.json
 func ExampleNodeTypesClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -934,7 +934,7 @@ func ExampleNodeTypesClient_BeginDeallocate() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypeDeleteOperation_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypeDeleteOperation_example.json
 func ExampleNodeTypesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -955,7 +955,7 @@ func ExampleNodeTypesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/DeleteNodes_example.json
+// Generated from example definition: 2025-10-01-preview/DeleteNodes_example.json
 func ExampleNodeTypesClient_BeginDeleteNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -981,7 +981,7 @@ func ExampleNodeTypesClient_BeginDeleteNode() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypeGetOperation_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypeGetOperation_example.json
 func ExampleNodeTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1039,7 +1039,7 @@ func ExampleNodeTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
+// Generated from example definition: 2025-10-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
 func ExampleNodeTypesClient_GetFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1091,7 +1091,7 @@ func ExampleNodeTypesClient_GetFaultSimulation() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypeListOperation_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypeListOperation_example.json
 func ExampleNodeTypesClient_NewListByManagedClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1205,7 +1205,7 @@ func ExampleNodeTypesClient_NewListByManagedClustersPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
+// Generated from example definition: 2025-10-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
 func ExampleNodeTypesClient_NewListFaultSimulationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1292,7 +1292,7 @@ func ExampleNodeTypesClient_NewListFaultSimulationPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/RedeployNodes_UD_example.json
+// Generated from example definition: 2025-10-01-preview/RedeployNodes_UD_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1315,7 +1315,7 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/RedeployNodes_example.json
+// Generated from example definition: 2025-10-01-preview/RedeployNodes_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1341,7 +1341,7 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ReimageNodes_UD_example.json
+// Generated from example definition: 2025-10-01-preview/ReimageNodes_UD_example.json
 func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1364,7 +1364,7 @@ func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ReimageNodes_example.json
+// Generated from example definition: 2025-10-01-preview/ReimageNodes_example.json
 func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1390,7 +1390,7 @@ func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/RestartNodes_example.json
+// Generated from example definition: 2025-10-01-preview/RestartNodes_example.json
 func ExampleNodeTypesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1416,7 +1416,7 @@ func ExampleNodeTypesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/StartNodes_example.json
+// Generated from example definition: 2025-10-01-preview/StartNodes_example.json
 func ExampleNodeTypesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1442,7 +1442,7 @@ func ExampleNodeTypesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
+// Generated from example definition: 2025-10-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
 func ExampleNodeTypesClient_BeginStartFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1470,7 +1470,7 @@ func ExampleNodeTypesClient_BeginStartFaultSimulation() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
+// Generated from example definition: 2025-10-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
 func ExampleNodeTypesClient_BeginStopFaultSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1493,7 +1493,7 @@ func ExampleNodeTypesClient_BeginStopFaultSimulation() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePatchOperationAutoScale_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePatchOperationAutoScale_example.json
 func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1593,7 +1593,7 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NodeTypePatchOperation_example.json
+// Generated from example definition: 2025-10-01-preview/NodeTypePatchOperation_example.json
 func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

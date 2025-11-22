@@ -73,6 +73,11 @@ type ApplicationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// ApplicationsClientFetchHealthResponse contains the response from method ApplicationsClient.BeginFetchHealth.
+type ApplicationsClientFetchHealthResponse struct {
+	// placeholder for future response values
+}
+
 // ApplicationsClientGetResponse contains the response from method ApplicationsClient.Get.
 type ApplicationsClientGetResponse struct {
 	// The application resource.
@@ -90,6 +95,11 @@ type ApplicationsClientReadUpgradeResponse struct {
 	// placeholder for future response values
 }
 
+// ApplicationsClientRestartDeployedCodePackageResponse contains the response from method ApplicationsClient.BeginRestartDeployedCodePackage.
+type ApplicationsClientRestartDeployedCodePackageResponse struct {
+	// placeholder for future response values
+}
+
 // ApplicationsClientResumeUpgradeResponse contains the response from method ApplicationsClient.BeginResumeUpgrade.
 type ApplicationsClientResumeUpgradeResponse struct {
 	// placeholder for future response values
@@ -100,7 +110,7 @@ type ApplicationsClientStartRollbackResponse struct {
 	// placeholder for future response values
 }
 
-// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.Update.
+// ApplicationsClientUpdateResponse contains the response from method ApplicationsClient.BeginUpdate.
 type ApplicationsClientUpdateResponse struct {
 	// The application resource.
 	ApplicationResource
@@ -197,7 +207,7 @@ type ManagedClustersClientStopFaultSimulationResponse struct {
 	FaultSimulation
 }
 
-// ManagedClustersClientUpdateResponse contains the response from method ManagedClustersClient.Update.
+// ManagedClustersClientUpdateResponse contains the response from method ManagedClustersClient.BeginUpdate.
 type ManagedClustersClientUpdateResponse struct {
 	// The managed cluster resource
 	ManagedCluster
@@ -349,6 +359,11 @@ type ServicesClientGetResponse struct {
 type ServicesClientListByApplicationsResponse struct {
 	// The list of service resources.
 	ServiceResourceList
+}
+
+// ServicesClientRestartReplicaResponse contains the response from method ServicesClient.BeginRestartReplica.
+type ServicesClientRestartReplicaResponse struct {
+	// placeholder for future response values
 }
 
 // ServicesClientUpdateResponse contains the response from method ServicesClient.Update.

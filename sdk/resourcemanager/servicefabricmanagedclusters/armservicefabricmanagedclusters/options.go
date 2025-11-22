@@ -75,9 +75,23 @@ type ApplicationsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// ApplicationsClientBeginFetchHealthOptions contains the optional parameters for the ApplicationsClient.BeginFetchHealth
+// method.
+type ApplicationsClientBeginFetchHealthOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ApplicationsClientBeginReadUpgradeOptions contains the optional parameters for the ApplicationsClient.BeginReadUpgrade
 // method.
 type ApplicationsClientBeginReadUpgradeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ApplicationsClientBeginRestartDeployedCodePackageOptions contains the optional parameters for the ApplicationsClient.BeginRestartDeployedCodePackage
+// method.
+type ApplicationsClientBeginRestartDeployedCodePackageOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -96,6 +110,12 @@ type ApplicationsClientBeginStartRollbackOptions struct {
 	ResumeToken string
 }
 
+// ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate method.
+type ApplicationsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ApplicationsClientBeginUpdateUpgradeOptions contains the optional parameters for the ApplicationsClient.BeginUpdateUpgrade
 // method.
 type ApplicationsClientBeginUpdateUpgradeOptions struct {
@@ -110,11 +130,6 @@ type ApplicationsClientGetOptions struct {
 
 // ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.NewListPager method.
 type ApplicationsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
-type ApplicationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -179,6 +194,12 @@ type ManagedClustersClientBeginStopFaultSimulationOptions struct {
 	ResumeToken string
 }
 
+// ManagedClustersClientBeginUpdateOptions contains the optional parameters for the ManagedClustersClient.BeginUpdate method.
+type ManagedClustersClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ManagedClustersClientGetFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.GetFaultSimulation
 // method.
 type ManagedClustersClientGetFaultSimulationOptions struct {
@@ -205,11 +226,6 @@ type ManagedClustersClientListBySubscriptionOptions struct {
 // ManagedClustersClientListFaultSimulationOptions contains the optional parameters for the ManagedClustersClient.NewListFaultSimulationPager
 // method.
 type ManagedClustersClientListFaultSimulationOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedClustersClientUpdateOptions contains the optional parameters for the ManagedClustersClient.Update method.
-type ManagedClustersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -350,6 +366,12 @@ type ServicesClientBeginCreateOrUpdateOptions struct {
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServicesClientBeginRestartReplicaOptions contains the optional parameters for the ServicesClient.BeginRestartReplica method.
+type ServicesClientBeginRestartReplicaOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

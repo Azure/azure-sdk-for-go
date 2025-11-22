@@ -1,6 +1,6 @@
-# Azure Compute Limit Module for Go
+# Azure Computelimit Module for Go
 
-The `armcomputelimit` module provides operations for working with Azure Compute Limit.
+The `armcomputelimit` module provides operations for working with Azure Computelimit.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/computelimit/armcomputelimit)
 

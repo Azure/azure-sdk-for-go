@@ -57,7 +57,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", tp.ID))
+	fmt.Fprintf(buffer, "\"id\":\"%s\"", tp.ID)
 
 	if tp.ResourceID != "" {
 		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.ResourceID))
@@ -73,7 +73,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if tp.SelfLink != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.SelfLink))
+		fmt.Fprintf(buffer, ",\"_self\":\"%s\"", tp.SelfLink)
 	}
 
 	if !tp.LastModified.IsZero() {

@@ -1,16 +1,10 @@
 # Release History
 
-## 1.5.0-beta.4 (Unreleased)
+## 1.5.0-beta.4 (2025-11-24)
 
 ### Features Added
 
 * Added client engine support for `ReadManyItems`. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.5.0-beta.3 (2025-11-10)
 

@@ -99,7 +99,7 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 	file := options.TokenFilePath
 	if file == "" && options.GetFederatedToken == nil {
 		if file, ok = os.LookupEnv(azureFederatedTokenFile); !ok {
-			return nil, errors.New("no token file specified. Check pod configuration or set TokenFilePath or GetFederatedToken in the options")
+			return nil, errors.New("no token source specified. Check pod configuration or set GetFederatedToken or TokenFilePath in the options")
 		}
 	}
 	tenantID := options.TenantID

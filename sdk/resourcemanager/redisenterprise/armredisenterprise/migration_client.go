@@ -16,66 +16,65 @@ import (
 	"strings"
 )
 
-// PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
-// Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
-type PrivateEndpointConnectionsClient struct {
+// MigrationClient contains the methods for the Migration group.
+// Don't use this type directly, use NewMigrationClient() instead.
+type MigrationClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient with the specified values.
+// NewMigrationClient creates a new instance of MigrationClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error) {
+func NewMigrationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PrivateEndpointConnectionsClient{
+	client := &MigrationClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginDelete - Deletes the specified private endpoint connection associated with the Redis Enterprise cluster.
+// BeginCancel - Cancel or rollback the migration operation in a Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
-//   - options - BeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete method.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *BeginDeleteOptions) (*runtime.Poller[DeleteResponse], error) {
+//   - options - BeginCancelOptions contains the optional parameters for the MigrationClient.BeginCancel method.
+func (client *MigrationClient) BeginCancel(ctx context.Context, resourceGroupName string, clusterName string, options *BeginCancelOptions) (*runtime.Poller[CancelResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, options)
+		resp, err := client.cancel(ctx, resourceGroupName, clusterName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CancelResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CancelResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes the specified private endpoint connection associated with the Redis Enterprise cluster.
+// Cancel - Cancel or rollback the migration operation in a Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
-func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *BeginDeleteOptions) (*http.Response, error) {
+func (client *MigrationClient) cancel(ctx context.Context, resourceGroupName string, clusterName string, options *BeginCancelOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
+	const operationName = "MigrationClient.BeginCancel"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, options)
+	req, err := client.cancelCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -83,16 +82,16 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, _ *BeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
+// cancelCreateRequest creates the Cancel request.
+func (client *MigrationClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *BeginCancelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,11 +104,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,22 +114,21 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// Get - Gets the specified private endpoint connection associated with the Redis Enterprise cluster.
+// Get - Gets information about a migration in a Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
-//   - options - GetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get method.
-func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *GetOptions) (GetResponse, error) {
+//   - options - GetOptions contains the optional parameters for the MigrationClient.Get method.
+func (client *MigrationClient) Get(ctx context.Context, resourceGroupName string, clusterName string, options *GetOptions) (GetResponse, error) {
 	var err error
-	const operationName = "PrivateEndpointConnectionsClient.Get"
+	const operationName = "MigrationClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return GetResponse{}, err
 	}
@@ -151,8 +145,8 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, _ *GetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
+func (client *MigrationClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *GetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -165,10 +159,6 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -181,28 +171,28 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (GetResponse, error) {
+func (client *MigrationClient) getHandleResponse(resp *http.Response) (GetResponse, error) {
 	result := GetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return GetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all the private endpoint connections associated with the Redis Enterprise cluster.
+// NewListPager - Gets information about all migrations attempts in a Redis Enterprise cluster.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
-//   - options - ListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager method.
-func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, clusterName string, options *ListOptions) *runtime.Pager[ListResponse] {
+//   - options - ListOptions contains the optional parameters for the MigrationClient.NewListPager method.
+func (client *MigrationClient) NewListPager(resourceGroupName string, clusterName string, options *ListOptions) *runtime.Pager[ListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ListResponse]{
 		More: func(page ListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListResponse) (ListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateEndpointConnectionsClient.NewListPager")
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MigrationClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -220,8 +210,8 @@ func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName s
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateEndpointConnections"
+func (client *MigrationClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -246,52 +236,52 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Response) (ListResponse, error) {
+func (client *MigrationClient) listHandleResponse(resp *http.Response) (ListResponse, error) {
 	result := ListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationList); err != nil {
 		return ListResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginPut - Updates the state of the specified private endpoint connection associated with the Redis Enterprise cluster.
+// BeginStart - Starts a new migration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
-//   - properties - The private endpoint connection properties.
-//   - options - BeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut method.
-func (client *PrivateEndpointConnectionsClient) BeginPut(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *BeginPutOptions) (*runtime.Poller[PutResponse], error) {
+//   - parameters - Parameters supplied to start a migration operation.
+//   - options - BeginStartOptions contains the optional parameters for the MigrationClient.BeginStart method.
+func (client *MigrationClient) BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *BeginStartOptions) (*runtime.Poller[StartResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.put(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, properties, options)
+		resp, err := client.start(ctx, resourceGroupName, clusterName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PutResponse]{
-			Tracer: client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StartResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PutResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StartResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Put - Updates the state of the specified private endpoint connection associated with the Redis Enterprise cluster.
+// Start - Starts a new migration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
-func (client *PrivateEndpointConnectionsClient) put(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *BeginPutOptions) (*http.Response, error) {
+func (client *MigrationClient) start(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *BeginStartOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PrivateEndpointConnectionsClient.BeginPut"
+	const operationName = "MigrationClient.BeginStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.putCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, properties, options)
+	req, err := client.startCreateRequest(ctx, resourceGroupName, clusterName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -299,16 +289,16 @@ func (client *PrivateEndpointConnectionsClient) put(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
 	return httpResp, nil
 }
 
-// putCreateRequest creates the Put request.
-func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, _ *BeginPutOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
+// startCreateRequest creates the Start request.
+func (client *MigrationClient) startCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, _ *BeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/migrations/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -321,10 +311,6 @@ func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Con
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if privateEndpointConnectionName == "" {
-		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -334,7 +320,7 @@ func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Con
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil

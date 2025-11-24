@@ -275,7 +275,7 @@ func (t *SwaggerCommonGenerator) GenChangeLog(oriExports *exports.Content, newEx
 	}
 
 	log.Printf("filter changelog...")
-	changelog.FilterChangelog(changelogs, changelog.NonExportedFilter, changelog.MarshalUnmarshalFilter, changelog.EnumFilter, changelog.FuncFilter, changelog.LROFilter, changelog.PageableFilter, changelog.InterfaceToAnyFilter, changelog.TypeToAnyFilter)
+	changelog.FilterChangelog(changelogs, changelog.NonExportedFilter, changelog.MarshalUnmarshalFilter, changelog.EnumFilter, changelog.FuncFilter, changelog.LROFilter, changelog.PageableFilter, changelog.InterfaceToAnyFilter, changelog.TypeToAnyFilter, changelog.ParamNameToUnderscoreFilter)
 	return changelogs, nil
 }
 
@@ -633,7 +633,7 @@ func (t *TypeSpecCommonGenerator) GenChangeLog(oriExports *exports.Content, newE
 	}
 
 	log.Printf("filter changelog...")
-	changelog.FilterChangelog(changelogs, changelog.NonExportedFilter, changelog.MarshalUnmarshalFilter, changelog.EnumFilter, changelog.FuncFilter, changelog.LROFilter, changelog.PageableFilter, changelog.InterfaceToAnyFilter, changelog.TypeToAnyFilter)
+	changelog.FilterChangelog(changelogs, changelog.NonExportedFilter, changelog.MarshalUnmarshalFilter, changelog.EnumFilter, changelog.FuncFilter, changelog.LROFilter, changelog.PageableFilter, changelog.InterfaceToAnyFilter, changelog.TypeToAnyFilter, changelog.ParamNameToUnderscoreFilter)
 	return changelogs, nil
 }
 

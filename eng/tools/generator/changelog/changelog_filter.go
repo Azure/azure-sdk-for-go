@@ -315,3 +315,79 @@ func TypeToAnyFilter(changelog *Changelog) {
 		}
 	}
 }
+
+// ParamNameToUnderscoreFilter filters out parameter changes where names are only changed to underscore (_).
+// This is not considered a breaking change as it only affects unused parameter naming.
+func ParamNameToUnderscoreFilter(changelog *Changelog) {
+	if changelog.Modified.HasBreakingChanges() {
+		for funcName, funcSig := range changelog.Modified.BreakingChanges.Funcs {
+			if funcSig.Params == nil {
+				continue
+			}
+
+			// Parse parameter signatures
+			fromParams := parseParamSignature(funcSig.Params.From)
+			toParams := parseParamSignature(funcSig.Params.To)
+
+			// Check if the change is only parameter names to underscore
+			if isOnlyParamNameToUnderscore(fromParams, toParams) {
+				delete(changelog.Modified.BreakingChanges.Funcs, funcName)
+			}
+		}
+	}
+}
+
+// parseParamSignature parses a parameter signature string into a slice of name-type pairs.
+func parseParamSignature(sig string) []struct{ name, typ string } {
+	if sig == delta.None {
+		return nil
+	}
+
+	params := strings.Split(sig, ",")
+	result := make([]struct{ name, typ string }, 0, len(params))
+
+	for _, param := range params {
+		param = strings.TrimSpace(param)
+		parts := strings.Fields(param)
+
+		if len(parts) == 1 {
+			// Unnamed parameter, only type
+			result = append(result, struct{ name, typ string }{name: "", typ: parts[0]})
+		} else if len(parts) >= 2 {
+			// Named parameter: name type
+			result = append(result, struct{ name, typ string }{name: parts[0], typ: strings.Join(parts[1:], " ")})
+		}
+	}
+
+	return result
+}
+
+// isOnlyParamNameToUnderscore checks if the only difference between two parameter lists
+// is that some parameter names changed from a non-underscore value to underscore (_).
+func isOnlyParamNameToUnderscore(from, to []struct{ name, typ string }) bool {
+	if len(from) != len(to) {
+		return false
+	}
+
+	hasUnderscoreChange := false
+	for i := range from {
+		// Types must match exactly
+		if from[i].typ != to[i].typ {
+			return false
+		}
+
+		// Check parameter names
+		if from[i].name != to[i].name {
+			// Names differ - check if it's a change to underscore
+			if to[i].name == "_" && from[i].name != "" {
+				hasUnderscoreChange = true
+			} else {
+				// Names differ but not a change to underscore
+				return false
+			}
+		}
+	}
+
+	// Only filter if at least one parameter name changed to underscore
+	return hasUnderscoreChange
+}

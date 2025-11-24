@@ -388,6 +388,58 @@ func (c *customTokenRequestPolicyFlowCheck) Validate(t testing.TB, req *http.Req
 	require.Equal(t, c.requiredHeaderValue, req.Header.Get(c.requiredHeaderKey))
 }
 
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithOptions(t *testing.T) {
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			policyFlowCheck.Validate(t, req)
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, "client_assertion")
+			require.Equal(t, req.PostForm.Get("client_assertion"), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			_, _ = w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	clientOptions := policy.ClientOptions{
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:         fakeClientID,
+		ClientOptions:    clientOptions,
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
+		AzureProxy: WorkloadIdentityAzureProxyOptions{
+			AzureKubernetesTokenProxy: customTokenEndointServer.URL,
+			AzureKubernetesCAData:     caData,
+		},
+	})
+	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+}
+
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T) {
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {

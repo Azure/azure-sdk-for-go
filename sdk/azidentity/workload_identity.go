@@ -29,6 +29,8 @@ type WorkloadIdentityCredential struct {
 	mtx             *sync.RWMutex
 }
 
+type WorkloadIdentityAzureProxyOptions = customtokenproxy.Options
+
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.
 type WorkloadIdentityCredentialOptions struct {
 	azcore.ClientOptions
@@ -52,14 +54,19 @@ type WorkloadIdentityCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables. When
-	// this value is true and proxy configuration isn't present or this value is false, the credential will request
+	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables or
+	// from the AzureTokenProxyOptions field.
+	// When this value is true and proxy configuration isn't present or this value is false, the credential will request
 	// tokens directly from Entra ID.
 	//
 	// The proxy feature is designed for applications that deploy to many clusters and clusters that host many
 	// applications. See the Azure Kubernetes Service identity bindings documentation for more information on when
 	// to set this option: https://learn.microsoft.com/azure/aks/identity-bindings-concepts
 	EnableAzureProxy bool
+
+	// AzureProxy specifies the options for the Azure proxy.
+	// If EnableAzureProxy is false, this field is ignored.
+	AzureProxy WorkloadIdentityAzureProxyOptions
 
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
@@ -104,9 +111,11 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 	}
 
 	if options.EnableAzureProxy {
-		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
+		mutateClientOptions, err := customtokenproxy.Apply(&options.AzureProxy)
+		if err != nil {
 			return nil, err
 		}
+		mutateClientOptions(&caco.ClientOptions)
 	}
 
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)

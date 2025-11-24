@@ -13,49 +13,6 @@ import (
 	"net/url"
 	"os"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-)
-
-const (
-	AzureKubernetesCAData  = "AZURE_KUBERNETES_CA_DATA"
-	AzureKubernetesCAFile  = "AZURE_KUBERNETES_CA_FILE"
-	AzureKubernetesSNIName = "AZURE_KUBERNETES_SNI_NAME"
-
-	AzureKubernetesTokenProxy = "AZURE_KUBERNETES_TOKEN_PROXY"
-)
-
-func parseAndValidate(endpoint string) (*url.URL, error) {
-	tokenProxy, err := url.Parse(endpoint)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse custom token proxy URL %q: %s", endpoint, err)
-	}
-	if tokenProxy.Scheme != "https" {
-		return nil, fmt.Errorf("custom token endpoint must use https scheme, got %q", tokenProxy.Scheme)
-	}
-	if tokenProxy.User != nil {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain user info", tokenProxy)
-	}
-	if tokenProxy.RawQuery != "" {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a query", tokenProxy)
-	}
-	if tokenProxy.EscapedFragment() != "" {
-		return nil, fmt.Errorf("custom token endpoint URL %q must not contain a fragment", tokenProxy)
-	}
-	if tokenProxy.EscapedPath() == "" {
-		// if the path is empty, set it to "/" to avoid stripping the path from req.URL
-		tokenProxy.Path = "/"
-	}
-	return tokenProxy, nil
-}
-
-var (
-	errCustomEndpointEnvSetWithoutTokenProxy = errors.New(
-		"AZURE_KUBERNETES_TOKEN_PROXY is not set but other custom endpoint-related environment variables are present",
-	)
-	errCustomEndpointMultipleCASourcesSet = errors.New(
-		"only one of AZURE_KUBERNETES_CA_FILE and AZURE_KUBERNETES_CA_DATA can be specified",
-	)
 )
 
 func createTransport(sniName string, caPool *x509.CertPool) *http.Transport {
@@ -80,49 +37,6 @@ func createTransport(sniName string, caPool *x509.CertPool) *http.Transport {
 	transport.TLSClientConfig.RootCAs = caPool
 
 	return transport
-}
-
-// Configure configures custom token endpoint mode if the required environment variables are present.
-func Configure(clientOptions *policy.ClientOptions) error {
-	kubernetesTokenProxyStr := os.Getenv(AzureKubernetesTokenProxy)
-
-	kubernetesSNIName := os.Getenv(AzureKubernetesSNIName)
-	kubernetesCAFile := os.Getenv(AzureKubernetesCAFile)
-	kubernetesCAData := os.Getenv(AzureKubernetesCAData)
-
-	if kubernetesTokenProxyStr == "" {
-		// custom token proxy is not set, while other Kubernetes-related environment variables are present,
-		// this is likely a configuration issue so erroring out to avoid misconfiguration
-		if kubernetesSNIName != "" || kubernetesCAFile != "" || kubernetesCAData != "" {
-			return errCustomEndpointEnvSetWithoutTokenProxy
-		}
-
-		return nil
-	}
-	tokenProxy, err := parseAndValidate(kubernetesTokenProxyStr)
-	if err != nil {
-		return err
-	}
-
-	// CAFile and CAData are mutually exclusive, at most one can be set.
-	// If none of CAFile or CAData are set, the default system CA pool will be used.
-	if kubernetesCAFile != "" && kubernetesCAData != "" {
-		return errCustomEndpointMultipleCASourcesSet
-	}
-
-	// preload the transport
-	t := &transport{
-		caFile:     kubernetesCAFile,
-		caData:     []byte(kubernetesCAData),
-		sniName:    kubernetesSNIName,
-		tokenProxy: tokenProxy,
-	}
-	if _, err := t.getTokenTransporter(); err != nil {
-		return err
-	}
-
-	clientOptions.Transport = t
-	return nil
 }
 
 // transport redirects requests to the configured proxy.

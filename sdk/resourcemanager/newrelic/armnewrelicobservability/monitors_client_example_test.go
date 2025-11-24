@@ -28,7 +28,7 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
-				"key8903": &armnewrelicobservability.UserAssignedIdentity{},
+				"key8903": {},
 			},
 		},
 		Location: to.Ptr("k"),
@@ -1354,7 +1354,7 @@ func ExampleMonitorsClient_BeginUpdate() {
 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
 			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
-				"key8903": &armnewrelicobservability.UserAssignedIdentity{},
+				"key8903": {},
 			},
 		},
 		Properties: &armnewrelicobservability.NewRelicMonitorResourceUpdateProperties{

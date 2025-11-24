@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added client engine support for `ReadManyItems`. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
+
 ### Breaking Changes
 
 ### Bugs Fixed

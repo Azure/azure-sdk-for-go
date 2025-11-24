@@ -57,14 +57,14 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", tp.ID))
+	fmt.Fprintf(buffer, "\"id\":\"%s\"", tp.ID)
 
 	if tp.ResourceID != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.ResourceID))
+		fmt.Fprintf(buffer, ",\"_rid\":\"%s\"", tp.ResourceID)
 	}
 
 	if tp.ETag != nil {
-		buffer.WriteString(",\"_etag\":")
+		fmt.Fprint(buffer, ",\"_etag\":")
 		etag, err := json.Marshal(tp.ETag)
 		if err != nil {
 			return nil, err
@@ -73,22 +73,22 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if tp.SelfLink != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.SelfLink))
+		fmt.Fprintf(buffer, ",\"_self\":\"%s\"", tp.SelfLink)
 	}
 
 	if !tp.LastModified.IsZero() {
-		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
+		fmt.Fprintf(buffer, ",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10))
 	}
 
-	buffer.WriteString(",\"partitionKey\":")
+	fmt.Fprint(buffer, ",\"partitionKey\":")
 	buffer.Write(pkDefinition)
 
 	if tp.DefaultTimeToLive != nil {
-		buffer.WriteString(fmt.Sprintf(",\"defaultTtl\":%v", *tp.DefaultTimeToLive))
+		fmt.Fprintf(buffer, ",\"defaultTtl\":%v", *tp.DefaultTimeToLive)
 	}
 
 	if tp.AnalyticalStoreTimeToLiveInSeconds != nil {
-		buffer.WriteString(fmt.Sprintf(",\"analyticalStorageTtl\":%v", *tp.AnalyticalStoreTimeToLiveInSeconds))
+		fmt.Fprintf(buffer, ",\"analyticalStorageTtl\":%v", *tp.AnalyticalStoreTimeToLiveInSeconds)
 	}
 
 	if tp.IndexingPolicy != nil {
@@ -96,7 +96,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"indexingPolicy\":")
+		fmt.Fprint(buffer, ",\"indexingPolicy\":")
 		buffer.Write(indexingPolicy)
 	}
 
@@ -105,7 +105,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"uniqueKeyPolicy\":")
+		fmt.Fprint(buffer, ",\"uniqueKeyPolicy\":")
 		buffer.Write(uniquePolicy)
 	}
 
@@ -114,7 +114,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"conflictResolutionPolicy\":")
+		fmt.Fprint(buffer, ",\"conflictResolutionPolicy\":")
 		buffer.Write(conflictPolicy)
 	}
 
@@ -123,7 +123,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"vectorEmbeddingPolicy\":")
+		fmt.Fprint(buffer, ",\"vectorEmbeddingPolicy\":")
 		buffer.Write(vectorPolicy)
 	}
 
@@ -132,11 +132,11 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		buffer.WriteString(",\"fullTextPolicy\":")
+		fmt.Fprint(buffer, ",\"fullTextPolicy\":")
 		buffer.Write(fullTextPolicy)
 	}
 
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 

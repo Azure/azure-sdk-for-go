@@ -60,7 +60,7 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	fmt.Fprintf(buffer, "\"id\":\"%s\"", tp.ID)
 
 	if tp.ResourceID != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.ResourceID))
+		fmt.Fprintf(buffer, ",\"_rid\":\"%s\"", tp.ResourceID)
 	}
 
 	if tp.ETag != nil {
@@ -77,14 +77,14 @@ func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	}
 
 	if !tp.LastModified.IsZero() {
-		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
+		fmt.Fprintf(buffer, ",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10))
 	}
 
 	buffer.WriteString(",\"partitionKey\":")
 	buffer.Write(pkDefinition)
 
 	if tp.DefaultTimeToLive != nil {
-		buffer.WriteString(fmt.Sprintf(",\"defaultTtl\":%v", *tp.DefaultTimeToLive))
+		fmt.Fprintf(buffer, ",\"defaultTtl\":%v", *tp.DefaultTimeToLive)
 	}
 
 	if tp.AnalyticalStoreTimeToLiveInSeconds != nil {

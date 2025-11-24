@@ -143,7 +143,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 		for _, line := range section {
 			if strings.HasPrefix(line, swagger_md_module_name_prefix) {
 				modules := strings.Split(strings.TrimSpace(line[len(swagger_md_module_name_prefix):]), "/")
-				if len(modules) != 4 {
+				if len(modules) != 4 && len(modules) != 5 {
 					return nil, fmt.Errorf("cannot parse module name from `track2` section")
 				}
 				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[3], "\n"), "\r")

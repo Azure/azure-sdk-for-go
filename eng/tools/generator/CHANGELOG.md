@@ -1,5 +1,11 @@
 # Release History
 
+## 0.3.1 (2025-11-13)
+
+### Bugs Fixed
+
+- Fix wrong parsing logic for module name config for swagger with major version suffix.
+
 ## 0.3.0 (2025-11-11)
 
 ### Features Added

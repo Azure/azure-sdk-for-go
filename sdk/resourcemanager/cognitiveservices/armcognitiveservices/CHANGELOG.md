@@ -1,5 +1,64 @@
 # Release History
 
+## 3.0.0 (2025-11-12)
+### Breaking Changes
+
+- Function `*ProjectCapabilityHostsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, string, CapabilityHost, *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, string, ProjectCapabilityHost, *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions)`
+- Field `CapabilityHost` of struct `ProjectCapabilityHostsClientCreateOrUpdateResponse` has been removed
+- Field `CapabilityHost` of struct `ProjectCapabilityHostsClientGetResponse` has been removed
+
+### Features Added
+
+- New value `ConnectionCategoryAzureStorageAccount` added to enum type `ConnectionCategory`
+- New value `ModelLifecycleStatusLegacy` added to enum type `ModelLifecycleStatus`
+- New enum type `DeprecationStatus` with values `DeprecationStatusPlanned`, `DeprecationStatusTentative`
+- New enum type `TierUpgradePolicy` with values `TierUpgradePolicyNoAutoUpgrade`, `TierUpgradePolicyOnceUpgradeIsAvailable`
+- New enum type `UpgradeAvailabilityStatus` with values `UpgradeAvailabilityStatusAvailable`, `UpgradeAvailabilityStatusNotAvailable`
+- New function `*AccountCapabilityHostsClient.NewListPager(string, string, *AccountCapabilityHostsClientListOptions) *runtime.Pager[AccountCapabilityHostsClientListResponse]`
+- New function `*ClientFactory.NewQuotaTiersClient() *QuotaTiersClient`
+- New function `*ClientFactory.NewRaiTopicsClient() *RaiTopicsClient`
+- New function `*ProjectCapabilityHostsClient.NewListPager(string, string, string, *ProjectCapabilityHostsClientListOptions) *runtime.Pager[ProjectCapabilityHostsClientListResponse]`
+- New function `NewQuotaTiersClient(string, azcore.TokenCredential, *arm.ClientOptions) (*QuotaTiersClient, error)`
+- New function `*QuotaTiersClient.CreateOrUpdate(context.Context, string, QuotaTier, *QuotaTiersClientCreateOrUpdateOptions) (QuotaTiersClientCreateOrUpdateResponse, error)`
+- New function `*QuotaTiersClient.Get(context.Context, string, *QuotaTiersClientGetOptions) (QuotaTiersClientGetResponse, error)`
+- New function `*QuotaTiersClient.NewListBySubscriptionPager(*QuotaTiersClientListBySubscriptionOptions) *runtime.Pager[QuotaTiersClientListBySubscriptionResponse]`
+- New function `*QuotaTiersClient.Update(context.Context, string, QuotaTier, *QuotaTiersClientUpdateOptions) (QuotaTiersClientUpdateResponse, error)`
+- New function `NewRaiTopicsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RaiTopicsClient, error)`
+- New function `*RaiTopicsClient.CreateOrUpdate(context.Context, string, string, string, RaiTopic, *RaiTopicsClientCreateOrUpdateOptions) (RaiTopicsClientCreateOrUpdateResponse, error)`
+- New function `*RaiTopicsClient.BeginDelete(context.Context, string, string, string, *RaiTopicsClientBeginDeleteOptions) (*runtime.Poller[RaiTopicsClientDeleteResponse], error)`
+- New function `*RaiTopicsClient.Get(context.Context, string, string, string, *RaiTopicsClientGetOptions) (RaiTopicsClientGetResponse, error)`
+- New function `*RaiTopicsClient.NewListPager(string, string, *RaiTopicsClientListOptions) *runtime.Pager[RaiTopicsClientListResponse]`
+- New struct `CapabilityHostResourceArmPaginatedResult`
+- New struct `CustomTopicConfig`
+- New struct `ProjectCapabilityHost`
+- New struct `ProjectCapabilityHostProperties`
+- New struct `ProjectCapabilityHostResourceArmPaginatedResult`
+- New struct `QuotaTier`
+- New struct `QuotaTierListResult`
+- New struct `QuotaTierProperties`
+- New struct `QuotaTierUpgradeEligibilityInfo`
+- New struct `RaiTopic`
+- New struct `RaiTopicConfig`
+- New struct `RaiTopicProperties`
+- New struct `RaiTopicResult`
+- New struct `ReplacementConfig`
+- New field `ModelCatalogAssetID`, `ReplacementConfig` in struct `AccountModel`
+- New field `StoredCompletionsDisabled` in struct `AccountProperties`
+- New field `SystemData` in struct `AzureEntityResource`
+- New field `SystemData` in struct `CapabilityHost`
+- New field `SystemData` in struct `ConnectionPropertiesV2BasicResource`
+- New field `SystemData` in struct `ModelCapacityListResultValueItem`
+- New field `DeprecationStatus` in struct `ModelDeprecationInfo`
+- New field `SystemData` in struct `NetworkSecurityPerimeterConfiguration`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New anonymous field `ProjectCapabilityHost` in struct `ProjectCapabilityHostsClientCreateOrUpdateResponse`
+- New anonymous field `ProjectCapabilityHost` in struct `ProjectCapabilityHostsClientGetResponse`
+- New field `SystemData` in struct `ProxyResource`
+- New field `SystemData` in struct `RaiContentFilter`
+- New field `CustomTopics` in struct `RaiPolicyProperties`
+- New field `SystemData` in struct `Resource`
+
+
 ## 2.0.0 (2025-09-15)
 ### Breaking Changes
 

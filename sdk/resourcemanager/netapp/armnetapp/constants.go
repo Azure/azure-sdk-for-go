@@ -104,50 +104,18 @@ func PossibleBackupTypeValues() []BackupType {
 	}
 }
 
-// BucketPatchPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite.
-type BucketPatchPermissions string
-
-const (
-	// BucketPatchPermissionsReadOnly - Read-only access to bucket.
-	BucketPatchPermissionsReadOnly BucketPatchPermissions = "ReadOnly"
-	// BucketPatchPermissionsReadWrite - Read-write access to bucket.
-	BucketPatchPermissionsReadWrite BucketPatchPermissions = "ReadWrite"
-)
-
-// PossibleBucketPatchPermissionsValues returns the possible values for the BucketPatchPermissions const type.
-func PossibleBucketPatchPermissionsValues() []BucketPatchPermissions {
-	return []BucketPatchPermissions{
-		BucketPatchPermissionsReadOnly,
-		BucketPatchPermissionsReadWrite,
-	}
-}
-
-// BucketPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite. The default is ReadOnly if no value
-// is provided during bucket creation.
-type BucketPermissions string
-
-const (
-	// BucketPermissionsReadOnly - Read-only access to bucket.
-	BucketPermissionsReadOnly BucketPermissions = "ReadOnly"
-	// BucketPermissionsReadWrite - Read-write access to bucket.
-	BucketPermissionsReadWrite BucketPermissions = "ReadWrite"
-)
-
-// PossibleBucketPermissionsValues returns the possible values for the BucketPermissions const type.
-func PossibleBucketPermissionsValues() []BucketPermissions {
-	return []BucketPermissions{
-		BucketPermissionsReadOnly,
-		BucketPermissionsReadWrite,
-	}
-}
-
 // CheckNameResourceTypes - Resource type used for verification.
 type CheckNameResourceTypes string
 
 const (
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccounts                              CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools                 CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes          CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccounts CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
+	// CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups - ANF Backup under a volume , deprecated, use `Microsoft.NetApp/netAppAccounts/backupVaults/backups`
+	// instead.
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups  CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools        CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	// CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups - ANF Backup under a Backup Vault
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups   CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups"
 	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
 )
 
@@ -155,8 +123,10 @@ const (
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return []CheckNameResourceTypes{
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccounts,
+		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes,
+		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots,
 	}
 }
@@ -165,9 +135,14 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 type CheckQuotaNameResourceTypes string
 
 const (
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts                              CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools                 CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes          CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
+	// CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups - ANF Backup under a volume , deprecated, use
+	// `Microsoft.NetApp/netAppAccounts/backupVaults/backups` instead.
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups  CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools        CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	// CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups - ANF Backup under a Backup Vault
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups   CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups"
 	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
 )
 
@@ -175,8 +150,10 @@ const (
 func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
 	return []CheckQuotaNameResourceTypes{
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts,
+		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes,
+		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots,
 	}
 }
@@ -263,30 +240,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// CredentialsStatus - The bucket credentials status. There states:
-// "NoCredentialsSet": Access and Secret key pair have not been generated.
-// "CredentialsExpired": Access and Secret key pair have expired.
-// "Active": The certificate has been installed and credentials are unexpired.
-type CredentialsStatus string
-
-const (
-	// CredentialsStatusActive - The certificate has been installed on the bucket server and the bucket credentials are unexpired.
-	CredentialsStatusActive CredentialsStatus = "Active"
-	// CredentialsStatusCredentialsExpired - Access and Secret key pair have expired.
-	CredentialsStatusCredentialsExpired CredentialsStatus = "CredentialsExpired"
-	// CredentialsStatusNoCredentialsSet - Access and Secret key pair have not been generated.
-	CredentialsStatusNoCredentialsSet CredentialsStatus = "NoCredentialsSet"
-)
-
-// PossibleCredentialsStatusValues returns the possible values for the CredentialsStatus const type.
-func PossibleCredentialsStatusValues() []CredentialsStatus {
-	return []CredentialsStatus{
-		CredentialsStatusActive,
-		CredentialsStatusCredentialsExpired,
-		CredentialsStatusNoCredentialsSet,
-	}
-}
-
 // EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
 type EnableSubvolumes string
 
@@ -359,36 +312,22 @@ func PossibleEndpointTypeValues() []EndpointType {
 	}
 }
 
-// ExternalReplicationSetupStatus - Property that only applies to external replications. Provides a machine-readable value
-// for the status of the external replication setup.
-type ExternalReplicationSetupStatus string
+// Exclude - An option to filter out replications. 'None' returns all replications, 'Deleted' excludes deleted replications.
+// Default is 'None'
+type Exclude string
 
 const (
-	// ExternalReplicationSetupStatusClusterPeerPending - The peering needs to be accepted on your cluster before the setup can
-	// proceed
-	ExternalReplicationSetupStatusClusterPeerPending ExternalReplicationSetupStatus = "ClusterPeerPending"
-	// ExternalReplicationSetupStatusClusterPeerRequired - Your cluster needs to be peered by using the 'peerExternalCluster'
-	// action
-	ExternalReplicationSetupStatusClusterPeerRequired ExternalReplicationSetupStatus = "ClusterPeerRequired"
-	// ExternalReplicationSetupStatusNoActionRequired - External Replication setup is complete, you can now monitor the 'mirrorState'
-	// in the replication status for the health of the replication
-	ExternalReplicationSetupStatusNoActionRequired ExternalReplicationSetupStatus = "NoActionRequired"
-	// ExternalReplicationSetupStatusReplicationCreateRequired - Need to call 'authorizeExternalReplication' to finish setting
-	// up the external replication
-	ExternalReplicationSetupStatusReplicationCreateRequired ExternalReplicationSetupStatus = "ReplicationCreateRequired"
-	// ExternalReplicationSetupStatusVServerPeerRequired - Need to call 'authorizeExternalReplication' and accept the returned
-	// 'vserver peer accept' command on your cluster to finish setting up the external replication
-	ExternalReplicationSetupStatusVServerPeerRequired ExternalReplicationSetupStatus = "VServerPeerRequired"
+	// ExcludeDeleted - 'Deleted' excludes deleted replications
+	ExcludeDeleted Exclude = "Deleted"
+	// ExcludeNone - 'None' returns all replications
+	ExcludeNone Exclude = "None"
 )
 
-// PossibleExternalReplicationSetupStatusValues returns the possible values for the ExternalReplicationSetupStatus const type.
-func PossibleExternalReplicationSetupStatusValues() []ExternalReplicationSetupStatus {
-	return []ExternalReplicationSetupStatus{
-		ExternalReplicationSetupStatusClusterPeerPending,
-		ExternalReplicationSetupStatusClusterPeerRequired,
-		ExternalReplicationSetupStatusNoActionRequired,
-		ExternalReplicationSetupStatusReplicationCreateRequired,
-		ExternalReplicationSetupStatusVServerPeerRequired,
+// PossibleExcludeValues returns the possible values for the Exclude const type.
+func PossibleExcludeValues() []Exclude {
+	return []Exclude{
+		ExcludeDeleted,
+		ExcludeNone,
 	}
 }
 
@@ -470,24 +409,6 @@ func PossibleKeyVaultStatusValues() []KeyVaultStatus {
 		KeyVaultStatusError,
 		KeyVaultStatusInUse,
 		KeyVaultStatusUpdating,
-	}
-}
-
-// LdapServerType - The type of the LDAP server
-type LdapServerType string
-
-const (
-	// LdapServerTypeActiveDirectory - The volume should use Active Directory for LDAP connections.
-	LdapServerTypeActiveDirectory LdapServerType = "ActiveDirectory"
-	// LdapServerTypeOpenLDAP - The volume should use OpenLDAP for LDAP connections.
-	LdapServerTypeOpenLDAP LdapServerType = "OpenLDAP"
-)
-
-// PossibleLdapServerTypeValues returns the possible values for the LdapServerType const type.
-func PossibleLdapServerTypeValues() []LdapServerType {
-	return []LdapServerType{
-		LdapServerTypeActiveDirectory,
-		LdapServerTypeOpenLDAP,
 	}
 }
 
@@ -612,20 +533,22 @@ func PossibleNetworkSiblingSetProvisioningStateValues() []NetworkSiblingSetProvi
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - Accepted
+	// ProvisioningStateAccepted - Resource has been Accepted
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateCreating - Creating
+	// ProvisioningStateCreating - Resource is being Created
 	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting - Deleting
+	// ProvisioningStateDeleting - Resource is being Deleted
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Failed
+	// ProvisioningStateFailed - Resource has Failed
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateMoving - Moving
+	// ProvisioningStateMoving - Resource is being Moved
 	ProvisioningStateMoving ProvisioningState = "Moving"
-	// ProvisioningStatePatching - Patching
+	// ProvisioningStatePatching - Resource is being Patched
 	ProvisioningStatePatching ProvisioningState = "Patching"
-	// ProvisioningStateSucceeded - Succeeded
+	// ProvisioningStateSucceeded - Resource has Succeeded
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - Resource is updating
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -638,6 +561,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateMoving,
 		ProvisioningStatePatching,
 		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }
 
@@ -692,6 +616,27 @@ func PossibleRegionStorageToNetworkProximityValues() []RegionStorageToNetworkPro
 		RegionStorageToNetworkProximityT1AndT2AndAcrossT2,
 		RegionStorageToNetworkProximityT2,
 		RegionStorageToNetworkProximityT2AndAcrossT2,
+	}
+}
+
+// ReplicationMirrorState - The status of the replication
+type ReplicationMirrorState string
+
+const (
+	// ReplicationMirrorStateBroken - Destination volume is RW, replication relationship has been broken off
+	ReplicationMirrorStateBroken ReplicationMirrorState = "Broken"
+	// ReplicationMirrorStateMirrored - Destination volume has been initialized and is ready
+	ReplicationMirrorStateMirrored ReplicationMirrorState = "Mirrored"
+	// ReplicationMirrorStateUninitialized - Destination volume has not been initialized
+	ReplicationMirrorStateUninitialized ReplicationMirrorState = "Uninitialized"
+)
+
+// PossibleReplicationMirrorStateValues returns the possible values for the ReplicationMirrorState const type.
+func PossibleReplicationMirrorStateValues() []ReplicationMirrorState {
+	return []ReplicationMirrorState{
+		ReplicationMirrorStateBroken,
+		ReplicationMirrorStateMirrored,
+		ReplicationMirrorStateUninitialized,
 	}
 }
 
@@ -852,225 +797,6 @@ func PossibleVolumeBackupRelationshipStatusValues() []VolumeBackupRelationshipSt
 		VolumeBackupRelationshipStatusIdle,
 		VolumeBackupRelationshipStatusTransferring,
 		VolumeBackupRelationshipStatusUnknown,
-	}
-}
-
-// VolumeLanguage - Language supported for volume.
-type VolumeLanguage string
-
-const (
-	// VolumeLanguageAr - Arabic - Deprecated
-	VolumeLanguageAr VolumeLanguage = "ar"
-	// VolumeLanguageArUTF8 - Arabic with UTF-8
-	VolumeLanguageArUTF8 VolumeLanguage = "ar.utf-8"
-	// VolumeLanguageC - Posix - Deprecated
-	VolumeLanguageC VolumeLanguage = "c"
-	// VolumeLanguageCUTF8 - Posix with UTF-8
-	VolumeLanguageCUTF8 VolumeLanguage = "c.utf-8"
-	// VolumeLanguageCs - Czech - Deprecated
-	VolumeLanguageCs VolumeLanguage = "cs"
-	// VolumeLanguageCsUTF8 - Czech with UTF-8
-	VolumeLanguageCsUTF8 VolumeLanguage = "cs.utf-8"
-	// VolumeLanguageDa - Danish - Deprecated
-	VolumeLanguageDa VolumeLanguage = "da"
-	// VolumeLanguageDaUTF8 - Danish with UTF-8
-	VolumeLanguageDaUTF8 VolumeLanguage = "da.utf-8"
-	// VolumeLanguageDe - German - Deprecated
-	VolumeLanguageDe VolumeLanguage = "de"
-	// VolumeLanguageDeUTF8 - German with UTF-8
-	VolumeLanguageDeUTF8 VolumeLanguage = "de.utf-8"
-	// VolumeLanguageEn - English - Deprecated
-	VolumeLanguageEn VolumeLanguage = "en"
-	// VolumeLanguageEnUTF8 - English with UTF-8
-	VolumeLanguageEnUTF8 VolumeLanguage = "en.utf-8"
-	// VolumeLanguageEnUs - US English - Deprecated
-	VolumeLanguageEnUs VolumeLanguage = "en-us"
-	// VolumeLanguageEnUsUTF8 - US English with UTF-8
-	VolumeLanguageEnUsUTF8 VolumeLanguage = "en-us.utf-8"
-	// VolumeLanguageEs - Spanish - Deprecated
-	VolumeLanguageEs VolumeLanguage = "es"
-	// VolumeLanguageEsUTF8 - Spanish with UTF-8
-	VolumeLanguageEsUTF8 VolumeLanguage = "es.utf-8"
-	// VolumeLanguageFi - Finnish - Deprecated
-	VolumeLanguageFi VolumeLanguage = "fi"
-	// VolumeLanguageFiUTF8 - Finnish with UTF-8
-	VolumeLanguageFiUTF8 VolumeLanguage = "fi.utf-8"
-	// VolumeLanguageFr - French - Deprecated
-	VolumeLanguageFr VolumeLanguage = "fr"
-	// VolumeLanguageFrUTF8 - French with UTF-8
-	VolumeLanguageFrUTF8 VolumeLanguage = "fr.utf-8"
-	// VolumeLanguageHe - Hebrew - Deprecated
-	VolumeLanguageHe VolumeLanguage = "he"
-	// VolumeLanguageHeUTF8 - Hebrew with UTF-8
-	VolumeLanguageHeUTF8 VolumeLanguage = "he.utf-8"
-	// VolumeLanguageHr - Croatian - Deprecated
-	VolumeLanguageHr VolumeLanguage = "hr"
-	// VolumeLanguageHrUTF8 - Croatian with UTF-8
-	VolumeLanguageHrUTF8 VolumeLanguage = "hr.utf-8"
-	// VolumeLanguageHu - Hungarian - Deprecated
-	VolumeLanguageHu VolumeLanguage = "hu"
-	// VolumeLanguageHuUTF8 - Hungarian with UTF-8
-	VolumeLanguageHuUTF8 VolumeLanguage = "hu.utf-8"
-	// VolumeLanguageIt - Italian - Deprecated
-	VolumeLanguageIt VolumeLanguage = "it"
-	// VolumeLanguageItUTF8 - Italian with UTF-8
-	VolumeLanguageItUTF8 VolumeLanguage = "it.utf-8"
-	// VolumeLanguageJa - Japanese euc-j - Deprecated
-	VolumeLanguageJa VolumeLanguage = "ja"
-	// VolumeLanguageJaJp932 - Japanese cp932
-	VolumeLanguageJaJp932 VolumeLanguage = "ja-jp.932"
-	// VolumeLanguageJaJp932UTF8 - Japanese cp932 with UTF-8 - Deprecated
-	VolumeLanguageJaJp932UTF8 VolumeLanguage = "ja-jp.932.utf-8"
-	// VolumeLanguageJaJpPck - Japanese pck
-	VolumeLanguageJaJpPck VolumeLanguage = "ja-jp.pck"
-	// VolumeLanguageJaJpPckUTF8 - Japanese pck with UTF-8 - Deprecated
-	VolumeLanguageJaJpPckUTF8 VolumeLanguage = "ja-jp.pck.utf-8"
-	// VolumeLanguageJaJpPckV2 - Japanese pck - sjis
-	VolumeLanguageJaJpPckV2 VolumeLanguage = "ja-jp.pck-v2"
-	// VolumeLanguageJaJpPckV2UTF8 - Japanese pck - sjis with UTF-8 - Deprecated
-	VolumeLanguageJaJpPckV2UTF8 VolumeLanguage = "ja-jp.pck-v2.utf-8"
-	// VolumeLanguageJaUTF8 - Japanese euc-j with UTF-8
-	VolumeLanguageJaUTF8 VolumeLanguage = "ja.utf-8"
-	// VolumeLanguageJaV1 - Japanese euc-j - Deprecated
-	VolumeLanguageJaV1 VolumeLanguage = "ja-v1"
-	// VolumeLanguageJaV1UTF8 - Japanese euc-j with UTF-8
-	VolumeLanguageJaV1UTF8 VolumeLanguage = "ja-v1.utf-8"
-	// VolumeLanguageKo - Korean - Deprecated
-	VolumeLanguageKo VolumeLanguage = "ko"
-	// VolumeLanguageKoUTF8 - Korean with UTF-8
-	VolumeLanguageKoUTF8 VolumeLanguage = "ko.utf-8"
-	// VolumeLanguageNl - Dutch - Deprecated
-	VolumeLanguageNl VolumeLanguage = "nl"
-	// VolumeLanguageNlUTF8 - Dutch with UTF-8
-	VolumeLanguageNlUTF8 VolumeLanguage = "nl.utf-8"
-	// VolumeLanguageNo - Norwegian - Deprecated
-	VolumeLanguageNo VolumeLanguage = "no"
-	// VolumeLanguageNoUTF8 - Norwegian with UTF-8
-	VolumeLanguageNoUTF8 VolumeLanguage = "no.utf-8"
-	// VolumeLanguagePl - Polish - Deprecated
-	VolumeLanguagePl VolumeLanguage = "pl"
-	// VolumeLanguagePlUTF8 - Polish with UTF-8
-	VolumeLanguagePlUTF8 VolumeLanguage = "pl.utf-8"
-	// VolumeLanguagePt - Portuguese - Deprecated
-	VolumeLanguagePt VolumeLanguage = "pt"
-	// VolumeLanguagePtUTF8 - Portuguese with UTF-8
-	VolumeLanguagePtUTF8 VolumeLanguage = "pt.utf-8"
-	// VolumeLanguageRo - Romanian - Deprecated
-	VolumeLanguageRo VolumeLanguage = "ro"
-	// VolumeLanguageRoUTF8 - Romanian with UTF-8
-	VolumeLanguageRoUTF8 VolumeLanguage = "ro.utf-8"
-	// VolumeLanguageRu - Russian - Deprecated
-	VolumeLanguageRu VolumeLanguage = "ru"
-	// VolumeLanguageRuUTF8 - Russian with UTF-8
-	VolumeLanguageRuUTF8 VolumeLanguage = "ru.utf-8"
-	// VolumeLanguageSk - Slovak - Deprecated
-	VolumeLanguageSk VolumeLanguage = "sk"
-	// VolumeLanguageSkUTF8 - Slovak with UTF-8
-	VolumeLanguageSkUTF8 VolumeLanguage = "sk.utf-8"
-	// VolumeLanguageSl - Slovenian - Deprecated
-	VolumeLanguageSl VolumeLanguage = "sl"
-	// VolumeLanguageSlUTF8 - Slovenian with UTF-8
-	VolumeLanguageSlUTF8 VolumeLanguage = "sl.utf-8"
-	// VolumeLanguageSv - Swedish - Deprecated
-	VolumeLanguageSv VolumeLanguage = "sv"
-	// VolumeLanguageSvUTF8 - Swedish with UTF-8
-	VolumeLanguageSvUTF8 VolumeLanguage = "sv.utf-8"
-	// VolumeLanguageTr - Turkish - Deprecated
-	VolumeLanguageTr VolumeLanguage = "tr"
-	// VolumeLanguageTrUTF8 - Turkish with UTF-8
-	VolumeLanguageTrUTF8 VolumeLanguage = "tr.utf-8"
-	// VolumeLanguageUTF8Mb4 - UTF-8 with 4 byte character support
-	VolumeLanguageUTF8Mb4 VolumeLanguage = "utf8mb4"
-	// VolumeLanguageZh - Simplified Chinese - Deprecated
-	VolumeLanguageZh VolumeLanguage = "zh"
-	// VolumeLanguageZhGbk - Simplified gbk Chinese
-	VolumeLanguageZhGbk VolumeLanguage = "zh.gbk"
-	// VolumeLanguageZhGbkUTF8 - Simplified gbk Chinese with UTF-8 - Deprecated
-	VolumeLanguageZhGbkUTF8 VolumeLanguage = "zh.gbk.utf-8"
-	// VolumeLanguageZhTw - Traditional Chinese EUC-TW
-	VolumeLanguageZhTw VolumeLanguage = "zh-tw"
-	// VolumeLanguageZhTwBig5 - Traditional Chinese BIG 5
-	VolumeLanguageZhTwBig5 VolumeLanguage = "zh-tw.big5"
-	// VolumeLanguageZhTwBig5UTF8 - Traditional Chinese BIG 5 with UTF-8 - Deprecated
-	VolumeLanguageZhTwBig5UTF8 VolumeLanguage = "zh-tw.big5.utf-8"
-	// VolumeLanguageZhTwUTF8 - Traditional Chinese EUC-TW with UTF-8 - Deprecated
-	VolumeLanguageZhTwUTF8 VolumeLanguage = "zh-tw.utf-8"
-	// VolumeLanguageZhUTF8 - Simplified Chinese with UTF-8
-	VolumeLanguageZhUTF8 VolumeLanguage = "zh.utf-8"
-)
-
-// PossibleVolumeLanguageValues returns the possible values for the VolumeLanguage const type.
-func PossibleVolumeLanguageValues() []VolumeLanguage {
-	return []VolumeLanguage{
-		VolumeLanguageAr,
-		VolumeLanguageArUTF8,
-		VolumeLanguageC,
-		VolumeLanguageCUTF8,
-		VolumeLanguageCs,
-		VolumeLanguageCsUTF8,
-		VolumeLanguageDa,
-		VolumeLanguageDaUTF8,
-		VolumeLanguageDe,
-		VolumeLanguageDeUTF8,
-		VolumeLanguageEn,
-		VolumeLanguageEnUTF8,
-		VolumeLanguageEnUs,
-		VolumeLanguageEnUsUTF8,
-		VolumeLanguageEs,
-		VolumeLanguageEsUTF8,
-		VolumeLanguageFi,
-		VolumeLanguageFiUTF8,
-		VolumeLanguageFr,
-		VolumeLanguageFrUTF8,
-		VolumeLanguageHe,
-		VolumeLanguageHeUTF8,
-		VolumeLanguageHr,
-		VolumeLanguageHrUTF8,
-		VolumeLanguageHu,
-		VolumeLanguageHuUTF8,
-		VolumeLanguageIt,
-		VolumeLanguageItUTF8,
-		VolumeLanguageJa,
-		VolumeLanguageJaJp932,
-		VolumeLanguageJaJp932UTF8,
-		VolumeLanguageJaJpPck,
-		VolumeLanguageJaJpPckUTF8,
-		VolumeLanguageJaJpPckV2,
-		VolumeLanguageJaJpPckV2UTF8,
-		VolumeLanguageJaUTF8,
-		VolumeLanguageJaV1,
-		VolumeLanguageJaV1UTF8,
-		VolumeLanguageKo,
-		VolumeLanguageKoUTF8,
-		VolumeLanguageNl,
-		VolumeLanguageNlUTF8,
-		VolumeLanguageNo,
-		VolumeLanguageNoUTF8,
-		VolumeLanguagePl,
-		VolumeLanguagePlUTF8,
-		VolumeLanguagePt,
-		VolumeLanguagePtUTF8,
-		VolumeLanguageRo,
-		VolumeLanguageRoUTF8,
-		VolumeLanguageRu,
-		VolumeLanguageRuUTF8,
-		VolumeLanguageSk,
-		VolumeLanguageSkUTF8,
-		VolumeLanguageSl,
-		VolumeLanguageSlUTF8,
-		VolumeLanguageSv,
-		VolumeLanguageSvUTF8,
-		VolumeLanguageTr,
-		VolumeLanguageTrUTF8,
-		VolumeLanguageUTF8Mb4,
-		VolumeLanguageZh,
-		VolumeLanguageZhGbk,
-		VolumeLanguageZhGbkUTF8,
-		VolumeLanguageZhTw,
-		VolumeLanguageZhTwBig5,
-		VolumeLanguageZhTwBig5UTF8,
-		VolumeLanguageZhTwUTF8,
-		VolumeLanguageZhUTF8,
 	}
 }
 

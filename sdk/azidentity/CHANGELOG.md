@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+> These changes affect only code written against a beta version such as v1.14.0-beta.2
+- Renamed `WorkloadIdentityCredentialOptions.EnableAzureTokenProxy` to `EnableAzureProxy`
+
 ### Bugs Fixed
 
 ### Other Changes

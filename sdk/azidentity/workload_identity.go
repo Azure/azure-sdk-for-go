@@ -57,7 +57,7 @@ type WorkloadIdentityCredentialOptions struct {
 	DisableInstanceDiscovery bool
 
 	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables or
-	// from the AzureTokenProxyOptions field.
+	// from the AzureProxy field.
 	// When this value is true and proxy configuration isn't present or this value is false, the credential will request
 	// tokens directly from Entra ID.
 	//

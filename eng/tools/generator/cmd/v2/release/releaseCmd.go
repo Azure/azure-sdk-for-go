@@ -72,6 +72,7 @@ type Flags struct {
 	SkipGenerateExample bool
 	PackageConfig       string
 	Token               string
+	ForceStableVersion  bool
 	TypeSpecConfig      string
 	TypeSpecGoOption    string
 	TspClientOption     []string
@@ -87,6 +88,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.Bool("skip-generate-example", false, "Skip generate example for SDK in the same time")
 	flagSet.String("package-config", "", "Additional config for package")
 	flagSet.StringP("token", "t", "", "Specify the personal access token of Github")
+	flagSet.Bool("force-stable-version", false, "Even if input-files contains preview files, they are forced to be generated as stable versions. At the same time, the tag must not contain preview.")
 	flagSet.String("tsp-config", "", "The path of the typespec tspconfig.yaml")
 	flagSet.String("tsp-option", "", "Emit typespec-go options, only valid when tsp-config is configured. e: option1=value1;option2=value2")
 	flagSet.StringSlice("tsp-client-option", nil, "The tsp-client(@azure-tools/typespec-client-generator-cli) init options. e: --save-inputs,--debug")
@@ -103,6 +105,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SkipGenerateExample: flags.GetBool(flagSet, "skip-generate-example"),
 		PackageConfig:       flags.GetString(flagSet, "package-config"),
 		Token:               flags.GetString(flagSet, "token"),
+		ForceStableVersion:  flags.GetBool(flagSet, "force-stable-version"),
 		TypeSpecConfig:      flags.GetString(flagSet, "tsp-config"),
 		TypeSpecGoOption:    flags.GetString(flagSet, "tsp-option"),
 		TspClientOption:     flags.GetStringSlice(flagSet, "tsp-client-option"),
@@ -185,6 +188,7 @@ func (c *commandContext) generate(sdkRepo repo.SDKRepository, specCommitHash str
 			SpecRPName:           c.flags.SpecRPName,
 			ReleaseDate:          c.flags.ReleaseDate,
 			SkipGenerateExample:  c.flags.SkipGenerateExample,
+			ForceStableVersion:   c.flags.ForceStableVersion,
 		})
 		if len(errs) > 0 {
 			// GenerateFromSwagger is a batch run function, one error means one package is failed.

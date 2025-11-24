@@ -13,7 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +23,7 @@ import (
 func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) {
 	// Scenario: Your API call asks for multiple responses (N>1) and at least 1 of the responses is filtered
 	// https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/cognitive-services/openai/concepts/content-filter.md#scenario-your-api-call-asks-for-multiple-responses-n1-and-at-least-1-of-the-responses-is-filtered
-	client := newStainlessTestClient(t, azureOpenAI.Completions.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	arg := openai.CompletionNewParams{
 		Model:       openai.CompletionNewParamsModel(azureOpenAI.Completions.Model),
@@ -62,7 +62,7 @@ func requireContentFilterError(t *testing.T, err error) {
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *testing.T) {
 	t.Skip("There seems to be some inconsistencies in the service, skipping until resolved.")
-	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
 	resp, err := client.Chat.Completions.New(context.Background(), openai.ChatCompletionNewParams{
 		Messages: []openai.ChatCompletionMessageParamUnion{{

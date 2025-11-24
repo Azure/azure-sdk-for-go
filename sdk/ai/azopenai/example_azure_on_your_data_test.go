@@ -10,7 +10,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
 )
 
 // Example_usingAzureOnYourData demonstrates how to use Azure OpenAI's Azure-On-Your-Data feature.
@@ -25,26 +27,27 @@ import (
 // - AOAI_OYD_MODEL: The deployment name of your model
 // - COGNITIVE_SEARCH_API_ENDPOINT: Your Azure Cognitive Search endpoint
 // - COGNITIVE_SEARCH_API_INDEX: The name of your search index
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Azure-On-Your-Data enables you to enhance chat completions with information from your
 // own data sources, allowing for more contextual and accurate responses based on your content.
 func Example_usingAzureOnYourData() {
-	if !CheckRequiredEnvVars("AOAI_OYD_ENDPOINT", "AOAI_OYD_MODEL",
-		"COGNITIVE_SEARCH_API_ENDPOINT", "COGNITIVE_SEARCH_API_INDEX") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not \nrunning example.")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_OYD_ENDPOINT")
 	model := os.Getenv("AOAI_OYD_MODEL")
 	cognitiveSearchEndpoint := os.Getenv("COGNITIVE_SEARCH_API_ENDPOINT")
 	cognitiveSearchIndexName := os.Getenv("COGNITIVE_SEARCH_API_INDEX")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	chatParams := openai.ChatCompletionNewParams{
 		Model:     openai.ChatModel(model),
@@ -134,23 +137,25 @@ func Example_usingAzureOnYourData() {
 // The example uses environment variables for configuration:
 // - AOAI_OYD_ENDPOINT: Your Azure OpenAI endpoint URL
 // - AOAI_OYD_MODEL: The deployment name of your model
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Azure OpenAI enhancements provide additional capabilities beyond standard OpenAI features,
 // such as improved grounding and content filtering for more accurate and controlled responses.
 func Example_usingEnhancements() {
-	if !CheckRequiredEnvVars("AOAI_OYD_ENDPOINT", "AOAI_OYD_MODEL") {
-		fmt.Fprintf(os.Stderr, "Environment variables are not set, not \nrunning example.")
-		return
-	}
-
 	endpoint := os.Getenv("AOAI_OYD_ENDPOINT")
 	model := os.Getenv("AOAI_OYD_MODEL")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	chatParams := openai.ChatCompletionNewParams{
 		Model:     openai.ChatModel(model),

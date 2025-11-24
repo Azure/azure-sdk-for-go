@@ -13,7 +13,7 @@ param(
     [switch]$removeUnreferencedTypes,
     [switch]$factoryGatherCommonParams,
     [string]$config = "autorest.md",
-    [string]$goExtension = "@autorest/go@4.0.0-preview.74",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.75",
     [string]$filePrefix,
     [string]$outputFolder
 )
@@ -91,12 +91,12 @@ function Process-Sdk ()
 
     if ($tidy)
     {
-        Write-Host "##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.23.0 in " $currentDirectory
-        go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.23.0
+        Write-Host "##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in " $currentDirectory
+        go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
         
-        Write-Host "##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.23.0 in " $currentDirectory
-        go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.23.0
+        Write-Host "##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in " $currentDirectory
+        go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
         
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory

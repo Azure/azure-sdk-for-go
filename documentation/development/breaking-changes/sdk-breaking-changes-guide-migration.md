@@ -1,25 +1,12 @@
 # Azure Go SDK Breaking Changes Review and Resolution Guide for TypeSpec Migration
 
-The Azure Go SDK generally prohibits breaking changes unless they result from service behavior modifications. This guide helps you identify, review, and resolve breaking changes that may occur in new SDK versions due to migrating of service specifications from Swagger to TypeSpec. For service's TypeSpec specification update scenario, refer this [doc](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide.md).
+This guide helps you identify, review, and resolve breaking changes specific to migrating service specifications from Swagger to TypeSpec. For breaking changes from general TypeSpec specification updates, refer to the [main breaking changes guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide.md).
 
-Breaking changes can be resolved by:
+Breaking changes should be resolved through TypeSpec client and/or configuration customizations. Low-impact breaking changes can be reviewed by Go architects as they may be acceptable.
 
-1. Client Customizations
+## TypeSpec Configuration Changes
 
-Client customizations should be implemented in a file named `client.tsp` located in the service's specification directory alongside the main entry point `main.tsp`. This `client.tsp` becomes the new specification entry point, so import `main.tsp` in the `client.tsp` file. **Do not** import `client.tsp` in the `main.tsp` file.
-
-```tsp
-import "./main.tsp";
-import "@azure-tools/typespec-client-generator-core";
-
-using Azure.ClientGenerator.Core;
-
-// Add your customizations here
-```
-
-2. TypeSpec Configuration Changes
-
-TypeSpec configuration changes should be made in the `tspconfig.yaml` file located in the service's specification directory. This file is used to configure the TypeSpec compiler and client generator options. For example:
+TypeSpec configuration changes should be made in the `tspconfig.yaml` file located in the service's specification directory. This file configures the TypeSpec compiler and client generator options. For example:
 
 ```yaml
 options:
@@ -27,7 +14,11 @@ options:
     fix-const-stuttering: false
 ```
 
-## 1. Naming Changes with Numbers
+For client customizations and `client.tsp` setup instructions, refer to the [main breaking changes guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide.md).
+
+## Breaking Changes That Can Be Resolved with TypeSpec Customizations
+
+### 1. Naming Changes with Numbers
 
 **Changelog Pattern**:
 
@@ -60,7 +51,7 @@ Use client customization to restore the original names from the removal entries:
 @@clientName(Minute.Minute30, "Thirty", "go");
 ```
 
-## 2. Enum Naming Changes from Anti-Stuttering Rules
+### 2. Enum Naming Changes from Anti-Stuttering Rules
 
 **Changelog Pattern**:
 
@@ -89,7 +80,7 @@ union MaintenanceScope {
 
 **Resolution**:
 
-Disable the anti-stuttering rule in TypeSpec config `tspconfig.yaml` to preserve original enum names:
+Disable the anti-stuttering rule in the TypeSpec config `tspconfig.yaml` to preserve original enum names:
 
 ```yaml
 options:
@@ -97,7 +88,7 @@ options:
     fix-const-stuttering: false
 ```
 
-## 3. Operation Naming Changes
+### 3. Operation Naming Changes
 
 **Changelog Pattern**:
 
@@ -112,7 +103,7 @@ Removal of an operation and addition of a similarly named operation for the same
 
 **Spec Pattern**:
 
-Locate the interface and operation using the name from the addition entries. Operation types include:
+Find the interface and operation using the name from the addition entries. Operation types include:
 
 - Regular operations: `New function *<interface name>Client.<operation name>(...)`
 - Paging operations: `New function *<interface name>Client.New<operation name>Pager(...)`
@@ -134,7 +125,7 @@ Use client naming to restore the original operation name from the removal entrie
 @@clientName(StorageTaskAssignment.storageTaskAssignmentList, "list", "go");
 ```
 
-## 4. Client Organization Changes
+### 4. Client Organization Changes
 
 **Changelog Pattern**:
 
@@ -169,7 +160,7 @@ Move the operation to the correct client using `@@clientLocation`. Use the clien
 @@clientLocation(Microsoft.ElasticSan.restoreVolume, "Management", "go");
 ```
 
-## 5. Missing Fields in Response Types
+### 5. Missing Fields in Response Types
 
 **Changelog Pattern**:
 
@@ -179,7 +170,7 @@ Removal of fields in response structures with the `xxxResponse` naming pattern:
 - Field `CacheAccessPolicyAssignment` of struct `AccessPolicyAssignmentClientCreateUpdateResponse` has been removed
 ```
 
-**Reason**: Incorrect TypeSpec conversion for long-running operation (LRO) responses.
+**Reason**: Incorrect TypeSpec conversion for Long-Running Operation (LRO) responses.
 
 **Spec Pattern**:
 
@@ -195,7 +186,7 @@ interface RedisCacheAccessPolicies {
 }
 ```
 
-If the response type name does not have the `<interface name>` prefix and start with `Client` directly, use the service name as the interface name instead.
+If the response type name does not have the `<interface name>` prefix and starts with `Client` directly, use the service name as the interface name instead.
 
 **Resolution**:
 
@@ -211,7 +202,87 @@ interface RedisCacheAccessPolicies {
 }
 ```
 
-## 6. Standard Operations List Operation Upgrade
+### 6. Naming Changes from Directives
+
+**Changelog Pattern**:
+
+Paired removal and addition entries showing naming changes for structs:
+
+```md
+- Struct `ResourceInfo` has been removed
+- New struct `RedisResource`
+```
+
+Also, in the legacy configuration for Swagger under the spec folder: `specification/<service>/resource-manager/readme.go.md`, the renaming directives can be found:
+
+```md
+directive:
+
+- rename-model:
+  from: 'RedisResource'
+  to: 'ResourceInfo'
+```
+
+**Reason**: Swagger has directives to change the naming.
+
+**Spec Pattern**:
+
+Find the type definition by examining the names from the addition entries in the changelog (pattern: `New xxx '<type name>'`):
+
+```tsp
+model RedisResource {
+  ...
+}
+```
+
+**Resolution**:
+
+Use client customization to perform the same renaming as the directives in the legacy configuration:
+
+```tsp
+@@clientName(RedisResource, "ResourceInfo", "go");
+```
+
+### 7. Type Changed from `string` to Another Enum Type
+
+**Changelog Pattern**:
+
+One property type changes from `*string` to another enum type, along with a newly added enum type:
+
+```md
+- Type of `RegistryNameCheckRequest.Type` has been changed from `*string` to `*ResourceType`
+- New enum type `ResourceType` with values `ResourceTypeMicrosoftContainerRegistryRegistries`
+```
+
+**Reason**: In Swagger, we converted single-value fixed enums to constants, but in TypeSpec we need to ensure the same behavior with client customization.
+
+**Spec Pattern**:
+
+Find the model property and enum using the name from the changelog (pattern: `Type of <model name>.<property name>` has been changed from *string to *<enum name>):
+
+```tsp
+model RegistryNameCheckRequest {
+  type: ContainerRegistryResourceType;
+}
+
+enum ContainerRegistryResourceType {
+  `Microsoft.ContainerRegistry/registries`,
+}
+```
+
+**Resolution**:
+
+Locate the model property and use `@@alternateType` to change the property type back to the constant string:
+
+```tsp
+@@alternateType(RegistryNameCheckRequest.type, "Microsoft.ContainerRegistry/registries", "go");
+```
+
+## Breaking Changes That Can Be Accepted
+
+All these breaking changes will be released in a new major version, except the last one about unreferenced types.
+
+### 1. Operations List Operation Upgrade
 
 **Changelog Pattern**:
 
@@ -234,7 +305,45 @@ Multiple changes related to the `Operation` type and its fields, sometimes inclu
 
 **Resolution**: Accept these breaking changes.
 
-## 7. Common Types Upgrade
+**Migration Guide**: Change to use the new `OperationList` operation and related types.
+
+For example:
+
+Previous code:
+
+```go
+pager := clientFactory.NewOperationsClient().NewListPager(nil)
+for pager.More() {
+  page, err := pager.NextPage(ctx)
+  if err != nil {
+    log.Fatalf("failed to advance page: %v", err)
+  }
+  for _, v := range page.Value {
+    if *v.Origin == "system"{
+      // ...
+    }
+  }
+}
+```
+
+New code:
+
+```go
+pager := clientFactory.NewOperationsClient().NewListPager(nil)
+for pager.More() {
+  page, err := pager.NextPage(ctx)
+  if err != nil {
+    log.Fatalf("failed to advance page: %v", err)
+  }
+  for _, v := range page.Value {
+    if *v.Origin == OriginSystem {
+      // ...
+    }
+  }
+}
+```
+
+### 2. Common Types Upgrade
 
 **Changelog Pattern**:
 
@@ -254,29 +363,27 @@ Multiple changes related to common infrastructure types such as `SystemData`, `E
 
 **Resolution**: Accept these breaking changes.
 
-## 8. Removal of Unreferenced Types
+**Migration Guide**: Change to use the new types.
 
-**Changelog Pattern**:
+For example:
 
-Multiple removals of unreferenced types that are typically not used in the SDK:
+Previous code:
 
-```md
-- Struct `TrackedResource` has been removed
-- Struct `Resource` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `ErrorResponse` has been removed
-- Struct `ErrorDetail` has been removed
-- Struct `ErrorAdditionalInfo` has been removed
-- Struct `SCConfluentListMetadata` has been removed
+```go
+if *resource.SystemData.CreatedByType == IdentityTypeUser {
+  // ...
+}
 ```
 
-**Reason**: Unreferenced types are removed during TypeSpec migration.
+New code:
 
-**Impact**: Low impact since these types are typically not used directly by users.
+```go
+if *resource.SystemData.CreatedByType == CreatedByTypeUser {
+  // ...
+}
+```
 
-**Resolution**: Accept these breaking changes.
-
-## 9. Request Body Optionality Changes
+### 3. Request Body Optionality Changes
 
 **Changelog Pattern**:
 
@@ -295,43 +402,220 @@ An additional parameter is added to an operation, and a corresponding field is r
 
 **Resolution**: Accept these breaking changes.
 
-## 10. Naming Changes from Directive
+**Migration Guide**: Update the code to pass the request body as a separate parameter instead of including it in the options struct.
+
+For example:
+
+Previous code:
+
+```go
+client.CreateOrUpdate(ctx, &armdatadog.MarketplaceAgreementsClientCreateOrUpdateOptions{
+  Body: &armdatadog.AgreementResource{
+    Properties: &armdatadog.AgreementProperties{
+      PlanID:   to.Ptr("plan-id"),
+      Product:  to.Ptr("product"),
+      Publisher: to.Ptr("publisher"),
+      Terms:    to.Ptr("terms"),
+    },
+  },
+})
+```
+
+New code:
+
+```go
+client.CreateOrUpdate(ctx, armdatadog.AgreementResource{
+  Properties: &armdatadog.AgreementProperties{
+    PlanID:   to.Ptr("plan-id"),
+    Product:  to.Ptr("product"),
+    Publisher: to.Ptr("publisher"),
+    Terms:    to.Ptr("terms"),
+  },
+}, nil)
+```
+
+### 4. Model Naming Changes from Anti-Stuttering Rules
 
 **Changelog Pattern**:
 
-Paired removal and addition entries showing naming changes for structs:
+Removal of a `xxxListResult` model, addition of a `xxxListListResult` model and change of related fields:
 
 ```md
-- Struct `ResourceInfo` has been removed
-- New struct `RedisResource`
+- Struct `DomainListResult` has been removed
+- Field `DomainListResult` of struct `DomainListsClientListByResourceGroupResponse` has been removed
+- Field `DomainListResult` of struct `DomainListsClientListResponse` has been removed
+- New struct `DomainListListResult`
+- New anonymous field `DomainListListResult` in struct `DomainListsClientListByResourceGroupResponse`
+- New anonymous field `DomainListListResult` in struct `DomainListsClientListResponse`
 ```
 
-Also, in the legacy config for swagger under the spec folder: `specification/<service>/resource-manager/readme.go.md`, the renaming directives could be found:
+**Reason**: Swagger has naming logic to remove the stuttering part of type names. When we migrate to TypeSpec, we want to keep the original names without this logic to avoid confusion.
 
-```md
-directive:
+**Impact**: Low impact since list structs are rarely used directly by users.
 
-- rename-model:
-  from: 'RedisResource'
-  to: 'ResourceInfo'
-```
+**Resolution**: Accept these breaking changes.
 
-**Reason**: Swagger has directive ways to change the naming.
+**Migration Guide**: Change to use the new structs.
 
-**Spec Pattern**:
+For example:
 
-Find the type definition by examining the names from the addition entries in the changelog (pattern: `New xxx '<type name>'`):
+Previous code:
 
-```tsp
-model RedisResource {
-  ...
+```go
+pager := clientFactory.NewDomainListsClient().NewListByResourceGroupPager("rg1", nil)
+for pager.More() {
+  page, err := pager.NextPage(ctx)
+  if err != nil {
+    log.Fatalf("failed to advance page: %v", err)
+  }
+  for _, v := range page.DomainListResult.Value {
+    // ...
+  }
 }
 ```
 
-**Resolution**:
+New code:
 
-Use client customization to do the same renaming as the directives in the legacy config:
-
-```tsp
-@@clientName(RedisResource, "ResourceInfo", "go");
+```go
+pager := clientFactory.NewDomainListsClient().NewListByResourceGroupPager("rg1", nil)
+for pager.More() {
+  page, err := pager.NextPage(ctx)
+  if err != nil {
+    log.Fatalf("failed to advance page: %v", err)
+  }
+  for _, v := range page.DomainListListResult.Value {
+    // ...
+  }
+}
 ```
+
+### 5. Enum Splitting
+
+**Changelog Pattern**:
+
+Removal of enum values and addition of new enum values with the new enum type:
+
+```md
+- `ActionTypeEnable`, `ActionTypeOptOut` from enum `ActionType` has been removed
+- New enum type `ActionTypeFlag` with values `ActionTypeFlagEnable`, `ActionTypeFlagOptOut`
+```
+
+**Reason**: Swagger merges the enum values of enum types with the same name. This is incorrect. When migrating to TypeSpec, we fix this with a new enum type.
+
+**Impact**: This corrects the previous SDK behavior.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to use the new enum types.
+
+For example:
+
+Previous code:
+
+```go
+if *resource.ActionType == ActionTypeEnable {
+  // ...
+}
+```
+
+New code:
+
+```go
+if *resource.ActionType == ActionTypeFlagEnable {
+  // ...
+}
+```
+
+### 6. Type Changes for Enum Values
+
+**Changelog Pattern**:
+
+Removal of an enum type and change the refer of this enum type to string:
+
+```md
+- Type of `MessageProperties.ContentType` has been changed from `*TranscriptContentType` to `*string`
+- Enum `TranscriptContentType` has been removed
+- Function `PossibleTranscriptContentTypeValues` has been removed
+```
+
+**Reason**: Swagger allows extensible enums without any known values. This is incorrect. When migrating to TypeSpec, we change this to string directly.
+
+**Impact**: This corrects the previous SDK behavior.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to remove type casting.
+
+For example:
+
+Previous code:
+
+```go
+if *message.ContentType == TranscriptContentTypePlainText {
+  // ...
+}
+```
+
+New code:
+
+```go
+if *message.ContentType == "PlainText" {
+  // ...
+}
+```
+
+### 7. Change type from `string` to `azore.ETag`
+
+**Changelog Pattern**:
+
+Type change for ETag fields from `*string` to `*azcore.ETag`:
+
+```md
+- Type of `PrivateEndpointConnection.Etag` has been changed from `*string` to `*azcore.ETag`
+```
+
+**Reason**: When migrating to TypeSpec, we change ETag fields from `*string` to `azcore.ETag`.
+
+**Impact**: Low impact since underlaying type of `azure.Etag` is `string`.
+
+**Resolution**: Accept these breaking changes.
+
+**Migration Guide**: Update the code to remove type casting.
+
+For example:
+
+Previous code:
+
+```go
+privateEndpointConnection.Etag = to.Ptr("*")
+```
+
+New code:
+
+```go
+privateEndpointConnection.Etag = to.Ptr(azcore.ETag("*"))
+```
+
+### 8. Removal of Unreferenced Types
+
+**Changelog Pattern**:
+
+Multiple removals of unreferenced types that are typically not used in the SDK:
+
+```md
+- Struct `TrackedResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `SCConfluentListMetadata` has been removed
+```
+
+**Reason**: Unreferenced types are removed during TypeSpec migration.
+
+**Impact**: No impact since these types are typically not used directly by users.
+
+**Resolution**: Accept these breaking changes.
+
+**Caution**: Since these types are unreferenced, their removal should not affect existing code. We will release these changes without a new major version.

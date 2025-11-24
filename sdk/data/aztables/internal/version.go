@@ -8,5 +8,5 @@ package internal
 
 const (
 	ModuleName = "github.com/Azure/azure-sdk-for-go/sdk/data/aztables"
-	Version    = "v1.4.1-beta.1"
+	Version    = "v1.4.2-beta.1"
 )

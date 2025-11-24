@@ -29,16 +29,16 @@ type OrganizationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOrganizationsServerTransport(srv *OrganizationsServer) *OrganizationsServerTransport {
 	return &OrganizationsServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armnewrelicobservability.OrganizationsClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armnewrelicobservability.OrganizationsClientListResponse]](),
 	}
 }
 
 // OrganizationsServerTransport connects instances of armnewrelicobservability.OrganizationsClient to instances of OrganizationsServer.
 // Don't use this type directly, use NewOrganizationsServerTransport instead.
 type OrganizationsServerTransport struct {
-	srv		*OrganizationsServer
-	newListPager	*tracker[azfake.PagerResponder[armnewrelicobservability.OrganizationsClientListResponse]]
+	srv          *OrganizationsServer
+	newListPager *tracker[azfake.PagerResponder[armnewrelicobservability.OrganizationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for OrganizationsServerTransport.

@@ -28,26 +28,26 @@ func ExampleTagRulesClient_BeginCreateOrUpdate_tagRulesCreateOrUpdateMaximumSetG
 			LogRules: &armnewrelicobservability.LogRules{
 				FilteringTags: []*armnewrelicobservability.FilteringTag{
 					{
-						Name:	to.Ptr("saokgpjvdlorciqbjmjxazpee"),
-						Action:	to.Ptr(armnewrelicobservability.TagActionInclude),
-						Value:	to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
+						Name:   to.Ptr("saokgpjvdlorciqbjmjxazpee"),
+						Action: to.Ptr(armnewrelicobservability.TagActionInclude),
+						Value:  to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
 					},
 				},
-				SendAADLogs:		to.Ptr(armnewrelicobservability.SendAADLogsStatusEnabled),
-				SendActivityLogs:	to.Ptr(armnewrelicobservability.SendActivityLogsStatusEnabled),
-				SendSubscriptionLogs:	to.Ptr(armnewrelicobservability.SendSubscriptionLogsStatusEnabled),
+				SendAADLogs:          to.Ptr(armnewrelicobservability.SendAADLogsStatusEnabled),
+				SendActivityLogs:     to.Ptr(armnewrelicobservability.SendActivityLogsStatusEnabled),
+				SendSubscriptionLogs: to.Ptr(armnewrelicobservability.SendSubscriptionLogsStatusEnabled),
 			},
 			MetricRules: &armnewrelicobservability.MetricRules{
 				FilteringTags: []*armnewrelicobservability.FilteringTag{
 					{
-						Name:	to.Ptr("saokgpjvdlorciqbjmjxazpee"),
-						Action:	to.Ptr(armnewrelicobservability.TagActionInclude),
-						Value:	to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
+						Name:   to.Ptr("saokgpjvdlorciqbjmjxazpee"),
+						Action: to.Ptr(armnewrelicobservability.TagActionInclude),
+						Value:  to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
 					},
 				},
-				UserEmail:	to.Ptr("test@testing.com"),
+				UserEmail: to.Ptr("test@testing.com"),
 			},
-			ProvisioningState:	to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+			ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
 		},
 	}, nil)
 	if err != nil {
@@ -395,24 +395,24 @@ func ExampleTagRulesClient_Update_tagRulesUpdateMaximumSetGen() {
 			LogRules: &armnewrelicobservability.LogRules{
 				FilteringTags: []*armnewrelicobservability.FilteringTag{
 					{
-						Name:	to.Ptr("saokgpjvdlorciqbjmjxazpee"),
-						Action:	to.Ptr(armnewrelicobservability.TagActionInclude),
-						Value:	to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
+						Name:   to.Ptr("saokgpjvdlorciqbjmjxazpee"),
+						Action: to.Ptr(armnewrelicobservability.TagActionInclude),
+						Value:  to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
 					},
 				},
-				SendAADLogs:		to.Ptr(armnewrelicobservability.SendAADLogsStatusEnabled),
-				SendActivityLogs:	to.Ptr(armnewrelicobservability.SendActivityLogsStatusEnabled),
-				SendSubscriptionLogs:	to.Ptr(armnewrelicobservability.SendSubscriptionLogsStatusEnabled),
+				SendAADLogs:          to.Ptr(armnewrelicobservability.SendAADLogsStatusEnabled),
+				SendActivityLogs:     to.Ptr(armnewrelicobservability.SendActivityLogsStatusEnabled),
+				SendSubscriptionLogs: to.Ptr(armnewrelicobservability.SendSubscriptionLogsStatusEnabled),
 			},
 			MetricRules: &armnewrelicobservability.MetricRules{
 				FilteringTags: []*armnewrelicobservability.FilteringTag{
 					{
-						Name:	to.Ptr("saokgpjvdlorciqbjmjxazpee"),
-						Action:	to.Ptr(armnewrelicobservability.TagActionInclude),
-						Value:	to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
+						Name:   to.Ptr("saokgpjvdlorciqbjmjxazpee"),
+						Action: to.Ptr(armnewrelicobservability.TagActionInclude),
+						Value:  to.Ptr("sarxrqsxouhdjwsrqqicbeirdb"),
 					},
 				},
-				UserEmail:	to.Ptr("test@testing.com"),
+				UserEmail: to.Ptr("test@testing.com"),
 			},
 		},
 	}, nil)

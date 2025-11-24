@@ -26,53 +26,53 @@ func ExampleMonitorsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewMonitorsClient().BeginCreateOrUpdate(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResource{
 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
-			Type:	to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
 				"key8903": &armnewrelicobservability.UserAssignedIdentity{},
 			},
 		},
-		Location:	to.Ptr("k"),
+		Location: to.Ptr("k"),
 		Properties: &armnewrelicobservability.MonitorProperties{
-			AccountCreationSource:		to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
-			LiftrResourceCategory:		to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
-			MarketplaceSubscriptionStatus:	to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
-			MonitoringStatus:		to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
+			AccountCreationSource:         to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
+			LiftrResourceCategory:         to.Ptr(armnewrelicobservability.LiftrResourceCategoriesUnknown),
+			MarketplaceSubscriptionStatus: to.Ptr(armnewrelicobservability.MarketplaceSubscriptionStatusActive),
+			MonitoringStatus:              to.Ptr(armnewrelicobservability.MonitoringStatusEnabled),
 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
 				AccountInfo: &armnewrelicobservability.AccountInfo{
-					AccountID:	to.Ptr("xhqmg"),
-					IngestionKey:	to.Ptr("wltnimmhqt"),
-					Region:		to.Ptr("ljcf"),
+					AccountID:    to.Ptr("xhqmg"),
+					IngestionKey: to.Ptr("wltnimmhqt"),
+					Region:       to.Ptr("ljcf"),
 				},
 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
 					OrganizationID: to.Ptr("k"),
 				},
 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
-					EnterpriseAppID:	to.Ptr("kwiwfz"),
-					ProvisioningState:	to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-					SingleSignOnState:	to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
-					SingleSignOnURL:	to.Ptr("kvseueuljsxmfwpqctz"),
+					EnterpriseAppID:   to.Ptr("kwiwfz"),
+					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
+					SingleSignOnURL:   to.Ptr("kvseueuljsxmfwpqctz"),
 				},
-				UserID:	to.Ptr("vcscxlncofcuduadesd"),
+				UserID: to.Ptr("vcscxlncofcuduadesd"),
 			},
-			OrgCreationSource:	to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
+			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
 			PlanData: &armnewrelicobservability.PlanData{
-				BillingCycle:	to.Ptr("Yearly"),
-				EffectiveDate:	to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t }()),
-				PlanDetails:	to.Ptr("tbbiaga"),
-				UsageType:	to.Ptr(armnewrelicobservability.UsageTypePAYG),
+				BillingCycle:  to.Ptr("Yearly"),
+				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t }()),
+				PlanDetails:   to.Ptr("tbbiaga"),
+				UsageType:     to.Ptr(armnewrelicobservability.UsageTypePAYG),
 			},
-			ProvisioningState:		to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-			SaaSAzureSubscriptionStatus:	to.Ptr("Subscribed"),
+			ProvisioningState:           to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+			SaaSAzureSubscriptionStatus: to.Ptr("Subscribed"),
 			SaaSData: &armnewrelicobservability.SaaSData{
 				SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"),
 			},
-			SubscriptionState:	to.Ptr("Suspended"),
+			SubscriptionState: to.Ptr("Suspended"),
 			UserInfo: &armnewrelicobservability.UserInfo{
-				Country:	to.Ptr("hslqnwdanrconqyekwbnttaetv"),
-				EmailAddress:	to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
-				FirstName:	to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
-				LastName:	to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
-				PhoneNumber:	to.Ptr("krf"),
+				Country:      to.Ptr("hslqnwdanrconqyekwbnttaetv"),
+				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
+				FirstName:    to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
+				LastName:     to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
+				PhoneNumber:  to.Ptr("krf"),
 			},
 		},
 		Tags: map[string]*string{
@@ -382,7 +382,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen(
 		AzureResourceIDs: []*string{
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 		},
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -414,7 +414,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen(
 		AzureResourceIDs: []*string{
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 		},
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -594,7 +594,7 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMaximu
 		AzureResourceIDs: []*string{
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 		},
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -636,7 +636,7 @@ func ExampleMonitorsClient_NewListAppServicesPager_monitorsListAppServicesMinimu
 		AzureResourceIDs: []*string{
 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
 		},
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -867,7 +867,7 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMaximumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewMonitorsClient().NewListHostsPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", armnewrelicobservability.HostsGetRequest{
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 		VMIDs: []*string{
 			to.Ptr("xzphvxvfmvjrnsgyns"),
 		},
@@ -909,7 +909,7 @@ func ExampleMonitorsClient_NewListHostsPager_monitorsListHostsMinimumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewMonitorsClient().NewListHostsPager("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", armnewrelicobservability.HostsGetRequest{
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 		VMIDs: []*string{
 			to.Ptr("xzphvxvfmvjrnsgyns"),
 		},
@@ -1161,15 +1161,15 @@ func ExampleMonitorsClient_SwitchBilling_monitorsSwitchBillingMaximumSetGen() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMonitorsClient().SwitchBilling(ctx, "rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz", armnewrelicobservability.SwitchBillingRequest{
-		AzureResourceID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
-		OrganizationID:		to.Ptr("k"),
+		AzureResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"),
+		OrganizationID:  to.Ptr("k"),
 		PlanData: &armnewrelicobservability.PlanData{
-			BillingCycle:	to.Ptr("Yearly"),
-			EffectiveDate:	to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t }()),
-			PlanDetails:	to.Ptr("tbbiaga"),
-			UsageType:	to.Ptr(armnewrelicobservability.UsageTypePAYG),
+			BillingCycle:  to.Ptr("Yearly"),
+			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t }()),
+			PlanDetails:   to.Ptr("tbbiaga"),
+			UsageType:     to.Ptr(armnewrelicobservability.UsageTypePAYG),
 		},
-		UserEmail:	to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
+		UserEmail: to.Ptr("ruxvg@xqkmdhrnoo.hlmbpm"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1352,43 +1352,43 @@ func ExampleMonitorsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewMonitorsClient().BeginUpdate(ctx, "rgNewRelic", "cdlymktqw", armnewrelicobservability.NewRelicMonitorResourceUpdate{
 		Identity: &armnewrelicobservability.ManagedServiceIdentity{
-			Type:	to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
+			Type: to.Ptr(armnewrelicobservability.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armnewrelicobservability.UserAssignedIdentity{
 				"key8903": &armnewrelicobservability.UserAssignedIdentity{},
 			},
 		},
 		Properties: &armnewrelicobservability.NewRelicMonitorResourceUpdateProperties{
-			AccountCreationSource:	to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
+			AccountCreationSource: to.Ptr(armnewrelicobservability.AccountCreationSourceLIFTR),
 			NewRelicAccountProperties: &armnewrelicobservability.AccountPropertiesForNewRelic{
 				AccountInfo: &armnewrelicobservability.AccountInfo{
-					AccountID:	to.Ptr("xhqmg"),
-					IngestionKey:	to.Ptr("wltnimmhqt"),
-					Region:		to.Ptr("ljcf"),
+					AccountID:    to.Ptr("xhqmg"),
+					IngestionKey: to.Ptr("wltnimmhqt"),
+					Region:       to.Ptr("ljcf"),
 				},
 				OrganizationInfo: &armnewrelicobservability.OrganizationInfo{
 					OrganizationID: to.Ptr("k"),
 				},
 				SingleSignOnProperties: &armnewrelicobservability.NewRelicSingleSignOnProperties{
-					EnterpriseAppID:	to.Ptr("kwiwfz"),
-					ProvisioningState:	to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
-					SingleSignOnState:	to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
-					SingleSignOnURL:	to.Ptr("kvseueuljsxmfwpqctz"),
+					EnterpriseAppID:   to.Ptr("kwiwfz"),
+					ProvisioningState: to.Ptr(armnewrelicobservability.ProvisioningStateAccepted),
+					SingleSignOnState: to.Ptr(armnewrelicobservability.SingleSignOnStatesInitial),
+					SingleSignOnURL:   to.Ptr("kvseueuljsxmfwpqctz"),
 				},
-				UserID:	to.Ptr("vcscxlncofcuduadesd"),
+				UserID: to.Ptr("vcscxlncofcuduadesd"),
 			},
-			OrgCreationSource:	to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
+			OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
 			PlanData: &armnewrelicobservability.PlanData{
-				BillingCycle:	to.Ptr("Yearly"),
-				EffectiveDate:	to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t }()),
-				PlanDetails:	to.Ptr("tbbiaga"),
-				UsageType:	to.Ptr(armnewrelicobservability.UsageTypePAYG),
+				BillingCycle:  to.Ptr("Yearly"),
+				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t }()),
+				PlanDetails:   to.Ptr("tbbiaga"),
+				UsageType:     to.Ptr(armnewrelicobservability.UsageTypePAYG),
 			},
 			UserInfo: &armnewrelicobservability.UserInfo{
-				Country:	to.Ptr("hslqnwdanrconqyekwbnttaetv"),
-				EmailAddress:	to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
-				FirstName:	to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
-				LastName:	to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
-				PhoneNumber:	to.Ptr("krf"),
+				Country:      to.Ptr("hslqnwdanrconqyekwbnttaetv"),
+				EmailAddress: to.Ptr("%6%@4-g.N1.3F-kI1.Ue-.lJso"),
+				FirstName:    to.Ptr("vdftzcggirefejajwahhwhyibutramdaotvnuf"),
+				LastName:     to.Ptr("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc"),
+				PhoneNumber:  to.Ptr("krf"),
 			},
 		},
 		Tags: map[string]*string{

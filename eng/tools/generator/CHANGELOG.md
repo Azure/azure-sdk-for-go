@@ -1,5 +1,11 @@
 # Release History
 
+## 0.3.2 (unreleased)
+
+### Features Added
+
+- Support detecting parameter renaming as breaking change in changelog generation.
+
 ## 0.3.1 (2025-11-13)
 
 ### Bugs Fixed

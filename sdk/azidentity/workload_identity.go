@@ -30,6 +30,7 @@ type WorkloadIdentityCredential struct {
 	mtx                  *sync.RWMutex
 }
 
+// WorkloadIdentityAzureProxyOptions contains optional parameters for configuring WorkloadIdentity Azure Proxy.
 type WorkloadIdentityAzureProxyOptions = customtokenproxy.Options
 
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.

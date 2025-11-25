@@ -5,10 +5,10 @@ go 1.24.0
 toolchain go1.24.4
 
 require (
-	github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx v0.2.0
+	github.com/Azure/azure-cosmos-client-engine/go/azcosmoscx v0.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.20.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
-	github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos v1.5.0-beta.3
+	github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos v1.5.0-beta.4
 	github.com/google/uuid v1.6.0
 )
 

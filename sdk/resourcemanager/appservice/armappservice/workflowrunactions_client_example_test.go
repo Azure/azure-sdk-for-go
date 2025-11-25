@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/WorkflowRunActions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/WorkflowRunActions_List.json
 func ExampleWorkflowRunActionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleWorkflowRunActionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/WorkflowRunActions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/WorkflowRunActions_Get.json
 func ExampleWorkflowRunActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleWorkflowRunActionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/WorkflowRunActions_ListExpressionTraces.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/WorkflowRunActions_ListExpressionTraces.json
 func ExampleWorkflowRunActionsClient_NewListExpressionTracesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

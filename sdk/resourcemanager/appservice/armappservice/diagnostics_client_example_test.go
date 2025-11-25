@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListHostingEnvironmentDetectorResponses.json
 func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleDiagnosticsClient_NewListHostingEnvironmentDetectorResponsesPager() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetHostingEnvironmentDetectorResponse.json
 func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleDiagnosticsClient_GetHostingEnvironmentDetectorResponse() {
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectorResponses.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppDetectorRe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppSlotDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesPager_getAppSlotDetect
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +397,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppDetectorResponse() {
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,7 +527,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponse_getAppSlotDetectorResponse
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,7 +562,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppDiagno
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppSlotDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -597,7 +597,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesPager_listAppSlotDi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppDiagnosticCategory
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategory_getAppSlotDiagnosticCate
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalyses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteAnalyses.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +714,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteAnalysesSlot.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppSlotAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +777,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesPager_listAppSlotAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteAnalysis.json
 func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -804,7 +804,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -831,7 +831,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysis_getAppSlotAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteAnalysis.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +958,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1085,7 +1085,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysis_executeSiteSlotAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectors.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1275,7 +1275,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectorsSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppSlotDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1339,7 +1339,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsPager_listAppSlotDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetector.json
 func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1368,7 +1368,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetectorSlot.json
 func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1397,7 +1397,7 @@ func ExampleDiagnosticsClient_GetSiteDetector_getAppSlotDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteDetector.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1435,7 +1435,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1473,7 +1473,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetector_executeSiteSlotDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectorResponses.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager_getAppDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1513,7 +1513,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager_getAppDetect
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectorResponsesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager_getAppSlotDetectorResponses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1553,7 +1553,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorResponsesSlotPager_getAppSlotDe
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponse.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1683,7 +1683,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppDetectorResponse
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
 func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppSlotDetectorResponse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1813,7 +1813,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorResponseSlot_getAppSlotDetectorResp
 	// 											}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDiagnosticCategories.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager_listAppDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1848,7 +1848,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager_listAppDi
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDiagnosticCategoriesSlot.json
 func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager_listAppSlotDiagnosticCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1883,7 +1883,7 @@ func ExampleDiagnosticsClient_NewListSiteDiagnosticCategoriesSlotPager_listAppSl
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDiagnosticCategory.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1910,7 +1910,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppDiagnosticCate
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDiagnosticCategorySlot.json
 func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppSlotDiagnosticCategory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1937,7 +1937,7 @@ func ExampleDiagnosticsClient_GetSiteDiagnosticCategorySlot_getAppSlotDiagnostic
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalyses.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteAnalyses.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager_listAppAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2000,7 +2000,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager_listAppAnalyses() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteAnalysesSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteAnalysesSlot.json
 func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager_listAppSlotAnalyses() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2063,7 +2063,7 @@ func ExampleDiagnosticsClient_NewListSiteAnalysesSlotPager_listAppSlotAnalyses()
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteAnalysis.json
 func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2090,7 +2090,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2117,7 +2117,7 @@ func ExampleDiagnosticsClient_GetSiteAnalysisSlot_getAppSlotAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysis.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteAnalysis.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2244,7 +2244,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteAnalysis() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteAnalysisSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteSlotAnalysis() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2371,7 +2371,7 @@ func ExampleDiagnosticsClient_ExecuteSiteAnalysisSlot_executeSiteSlotAnalysis() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectors.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager_listAppDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2561,7 +2561,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager_listAppDetectors() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ListSiteDetectorsSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ListSiteDetectorsSlot.json
 func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager_listAppSlotDetectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2625,7 +2625,7 @@ func ExampleDiagnosticsClient_NewListSiteDetectorsSlotPager_listAppSlotDetectors
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetector.json
 func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2654,7 +2654,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_GetSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_GetSiteDetectorSlot.json
 func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2683,7 +2683,7 @@ func ExampleDiagnosticsClient_GetSiteDetectorSlot_getAppSlotDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteDetector.json
 func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2721,7 +2721,7 @@ func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteDetector() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Diagnostics_ExecuteSiteDetectorSlot.json
 func ExampleDiagnosticsClient_ExecuteSiteDetectorSlot_executeSiteSlotDetector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

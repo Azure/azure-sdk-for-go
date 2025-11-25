@@ -764,6 +764,119 @@ type KubeEnvironmentsClientUpdateResponse struct {
 	KubeEnvironment
 }
 
+// ManagementClientCheckNameAvailabilityResponse contains the response from method ManagementClient.CheckNameAvailability.
+type ManagementClientCheckNameAvailabilityResponse struct {
+	// Information regarding availability of a resource name.
+	ResourceNameAvailability
+}
+
+// ManagementClientGetPublishingUserResponse contains the response from method ManagementClient.GetPublishingUser.
+type ManagementClientGetPublishingUserResponse struct {
+	// User credentials used for publishing activity.
+	User
+}
+
+// ManagementClientGetSourceControlResponse contains the response from method ManagementClient.GetSourceControl.
+type ManagementClientGetSourceControlResponse struct {
+	// The source control OAuth token.
+	SourceControl
+}
+
+// ManagementClientGetSubscriptionDeploymentLocationsResponse contains the response from method ManagementClient.GetSubscriptionDeploymentLocations.
+type ManagementClientGetSubscriptionDeploymentLocationsResponse struct {
+	// List of available locations (regions or App Service Environments) for
+	// deployment of App Service resources.
+	DeploymentLocations
+}
+
+// ManagementClientListAseRegionsResponse contains the response from method ManagementClient.NewListAseRegionsPager.
+type ManagementClientListAseRegionsResponse struct {
+	// Collection of ASE regions.
+	AseRegionCollection
+}
+
+// ManagementClientListBillingMetersResponse contains the response from method ManagementClient.NewListBillingMetersPager.
+type ManagementClientListBillingMetersResponse struct {
+	// Collection of Billing Meters
+	BillingMeterCollection
+}
+
+// ManagementClientListCustomHostNameSitesResponse contains the response from method ManagementClient.NewListCustomHostNameSitesPager.
+type ManagementClientListCustomHostNameSitesResponse struct {
+	// Collection of custom hostname sites
+	CustomHostnameSitesCollection
+}
+
+// ManagementClientListGeoRegionsResponse contains the response from method ManagementClient.NewListGeoRegionsPager.
+type ManagementClientListGeoRegionsResponse struct {
+	// Collection of geographical regions.
+	GeoRegionCollection
+}
+
+// ManagementClientListPremierAddOnOffersResponse contains the response from method ManagementClient.NewListPremierAddOnOffersPager.
+type ManagementClientListPremierAddOnOffersResponse struct {
+	// Collection of premier add-on offers.
+	PremierAddOnOfferCollection
+}
+
+// ManagementClientListSKUsResponse contains the response from method ManagementClient.ListSKUs.
+type ManagementClientListSKUsResponse struct {
+	// Collection of SKU information.
+	SKUInfos
+}
+
+// ManagementClientListSiteIdentifiersAssignedToHostNameResponse contains the response from method ManagementClient.NewListSiteIdentifiersAssignedToHostNamePager.
+type ManagementClientListSiteIdentifiersAssignedToHostNameResponse struct {
+	// Collection of identifiers.
+	IdentifierCollection
+}
+
+// ManagementClientListSourceControlsResponse contains the response from method ManagementClient.NewListSourceControlsPager.
+type ManagementClientListSourceControlsResponse struct {
+	// Collection of source controls.
+	SourceControlCollection
+}
+
+// ManagementClientMoveResponse contains the response from method ManagementClient.Move.
+type ManagementClientMoveResponse struct {
+	// placeholder for future response values
+}
+
+// ManagementClientRegionalCheckNameAvailabilityResponse contains the response from method ManagementClient.RegionalCheckNameAvailability.
+type ManagementClientRegionalCheckNameAvailabilityResponse struct {
+	// Information regarding availability of a resource name for DNL apps with regionalized default hostnames.
+	DnlResourceNameAvailability
+}
+
+// ManagementClientUpdatePublishingUserResponse contains the response from method ManagementClient.UpdatePublishingUser.
+type ManagementClientUpdatePublishingUserResponse struct {
+	// User credentials used for publishing activity.
+	User
+}
+
+// ManagementClientUpdateSourceControlResponse contains the response from method ManagementClient.UpdateSourceControl.
+type ManagementClientUpdateSourceControlResponse struct {
+	// The source control OAuth token.
+	SourceControl
+}
+
+// ManagementClientValidateMoveResponse contains the response from method ManagementClient.ValidateMove.
+type ManagementClientValidateMoveResponse struct {
+	// placeholder for future response values
+}
+
+// ManagementClientValidateResponse contains the response from method ManagementClient.Validate.
+type ManagementClientValidateResponse struct {
+	// Describes the result of resource validation.
+	ValidateResponse
+}
+
+// ManagementClientVerifyHostingEnvironmentVnetResponse contains the response from method ManagementClient.VerifyHostingEnvironmentVnet.
+type ManagementClientVerifyHostingEnvironmentVnetResponse struct {
+	// A class that describes the reason for a validation failure.
+	VnetValidationFailureDetails
+}
+
 // PlansClientCreateOrUpdateResponse contains the response from method PlansClient.BeginCreateOrUpdate.
 type PlansClientCreateOrUpdateResponse struct {
 	// App Service plan.
@@ -813,6 +926,18 @@ type PlansClientGetResponse struct {
 type PlansClientGetRouteForVnetResponse struct {
 	// Array of VnetRoute
 	VnetRouteArray []*VnetRoute
+}
+
+// PlansClientGetServerFarmInstanceDetailsResponse contains the response from method PlansClient.GetServerFarmInstanceDetails.
+type PlansClientGetServerFarmInstanceDetailsResponse struct {
+	// Represents instance details for an app service plan.
+	ServerFarmInstanceDetails
+}
+
+// PlansClientGetServerFarmRdpPasswordResponse contains the response from method PlansClient.GetServerFarmRdpPassword.
+type PlansClientGetServerFarmRdpPasswordResponse struct {
+	// Server Farm RDP connection details.
+	ServerFarmRdpDetails
 }
 
 // PlansClientGetServerFarmSKUsResponse contains the response from method PlansClient.GetServerFarmSKUs.
@@ -896,6 +1021,12 @@ type PlansClientListWebAppsResponse struct {
 // PlansClientRebootWorkerResponse contains the response from method PlansClient.RebootWorker.
 type PlansClientRebootWorkerResponse struct {
 	// placeholder for future response values
+}
+
+// PlansClientRecycleManagedInstanceWorkerResponse contains the response from method PlansClient.RecycleManagedInstanceWorker.
+type PlansClientRecycleManagedInstanceWorkerResponse struct {
+	// An operation on a resource.
+	Operation
 }
 
 // PlansClientRestartWebAppsResponse contains the response from method PlansClient.RestartWebApps.
@@ -3983,119 +4114,6 @@ type WebAppsClientUpdateVnetConnectionResponse struct {
 type WebAppsClientUpdateVnetConnectionSlotResponse struct {
 	// Virtual Network information ARM resource.
 	VnetInfoResource
-}
-
-// WebSiteManagementClientCheckNameAvailabilityResponse contains the response from method WebSiteManagementClient.CheckNameAvailability.
-type WebSiteManagementClientCheckNameAvailabilityResponse struct {
-	// Information regarding availability of a resource name.
-	ResourceNameAvailability
-}
-
-// WebSiteManagementClientGetPublishingUserResponse contains the response from method WebSiteManagementClient.GetPublishingUser.
-type WebSiteManagementClientGetPublishingUserResponse struct {
-	// User credentials used for publishing activity.
-	User
-}
-
-// WebSiteManagementClientGetSourceControlResponse contains the response from method WebSiteManagementClient.GetSourceControl.
-type WebSiteManagementClientGetSourceControlResponse struct {
-	// The source control OAuth token.
-	SourceControl
-}
-
-// WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse contains the response from method WebSiteManagementClient.GetSubscriptionDeploymentLocations.
-type WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse struct {
-	// List of available locations (regions or App Service Environments) for
-	// deployment of App Service resources.
-	DeploymentLocations
-}
-
-// WebSiteManagementClientListAseRegionsResponse contains the response from method WebSiteManagementClient.NewListAseRegionsPager.
-type WebSiteManagementClientListAseRegionsResponse struct {
-	// Collection of ASE regions.
-	AseRegionCollection
-}
-
-// WebSiteManagementClientListBillingMetersResponse contains the response from method WebSiteManagementClient.NewListBillingMetersPager.
-type WebSiteManagementClientListBillingMetersResponse struct {
-	// Collection of Billing Meters
-	BillingMeterCollection
-}
-
-// WebSiteManagementClientListCustomHostNameSitesResponse contains the response from method WebSiteManagementClient.NewListCustomHostNameSitesPager.
-type WebSiteManagementClientListCustomHostNameSitesResponse struct {
-	// Collection of custom hostname sites
-	CustomHostnameSitesCollection
-}
-
-// WebSiteManagementClientListGeoRegionsResponse contains the response from method WebSiteManagementClient.NewListGeoRegionsPager.
-type WebSiteManagementClientListGeoRegionsResponse struct {
-	// Collection of geographical regions.
-	GeoRegionCollection
-}
-
-// WebSiteManagementClientListPremierAddOnOffersResponse contains the response from method WebSiteManagementClient.NewListPremierAddOnOffersPager.
-type WebSiteManagementClientListPremierAddOnOffersResponse struct {
-	// Collection of premier add-on offers.
-	PremierAddOnOfferCollection
-}
-
-// WebSiteManagementClientListSKUsResponse contains the response from method WebSiteManagementClient.ListSKUs.
-type WebSiteManagementClientListSKUsResponse struct {
-	// Collection of SKU information.
-	SKUInfos
-}
-
-// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse contains the response from method WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager.
-type WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse struct {
-	// Collection of identifiers.
-	IdentifierCollection
-}
-
-// WebSiteManagementClientListSourceControlsResponse contains the response from method WebSiteManagementClient.NewListSourceControlsPager.
-type WebSiteManagementClientListSourceControlsResponse struct {
-	// Collection of source controls.
-	SourceControlCollection
-}
-
-// WebSiteManagementClientMoveResponse contains the response from method WebSiteManagementClient.Move.
-type WebSiteManagementClientMoveResponse struct {
-	// placeholder for future response values
-}
-
-// WebSiteManagementClientRegionalCheckNameAvailabilityResponse contains the response from method WebSiteManagementClient.RegionalCheckNameAvailability.
-type WebSiteManagementClientRegionalCheckNameAvailabilityResponse struct {
-	// Information regarding availability of a resource name for DNL apps with regionalized default hostnames.
-	DnlResourceNameAvailability
-}
-
-// WebSiteManagementClientUpdatePublishingUserResponse contains the response from method WebSiteManagementClient.UpdatePublishingUser.
-type WebSiteManagementClientUpdatePublishingUserResponse struct {
-	// User credentials used for publishing activity.
-	User
-}
-
-// WebSiteManagementClientUpdateSourceControlResponse contains the response from method WebSiteManagementClient.UpdateSourceControl.
-type WebSiteManagementClientUpdateSourceControlResponse struct {
-	// The source control OAuth token.
-	SourceControl
-}
-
-// WebSiteManagementClientValidateMoveResponse contains the response from method WebSiteManagementClient.ValidateMove.
-type WebSiteManagementClientValidateMoveResponse struct {
-	// placeholder for future response values
-}
-
-// WebSiteManagementClientValidateResponse contains the response from method WebSiteManagementClient.Validate.
-type WebSiteManagementClientValidateResponse struct {
-	// Describes the result of resource validation.
-	ValidateResponse
-}
-
-// WebSiteManagementClientVerifyHostingEnvironmentVnetResponse contains the response from method WebSiteManagementClient.VerifyHostingEnvironmentVnet.
-type WebSiteManagementClientVerifyHostingEnvironmentVnetResponse struct {
-	// A class that describes the reason for a validation failure.
-	VnetValidationFailureDetails
 }
 
 // WorkflowRunActionRepetitionsClientGetResponse contains the response from method WorkflowRunActionRepetitionsClient.Get.

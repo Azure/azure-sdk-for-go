@@ -1,5 +1,75 @@
 # Release History
 
+## 6.0.0 (2025-11-25)
+### Breaking Changes
+
+- Function `*ClientFactory.NewWebSiteManagementClient` has been removed
+- Function `NewWebSiteManagementClient` has been removed
+- Function `*WebSiteManagementClient.CheckNameAvailability` has been removed
+- Function `*WebSiteManagementClient.GetPublishingUser` has been removed
+- Function `*WebSiteManagementClient.GetSourceControl` has been removed
+- Function `*WebSiteManagementClient.GetSubscriptionDeploymentLocations` has been removed
+- Function `*WebSiteManagementClient.NewListAseRegionsPager` has been removed
+- Function `*WebSiteManagementClient.NewListBillingMetersPager` has been removed
+- Function `*WebSiteManagementClient.NewListCustomHostNameSitesPager` has been removed
+- Function `*WebSiteManagementClient.NewListGeoRegionsPager` has been removed
+- Function `*WebSiteManagementClient.NewListPremierAddOnOffersPager` has been removed
+- Function `*WebSiteManagementClient.ListSKUs` has been removed
+- Function `*WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager` has been removed
+- Function `*WebSiteManagementClient.NewListSourceControlsPager` has been removed
+- Function `*WebSiteManagementClient.Move` has been removed
+- Function `*WebSiteManagementClient.RegionalCheckNameAvailability` has been removed
+- Function `*WebSiteManagementClient.UpdatePublishingUser` has been removed
+- Function `*WebSiteManagementClient.UpdateSourceControl` has been removed
+- Function `*WebSiteManagementClient.Validate` has been removed
+- Function `*WebSiteManagementClient.ValidateMove` has been removed
+- Function `*WebSiteManagementClient.VerifyHostingEnvironmentVnet` has been removed
+
+### Features Added
+
+- New enum type `InstallScriptType` with values `InstallScriptTypePlatformStorage`, `InstallScriptTypeRemoteAzureBlob`
+- New enum type `RegistryAdapterType` with values `RegistryAdapterTypeBinary`, `RegistryAdapterTypeDWord`, `RegistryAdapterTypeExpandString`, `RegistryAdapterTypeMultiString`, `RegistryAdapterTypeQWord`, `RegistryAdapterTypeString`
+- New enum type `StorageMountType` with values `StorageMountTypeAzureFiles`, `StorageMountTypeFileShare`, `StorageMountTypeLocalStorage`
+- New function `*ClientFactory.NewManagementClient() *ManagementClient`
+- New function `NewManagementClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagementClient, error)`
+- New function `*ManagementClient.CheckNameAvailability(context.Context, ResourceNameAvailabilityRequest, *ManagementClientCheckNameAvailabilityOptions) (ManagementClientCheckNameAvailabilityResponse, error)`
+- New function `*ManagementClient.GetPublishingUser(context.Context, *ManagementClientGetPublishingUserOptions) (ManagementClientGetPublishingUserResponse, error)`
+- New function `*ManagementClient.GetSourceControl(context.Context, string, *ManagementClientGetSourceControlOptions) (ManagementClientGetSourceControlResponse, error)`
+- New function `*ManagementClient.GetSubscriptionDeploymentLocations(context.Context, *ManagementClientGetSubscriptionDeploymentLocationsOptions) (ManagementClientGetSubscriptionDeploymentLocationsResponse, error)`
+- New function `*ManagementClient.NewListAseRegionsPager(*ManagementClientListAseRegionsOptions) *runtime.Pager[ManagementClientListAseRegionsResponse]`
+- New function `*ManagementClient.NewListBillingMetersPager(*ManagementClientListBillingMetersOptions) *runtime.Pager[ManagementClientListBillingMetersResponse]`
+- New function `*ManagementClient.NewListCustomHostNameSitesPager(*ManagementClientListCustomHostNameSitesOptions) *runtime.Pager[ManagementClientListCustomHostNameSitesResponse]`
+- New function `*ManagementClient.NewListGeoRegionsPager(*ManagementClientListGeoRegionsOptions) *runtime.Pager[ManagementClientListGeoRegionsResponse]`
+- New function `*ManagementClient.NewListPremierAddOnOffersPager(*ManagementClientListPremierAddOnOffersOptions) *runtime.Pager[ManagementClientListPremierAddOnOffersResponse]`
+- New function `*ManagementClient.ListSKUs(context.Context, *ManagementClientListSKUsOptions) (ManagementClientListSKUsResponse, error)`
+- New function `*ManagementClient.NewListSiteIdentifiersAssignedToHostNamePager(NameIdentifier, *ManagementClientListSiteIdentifiersAssignedToHostNameOptions) *runtime.Pager[ManagementClientListSiteIdentifiersAssignedToHostNameResponse]`
+- New function `*ManagementClient.NewListSourceControlsPager(*ManagementClientListSourceControlsOptions) *runtime.Pager[ManagementClientListSourceControlsResponse]`
+- New function `*ManagementClient.Move(context.Context, string, CsmMoveResourceEnvelope, *ManagementClientMoveOptions) (ManagementClientMoveResponse, error)`
+- New function `*ManagementClient.RegionalCheckNameAvailability(context.Context, string, DnlResourceNameAvailabilityRequest, *ManagementClientRegionalCheckNameAvailabilityOptions) (ManagementClientRegionalCheckNameAvailabilityResponse, error)`
+- New function `*ManagementClient.UpdatePublishingUser(context.Context, User, *ManagementClientUpdatePublishingUserOptions) (ManagementClientUpdatePublishingUserResponse, error)`
+- New function `*ManagementClient.UpdateSourceControl(context.Context, string, SourceControl, *ManagementClientUpdateSourceControlOptions) (ManagementClientUpdateSourceControlResponse, error)`
+- New function `*ManagementClient.Validate(context.Context, string, ValidateRequest, *ManagementClientValidateOptions) (ManagementClientValidateResponse, error)`
+- New function `*ManagementClient.ValidateMove(context.Context, string, CsmMoveResourceEnvelope, *ManagementClientValidateMoveOptions) (ManagementClientValidateMoveResponse, error)`
+- New function `*ManagementClient.VerifyHostingEnvironmentVnet(context.Context, VnetParameters, *ManagementClientVerifyHostingEnvironmentVnetOptions) (ManagementClientVerifyHostingEnvironmentVnetResponse, error)`
+- New function `*PlansClient.GetServerFarmInstanceDetails(context.Context, string, string, *PlansClientGetServerFarmInstanceDetailsOptions) (PlansClientGetServerFarmInstanceDetailsResponse, error)`
+- New function `*PlansClient.GetServerFarmRdpPassword(context.Context, string, string, *PlansClientGetServerFarmRdpPasswordOptions) (PlansClientGetServerFarmRdpPasswordResponse, error)`
+- New function `*PlansClient.RecycleManagedInstanceWorker(context.Context, string, string, string, *PlansClientRecycleManagedInstanceWorkerOptions) (PlansClientRecycleManagedInstanceWorkerResponse, error)`
+- New struct `DefaultIdentity`
+- New struct `InstallScript`
+- New struct `InstallScriptSource`
+- New struct `KeyVaultReferenceWithStatus`
+- New struct `RegistryAdapter`
+- New struct `ServerFarmInstance`
+- New struct `ServerFarmInstanceDetails`
+- New struct `ServerFarmNetworkSettings`
+- New struct `ServerFarmRdpDetails`
+- New struct `StorageMount`
+- New field `Identity` in struct `Plan`
+- New field `Identity` in struct `PlanPatchResource`
+- New field `InstallScripts`, `IsCustomMode`, `Network`, `PlanDefaultIdentity`, `RdpEnabled`, `RegistryAdapters`, `StorageMounts` in struct `PlanProperties`
+- New field `PublicNetworkAccess` in struct `SitePatchResourceProperties`
+
+
 ## 5.0.0 (2025-06-12)
 ### Breaking Changes
 

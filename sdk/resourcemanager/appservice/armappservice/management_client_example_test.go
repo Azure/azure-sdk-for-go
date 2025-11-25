@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListCustomHostNameSites.json
-func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager_getCustomHostnamesUnderSubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListCustomHostNameSites.json
+func ExampleManagementClient_NewListCustomHostNameSitesPager_getCustomHostnamesUnderSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -29,7 +29,7 @@ func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager_getCustomHos
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebSiteManagementClient().NewListCustomHostNameSitesPager(&armappservice.WebSiteManagementClientListCustomHostNameSitesOptions{Hostname: nil})
+	pager := clientFactory.NewManagementClient().NewListCustomHostNameSitesPager(&armappservice.ManagementClientListCustomHostNameSitesOptions{Hostname: nil})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -78,8 +78,8 @@ func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager_getCustomHos
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListCustomSpecificHostNameSites.json
-func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager_getSpecificCustomHostnameUnderSubscription() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListCustomSpecificHostNameSites.json
+func ExampleManagementClient_NewListCustomHostNameSitesPager_getSpecificCustomHostnameUnderSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -89,7 +89,7 @@ func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager_getSpecificC
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebSiteManagementClient().NewListCustomHostNameSitesPager(&armappservice.WebSiteManagementClientListCustomHostNameSitesOptions{Hostname: to.Ptr("www.example.com")})
+	pager := clientFactory.NewManagementClient().NewListCustomHostNameSitesPager(&armappservice.ManagementClientListCustomHostNameSitesOptions{Hostname: to.Ptr("www.example.com")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -125,8 +125,8 @@ func ExampleWebSiteManagementClient_NewListCustomHostNameSitesPager_getSpecificC
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListAseRegions.json
-func ExampleWebSiteManagementClient_NewListAseRegionsPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListAseRegions.json
+func ExampleManagementClient_NewListAseRegionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +136,7 @@ func ExampleWebSiteManagementClient_NewListAseRegionsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWebSiteManagementClient().NewListAseRegionsPager(nil)
+	pager := clientFactory.NewManagementClient().NewListAseRegionsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -188,8 +188,8 @@ func ExampleWebSiteManagementClient_NewListAseRegionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/VerifyHostingEnvironmentVnet.json
-func ExampleWebSiteManagementClient_VerifyHostingEnvironmentVnet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c323602cf938f10801512e3dd8a6a3b02643a551/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/VerifyHostingEnvironmentVnet.json
+func ExampleManagementClient_VerifyHostingEnvironmentVnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -199,7 +199,7 @@ func ExampleWebSiteManagementClient_VerifyHostingEnvironmentVnet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWebSiteManagementClient().VerifyHostingEnvironmentVnet(ctx, armappservice.VnetParameters{
+	res, err := clientFactory.NewManagementClient().VerifyHostingEnvironmentVnet(ctx, armappservice.VnetParameters{
 		Properties: &armappservice.VnetParametersProperties{
 			VnetName:          to.Ptr("vNet123"),
 			VnetResourceGroup: to.Ptr("vNet123rg"),

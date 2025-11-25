@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ListAppServiceCertificateOrdersBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ListAppServiceCertificateOrdersBySubscription.json
 func ExampleCertificateOrdersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleCertificateOrdersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ValidateAppServiceCertificatePurchaseInformationBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ValidateAppServiceCertificatePurchaseInformationBySubscription.json
 func ExampleCertificateOrdersClient_ValidatePurchaseInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleCertificateOrdersClient_ValidatePurchaseInformation() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
 func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleCertificateOrdersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/GetAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/GetAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleCertificateOrdersClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/CreateAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/CreateAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,7 +461,7 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/DeleteAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/DeleteAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleCertificateOrdersClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/UpdateAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/UpdateAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -588,7 +588,7 @@ func ExampleCertificateOrdersClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ListCertificatesByAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ListCertificatesByAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_NewListCertificatesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,7 +638,7 @@ func ExampleCertificateOrdersClient_NewListCertificatesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/GetAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/GetAppServiceCertificate.json
 func ExampleCertificateOrdersClient_GetCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +669,7 @@ func ExampleCertificateOrdersClient_GetCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/CreateAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/CreateAppServiceCertificate.json
 func ExampleCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +710,7 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/DeleteAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/DeleteAppServiceCertificate.json
 func ExampleCertificateOrdersClient_DeleteCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -727,7 +727,7 @@ func ExampleCertificateOrdersClient_DeleteCertificate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/UpdateAppServiceCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/UpdateAppServiceCertificate.json
 func ExampleCertificateOrdersClient_UpdateCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +763,7 @@ func ExampleCertificateOrdersClient_UpdateCertificate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ReissueAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ReissueAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Reissue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -787,7 +787,7 @@ func ExampleCertificateOrdersClient_Reissue() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/RenewAppServiceCertificateOrder.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/RenewAppServiceCertificateOrder.json
 func ExampleCertificateOrdersClient_Renew() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -810,7 +810,7 @@ func ExampleCertificateOrdersClient_Renew() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ResendAppServiceCertificateOrderEmail.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ResendAppServiceCertificateOrderEmail.json
 func ExampleCertificateOrdersClient_ResendEmail() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -827,7 +827,7 @@ func ExampleCertificateOrdersClient_ResendEmail() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/ResendDomainOwnershipVerificationEmail.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ResendDomainOwnershipVerificationEmail.json
 func ExampleCertificateOrdersClient_ResendRequestEmails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,7 +846,7 @@ func ExampleCertificateOrdersClient_ResendRequestEmails() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/RetrieveSiteSeal.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/RetrieveSiteSeal.json
 func ExampleCertificateOrdersClient_RetrieveSiteSeal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -872,7 +872,7 @@ func ExampleCertificateOrdersClient_RetrieveSiteSeal() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/VerifyDomainOwnership.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/VerifyDomainOwnership.json
 func ExampleCertificateOrdersClient_VerifyDomainOwnership() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -889,7 +889,7 @@ func ExampleCertificateOrdersClient_VerifyDomainOwnership() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/RetrieveCertificateOrderActions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/RetrieveCertificateOrderActions.json
 func ExampleCertificateOrdersClient_RetrieveCertificateActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -922,7 +922,7 @@ func ExampleCertificateOrdersClient_RetrieveCertificateActions() {
 	// }}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2024-11-01/examples/RetrieveCertificateEmailHistory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/RetrieveCertificateEmailHistory.json
 func ExampleCertificateOrdersClient_RetrieveCertificateEmailHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

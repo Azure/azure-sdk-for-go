@@ -127,6 +127,14 @@ func (c *ClientFactory) NewKubeEnvironmentsClient() *KubeEnvironmentsClient {
 	}
 }
 
+// NewManagementClient creates a new instance of ManagementClient.
+func (c *ClientFactory) NewManagementClient() *ManagementClient {
+	return &ManagementClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewPlansClient creates a new instance of PlansClient.
 func (c *ClientFactory) NewPlansClient() *PlansClient {
 	return &PlansClient{
@@ -186,14 +194,6 @@ func (c *ClientFactory) NewTopLevelDomainsClient() *TopLevelDomainsClient {
 // NewWebAppsClient creates a new instance of WebAppsClient.
 func (c *ClientFactory) NewWebAppsClient() *WebAppsClient {
 	return &WebAppsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewWebSiteManagementClient creates a new instance of WebSiteManagementClient.
-func (c *ClientFactory) NewWebSiteManagementClient() *WebSiteManagementClient {
-	return &WebSiteManagementClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

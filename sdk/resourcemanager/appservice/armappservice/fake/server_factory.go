@@ -52,6 +52,9 @@ type ServerFactory struct {
 	// KubeEnvironmentsServer contains the fakes for client KubeEnvironmentsClient
 	KubeEnvironmentsServer KubeEnvironmentsServer
 
+	// ManagementServer contains the fakes for client ManagementClient
+	ManagementServer ManagementServer
+
 	// PlansServer contains the fakes for client PlansClient
 	PlansServer PlansServer
 
@@ -75,9 +78,6 @@ type ServerFactory struct {
 
 	// WebAppsServer contains the fakes for client WebAppsClient
 	WebAppsServer WebAppsServer
-
-	// WebSiteManagementServer contains the fakes for client WebSiteManagementClient
-	WebSiteManagementServer WebSiteManagementServer
 
 	// WorkflowRunActionRepetitionsServer contains the fakes for client WorkflowRunActionRepetitionsClient
 	WorkflowRunActionRepetitionsServer WorkflowRunActionRepetitionsServer
@@ -133,6 +133,7 @@ type ServerFactoryTransport struct {
 	trGetUsagesInLocationServer                          *GetUsagesInLocationServerTransport
 	trGlobalServer                                       *GlobalServerTransport
 	trKubeEnvironmentsServer                             *KubeEnvironmentsServerTransport
+	trManagementServer                                   *ManagementServerTransport
 	trPlansServer                                        *PlansServerTransport
 	trProviderServer                                     *ProviderServerTransport
 	trRecommendationsServer                              *RecommendationsServerTransport
@@ -141,7 +142,6 @@ type ServerFactoryTransport struct {
 	trStaticSitesServer                                  *StaticSitesServerTransport
 	trTopLevelDomainsServer                              *TopLevelDomainsServerTransport
 	trWebAppsServer                                      *WebAppsServerTransport
-	trWebSiteManagementServer                            *WebSiteManagementServerTransport
 	trWorkflowRunActionRepetitionsServer                 *WorkflowRunActionRepetitionsServerTransport
 	trWorkflowRunActionRepetitionsRequestHistoriesServer *WorkflowRunActionRepetitionsRequestHistoriesServerTransport
 	trWorkflowRunActionScopeRepetitionsServer            *WorkflowRunActionScopeRepetitionsServerTransport
@@ -216,6 +216,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewKubeEnvironmentsServerTransport(&s.srv.KubeEnvironmentsServer)
 		})
 		resp, err = s.trKubeEnvironmentsServer.Do(req)
+	case "ManagementClient":
+		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
+		resp, err = s.trManagementServer.Do(req)
 	case "PlansClient":
 		initServer(s, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
 		resp, err = s.trPlansServer.Do(req)
@@ -248,11 +251,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "WebAppsClient":
 		initServer(s, &s.trWebAppsServer, func() *WebAppsServerTransport { return NewWebAppsServerTransport(&s.srv.WebAppsServer) })
 		resp, err = s.trWebAppsServer.Do(req)
-	case "WebSiteManagementClient":
-		initServer(s, &s.trWebSiteManagementServer, func() *WebSiteManagementServerTransport {
-			return NewWebSiteManagementServerTransport(&s.srv.WebSiteManagementServer)
-		})
-		resp, err = s.trWebSiteManagementServer.Do(req)
 	case "WorkflowRunActionRepetitionsClient":
 		initServer(s, &s.trWorkflowRunActionRepetitionsServer, func() *WorkflowRunActionRepetitionsServerTransport {
 			return NewWorkflowRunActionRepetitionsServerTransport(&s.srv.WorkflowRunActionRepetitionsServer)

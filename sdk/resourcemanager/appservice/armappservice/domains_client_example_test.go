@@ -17,10 +17,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/CheckDomainAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/CheckDomainAvailability.json
 func ExampleDomainsClient_CheckAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleDomainsClient_CheckAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/ListDomainsBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/ListDomainsBySubscription.json
 func ExampleDomainsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleDomainsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/GetDomainControlCenterSsoRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/GetDomainControlCenterSsoRequest.json
 func ExampleDomainsClient_GetControlCenterSsoRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleDomainsClient_GetControlCenterSsoRequest() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/ListDomainRecommendations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/ListDomainRecommendations.json
 func ExampleDomainsClient_NewListRecommendationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleDomainsClient_NewListRecommendationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/ListDomainsByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/ListDomainsByResourceGroup.json
 func ExampleDomainsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -368,7 +368,7 @@ func ExampleDomainsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/GetDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/GetDomain.json
 func ExampleDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleDomainsClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/CreateAppServiceDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/CreateAppServiceDomain.json
 func ExampleDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -695,7 +695,7 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/DeleteAppServiceDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/DeleteAppServiceDomain.json
 func ExampleDomainsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,7 +712,7 @@ func ExampleDomainsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/UpdateAppServiceDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/UpdateAppServiceDomain.json
 func ExampleDomainsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -913,7 +913,7 @@ func ExampleDomainsClient_Update() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/ListDomainOwnershipIdentifiers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/ListDomainOwnershipIdentifiers.json
 func ExampleDomainsClient_NewListOwnershipIdentifiersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -949,7 +949,7 @@ func ExampleDomainsClient_NewListOwnershipIdentifiersPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/GetDomainOwnershipIdentifier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/GetDomainOwnershipIdentifier.json
 func ExampleDomainsClient_GetOwnershipIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -977,7 +977,7 @@ func ExampleDomainsClient_GetOwnershipIdentifier() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/CreateAppServiceDomainOwnershipIdentifier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/CreateAppServiceDomainOwnershipIdentifier.json
 func ExampleDomainsClient_CreateOrUpdateOwnershipIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1009,7 +1009,7 @@ func ExampleDomainsClient_CreateOrUpdateOwnershipIdentifier() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/DeleteAppServiceDomainOwnershipIdentifier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/DeleteAppServiceDomainOwnershipIdentifier.json
 func ExampleDomainsClient_DeleteOwnershipIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1026,7 +1026,7 @@ func ExampleDomainsClient_DeleteOwnershipIdentifier() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/UpdateAppServiceDomainOwnershipIdentifier.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/UpdateAppServiceDomainOwnershipIdentifier.json
 func ExampleDomainsClient_UpdateOwnershipIdentifier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1058,7 +1058,7 @@ func ExampleDomainsClient_UpdateOwnershipIdentifier() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/RenewDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/RenewDomain.json
 func ExampleDomainsClient_Renew() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1075,7 +1075,7 @@ func ExampleDomainsClient_Renew() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/TransferOutDomain.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-01/examples/TransferOutDomain.json
 func ExampleDomainsClient_TransferOut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

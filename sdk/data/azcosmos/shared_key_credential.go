@@ -130,7 +130,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 func join(strs ...string) string {
 	var sb strings.Builder
 	for _, str := range strs {
-		sb.WriteString(str)
+		fmt.Fprint(&sb, str)
 	}
 	return sb.String()
 }

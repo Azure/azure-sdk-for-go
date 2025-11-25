@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/ManagedClusterVersionGet_example.json
+// Generated from example definition: 2025-10-01-preview/ManagedClusterVersionGet_example.json
 func ExampleManagedClusterVersionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleManagedClusterVersionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ManagedClusterVersionGetByEnvironment_example.json
+// Generated from example definition: 2025-10-01-preview/ManagedClusterVersionGetByEnvironment_example.json
 func ExampleManagedClusterVersionClient_GetByEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleManagedClusterVersionClient_GetByEnvironment() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ManagedClusterVersionList_example.json
+// Generated from example definition: 2025-10-01-preview/ManagedClusterVersionList_example.json
 func ExampleManagedClusterVersionClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleManagedClusterVersionClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ManagedClusterVersionListByEnvironment.json
+// Generated from example definition: 2025-10-01-preview/ManagedClusterVersionListByEnvironment.json
 func ExampleManagedClusterVersionClient_ListByEnvironment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

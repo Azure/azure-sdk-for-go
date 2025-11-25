@@ -143,7 +143,7 @@ steps:
       GO111MODULE: 'on'
 
   - script: |
-      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
+      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version
     displayName: 'Install GoLintCLI and dependencies.'
     condition: succeededOrFailed()

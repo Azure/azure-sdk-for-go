@@ -651,12 +651,12 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam, ch
 	}
 
 	if !generateParam.SkipUpdateDep {
-		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.23.0 in %s\n", modulePath)
-		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.23.0"); err != nil {
+		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in %s\n", modulePath)
+		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.24.0"); err != nil {
 			return nil, err
 		}
-		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.23.0 in %s\n", modulePath)
-		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.23.0"); err != nil {
+		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in %s\n", modulePath)
+		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.24.0"); err != nil {
 			return nil, err
 		}
 	}

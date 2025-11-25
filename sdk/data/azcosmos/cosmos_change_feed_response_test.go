@@ -69,8 +69,8 @@ func TestNewChangeFeedResponse(t *testing.T) {
 		t.Fatalf("newChangeFeedResponse error: %v", err)
 	}
 
-	if parsedResponse.Response.RawResponse == nil {
-		t.Fatal("parsedResponse.Response.RawResponse is nil")
+	if parsedResponse.RawResponse == nil {
+		t.Fatal("parsedResponse.RawResponse is nil")
 	}
 
 	if parsedResponse.ResourceID != "ubgwAI1+zvg=" {

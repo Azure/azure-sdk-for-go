@@ -198,7 +198,6 @@ func runEngineRequests(
 	}
 
 	jobs := make(chan queryengine.QueryRequest, len(requests))
-	resultsCh := make(chan queryengine.QueryResult)
 	errCh := make(chan error, 1)
 	done := make(chan struct{})
 	var wg sync.WaitGroup
@@ -212,26 +211,15 @@ func runEngineRequests(
 		workerCount = 1
 	}
 
-	// Per-worker request charge slots (no lock needed)
+	// Per-worker request charge slots and result slices (lock-free updates)
 	charges := make([]float32, workerCount)
-
-	// Collector goroutine gathers all results
-	var allResults []queryengine.QueryResult
-	var resultsMu sync.Mutex
-	collectorDone := make(chan struct{})
-	go func() {
-		defer close(collectorDone)
-		for result := range resultsCh {
-			resultsMu.Lock()
-			allResults = append(allResults, result)
-			resultsMu.Unlock()
-		}
-	}()
+	resultsSlices := make([][]queryengine.QueryResult, workerCount)
 
 	for w := 0; w < workerCount; w++ {
 		wg.Add(1)
 		go func(workerIndex int) {
 			defer wg.Done()
+			localResults := make([]queryengine.QueryResult, 0, 8)
 			for {
 				select {
 				case <-done:
@@ -240,12 +228,12 @@ func runEngineRequests(
 					return
 				case req, ok := <-jobs:
 					if !ok {
+						// jobs exhausted
+						resultsSlices[workerIndex] = localResults
 						return
 					}
-
 					log.Writef(azlog.EventRequest, "Engine pipeline requested data for PKRange: %s", req.PartitionKeyRangeID)
 					queryText, params, drain := prepareFn(req)
-					// Pagination loop
 					fetchMorePages := true
 					for fetchMorePages {
 						qr := queryRequest(req)
@@ -265,7 +253,6 @@ func runEngineRequests(
 							}
 							return
 						}
-
 						qResp, err := newQueryResponse(azResponse)
 						if err != nil {
 							select {
@@ -275,8 +262,6 @@ func runEngineRequests(
 							return
 						}
 						charges[workerIndex] += qResp.RequestCharge
-
-						// Load the data into a buffer to send it to the pipeline
 						buf := new(bytes.Buffer)
 						if _, err := buf.ReadFrom(azResponse.Body); err != nil {
 							select {
@@ -288,20 +273,13 @@ func runEngineRequests(
 						continuation := azResponse.Header.Get(cosmosHeaderContinuationToken)
 						data := buf.Bytes()
 						fetchMorePages = continuation != "" && drain
-
-						// Provide the data to the pipeline, make sure it's tagged with the partition key range ID so the pipeline can merge it into the correct partition.
-						result := queryengine.QueryResult{
+						localResults = append(localResults, queryengine.QueryResult{
 							PartitionKeyRangeID: req.PartitionKeyRangeID,
 							NextContinuation:    continuation,
 							Data:                data,
 							RequestId:           req.Id,
-						}
+						})
 						log.Writef(EventQueryEngine, "Received response for PKRange: %s. Continuation present: %v", req.PartitionKeyRangeID, continuation != "")
-						select {
-						case <-done:
-							return
-						case resultsCh <- result:
-						}
 					}
 				}
 			}
@@ -321,14 +299,15 @@ func runEngineRequests(
 		close(jobs)
 	}()
 
-	// Close results channel after workers finish
-	go func() { wg.Wait(); close(resultsCh) }()
+	// Wait for workers to finish (or error/cancel)
+	workersDone := make(chan struct{})
+	go func() { wg.Wait(); close(workersDone) }()
 
 	// Helper to sum charges
 	sumCharges := func() float32 {
 		var total float32
-		for _, charge := range charges {
-			total += charge
+		for _, cval := range charges {
+			total += cval
 		}
 		return total
 	}
@@ -349,15 +328,23 @@ func runEngineRequests(
 			close(done)
 		}
 		return sumCharges(), ctx.Err()
-	case <-collectorDone:
+	case <-workersDone:
 	}
 
-	// Sum up all worker charges
 	totalCharge := sumCharges()
 
-	// Provide all collected results in a single batch
-	if len(allResults) > 0 {
-		if err := pipeline.ProvideData(allResults); err != nil {
+	// Merge per-worker result slices deterministically
+	// Pre-size combined slice for efficiency
+	var combinedCount int
+	for _, rs := range resultsSlices {
+		combinedCount += len(rs)
+	}
+	if combinedCount > 0 {
+		all := make([]queryengine.QueryResult, 0, combinedCount)
+		for _, rs := range resultsSlices {
+			all = append(all, rs...)
+		}
+		if err := pipeline.ProvideData(all); err != nil {
 			return totalCharge, err
 		}
 	}

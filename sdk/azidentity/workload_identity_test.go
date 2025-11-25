@@ -423,11 +423,11 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithOptions(t *testing.T
 	}
 	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 
-	customTokenEndointServerCalledTimes := new(atomic.Int32)
-	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+	customTokenEndpointServerCalledTimes := new(atomic.Int32)
+	customTokenEndpointServer, caData := startTestTokenEndpointWithCAData(
 		t,
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-			customTokenEndointServerCalledTimes.Add(1)
+			customTokenEndpointServerCalledTimes.Add(1)
 
 			policyFlowCheck.Validate(t, req)
 
@@ -456,7 +456,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithOptions(t *testing.T
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
 		AzureProxy: WorkloadIdentityAzureProxyOptions{
-			AzureKubernetesTokenProxy: customTokenEndointServer.URL,
+			AzureKubernetesTokenProxy: customTokenEndpointServer.URL,
 			AzureKubernetesCAData:     caData,
 		},
 	})
@@ -465,7 +465,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithOptions(t *testing.T
 
 	testGetTokenSuccess(t, cred)
 
-	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+	require.Equal(t, int32(1), customTokenEndpointServerCalledTimes.Load())
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T) {
@@ -475,11 +475,11 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	}
 	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
 
-	customTokenEndointServerCalledTimes := new(atomic.Int32)
-	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+	customTokenEndpointServerCalledTimes := new(atomic.Int32)
+	customTokenEndpointServer, caData := startTestTokenEndpointWithCAData(
 		t,
 		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-			customTokenEndointServerCalledTimes.Add(1)
+			customTokenEndpointServerCalledTimes.Add(1)
 
 			policyFlowCheck.Validate(t, req)
 
@@ -496,7 +496,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 		}),
 	)
 
-	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndpointServer.URL)
 	t.Setenv(customtokenproxy.AzureKubernetesCAData, caData)
 
 	clientOptions := policy.ClientOptions{
@@ -516,7 +516,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 
 	testGetTokenSuccess(t, cred)
 
-	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+	require.Equal(t, int32(1), customTokenEndpointServerCalledTimes.Load())
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testing.T) {

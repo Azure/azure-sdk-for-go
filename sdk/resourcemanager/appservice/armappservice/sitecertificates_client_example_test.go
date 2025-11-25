@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListSiteCertificatesByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListSiteCertificatesByResourceGroup.json
 func ExampleSiteCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleSiteCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetSiteCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetSiteCertificate.json
 func ExampleSiteCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleSiteCertificatesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateSiteCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/CreateOrUpdateSiteCertificate.json
 func ExampleSiteCertificatesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleSiteCertificatesClient_CreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/DeleteSiteCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/DeleteSiteCertificate.json
 func ExampleSiteCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleSiteCertificatesClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchSiteCertificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/PatchSiteCertificate.json
 func ExampleSiteCertificatesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleSiteCertificatesClient_Update() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ListSiteCertificatesByResourceGroupSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListSiteCertificatesByResourceGroupSlot.json
 func ExampleSiteCertificatesClient_NewListSlotPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleSiteCertificatesClient_NewListSlotPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetSiteCertificateSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetSiteCertificateSlot.json
 func ExampleSiteCertificatesClient_GetSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleSiteCertificatesClient_GetSlot() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/CreateOrUpdateSiteCertificateSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/CreateOrUpdateSiteCertificateSlot.json
 func ExampleSiteCertificatesClient_CreateOrUpdateSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleSiteCertificatesClient_CreateOrUpdateSlot() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/DeleteSiteCertificateSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/DeleteSiteCertificateSlot.json
 func ExampleSiteCertificatesClient_DeleteSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,7 +371,7 @@ func ExampleSiteCertificatesClient_DeleteSlot() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PatchSiteCertificateSlot.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/PatchSiteCertificateSlot.json
 func ExampleSiteCertificatesClient_UpdateSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

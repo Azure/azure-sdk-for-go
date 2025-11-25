@@ -22,7 +22,7 @@ type DomainRegistrationProviderClient struct {
 
 // NewDomainRegistrationProviderClient creates a new instance of DomainRegistrationProviderClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDomainRegistrationProviderClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainRegistrationProviderClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

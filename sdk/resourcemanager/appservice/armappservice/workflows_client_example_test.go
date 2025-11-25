@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Workflows_RegenerateAccessKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Workflows_RegenerateAccessKey.json
 func ExampleWorkflowsClient_RegenerateAccessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleWorkflowsClient_RegenerateAccessKey() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/82e9c6f9fbfa2d6d47d5e2a6a11c0ad2eb345c43/specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/Workflows_Validate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7773129f45971ca43cb38458e35a06d9cc1aba29/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/Workflows_Validate.json
 func ExampleWorkflowsClient_Validate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

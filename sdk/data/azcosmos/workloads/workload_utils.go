@@ -23,6 +23,15 @@ import (
 
 const defaultConcurrency = 32
 
+// GetPKValue returns the partition key value for a given logical index.
+// If pkField is "id" the PK equals the item id (test-<index>), otherwise it uses "pk-<index>".
+func GetPKValue(pkField string, index int) string {
+	if pkField == "id" {
+		return fmt.Sprintf("test-%d", index)
+	}
+	return fmt.Sprintf("pk-%d", index)
+}
+
 // rwOperation enumerates random read/write/query operations.
 type rwOperation int
 
@@ -111,7 +120,7 @@ func upsertItemsConcurrently(ctx context.Context, container *azcosmos.ContainerC
 	return runConcurrent(ctx, count, defaultConcurrency, func(ctx context.Context, i int, rng *rand.Rand) error {
 		item := createRandomItem(i)
 		id := fmt.Sprintf("test-%d", i)
-		pkVal := fmt.Sprintf("pk-%d", i)
+		pkVal := GetPKValue(pkField, i)
 		item["id"] = id
 		item[pkField] = pkVal
 		body, err := json.Marshal(item)
@@ -129,12 +138,7 @@ func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerCl
 		// pick a random existing (or future) document index to operate on
 		num := rng.Intn(count) + 1
 		id := fmt.Sprintf("test-%d", num)
-		var pkVal string
-		if pkField == "id" {
-			pkVal = id
-		} else {
-			pkVal = fmt.Sprintf("pk-%d", num)
-		}
+		pkVal := GetPKValue(pkField, num)
 
 		pk := azcosmos.NewPartitionKeyString(pkVal)
 
@@ -161,7 +165,7 @@ func randomReadWriteQueries(ctx context.Context, container *azcosmos.ContainerCl
 		case opQuery:
 			pager := container.NewQueryItemsPager(
 				"SELECT * FROM c WHERE c.id = @id",
-				azcosmos.NewPartitionKeyString(pkVal),
+				pk,
 				&azcosmos.QueryOptions{QueryParameters: []azcosmos.QueryParameter{{Name: "@id", Value: id}}},
 			)
 			for pager.More() {
@@ -179,9 +183,11 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 	return runConcurrent(ctx, count, defaultConcurrency, func(ctx context.Context, i int, rng *rand.Rand) error {
 		embedding := createRandomEmbedding()
 
+		pkVal := GetPKValue(pkField, rng.Intn(count)+1)
+
 		pager := container.NewQueryItemsPager(
 			"SELECT TOP 10 c.id FROM c ORDER BY VectorDistance(c.embedding, @embedding)",
-			azcosmos.NewPartitionKey(),
+			azcosmos.NewPartitionKeyString(pkVal),
 			&azcosmos.QueryOptions{
 				QueryParameters: []azcosmos.QueryParameter{{Name: "@embedding", Value: embedding}},
 				QueryEngine:     azcosmoscx.NewQueryEngine(),

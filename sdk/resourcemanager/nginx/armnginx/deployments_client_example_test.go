@@ -560,7 +560,7 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateSubnet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", nil)
+	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", armnginx.DeploymentUpdateParameters{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

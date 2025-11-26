@@ -1,5 +1,242 @@
 # Release History
 
+## 8.1.0-beta.1 (2025-11-26)
+### Features Added
+
+- New enum type `ActualRansomwareProtectionState` with values `ActualRansomwareProtectionStateDisabled`, `ActualRansomwareProtectionStateEnabled`, `ActualRansomwareProtectionStateLearning`, `ActualRansomwareProtectionStatePaused`
+- New enum type `BreakthroughMode` with values `BreakthroughModeDisabled`, `BreakthroughModeEnabled`
+- New enum type `BucketPatchPermissions` with values `BucketPatchPermissionsReadOnly`, `BucketPatchPermissionsReadWrite`
+- New enum type `BucketPermissions` with values `BucketPermissionsReadOnly`, `BucketPermissionsReadWrite`
+- New enum type `CacheLifeCycleState` with values `CacheLifeCycleStateClusterPeeringOfferSent`, `CacheLifeCycleStateCreating`, `CacheLifeCycleStateFailed`, `CacheLifeCycleStateSucceeded`, `CacheLifeCycleStateVserverPeeringOfferSent`
+- New enum type `CacheProvisioningState` with values `CacheProvisioningStateCanceled`, `CacheProvisioningStateCreating`, `CacheProvisioningStateDeleting`, `CacheProvisioningStateFailed`, `CacheProvisioningStateSucceeded`, `CacheProvisioningStateUpdating`
+- New enum type `CheckElasticResourceAvailabilityReason` with values `CheckElasticResourceAvailabilityReasonAlreadyExists`, `CheckElasticResourceAvailabilityReasonInvalid`
+- New enum type `CheckElasticResourceAvailabilityStatus` with values `CheckElasticResourceAvailabilityStatusFalse`, `CheckElasticResourceAvailabilityStatusTrue`
+- New enum type `CifsChangeNotifyState` with values `CifsChangeNotifyStateDisabled`, `CifsChangeNotifyStateEnabled`
+- New enum type `CredentialsStatus` with values `CredentialsStatusActive`, `CredentialsStatusCredentialsExpired`, `CredentialsStatusNoCredentialsSet`
+- New enum type `DayOfWeek` with values `DayOfWeekFriday`, `DayOfWeekMonday`, `DayOfWeekSaturday`, `DayOfWeekSunday`, `DayOfWeekThursday`, `DayOfWeekTuesday`, `DayOfWeekWednesday`
+- New enum type `DesiredRansomwareProtectionState` with values `DesiredRansomwareProtectionStateDisabled`, `DesiredRansomwareProtectionStateEnabled`
+- New enum type `ElasticBackupPolicyState` with values `ElasticBackupPolicyStateDisabled`, `ElasticBackupPolicyStateEnabled`
+- New enum type `ElasticBackupType` with values `ElasticBackupTypeManual`, `ElasticBackupTypeScheduled`
+- New enum type `ElasticKeyVaultStatus` with values `ElasticKeyVaultStatusCreated`, `ElasticKeyVaultStatusDeleted`, `ElasticKeyVaultStatusError`, `ElasticKeyVaultStatusInUse`, `ElasticKeyVaultStatusUpdating`
+- New enum type `ElasticNfsv3Access` with values `ElasticNfsv3AccessDisabled`, `ElasticNfsv3AccessEnabled`
+- New enum type `ElasticNfsv4Access` with values `ElasticNfsv4AccessDisabled`, `ElasticNfsv4AccessEnabled`
+- New enum type `ElasticPoolEncryptionKeySource` with values `ElasticPoolEncryptionKeySourceKeyVault`, `ElasticPoolEncryptionKeySourceNetApp`
+- New enum type `ElasticProtocolType` with values `ElasticProtocolTypeNFSv3`, `ElasticProtocolTypeNFSv4`, `ElasticProtocolTypeSMB`
+- New enum type `ElasticResourceAvailabilityStatus` with values `ElasticResourceAvailabilityStatusOffline`, `ElasticResourceAvailabilityStatusOnline`
+- New enum type `ElasticRootAccess` with values `ElasticRootAccessDisabled`, `ElasticRootAccessEnabled`
+- New enum type `ElasticServiceLevel` with values `ElasticServiceLevelZoneRedundant`
+- New enum type `ElasticSmbEncryption` with values `ElasticSmbEncryptionDisabled`, `ElasticSmbEncryptionEnabled`
+- New enum type `ElasticUnixAccessRule` with values `ElasticUnixAccessRuleNoAccess`, `ElasticUnixAccessRuleReadOnly`, `ElasticUnixAccessRuleReadWrite`
+- New enum type `ElasticVolumePolicyEnforcement` with values `ElasticVolumePolicyEnforcementEnforced`, `ElasticVolumePolicyEnforcementNotEnforced`
+- New enum type `ElasticVolumeRestorationState` with values `ElasticVolumeRestorationStateFailed`, `ElasticVolumeRestorationStateRestored`, `ElasticVolumeRestorationStateRestoring`
+- New enum type `EnableWriteBackState` with values `EnableWriteBackStateDisabled`, `EnableWriteBackStateEnabled`
+- New enum type `EncryptionState` with values `EncryptionStateDisabled`, `EncryptionStateEnabled`
+- New enum type `ExternalReplicationSetupStatus` with values `ExternalReplicationSetupStatusClusterPeerPending`, `ExternalReplicationSetupStatusClusterPeerRequired`, `ExternalReplicationSetupStatusNoActionRequired`, `ExternalReplicationSetupStatusReplicationCreateRequired`, `ExternalReplicationSetupStatusVServerPeerRequired`
+- New enum type `GlobalFileLockingState` with values `GlobalFileLockingStateDisabled`, `GlobalFileLockingStateEnabled`
+- New enum type `KerberosState` with values `KerberosStateDisabled`, `KerberosStateEnabled`
+- New enum type `LargeVolumeType` with values `LargeVolumeTypeExtraLargeVolume7Dot2PiB`, `LargeVolumeTypeLargeVolume`
+- New enum type `LdapServerType` with values `LdapServerTypeActiveDirectory`, `LdapServerTypeOpenLDAP`
+- New enum type `LdapState` with values `LdapStateDisabled`, `LdapStateEnabled`
+- New enum type `PolicyStatus` with values `PolicyStatusDisabled`, `PolicyStatusEnabled`
+- New enum type `ProtocolTypes` with values `ProtocolTypesNFSv3`, `ProtocolTypesNFSv4`, `ProtocolTypesSMB`
+- New enum type `RansomwareReportSeverity` with values `RansomwareReportSeverityHigh`, `RansomwareReportSeverityLow`, `RansomwareReportSeverityModerate`, `RansomwareReportSeverityNone`
+- New enum type `RansomwareReportState` with values `RansomwareReportStateActive`, `RansomwareReportStateResolved`
+- New enum type `RansomwareSuspectResolution` with values `RansomwareSuspectResolutionFalsePositive`, `RansomwareSuspectResolutionPotentialThreat`
+- New enum type `SmbEncryptionState` with values `SmbEncryptionStateDisabled`, `SmbEncryptionStateEnabled`
+- New enum type `SnapshotDirectoryVisibility` with values `SnapshotDirectoryVisibilityHidden`, `SnapshotDirectoryVisibilityVisible`
+- New enum type `SnapshotUsage` with values `SnapshotUsageCreateNewSnapshot`, `SnapshotUsageUseExistingSnapshot`
+- New enum type `VolumeLanguage` with values `VolumeLanguageAr`, `VolumeLanguageArUTF8`, `VolumeLanguageC`, `VolumeLanguageCUTF8`, `VolumeLanguageCs`, `VolumeLanguageCsUTF8`, `VolumeLanguageDa`, `VolumeLanguageDaUTF8`, `VolumeLanguageDe`, `VolumeLanguageDeUTF8`, `VolumeLanguageEn`, `VolumeLanguageEnUTF8`, `VolumeLanguageEnUs`, `VolumeLanguageEnUsUTF8`, `VolumeLanguageEs`, `VolumeLanguageEsUTF8`, `VolumeLanguageFi`, `VolumeLanguageFiUTF8`, `VolumeLanguageFr`, `VolumeLanguageFrUTF8`, `VolumeLanguageHe`, `VolumeLanguageHeUTF8`, `VolumeLanguageHr`, `VolumeLanguageHrUTF8`, `VolumeLanguageHu`, `VolumeLanguageHuUTF8`, `VolumeLanguageIt`, `VolumeLanguageItUTF8`, `VolumeLanguageJa`, `VolumeLanguageJaJp932`, `VolumeLanguageJaJp932UTF8`, `VolumeLanguageJaJpPck`, `VolumeLanguageJaJpPckUTF8`, `VolumeLanguageJaJpPckV2`, `VolumeLanguageJaJpPckV2UTF8`, `VolumeLanguageJaUTF8`, `VolumeLanguageJaV1`, `VolumeLanguageJaV1UTF8`, `VolumeLanguageKo`, `VolumeLanguageKoUTF8`, `VolumeLanguageNl`, `VolumeLanguageNlUTF8`, `VolumeLanguageNo`, `VolumeLanguageNoUTF8`, `VolumeLanguagePl`, `VolumeLanguagePlUTF8`, `VolumeLanguagePt`, `VolumeLanguagePtUTF8`, `VolumeLanguageRo`, `VolumeLanguageRoUTF8`, `VolumeLanguageRu`, `VolumeLanguageRuUTF8`, `VolumeLanguageSk`, `VolumeLanguageSkUTF8`, `VolumeLanguageSl`, `VolumeLanguageSlUTF8`, `VolumeLanguageSv`, `VolumeLanguageSvUTF8`, `VolumeLanguageTr`, `VolumeLanguageTrUTF8`, `VolumeLanguageUTF8Mb4`, `VolumeLanguageZh`, `VolumeLanguageZhGbk`, `VolumeLanguageZhGbkUTF8`, `VolumeLanguageZhTw`, `VolumeLanguageZhTwBig5`, `VolumeLanguageZhTwBig5UTF8`, `VolumeLanguageZhTwUTF8`, `VolumeLanguageZhUTF8`
+- New enum type `VolumeSize` with values `VolumeSizeLarge`, `VolumeSizeRegular`
+- New function `NewActiveDirectoryConfigsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ActiveDirectoryConfigsClient, error)`
+- New function `*ActiveDirectoryConfigsClient.BeginCreateOrUpdate(context.Context, string, string, ActiveDirectoryConfig, *ActiveDirectoryConfigsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ActiveDirectoryConfigsClientCreateOrUpdateResponse], error)`
+- New function `*ActiveDirectoryConfigsClient.BeginDelete(context.Context, string, string, *ActiveDirectoryConfigsClientBeginDeleteOptions) (*runtime.Poller[ActiveDirectoryConfigsClientDeleteResponse], error)`
+- New function `*ActiveDirectoryConfigsClient.Get(context.Context, string, string, *ActiveDirectoryConfigsClientGetOptions) (ActiveDirectoryConfigsClientGetResponse, error)`
+- New function `*ActiveDirectoryConfigsClient.NewListByResourceGroupPager(string, *ActiveDirectoryConfigsClientListByResourceGroupOptions) *runtime.Pager[ActiveDirectoryConfigsClientListByResourceGroupResponse]`
+- New function `*ActiveDirectoryConfigsClient.NewListBySubscriptionPager(*ActiveDirectoryConfigsClientListBySubscriptionOptions) *runtime.Pager[ActiveDirectoryConfigsClientListBySubscriptionResponse]`
+- New function `*ActiveDirectoryConfigsClient.BeginUpdate(context.Context, string, string, ActiveDirectoryConfigUpdate, *ActiveDirectoryConfigsClientBeginUpdateOptions) (*runtime.Poller[ActiveDirectoryConfigsClientUpdateResponse], error)`
+- New function `NewBucketsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BucketsClient, error)`
+- New function `*BucketsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, string, Bucket, *BucketsClientBeginCreateOrUpdateOptions) (*runtime.Poller[BucketsClientCreateOrUpdateResponse], error)`
+- New function `*BucketsClient.BeginDelete(context.Context, string, string, string, string, string, *BucketsClientBeginDeleteOptions) (*runtime.Poller[BucketsClientDeleteResponse], error)`
+- New function `*BucketsClient.GenerateCredentials(context.Context, string, string, string, string, string, BucketCredentialsExpiry, *BucketsClientGenerateCredentialsOptions) (BucketsClientGenerateCredentialsResponse, error)`
+- New function `*BucketsClient.Get(context.Context, string, string, string, string, string, *BucketsClientGetOptions) (BucketsClientGetResponse, error)`
+- New function `*BucketsClient.NewListPager(string, string, string, string, *BucketsClientListOptions) *runtime.Pager[BucketsClientListResponse]`
+- New function `*BucketsClient.BeginUpdate(context.Context, string, string, string, string, string, BucketPatch, *BucketsClientBeginUpdateOptions) (*runtime.Poller[BucketsClientUpdateResponse], error)`
+- New function `NewCachesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CachesClient, error)`
+- New function `*CachesClient.BeginCreateOrUpdate(context.Context, string, string, string, string, Cache, *CachesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CachesClientCreateOrUpdateResponse], error)`
+- New function `*CachesClient.BeginDelete(context.Context, string, string, string, string, *CachesClientBeginDeleteOptions) (*runtime.Poller[CachesClientDeleteResponse], error)`
+- New function `*CachesClient.Get(context.Context, string, string, string, string, *CachesClientGetOptions) (CachesClientGetResponse, error)`
+- New function `*CachesClient.NewListByCapacityPoolsPager(string, string, string, *CachesClientListByCapacityPoolsOptions) *runtime.Pager[CachesClientListByCapacityPoolsResponse]`
+- New function `*CachesClient.ListPeeringPassphrases(context.Context, string, string, string, string, *CachesClientListPeeringPassphrasesOptions) (CachesClientListPeeringPassphrasesResponse, error)`
+- New function `*CachesClient.BeginPoolChange(context.Context, string, string, string, string, PoolChangeRequest, *CachesClientBeginPoolChangeOptions) (*runtime.Poller[CachesClientPoolChangeResponse], error)`
+- New function `*CachesClient.BeginUpdate(context.Context, string, string, string, string, CacheUpdate, *CachesClientBeginUpdateOptions) (*runtime.Poller[CachesClientUpdateResponse], error)`
+- New function `*ClientFactory.NewActiveDirectoryConfigsClient() *ActiveDirectoryConfigsClient`
+- New function `*ClientFactory.NewBucketsClient() *BucketsClient`
+- New function `*ClientFactory.NewCachesClient() *CachesClient`
+- New function `*ClientFactory.NewElasticAccountsClient() *ElasticAccountsClient`
+- New function `*ClientFactory.NewElasticBackupPoliciesClient() *ElasticBackupPoliciesClient`
+- New function `*ClientFactory.NewElasticBackupVaultsClient() *ElasticBackupVaultsClient`
+- New function `*ClientFactory.NewElasticBackupsClient() *ElasticBackupsClient`
+- New function `*ClientFactory.NewElasticCapacityPoolsClient() *ElasticCapacityPoolsClient`
+- New function `*ClientFactory.NewElasticSnapshotPoliciesClient() *ElasticSnapshotPoliciesClient`
+- New function `*ClientFactory.NewElasticSnapshotsClient() *ElasticSnapshotsClient`
+- New function `*ClientFactory.NewElasticVolumesClient() *ElasticVolumesClient`
+- New function `*ClientFactory.NewRansomwareReportsClient() *RansomwareReportsClient`
+- New function `NewElasticAccountsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticAccountsClient, error)`
+- New function `*ElasticAccountsClient.BeginCreateOrUpdate(context.Context, string, string, ElasticAccount, *ElasticAccountsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticAccountsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticAccountsClient.BeginDelete(context.Context, string, string, *ElasticAccountsClientBeginDeleteOptions) (*runtime.Poller[ElasticAccountsClientDeleteResponse], error)`
+- New function `*ElasticAccountsClient.Get(context.Context, string, string, *ElasticAccountsClientGetOptions) (ElasticAccountsClientGetResponse, error)`
+- New function `*ElasticAccountsClient.NewListByResourceGroupPager(string, *ElasticAccountsClientListByResourceGroupOptions) *runtime.Pager[ElasticAccountsClientListByResourceGroupResponse]`
+- New function `*ElasticAccountsClient.NewListBySubscriptionPager(*ElasticAccountsClientListBySubscriptionOptions) *runtime.Pager[ElasticAccountsClientListBySubscriptionResponse]`
+- New function `*ElasticAccountsClient.BeginUpdate(context.Context, string, string, ElasticAccountUpdate, *ElasticAccountsClientBeginUpdateOptions) (*runtime.Poller[ElasticAccountsClientUpdateResponse], error)`
+- New function `NewElasticBackupPoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticBackupPoliciesClient, error)`
+- New function `*ElasticBackupPoliciesClient.BeginCreateOrUpdate(context.Context, string, string, string, ElasticBackupPolicy, *ElasticBackupPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticBackupPoliciesClientCreateOrUpdateResponse], error)`
+- New function `*ElasticBackupPoliciesClient.BeginDelete(context.Context, string, string, string, *ElasticBackupPoliciesClientBeginDeleteOptions) (*runtime.Poller[ElasticBackupPoliciesClientDeleteResponse], error)`
+- New function `*ElasticBackupPoliciesClient.Get(context.Context, string, string, string, *ElasticBackupPoliciesClientGetOptions) (ElasticBackupPoliciesClientGetResponse, error)`
+- New function `*ElasticBackupPoliciesClient.NewListByElasticAccountPager(string, string, *ElasticBackupPoliciesClientListByElasticAccountOptions) *runtime.Pager[ElasticBackupPoliciesClientListByElasticAccountResponse]`
+- New function `*ElasticBackupPoliciesClient.BeginUpdate(context.Context, string, string, string, ElasticBackupPolicy, *ElasticBackupPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupPoliciesClientUpdateResponse], error)`
+- New function `NewElasticBackupVaultsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticBackupVaultsClient, error)`
+- New function `*ElasticBackupVaultsClient.BeginCreateOrUpdate(context.Context, string, string, string, ElasticBackupVault, *ElasticBackupVaultsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticBackupVaultsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticBackupVaultsClient.BeginDelete(context.Context, string, string, string, *ElasticBackupVaultsClientBeginDeleteOptions) (*runtime.Poller[ElasticBackupVaultsClientDeleteResponse], error)`
+- New function `*ElasticBackupVaultsClient.Get(context.Context, string, string, string, *ElasticBackupVaultsClientGetOptions) (ElasticBackupVaultsClientGetResponse, error)`
+- New function `*ElasticBackupVaultsClient.NewListByElasticAccountPager(string, string, *ElasticBackupVaultsClientListByElasticAccountOptions) *runtime.Pager[ElasticBackupVaultsClientListByElasticAccountResponse]`
+- New function `*ElasticBackupVaultsClient.BeginUpdate(context.Context, string, string, string, ElasticBackupVault, *ElasticBackupVaultsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupVaultsClientUpdateResponse], error)`
+- New function `NewElasticBackupsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticBackupsClient, error)`
+- New function `*ElasticBackupsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, ElasticBackup, *ElasticBackupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticBackupsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticBackupsClient.BeginDelete(context.Context, string, string, string, string, *ElasticBackupsClientBeginDeleteOptions) (*runtime.Poller[ElasticBackupsClientDeleteResponse], error)`
+- New function `*ElasticBackupsClient.Get(context.Context, string, string, string, string, *ElasticBackupsClientGetOptions) (ElasticBackupsClientGetResponse, error)`
+- New function `*ElasticBackupsClient.NewListByVaultPager(string, string, string, *ElasticBackupsClientListByVaultOptions) *runtime.Pager[ElasticBackupsClientListByVaultResponse]`
+- New function `*ElasticBackupsClient.BeginUpdate(context.Context, string, string, string, string, ElasticBackup, *ElasticBackupsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupsClientUpdateResponse], error)`
+- New function `NewElasticCapacityPoolsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticCapacityPoolsClient, error)`
+- New function `*ElasticCapacityPoolsClient.BeginChangeZone(context.Context, string, string, string, ChangeZoneRequest, *ElasticCapacityPoolsClientBeginChangeZoneOptions) (*runtime.Poller[ElasticCapacityPoolsClientChangeZoneResponse], error)`
+- New function `*ElasticCapacityPoolsClient.CheckVolumeFilePathAvailability(context.Context, string, string, string, CheckElasticVolumeFilePathAvailabilityRequest, *ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityOptions) (ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse, error)`
+- New function `*ElasticCapacityPoolsClient.BeginCreateOrUpdate(context.Context, string, string, string, ElasticCapacityPool, *ElasticCapacityPoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticCapacityPoolsClient.BeginDelete(context.Context, string, string, string, *ElasticCapacityPoolsClientBeginDeleteOptions) (*runtime.Poller[ElasticCapacityPoolsClientDeleteResponse], error)`
+- New function `*ElasticCapacityPoolsClient.Get(context.Context, string, string, string, *ElasticCapacityPoolsClientGetOptions) (ElasticCapacityPoolsClientGetResponse, error)`
+- New function `*ElasticCapacityPoolsClient.NewListByElasticAccountPager(string, string, *ElasticCapacityPoolsClientListByElasticAccountOptions) *runtime.Pager[ElasticCapacityPoolsClientListByElasticAccountResponse]`
+- New function `*ElasticCapacityPoolsClient.BeginUpdate(context.Context, string, string, string, ElasticCapacityPoolUpdate, *ElasticCapacityPoolsClientBeginUpdateOptions) (*runtime.Poller[ElasticCapacityPoolsClientUpdateResponse], error)`
+- New function `NewElasticSnapshotPoliciesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticSnapshotPoliciesClient, error)`
+- New function `*ElasticSnapshotPoliciesClient.BeginCreateOrUpdate(context.Context, string, string, string, ElasticSnapshotPolicy, *ElasticSnapshotPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientCreateOrUpdateResponse], error)`
+- New function `*ElasticSnapshotPoliciesClient.BeginDelete(context.Context, string, string, string, *ElasticSnapshotPoliciesClientBeginDeleteOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientDeleteResponse], error)`
+- New function `*ElasticSnapshotPoliciesClient.Get(context.Context, string, string, string, *ElasticSnapshotPoliciesClientGetOptions) (ElasticSnapshotPoliciesClientGetResponse, error)`
+- New function `*ElasticSnapshotPoliciesClient.NewListByElasticAccountPager(string, string, *ElasticSnapshotPoliciesClientListByElasticAccountOptions) *runtime.Pager[ElasticSnapshotPoliciesClientListByElasticAccountResponse]`
+- New function `*ElasticSnapshotPoliciesClient.NewListElasticVolumesPager(string, string, string, *ElasticSnapshotPoliciesClientListElasticVolumesOptions) *runtime.Pager[ElasticSnapshotPoliciesClientListElasticVolumesResponse]`
+- New function `*ElasticSnapshotPoliciesClient.BeginUpdate(context.Context, string, string, string, ElasticSnapshotPolicy, *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientUpdateResponse], error)`
+- New function `NewElasticSnapshotsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticSnapshotsClient, error)`
+- New function `*ElasticSnapshotsClient.BeginCreateOrUpdate(context.Context, string, string, string, string, string, ElasticSnapshot, *ElasticSnapshotsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticSnapshotsClientCreateOrUpdateResponse], error)`
+- New function `*ElasticSnapshotsClient.BeginDelete(context.Context, string, string, string, string, string, *ElasticSnapshotsClientBeginDeleteOptions) (*runtime.Poller[ElasticSnapshotsClientDeleteResponse], error)`
+- New function `*ElasticSnapshotsClient.Get(context.Context, string, string, string, string, string, *ElasticSnapshotsClientGetOptions) (ElasticSnapshotsClientGetResponse, error)`
+- New function `*ElasticSnapshotsClient.NewListByElasticVolumePager(string, string, string, string, *ElasticSnapshotsClientListByElasticVolumeOptions) *runtime.Pager[ElasticSnapshotsClientListByElasticVolumeResponse]`
+- New function `NewElasticVolumesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ElasticVolumesClient, error)`
+- New function `*ElasticVolumesClient.BeginCreateOrUpdate(context.Context, string, string, string, string, ElasticVolume, *ElasticVolumesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ElasticVolumesClientCreateOrUpdateResponse], error)`
+- New function `*ElasticVolumesClient.BeginDelete(context.Context, string, string, string, string, *ElasticVolumesClientBeginDeleteOptions) (*runtime.Poller[ElasticVolumesClientDeleteResponse], error)`
+- New function `*ElasticVolumesClient.Get(context.Context, string, string, string, string, *ElasticVolumesClientGetOptions) (ElasticVolumesClientGetResponse, error)`
+- New function `*ElasticVolumesClient.NewListByElasticPoolPager(string, string, string, *ElasticVolumesClientListByElasticPoolOptions) *runtime.Pager[ElasticVolumesClientListByElasticPoolResponse]`
+- New function `*ElasticVolumesClient.BeginRevert(context.Context, string, string, string, string, ElasticVolumeRevert, *ElasticVolumesClientBeginRevertOptions) (*runtime.Poller[ElasticVolumesClientRevertResponse], error)`
+- New function `*ElasticVolumesClient.BeginUpdate(context.Context, string, string, string, string, ElasticVolumeUpdate, *ElasticVolumesClientBeginUpdateOptions) (*runtime.Poller[ElasticVolumesClientUpdateResponse], error)`
+- New function `NewRansomwareReportsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*RansomwareReportsClient, error)`
+- New function `*RansomwareReportsClient.BeginClearSuspects(context.Context, string, string, string, string, string, RansomwareSuspectsClearRequest, *RansomwareReportsClientBeginClearSuspectsOptions) (*runtime.Poller[RansomwareReportsClientClearSuspectsResponse], error)`
+- New function `*RansomwareReportsClient.Get(context.Context, string, string, string, string, string, *RansomwareReportsClientGetOptions) (RansomwareReportsClientGetResponse, error)`
+- New function `*RansomwareReportsClient.NewListPager(string, string, string, string, *RansomwareReportsClientListOptions) *runtime.Pager[RansomwareReportsClientListResponse]`
+- New function `*VolumesClient.BeginListQuotaReport(context.Context, string, string, string, string, *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
+- New struct `ActiveDirectoryConfig`
+- New struct `ActiveDirectoryConfigListResult`
+- New struct `ActiveDirectoryConfigProperties`
+- New struct `ActiveDirectoryConfigUpdate`
+- New struct `ActiveDirectoryConfigUpdateProperties`
+- New struct `Bucket`
+- New struct `BucketCredentialsExpiry`
+- New struct `BucketGenerateCredentials`
+- New struct `BucketList`
+- New struct `BucketPatch`
+- New struct `BucketPatchProperties`
+- New struct `BucketProperties`
+- New struct `BucketServerPatchProperties`
+- New struct `BucketServerProperties`
+- New struct `Cache`
+- New struct `CacheList`
+- New struct `CacheMountTargetProperties`
+- New struct `CacheProperties`
+- New struct `CacheUpdate`
+- New struct `CacheUpdateProperties`
+- New struct `ChangeZoneRequest`
+- New struct `CheckElasticResourceAvailabilityResponse`
+- New struct `CheckElasticVolumeFilePathAvailabilityRequest`
+- New struct `CifsUser`
+- New struct `ElasticAccount`
+- New struct `ElasticAccountListResult`
+- New struct `ElasticAccountProperties`
+- New struct `ElasticAccountUpdate`
+- New struct `ElasticAccountUpdateProperties`
+- New struct `ElasticBackup`
+- New struct `ElasticBackupListResult`
+- New struct `ElasticBackupPolicy`
+- New struct `ElasticBackupPolicyListResult`
+- New struct `ElasticBackupPolicyProperties`
+- New struct `ElasticBackupProperties`
+- New struct `ElasticBackupVault`
+- New struct `ElasticBackupVaultListResult`
+- New struct `ElasticBackupVaultProperties`
+- New struct `ElasticCapacityPool`
+- New struct `ElasticCapacityPoolListResult`
+- New struct `ElasticCapacityPoolProperties`
+- New struct `ElasticCapacityPoolUpdate`
+- New struct `ElasticCapacityPoolUpdateProperties`
+- New struct `ElasticEncryption`
+- New struct `ElasticEncryptionConfiguration`
+- New struct `ElasticEncryptionIdentity`
+- New struct `ElasticExportPolicy`
+- New struct `ElasticExportPolicyRule`
+- New struct `ElasticKeyVaultProperties`
+- New struct `ElasticMountTargetProperties`
+- New struct `ElasticSmbPatchProperties`
+- New struct `ElasticSmbProperties`
+- New struct `ElasticSnapshot`
+- New struct `ElasticSnapshotListResult`
+- New struct `ElasticSnapshotPolicy`
+- New struct `ElasticSnapshotPolicyDailySchedule`
+- New struct `ElasticSnapshotPolicyHourlySchedule`
+- New struct `ElasticSnapshotPolicyListResult`
+- New struct `ElasticSnapshotPolicyMonthlySchedule`
+- New struct `ElasticSnapshotPolicyProperties`
+- New struct `ElasticSnapshotPolicyVolumeList`
+- New struct `ElasticSnapshotPolicyWeeklySchedule`
+- New struct `ElasticSnapshotProperties`
+- New struct `ElasticVolume`
+- New struct `ElasticVolumeBackupProperties`
+- New struct `ElasticVolumeDataProtectionPatchProperties`
+- New struct `ElasticVolumeDataProtectionProperties`
+- New struct `ElasticVolumeListResult`
+- New struct `ElasticVolumeProperties`
+- New struct `ElasticVolumeRevert`
+- New struct `ElasticVolumeSnapshotProperties`
+- New struct `ElasticVolumeUpdate`
+- New struct `ElasticVolumeUpdateProperties`
+- New struct `FileSystemUser`
+- New struct `LdapConfiguration`
+- New struct `ListQuotaReportResponse`
+- New struct `NfsUser`
+- New struct `OriginClusterInformation`
+- New struct `PeeringPassphrases`
+- New struct `QuotaReport`
+- New struct `RansomwareProtectionPatchSettings`
+- New struct `RansomwareProtectionSettings`
+- New struct `RansomwareReport`
+- New struct `RansomwareReportProperties`
+- New struct `RansomwareReportsList`
+- New struct `RansomwareSuspects`
+- New struct `RansomwareSuspectsClearRequest`
+- New struct `SecretPassword`
+- New struct `SecretPasswordIdentity`
+- New struct `SecretPasswordKeyVaultProperties`
+- New struct `SmbSettings`
+- New struct `SuspectFile`
+- New field `LdapConfiguration` in struct `AccountProperties`
+- New field `ExternalReplicationSetupInfo`, `ExternalReplicationSetupStatus`, `MirrorState`, `RelationshipStatus` in struct `ReplicationObject`
+- New field `RansomwareProtection` in struct `VolumePatchPropertiesDataProtection`
+- New field `BreakthroughMode`, `Language`, `LargeVolumeType`, `LdapServerType` in struct `VolumeProperties`
+- New field `RansomwareProtection` in struct `VolumePropertiesDataProtection`
+
+
 ## 8.0.0 (2025-11-14)
 ### Breaking Changes
 

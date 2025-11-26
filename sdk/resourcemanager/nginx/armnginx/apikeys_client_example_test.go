@@ -22,7 +22,7 @@ func ExampleAPIKeysClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAPIKeysClient().CreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "myApiKey", nil)
+	res, err := clientFactory.NewAPIKeysClient().CreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "myApiKey", armnginx.DeploymentAPIKeyRequest{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -60,7 +60,7 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewConfigurationsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "default", nil)
+	poller, err := clientFactory.NewConfigurationsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "default", armnginx.ConfigurationRequest{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

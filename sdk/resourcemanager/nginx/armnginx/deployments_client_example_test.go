@@ -22,7 +22,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", nil)
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", armnginx.Deployment{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -468,7 +468,7 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", nil)
+	poller, err := clientFactory.NewDeploymentsClient().BeginUpdate(ctx, "myResourceGroup", "myDeployment", armnginx.DeploymentUpdateParameters{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

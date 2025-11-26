@@ -22,7 +22,7 @@ func ExampleWafPolicyClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWafPolicyClient().BeginCreate(ctx, "myResourceGroup", "myDeployment", "myWafPolicy", nil)
+	poller, err := clientFactory.NewWafPolicyClient().BeginCreate(ctx, "myResourceGroup", "myDeployment", "myWafPolicy", armnginx.DeploymentWafPolicy{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

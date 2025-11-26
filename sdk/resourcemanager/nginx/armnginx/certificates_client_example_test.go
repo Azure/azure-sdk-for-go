@@ -22,7 +22,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewCertificatesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "default", nil)
+	poller, err := clientFactory.NewCertificatesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myDeployment", "default", armnginx.Certificate{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

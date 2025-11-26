@@ -41,7 +41,7 @@ type APIKVReferenceCollection struct {
 
 // APIKVReferenceProperties - ApiKVReference resource specific properties
 type APIKVReferenceProperties struct {
-	// CONSTANT; undefinedField has constant value "KeyVault", any specified value is ignored.
+	// CONSTANT; Field has constant value "KeyVault", any specified value is ignored.
 	Source        *string
 	ActiveVersion *string
 	Details       *string
@@ -2258,6 +2258,11 @@ type DefaultErrorResponseErrorDetailsItem struct {
 	Target *string
 }
 
+type DefaultIdentity struct {
+	IdentityType                   *ManagedServiceIdentityType
+	UserAssignedIdentityResourceID *string
+}
+
 // DeletedAppRestoreRequest - Details about restoring a deleted app.
 type DeletedAppRestoreRequest struct {
 	// Kind of resource.
@@ -4357,6 +4362,24 @@ type InboundEnvironmentEndpointCollection struct {
 	NextLink *string
 }
 
+// InstallScript - Server farm install script configuration.
+type InstallScript struct {
+	// Name of the install script.
+	Name *string
+
+	// Source of the install script.
+	Source *InstallScriptSource
+}
+
+// InstallScriptSource - Object to hold install script reference.
+type InstallScriptSource struct {
+	// Install script source URI where the install script file will be fetched from.
+	SourceURI *string
+
+	// Type of the install script.
+	Type *InstallScriptType
+}
+
 // JSONSchema - The JSON schema.
 type JSONSchema struct {
 	// The JSON content.
@@ -4390,6 +4413,15 @@ type KeyValuePairStringObject struct {
 
 	// READ-ONLY; Anything
 	Value any
+}
+
+// KeyVaultReferenceWithStatus - Object to hold key vault reference and the resolution status
+type KeyVaultReferenceWithStatus struct {
+	// Reference status of the key vault secret.
+	ReferenceStatus *string
+
+	// Key vault secret URI.
+	SecretURI *string
 }
 
 // KubeEnvironment - A Kubernetes cluster specialized for web workloads by Azure App Service
@@ -5181,6 +5213,9 @@ type Plan struct {
 	// Extended Location.
 	ExtendedLocation *ExtendedLocation
 
+	// Managed service identity.
+	Identity *ManagedServiceIdentity
+
 	// Kind of resource. If the resource is an app, you can refer to https://github.com/Azure/app-service-linux-docs/blob/master/ThingsYouShouldKnow/kindproperty.md#app-service-resource-kind-reference
 	// for
 	// details supported values for kind.
@@ -5216,6 +5251,9 @@ type PlanCollection struct {
 
 // PlanPatchResource - ARM resource for a app service plan.
 type PlanPatchResource struct {
+	// Managed service identity.
+	Identity *ManagedServiceIdentity
+
 	// Kind of resource.
 	Kind *string
 
@@ -5324,6 +5362,12 @@ type PlanProperties struct {
 	// If Hyper-V container app service plan true, false otherwise.
 	HyperV *bool
 
+	// Install scripts associated with this App Service plan.
+	InstallScripts []*InstallScript
+
+	// Whether this server farm is in custom mode.
+	IsCustomMode *bool
+
 	// If true, this App Service Plan owns spot instances.
 	IsSpot *bool
 
@@ -5336,15 +5380,31 @@ type PlanProperties struct {
 	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
 	MaximumElasticWorkerCount *int32
 
+	// All network settings for the server farm.
+	Network *ServerFarmNetworkSettings
+
 	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service
 	// plan will scale to all instances of the plan.
 	PerSiteScaling *bool
+
+	// Identity to use by platform for various features and integrations using managed identity.
+	PlanDefaultIdentity *DefaultIdentity
+
+	// If true, RDP access is enabled for this App Service plan. Only applicable for IsCustomMode ASPs. If false, RDP access is
+	// disabled.
+	RdpEnabled *bool
+
+	// Registry adapters associated with this App Service plan.
+	RegistryAdapters []*RegistryAdapter
 
 	// If Linux app service plan true, false otherwise.
 	Reserved *bool
 
 	// The time when the server farm expires. Valid only if it is a spot server farm.
 	SpotExpirationTime *time.Time
+
+	// Storage mounts associated with this App Service plan.
+	StorageMounts []*StorageMount
 
 	// Scaling worker count.
 	TargetWorkerCount *int32
@@ -6273,6 +6333,18 @@ type RegenerateActionParameter struct {
 	KeyType *KeyType
 }
 
+// RegistryAdapter - Server farm registry adapter configuration.
+type RegistryAdapter struct {
+	// Key vault reference to the value that will be placed in the registry location
+	KeyVaultSecretReference *KeyVaultReferenceWithStatus
+
+	// Registry key for the adapter.
+	RegistryKey *string
+
+	// Type of the registry adapter.
+	Type *RegistryAdapterType
+}
+
 // ReissueCertificateOrderRequest - Class representing certificate reissue request.
 type ReissueCertificateOrderRequest struct {
 	// Kind of resource.
@@ -6972,6 +7044,47 @@ type ScaleRuleAuth struct {
 
 	// Trigger Parameter that uses the secret
 	TriggerParameter *string
+}
+
+// ServerFarmInstance - Represents details of a single instance in a server farm.
+type ServerFarmInstance struct {
+	// The instance IP address.
+	IPAddress *string
+
+	// The instance name.
+	InstanceName *string
+
+	// The instance status.
+	Status *string
+}
+
+// ServerFarmInstanceDetails - Represents instance details for an app service plan.
+type ServerFarmInstanceDetails struct {
+	// The total number of instances.
+	InstanceCount *int32
+
+	// The list of server farm instances.
+	Instances []*ServerFarmInstance
+
+	// The server farm name.
+	ServerFarmName *string
+}
+
+// ServerFarmNetworkSettings - Network settings for an app service plan.
+type ServerFarmNetworkSettings struct {
+	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of
+	// the form
+	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
+	VirtualNetworkSubnetID *string
+}
+
+// ServerFarmRdpDetails - Server Farm RDP connection details.
+type ServerFarmRdpDetails struct {
+	// The RDP password for the server farm.
+	RdpPassword *string
+
+	// The RDP password expiry date.
+	RdpPasswordExpiry *time.Time
 }
 
 // ServiceSpecification - Resource metrics service provided by Microsoft.Insights resource provider.
@@ -7877,6 +7990,9 @@ type SitePatchResourceProperties struct {
 
 	// Identity to use for Key Vault Reference authentication.
 	KeyVaultReferenceIdentity *string
+
+	// Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+	PublicNetworkAccess *string
 
 	// Site redundancy mode
 	RedundancyMode *RedundancyMode
@@ -9428,6 +9544,24 @@ type StorageMigrationResponseProperties struct {
 	// READ-ONLY; When server starts the migration process, it will return an operation ID identifying that particular migration
 	// operation.
 	OperationID *string
+}
+
+// StorageMount - Server farm storage mount configuration.
+type StorageMount struct {
+	// KV reference to the credentials to connect to the share.
+	CredentialsKeyVaultReference *KeyVaultReferenceWithStatus
+
+	// Path on worker where storage will be mounted.
+	DestinationPath *string
+
+	// Name of the storage mount.
+	Name *string
+
+	// Source of the fileshare/storage.
+	Source *string
+
+	// Type of the storage mount.
+	Type *StorageMountType
 }
 
 // StringDictionary - String dictionary resource.

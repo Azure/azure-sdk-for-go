@@ -815,6 +815,18 @@ type PlansClientGetRouteForVnetResponse struct {
 	VnetRouteArray []*VnetRoute
 }
 
+// PlansClientGetServerFarmInstanceDetailsResponse contains the response from method PlansClient.GetServerFarmInstanceDetails.
+type PlansClientGetServerFarmInstanceDetailsResponse struct {
+	// Represents instance details for an app service plan.
+	ServerFarmInstanceDetails
+}
+
+// PlansClientGetServerFarmRdpPasswordResponse contains the response from method PlansClient.GetServerFarmRdpPassword.
+type PlansClientGetServerFarmRdpPasswordResponse struct {
+	// Server Farm RDP connection details.
+	ServerFarmRdpDetails
+}
+
 // PlansClientGetServerFarmSKUsResponse contains the response from method PlansClient.GetServerFarmSKUs.
 type PlansClientGetServerFarmSKUsResponse struct {
 	// Anything
@@ -896,6 +908,12 @@ type PlansClientListWebAppsResponse struct {
 // PlansClientRebootWorkerResponse contains the response from method PlansClient.RebootWorker.
 type PlansClientRebootWorkerResponse struct {
 	// placeholder for future response values
+}
+
+// PlansClientRecycleManagedInstanceWorkerResponse contains the response from method PlansClient.RecycleManagedInstanceWorker.
+type PlansClientRecycleManagedInstanceWorkerResponse struct {
+	// An operation on a resource.
+	Operation
 }
 
 // PlansClientRestartWebAppsResponse contains the response from method PlansClient.RestartWebApps.

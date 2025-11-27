@@ -1,10 +1,14 @@
 # Release History
 
-## 0.3.2 (unreleased)
+## 0.4.0 (unreleased)
 
 ### Features Added
 
 - Support detecting parameter renaming as breaking change in changelog generation.
+
+### Other Changes
+
+- Upgrade Go version to 1.24.0 for dependency management.
 
 ## 0.3.1 (2025-11-13)
 

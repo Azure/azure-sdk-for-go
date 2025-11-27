@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualHubBgpConnectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualHubBgpConnectionGet.json
 func ExampleVirtualHubBgpConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleVirtualHubBgpConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualHubBgpConnectionPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualHubBgpConnectionPut.json
 func ExampleVirtualHubBgpConnectionClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleVirtualHubBgpConnectionClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualHubBgpConnectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualHubBgpConnectionDelete.json
 func ExampleVirtualHubBgpConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

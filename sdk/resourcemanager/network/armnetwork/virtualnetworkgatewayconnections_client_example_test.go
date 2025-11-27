@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionCreate.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionGet.json
 func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionDelete.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -314,7 +314,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionUpdateTags.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginUpdateTags() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionSetSharedKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionSetSharedKey.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,7 +425,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginSetSharedKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionGetSharedKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionGetSharedKey.json
 func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,7 +449,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_GetSharedKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionsList.json
 func ExampleVirtualNetworkGatewayConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,7 +581,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionResetSharedKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionResetSharedKey.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,7 +610,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetSharedKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayConnectionWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,7 +638,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_start
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionStartPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionStartPacketCapture.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayConnectionWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -663,7 +663,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStartPacketCapture_start
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionStopPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionStopPacketCapture.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -690,7 +690,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginStopPacketCapture() {
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionGetIkeSas.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionGetIkeSas.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -715,7 +715,7 @@ func ExampleVirtualNetworkGatewayConnectionsClient_BeginGetIkeSas() {
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayConnectionReset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/VirtualNetworkGatewayConnectionReset.json
 func ExampleVirtualNetworkGatewayConnectionsClient_BeginResetConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

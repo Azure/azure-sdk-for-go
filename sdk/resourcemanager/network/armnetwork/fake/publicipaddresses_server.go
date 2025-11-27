@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -32,6 +32,10 @@ type PublicIPAddressesServer struct {
 	// BeginDelete is the fake for method PublicIPAddressesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, publicIPAddressName string, options *armnetwork.PublicIPAddressesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.PublicIPAddressesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginDisassociateCloudServiceReservedPublicIP is the fake for method PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginDisassociateCloudServiceReservedPublicIP func(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters armnetwork.DisassociateCloudServicePublicIPRequest, options *armnetwork.PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions) (resp azfake.PollerResponder[armnetwork.PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PublicIPAddressesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -69,6 +73,10 @@ type PublicIPAddressesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListVirtualMachineScaleSetVMPublicIPAddressesPager func(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesOptions) (resp azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse])
 
+	// BeginReserveCloudServicePublicIPAddress is the fake for method PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginReserveCloudServicePublicIPAddress func(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters armnetwork.ReserveCloudServicePublicIPAddressRequest, options *armnetwork.PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions) (resp azfake.PollerResponder[armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse], errResp azfake.ErrorResponder)
+
 	// UpdateTags is the fake for method PublicIPAddressesClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateTags func(ctx context.Context, resourceGroupName string, publicIPAddressName string, parameters armnetwork.TagsObject, options *armnetwork.PublicIPAddressesClientUpdateTagsOptions) (resp azfake.Responder[armnetwork.PublicIPAddressesClientUpdateTagsResponse], errResp azfake.ErrorResponder)
@@ -83,12 +91,14 @@ func NewPublicIPAddressesServerTransport(srv *PublicIPAddressesServer) *PublicIP
 		beginCreateOrUpdate:       newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientCreateOrUpdateResponse]](),
 		beginDdosProtectionStatus: newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDdosProtectionStatusResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDeleteResponse]](),
-		newListPager:              newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse]](),
-		newListAllPager:           newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListAllResponse]](),
+		beginDisassociateCloudServiceReservedPublicIP: newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse]](),
+		newListPager:    newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse]](),
+		newListAllPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListAllResponse]](),
 		newListCloudServicePublicIPAddressesPager:             newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]](),
 		newListCloudServiceRoleInstancePublicIPAddressesPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]](),
 		newListVirtualMachineScaleSetPublicIPAddressesPager:   newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]](),
 		newListVirtualMachineScaleSetVMPublicIPAddressesPager: newTracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]](),
+		beginReserveCloudServicePublicIPAddress:               newTracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse]](),
 	}
 }
 
@@ -99,12 +109,14 @@ type PublicIPAddressesServerTransport struct {
 	beginCreateOrUpdate                                   *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientCreateOrUpdateResponse]]
 	beginDdosProtectionStatus                             *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDdosProtectionStatusResponse]]
 	beginDelete                                           *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDeleteResponse]]
+	beginDisassociateCloudServiceReservedPublicIP         *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse]]
 	newListPager                                          *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListResponse]]
 	newListAllPager                                       *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListAllResponse]]
 	newListCloudServicePublicIPAddressesPager             *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServicePublicIPAddressesResponse]]
 	newListCloudServiceRoleInstancePublicIPAddressesPager *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListCloudServiceRoleInstancePublicIPAddressesResponse]]
 	newListVirtualMachineScaleSetPublicIPAddressesPager   *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse]]
 	newListVirtualMachineScaleSetVMPublicIPAddressesPager *tracker[azfake.PagerResponder[armnetwork.PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse]]
+	beginReserveCloudServicePublicIPAddress               *tracker[azfake.PollerResponder[armnetwork.PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse]]
 }
 
 // Do implements the policy.Transporter interface for PublicIPAddressesServerTransport.
@@ -136,6 +148,8 @@ func (p *PublicIPAddressesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = p.dispatchBeginDdosProtectionStatus(req)
 			case "PublicIPAddressesClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP":
+				res.resp, res.err = p.dispatchBeginDisassociateCloudServiceReservedPublicIP(req)
 			case "PublicIPAddressesClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PublicIPAddressesClient.GetCloudServicePublicIPAddress":
@@ -154,6 +168,8 @@ func (p *PublicIPAddressesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = p.dispatchNewListVirtualMachineScaleSetPublicIPAddressesPager(req)
 			case "PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager":
 				res.resp, res.err = p.dispatchNewListVirtualMachineScaleSetVMPublicIPAddressesPager(req)
+			case "PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress":
+				res.resp, res.err = p.dispatchBeginReserveCloudServicePublicIPAddress(req)
 			case "PublicIPAddressesClient.UpdateTags":
 				res.resp, res.err = p.dispatchUpdateTags(req)
 			default:
@@ -306,6 +322,54 @@ func (p *PublicIPAddressesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		p.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (p *PublicIPAddressesServerTransport) dispatchBeginDisassociateCloudServiceReservedPublicIP(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginDisassociateCloudServiceReservedPublicIP == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDisassociateCloudServiceReservedPublicIP not implemented")}
+	}
+	beginDisassociateCloudServiceReservedPublicIP := p.beginDisassociateCloudServiceReservedPublicIP.get(req)
+	if beginDisassociateCloudServiceReservedPublicIP == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/publicIPAddresses/(?P<publicIpAddressName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disassociateCloudServiceReservedPublicIp`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.DisassociateCloudServicePublicIPRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		publicIPAddressNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicIpAddressName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginDisassociateCloudServiceReservedPublicIP(req.Context(), resourceGroupNameParam, publicIPAddressNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDisassociateCloudServiceReservedPublicIP = &respr
+		p.beginDisassociateCloudServiceReservedPublicIP.add(req, beginDisassociateCloudServiceReservedPublicIP)
+	}
+
+	resp, err := server.PollerResponderNext(beginDisassociateCloudServiceReservedPublicIP, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginDisassociateCloudServiceReservedPublicIP.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDisassociateCloudServiceReservedPublicIP) {
+		p.beginDisassociateCloudServiceReservedPublicIP.remove(req)
 	}
 
 	return resp, nil
@@ -733,6 +797,54 @@ func (p *PublicIPAddressesServerTransport) dispatchNewListVirtualMachineScaleSet
 	if !server.PagerResponderMore(newListVirtualMachineScaleSetVMPublicIPAddressesPager) {
 		p.newListVirtualMachineScaleSetVMPublicIPAddressesPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (p *PublicIPAddressesServerTransport) dispatchBeginReserveCloudServicePublicIPAddress(req *http.Request) (*http.Response, error) {
+	if p.srv.BeginReserveCloudServicePublicIPAddress == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReserveCloudServicePublicIPAddress not implemented")}
+	}
+	beginReserveCloudServicePublicIPAddress := p.beginReserveCloudServicePublicIPAddress.get(req)
+	if beginReserveCloudServicePublicIPAddress == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/publicIPAddresses/(?P<publicIpAddressName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reserveCloudServicePublicIpAddress`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.ReserveCloudServicePublicIPAddressRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		publicIPAddressNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicIpAddressName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := p.srv.BeginReserveCloudServicePublicIPAddress(req.Context(), resourceGroupNameParam, publicIPAddressNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReserveCloudServicePublicIPAddress = &respr
+		p.beginReserveCloudServicePublicIPAddress.add(req, beginReserveCloudServicePublicIPAddress)
+	}
+
+	resp, err := server.PollerResponderNext(beginReserveCloudServicePublicIPAddress, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		p.beginReserveCloudServicePublicIPAddress.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReserveCloudServicePublicIPAddress) {
+		p.beginReserveCloudServicePublicIPAddress.remove(req)
+	}
+
 	return resp, nil
 }
 

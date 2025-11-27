@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceDelete.json
 func ExampleVirtualAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceGet.json
 func ExampleVirtualAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleVirtualAppliancesClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceUpdateTags.json
 func ExampleVirtualAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleVirtualAppliancesClient_UpdateTags() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceVnetBasicPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceVnetBasicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +445,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceVnetIngressPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceVnetIngressPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingInternetIngress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,7 +599,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceVnetNetworkProfilePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceVnetNetworkProfilePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicIncludingNetworkProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -851,7 +851,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceVnetAdditionalPrivatePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPrivateNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1027,7 +1027,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceVnetAdditionalPublicPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceVnetAdditionalPublicPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPrivateNicPublicNicAdditionalPublicNic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1203,7 +1203,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNvaInVNetWithPriva
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualAppliancePut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualAppliancePut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1427,7 +1427,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceSaaSPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceSaaSPut.json
 func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtualAppliance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1490,7 +1490,7 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceEmptyRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceEmptyRestart.json
 func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplianceVMsInVmScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1518,7 +1518,7 @@ func ExampleVirtualAppliancesClient_BeginRestart_restartAllNetworkVirtualApplian
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceSpecificRestart.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceSpecificRestart.json
 func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualApplianceVMsInVmScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1547,7 +1547,7 @@ func ExampleVirtualAppliancesClient_BeginRestart_restartSpecificNetworkVirtualAp
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceSpecificReimage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceSpecificReimage.json
 func ExampleVirtualAppliancesClient_BeginReimage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1575,7 +1575,7 @@ func ExampleVirtualAppliancesClient_BeginReimage() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceBootDiagnostics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceBootDiagnostics.json
 func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1606,7 +1606,7 @@ func ExampleVirtualAppliancesClient_BeginGetBootDiagnosticLogs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceListByResourceGroup.json
 func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1760,7 +1760,7 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/NetworkVirtualApplianceListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/NetworkVirtualApplianceListBySubscription.json
 func ExampleVirtualAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

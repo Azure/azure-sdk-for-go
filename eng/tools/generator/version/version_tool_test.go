@@ -66,7 +66,7 @@ func TestCalculateNewVersion(t *testing.T) {
 	assert.Equal(t, newVersion.String(), "1.2.1")
 	assert.Equal(t, utils.StableLabel, prl)
 
-	// fix with beat
+	// fix with beta
 	newVersion, prl, err = CalculateNewVersion(fixChange, "1.2.0", true)
 	assert.NoError(t, err)
 	assert.Equal(t, newVersion.String(), "1.2.1-beta.1")

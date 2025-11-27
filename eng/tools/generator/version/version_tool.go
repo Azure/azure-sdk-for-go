@@ -340,7 +340,7 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 	if err != nil {
 		return nil, "", err
 	}
-	log.Printf("Lastest version is: %s", version.String())
+	log.Printf("Latest version is: %s", version.String())
 
 	var newVersion semver.Version
 	var prl utils.PullRequestLabel

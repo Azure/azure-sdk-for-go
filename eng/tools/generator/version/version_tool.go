@@ -305,7 +305,7 @@ func IsCurrentPreviewVersion(modulePath string, sdkRepo repo.SDKRepository, over
 
 // containsPreviewAPIVersion checks if the package contains any preview API version calls
 func containsPreviewAPIVersion(packagePath string) (bool, error) {
-	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
+	log.Printf("Check if package contains preview API version from '%s' ...", packagePath)
 
 	files, err := os.ReadDir(packagePath)
 	if err != nil {

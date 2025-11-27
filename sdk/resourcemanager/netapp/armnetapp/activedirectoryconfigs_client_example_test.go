@@ -31,7 +31,7 @@ func ExampleActiveDirectoryConfigsClient_BeginCreateOrUpdate() {
 		Identity: &armnetapp.ManagedServiceIdentity{
 			Type: to.Ptr(armnetapp.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armnetapp.UserAssignedIdentity{
-				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userAssignedIdentity1": &armnetapp.UserAssignedIdentity{},
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userAssignedIdentity1": {},
 			},
 		},
 		Properties: &armnetapp.ActiveDirectoryConfigProperties{

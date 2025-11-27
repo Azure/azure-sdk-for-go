@@ -21,7 +21,7 @@ func TestEnumFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,7 +43,7 @@ func TestFuncFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +65,7 @@ func TestLROFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -87,7 +87,7 @@ func TestPageableFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +109,7 @@ func TestInterfaceToAnyFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -131,7 +131,7 @@ func TestNonExportedFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}

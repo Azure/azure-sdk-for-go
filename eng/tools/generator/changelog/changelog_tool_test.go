@@ -10,7 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
+	internalutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,7 +25,7 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,7 +47,7 @@ func TestFuncParameterChange(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -66,7 +66,7 @@ func TestGetAllVersionTags(t *testing.T) {
 	log.Printf("Using current directory as SDK root: %s", cwd)
 
 	// create sdk repo ref
-	sdkRepo, err := repo.OpenSDKRepository(utils.NormalizePath(cwd))
+	sdkRepo, err := repo.OpenSDKRepository(internalutils.NormalizePath(cwd))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -119,7 +119,7 @@ func TestGetExportsFromTag(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Call GetExportsFromTag
-			exports, err := GetExportsFromTag(tc.packagePath, tc.tag)
+			exports, err := getExportsFromTag(tc.packagePath, tc.tag)
 
 			// Should not error for valid tags
 			assert.NoError(t, err)
@@ -132,4 +132,26 @@ func TestGetExportsFromTag(t *testing.T) {
 				"Expected to find some exports in package")
 		})
 	}
+}
+
+func TestGetPreviousVersionTag(t *testing.T) {
+	tags := []string{"v1.2.0", "v1.1.0-beta.1", "v1.0.0"}
+
+	// Test preview - should return latest
+	result := getPreviousVersionTag(true, tags)
+	assert.Equal(t, "v1.2.0", result)
+
+	// Test stable - should return latest stable
+	result = getPreviousVersionTag(false, tags)
+	assert.Equal(t, "v1.2.0", result)
+
+	tags = []string{"v1.1.0-beta.2", "v1.1.0-beta.1", "v1.0.0"}
+
+	// Test preview - should return latest beta
+	result = getPreviousVersionTag(true, tags)
+	assert.Equal(t, "v1.1.0-beta.2", result)
+
+	// Test stable - should return latest stable
+	result = getPreviousVersionTag(false, tags)
+	assert.Equal(t, "v1.0.0", result)
 }

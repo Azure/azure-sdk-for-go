@@ -17,7 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/automation/pipeline"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
+	internalutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -58,7 +59,7 @@ func execute(inputPath, outputPath string) error {
 	log.Printf("Using current directory as SDK root: %s", cwd)
 
 	ctx := automationContext{
-		sdkRoot:    utils.NormalizePath(cwd),
+		sdkRoot:    internalutils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
 	}
@@ -89,12 +90,12 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	errorBuilder := generateErrorBuilder{}
-	if input.RunMode == common.AutomationRunModeLocal || input.RunMode == common.AutomationRunModeRelease {
-		if input.SdkReleaseType != "" && input.SdkReleaseType != common.SDKReleaseTypeStable && input.SdkReleaseType != common.SDKReleaseTypePreview {
+	if input.RunMode == utils.AutomationRunModeLocal || input.RunMode == utils.AutomationRunModeRelease {
+		if input.SdkReleaseType != "" && input.SdkReleaseType != utils.SDKReleaseTypeStable && input.SdkReleaseType != utils.SDKReleaseTypePreview {
 			return nil, fmt.Errorf("invalid SDK release type:%s, only support 'stable' or 'beta'", input.SdkReleaseType)
 		}
 		if input.SdkReleaseType != "" && input.ApiVersion != "" {
-			if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == common.SDKReleaseTypeStable {
+			if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == utils.SDKReleaseTypeStable {
 				return nil, fmt.Errorf("SDK release type is stable, but API version: %s is preview", input.ApiVersion)
 			}
 		}
@@ -202,7 +203,7 @@ func (ctx *automationContext) getRPMap(absReadmeGo string) (map[string][]common.
 func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult *common.GenerateResult) pipeline.PackageResult {
 	content := namespaceResult.ChangelogMD
 	breaking := namespaceResult.Changelog.HasBreakingChanges()
-	if namespaceResult.PullRequestLabels == string(common.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(common.BetaBreakingChangeLabel) {
+	if namespaceResult.PullRequestLabels == string(utils.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(utils.BetaBreakingChangeLabel) {
 		// If the PR is first beta or first GA, it is not necessary to report SDK breaking change in spec PR
 		breaking = false
 	}

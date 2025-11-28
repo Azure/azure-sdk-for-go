@@ -217,7 +217,6 @@ package armchaos_test
 
 import (
  "context"
- "fmt"
  "testing"
 
  "github.com/Azure/azure-sdk-for-go/sdk/azcore"

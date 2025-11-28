@@ -38,7 +38,7 @@ type ElasticBackupPoliciesServer struct {
 
 	// BeginUpdate is the fake for method ElasticBackupPoliciesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body armnetapp.ElasticBackupPolicy, options *armnetapp.ElasticBackupPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ElasticBackupPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body armnetapp.ElasticBackupPolicyUpdate, options *armnetapp.ElasticBackupPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.ElasticBackupPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewElasticBackupPoliciesServerTransport creates a new instance of ElasticBackupPoliciesServerTransport with the provided implementation.
@@ -306,7 +306,7 @@ func (e *ElasticBackupPoliciesServerTransport) dispatchBeginUpdate(req *http.Req
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.ElasticBackupPolicy](req)
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.ElasticBackupPolicyUpdate](req)
 		if err != nil {
 			return nil, err
 		}

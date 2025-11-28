@@ -349,7 +349,7 @@ func (client *ElasticBackupVaultsClient) listByElasticAccountHandleResponse(resp
 //   - body - The resource properties to be updated.
 //   - options - ElasticBackupVaultsClientBeginUpdateOptions contains the optional parameters for the ElasticBackupVaultsClient.BeginUpdate
 //     method.
-func (client *ElasticBackupVaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVault, options *ElasticBackupVaultsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupVaultsClientUpdateResponse], error) {
+func (client *ElasticBackupVaultsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVaultUpdate, options *ElasticBackupVaultsClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupVaultsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, backupVaultName, body, options)
 		if err != nil {
@@ -370,7 +370,7 @@ func (client *ElasticBackupVaultsClient) BeginUpdate(ctx context.Context, resour
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01-preview
-func (client *ElasticBackupVaultsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVault, options *ElasticBackupVaultsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ElasticBackupVaultsClient) update(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVaultUpdate, options *ElasticBackupVaultsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticBackupVaultsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -392,7 +392,7 @@ func (client *ElasticBackupVaultsClient) update(ctx context.Context, resourceGro
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ElasticBackupVaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVault, _ *ElasticBackupVaultsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ElasticBackupVaultsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, body ElasticBackupVaultUpdate, _ *ElasticBackupVaultsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupVaults/{backupVaultName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

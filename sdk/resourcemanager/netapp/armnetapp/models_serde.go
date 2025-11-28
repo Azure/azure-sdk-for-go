@@ -2871,6 +2871,76 @@ func (e *ElasticBackupPolicyProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ElasticBackupPolicyUpdate.
+func (e ElasticBackupPolicyUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "tags", e.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ElasticBackupPolicyUpdate.
+func (e *ElasticBackupPolicyUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &e.Properties)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &e.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ElasticBackupPolicyUpdateProperties.
+func (e ElasticBackupPolicyUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dailyBackupsToKeep", e.DailyBackupsToKeep)
+	populate(objectMap, "monthlyBackupsToKeep", e.MonthlyBackupsToKeep)
+	populate(objectMap, "policyState", e.PolicyState)
+	populate(objectMap, "weeklyBackupsToKeep", e.WeeklyBackupsToKeep)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ElasticBackupPolicyUpdateProperties.
+func (e *ElasticBackupPolicyUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dailyBackupsToKeep":
+			err = unpopulate(val, "DailyBackupsToKeep", &e.DailyBackupsToKeep)
+			delete(rawMsg, key)
+		case "monthlyBackupsToKeep":
+			err = unpopulate(val, "MonthlyBackupsToKeep", &e.MonthlyBackupsToKeep)
+			delete(rawMsg, key)
+		case "policyState":
+			err = unpopulate(val, "PolicyState", &e.PolicyState)
+			delete(rawMsg, key)
+		case "weeklyBackupsToKeep":
+			err = unpopulate(val, "WeeklyBackupsToKeep", &e.WeeklyBackupsToKeep)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ElasticBackupProperties.
 func (e ElasticBackupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3050,6 +3120,33 @@ func (e *ElasticBackupVaultProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ElasticBackupVaultUpdate.
+func (e ElasticBackupVaultUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "tags", e.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ElasticBackupVaultUpdate.
+func (e *ElasticBackupVaultUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "tags":
+			err = unpopulate(val, "Tags", &e.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3869,6 +3966,80 @@ func (e *ElasticSnapshotPolicyProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &e.ProvisioningState)
+			delete(rawMsg, key)
+		case "weeklySchedule":
+			err = unpopulate(val, "WeeklySchedule", &e.WeeklySchedule)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ElasticSnapshotPolicyUpdate.
+func (e ElasticSnapshotPolicyUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", e.Properties)
+	populate(objectMap, "tags", e.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ElasticSnapshotPolicyUpdate.
+func (e *ElasticSnapshotPolicyUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &e.Properties)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &e.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ElasticSnapshotPolicyUpdateProperties.
+func (e ElasticSnapshotPolicyUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dailySchedule", e.DailySchedule)
+	populate(objectMap, "hourlySchedule", e.HourlySchedule)
+	populate(objectMap, "monthlySchedule", e.MonthlySchedule)
+	populate(objectMap, "policyStatus", e.PolicyStatus)
+	populate(objectMap, "weeklySchedule", e.WeeklySchedule)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ElasticSnapshotPolicyUpdateProperties.
+func (e *ElasticSnapshotPolicyUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dailySchedule":
+			err = unpopulate(val, "DailySchedule", &e.DailySchedule)
+			delete(rawMsg, key)
+		case "hourlySchedule":
+			err = unpopulate(val, "HourlySchedule", &e.HourlySchedule)
+			delete(rawMsg, key)
+		case "monthlySchedule":
+			err = unpopulate(val, "MonthlySchedule", &e.MonthlySchedule)
+			delete(rawMsg, key)
+		case "policyStatus":
+			err = unpopulate(val, "PolicyStatus", &e.PolicyStatus)
 			delete(rawMsg, key)
 		case "weeklySchedule":
 			err = unpopulate(val, "WeeklySchedule", &e.WeeklySchedule)

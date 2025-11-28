@@ -350,7 +350,7 @@ func (client *ElasticBackupPoliciesClient) listByElasticAccountHandleResponse(re
 //   - body - The resource properties to be updated.
 //   - options - ElasticBackupPoliciesClientBeginUpdateOptions contains the optional parameters for the ElasticBackupPoliciesClient.BeginUpdate
 //     method.
-func (client *ElasticBackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicy, options *ElasticBackupPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupPoliciesClientUpdateResponse], error) {
+func (client *ElasticBackupPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicyUpdate, options *ElasticBackupPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticBackupPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, backupPolicyName, body, options)
 		if err != nil {
@@ -371,7 +371,7 @@ func (client *ElasticBackupPoliciesClient) BeginUpdate(ctx context.Context, reso
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01-preview
-func (client *ElasticBackupPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicy, options *ElasticBackupPoliciesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ElasticBackupPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicyUpdate, options *ElasticBackupPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticBackupPoliciesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -393,7 +393,7 @@ func (client *ElasticBackupPoliciesClient) update(ctx context.Context, resourceG
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ElasticBackupPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicy, _ *ElasticBackupPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ElasticBackupPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, backupPolicyName string, body ElasticBackupPolicyUpdate, _ *ElasticBackupPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticBackupPolicies/{backupPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

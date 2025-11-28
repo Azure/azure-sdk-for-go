@@ -158,7 +158,7 @@ func ExampleElasticBackupVaultsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticBackupVaultsClient().BeginUpdate(ctx, "myRG", "account1", "backupVault1", armnetapp.ElasticBackupVault{
+	poller, err := clientFactory.NewElasticBackupVaultsClient().BeginUpdate(ctx, "myRG", "account1", "backupVault1", armnetapp.ElasticBackupVaultUpdate{
 		Tags: map[string]*string{
 			"Tag1": to.Ptr("Value1"),
 		},

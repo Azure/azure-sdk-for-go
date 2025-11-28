@@ -170,8 +170,8 @@ func ExampleElasticBackupPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticBackupPoliciesClient().BeginUpdate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.ElasticBackupPolicy{
-		Properties: &armnetapp.ElasticBackupPolicyProperties{
+	poller, err := clientFactory.NewElasticBackupPoliciesClient().BeginUpdate(ctx, "myRG", "account1", "backupPolicyName", armnetapp.ElasticBackupPolicyUpdate{
+		Properties: &armnetapp.ElasticBackupPolicyUpdateProperties{
 			DailyBackupsToKeep:   to.Ptr[int32](5),
 			WeeklyBackupsToKeep:  to.Ptr[int32](10),
 			MonthlyBackupsToKeep: to.Ptr[int32](10),

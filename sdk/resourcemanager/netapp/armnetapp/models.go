@@ -1240,6 +1240,30 @@ type ElasticBackupPolicyProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// ElasticBackupPolicyUpdate - The type used for update operations of the ElasticBackupPolicy.
+type ElasticBackupPolicyUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticBackupPolicyUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticBackupPolicyUpdateProperties - The updatable properties of the ElasticBackupPolicy.
+type ElasticBackupPolicyUpdateProperties struct {
+	// Daily backups count to keep
+	DailyBackupsToKeep *int32
+
+	// Monthly backups count to keep
+	MonthlyBackupsToKeep *int32
+
+	// The property to identify whether Backup Policy is enabled or not
+	PolicyState *ElasticBackupPolicyState
+
+	// Weekly backups count to keep
+	WeeklyBackupsToKeep *int32
+}
+
 // ElasticBackupProperties - Elastic Backup properties
 type ElasticBackupProperties struct {
 	// REQUIRED; ResourceId used to identify the Elastic Volume
@@ -1327,6 +1351,12 @@ type ElasticBackupVaultListResult struct {
 type ElasticBackupVaultProperties struct {
 	// READ-ONLY; Azure lifecycle management.
 	ProvisioningState *ProvisioningState
+}
+
+// ElasticBackupVaultUpdate - The type used for update operations of the ElasticBackupVault.
+type ElasticBackupVaultUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // ElasticCapacityPool - NetApp Elastic Capacity Pool resource
@@ -1648,6 +1678,33 @@ type ElasticSnapshotPolicyProperties struct {
 
 	// READ-ONLY; Azure lifecycle management.
 	ProvisioningState *ProvisioningState
+}
+
+// ElasticSnapshotPolicyUpdate - The type used for update operations of the ElasticSnapshotPolicy.
+type ElasticSnapshotPolicyUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticSnapshotPolicyUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticSnapshotPolicyUpdateProperties - The updatable properties of the ElasticSnapshotPolicy.
+type ElasticSnapshotPolicyUpdateProperties struct {
+	// Schedule for daily snapshots
+	DailySchedule *ElasticSnapshotPolicyDailySchedule
+
+	// Schedule for hourly snapshots
+	HourlySchedule *ElasticSnapshotPolicyHourlySchedule
+
+	// Schedule for monthly snapshots
+	MonthlySchedule *ElasticSnapshotPolicyMonthlySchedule
+
+	// Configures if the snapshot policy is enabled on the volumes connected to the policy.
+	PolicyStatus *PolicyStatus
+
+	// Schedule for weekly snapshots
+	WeeklySchedule *ElasticSnapshotPolicyWeeklySchedule
 }
 
 // ElasticSnapshotPolicyVolumeList - Elastic Volumes associated with Elastic Snapshot Policy
@@ -2198,12 +2255,12 @@ type NfsUser struct {
 	UserID *int64
 }
 
-// NicInfo - NIC information and list of volumes for which the NIC has the primary mount ip address.
+// NicInfo - NIC information and list of volumes for which the NIC has the primary mount IP Address.
 type NicInfo struct {
 	// Volume resource Ids
 	VolumeResourceIDs []*string
 
-	// READ-ONLY; ipAddress
+	// READ-ONLY; IP Address
 	IPAddress *string
 }
 

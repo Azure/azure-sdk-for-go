@@ -420,7 +420,7 @@ func (client *ElasticSnapshotPoliciesClient) listElasticVolumesHandleResponse(re
 //   - body - The resource properties to be updated.
 //   - options - ElasticSnapshotPoliciesClientBeginUpdateOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.BeginUpdate
 //     method.
-func (client *ElasticSnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicy, options *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientUpdateResponse], error) {
+func (client *ElasticSnapshotPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicyUpdate, options *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*runtime.Poller[ElasticSnapshotPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, snapshotPolicyName, body, options)
 		if err != nil {
@@ -441,7 +441,7 @@ func (client *ElasticSnapshotPoliciesClient) BeginUpdate(ctx context.Context, re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01-preview
-func (client *ElasticSnapshotPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicy, options *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ElasticSnapshotPoliciesClient) update(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicyUpdate, options *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ElasticSnapshotPoliciesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -463,7 +463,7 @@ func (client *ElasticSnapshotPoliciesClient) update(ctx context.Context, resourc
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ElasticSnapshotPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicy, _ *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ElasticSnapshotPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, body ElasticSnapshotPolicyUpdate, _ *ElasticSnapshotPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticSnapshotPolicies/{snapshotPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

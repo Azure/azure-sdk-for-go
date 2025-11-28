@@ -330,8 +330,8 @@ func ExampleElasticSnapshotPoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewElasticSnapshotPoliciesClient().BeginUpdate(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.ElasticSnapshotPolicy{
-		Properties: &armnetapp.ElasticSnapshotPolicyProperties{
+	poller, err := clientFactory.NewElasticSnapshotPoliciesClient().BeginUpdate(ctx, "myRG", "account1", "snapshotPolicyName", armnetapp.ElasticSnapshotPolicyUpdate{
+		Properties: &armnetapp.ElasticSnapshotPolicyUpdateProperties{
 			PolicyStatus: to.Ptr(armnetapp.PolicyStatusEnabled),
 			HourlySchedule: &armnetapp.ElasticSnapshotPolicyHourlySchedule{
 				SnapshotsToKeep: to.Ptr[int32](2),

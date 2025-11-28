@@ -140,7 +140,7 @@ Check out the docs for more information about the methods available in the [`req
 
 If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go test` with this code and the proper environment variables this test would pass and you would be left with a new directory and file. Test recordings are saved to a `recording` directory in the same directory that your test code lives. Running the above test would also create a file `recording/TestCreateTable.json` with the HTTP interactions persisted on disk. Now you can set `AZURE_RECORD_MODE` to "playback" and run `go test` again, the test will have the same output but without reaching the service.
 
-#### example about `management plane`
+#### Example: Management Plane
 
 A simple test for `armchaos` is shown below:
 ##### The first step is to download prepared scripts to generated asset.json in the path and create file utils_test.go

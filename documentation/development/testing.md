@@ -94,7 +94,7 @@ NOTE: the path to the recordings **must** be in or under a directory named `test
 
 ### Writing Tests
 
-#### example about `data plane`
+#### Example: Data Plane
 
 A simple test for `aztables` is shown below:
 

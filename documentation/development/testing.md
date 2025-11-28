@@ -143,7 +143,7 @@ If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go 
 #### example about `management plane`
 
 A simple test for `armchaos` is shown below:
-##### The first step is to download prepared scripts to genrated asset.json in the path and create file utils_test.go
+##### The first step is to download prepared scripts to generated asset.json in the path and create file utils_test.go
 
 1. Run the following PowerShell commands to download necessary scripts:
 

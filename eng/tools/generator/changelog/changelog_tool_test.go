@@ -81,8 +81,7 @@ func TestGetAllVersionTags(t *testing.T) {
 	assert.Contains(t, tags, expected)
 	assert.GreaterOrEqual(t, len(tags), 69)
 
-	tags, err = GetAllVersionTags("sdk/resourcemanager/network/armnetwork", sdkRepo)
-	if err != nil {
+	if tags, err = GetAllVersionTags("sdk/resourcemanager/network/armnetwork", sdkRepo); err != nil {
 		t.Fatal(err)
 	}
 	expected = "refs/tags/sdk/resourcemanager/network/armnetwork/v0.1.0"

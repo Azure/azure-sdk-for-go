@@ -262,8 +262,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			if info.ReleaseDate != nil {
 				c.flags.ReleaseDate = info.ReleaseDate.Format("2006-01-02")
 			}
-			err = c.generate(sdkRepo, specCommitHash)
-			if err != nil {
+			if err = c.generate(sdkRepo, specCommitHash); err != nil {
 				generateErr = append(generateErr, err)
 				continue
 			}
@@ -306,8 +305,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			if packageInfo.ReleaseDate != nil {
 				c.flags.ReleaseDate = packageInfo.ReleaseDate.Format("2006-01-02")
 			}
-			err = c.generate(sdkRepo, specCommitHash)
-			if err != nil {
+			if err = c.generate(sdkRepo, specCommitHash); err != nil {
 				generateErr = append(generateErr, err)
 				continue
 			}
@@ -358,14 +356,12 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 
 			log.Printf("Leave a comment in %s...\n", issue)
 			issueNumber := strings.Split(issue.requestLink, "/")
-			err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token)
-			if err != nil {
+			if err = common.ExecuteAddIssueComment(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], fmt.Sprintf(confirmComment, pullRequestUrl), c.flags.Token); err != nil {
 				return err
 			}
 
 			log.Printf("Add Labels...\n")
-			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready", issue.pullRequestLabel})
-			if err != nil {
+			if err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready", issue.pullRequestLabel}); err != nil {
 				return err
 			}
 		}

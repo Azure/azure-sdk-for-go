@@ -165,8 +165,7 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 		}
 
 		// Parse the provided version
-		newVersion, err = semver.NewVersion(sdkVersion)
-		if err != nil {
+		if newVersion, err = semver.NewVersion(sdkVersion); err != nil {
 			result.Success = false
 			result.Message = fmt.Sprintf("Invalid version format '%s': %v", sdkVersion, err)
 			return result, nil
@@ -222,8 +221,7 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 		log.Printf("Updating all version files...")
 	}
 
-	err = version.UpdateAllVersionFiles(packagePath, newVersion, sdkRepo)
-	if err != nil {
+	if err = version.UpdateAllVersionFiles(packagePath, newVersion, sdkRepo); err != nil {
 		result.Success = false
 		result.Message = fmt.Sprintf("Failed to update version files: %v", err)
 		return result, nil

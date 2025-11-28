@@ -279,7 +279,7 @@ func zipDirectory(srcFolder, dstZip string) error {
 	}
 	w := zip.NewWriter(outFile)
 	srcFolder = strings.TrimSuffix(srcFolder, string(os.PathSeparator))
-	err = filepath.Walk(srcFolder, func(path string, info fs.FileInfo, err error) error {
+	if err = filepath.Walk(srcFolder, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -288,8 +288,7 @@ func zipDirectory(srcFolder, dstZip string) error {
 			return err
 		}
 		header.Method = zip.Deflate
-		header.Name, err = filepath.Rel(filepath.Dir(srcFolder), path)
-		if err != nil {
+		if header.Name, err = filepath.Rel(filepath.Dir(srcFolder), path); err != nil {
 			return err
 		}
 		if info.IsDir() {
@@ -306,21 +305,17 @@ func zipDirectory(srcFolder, dstZip string) error {
 		if err != nil {
 			return err
 		}
-		_, err = io.Copy(hw, f)
-		if err != nil {
+		if _, err = io.Copy(hw, f); err != nil {
 			return err
 		}
 		return nil
-	})
-	if err != nil {
+	}); err != nil {
 		return err
 	}
-	err = w.Close()
-	if err != nil {
+	if err = w.Close(); err != nil {
 		return err
 	}
-	err = outFile.Close()
-	if err != nil {
+	if err = outFile.Close(); err != nil {
 		return err
 	}
 	return nil

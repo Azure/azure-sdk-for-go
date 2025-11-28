@@ -183,8 +183,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 		generator = &SwaggerUpdateGenerator{SwaggerCommonGenerator: commonGenerator}
 	}
 
-	err = generator.PreGenerate(generateParam)
-	if err != nil {
+	if err = generator.PreGenerate(generateParam); err != nil {
 		return nil, err
 	}
 
@@ -324,6 +323,16 @@ func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam) erro
 	return nil
 }
 
+func (t *SwaggerOnBoardGenerator) GenChangeLog(generateParam *GenerateParam) error {
+	if err := t.SwaggerCommonGenerator.GenChangeLog(generateParam); err != nil {
+		return err
+	}
+	if err := changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate); err != nil {
+		return err
+	}
+	return nil
+}
+
 func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
 	var err error
 	var prl utils.PullRequestLabel
@@ -331,11 +340,6 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	packagePath := t.PackagePath
 	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
 	if err = ReplaceNewClientNamePlaceholder(packagePath, *t.ChangelogResult.NewExports); err != nil {
-		return nil, err
-	}
-
-	err = changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate)
-	if err != nil {
 		return nil, err
 	}
 
@@ -373,8 +377,7 @@ func (t *SwaggerUpdateGenerator) PreGenerate(generateParam *GenerateParam) error
 	if generateParam.ForceStableVersion {
 		*override = true
 	}
-	t.IsCurrentPreview, err = version.IsCurrentPreviewVersion(packagePath, *t.SDKRepo, override)
-	if err != nil {
+	if t.IsCurrentPreview, err = version.IsCurrentPreviewVersion(packagePath, *t.SDKRepo, override); err != nil {
 		return err
 	}
 
@@ -401,8 +404,7 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*G
 	}
 
 	log.Printf("Update all version files...")
-	err = version.UpdateAllVersionFiles(packagePath, newVersion, *t.SDKRepo)
-	if err != nil {
+	if err = version.UpdateAllVersionFiles(packagePath, newVersion, *t.SDKRepo); err != nil {
 		return nil, err
 	}
 
@@ -445,8 +447,7 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 		if err != nil {
 			return nil, err
 		}
-		moduleRelativePath, err = filepath.Rel(ctx.SDKPath, val)
-		if err != nil {
+		if moduleRelativePath, err = filepath.Rel(ctx.SDKPath, val); err != nil {
 			return nil, err
 		}
 		moduleRelativePath = filepath.ToSlash(moduleRelativePath)
@@ -501,18 +502,15 @@ func (ctx *GenerateContext) GenerateForSingleTypeSpec(generateParam *GeneratePar
 		generator = &TypeSpecUpdateGenerator{TypeSpecCommonGenerator: commonGenerator}
 	}
 
-	err = generator.PreGenerate(generateParam)
-	if err != nil {
+	if err = generator.PreGenerate(generateParam); err != nil {
 		return nil, err
 	}
 
-	err = generator.Generate(generateParam)
-	if err != nil {
+	if err = generator.Generate(generateParam); err != nil {
 		return nil, err
 	}
 
-	err = generator.GenChangeLog(generateParam)
-	if err != nil {
+	if err = generator.GenChangeLog(generateParam); err != nil {
 		return nil, err
 	}
 
@@ -526,7 +524,7 @@ func (t *TypeSpecCommonGenerator) PreGenerate(generateParam *GenerateParam) erro
 func (t *TypeSpecCommonGenerator) GenChangeLog(generateParam *GenerateParam) error {
 	log.Printf("Start to generate changelog for package...")
 	var err error
-	t.ChangelogResult, err = changelog.GenerateChangelog(t.PackagePath, *t.SDKRepo, t.IsCurrentPreview)
+	t.ChangelogResult, err = changelog.GenerateChangelog(t.ModulePath, *t.SDKRepo, t.IsCurrentPreview)
 	if err != nil {
 		return err
 	}
@@ -636,8 +634,7 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (
 		log.Printf("Generate examples...")
 	}
 
-	err = changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate)
-	if err != nil {
+	if err = changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate); err != nil {
 		return nil, err
 	}
 
@@ -707,8 +704,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	}
 
 	log.Printf("Update all version files...")
-	err = version.UpdateAllVersionFiles(packagePath, newVersion, *t.SDKRepo)
-	if err != nil {
+	if err = version.UpdateAllVersionFiles(packagePath, newVersion, *t.SDKRepo); err != nil {
 		return nil, err
 	}
 

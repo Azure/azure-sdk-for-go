@@ -374,8 +374,7 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 				if err != nil {
 					return nil, "", err
 				}
-				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
-				if err != nil {
+				if newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1)); err != nil {
 					return nil, "", err
 				}
 				if changelog.HasBreakingChanges() {
@@ -391,11 +390,10 @@ func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string,
 					newVersion = version.IncMinor()
 					prl = utils.BetaLabel
 				} else {
-					newVersion = version.IncPatch()
-					prl = utils.BetaLabel
-				}
-				newVersion, err = newVersion.SetPrerelease("beta.1")
-				if err != nil {
+				newVersion = version.IncPatch()
+				prl = utils.BetaLabel
+			}
+				if newVersion, err = newVersion.SetPrerelease("beta.1"); err != nil {
 					return nil, "", err
 				}
 			}

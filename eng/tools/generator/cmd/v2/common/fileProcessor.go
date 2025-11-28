@@ -137,8 +137,7 @@ func CleanSDKGeneratedFiles(path string) error {
 			}
 
 			if strings.Contains(string(b), generated_file_scan_string) {
-				err = os.Remove(path)
-				if err != nil {
+				if err = os.Remove(path); err != nil {
 					return err
 				}
 			}

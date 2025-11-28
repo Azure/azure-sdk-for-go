@@ -136,34 +136,34 @@ func getExportsFromTag(moduleRelativePath, tag string) (*exports.Content, error)
 	// Extract tag name from ref/tags/ prefix if present
 	tagName := strings.TrimPrefix(tag, "refs/tags/")
 
-	// Download and extract only the packagePath folder
-	extractedPackagePath, err := downloadAndExtractPackagePath(tagName, moduleRelativePath)
+	// Download and extract only the module folder
+	extractedPath, err := downloadAndExtractCode(tagName, moduleRelativePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to download and extract package path: %v", err)
+		return nil, fmt.Errorf("failed to download and extract code: %v", err)
 	}
-	defer os.RemoveAll(filepath.Dir(extractedPackagePath)) // Clean up temp directory
+	defer os.RemoveAll(filepath.Dir(extractedPath)) // Clean up temp directory
 
-	// Check if the package path exists in the extracted source
-	if _, err := os.Stat(extractedPackagePath); os.IsNotExist(err) {
-		log.Printf("Package path '%s' does not exist in tag '%s'", moduleRelativePath, tagName)
+	// Check if the module path exists in the extracted source
+	if _, err := os.Stat(extractedPath); os.IsNotExist(err) {
+		log.Printf("Module path '%s' does not exist in tag '%s'", moduleRelativePath, tagName)
 		return &exports.Content{}, nil
 	}
 
-	// Get exports from the extracted package path
-	result, err := exports.Get(extractedPackagePath)
-	// bypass the error if the package doesn't contain any exports, return empty content
+	// Get exports from the extracted module path
+	result, err := exports.Get(extractedPath)
+	// bypass the error if the module doesn't contain any exports, return empty content
 	if err != nil && strings.Contains(err.Error(), "doesn't contain any exports") {
 		return &exports.Content{}, nil
 	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to get exports from extracted package: %v", err)
+		return nil, fmt.Errorf("failed to get exports from extracted code: %v", err)
 	}
 
 	return &result, nil
 }
 
-// downloadAndExtractPackagePath downloads the source code for a specific tag and extracts only the packagePath folder
-func downloadAndExtractPackagePath(tagName, packageRelativePath string) (string, error) {
+// downloadAndExtractCode downloads the source code for a specific tag and extracts only the moduleRelativePath folder
+func downloadAndExtractCode(tagName, moduleRelativePath string) (string, error) {
 	// Create a temporary directory
 	tempDir, err := os.MkdirTemp("", "azure-sdk-for-go-*")
 	if err != nil {
@@ -201,28 +201,28 @@ func downloadAndExtractPackagePath(tagName, packageRelativePath string) (string,
 		return "", fmt.Errorf("failed to save zip file: %v", err)
 	}
 
-	// Extract only the packagePath folder from the zip file
-	extractedPackagePath, err := extractPackagePathFromZip(zipFilePath, tempDir, packageRelativePath)
+	// Extract only the moduleRelativePath folder from the zip file
+	extractedPath, err := extractCodeFromZip(zipFilePath, tempDir, moduleRelativePath)
 	if err != nil {
 		os.RemoveAll(tempDir)
-		return "", fmt.Errorf("failed to extract package path from zip file: %v", err)
+		return "", fmt.Errorf("failed to extract code from zip file: %v", err)
 	}
 
 	// Remove the zip file after extraction
 	os.Remove(zipFilePath)
 
-	return extractedPackagePath, nil
+	return extractedPath, nil
 }
 
-// extractPackagePathFromZip extracts only the specified packagePath from the zip file
-func extractPackagePathFromZip(src, dest, packageRelativePath string) (string, error) {
+// extractCodeFromZip extracts only the specified moduleRelativePath from the zip file
+func extractCodeFromZip(src, dest, moduleRelativePath string) (string, error) {
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return "", err
 	}
 	defer r.Close()
 
-	var extractedPackagePath string
+	var extractedPath string
 	repoPrefix := ""
 
 	// First pass: find the repository prefix (e.g., "azure-sdk-for-go-v1.2.3/")
@@ -241,29 +241,29 @@ func extractPackagePathFromZip(src, dest, packageRelativePath string) (string, e
 	}
 
 	// Target path within the zip file (normalize path separators to forward slashes for zip compatibility)
-	normalizedPackagePath := strings.ReplaceAll(packageRelativePath, "\\", "/")
-	targetPathInZip := repoPrefix + normalizedPackagePath + "/"
+	normalizedPath := strings.ReplaceAll(moduleRelativePath, "\\", "/")
+	targetPathInZip := repoPrefix + normalizedPath + "/"
 
-	// Create destination directory for the package
-	packageDestDir := filepath.Join(dest, packageRelativePath)
-	os.MkdirAll(packageDestDir, 0755)
-	extractedPackagePath = packageDestDir
+	// Create destination directory for the code
+	codeDestDir := filepath.Join(dest, moduleRelativePath)
+	os.MkdirAll(codeDestDir, 0755)
+	extractedPath = codeDestDir
 
-	// Second pass: extract only files under the packagePath
+	// Second pass: extract only files under the module path
 	for _, f := range r.File {
-		// Check if this file is within our target package path
+		// Check if this file is within our target module path
 		if !strings.HasPrefix(f.Name, targetPathInZip) {
 			continue
 		}
 
-		// Remove the repo prefix and package path prefix to get relative path within package
+		// Remove the repo prefix and module path prefix to get relative path within module
 		relativePath := strings.TrimPrefix(f.Name, targetPathInZip)
 		if relativePath == "" {
 			continue // Skip the directory itself
 		}
 
 		// Create the file path in destination
-		destPath := filepath.Join(packageDestDir, relativePath)
+		destPath := filepath.Join(codeDestDir, relativePath)
 
 		// Check for ZipSlip vulnerability
 		if !strings.HasPrefix(destPath, filepath.Clean(dest)+string(os.PathSeparator)) {
@@ -302,22 +302,22 @@ func extractPackagePathFromZip(src, dest, packageRelativePath string) (string, e
 		}
 	}
 
-	return extractedPackagePath, nil
+	return extractedPath, nil
 }
 
 // getChangelog generates the changelog report with the given two Contents
 func getChangelog(lhs, rhs *exports.Content) (*Changelog, error) {
 	if lhs == nil && rhs == nil {
-		return nil, fmt.Errorf("this package does not exist even after the generation, this should never happen")
+		return nil, fmt.Errorf("nothing exists after the generation, this should never happen")
 	}
 	if lhs == nil {
-		// the package does not exist before the generation: this is a new package
+		// the module does not exist before the generation: this is a new module
 		return &Changelog{
 			NewPackage: true,
 		}, nil
 	}
 	if rhs == nil {
-		// the package no longer exists after the generation: this package was removed
+		// the module no longer exists after the generation: this module was removed
 		return &Changelog{
 			RemovedPackage: true,
 		}, nil
@@ -329,7 +329,7 @@ func getChangelog(lhs, rhs *exports.Content) (*Changelog, error) {
 	}, nil
 }
 
-// DetermineModuleStatus determines whether a package is new or existing
+// DetermineModuleStatus determines whether a module is new or existing
 func DetermineModuleStatus(modulePath string, sdkRepo repo.SDKRepository) (utils.PackageStatus, error) {
 	changelogPath := filepath.Join(modulePath, utils.ChangelogFileName)
 
@@ -338,7 +338,7 @@ func DetermineModuleStatus(modulePath string, sdkRepo repo.SDKRepository) (utils
 		return utils.PackageStatusNew, nil
 	}
 
-	// Get all version tags for this package
+	// Get all version tags for this module
 	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
 	if err != nil {
 		return utils.PackageStatusNew, err
@@ -410,7 +410,7 @@ func getPreviousVersionAndExports(modulePath string, sdkRepo repo.SDKRepository,
 		return nil, "", err
 	}
 
-	// New package
+	// New module
 	if len(tags) == 0 {
 		return nil, "", nil
 	}
@@ -496,15 +496,14 @@ func AddChangelogToFileWithReplacement(changelog *Changelog, version *semver.Ver
 	// If we didn't find the version, all content after "# Release History" has been added
 	finalChangelog := strings.Join(newLines, "\n")
 
-	err = os.WriteFile(path, []byte(finalChangelog), 0644)
-	if err != nil {
+	if err = os.WriteFile(path, []byte(finalChangelog), 0644); err != nil {
 		return "", err
 	}
 
 	return additionalChangelog, nil
 }
 
-// CreateNewChangelog creates a new changelog file for a new package
+// CreateNewChangelog creates a new changelog file for a new module
 func CreateNewChangelog(modulePath string, sdkRepo repo.SDKRepository, packageVersion, releaseDate string) error {
 	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
 	if err != nil {
@@ -519,8 +518,7 @@ func CreateNewChangelog(modulePath string, sdkRepo repo.SDKRepository, packageVe
 
 	// Write the changelog file
 	changelogPath := filepath.Join(modulePath, utils.ChangelogFileName)
-	err = os.WriteFile(changelogPath, []byte(content), 0644)
-	if err != nil {
+	if err = os.WriteFile(changelogPath, []byte(content), 0644); err != nil {
 		return fmt.Errorf("failed to write changelog file: %v", err)
 	}
 

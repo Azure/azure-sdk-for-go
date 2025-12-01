@@ -1,16 +1,13 @@
 # Release History
 
-## 0.4.0 (unreleased)
-
-### Features Added
-
-- Support detecting parameter renaming as breaking change in changelog generation.
+## 0.4.0 (2025-12-01)
 
 ### Features Added
 
 - Add `changelog` command to generate and update changelog content for SDK packages based on code changes.
 - Add `version` command to calculate and update version numbers across all version-related files.
 - Add comprehensive helper utilities for package status determination, path resolution, and version management.
+- Support detecting parameter renaming as breaking change in changelog generation.
 
 ### Breaking Changes
 

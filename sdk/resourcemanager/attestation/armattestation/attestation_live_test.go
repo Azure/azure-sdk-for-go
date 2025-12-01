@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -24,15 +24,15 @@ import (
 type AttestationTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	armEndpoint       string
-	attestationId     string
-	providerName      string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	armEndpoint		string
+	attestationId		string
+	providerName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *AttestationTestSuite) SetupSuite() {
@@ -109,9 +109,9 @@ func (testsuite *AttestationTestSuite) TestAttestationProviders() {
 	fmt.Println("Call operation: AttestationProviders_Update")
 	_, err = providersClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.providerName, armattestation.ServicePatchParams{
 		Tags: map[string]*string{
-			"Property1": to.Ptr("Value1"),
-			"Property2": to.Ptr("Value2"),
-			"Property3": to.Ptr("Value3"),
+			"Property1":	to.Ptr("Value1"),
+			"Property2":	to.Ptr("Value2"),
+			"Property3":	to.Ptr("Value3"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -124,78 +124,78 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 	var err error
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]any{
 			"attestationId": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.attestationId,
+				"type":		"string",
+				"defaultValue":	testsuite.attestationId,
 			},
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"networkInterfaceName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epattestation-nic",
+				"type":		"string",
+				"defaultValue":	"epattestation-nic",
 			},
 			"privateEndpointName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epattestation",
+				"type":		"string",
+				"defaultValue":	"epattestation",
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epattestationvnet",
+				"type":		"string",
+				"defaultValue":	"epattestationvnet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []any{
 						map[string]any{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]any{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []any{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]any{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []any{},
+					"virtualNetworkPeerings":	[]any{},
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('networkInterfaceName')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('networkInterfaceName')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"dnsSettings": map[string]any{
 						"dnsServers": []any{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []any{
 						map[string]any{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]any{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]any{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -205,29 +205,29 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('privateEndpointName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"customDnsConfigs":                    []any{},
-					"manualPrivateLinkServiceConnections": []any{},
+					"customDnsConfigs":			[]any{},
+					"manualPrivateLinkServiceConnections":	[]any{},
 					"privateLinkServiceConnections": []any{
 						map[string]any{
-							"name": "[parameters('privateEndpointName')]",
+							"name":	"[parameters('privateEndpointName')]",
 							"properties": map[string]any{
 								"groupIds": []any{
 									"standard",
 								},
 								"privateLinkServiceConnectionState": map[string]any{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('attestationId')]",
+								"privateLinkServiceId":	"[parameters('attestationId')]",
 							},
 						},
 					},
@@ -237,26 +237,26 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
-				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('virtualNetworksName'), '/default')]",
+				"type":		"Microsoft.Network/virtualNetworks/subnets",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
-					"addressPrefix":                     "10.0.0.0/24",
-					"delegations":                       []any{},
-					"privateEndpointNetworkPolicies":    "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
+					"addressPrefix":			"10.0.0.0/24",
+					"delegations":				[]any{},
+					"privateEndpointNetworkPolicies":	"Disabled",
+					"privateLinkServiceNetworkPolicies":	"Enabled",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -280,11 +280,11 @@ func (testsuite *AttestationTestSuite) TestPrivateEndpointConnections() {
 	// From step PrivateEndpointConnections_Create
 	fmt.Println("Call operation: PrivateEndpointConnections_Create")
 	_, err = privateEndpointConnectionsClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.providerName, privateEndpointConnectionName, armattestation.PrivateEndpointConnection{
-		ID: to.Ptr(privateEndpointConnectionId),
+		ID:	to.Ptr(privateEndpointConnectionId),
 		Properties: &armattestation.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armattestation.PrivateLinkServiceConnectionState{
-				Description: to.Ptr("rejection connection"),
-				Status:      to.Ptr(armattestation.PrivateEndpointServiceConnectionStatusRejected),
+				Description:	to.Ptr("rejection connection"),
+				Status:		to.Ptr(armattestation.PrivateEndpointServiceConnectionStatusRejected),
 			},
 		},
 	}, nil)

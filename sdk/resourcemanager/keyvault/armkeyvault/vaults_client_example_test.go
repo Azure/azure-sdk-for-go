@@ -207,7 +207,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// 			},
 	// 			PrivateEndpointConnections: []*armkeyvault.PrivateEndpointConnectionItem{
 	// 				{
-	// 					Etag: &azcore.ETag(""),
+	// 					Etag: to.Ptr(azcore.ETag("")),
 	// 					ID: to.Ptr(""),
 	// 					Properties: &armkeyvault.PrivateEndpointConnectionProperties{
 	// 						PrivateEndpoint: &armkeyvault.PrivateEndpoint{
@@ -517,7 +517,7 @@ func ExampleVaultsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{
+	pager := clientFactory.NewVaultsClient().NewListPager(to.Ptr("resourceType eq 'Microsoft.KeyVault/vaults'"), to.Ptr("2015-11-01"), &armkeyvault.VaultsClientListOptions{
 		Top: to.Ptr[int32](1)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)

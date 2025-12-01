@@ -58,7 +58,8 @@ type IntegrationFabricsClientCreateResponse struct {
 
 // IntegrationFabricsClientDeleteResponse contains the response from method IntegrationFabricsClient.BeginDelete.
 type IntegrationFabricsClientDeleteResponse struct {
-	// placeholder for future response values
+	// The integration fabric resource type.
+	IntegrationFabric
 }
 
 // IntegrationFabricsClientGetResponse contains the response from method IntegrationFabricsClient.Get.

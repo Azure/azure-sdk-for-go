@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability
 
 go 1.23.0
 

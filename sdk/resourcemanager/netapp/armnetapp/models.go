@@ -922,12 +922,12 @@ type NetworkSiblingSet struct {
 	ProvisioningState *NetworkSiblingSetProvisioningState
 }
 
-// NicInfo - NIC information and list of volumes for which the NIC has the primary mount ip address.
+// NicInfo - NIC information and list of volumes for which the NIC has the primary mount IP Address.
 type NicInfo struct {
 	// Volume resource Ids
 	VolumeResourceIDs []*string
 
-	// READ-ONLY; ipAddress
+	// READ-ONLY; IP Address
 	IPAddress *string
 }
 

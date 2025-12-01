@@ -153,7 +153,7 @@ func TestParamNameToUnderscoreFilter(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}

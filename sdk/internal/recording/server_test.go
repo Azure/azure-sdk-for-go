@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -29,7 +26,7 @@ func TestServer(t *testing.T) {
 
 func (s *serverTests) SetupSuite() {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(proxyManualStartEnv, "false")
+	require.NoError(s.T(), os.Setenv(proxyManualStartEnv, "false"))
 }
 
 func (s *serverTests) TestProxyDownloadFile() {
@@ -41,11 +38,13 @@ func (s *serverTests) TestProxyDownloadFile() {
 func (s *serverTests) TestExtractTestProxyZip() {
 	zipFile, err := os.CreateTemp("", "test-extract-*.zip")
 	require.NoError(s.T(), err)
-	defer zipFile.Close()
+	defer func() {
+		require.NoError(s.T(), zipFile.Close())
+	}()
 
 	// Create a new zip archive
 	zipWriter := zip.NewWriter(zipFile)
-	defer zipWriter.Close()
+	require.NoError(s.T(), zipWriter.Close())
 }
 
 func (s *serverTests) TestEnsureTestProxyInstalled() {
@@ -113,7 +112,9 @@ func (s *serverTests) TestExtractInsecurePath() {
 		p := filepath.Join(td, "test.zip")
 		f, err := os.Create(p)
 		require.NoError(t, err)
-		defer f.Close()
+		defer func() {
+			require.NoError(s.T(), f.Close())
+		}()
 		zw := zip.NewWriter(f)
 		w, err := zw.Create("../file")
 		require.NoError(t, err)

@@ -2,6 +2,19 @@
 
 ## 0.3.2 (unreleased)
 
+### Features Added
+
+- Add `changelog` command to generate and update changelog content for SDK packages based on code changes.
+- Add `version` command to calculate and update version numbers across all version-related files.
+- Add comprehensive helper utilities for package status determination, path resolution, and version management.
+
+### Breaking Changes
+
+- Split version calculation and changelog generation logic into separate packages (`changelog` and `version`).
+- Move constants and enums from `cmd/v2/common` to shared `utils` package for better reusability.
+- Refactor `GenerateForSingleRPNamespace` and `GenerateForSingleTypeSpec` to use status-based generator selection.
+- Remove template files for CHANGELOG.md and go.mod (now generated programmatically).
+
 ### Other Changes
 
 - Upgrade Go version to 1.24.0 for dependency management.

@@ -35,18 +35,6 @@ func (s *serverTests) TestProxyDownloadFile() {
 	require.NotEmpty(s.T(), file)
 }
 
-func (s *serverTests) TestExtractTestProxyZip() {
-	zipFile, err := os.CreateTemp("", "test-extract-*.zip")
-	require.NoError(s.T(), err)
-	defer func() {
-		require.NoError(s.T(), zipFile.Close())
-	}()
-
-	// Create a new zip archive
-	zipWriter := zip.NewWriter(zipFile)
-	require.NoError(s.T(), zipWriter.Close())
-}
-
 func (s *serverTests) TestEnsureTestProxyInstalled() {
 	cwd, err := os.Getwd()
 	require.NoError(s.T(), err)

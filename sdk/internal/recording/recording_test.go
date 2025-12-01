@@ -193,9 +193,8 @@ func (s *recordingTests) TestStopRecordingNoStart() {
 	err := Stop(s.T(), nil)
 	require.Error(err)
 
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	_, err = os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.Error(err)
-	require.Nil(jsonFile)
 }
 
 func (s *recordingTests) TestLiveModeOnly() {

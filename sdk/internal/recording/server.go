@@ -163,11 +163,9 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 			if err != nil {
 				return err
 			}
-			defer func() {
-				_ = file.Close()
-			}()
-
-			if _, err := io.Copy(file, tarReader); err != nil {
+			_, err = io.Copy(file, tarReader)
+			_ = file.Close()
+			if err != nil {
 				return err
 			}
 		default:

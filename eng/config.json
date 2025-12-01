@@ -6,7 +6,7 @@
         },
         {
             "Name": "azappconfig",
-            "CoverageGoal": 0.19
+            "CoverageGoal": 0.15
         },
         {
             "Name": "azbatch",

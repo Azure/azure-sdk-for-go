@@ -15,7 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managementgroups/armmanagementgroups/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/CheckManagementGroupNameAvailability.json
@@ -30,8 +30,8 @@ func ExampleAPIClient_CheckNameAvailability() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewAPIClient().CheckNameAvailability(ctx, armmanagementgroups.CheckNameAvailabilityRequest{
-		Name: to.Ptr("nameTocheck"),
-		Type: to.Ptr("Microsoft.Management/managementGroups"),
+		Name:	to.Ptr("nameTocheck"),
+		Type:	to.Ptr("Microsoft.Management/managementGroups"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

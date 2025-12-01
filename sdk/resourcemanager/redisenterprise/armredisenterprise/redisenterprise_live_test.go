@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -25,16 +25,16 @@ import (
 type RedisenterpriseTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	armEndpoint       string
-	clusterName       string
-	databaseName      string
-	redisEnterpriseId string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	armEndpoint		string
+	clusterName		string
+	databaseName		string
+	redisEnterpriseId	string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *RedisenterpriseTestSuite) SetupSuite() {
@@ -72,7 +72,7 @@ func (testsuite *RedisenterpriseTestSuite) Prepare() {
 	client, err := armredisenterprise.NewClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	clientCreateResponsePoller, err := client.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, armredisenterprise.Cluster{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -83,8 +83,8 @@ func (testsuite *RedisenterpriseTestSuite) Prepare() {
 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 		},
 		SKU: &armredisenterprise.SKU{
-			Name:     to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-			Capacity: to.Ptr[int32](3),
+			Name:		to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
+			Capacity:	to.Ptr[int32](3),
 		},
 		Zones: []*string{
 			to.Ptr("1"),
@@ -148,12 +148,12 @@ func (testsuite *RedisenterpriseTestSuite) TestDatabases() {
 	testsuite.Require().NoError(err)
 	databasesClientCreateResponsePoller, err := databasesClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, testsuite.databaseName, armredisenterprise.Database{
 		Properties: &armredisenterprise.DatabaseCreateProperties{
-			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
-			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
-			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+			ClientProtocol:		to.Ptr(armredisenterprise.ProtocolEncrypted),
+			ClusteringPolicy:	to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
+			EvictionPolicy:		to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
 			Persistence: &armredisenterprise.Persistence{
-				AofEnabled: to.Ptr(false),
-				RdbEnabled: to.Ptr(false),
+				AofEnabled:	to.Ptr(false),
+				RdbEnabled:	to.Ptr(false),
 			},
 		},
 	}, nil)
@@ -213,78 +213,78 @@ func (testsuite *RedisenterpriseTestSuite) TestPrivateEndpointConnections() {
 	var err error
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"networkInterfaceName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epredisenter-nic",
+				"type":		"string",
+				"defaultValue":	"epredisenter-nic",
 			},
 			"privateEndpointName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epredisenter",
+				"type":		"string",
+				"defaultValue":	"epredisenter",
 			},
 			"redisEnterpriseId": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.redisEnterpriseId,
+				"type":		"string",
+				"defaultValue":	testsuite.redisEnterpriseId,
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epredisentervnet",
+				"type":		"string",
+				"defaultValue":	"epredisentervnet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []any{
 						map[string]any{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]any{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []any{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]any{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []any{},
+					"virtualNetworkPeerings":	[]any{},
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('networkInterfaceName')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('networkInterfaceName')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"dnsSettings": map[string]any{
 						"dnsServers": []any{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []any{
 						map[string]any{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]any{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]any{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -294,29 +294,29 @@ func (testsuite *RedisenterpriseTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('privateEndpointName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"customDnsConfigs":                    []any{},
-					"manualPrivateLinkServiceConnections": []any{},
+					"customDnsConfigs":			[]any{},
+					"manualPrivateLinkServiceConnections":	[]any{},
 					"privateLinkServiceConnections": []any{
 						map[string]any{
-							"name": "[parameters('privateEndpointName')]",
+							"name":	"[parameters('privateEndpointName')]",
 							"properties": map[string]any{
 								"groupIds": []any{
 									"redisEnterprise",
 								},
 								"privateLinkServiceConnectionState": map[string]any{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('redisEnterpriseId')]",
+								"privateLinkServiceId":	"[parameters('redisEnterpriseId')]",
 							},
 						},
 					},
@@ -326,26 +326,26 @@ func (testsuite *RedisenterpriseTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
-				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('virtualNetworksName'), '/default')]",
+				"type":		"Microsoft.Network/virtualNetworks/subnets",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
-					"addressPrefix":                     "10.0.0.0/24",
-					"delegations":                       []any{},
-					"privateEndpointNetworkPolicies":    "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
+					"addressPrefix":			"10.0.0.0/24",
+					"delegations":				[]any{},
+					"privateEndpointNetworkPolicies":	"Disabled",
+					"privateLinkServiceNetworkPolicies":	"Enabled",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -369,8 +369,8 @@ func (testsuite *RedisenterpriseTestSuite) TestPrivateEndpointConnections() {
 	privateEndpointConnectionsClientPutResponsePoller, err := privateEndpointConnectionsClient.BeginPut(testsuite.ctx, testsuite.resourceGroupName, testsuite.clusterName, privateEndpointConnectionName, armredisenterprise.PrivateEndpointConnection{
 		Properties: &armredisenterprise.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armredisenterprise.PrivateLinkServiceConnectionState{
-				Description: to.Ptr("Auto-Approved"),
-				Status:      to.Ptr(armredisenterprise.PrivateEndpointServiceConnectionStatusRejected),
+				Description:	to.Ptr("Auto-Approved"),
+				Status:		to.Ptr(armredisenterprise.PrivateEndpointServiceConnectionStatusRejected),
 			},
 		},
 	}, nil)

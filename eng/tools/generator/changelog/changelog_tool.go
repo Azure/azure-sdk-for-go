@@ -388,7 +388,8 @@ func GenerateChangelog(modulePath string, sdkRepo repo.SDKRepository, isCurrentP
 		LROFilter,
 		PageableFilter,
 		InterfaceToAnyFilter,
-		TypeToAnyFilter)
+		TypeToAnyFilter,
+		ParamNameToUnderscoreFilter)
 
 	return ChangelogResult{
 		ChangelogData:   changelogData,

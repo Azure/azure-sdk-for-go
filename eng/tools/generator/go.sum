@@ -1,7 +1,7 @@
 dario.cat/mergo v1.0.2 h1:85+piFYR1tMbRrLcDwR18y4UKJ3aH1Tbzi24VRW1TK8=
 dario.cat/mergo v1.0.2/go.mod h1:E/hbnu0NxMFBjpMIE34DRGLWqDy0g5FuKDhCb31ngxA=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20250721044046-7bf8728236e5 h1:lb67a/NZW9eEbisldsJDwaMenbgprjNuclWnstUzU8U=
-github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20250721044046-7bf8728236e5/go.mod h1:1wiEmZuPMe5xsZ5BBhoHXpa1Qatbjwp+ETnMY/PbP84=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20251121232512-b13894656d2c h1:GuetXZozb2cz4uHAVSNsQezeGE34tFjHDXLQSOLrsYI=
+github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.0.0-20251121232512-b13894656d2c/go.mod h1:1wiEmZuPMe5xsZ5BBhoHXpa1Qatbjwp+ETnMY/PbP84=
 github.com/Masterminds/semver v1.5.0 h1:H65muMkzWKEuNDnfl9d70GUjFniHKHRbFPGBuZ3QEww=
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/Microsoft/go-winio v0.5.2/go.mod h1:WpS1mjBmmwHBEWmogvA2mj8546UReBk4v8QkMxJ6pZY=

@@ -6,5 +6,5 @@ package armdevopsinfrastructure
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devopsinfrastructure/armdevopsinfrastructure"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v1.0.0"
 )

@@ -22,7 +22,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", armdashboard.PrivateEndpointConnection{}, &armdashboard.PrivateEndpointConnectionsClientBeginApproveOptions{})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

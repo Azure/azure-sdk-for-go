@@ -42,25 +42,21 @@ func ParseTypeSpecConfig(tspconfigPath string) (*TypeSpecConfig, error) {
 			return nil, err
 		}
 		defer resp.Body.Close()
-		data, err = io.ReadAll(resp.Body)
-		if err != nil {
+		if data, err = io.ReadAll(resp.Body); err != nil {
 			return nil, err
 		}
 	} else {
 		// local path
-		data, err = os.ReadFile(tspconfigPath)
-		if err != nil {
+		if data, err = os.ReadFile(tspconfigPath); err != nil {
 			return nil, err
 		}
 	}
 
-	err = yaml.Unmarshal(data, &(tspConfig.TypeSpecProjectSchema))
-	if err != nil {
+	if err = yaml.Unmarshal(data, &(tspConfig.TypeSpecProjectSchema)); err != nil {
 		return nil, err
 	}
 
-	_, err = tspConfig.ExistEmitOption()
-	if err != nil {
+	if _, err = tspConfig.ExistEmitOption(); err != nil {
 		return nil, err
 	}
 

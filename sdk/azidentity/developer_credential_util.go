@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -80,7 +77,7 @@ func unavailableIfInDAC(err error, inDefaultChain bool) error {
 // validScope is for credentials authenticating via external tools. The authority validates scopes for all other credentials.
 func validScope(scope string) bool {
 	for _, r := range scope {
-		if !(alphanumeric(r) || r == '.' || r == '-' || r == '_' || r == '/' || r == ':') {
+		if !alphanumeric(r) && r != '.' && r != '-' && r != '_' && r != '/' && r != ':' {
 			return false
 		}
 	}

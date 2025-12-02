@@ -1,6 +1,20 @@
 # Release History
 
-## 0.3.2 (unreleased)
+## 0.4.0 (2025-12-01)
+
+### Features Added
+
+- Add `changelog` command to generate and update changelog content for SDK packages based on code changes.
+- Add `version` command to calculate and update version numbers across all version-related files.
+- Add comprehensive helper utilities for package status determination, path resolution, and version management.
+- Support detecting parameter renaming as breaking change in changelog generation.
+
+### Breaking Changes
+
+- Split version calculation and changelog generation logic into separate packages (`changelog` and `version`).
+- Move constants and enums from `cmd/v2/common` to shared `utils` package for better reusability.
+- Refactor `GenerateForSingleRPNamespace` and `GenerateForSingleTypeSpec` to use status-based generator selection.
+- Remove template files for CHANGELOG.md and go.mod (now generated programmatically).
 
 ### Other Changes
 

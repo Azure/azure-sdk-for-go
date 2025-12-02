@@ -23,7 +23,7 @@ func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginCreateorUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, MonitoredSubscriptionProperties{}, nil)
+	poller, err := clientFactory.NewMonitoredSubscriptionsClient().BeginCreateorUpdate(ctx, "myResourceGroup", "myMonitor", armnewrelicobservability.ConfigurationNameDefault, armnewrelicobservability.MonitoredSubscriptionProperties{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -12,8 +12,8 @@ const (
 	ReadmeFileName        = "README.md"
 	ClientFactoryFileName = "client_factory.go"
 
-	SDKReleaseTypeStable  = "stable"
-	SDKReleaseTypePreview = "preview"
+	SDKReleaseTypeStable = "stable"
+	SDKReleaseTypeBeta   = "beta"
 
 	AutomationRunModeRelease = "release"
 	AutomationRunModeLocal   = "local"

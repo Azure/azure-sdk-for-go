@@ -185,9 +185,9 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 
 		queryStr := ""
 		if pkField == "id" {
-			queryStr = "SELECT TOP 10 c.id FROM c WHERE c.id == @pkValue ORDER BY VectorDistance(c.embedding, @embedding)"
+			queryStr = "SELECT TOP 10 c.id FROM c WHERE c.id = @pkValue ORDER BY VectorDistance(c.embedding, @embedding)"
 		} else {
-			queryStr = "SELECT TOP 10 c.id FROM c WHERE c.pk == @pkValue ORDER BY VectorDistance(c.embedding, @embedding)"
+			queryStr = "SELECT TOP 10 c.id FROM c WHERE c.pk = @pkValue ORDER BY VectorDistance(c.embedding, @embedding)"
 		}
 		pkVal := GetPKValue(pkField, rng.Intn(count)+1)
 

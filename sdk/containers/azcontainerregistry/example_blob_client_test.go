@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -9,12 +6,13 @@ package azcontainerregistry_test
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 	"io"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/containers/azcontainerregistry"
 )
 
 var blobClient *azcontainerregistry.BlobClient
@@ -64,7 +62,11 @@ func ExampleBlobClient_GetBlob() {
 	if err != nil {
 		log.Fatalf("failed to create blob file: %v", err)
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Printf("failed to close blob file: %v", err)
+		}
+	}()
 	_, err = io.Copy(f, reader)
 	if err != nil {
 		log.Printf("failed to write to the file: %v", err)
@@ -79,7 +81,11 @@ func ExampleBlobClient_GetChunk() {
 	if err != nil {
 		log.Fatalf("failed to create blob file: %v", err)
 	}
-	defer f.Close()
+	defer func() {
+		if err := f.Close(); err != nil {
+			log.Printf("failed to close blob file: %v", err)
+		}
+	}()
 	for {
 		res, err := blobClient.GetChunk(context.TODO(), "prod/bash", digest, fmt.Sprintf("bytes=%d-%d", current, current+chunkSize-1), nil)
 		if err != nil {

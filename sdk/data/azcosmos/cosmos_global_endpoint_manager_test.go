@@ -522,30 +522,30 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 }
 
 func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
-	availableWriteLocs := []string{"East US"}
+	availableWriteLocs := []regionId{newRegionId("East US")}
 	if isMultiMaster {
-		availableWriteLocs = []string{"East US", "Central US"}
+		availableWriteLocs = []regionId{newRegionId("East US"), newRegionId("Central US")}
 	}
-	availableReadLocs := []string{"East US", "Central US", "East US 2"}
-	availableWriteEndpointsByLoc := map[string]url.URL{}
-	availableReadEndpointsByLoc := map[string]url.URL{}
+	availableReadLocs := []regionId{newRegionId("East US"), newRegionId("Central US"), newRegionId("East US 2")}
+	availableWriteEndpointsByLoc := map[regionId]url.URL{}
+	availableReadEndpointsByLoc := map[regionId]url.URL{}
 	writeEndpoints := []url.URL{}
 	readEndpoints := []url.URL{}
 
 	for _, value := range availableWriteLocs {
-		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + value.String())
 		availableWriteEndpointsByLoc[value] = *regionalEndpoint
 		writeEndpoints = append(writeEndpoints, *regionalEndpoint)
 	}
 
 	for _, value := range availableReadLocs {
-		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + value.String())
 		availableReadEndpointsByLoc[value] = *regionalEndpoint
 		readEndpoints = append(readEndpoints, *regionalEndpoint)
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
-		prefLocations:                 []string{"Central US"},
+		prefLocations:                 []regionId{newRegionId("Central US")},
 		availWriteLocations:           availableWriteLocs,
 		availReadLocations:            availableReadLocs,
 		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,

@@ -27,18 +27,18 @@ type locationUnavailabilityInfo struct {
 }
 
 type databaseAccountLocationsInfo struct {
-	prefLocations                 []string
-	availWriteLocations           []string
-	availReadLocations            []string
-	availWriteEndpointsByLocation map[string]url.URL
-	availReadEndpointsByLocation  map[string]url.URL
+	prefLocations                 []regionId
+	availWriteLocations           []regionId
+	availReadLocations            []regionId
+	availWriteEndpointsByLocation map[regionId]url.URL
+	availReadEndpointsByLocation  map[regionId]url.URL
 	writeEndpoints                []url.URL
 	readEndpoints                 []url.URL
 }
 
 type accountRegion struct {
-	Name     string `json:"name"`
-	Endpoint string `json:"databaseAccountEndpoint"`
+	Name     regionId `json:"name"`
+	Endpoint string   `json:"databaseAccountEndpoint"`
 }
 
 type userConsistencyPolicy struct {
@@ -69,9 +69,13 @@ type locationCache struct {
 }
 
 func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool) *locationCache {
+	prefRegions := make([]regionId, len(prefLocations))
+	for i, loc := range prefLocations {
+		prefRegions[i] = newRegionId(loc)
+	}
 	return &locationCache{
 		defaultEndpoint:                   defaultEndpoint,
-		locationInfo:                      *newDatabaseAccountLocationsInfo(prefLocations, defaultEndpoint),
+		locationInfo:                      *newDatabaseAccountLocationsInfo(prefRegions, defaultEndpoint),
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
 		enableCrossRegionRetries:          enableCrossRegionRetries,
@@ -81,7 +85,11 @@ func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCro
 func (lc *locationCache) update(writeLocations []accountRegion, readLocations []accountRegion, prefList []string, enableMultipleWriteLocations *bool) error {
 	nextLoc := copyDatabaseAccountLocationsInfo(lc.locationInfo)
 	if prefList != nil {
-		nextLoc.prefLocations = prefList
+		prefRegions := make([]regionId, len(prefList))
+		for i, loc := range prefList {
+			prefRegions[i] = newRegionId(loc)
+		}
+		nextLoc.prefLocations = prefRegions
 	}
 	if enableMultipleWriteLocations != nil {
 		lc.enableMultipleWriteLocations = *enableMultipleWriteLocations
@@ -158,8 +166,8 @@ func (lc *locationCache) writeEndpoints() ([]url.URL, error) {
 	return lc.locationInfo.writeEndpoints, nil
 }
 
-func (lc *locationCache) getLocation(endpoint url.URL) string {
-	firstLoc := ""
+func (lc *locationCache) getLocation(endpoint url.URL) regionId {
+	var firstLoc regionId
 	for location, uri := range lc.locationInfo.availWriteEndpointsByLocation {
 		if uri == endpoint {
 			return location
@@ -239,7 +247,7 @@ func (lc *locationCache) isEndpointUnavailable(endpoint url.URL, ops requestedOp
 	return time.Since(info.lastCheckTime) < lc.unavailableLocationExpirationTime
 }
 
-func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url.URL, locs []string, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
+func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[regionId]url.URL, locs []regionId, availOps requestedOperations, fallbackEndpoint url.URL) []url.URL {
 	endpoints := make([]url.URL, 0)
 	if lc.enableCrossRegionRetries {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
@@ -269,9 +277,9 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[string]url
 	return endpoints
 }
 
-func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string, error) {
-	endpointsByLoc := make(map[string]url.URL)
-	parsedLocs := make([]string, 0)
+func getEndpointsByLocation(locs []accountRegion) (map[regionId]url.URL, []regionId, error) {
+	endpointsByLoc := make(map[regionId]url.URL)
+	parsedLocs := make([]regionId, 0)
 	for _, loc := range locs {
 		endpoint, err := url.Parse(loc.Endpoint)
 		if err != nil {
@@ -286,11 +294,11 @@ func getEndpointsByLocation(locs []accountRegion) (map[string]url.URL, []string,
 	return endpointsByLoc, parsedLocs, nil
 }
 
-func newDatabaseAccountLocationsInfo(prefLocations []string, defaultEndpoint url.URL) *databaseAccountLocationsInfo {
-	availWriteLocs := make([]string, 0)
-	availReadLocs := make([]string, 0)
-	availWriteEndpointsByLocation := make(map[string]url.URL)
-	availReadEndpointsByLocation := make(map[string]url.URL)
+func newDatabaseAccountLocationsInfo(prefLocations []regionId, defaultEndpoint url.URL) *databaseAccountLocationsInfo {
+	availWriteLocs := make([]regionId, 0)
+	availReadLocs := make([]regionId, 0)
+	availWriteEndpointsByLocation := make(map[regionId]url.URL)
+	availReadEndpointsByLocation := make(map[regionId]url.URL)
 	writeEndpoints := []url.URL{defaultEndpoint}
 	readEndpoints := []url.URL{defaultEndpoint}
 	return &databaseAccountLocationsInfo{

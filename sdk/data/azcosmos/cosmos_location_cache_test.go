@@ -17,7 +17,7 @@ var loc3Endpoint *url.URL
 var loc4Endpoint *url.URL
 var writeEndpoints []url.URL
 var readEndpoints []url.URL
-var endpointsByLoc map[string]url.URL
+var endpointsByLoc map[regionId]url.URL
 var loc1 accountRegion
 var loc2 accountRegion
 var loc3 accountRegion
@@ -52,14 +52,14 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	loc1 = accountRegion{Name: "location1", Endpoint: loc1Endpoint.String()}
-	loc2 = accountRegion{Name: "location2", Endpoint: loc2Endpoint.String()}
-	loc3 = accountRegion{Name: "location3", Endpoint: loc3Endpoint.String()}
-	loc4 = accountRegion{Name: "location4", Endpoint: loc4Endpoint.String()}
+	loc1 = accountRegion{Name: newRegionId("location1"), Endpoint: loc1Endpoint.String()}
+	loc2 = accountRegion{Name: newRegionId("location2"), Endpoint: loc2Endpoint.String()}
+	loc3 = accountRegion{Name: newRegionId("location3"), Endpoint: loc3Endpoint.String()}
+	loc4 = accountRegion{Name: newRegionId("location4"), Endpoint: loc4Endpoint.String()}
 
 	writeEndpoints = []url.URL{*loc1Endpoint, *loc2Endpoint, *loc3Endpoint}
 	readEndpoints = []url.URL{*loc1Endpoint, *loc2Endpoint, *loc4Endpoint}
-	endpointsByLoc = map[string]url.URL{"location1": *loc1Endpoint, "location2": *loc2Endpoint, "location3": *loc3Endpoint, "location4": *loc4Endpoint}
+	endpointsByLoc = map[regionId]url.URL{newRegionId("location1"): *loc1Endpoint, newRegionId("location2"): *loc2Endpoint, newRegionId("location3"): *loc3Endpoint, newRegionId("location4"): *loc4Endpoint}
 
 	prefLocs = make([]string, 0)
 
@@ -196,7 +196,7 @@ func TestGetLocation(t *testing.T) {
 			t.Errorf("Failed to parse endpoint %s, %s", region.Endpoint, err)
 			continue
 		}
-		expected, actual := region.Name, lc.getLocation(*url)
+		expected, actual := region.Name.String(), lc.getLocation(*url)
 		if expected != actual {
 			t.Errorf("Expected GetLocation to return Write Region %s, but was %s", expected, actual)
 		}
@@ -208,7 +208,7 @@ func TestGetLocation(t *testing.T) {
 			t.Errorf("Failed to parse endpoint %s, %s", region.Endpoint, err)
 			continue
 		}
-		expected, actual := region.Name, lc.getLocation(*url)
+		expected, actual := region.Name.String(), lc.getLocation(*url)
 		if expected != actual {
 			t.Errorf("Expected GetLocation to return Read Region %s, but was %s", expected, actual)
 		}
@@ -259,7 +259,7 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
 	// loc1: unavailable, loc2: available, loc5: non-existent
-	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, "location5"}
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, newRegionId("location5")}
 	prefWriteEndpoints := lc.getPrefAvailableEndpoints(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
 	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
 	expectedWriteEndpoints := []*url.URL{loc2Endpoint, defaultEndpoint, loc1Endpoint}
@@ -273,7 +273,7 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 
 func TestReadEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
-	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)
 	if err != nil {
@@ -321,7 +321,7 @@ func TestReadEndpoints(t *testing.T) {
 func TestWriteEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	lc.enableMultipleWriteLocations = true
-	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)
 	if err != nil {

@@ -528,13 +528,13 @@ func TestDnsErrorRetry(t *testing.T) {
 }
 
 func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
-	availableWriteLocs := []string{"East US"}
+	availableWriteLocs := []regionId{newRegionId("East US")}
 	if isMultiMaster {
-		availableWriteLocs = []string{"East US", "Central US"}
+		availableWriteLocs = []regionId{newRegionId("East US"), newRegionId("Central US")}
 	}
-	availableReadLocs := []string{"East US", "Central US", "East US 2"}
-	availableWriteEndpointsByLoc := map[string]url.URL{}
-	availableReadEndpointsByLoc := map[string]url.URL{}
+	availableReadLocs := []regionId{newRegionId("East US"), newRegionId("Central US"), newRegionId("East US 2")}
+	availableWriteEndpointsByLoc := map[regionId]url.URL{}
+	availableReadEndpointsByLoc := map[regionId]url.URL{}
 	dereferencedEndpoint := defaultEndpoint
 
 	for _, value := range availableWriteLocs {
@@ -546,7 +546,7 @@ func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
-		prefLocations:                 []string{},
+		prefLocations:                 []regionId{},
 		availWriteLocations:           availableWriteLocs,
 		availReadLocations:            availableReadLocs,
 		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,

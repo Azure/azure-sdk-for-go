@@ -66,7 +66,7 @@ func (gem *globalEndpointManager) MarkEndpointUnavailableForRead(endpoint url.UR
 	return gem.locationCache.markEndpointUnavailableForRead(endpoint)
 }
 
-func (gem *globalEndpointManager) GetEndpointLocation(endpoint url.URL) string {
+func (gem *globalEndpointManager) GetEndpointLocation(endpoint url.URL) regionId {
 	return gem.locationCache.getLocation(endpoint)
 }
 

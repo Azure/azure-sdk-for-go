@@ -19,7 +19,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	}))
 	emulatorRegionName := "South Central US"
 	preferredRegions := []string{}
-	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
+	emulatorRegion := accountRegion{Name: newRegionId(emulatorRegionName), Endpoint: "https://127.0.0.1:8081/"}
 
 	gem, err := newGlobalEndpointManager(client.endpoint, client.internal.Pipeline(), preferredRegions, 5*time.Minute, true)
 	assert.NoError(t, err)

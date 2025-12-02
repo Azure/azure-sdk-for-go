@@ -196,8 +196,8 @@ func TestGetLocation(t *testing.T) {
 			t.Errorf("Failed to parse endpoint %s, %s", region.Endpoint, err)
 			continue
 		}
-		expected, actual := region.Name.String(), lc.getLocation(*url)
-		if expected != actual {
+		expected, actual := region.Name, lc.getLocation(*url)
+		if !expected.Equal(actual) {
 			t.Errorf("Expected GetLocation to return Write Region %s, but was %s", expected, actual)
 		}
 	}
@@ -208,8 +208,8 @@ func TestGetLocation(t *testing.T) {
 			t.Errorf("Failed to parse endpoint %s, %s", region.Endpoint, err)
 			continue
 		}
-		expected, actual := region.Name.String(), lc.getLocation(*url)
-		if expected != actual {
+		expected, actual := region.Name, lc.getLocation(*url)
+		if !expected.Equal(actual) {
 			t.Errorf("Expected GetLocation to return Read Region %s, but was %s", expected, actual)
 		}
 	}

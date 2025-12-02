@@ -10,35 +10,32 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/exported"
 )
 
 const (
-	AzureKubernetesCAData  = "AZURE_KUBERNETES_CA_DATA"
-	AzureKubernetesCAFile  = "AZURE_KUBERNETES_CA_FILE"
-	AzureKubernetesSNIName = "AZURE_KUBERNETES_SNI_NAME"
-
-	AzureKubernetesTokenProxy = "AZURE_KUBERNETES_TOKEN_PROXY"
+	EnvAzureKubernetesCAData     = "AZURE_KUBERNETES_CA_DATA"
+	EnvAzureKubernetesCAFile     = "AZURE_KUBERNETES_CA_FILE"
+	EnvAzureKubernetesSNIName    = "AZURE_KUBERNETES_SNI_NAME"
+	EnvAzureKubernetesTokenProxy = "AZURE_KUBERNETES_TOKEN_PROXY"
 )
 
-// Options contains optional parameters for custom token proxy configuration.
-type Options struct {
-	// AzureKubernetesCAData specifies the CA certificate data for the Kubernetes cluster.
-	// Corresponds to the AZURE_KUBERNETES_CA_DATA environment variable.
-	// At most one of AzureKubernetesCAData or AzureKubernetesCAFile should be set.
-	AzureKubernetesCAData string
+func readOptionsFromEnv() *exported.CustomTokenProxyOptions {
+	return &exported.CustomTokenProxyOptions{
+		TokenProxy: os.Getenv(EnvAzureKubernetesTokenProxy),
+		SNIName:    os.Getenv(EnvAzureKubernetesSNIName),
+		CAFile:     os.Getenv(EnvAzureKubernetesCAFile),
+		CAData:     os.Getenv(EnvAzureKubernetesCAData),
+	}
+}
 
-	// AzureKubernetesCAFile specifies the path to the CA certificate file for the Kubernetes cluster.
-	// This field corresponds to the AZURE_KUBERNETES_CA_FILE environment variable.
-	// At most one of AzureKubernetesCAData or AzureKubernetesCAFile should be set.
-	AzureKubernetesCAFile string
+func backfillOptionsFromEnv(opts *exported.CustomTokenProxyOptions) {
+	if opts.CAData != "" || opts.CAFile != "" || opts.SNIName != "" || opts.TokenProxy != "" {
+		return
+	}
 
-	// AzureKubernetesSNIName specifies the name of the SNI for Kubernetes cluster.
-	// This field corresponds to the AZURE_KUBERNETES_SNI_NAME environment variable.
-	AzureKubernetesSNIName string
-
-	// AzureKubernetesTokenProxy specifies the URL of the custom token proxy for the Kubernetes cluster.
-	// This field corresponds to the AZURE_KUBERNETES_TOKEN_PROXY environment variable.
-	AzureKubernetesTokenProxy string
+	// only backfill if all fields are empty
+	*opts = *readOptionsFromEnv()
 }
 
 func parseTokenProxyURL(endpoint string) (*url.URL, error) {
@@ -65,21 +62,6 @@ func parseTokenProxyURL(endpoint string) (*url.URL, error) {
 	return tokenProxy, nil
 }
 
-func (o *Options) defaults() {
-	if o.AzureKubernetesTokenProxy == "" {
-		o.AzureKubernetesTokenProxy = os.Getenv(AzureKubernetesTokenProxy)
-	}
-	if o.AzureKubernetesSNIName == "" {
-		o.AzureKubernetesSNIName = os.Getenv(AzureKubernetesSNIName)
-	}
-	if o.AzureKubernetesCAFile == "" {
-		o.AzureKubernetesCAFile = os.Getenv(AzureKubernetesCAFile)
-	}
-	if o.AzureKubernetesCAData == "" {
-		o.AzureKubernetesCAData = os.Getenv(AzureKubernetesCAData)
-	}
-}
-
 var (
 	errCustomEndpointSetWithoutTokenProxy = errors.New(
 		"AZURE_KUBERNETES_TOKEN_PROXY is not set but other custom endpoint-related settings are present",
@@ -93,40 +75,40 @@ func noopConfigure(*policy.ClientOptions) {
 	// no-op
 }
 
-// Apply returns a function that configures the client options to use the custom token proxy.
-func Apply(opts *Options) (func(*policy.ClientOptions), error) {
+// GetClientOptionsConfigurer returns a function that configures the client options to use the custom token proxy.
+func GetClientOptionsConfigurer(opts *exported.CustomTokenProxyOptions) (func(*policy.ClientOptions), error) {
 	if opts == nil {
 		return noopConfigure, nil
 	}
 
-	opts.defaults()
+	backfillOptionsFromEnv(opts)
 
-	if opts.AzureKubernetesTokenProxy == "" {
+	if opts.TokenProxy == "" {
 		// custom token proxy is not set, while other Kubernetes-related environment variables are present,
 		// this is likely a configuration issue so erroring out to avoid misconfiguration
-		if opts.AzureKubernetesSNIName != "" || opts.AzureKubernetesCAFile != "" || opts.AzureKubernetesCAData != "" {
+		if opts.SNIName != "" || opts.CAFile != "" || opts.CAData != "" {
 			return nil, errCustomEndpointSetWithoutTokenProxy
 		}
 
 		return noopConfigure, nil
 	}
 
-	tokenProxy, err := parseTokenProxyURL(opts.AzureKubernetesTokenProxy)
+	tokenProxy, err := parseTokenProxyURL(opts.TokenProxy)
 	if err != nil {
 		return nil, err
 	}
 
 	// CAFile and CAData are mutually exclusive, at most one can be set.
 	// If none of CAFile or CAData are set, the default system CA pool will be used.
-	if opts.AzureKubernetesCAFile != "" && opts.AzureKubernetesCAData != "" {
+	if opts.CAFile != "" && opts.CAData != "" {
 		return nil, errCustomEndpointMultipleCASourcesSet
 	}
 
 	// preload the transport
 	t := &transport{
-		caFile:     opts.AzureKubernetesCAFile,
-		caData:     []byte(opts.AzureKubernetesCAData),
-		sniName:    opts.AzureKubernetesSNIName,
+		caFile:     opts.CAFile,
+		caData:     []byte(opts.CAData),
+		sniName:    opts.SNIName,
 		tokenProxy: tokenProxy,
 	}
 	if _, err := t.getTokenTransporter(); err != nil {

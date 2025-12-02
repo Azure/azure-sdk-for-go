@@ -455,9 +455,9 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithOptions(t *testing.T
 		EnableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
-		AzureProxy: WorkloadIdentityAzureProxyOptions{
-			AzureKubernetesTokenProxy: customTokenEndpointServer.URL,
-			AzureKubernetesCAData:     caData,
+		CustomTokenProxy: &WorkloadIdentityCustomTokenProxyOptions{
+			TokenProxy: customTokenEndpointServer.URL,
+			CAData:     caData,
 		},
 	})
 	require.NoError(t, err)
@@ -496,8 +496,8 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 		}),
 	)
 
-	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndpointServer.URL)
-	t.Setenv(customtokenproxy.AzureKubernetesCAData, caData)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesTokenProxy, customTokenEndpointServer.URL)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesCAData, caData)
 
 	clientOptions := policy.ClientOptions{
 		PerCallPolicies: []policy.Policy{
@@ -520,7 +520,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 }
 
 func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testing.T) {
-	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "invalid-token-endpoint")
+	t.Setenv(customtokenproxy.EnvAzureKubernetesTokenProxy, "invalid-token-endpoint")
 	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
 		EnableAzureProxy: true,
@@ -558,11 +558,11 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 		}),
 	)
 
-	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesTokenProxy, customTokenEndointServer.URL)
 	d := t.TempDir()
 	caFile := filepath.Join(d, "test-ca-file")
 	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
-	t.Setenv(customtokenproxy.AzureKubernetesCAFile, caFile)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesCAFile, caFile)
 
 	clientOptions := policy.ClientOptions{
 		PerCallPolicies: []policy.Policy{
@@ -584,7 +584,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
 }
 
-func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup_FromEnv(t *testing.T) {
 	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
 	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
 		t.Fatalf("failed to write token file: %v", err)
@@ -616,13 +616,13 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 		}),
 	)
 
-	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
-	t.Setenv(customtokenproxy.AzureKubernetesSNIName, sniName)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesSNIName, sniName)
 
 	d := t.TempDir()
 	caFile := filepath.Join(d, "test-ca-file")
 	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
-	t.Setenv(customtokenproxy.AzureKubernetesCAFile, caFile)
+	t.Setenv(customtokenproxy.EnvAzureKubernetesCAFile, caFile)
 
 	clientOptions := policy.ClientOptions{
 		PerCallPolicies: []policy.Policy{
@@ -635,6 +635,67 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 		EnableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
+	})
+	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup_FromOptions(t *testing.T) {
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
+	sniName := "test-sni.example.com"
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			policyFlowCheck.Validate(t, req)
+
+			require.NotNil(t, req.TLS)
+			require.Equal(t, req.TLS.ServerName, sniName, "when SNI is set, request should set SNI")
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, "client_assertion")
+			require.Equal(t, req.PostForm.Get("client_assertion"), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			_, _ = w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	d := t.TempDir()
+	caFile := filepath.Join(d, "test-ca-file")
+	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
+
+	clientOptions := policy.ClientOptions{
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:         fakeClientID,
+		ClientOptions:    clientOptions,
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
+		CustomTokenProxy: &WorkloadIdentityCustomTokenProxyOptions{
+			TokenProxy: customTokenEndointServer.URL,
+			CAFile:     caFile,
+			SNIName:    sniName,
+		},
 	})
 	require.NoError(t, err)
 	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")

@@ -12,6 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/exported"
 )
 
 func TestParseTokenProxyURL(t *testing.T) {
@@ -103,7 +104,7 @@ func TestOptions_Configure(t *testing.T) {
 	tests := []struct {
 		Name            string
 		Envs            map[string]string
-		Options         Options
+		Options         exported.CustomTokenProxyOptions
 		ClientOptions   policy.ClientOptions
 		ExpectErr       bool
 		AssertErr       func(t testing.TB, err error)
@@ -112,42 +113,42 @@ func TestOptions_Configure(t *testing.T) {
 		{
 			Name:            "no custom endpoint",
 			Envs:            map[string]string{},
-			Options:         Options{},
+			Options:         exported.CustomTokenProxyOptions{},
 			ExpectErr:       false,
 			ExpectTransport: false,
 		},
 		{
 			Name: "custom endpoint enabled with minimal settings",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
 			},
 			ExpectErr:       false,
 			ExpectTransport: true,
 		},
 		{
 			Name: "custom endpoint enabled with CA file + SNI",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAFile:     testCAFile,
-				AzureKubernetesSNIName:    "custom-sni.example.com",
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAFile:     testCAFile,
+				SNIName:    "custom-sni.example.com",
 			},
 			ExpectErr:       false,
 			ExpectTransport: true,
 		},
 		{
 			Name: "custom endpoint enabled with invalid CA file",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAFile:     "/non/existent/path/to/custom-ca-file.pem",
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAFile:     "/non/existent/path/to/custom-ca-file.pem",
 			},
 			ExpectErr:       true,
 			ExpectTransport: false,
 		},
 		{
 			Name: "custom endpoint enabled with CA file contains invalid CA data",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAFile: func() string {
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAFile: func() string {
 					t.Helper()
 
 					tempDir := t.TempDir()
@@ -161,36 +162,36 @@ func TestOptions_Configure(t *testing.T) {
 		},
 		{
 			Name: "custom endpoint enabled with CA data + SNI",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAData:     testCAData,
-				AzureKubernetesSNIName:    "custom-sni.example.com",
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAData:     testCAData,
+				SNIName:    "custom-sni.example.com",
 			},
 			ExpectErr:       false,
 			ExpectTransport: true,
 		},
 		{
 			Name: "custom endpoint enabled with invalid CA data",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAData:     string("invalid-ca-cert"),
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAData:     string("invalid-ca-cert"),
 			},
 			ExpectErr:       true,
 			ExpectTransport: false,
 		},
 		{
 			Name: "custom endpoint enabled with SNI",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesSNIName:    "custom-sni.example.com",
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				SNIName:    "custom-sni.example.com",
 			},
 			ExpectErr:       false,
 			ExpectTransport: true,
 		},
 		{
 			Name: "custom endpoint disabled with extra environment variables",
-			Options: Options{
-				AzureKubernetesSNIName: "custom-sni.example.com",
+			Options: exported.CustomTokenProxyOptions{
+				SNIName: "custom-sni.example.com",
 			},
 			ExpectErr: true,
 			AssertErr: func(t testing.TB, err error) {
@@ -199,10 +200,10 @@ func TestOptions_Configure(t *testing.T) {
 		},
 		{
 			Name: "custom endpoint enabled with both CAData and CAFile",
-			Options: Options{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAData:     testCAData,
-				AzureKubernetesCAFile:     testCAFile,
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAData:     testCAData,
+				CAFile:     testCAFile,
 			},
 			ExpectErr: true,
 			AssertErr: func(t testing.TB, err error) {
@@ -211,20 +212,20 @@ func TestOptions_Configure(t *testing.T) {
 		},
 		{
 			Name: "custom endpoint enabled with invalid endpoint",
-			Options: Options{
+			Options: exported.CustomTokenProxyOptions{
 				// http endpoint is not allowed
-				AzureKubernetesTokenProxy: "http://custom-endpoint.com",
+				TokenProxy: "http://custom-endpoint.com",
 			},
 			ExpectErr: true,
 		},
 		{
 			Name: "set by environment variables",
 			Envs: map[string]string{
-				AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-				AzureKubernetesCAFile:     testCAFile,
-				AzureKubernetesSNIName:    "custom-sni.example.com",
+				EnvAzureKubernetesTokenProxy: "https://custom-endpoint.com",
+				EnvAzureKubernetesCAFile:     testCAFile,
+				EnvAzureKubernetesSNIName:    "custom-sni.example.com",
 			},
-			Options:         Options{},
+			Options:         exported.CustomTokenProxyOptions{},
 			ExpectErr:       false,
 			ExpectTransport: true,
 		},
@@ -238,7 +239,7 @@ func TestOptions_Configure(t *testing.T) {
 				}
 			}
 
-			mutateClientOptions, err := Apply(&tt.Options)
+			mutateClientOptions, err := GetClientOptionsConfigurer(&tt.Options)
 			if tt.ExpectErr {
 				require.Error(t, err)
 				if tt.AssertErr != nil {
@@ -260,41 +261,67 @@ func TestOptions_Configure(t *testing.T) {
 	}
 }
 
-func TestConfiguration_defaults(t *testing.T) {
-	t.Run("fills from env when empty", func(t *testing.T) {
-		expected := map[string]string{
-			AzureKubernetesTokenProxy: "https://custom-endpoint.com",
-			AzureKubernetesSNIName:    "sni.example.com",
-			AzureKubernetesCAFile:     "/path/to/ca.pem",
-			AzureKubernetesCAData:     "pem-data",
-		}
-		for k, v := range expected {
-			t.Setenv(k, v)
-		}
+func TestBackfillOptionsFromEnv(t *testing.T) {
+	tests := []struct {
+		Name     string
+		Options  exported.CustomTokenProxyOptions
+		Envs     map[string]string
+		Expected exported.CustomTokenProxyOptions
+	}{
+		{
+			Name:     "empty",
+			Options:  exported.CustomTokenProxyOptions{},
+			Envs:     map[string]string{},
+			Expected: exported.CustomTokenProxyOptions{},
+		},
+		{
+			Name: "options field is not nil",
+			Options: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAData:     "testCAData",
+				CAFile:     "testCAFile",
+				SNIName:    "custom-sni.example.com",
+			},
+			Envs: map[string]string{
+				EnvAzureKubernetesTokenProxy: "https://endpoint-from-env.com",
+				EnvAzureKubernetesCAData:     "ca-data-from-env",
+				EnvAzureKubernetesCAFile:     "ca-file-from-env",
+				EnvAzureKubernetesSNIName:    "sni-name-from-env",
+			},
+			Expected: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://custom-endpoint.com",
+				CAData:     "testCAData",
+				CAFile:     "testCAFile",
+				SNIName:    "custom-sni.example.com",
+			},
+		},
+		{
+			Name:    "options field is nil",
+			Options: exported.CustomTokenProxyOptions{},
+			Envs: map[string]string{
+				EnvAzureKubernetesTokenProxy: "https://endpoint-from-env.com",
+				EnvAzureKubernetesCAData:     "ca-data-from-env",
+				EnvAzureKubernetesCAFile:     "ca-file-from-env",
+				EnvAzureKubernetesSNIName:    "sni-name-from-env",
+			},
+			Expected: exported.CustomTokenProxyOptions{
+				TokenProxy: "https://endpoint-from-env.com",
+				CAData:     "ca-data-from-env",
+				CAFile:     "ca-file-from-env",
+				SNIName:    "sni-name-from-env",
+			},
+		},
+	}
 
-		opts := Options{}
-		opts.defaults()
+	for _, tt := range tests {
+		t.Run(tt.Name, func(t *testing.T) {
 
-		require.Equal(t, expected[AzureKubernetesTokenProxy], opts.AzureKubernetesTokenProxy)
-		require.Equal(t, expected[AzureKubernetesSNIName], opts.AzureKubernetesSNIName)
-		require.Equal(t, expected[AzureKubernetesCAFile], opts.AzureKubernetesCAFile)
-		require.Equal(t, expected[AzureKubernetesCAData], opts.AzureKubernetesCAData)
-	})
+			for k, v := range tt.Envs {
+				t.Setenv(k, v)
+			}
 
-	t.Run("preserves explicit values", func(t *testing.T) {
-		t.Setenv(AzureKubernetesTokenProxy, "https://env-value.com")
-		opts := Options{
-			AzureKubernetesTokenProxy: "https://explicit.com",
-			AzureKubernetesSNIName:    "explicit-sni",
-			AzureKubernetesCAFile:     "/explicit/ca.pem",
-			AzureKubernetesCAData:     "explicit-ca-data",
-		}
-
-		opts.defaults()
-
-		require.Equal(t, "https://explicit.com", opts.AzureKubernetesTokenProxy)
-		require.Equal(t, "explicit-sni", opts.AzureKubernetesSNIName)
-		require.Equal(t, "/explicit/ca.pem", opts.AzureKubernetesCAFile)
-		require.Equal(t, "explicit-ca-data", opts.AzureKubernetesCAData)
-	})
+			backfillOptionsFromEnv(&tt.Options)
+			require.Equal(t, tt.Expected, tt.Options)
+		})
+	}
 }

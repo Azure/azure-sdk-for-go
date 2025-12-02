@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/exported"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -30,8 +31,8 @@ type WorkloadIdentityCredential struct {
 	mtx                  *sync.RWMutex
 }
 
-// WorkloadIdentityAzureProxyOptions contains optional parameters for configuring WorkloadIdentity Azure Proxy.
-type WorkloadIdentityAzureProxyOptions = customtokenproxy.Options
+// WorkloadIdentityCustomTokenProxyOptions contains optional parameters for configuring WorkloadIdentity Custom Token Proxy.
+type WorkloadIdentityCustomTokenProxyOptions = exported.CustomTokenProxyOptions
 
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.
 type WorkloadIdentityCredentialOptions struct {
@@ -57,7 +58,7 @@ type WorkloadIdentityCredentialOptions struct {
 	DisableInstanceDiscovery bool
 
 	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables or
-	// from the AzureProxy field.
+	// from the CustomTokenProxy field.
 	// When this value is true and proxy configuration isn't present or this value is false, the credential will request
 	// tokens directly from Entra ID.
 	//
@@ -66,20 +67,21 @@ type WorkloadIdentityCredentialOptions struct {
 	// to set this option: https://learn.microsoft.com/azure/aks/identity-bindings-concepts
 	EnableAzureProxy bool
 
-	// AzureProxy specifies the options for the Azure proxy.
-	// If EnableAzureProxy is false, this field is ignored.
-	AzureProxy WorkloadIdentityAzureProxyOptions
+	// CustomTokenProxy specifies the options for the custom token proxy.
+	// It should not be set if EnableAzureProxy is true.
+	CustomTokenProxy *WorkloadIdentityCustomTokenProxyOptions
 
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
 
-	// TokenFilePath is the path of a file containing a Kubernetes service account token. Defaults to the value of the
-	// environment variable AZURE_FEDERATED_TOKEN_FILE.
-	// If GetFederatedToken is set, this field is ignored.
+	// TokenFilePath is the path of a file containing a Kubernetes service account token.
+	// This field is mutually exclusive with GetFederatedToken.
+	// If neither is specified, the credential will attempt to read the token path from the AZURE_FEDERATED_TOKEN_FILE environment variable.
 	TokenFilePath string
 
 	// GetFederatedToken defines an optional func to get the Kubernetes service account token.
-	// If this function is set, it will be used to get the token instead of reading it from TokenFilePath.
+	// This field is mutually exclusive with TokenFilePath.
+	// If neither is specified, the credential will attempt to read the token path from the AZURE_FEDERATED_TOKEN_FILE environment variable.
 	GetFederatedToken func(ctx context.Context) (string, error)
 }
 
@@ -97,6 +99,9 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		}
 	}
 	file := options.TokenFilePath
+	if file != "" && options.GetFederatedToken != nil {
+		return nil, errors.New("TokenFilePath and GetFederatedToken cannot be set at the same time")
+	}
 	if file == "" && options.GetFederatedToken == nil {
 		if file, ok = os.LookupEnv(azureFederatedTokenFile); !ok {
 			return nil, errors.New("no token source specified. Check pod configuration or set GetFederatedToken or TokenFilePath in the options")
@@ -107,6 +112,9 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		if tenantID, ok = os.LookupEnv(azureTenantID); !ok {
 			return nil, errors.New("no tenant ID specified. Check pod configuration or set TenantID in the options")
 		}
+	}
+	if !options.EnableAzureProxy && options.CustomTokenProxy != nil {
+		return nil, errors.New("CustomTokenProxy should not be set if EnableAzureProxy is false")
 	}
 
 	w := WorkloadIdentityCredential{
@@ -122,7 +130,11 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 	}
 
 	if options.EnableAzureProxy {
-		mutateClientOptions, err := customtokenproxy.Apply(&options.AzureProxy)
+		customTokenProxyOptions := options.CustomTokenProxy
+		if customTokenProxyOptions == nil {
+			customTokenProxyOptions = &WorkloadIdentityCustomTokenProxyOptions{}
+		}
+		mutateClientOptions, err := customtokenproxy.GetClientOptionsConfigurer(customTokenProxyOptions)
 		if err != nil {
 			return nil, err
 		}

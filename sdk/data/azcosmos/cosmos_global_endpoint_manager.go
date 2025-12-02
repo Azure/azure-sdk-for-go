@@ -4,8 +4,11 @@
 package azcosmos
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"sync"
@@ -46,6 +49,11 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
+
+	log.Writef(EventEndpointManager,
+		"Initializing Global Endpoint Manager: endpoint=%s, preferredLocations=%v, "+
+			"refreshInterval=%v, enableCrossRegionRetries=%v",
+		clientEndpoint, preferredLocations, refreshTimeInterval, enableCrossRegionRetries)
 
 	return gem, nil
 }
@@ -155,7 +163,21 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {
 	properties := accountProperties{}
-	err := azruntime.UnmarshalAsJSON(azResponse, &properties)
+
+	// Read the raw body for logging before unmarshaling
+	bodyBytes, err := io.ReadAll(azResponse.Body)
+	if err != nil {
+		return properties, err
+	}
+	// Restore the body for unmarshaling
+	azResponse.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+
+	// Log the raw JSON
+	log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n"+
+		string(bodyBytes)+"\n"+
+		"==================================================\n")
+
+	err = json.Unmarshal(bodyBytes, &properties)
 	if err != nil {
 		return properties, err
 	}

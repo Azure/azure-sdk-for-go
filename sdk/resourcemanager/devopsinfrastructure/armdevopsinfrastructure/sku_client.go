@@ -26,7 +26,7 @@ type SKUClient struct {
 // NewSKUClient creates a new instance of SKUClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - Contains optional client configuration. Pass nil to accept the default values.
+//   - options - pass nil to accept the default values.
 func NewSKUClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,7 +41,7 @@ func NewSKUClient(subscriptionID string, credential azcore.TokenCredential, opti
 
 // NewListByLocationPager - List ResourceSku resources by subscription ID
 //
-// Generated from API version 2025-09-20
+// Generated from API version 2024-10-19
 //   - locationName - Name of the location.
 //   - options - SKUClientListByLocationOptions contains the optional parameters for the SKUClient.NewListByLocationPager method.
 func (client *SKUClient) NewListByLocationPager(locationName string, options *SKUClientListByLocationOptions) *runtime.Pager[SKUClientListByLocationResponse] {
@@ -83,7 +83,7 @@ func (client *SKUClient) listByLocationCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-20")
+	reqQP.Set("api-version", "2024-10-19")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -183,13 +183,19 @@ func vectorSearchQueries(ctx context.Context, container *azcosmos.ContainerClien
 	return runConcurrent(ctx, count, defaultConcurrency, func(ctx context.Context, i int, rng *rand.Rand) error {
 		embedding := createRandomEmbedding()
 
+		queryStr := ""
+		if pkField == "id" {
+			queryStr = "SELECT TOP 10 c.id FROM c WHERE c.id == @pkValue ORDER BY VectorDistance(c.embedding, @embedding)"
+		} else {
+			queryStr = "SELECT TOP 10 c.id FROM c WHERE c.pk == @pkValue ORDER BY VectorDistance(c.embedding, @embedding)"
+		}
 		pkVal := GetPKValue(pkField, rng.Intn(count)+1)
 
 		pager := container.NewQueryItemsPager(
-			"SELECT TOP 10 c.id FROM c ORDER BY VectorDistance(c.embedding, @embedding)",
-			azcosmos.NewPartitionKeyString(pkVal),
+			queryStr,
+			azcosmos.NewPartitionKey(),
 			&azcosmos.QueryOptions{
-				QueryParameters: []azcosmos.QueryParameter{{Name: "@embedding", Value: embedding}},
+				QueryParameters: []azcosmos.QueryParameter{{Name: "@embedding", Value: embedding}, {Name: "@pkValue", Value: pkVal}},
 				QueryEngine:     azcosmoscx.NewQueryEngine(),
 			},
 		)

@@ -4,11 +4,9 @@
 package azcosmos
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
 	"net/url"
 	"sync"
@@ -164,13 +162,11 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {
 	properties := accountProperties{}
 
-	// Read the raw body for logging before unmarshaling
-	bodyBytes, err := io.ReadAll(azResponse.Body)
+	// This function, azruntime.Payload, will automatically capture the body, and restore it back to azResponse.Body at position 0
+	bodyBytes, err := azruntime.Payload(azResponse)
 	if err != nil {
 		return properties, err
 	}
-	// Restore the body for unmarshaling
-	azResponse.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
 
 	// Log the raw JSON
 	log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n"+

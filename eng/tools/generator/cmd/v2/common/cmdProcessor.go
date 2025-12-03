@@ -123,7 +123,7 @@ func ExecuteGoimports(path string) error {
 }
 
 func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
-	refName := fmt.Sprintf(branchName + ":" + branchName)
+	refName := fmt.Sprintf("%s", branchName+":"+branchName)
 	cmd := exec.Command("git", "push", remoteName, refName)
 	cmd.Dir = path
 	msg, err := cmd.CombinedOutput()

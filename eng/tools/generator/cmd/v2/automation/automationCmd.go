@@ -91,7 +91,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 	errorBuilder := generateErrorBuilder{}
 	if input.RunMode == utils.AutomationRunModeLocal || input.RunMode == utils.AutomationRunModeRelease {
-		if input.SdkReleaseType != "" && input.SdkReleaseType != utils.SDKReleaseTypeStable && input.SdkReleaseType != utils.SDKReleaseTypePreview {
+		if input.SdkReleaseType != "" && input.SdkReleaseType != utils.SDKReleaseTypeStable && input.SdkReleaseType != utils.SDKReleaseTypeBeta {
 			return nil, fmt.Errorf("invalid SDK release type:%s, only support 'stable' or 'beta'", input.SdkReleaseType)
 		}
 		if input.SdkReleaseType != "" && input.ApiVersion != "" {

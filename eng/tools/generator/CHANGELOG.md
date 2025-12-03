@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.1 (2025-12-02)
+
+### Bugs Fixed
+
+- Fix the wrong constant value for beta release type.
+
 ## 0.4.0 (2025-12-01)
 
 ### Features Added

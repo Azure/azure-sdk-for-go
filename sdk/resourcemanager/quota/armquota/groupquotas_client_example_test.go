@@ -158,7 +158,7 @@ func ExampleGroupQuotasClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewGroupQuotasClient().BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", nil)
+	poller, err := clientFactory.NewGroupQuotasClient().BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", armquota.GroupQuotasEntityPatch{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -16,68 +16,67 @@ import (
 	"strings"
 )
 
-// FleetMembersClient contains the methods for the FleetMembers group.
-// Don't use this type directly, use NewFleetMembersClient() instead.
-type FleetMembersClient struct {
+// FleetManagedNamespacesClient contains the methods for the FleetManagedNamespaces group.
+// Don't use this type directly, use NewFleetManagedNamespacesClient() instead.
+type FleetManagedNamespacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewFleetMembersClient creates a new instance of FleetMembersClient with the specified values.
+// NewFleetManagedNamespacesClient creates a new instance of FleetManagedNamespacesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewFleetMembersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetMembersClient, error) {
+func NewFleetManagedNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetManagedNamespacesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &FleetMembersClient{
+	client := &FleetManagedNamespacesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreate - Create a FleetMember
+// BeginCreateOrUpdate - Create a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - fleetMemberName - The name of the Fleet member resource.
+//   - managedNamespaceName - The name of the fleet managed namespace resource.
 //   - resource - Resource create parameters.
-//   - options - FleetMembersClientBeginCreateOptions contains the optional parameters for the FleetMembersClient.BeginCreate
+//   - options - FleetManagedNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginCreateOrUpdate
 //     method.
-func (client *FleetMembersClient) BeginCreate(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, resource FleetMember, options *FleetMembersClientBeginCreateOptions) (*runtime.Poller[FleetMembersClientCreateResponse], error) {
+func (client *FleetManagedNamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, resourceGroupName, fleetName, fleetMemberName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, fleetName, managedNamespaceName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetMembersClientCreateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetManagedNamespacesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetMembersClientCreateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetManagedNamespacesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Create - Create a FleetMember
+// CreateOrUpdate - Create a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
-func (client *FleetMembersClient) create(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, resource FleetMember, options *FleetMembersClientBeginCreateOptions) (*http.Response, error) {
+func (client *FleetManagedNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FleetMembersClient.BeginCreate"
+	const operationName = "FleetManagedNamespacesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, fleetName, fleetMemberName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, fleetName, managedNamespaceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -92,9 +91,9 @@ func (client *FleetMembersClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
-func (client *FleetMembersClient) createCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, resource FleetMember, options *FleetMembersClientBeginCreateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}"
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *FleetManagedNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, resource FleetManagedNamespace, options *FleetManagedNamespacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -107,10 +106,10 @@ func (client *FleetMembersClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if fleetMemberName == "" {
-		return nil, errors.New("parameter fleetMemberName cannot be empty")
+	if managedNamespaceName == "" {
+		return nil, errors.New("parameter managedNamespaceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetMemberName}", url.PathEscape(fleetMemberName))
+	urlPath = strings.ReplaceAll(urlPath, "{managedNamespaceName}", url.PathEscape(managedNamespaceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -132,43 +131,43 @@ func (client *FleetMembersClient) createCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// BeginDelete - Delete a FleetMember
+// BeginDelete - Delete a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - fleetMemberName - The name of the Fleet member resource.
-//   - options - FleetMembersClientBeginDeleteOptions contains the optional parameters for the FleetMembersClient.BeginDelete
+//   - managedNamespaceName - The name of the fleet managed namespace resource.
+//   - options - FleetManagedNamespacesClientBeginDeleteOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginDelete
 //     method.
-func (client *FleetMembersClient) BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, options *FleetMembersClientBeginDeleteOptions) (*runtime.Poller[FleetMembersClientDeleteResponse], error) {
+func (client *FleetManagedNamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*runtime.Poller[FleetManagedNamespacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, fleetName, fleetMemberName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, fleetName, managedNamespaceName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetMembersClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetManagedNamespacesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetMembersClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetManagedNamespacesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a FleetMember
+// Delete - Delete a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
-func (client *FleetMembersClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, options *FleetMembersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FleetManagedNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FleetMembersClient.BeginDelete"
+	const operationName = "FleetManagedNamespacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, fleetMemberName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, fleetName, managedNamespaceName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -176,7 +175,7 @@ func (client *FleetMembersClient) deleteOperation(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -184,8 +183,8 @@ func (client *FleetMembersClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FleetMembersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, options *FleetMembersClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}"
+func (client *FleetManagedNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -198,10 +197,10 @@ func (client *FleetMembersClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if fleetMemberName == "" {
-		return nil, errors.New("parameter fleetMemberName cannot be empty")
+	if managedNamespaceName == "" {
+		return nil, errors.New("parameter managedNamespaceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetMemberName}", url.PathEscape(fleetMemberName))
+	urlPath = strings.ReplaceAll(urlPath, "{managedNamespaceName}", url.PathEscape(managedNamespaceName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -215,39 +214,40 @@ func (client *FleetMembersClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// Get - Get a FleetMember
+// Get - Get a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - fleetMemberName - The name of the Fleet member resource.
-//   - options - FleetMembersClientGetOptions contains the optional parameters for the FleetMembersClient.Get method.
-func (client *FleetMembersClient) Get(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, options *FleetMembersClientGetOptions) (FleetMembersClientGetResponse, error) {
+//   - managedNamespaceName - The name of the fleet managed namespace resource.
+//   - options - FleetManagedNamespacesClientGetOptions contains the optional parameters for the FleetManagedNamespacesClient.Get
+//     method.
+func (client *FleetManagedNamespacesClient) Get(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, options *FleetManagedNamespacesClientGetOptions) (FleetManagedNamespacesClientGetResponse, error) {
 	var err error
-	const operationName = "FleetMembersClient.Get"
+	const operationName = "FleetManagedNamespacesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, fleetName, fleetMemberName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, fleetName, managedNamespaceName, options)
 	if err != nil {
-		return FleetMembersClientGetResponse{}, err
+		return FleetManagedNamespacesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return FleetMembersClientGetResponse{}, err
+		return FleetManagedNamespacesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return FleetMembersClientGetResponse{}, err
+		return FleetManagedNamespacesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *FleetMembersClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, _ *FleetMembersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}"
+func (client *FleetManagedNamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, _ *FleetManagedNamespacesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -260,10 +260,10 @@ func (client *FleetMembersClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if fleetMemberName == "" {
-		return nil, errors.New("parameter fleetMemberName cannot be empty")
+	if managedNamespaceName == "" {
+		return nil, errors.New("parameter managedNamespaceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetMemberName}", url.PathEscape(fleetMemberName))
+	urlPath = strings.ReplaceAll(urlPath, "{managedNamespaceName}", url.PathEscape(managedNamespaceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -276,28 +276,28 @@ func (client *FleetMembersClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *FleetMembersClient) getHandleResponse(resp *http.Response) (FleetMembersClientGetResponse, error) {
-	result := FleetMembersClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FleetMember); err != nil {
-		return FleetMembersClientGetResponse{}, err
+func (client *FleetManagedNamespacesClient) getHandleResponse(resp *http.Response) (FleetManagedNamespacesClientGetResponse, error) {
+	result := FleetManagedNamespacesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FleetManagedNamespace); err != nil {
+		return FleetManagedNamespacesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByFleetPager - List FleetMember resources by Fleet
+// NewListByFleetPager - List FleetManagedNamespace resources by Fleet
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - options - FleetMembersClientListByFleetOptions contains the optional parameters for the FleetMembersClient.NewListByFleetPager
+//   - options - FleetManagedNamespacesClientListByFleetOptions contains the optional parameters for the FleetManagedNamespacesClient.NewListByFleetPager
 //     method.
-func (client *FleetMembersClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetMembersClientListByFleetOptions) *runtime.Pager[FleetMembersClientListByFleetResponse] {
-	return runtime.NewPager(runtime.PagingHandler[FleetMembersClientListByFleetResponse]{
-		More: func(page FleetMembersClientListByFleetResponse) bool {
+func (client *FleetManagedNamespacesClient) NewListByFleetPager(resourceGroupName string, fleetName string, options *FleetManagedNamespacesClientListByFleetOptions) *runtime.Pager[FleetManagedNamespacesClientListByFleetResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FleetManagedNamespacesClientListByFleetResponse]{
+		More: func(page FleetManagedNamespacesClientListByFleetResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *FleetMembersClientListByFleetResponse) (FleetMembersClientListByFleetResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetMembersClient.NewListByFleetPager")
+		Fetcher: func(ctx context.Context, page *FleetManagedNamespacesClientListByFleetResponse) (FleetManagedNamespacesClientListByFleetResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FleetManagedNamespacesClient.NewListByFleetPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -306,7 +306,7 @@ func (client *FleetMembersClient) NewListByFleetPager(resourceGroupName string, 
 				return client.listByFleetCreateRequest(ctx, resourceGroupName, fleetName, options)
 			}, nil)
 			if err != nil {
-				return FleetMembersClientListByFleetResponse{}, err
+				return FleetManagedNamespacesClientListByFleetResponse{}, err
 			}
 			return client.listByFleetHandleResponse(resp)
 		},
@@ -315,8 +315,8 @@ func (client *FleetMembersClient) NewListByFleetPager(resourceGroupName string, 
 }
 
 // listByFleetCreateRequest creates the ListByFleet request.
-func (client *FleetMembersClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetMembersClientListByFleetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members"
+func (client *FleetManagedNamespacesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetManagedNamespacesClientListByFleetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -341,52 +341,52 @@ func (client *FleetMembersClient) listByFleetCreateRequest(ctx context.Context, 
 }
 
 // listByFleetHandleResponse handles the ListByFleet response.
-func (client *FleetMembersClient) listByFleetHandleResponse(resp *http.Response) (FleetMembersClientListByFleetResponse, error) {
-	result := FleetMembersClientListByFleetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FleetMemberListResult); err != nil {
-		return FleetMembersClientListByFleetResponse{}, err
+func (client *FleetManagedNamespacesClient) listByFleetHandleResponse(resp *http.Response) (FleetManagedNamespacesClientListByFleetResponse, error) {
+	result := FleetManagedNamespacesClientListByFleetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FleetManagedNamespaceListResult); err != nil {
+		return FleetManagedNamespacesClientListByFleetResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdateAsync - Update a FleetMember
+// BeginUpdate - Update a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
-//   - fleetMemberName - The name of the Fleet member resource.
+//   - managedNamespaceName - The name of the fleet managed namespace resource.
 //   - properties - The resource properties to be updated.
-//   - options - FleetMembersClientBeginUpdateAsyncOptions contains the optional parameters for the FleetMembersClient.BeginUpdateAsync
+//   - options - FleetManagedNamespacesClientBeginUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginUpdate
 //     method.
-func (client *FleetMembersClient) BeginUpdateAsync(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, properties FleetMemberUpdate, options *FleetMembersClientBeginUpdateAsyncOptions) (*runtime.Poller[FleetMembersClientUpdateAsyncResponse], error) {
+func (client *FleetManagedNamespacesClient) BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*runtime.Poller[FleetManagedNamespacesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateAsync(ctx, resourceGroupName, fleetName, fleetMemberName, properties, options)
+		resp, err := client.update(ctx, resourceGroupName, fleetName, managedNamespaceName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetMembersClientUpdateAsyncResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetManagedNamespacesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetMembersClientUpdateAsyncResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetManagedNamespacesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// UpdateAsync - Update a FleetMember
+// Update - Update a FleetManagedNamespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-08-01-preview
-func (client *FleetMembersClient) updateAsync(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, properties FleetMemberUpdate, options *FleetMembersClientBeginUpdateAsyncOptions) (*http.Response, error) {
+func (client *FleetManagedNamespacesClient) update(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FleetMembersClient.BeginUpdateAsync"
+	const operationName = "FleetManagedNamespacesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateAsyncCreateRequest(ctx, resourceGroupName, fleetName, fleetMemberName, properties, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, managedNamespaceName, properties, options)
 	if err != nil {
 		return nil, err
 	}
@@ -401,9 +401,9 @@ func (client *FleetMembersClient) updateAsync(ctx context.Context, resourceGroup
 	return httpResp, nil
 }
 
-// updateAsyncCreateRequest creates the UpdateAsync request.
-func (client *FleetMembersClient) updateAsyncCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetMemberName string, properties FleetMemberUpdate, options *FleetMembersClientBeginUpdateAsyncOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/members/{fleetMemberName}"
+// updateCreateRequest creates the Update request.
+func (client *FleetManagedNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, managedNamespaceName string, properties FleetManagedNamespacePatch, options *FleetManagedNamespacesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/managedNamespaces/{managedNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -416,10 +416,10 @@ func (client *FleetMembersClient) updateAsyncCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter fleetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if fleetMemberName == "" {
-		return nil, errors.New("parameter fleetMemberName cannot be empty")
+	if managedNamespaceName == "" {
+		return nil, errors.New("parameter managedNamespaceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetMemberName}", url.PathEscape(fleetMemberName))
+	urlPath = strings.ReplaceAll(urlPath, "{managedNamespaceName}", url.PathEscape(managedNamespaceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

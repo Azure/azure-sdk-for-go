@@ -105,6 +105,7 @@ ccmshowbackdevs is an invalid user. Ensure the user exists, is public member of 
 cdnfdsuppgithub is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 chenkennt is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 chiragg4u is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
+chlahav is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 ctstone is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 dadunl is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 darshanhs90 is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.

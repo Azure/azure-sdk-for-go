@@ -665,11 +665,11 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 	}
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, updatedPolicy, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, updateResp.CertificatePolicy.IssuerParameters)
-	require.Equal(t, updatedPolicy.KeyProperties, updateResp.CertificatePolicy.KeyProperties)
-	require.Equal(t, policy.LifetimeActions, updateResp.CertificatePolicy.LifetimeActions)
-	require.Equal(t, policy.SecretProperties, updateResp.CertificatePolicy.SecretProperties)
-	require.Equal(t, policy.X509CertificateProperties, updateResp.CertificatePolicy.X509CertificateProperties)
+	require.Equal(t, policy.IssuerParameters, updateResp.IssuerParameters)
+	require.Equal(t, updatedPolicy.KeyProperties, updateResp.KeyProperties)
+	require.Equal(t, policy.LifetimeActions, updateResp.LifetimeActions)
+	require.Equal(t, policy.SecretProperties, updateResp.SecretProperties)
+	require.Equal(t, policy.X509CertificateProperties, updateResp.X509CertificateProperties)
 }
 
 func TestAPIVersion(t *testing.T) {

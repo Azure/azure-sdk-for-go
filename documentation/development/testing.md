@@ -168,8 +168,8 @@ asset.json
 
 3. Before testing, create a utils_test.go file as the entry point for live tests. Modify "package" and pathToPackage to match your service.
 
-```go
 `utils_test.go`
+```go
 //go:build go1.18
 // +build go1.18
 

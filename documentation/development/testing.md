@@ -147,7 +147,7 @@ A simple test for `armchaos` is shown below:
 
 1. Run the following PowerShell commands to download necessary scripts:
 
- ```ps
+ ```powershell
  Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
  Invoke-WebRequest -OutFile "common-asset-functions.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/common-asset-functions.ps1
 ```

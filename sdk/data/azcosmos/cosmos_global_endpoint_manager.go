@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -161,22 +160,19 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {
 	properties := accountProperties{}
+	unmarshalErr := azruntime.UnmarshalAsJSON(azResponse, &properties)
 
-	// This function, azruntime.Payload, will automatically capture the body, and restore it back to azResponse.Body at position 0
+	// It's safe to call this multiple times (UnmarshalAsJSON does it internally) because the body is buffered and seeked back to start.
 	bodyBytes, err := azruntime.Payload(azResponse)
-	if err != nil {
-		return properties, err
-	}
 
 	// Log the raw JSON
-	log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n"+
-		string(bodyBytes)+"\n"+
-		"==================================================\n")
-
-	err = json.Unmarshal(bodyBytes, &properties)
 	if err != nil {
-		return properties, err
+		log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n"+
+			string(bodyBytes)+"\n"+
+			"==================================================\n")
+	} else {
+		log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n<Failed to parse>\n==================================================\n")
 	}
 
-	return properties, nil
+	return properties, unmarshalErr
 }

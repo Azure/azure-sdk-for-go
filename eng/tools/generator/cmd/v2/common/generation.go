@@ -245,7 +245,7 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 
 func (t *SwaggerCommonGenerator) Generate(generateParam *GenerateParam) error {
 	packagePath := t.PackagePath
-	log.Printf("Start to run `` to regenerate the code...")
+	log.Printf("Start to run `go generate` to regenerate the code...")
 	if err := ExecuteGoGenerate(packagePath); err != nil {
 		return err
 	}

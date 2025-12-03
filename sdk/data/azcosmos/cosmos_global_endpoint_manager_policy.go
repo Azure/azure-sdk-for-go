@@ -12,8 +12,9 @@ import (
 )
 
 type globalEndpointManagerPolicy struct {
-	gem  *globalEndpointManager
-	once sync.Once
+	gem                  *globalEndpointManager
+	once                 sync.Once
+	outstandingRefreshes sync.WaitGroup
 }
 
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {
@@ -24,11 +25,7 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 		err = p.gem.Update(context.WithoutCancel(req.Raw().Context()), true)
 	})
 	if p.gem.ShouldRefresh() {
-		go func() {
-			// Use the same context, but without the cancellation signal.
-			// We DO want to preserve things like context values, but the GEM update needs to complete fully, even if the user cancels the triggering request.
-			_ = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
-		}()
+		p.gem.BackgroundRefresh(context.WithoutCancel(req.Raw().Context()))
 	}
 	if p.gem.CanUseMultipleWriteLocations() {
 		req.Raw().Header.Set(cosmosHeaderAllowTentativeWrites, "true")

@@ -45,6 +45,10 @@ func TestLoggingSuccessResponse(t *testing.T) {
 		},
 	})
 
+	// The GEM may have outstanding refreshes from client creation; wait for them to complete before moving to the next test.
+	// If we don't do this, we risk setting a log listener while the GEM is writing to the log during a background refresh.
+	defer client.gem.WaitForOutstandingRefreshes()
+
 	_, err := client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
 	if err != nil {
 		t.Errorf("Error creating database: %v", err)
@@ -91,6 +95,10 @@ func TestLoggingFailureResponse(t *testing.T) {
 			},
 		},
 	})
+
+	// The GEM may have outstanding refreshes from client creation; wait for them to complete before moving to the next test.
+	// If we don't do this, we risk setting a log listener while the GEM is writing to the log during a background refresh.
+	defer client.gem.WaitForOutstandingRefreshes()
 
 	// We expect an error here due to 500 response
 	_, _ = client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)

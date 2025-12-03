@@ -26,6 +26,18 @@ current_version=$(go version | awk '{print $3}' | sed 's/go//')
 if ! semver -r ">=1.24.10" "$current_version"; then
   wget -q https://go.dev/dl/go1.24.10.linux-amd64.tar.gz
   tar -C $TMPDIR -xzf go1.24.10.linux-amd64.tar.gz
+  found=0
+  for file in go*.linux-amd64.tar.gz*; do
+      if [ -e "$file" ]; then
+          echo "Deleting $file"
+          rm -f "$file"
+          found=1
+      fi
+  done
+
+  if [ "$found" -eq 0 ]; then
+      echo "No matching files found."
+  fi
   export GOROOT=$TMPDIR/go
   export PATH=$GOROOT/bin:$PATH
 fi
@@ -46,18 +58,6 @@ echo "GOPATH: $GOPATH"
 
 export GO111MODULE=on
 
-found=0
-for file in go*.linux-amd64.tar.gz*; do
-    if [ -e "$file" ]; then
-        echo "Deleting $file"
-        rm -f "$file"
-        found=1
-    fi
-done
-
-if [ "$found" -eq 0 ]; then
-    echo "No matching files found."
-fi
 
 generatorDirectory="$(realpath $DIRECTORY/../tools/generator)"
 cd $generatorDirectory

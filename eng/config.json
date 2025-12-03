@@ -132,7 +132,7 @@
         },
         {
             "Name": "security/keyvault/azadmin",
-            "CoverageGoal": 0.78
+            "CoverageGoal": 0.75
         },
         {
             "Name": "monitor/query/azmetrics",

@@ -90,7 +90,7 @@ func (r *repository) Add(path string) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -107,7 +107,7 @@ func (r *repository) Commit(message string) error {
 				message: m,
 			}
 		}
-		return fmt.Errorf(m)
+		return fmt.Errorf("%s", m)
 	}
 	return nil
 }
@@ -133,7 +133,7 @@ func (r *repository) checkoutBranch(branch string, create bool) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -143,7 +143,7 @@ func (r *repository) checkoutHash(hash string) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -153,7 +153,7 @@ func (r *repository) CheckoutTag(tag string) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -163,7 +163,7 @@ func (r *repository) CreateBranch(branch *Branch) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -174,7 +174,7 @@ func (r *repository) DeleteBranch(name string) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -185,7 +185,7 @@ func (r *repository) CherryPick(commit string) error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -196,7 +196,7 @@ func (r *repository) Stash() error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }
@@ -207,7 +207,7 @@ func (r *repository) StashPop() error {
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf(string(output))
+		return fmt.Errorf("%s", string(output))
 	}
 	return nil
 }

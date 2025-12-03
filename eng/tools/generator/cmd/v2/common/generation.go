@@ -664,7 +664,7 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 
 	var override *bool
 	switch generateParam.SdkReleaseType {
-	case utils.SDKReleaseTypePreview:
+	case utils.SDKReleaseTypeBeta:
 		override = new(bool)
 		*override = true
 	case utils.SDKReleaseTypeStable:

@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
 type captureLogger struct {
@@ -265,4 +266,62 @@ func TestLoggingEndpointFailureAndRecovery(t *testing.T) {
 
 		t.Logf("Phase 5 complete: %d EventEndpointManager logs", len(logs))
 	})
+}
+
+func TestLoggingAllowedHeaders(t *testing.T) {
+	emulatorTests := newEmulatorTests(t)
+
+	logger := &captureLogger{}
+	azlog.SetListener(func(event azlog.Event, message string) {
+		logger.log(event, message)
+	})
+	defer azlog.SetListener(nil)
+
+	azlog.SetEvents(azlog.EventResponse)
+	defer azlog.SetEvents()
+
+	client := emulatorTests.getClient(t, tracing.Provider{})
+
+	ctx := context.Background()
+	dbName := "loggingHeadersTestDB"
+	db := emulatorTests.createDatabase(t, ctx, client, dbName)
+	defer emulatorTests.deleteDatabase(t, ctx, db)
+
+	logs := logger.filterByEvent(azlog.EventResponse)
+	if len(logs) == 0 {
+		t.Fatal("No response logs captured")
+	}
+
+	headersToCheck := []string{
+		"X-Ms-Request-Charge",
+		"X-Ms-Activity-Id",
+		"Content-Type",
+	}
+
+	for _, header := range headersToCheck {
+		found := false
+		for _, logMsg := range logs {
+			if strings.Contains(logMsg, header) && !strings.Contains(logMsg, header+": REDACTED") {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("Expected header '%s' to be logged unredacted, but it was not found or was redacted.\nLogs:\n%s", header, logger.getAllLogs())
+		}
+	}
+
+	foundAuth := false
+	for _, logMsg := range logs {
+		if strings.Contains(logMsg, "Authorization") {
+			foundAuth = true
+			if !strings.Contains(logMsg, "Authorization: REDACTED") {
+				t.Errorf("Expected Authorization header to be redacted, but it was not.\nLog message: %s", logMsg)
+			}
+		}
+	}
+
+	if !foundAuth {
+		t.Log("Authorization header not found in logs")
+	}
 }

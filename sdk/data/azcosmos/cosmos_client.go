@@ -136,9 +136,11 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	if options.ClientOptions.Logging.AllowedHeaders == nil {
+		options.ClientOptions.Logging.AllowedHeaders = getAllowedHeaders()
+	}
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
-			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
@@ -160,9 +162,11 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	if options.ClientOptions.Logging.AllowedHeaders == nil {
+		options.ClientOptions.Logging.AllowedHeaders = getAllowedHeaders()
+	}
 	return azruntime.NewPipeline(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
-			AllowedHeaders: getAllowedHeaders(),
 			PerRetry: []policy.Policy{
 				authPolicy,
 			},
@@ -548,77 +552,12 @@ func addDefaultHeaders(req *policy.Request) {
 }
 
 func getAllowedHeaders() []string {
-	return []string{
-		cosmosHeaderRequestCharge,
-		cosmosHeaderActivityId,
-		cosmosHeaderEtag,
-		cosmosHeaderSubstatus,
-		cosmosHeaderPopulateQuotaInfo,
-		cosmosHeaderPreTriggerInclude,
-		cosmosHeaderPostTriggerInclude,
-		cosmosHeaderIndexingDirective,
-		cosmosHeaderSessionToken,
-		cosmosHeaderConsistencyLevel,
-		cosmosHeaderPrefer,
-		cosmosHeaderIsUpsert,
-		cosmosHeaderOfferThroughput,
-		cosmosHeaderOfferAutoscale,
-		cosmosHeaderQuery,
-		cosmosHeaderOfferReplacePending,
-		cosmosHeaderOfferMinimumThroughput,
-		cosmosHeaderResponseContinuationTokenLimitInKb,
-		cosmosHeaderEnableScanInQuery,
-		cosmosHeaderMaxItemCount,
-		cosmosHeaderContinuationToken,
-		cosmosHeaderPopulateIndexMetrics,
-		cosmosHeaderPopulateQueryMetrics,
-		cosmosHeaderQueryMetrics,
-		cosmosHeaderIndexUtilization,
-		cosmosHeaderCorrelatedActivityId,
-		cosmosHeaderIsBatchRequest,
-		cosmosHeaderIsBatchAtomic,
-		cosmosHeaderIsBatchOrdered,
-		cosmosHeaderSDKSupportedCapabilities,
-		headerXmsDate,
-		headerContentType,
-		headerIfMatch,
-		headerIfNoneMatch,
-		headerXmsVersion,
-		headerContentLocation,
-		headerXmsGatewayVersion,
-		headerLsn,
-		headerXmsCosmosLlsn,
-		headerXmsCosmosItemLlsn,
-		headerXmsItemLsn,
-		headerXmsCosmosQuorumAckedLlsn,
-		headerXmsCurrentReplicaSetSize,
-		headerXmsCurrentWriteQuorum,
-		headerXmsGlobalCommittedLsn,
-		headerXmsLastStateChangeUtc,
-		headerXmsNumberOfReadRegions,
-		headerXmsQuorumAckedLsn,
-		headerXmsRequestDurationMs,
-		headerXmsResourceQuota,
-		headerXmsResourceUsage,
-		headerXmsSchemaVersion,
-		headerXmsServiceVersion,
-		headerXmsTransportRequestId,
-		headerXmsXpRole,
-		headerCollectionPartitionIndex,
-		headerCollectionServiceIndex,
-		headerXmsDocumentDbPartitionKeyRangeId,
-		cosmosHeaderPhysicalPartitionId,
-		headerStrictTransportSecurity,
-		headerXmsDatabaseAccountConsumedMb,
-		headerXmsDatabaseAccountProvisionedMb,
-		headerXmsDatabaseAccountReservedMb,
-		headerXmsMaxMediaStorageUsageMb,
-		headerXmsMediaStorageUsageMb,
-		headerXmsContentPath,
-		headerXmsAltContentPath,
-		cosmosHeaderMaxContentLength,
-		cosmosHeaderIsPartitionKeyDeletePending,
-		cosmosHeaderQueryExecutionInfo,
-		headerXmsItemCount,
+	headers := make([]string, 0, len(allKnownHttpHeaders))
+	for _, h := range allKnownHttpHeaders {
+		if h == headerAuthorization || h == "Proxy-Authorization" || h == "Transfer-Encoding" {
+			continue
+		}
+		headers = append(headers, h)
 	}
+	return headers
 }

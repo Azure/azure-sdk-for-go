@@ -3,7 +3,12 @@
 
 package azcosmos
 
+//go:generate go -C ./valuelist run . ../cosmos_http_constants.go ../cosmos_http_constants_generated.go
+
+// AFTER adding any new constants to the header list below, run `go generate` in this package to regenerate the generated file listing all possible headers.
+
 // Headers
+// valueList allKnownHttpHeaders
 const (
 	cosmosHeaderRequestCharge                      string = "x-ms-request-charge"
 	cosmosHeaderActivityId                         string = "x-ms-activity-id"

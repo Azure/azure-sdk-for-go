@@ -143,7 +143,7 @@ If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go 
 #### Example: Management Plane
 
 A simple test for `armchaos` is shown below:
-##### The first step is to download prepared scripts to generated asset.json in the path and create file utils_test.go
+##### The first step is to download prepared scripts to generated assets.json in the path and create file utils_test.go
 
 1. Run the following PowerShell commands to download necessary scripts:
 
@@ -154,7 +154,7 @@ A simple test for `armchaos` is shown below:
 
 2. Run the script in the service path:
 `.\generate-assets-json.ps1 -InitialPush`
-This will create a config file `asset.json` and push recordings to the Azure SDK Assets repo.
+This will create a config file `assets.json` and push recordings to the Azure SDK Assets repo.
 
 `assets.json`
 ```json
@@ -179,25 +179,25 @@ This will create a config file `asset.json` and push recordings to the Azure SDK
 package armchaos_test
 
 import (
- "os"
- "testing"
-
- "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
+    "os"
+    "testing"
+    
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 )
 
 const (
- pathToPackage = "sdk/resourcemanager/chaos/armchaos/testdata"
+    pathToPackage = "sdk/resourcemanager/chaos/armchaos/testdata"
 )
 
 func TestMain(m *testing.M) {
- code := run(m)
- os.Exit(code)
+    code := run(m)
+    os.Exit(code)
 }
 
 func run(m *testing.M) int {
- f := testutil.StartProxy(pathToPackage)
- defer f()
- return m.Run()
+    f := testutil.StartProxy(pathToPackage)
+    defer f()
+    return m.Run()
 }
 
 ```
@@ -216,61 +216,61 @@ func run(m *testing.M) int {
 package armchaos_test
 
 import (
- "context"
- "testing"
-
- "github.com/Azure/azure-sdk-for-go/sdk/azcore"
- "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
- "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
- "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
- "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
- "github.com/stretchr/testify/suite"
+    "context"
+    "testing"
+    
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+    "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
+    "github.com/stretchr/testify/suite"
 )
 
 type OperationsTestSuite struct {
- suite.Suite
-
- ctx               context.Context
- cred              azcore.TokenCredential
- options           *arm.ClientOptions
- armEndpoint       string
- location          string
- resourceGroupName string
- subscriptionId    string
+    suite.Suite
+    
+    ctx               context.Context
+    cred              azcore.TokenCredential
+    options           *arm.ClientOptions
+    armEndpoint       string
+    location          string
+    resourceGroupName string
+    subscriptionId    string
 }
 
 func (testsuite *OperationsTestSuite) SetupSuite() {
- testutil.StartRecording(testsuite.T(), pathToPackage)
-
- testsuite.ctx = context.Background()
- testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
- testsuite.armEndpoint = "https://management.azure.com"
- testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
- testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
- testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
- resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
- testsuite.Require().NoError(err)
- testsuite.resourceGroupName = *resourceGroup.Name
+    testutil.StartRecording(testsuite.T(), pathToPackage)
+    
+    testsuite.ctx = context.Background()
+    testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+    testsuite.armEndpoint = "https://management.azure.com"
+    testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+    testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+    testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+    resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
+    testsuite.Require().NoError(err)
+    testsuite.resourceGroupName = *resourceGroup.Name
 }
 
 func (testsuite *OperationsTestSuite) TearDownSuite() {
- _, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
- testsuite.Require().NoError(err)
- testutil.StopRecording(testsuite.T())
+    _, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+    testsuite.Require().NoError(err)
+    testutil.StopRecording(testsuite.T())
 }
 
 func TestOperationsTestSuite(t *testing.T) {
- suite.Run(t, new(OperationsTestSuite))
+    suite.Run(t, new(OperationsTestSuite))
 }
 
 // Microsoft.Chaos/operations
 func (testsuite *OperationsTestSuite) TestOperation() {
- var err error
- // From step Operations_ListAll
- operationsClient, err := armchaos.NewOperationStatusesClient(testsuite.subscriptionId, testsuite.cred, nil)
- testsuite.Require().NoError(err)
- _, err = operationsClient.Get(testsuite.ctx, testsuite.location, testsuite.subscriptionId, nil)
- testsuite.Require().NoError(err)
+    var err error
+    // From step Operations_ListAll
+    operationsClient, err := armchaos.NewOperationStatusesClient(testsuite.subscriptionId, testsuite.cred, nil)
+    testsuite.Require().NoError(err)
+    _, err = operationsClient.Get(testsuite.ctx, testsuite.location, testsuite.subscriptionId, nil)
+    testsuite.Require().NoError(err)
 }
 
 ```

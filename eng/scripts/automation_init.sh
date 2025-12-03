@@ -47,7 +47,7 @@ echo "GOPATH: $GOPATH"
 export GO111MODULE=on
 
 found=0
-for file in go*.linux-amd64.tar.gz go*.linux-amd64.tar.gz.*; do
+for file in go*.linux-amd64.tar.gz*; do
     if [ -e "$file" ]; then
         echo "Deleting $file"
         rm -f "$file"

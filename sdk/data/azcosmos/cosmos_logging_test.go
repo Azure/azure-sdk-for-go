@@ -45,7 +45,10 @@ func TestLoggingSuccessResponse(t *testing.T) {
 		},
 	})
 
-	client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
+	_, err := client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
+	if err != nil {
+		t.Errorf("Error creating database: %v", err)
+	}
 
 	logs := logger.filterByEvent(azlog.EventResponse)
 	found := false
@@ -89,7 +92,8 @@ func TestLoggingFailureResponse(t *testing.T) {
 		},
 	})
 
-	client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
+	// We expect an error here due to 500 response
+	_, _ = client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
 
 	logs := logger.filterByEvent(azlog.EventResponse)
 	found := false

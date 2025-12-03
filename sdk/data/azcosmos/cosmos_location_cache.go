@@ -118,12 +118,12 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 
 	nextLoc.writeEndpoints = lc.getPrefAvailableEndpoints(nextLoc.availWriteEndpointsByLocation, nextLoc.availWriteLocations, write, lc.defaultEndpoint)
 	nextLoc.readEndpoints = lc.getPrefAvailableEndpoints(nextLoc.availReadEndpointsByLocation, nextLoc.availReadLocations, read, nextLoc.writeEndpoints[0])
-	
+
 	// Only compare and log if the event is enabled
 	if log.Should(EventEndpointManager) {
 		writeEndpointsChanged := !urlSlicesEqual(lc.locationInfo.writeEndpoints, nextLoc.writeEndpoints)
 		readEndpointsChanged := !urlSlicesEqual(lc.locationInfo.readEndpoints, nextLoc.readEndpoints)
-		
+
 		if writeEndpointsChanged || readEndpointsChanged {
 			log.Writef(EventEndpointManager,
 				"\n===== Endpoint Priority Recomputed =====\n"+
@@ -138,7 +138,7 @@ func (lc *locationCache) update(writeLocations []accountRegion, readLocations []
 				lc.enableMultipleWriteLocations)
 		}
 	}
-	
+
 	lc.lastUpdateTime = time.Now()
 	lc.locationInfo = nextLoc
 	return nil
@@ -229,7 +229,7 @@ func (lc *locationCache) markEndpointUnavailableForWrite(endpoint url.URL) error
 func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedOperations) error {
 	now := time.Now()
 	region := lc.getLocation(endpoint)
-	
+
 	lc.mapMutex.Lock()
 	if info, ok := lc.locationUnavailabilityInfoMap[endpoint]; ok {
 		info.lastCheckTime = now
@@ -243,11 +243,11 @@ func (lc *locationCache) markEndpointUnavailable(endpoint url.URL, op requestedO
 		lc.locationUnavailabilityInfoMap[endpoint] = info
 	}
 	lc.mapMutex.Unlock()
-	
+
 	log.Writef(EventEndpointManager,
 		"Marked endpoint unavailable: endpoint=%s, region=%s, operation=%s",
 		endpoint.Host, region, operationName(op))
-	
+
 	err := lc.update(nil, nil, nil, nil)
 	return err
 }

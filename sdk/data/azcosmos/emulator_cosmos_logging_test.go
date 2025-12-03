@@ -33,14 +33,6 @@ func (cl *captureLogger) log(event azlog.Event, message string) {
 	})
 }
 
-func (cl *captureLogger) getEntries() []logEntry {
-	cl.mu.Lock()
-	defer cl.mu.Unlock()
-	entries := make([]logEntry, len(cl.entries))
-	copy(entries, cl.entries)
-	return entries
-}
-
 func (cl *captureLogger) filterByEvent(event azlog.Event) []string {
 	cl.mu.Lock()
 	defer cl.mu.Unlock()

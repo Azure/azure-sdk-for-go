@@ -156,8 +156,8 @@ A simple test for `armchaos` is shown below:
 `.\generate-assets-json.ps1 -InitialPush`
 This will create a config file `asset.json` and push recordings to the Azure SDK Assets repo.
 
-```
-asset.json
+`assets.json`
+```json
 {
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",

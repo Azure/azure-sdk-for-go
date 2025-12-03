@@ -58,7 +58,6 @@ echo "GOPATH: $GOPATH"
 
 export GO111MODULE=on
 
-
 generatorDirectory="$(realpath $DIRECTORY/../tools/generator)"
 cd $generatorDirectory
 echo "Install generator..."

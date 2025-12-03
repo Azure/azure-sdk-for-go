@@ -23,9 +23,9 @@ if ! command -v semver &> /dev/null; then
     npm install -g semver
 fi
 current_version=$(go version | awk '{print $3}' | sed 's/go//')
-if ! semver -r ">=1.25.4" "$current_version"; then
-  wget -q https://go.dev/dl/go1.25.4.linux-amd64.tar.gz
-  tar -C $TMPDIR -xzf go1.25.4.linux-amd64.tar.gz
+if ! semver -r ">=1.24.10" "$current_version"; then
+  wget -q https://go.dev/dl/go1.24.10.linux-amd64.tar.gz
+  tar -C $TMPDIR -xzf go1.24.10.linux-amd64.tar.gz
   export GOROOT=$TMPDIR/go
   export PATH=$GOROOT/bin:$PATH
 fi
@@ -45,6 +45,19 @@ fi
 echo "GOPATH: $GOPATH"
 
 export GO111MODULE=on
+
+found=0
+for file in go*.linux-amd64.tar.gz go*.linux-amd64.tar.gz.*; do
+    if [ -e "$file" ]; then
+        echo "Deleting $file"
+        rm -f "$file"
+        found=1
+    fi
+done
+
+if [ "$found" -eq 0 ]; then
+    echo "No matching files found."
+fi
 
 generatorDirectory="$(realpath $DIRECTORY/../tools/generator)"
 cd $generatorDirectory

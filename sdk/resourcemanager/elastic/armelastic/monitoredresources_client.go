@@ -49,9 +49,9 @@ func NewMonitoredResourcesClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// NewListPager - List the resources currently being monitored by the Elastic monitor resource.
+// NewListPager - List all resources currently being monitored by the Elastic monitor resource, helping you manage observability.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitoredResourcesClientListOptions contains the optional parameters for the MonitoredResourcesClient.NewListPager
@@ -80,7 +80,7 @@ func (client *MonitoredResourcesClient) NewListPager(resourceGroupName string, m
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitoredResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitoredResourcesClientListOptions) (*policy.Request, error) {
+func (client *MonitoredResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitoredResourcesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listMonitoredResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,7 +99,7 @@ func (client *MonitoredResourcesClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

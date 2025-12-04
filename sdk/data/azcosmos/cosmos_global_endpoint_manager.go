@@ -47,6 +47,11 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		lastUpdateTime:      time.Time{},
 	}
 
+	log.Writef(EventEndpointManager,
+		"Initializing Global Endpoint Manager: endpoint=%s, preferredLocations=%v, "+
+			"refreshInterval=%v, enableCrossRegionRetries=%v",
+		clientEndpoint, preferredLocations, refreshTimeInterval, enableCrossRegionRetries)
+
 	return gem, nil
 }
 
@@ -66,7 +71,7 @@ func (gem *globalEndpointManager) MarkEndpointUnavailableForRead(endpoint url.UR
 	return gem.locationCache.markEndpointUnavailableForRead(endpoint)
 }
 
-func (gem *globalEndpointManager) GetEndpointLocation(endpoint url.URL) string {
+func (gem *globalEndpointManager) GetEndpointLocation(endpoint url.URL) regionId {
 	return gem.locationCache.getLocation(endpoint)
 }
 
@@ -155,10 +160,19 @@ func (gem *globalEndpointManager) GetAccountProperties(ctx context.Context) (acc
 
 func newAccountProperties(azResponse *http.Response) (accountProperties, error) {
 	properties := accountProperties{}
-	err := azruntime.UnmarshalAsJSON(azResponse, &properties)
+	unmarshalErr := azruntime.UnmarshalAsJSON(azResponse, &properties)
+
+	// It's safe to call this multiple times (UnmarshalAsJSON does it internally) because the body is buffered and seeked back to start.
+	bodyBytes, err := azruntime.Payload(azResponse)
+
+	// Log the raw JSON
 	if err != nil {
-		return properties, err
+		log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n"+
+			string(bodyBytes)+"\n"+
+			"==================================================\n")
+	} else {
+		log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n<Failed to parse>\n==================================================\n")
 	}
 
-	return properties, nil
+	return properties, unmarshalErr
 }

@@ -17,7 +17,7 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
-	emulatorRegionName := "South Central US"
+	emulatorRegionName := newRegionId("South Central US")
 	preferredRegions := []string{}
 	emulatorRegion := accountRegion{Name: emulatorRegionName, Endpoint: "https://127.0.0.1:8081/"}
 
@@ -56,8 +56,8 @@ func TestGlobalEndpointManagerEmulator(t *testing.T) {
 
 	// Assert location cache is not populated until update() is called
 	locationInfo := gem.locationCache.locationInfo
-	availableLocation := []string{}
-	availableEndpointsByLocation := map[string]url.URL{}
+	availableLocation := []regionId{}
+	availableEndpointsByLocation := map[regionId]url.URL{}
 
 	assert.Equal(t, locationInfo.availReadLocations, availableLocation)
 	assert.Equal(t, locationInfo.availWriteLocations, availableLocation)
@@ -82,12 +82,12 @@ func TestGlobalEndpointManagerPolicyEmulator(t *testing.T) {
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
-	emulatorRegionName := "South Central US"
+	emulatorRegionName := newRegionId("South Central US")
 
 	// Assert location cache is not populated until update() is called within the policy
 	locationInfo := client.gem.locationCache.locationInfo
-	availableLocation := []string{}
-	availableEndpointsByLocation := map[string]url.URL{}
+	availableLocation := []regionId{}
+	availableEndpointsByLocation := map[regionId]url.URL{}
 
 	assert.Equal(t, locationInfo.availReadLocations, availableLocation)
 	assert.Equal(t, locationInfo.availWriteLocations, availableLocation)

@@ -148,7 +148,7 @@ func TestGlobalEndpointManagerGetEndpointLocation(t *testing.T) {
 
 	location := gem.GetEndpointLocation(*serverEndpoint)
 
-	expectedLocation := "West US"
+	expectedLocation := newRegionId("West US")
 	assert.Equal(t, expectedLocation, location)
 }
 
@@ -286,13 +286,13 @@ func TestGlobalEndpointManagerResolveEndpointSingleMasterDocumentOperation(t *te
 	writeOperation := false
 	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "centralus"))
 
 	// Writes should go to primary endpoint
 	writeOperation = true
 	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "eastus"))
 }
 
 func TestGlobalEndpointManagerResolveEndpointMultiMasterDocumentOperation(t *testing.T) {
@@ -311,13 +311,13 @@ func TestGlobalEndpointManagerResolveEndpointMultiMasterDocumentOperation(t *tes
 	writeOperation := false
 	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "centralus"))
 
 	// Writes should go to primary endpoint
 	writeOperation = true
 	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeDocument, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "centralus"))
 }
 
 func TestGlobalEndpointManagerResolveEndpointSingleMasterMetadataOperation(t *testing.T) {
@@ -336,13 +336,13 @@ func TestGlobalEndpointManagerResolveEndpointSingleMasterMetadataOperation(t *te
 	writeOperation := false
 	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "centralus"))
 
 	// Writes should go to primary endpoint
 	writeOperation = true
 	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "eastus"))
 }
 
 func TestGlobalEndpointManagerResolveEndpointMultiMasterMetadataOperation(t *testing.T) {
@@ -361,13 +361,13 @@ func TestGlobalEndpointManagerResolveEndpointMultiMasterMetadataOperation(t *tes
 	writeOperation := false
 	selectedEndpoint := mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "central-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "centralus"))
 
 	// Writes should go to primary endpoint
 	writeOperation = true
 	selectedEndpoint = mockGem.ResolveServiceEndpoint(0, resourceTypeCollection, writeOperation, false)
 
-	assert.True(t, strings.Contains(selectedEndpoint.Host, "east-us"))
+	assert.True(t, strings.Contains(selectedEndpoint.Host, "eastus"))
 }
 
 // A policy that captures all requests made.
@@ -522,30 +522,30 @@ func TestAddedAllowTentativeHeaderGEMPolicy(t *testing.T) {
 }
 
 func createLocationCacheForGem(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
-	availableWriteLocs := []string{"East US"}
+	availableWriteLocs := []regionId{newRegionId("East US")}
 	if isMultiMaster {
-		availableWriteLocs = []string{"East US", "Central US"}
+		availableWriteLocs = []regionId{newRegionId("East US"), newRegionId("Central US")}
 	}
-	availableReadLocs := []string{"East US", "Central US", "East US 2"}
-	availableWriteEndpointsByLoc := map[string]url.URL{}
-	availableReadEndpointsByLoc := map[string]url.URL{}
+	availableReadLocs := []regionId{newRegionId("East US"), newRegionId("Central US"), newRegionId("East US 2")}
+	availableWriteEndpointsByLoc := map[regionId]url.URL{}
+	availableReadEndpointsByLoc := map[regionId]url.URL{}
 	writeEndpoints := []url.URL{}
 	readEndpoints := []url.URL{}
 
-	for _, value := range availableWriteLocs {
-		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
-		availableWriteEndpointsByLoc[value] = *regionalEndpoint
+	for _, region := range availableWriteLocs {
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + region.String())
+		availableWriteEndpointsByLoc[region] = *regionalEndpoint
 		writeEndpoints = append(writeEndpoints, *regionalEndpoint)
 	}
 
-	for _, value := range availableReadLocs {
-		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + strings.ToLower(strings.ReplaceAll(value, " ", "-")))
-		availableReadEndpointsByLoc[value] = *regionalEndpoint
+	for _, region := range availableReadLocs {
+		regionalEndpoint, _ := url.Parse(defaultEndpoint.Scheme + "://" + defaultEndpoint.Hostname() + "-" + region.String())
+		availableReadEndpointsByLoc[region] = *regionalEndpoint
 		readEndpoints = append(readEndpoints, *regionalEndpoint)
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
-		prefLocations:                 []string{"Central US"},
+		prefLocations:                 []regionId{newRegionId("Central US")},
 		availWriteLocations:           availableWriteLocs,
 		availReadLocations:            availableReadLocs,
 		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,

@@ -6,10 +6,11 @@ package armkeyvault_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
-	"log"
 )
 
 // Generated from example definition: 2025-05-01/checkVaultNameAvailability.json
@@ -207,7 +208,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// 			},
 	// 			PrivateEndpointConnections: []*armkeyvault.PrivateEndpointConnectionItem{
 	// 				{
-	// 					Etag: &azcore.ETag(""),
+	// 					Etag: to.Ptr(azcore.ETag("")),
 	// 					ID: to.Ptr(""),
 	// 					Properties: &armkeyvault.PrivateEndpointConnectionProperties{
 	// 						PrivateEndpoint: &armkeyvault.PrivateEndpoint{

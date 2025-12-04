@@ -68,7 +68,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_Get() {
 	// 	MHSMPrivateEndpointConnection: &armkeyvault.MHSMPrivateEndpointConnection{
 	// 		Name: to.Ptr("sample-pec"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedhsms/privateEndpointConnections"),
-	// 		Etag: &azcore.ETag(""),
+	// 		Etag: to.Ptr(azcore.ETag("")),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedhsms/sample-mhsm/privateEndpointConnections/sample-pec"),
 	// 		Properties: &armkeyvault.MHSMPrivateEndpointConnectionProperties{
 	// 			PrivateEndpoint: &armkeyvault.MHSMPrivateEndpoint{
@@ -113,7 +113,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_NewListByResourcePager() {
 		// 			{
 		// 				Name: to.Ptr("sample-pec1"),
 		// 				Type: to.Ptr("Microsoft.KeyVault/managedhsms/privateEndpointConnections"),
-		// 				Etag: &azcore.ETag(""),
+		// 				Etag: to.Ptr(azcore.ETag("")),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedhsms/sample-mhsm/privateEndpointConnections/sample-pec1"),
 		// 				Properties: &armkeyvault.MHSMPrivateEndpointConnectionProperties{
 		// 					PrivateEndpoint: &armkeyvault.MHSMPrivateEndpoint{
@@ -130,7 +130,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_NewListByResourcePager() {
 		// 			{
 		// 				Name: to.Ptr("sample-pec2"),
 		// 				Type: to.Ptr("Microsoft.KeyVault/managedhsms/privateEndpointConnections"),
-		// 				Etag: &azcore.ETag(""),
+		// 				Etag: to.Ptr(azcore.ETag("")),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedhsms/sample-mhsm/privateEndpointConnections/sample-pec2"),
 		// 				Properties: &armkeyvault.MHSMPrivateEndpointConnectionProperties{
 		// 					PrivateEndpoint: &armkeyvault.MHSMPrivateEndpoint{

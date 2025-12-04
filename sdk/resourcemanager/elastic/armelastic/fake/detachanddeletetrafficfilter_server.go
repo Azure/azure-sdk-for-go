@@ -21,7 +21,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -55,21 +55,40 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) Do(req *http.Request) (*ht
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DetachAndDeleteTrafficFilterClient.Delete":
-		resp, err = d.dispatchDelete(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if detachAndDeleteTrafficFilterServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = detachAndDeleteTrafficFilterServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DetachAndDeleteTrafficFilterClient.Delete":
+				res.resp, res.err = d.dispatchDelete(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
@@ -79,7 +98,7 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchDelete(req *http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/detachAndDeleteTrafficFilter`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -115,4 +134,10 @@ func (d *DetachAndDeleteTrafficFilterServerTransport) dispatchDelete(req *http.R
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DetachAndDeleteTrafficFilterServerTransport
+var detachAndDeleteTrafficFilterServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

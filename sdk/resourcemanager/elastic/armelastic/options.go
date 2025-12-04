@@ -22,7 +22,7 @@ type AllTrafficFiltersClientListOptions struct {
 // AssociateTrafficFilterClientBeginAssociateOptions contains the optional parameters for the AssociateTrafficFilterClient.BeginAssociate
 // method.
 type AssociateTrafficFilterClientBeginAssociateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 
 	// Ruleset Id of the filter
@@ -49,7 +49,7 @@ type CreateAndAssociateIPFilterClientBeginCreateOptions struct {
 	// Name of the traffic filter
 	Name *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -65,7 +65,7 @@ type CreateAndAssociatePLFilterClientBeginCreateOptions struct {
 	// Name of the private endpoint
 	PrivateEndpointName *string
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -84,7 +84,7 @@ type DetachAndDeleteTrafficFilterClientDeleteOptions struct {
 // DetachTrafficFilterClientBeginUpdateOptions contains the optional parameters for the DetachTrafficFilterClient.BeginUpdate
 // method.
 type DetachTrafficFilterClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 
 	// Ruleset Id of the filter
@@ -108,7 +108,7 @@ type MonitorClientBeginUpgradeOptions struct {
 	// Elastic Monitor Upgrade Parameters
 	Body *MonitorUpgrade
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -117,18 +117,63 @@ type MonitoredResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MonitoredSubscriptionsClientBeginCreateorUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginCreateorUpdate
+// method.
+type MonitoredSubscriptionsClientBeginCreateorUpdateOptions struct {
+	Body *MonitoredSubscriptionProperties
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitoredSubscriptionsClientBeginDeleteOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginDelete
+// method.
+type MonitoredSubscriptionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitoredSubscriptionsClientBeginUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginUpdate
+// method.
+type MonitoredSubscriptionsClientBeginUpdateOptions struct {
+	Body *MonitoredSubscriptionProperties
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitoredSubscriptionsClientGetOptions contains the optional parameters for the MonitoredSubscriptionsClient.Get method.
+type MonitoredSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MonitoredSubscriptionsClientListOptions contains the optional parameters for the MonitoredSubscriptionsClient.NewListPager
+// method.
+type MonitoredSubscriptionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
 type MonitorsClientBeginCreateOptions struct {
 	// Elastic monitor resource model
 	Body *MonitorResource
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
 type MonitorsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
+type MonitorsClientBeginUpdateOptions struct {
+	// Elastic resource model update parameters.
+	Body *MonitorResourceUpdateParameters
+
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -146,12 +191,6 @@ type MonitorsClientListByResourceGroupOptions struct {
 // MonitorsClientListOptions contains the optional parameters for the MonitorsClient.NewListPager method.
 type MonitorsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// MonitorsClientUpdateOptions contains the optional parameters for the MonitorsClient.Update method.
-type MonitorsClientUpdateOptions struct {
-	// Elastic resource model update parameters.
-	Body *MonitorResourceUpdateParameters
 }
 
 // OpenAIClientCreateOrUpdateOptions contains the optional parameters for the OpenAIClient.CreateOrUpdate method.
@@ -184,6 +223,16 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// OrganizationsClientBeginResubscribeOptions contains the optional parameters for the OrganizationsClient.BeginResubscribe
+// method.
+type OrganizationsClientBeginResubscribeOptions struct {
+	// Resubscribe Properties
+	Body *ResubscribeProperties
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // OrganizationsClientGetAPIKeyOptions contains the optional parameters for the OrganizationsClient.GetAPIKey method.
 type OrganizationsClientGetAPIKeyOptions struct {
 	// Email Id parameter of the User Organization, of which the API Key must be returned
@@ -198,7 +247,7 @@ type OrganizationsClientGetElasticToAzureSubscriptionMappingOptions struct {
 
 // TagRulesClientBeginDeleteOptions contains the optional parameters for the TagRulesClient.BeginDelete method.
 type TagRulesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

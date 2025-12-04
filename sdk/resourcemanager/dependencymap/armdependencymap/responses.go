@@ -46,7 +46,8 @@ type MapsClientDeleteResponse struct {
 
 // MapsClientExportDependenciesResponse contains the response from method MapsClient.BeginExportDependencies.
 type MapsClientExportDependenciesResponse struct {
-	// placeholder for future response values
+	// Model representing the result of the export dependencies asynchronous operation.
+	ExportDependenciesOperationResult
 }
 
 // MapsClientGetConnectionsForProcessOnFocusedMachineResponse contains the response from method MapsClient.BeginGetConnectionsForProcessOnFocusedMachine.

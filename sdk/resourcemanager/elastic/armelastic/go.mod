@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2
 
 go 1.24.0
 

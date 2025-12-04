@@ -146,6 +146,14 @@ func (c *ClientFactory) NewMonitoredResourcesClient() *MonitoredResourcesClient 
 	}
 }
 
+// NewMonitoredSubscriptionsClient creates a new instance of MonitoredSubscriptionsClient.
+func (c *ClientFactory) NewMonitoredSubscriptionsClient() *MonitoredSubscriptionsClient {
+	return &MonitoredSubscriptionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewMonitorsClient creates a new instance of MonitorsClient.
 func (c *ClientFactory) NewMonitorsClient() *MonitorsClient {
 	return &MonitorsClient{

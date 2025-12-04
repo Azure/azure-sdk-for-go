@@ -49,10 +49,11 @@ func NewTrafficFiltersClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// Delete - Delete traffic filter from the account.
+// Delete - Delete an existing traffic filter associated with your Elastic monitor resource, removing its network traffic
+// control capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - TrafficFiltersClientDeleteOptions contains the optional parameters for the TrafficFiltersClient.Delete method.
@@ -97,7 +98,7 @@ func (client *TrafficFiltersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

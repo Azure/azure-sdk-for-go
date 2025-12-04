@@ -101,10 +101,10 @@ func (b batchOperationCreate) getOperationType() operationType {
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationCreate) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(",\"resourceBody\":")
+	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
+	fmt.Fprint(buffer, ",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 
@@ -121,10 +121,10 @@ func (b batchOperationDelete) getOperationType() operationType {
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
+	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
+	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
 	if b.ifMatch != nil {
-		buffer.WriteString(",\"ifMatch\":")
+		fmt.Fprint(buffer, ",\"ifMatch\":")
 		etag, err := json.Marshal(b.ifMatch)
 		if err != nil {
 			return nil, err
@@ -132,7 +132,7 @@ func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 
@@ -150,9 +150,9 @@ func (b batchOperationReplace) getOperationType() operationType {
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
+	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 	if b.ifMatch != nil {
-		buffer.WriteString(",\"ifMatch\":")
+		fmt.Fprint(buffer, ",\"ifMatch\":")
 		etag, err := json.Marshal(b.ifMatch)
 		if err != nil {
 			return nil, err
@@ -160,10 +160,10 @@ func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
-	buffer.WriteString(",\"resourceBody\":")
+	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, ",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 
@@ -180,9 +180,9 @@ func (b batchOperationUpsert) getOperationType() operationType {
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
+	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 	if b.ifMatch != nil {
-		buffer.WriteString(",\"ifMatch\":")
+		fmt.Fprint(buffer, ",\"ifMatch\":")
 		etag, err := json.Marshal(b.ifMatch)
 		if err != nil {
 			return nil, err
@@ -190,9 +190,9 @@ func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(",\"resourceBody\":")
+	fmt.Fprint(buffer, ",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 
@@ -210,10 +210,10 @@ func (b batchOperationPatch) getOperationType() operationType {
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationPatch) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
+	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 
 	if b.ifMatch != nil {
-		buffer.WriteString(",\"ifMatch\":")
+		fmt.Fprint(buffer, ",\"ifMatch\":")
 		etag, err := json.Marshal(b.ifMatch)
 		if err != nil {
 			return nil, err
@@ -221,14 +221,14 @@ func (b batchOperationPatch) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
-	buffer.WriteString(",\"resourceBody\":")
+	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, ",\"resourceBody\":")
 	p, err := json.Marshal(b.patchOperations)
 	if err != nil {
 		return nil, err
 	}
 	buffer.Write(p)
-	buffer.WriteString("}")
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }
 
@@ -244,8 +244,8 @@ func (b batchOperationRead) getOperationType() operationType {
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationRead) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString(fmt.Sprintf("\"operationType\":\"%s\"", b.operationType))
-	buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", b.id))
-	buffer.WriteString("}")
+	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
+	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }

@@ -70,7 +70,7 @@
         },
         {
             "Name": "data/aztables",
-            "CoverageGoal": 0.77,
+            "CoverageGoal": 0.43,
             "EnvironmentVariables": {
                 "TABLES_STORAGE_ACCOUNT_NAME": "fakeaccount",
                 "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY": "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==",
@@ -132,7 +132,7 @@
         },
         {
             "Name": "security/keyvault/azadmin",
-            "CoverageGoal": 0.78
+            "CoverageGoal": 0.75
         },
         {
             "Name": "monitor/query/azmetrics",

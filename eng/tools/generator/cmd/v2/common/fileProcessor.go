@@ -4,27 +4,19 @@
 package common
 
 import (
-	"bytes"
 	"fmt"
-	"go/ast"
-	"go/parser"
-	"go/printer"
-	"go/token"
 	"io"
 	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
-	"slices"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
-	"github.com/Masterminds/semver"
-	"golang.org/x/tools/go/ast/astutil"
 )
 
 const (
@@ -32,18 +24,6 @@ const (
 	autorest_md_file_suffix           = "readme.md"
 	autorest_md_module_version_prefix = "module-version: "
 	swagger_md_module_name_prefix     = "module-name: "
-)
-
-type PullRequestLabel string
-
-const (
-	StableLabel                PullRequestLabel = "Stable"
-	BetaLabel                  PullRequestLabel = "Beta"
-	FirstGALabel               PullRequestLabel = "FirstGA"
-	FirstGABreakingChangeLabel PullRequestLabel = "FirstGA,BreakingChange"
-	FirstBetaLabel             PullRequestLabel = "FirstBeta"
-	StableBreakingChangeLabel  PullRequestLabel = "Stable,BreakingChange"
-	BetaBreakingChangeLabel    PullRequestLabel = "Beta,BreakingChange"
 )
 
 var (
@@ -56,6 +36,37 @@ var (
 	packageConfigRegex              = regexp.MustCompile(`\$\((package-.+)\)`)
 )
 
+// paramsToString converts a parameter list to a comma-delimited string with names and types
+func paramsToString(params []exports.Param) string {
+	if len(params) == 0 {
+		return ""
+	}
+
+	var parts []string
+	for _, p := range params {
+		if p.Name != "" {
+			parts = append(parts, p.Name+" "+p.Type)
+		} else {
+			parts = append(parts, p.Type)
+		}
+	}
+	return strings.Join(parts, ", ")
+}
+
+// hasExpectedClientParams checks if params match the expected ARM client constructor signature
+func hasExpectedClientParams(params []exports.Param) bool {
+	expectedTypes := []string{"string", "azcore.TokenCredential", "*arm.ClientOptions"}
+	if len(params) != len(expectedTypes) {
+		return false
+	}
+	for i, p := range params {
+		if p.Type != expectedTypes[i] {
+			return false
+		}
+	}
+	return true
+}
+
 type PackageInfo struct {
 	Name        string
 	Config      string
@@ -65,7 +76,7 @@ type PackageInfo struct {
 	ReleaseDate *time.Time
 }
 
-// reads from readme.go.md, parses the `track2` section to get module and package name
+// ReadV2ModuleNameToGetNamespace reads from readme.go.md, parses the `track2` section to get module and package name
 func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, error) {
 	result := make(map[string][]PackageInfo)
 	log.Printf("Reading from readme.go.md '%s'...", path)
@@ -135,7 +146,7 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]PackageInfo, erro
 	return result, nil
 }
 
-// remove all sdk generated files in given path
+// CleanSDKGeneratedFiles removes all sdk generated files in given path
 func CleanSDKGeneratedFiles(path string) error {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return nil
@@ -157,8 +168,7 @@ func CleanSDKGeneratedFiles(path string) error {
 			}
 
 			if strings.Contains(string(b), generated_file_scan_string) {
-				err = os.Remove(path)
-				if err != nil {
+				if err = os.Remove(path); err != nil {
 					return err
 				}
 			}
@@ -168,7 +178,7 @@ func CleanSDKGeneratedFiles(path string) error {
 	})
 }
 
-// replace repo commit with local path in autorest.md file
+// ChangeConfigWithLocalPath replaces repo commit with local path in autorest.md file
 func ChangeConfigWithLocalPath(path, readmeFile, readmeGoFile string) error {
 	log.Printf("Replacing repo commit with local path in autorest.md ...")
 	b, err := os.ReadFile(path)
@@ -188,7 +198,7 @@ func ChangeConfigWithLocalPath(path, readmeFile, readmeGoFile string) error {
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// replace repo URL and commit id in autorest.md file
+// ChangeConfigWithCommitID replaces repo URL and commit id in autorest.md file
 func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error {
 	log.Printf("Replacing repo URL and commit id in autorest.md ...")
 	b, err := os.ReadFile(path)
@@ -213,7 +223,7 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// RemoveTagSet delete tag set in config file
+// RemoveTagSet deletes tag set in config file
 func RemoveTagSet(path string) error {
 	log.Printf("Removing tag set in autorest.md ...")
 	b, err := os.ReadFile(path)
@@ -232,7 +242,7 @@ func RemoveTagSet(path string) error {
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// get swagger rp folder name from autorest.md file
+// GetSpecRpName gets swagger rp folder name from autorest.md file
 func GetSpecRpName(packageRootPath string) (string, error) {
 	b, err := os.ReadFile(filepath.Join(packageRootPath, "autorest.md"))
 	if err != nil {
@@ -253,156 +263,12 @@ func GetSpecRpName(packageRootPath string) (string, error) {
 	return "", fmt.Errorf("cannot get sepc rp name from config")
 }
 
-// replace version: use `module-version: ` prefix to locate version in autorest.md file, use version = "v*.*.*" regrex to locate version in version.go file
-func ReplaceVersion(packageRootPath string, newVersion string) error {
-	path := filepath.Join(packageRootPath, "autorest.md")
-	b, err := os.ReadFile(path)
-	if err != nil {
-		return err
-	}
-
-	lines := strings.Split(string(b), "\n")
-	for i, line := range lines {
-		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion
-			break
-		}
-	}
-
-	if err = os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
-		return err
-	}
-
-	path = filepath.Join(packageRootPath, "version.go")
-	if b, err = os.ReadFile(path); err != nil {
-		return err
-	}
-	contents := versionLineRegex.ReplaceAllString(string(b), "moduleVersion = \"v"+newVersion+"\"")
-
-	return os.WriteFile(path, []byte(contents), 0644)
-}
-
-// calculate new version by changelog using semver package
-func CalculateNewVersion(changelog *changelog.Changelog, previousVersion string, isCurrentPreview bool) (*semver.Version, PullRequestLabel, error) {
-	version, err := semver.NewVersion(previousVersion)
-	if err != nil {
-		return nil, "", err
-	}
-	log.Printf("Lastest version is: %s", version.String())
-
-	var newVersion semver.Version
-	var prl PullRequestLabel
-	if version.Major() == 0 {
-		// preview version calculation
-		if !isCurrentPreview {
-			tempVersion, err := semver.NewVersion("1.0.0")
-			if err != nil {
-				return nil, "", err
-			}
-			newVersion = *tempVersion
-			if changelog.HasBreakingChanges() {
-				prl = FirstGABreakingChangeLabel
-			} else {
-				prl = FirstGALabel
-			}
-		} else if changelog.HasBreakingChanges() {
-			newVersion = version.IncMinor()
-			prl = BetaBreakingChangeLabel
-		} else if changelog.Modified.HasAdditiveChanges() {
-			newVersion = version.IncMinor()
-			prl = BetaLabel
-		} else {
-			newVersion = version.IncPatch()
-			prl = BetaLabel
-		}
-	} else {
-		if isCurrentPreview {
-			if strings.Contains(previousVersion, "beta") {
-				betaNumber, err := strconv.Atoi(strings.Split(version.Prerelease(), "beta.")[1])
-				if err != nil {
-					return nil, "", err
-				}
-				newVersion, err = version.SetPrerelease("beta." + strconv.Itoa(betaNumber+1))
-				if err != nil {
-					return nil, "", err
-				}
-				if changelog.HasBreakingChanges() {
-					prl = BetaBreakingChangeLabel
-				} else {
-					prl = BetaLabel
-				}
-			} else {
-				if changelog.HasBreakingChanges() {
-					newVersion = version.IncMajor()
-					prl = BetaBreakingChangeLabel
-				} else if changelog.Modified.HasAdditiveChanges() {
-					newVersion = version.IncMinor()
-					prl = BetaLabel
-				} else {
-					newVersion = version.IncPatch()
-					prl = BetaLabel
-				}
-				newVersion, err = newVersion.SetPrerelease("beta.1")
-				if err != nil {
-					return nil, "", err
-				}
-			}
-		} else {
-			if strings.Contains(previousVersion, "beta") {
-				return nil, "", fmt.Errorf("must have stable previous version")
-			}
-			// release version calculation
-			if changelog.HasBreakingChanges() {
-				newVersion = version.IncMajor()
-				prl = StableBreakingChangeLabel
-			} else if changelog.Modified.HasAdditiveChanges() {
-				newVersion = version.IncMinor()
-				prl = StableLabel
-			} else {
-				newVersion = version.IncPatch()
-				prl = StableLabel
-			}
-		}
-	}
-
-	log.Printf("New version is: %s", newVersion.String())
-	return &newVersion, prl, nil
-}
-
-// add new changelog md to changelog file
-func AddChangelogToFile(changelog *changelog.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
-	path := filepath.Join(packageRootPath, ChangelogFileName)
-	b, err := os.ReadFile(path)
-	if err != nil {
-		return "", err
-	}
-
-	oldChangelog := string(b)
-	newChangelog := "# Release History\n\n"
-	matchResults := changelogPosWithPreviewRegex.FindAllStringSubmatchIndex(oldChangelog, -1)
-	additionalChangelog := changelog.ToCompactMarkdown()
-	if releaseDate == "" {
-		releaseDate = time.Now().Format("2006-01-02")
-	}
-
-	for _, matchResult := range matchResults {
-		newChangelog = newChangelog + "## " + version.String() + " (" + releaseDate + ")\r\n" + additionalChangelog + "\r\n\r\n" + oldChangelog[matchResult[0]:]
-		break
-	}
-
-	err = os.WriteFile(path, []byte(newChangelog), 0644)
-	if err != nil {
-		return "", err
-	}
-	return additionalChangelog, nil
-}
-
-// replace `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
+// ReplaceNewClientNamePlaceholder replaces `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Content) error {
 	var clientName string
 	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
+		if newClientMethodNameRegex.MatchString(k) && hasExpectedClientParams(v.Params) {
 			clientName = k
 			break
 		}
@@ -423,53 +289,7 @@ func ReplaceNewClientNamePlaceholder(packageRootPath string, exports exports.Con
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-func UpdateModuleDefinition(packageRootPath, packageModuleRelativePath string, version *semver.Version) error {
-	if version.Major() > 1 {
-		path := filepath.Join(packageRootPath, "go.mod")
-
-		if _, err := os.Stat(path); os.IsNotExist(err) {
-			return nil
-		}
-
-		b, err := os.ReadFile(path)
-		if err != nil {
-			return fmt.Errorf("cannot read go.mod")
-		}
-
-		lines := strings.Split(string(b), "\n")
-		for i, line := range lines {
-			if strings.HasPrefix(line, "module") {
-				line = strings.TrimRight(line, "\r")
-				parts := strings.Split(line, "/")
-				if parts[len(parts)-1] != fmt.Sprintf("v%d", version.Major()) {
-					lines[i] = fmt.Sprintf("module github.com/Azure/azure-sdk-for-go/%s/v%d", packageModuleRelativePath, version.Major())
-				}
-				break
-			}
-		}
-		if err = os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func UpdateOnboardChangelogVersion(packageRootPath, versionNumber string) error {
-	changelogPath := filepath.Join(packageRootPath, ChangelogFileName)
-	b, err := os.ReadFile(changelogPath)
-	if err != nil {
-		return err
-	}
-
-	newChangelog := regexp.MustCompile(`\d\.\d\.\d`).ReplaceAllString(string(b), versionNumber)
-	err = os.WriteFile(changelogPath, []byte(newChangelog), 0644)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
+// GetAlwaysSetBodyParamRequiredFlag gets the flag for always setting body param required
 func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 	buildGo, err := os.ReadFile(path)
 	if err != nil {
@@ -481,6 +301,7 @@ func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 	return "", nil
 }
 
+// GetFactoryGatherAllParamsFlag gets the flag for factory gather all params
 func GetFactoryGatherAllParamsFlag(path string) (string, error) {
 	buildGo, err := os.ReadFile(path)
 	if err != nil {
@@ -492,7 +313,7 @@ func GetFactoryGatherAllParamsFlag(path string) (string, error) {
 	return "", nil
 }
 
-// AddTagSet add tag in file
+// AddTagSet adds tag in file
 func AddTagSet(path, tag string) error {
 	b, err := os.ReadFile(path)
 	if err != nil {
@@ -530,6 +351,7 @@ func AddTagSet(path, tag string) error {
 	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
+// GetTag gets tag from file
 func GetTag(path string) (string, error) {
 	b, err := os.ReadFile(path)
 	if err != nil {
@@ -546,48 +368,13 @@ func GetTag(path string) (string, error) {
 	return "", nil
 }
 
-func replaceReadmeModule(path, packageModuleRelativePath, currentVersion string) error {
-	readmeFile, err := os.ReadFile(filepath.Join(path, "README.md"))
-	if err != nil {
-		return err
-	}
-
-	module := fmt.Sprintf("github.com/Azure/azure-sdk-for-go/%s", packageModuleRelativePath)
-
-	readmeModule := module
-	match := regexp.MustCompile(fmt.Sprintf(`%s/v\d+`, module))
-	if match.Match(readmeFile) {
-		readmeModule = match.FindString(string(readmeFile))
-	}
-
-	newModule := module
-	current, err := semver.NewVersion(currentVersion)
-	if err != nil {
-		return err
-	}
-	if current.Major() > 1 {
-		newModule = fmt.Sprintf("%s/v%d", newModule, current.Major())
-	}
-
-	if newModule == readmeModule {
-		return nil
-	}
-
-	newReadmeFile := bytes.ReplaceAll(readmeFile, []byte(readmeModule), []byte(newModule))
-	err = os.WriteFile(filepath.Join(path, "README.md"), newReadmeFile, 0666)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
+// ReplaceReadmeNewClientName replaces old client name in README.md by first func name according to `^New.+Method$` pattern
 func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content) error {
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for _, k := range changelog.SortFuncItem(exports.Funcs) {
 		v := exports.Funcs[k]
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "string, azcore.TokenCredential, *arm.ClientOptions" {
+		if newClientMethodNameRegex.MatchString(k) && hasExpectedClientParams(v.Params) {
 			clientName = k
 			break
 		}
@@ -614,124 +401,18 @@ func ReplaceReadmeNewClientName(packageRootPath string, exports exports.Content)
 	return os.WriteFile(path, []byte(content), 0644)
 }
 
-func ReplaceConstModuleVersion(packagePath string, newVersion string) error {
-	path := filepath.Join(packagePath, "version.go")
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil
-	}
-
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return err
-	}
-
-	contents := versionLineRegex.ReplaceAllString(string(data), "moduleVersion = \"v"+newVersion+"\"")
-	if contents == string(data) {
-		return nil
-	}
-
-	return os.WriteFile(path, []byte(contents), 0644)
-}
-
-func ReplaceModule(newVersion *semver.Version, packagePath, baseModule string, suffixes ...string) error {
-	return filepath.WalkDir(packagePath, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-
-		if d.IsDir() {
-			return nil
-		}
-
-		hasSuffix := slices.ContainsFunc(suffixes, func(s string) bool { return strings.HasSuffix(d.Name(), s) })
-		if len(suffixes) == 0 || hasSuffix {
-			if err = ReplaceImport(path, baseModule, newVersion.Major()); err != nil {
-				return err
-			}
-		}
-
-		return nil
-	})
-}
-
-func ReplaceImport(sourceFile string, baseModule string, majorVersion int64) error {
-	fset := token.NewFileSet()
-	f, err := parser.ParseFile(fset, sourceFile, nil, parser.ParseComments)
-	if err != nil {
-		return err
-	}
-
-	rewrote := false
-	for _, i := range f.Imports {
-		if strings.HasPrefix(i.Path.Value, fmt.Sprintf("\"%s", baseModule)) {
-			oldPath := importPath(i)
-			after, _ := strings.CutPrefix(oldPath, baseModule)
-
-			newPath := baseModule
-			if after != "" {
-				before, sub, _ := strings.Cut(strings.TrimLeft(after, "/"), "/")
-				if regexp.MustCompile(`^v\d+$`).MatchString(before) {
-					if majorVersion > 1 {
-						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
-					}
-					if sub != "" {
-						newPath = fmt.Sprintf("%s/%s", newPath, sub)
-					}
-				} else {
-					if majorVersion > 1 {
-						newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
-					}
-					newPath = fmt.Sprintf("%s/%s", newPath, before)
-					if sub != "" {
-						newPath = fmt.Sprintf("%s/%s", newPath, sub)
-					}
-				}
-			} else {
-				if majorVersion > 1 {
-					newPath = fmt.Sprintf("%s/v%d", baseModule, majorVersion)
-				}
-			}
-
-			if newPath != oldPath {
-				rewrote = astutil.RewriteImport(fset, f, oldPath, newPath)
-			}
-		}
-	}
-
-	if rewrote {
-		w, err := os.Create(sourceFile)
-		if err != nil {
-			return err
-		}
-		defer w.Close()
-
-		return printer.Fprint(w, fset, f)
-	}
-
-	return nil
-}
-
-func importPath(s *ast.ImportSpec) string {
-	t, err := strconv.Unquote(s.Path.Value)
-	if err != nil {
-		return ""
-	}
-	return t
-}
-
-// Walks the sdk directory to find module based on a go.mod file
+// FindModuleDirByGoMod finds the sdk directory to find module based on a go.mod file
 func FindModuleDirByGoMod(root string) (string, error) {
 	path := root
 	curLevel := 0
 	maxLevel := 5
-	for !strings.HasSuffix(path, SdkRootPath) && curLevel < maxLevel {
+	for !strings.HasSuffix(path, utils.SdkRootPath) && curLevel < maxLevel {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			path = filepath.Dir(path)
 			curLevel++
 			continue
 		}
-		goModFilePath := filepath.Join(path, GoModFileName)
+		goModFilePath := filepath.Join(path, utils.GoModFileName)
 		if _, err := os.Stat(goModFilePath); err == nil {
 			return path, nil
 		}
@@ -741,8 +422,9 @@ func FindModuleDirByGoMod(root string) (string, error) {
 	return "", fmt.Errorf("module not found, package path:%s", root)
 }
 
+// UpdateReadmeClientFactory updates the NewClientFactory calls in README.md according to client_factory.go
 func UpdateReadmeClientFactory(path string) error {
-	readmePath := filepath.Join(path, ReadmeFileName)
+	readmePath := filepath.Join(path, utils.ReadmeFileName)
 	readmeFile, err := os.ReadFile(readmePath)
 	if err != nil {
 		return err
@@ -754,7 +436,7 @@ func UpdateReadmeClientFactory(path string) error {
 	if oldnoOptionalFactory == "" && oldwithOptionalFactory == "" {
 		return nil
 	}
-	clientFactoryFile, err := os.ReadFile(filepath.Join(path, ClientFactoryFileName))
+	clientFactoryFile, err := os.ReadFile(filepath.Join(path, utils.ClientFactoryFileName))
 	if err != nil {
 		return err
 	}

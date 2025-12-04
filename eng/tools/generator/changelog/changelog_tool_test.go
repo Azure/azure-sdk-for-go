@@ -10,7 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
+	internalutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,7 +25,7 @@ func TestTypeToAny(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -47,14 +47,42 @@ func TestFuncParameterChange(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	changelog, err := GetChangelogForPackage(&oldExport, &newExport)
+	changelog, err := getChangelog(&oldExport, &newExport)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	FilterChangelog(changelog, FuncFilter)
 
-	excepted := "### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, string, any, Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(context.Context, string, string, interface{}, ClientOption)` to `(context.Context, string, any, any, ClientOption)`\n"
+	excepted := "### Breaking Changes\n\n- Function `*Client.AfterAny` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, value interface{}, option ClientOption)` to `(ctx context.Context, resourceGroupName string, serviceName string, value any, option Option)`\n- Function `*Client.BeforeAny` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, value interface{}, option ClientOption)` to `(ctx context.Context, resourceGroupName string, serviceName any, value any, option ClientOption)`\n- Function `*Client.OnlyToAny` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, value interface{}, option ClientOption)` to `(ctx context.Context, resourceGroupName string, serviceName string, value any, option ClientOption)`\n"
+	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
+}
+
+func TestFuncParameterOrderChange(t *testing.T) {
+	oldExport, err := exports.Get("./testdata/old/paramorder")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	newExport, err := exports.Get("./testdata/new/paramorder")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changelog, err := getChangelog(&oldExport, &newExport)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	FilterChangelog(changelog, FuncFilter)
+
+	// Expected: Functions with parameter changes (type, name, or order) should be detected
+	// Now the output includes parameter names to make it clear what changed
+	// - NewListByServicePager: serviceName and resourceGroupName swapped (order change)
+	// - OrderChanged: resourceGroupName, serviceName, subscriptionID -> serviceName, subscriptionID, resourceGroupName (order change)
+	// - DifferentNames: oldName, newName -> firstName, lastName (name change)
+	// - NoChange: should not appear (no change)
+	excepted := "### Breaking Changes\n\n- Function `*AllPoliciesClient.DifferentNames` parameter(s) have been changed from `(oldName string, newName string)` to `(firstName string, lastName string)`\n- Function `*AllPoliciesClient.NewListByServicePager` parameter(s) have been changed from `(resourceGroupName string, serviceName string, options *AllPoliciesClientListByServiceOptions)` to `(serviceName string, resourceGroupName string, options *AllPoliciesClientListByServiceOptions)`\n- Function `*AllPoliciesClient.OrderChanged` parameter(s) have been changed from `(resourceGroupName string, serviceName string, subscriptionID string)` to `(serviceName string, subscriptionID string, resourceGroupName string)`\n"
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 
@@ -66,7 +94,7 @@ func TestGetAllVersionTags(t *testing.T) {
 	log.Printf("Using current directory as SDK root: %s", cwd)
 
 	// create sdk repo ref
-	sdkRepo, err := repo.OpenSDKRepository(utils.NormalizePath(cwd))
+	sdkRepo, err := repo.OpenSDKRepository(internalutils.NormalizePath(cwd))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -81,8 +109,7 @@ func TestGetAllVersionTags(t *testing.T) {
 	assert.Contains(t, tags, expected)
 	assert.GreaterOrEqual(t, len(tags), 69)
 
-	tags, err = GetAllVersionTags("sdk/resourcemanager/network/armnetwork", sdkRepo)
-	if err != nil {
+	if tags, err = GetAllVersionTags("sdk/resourcemanager/network/armnetwork", sdkRepo); err != nil {
 		t.Fatal(err)
 	}
 	expected = "refs/tags/sdk/resourcemanager/network/armnetwork/v0.1.0"
@@ -119,7 +146,7 @@ func TestGetExportsFromTag(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Call GetExportsFromTag
-			exports, err := GetExportsFromTag(tc.packagePath, tc.tag)
+			exports, err := getExportsFromTag(tc.packagePath, tc.tag)
 
 			// Should not error for valid tags
 			assert.NoError(t, err)
@@ -132,4 +159,26 @@ func TestGetExportsFromTag(t *testing.T) {
 				"Expected to find some exports in package")
 		})
 	}
+}
+
+func TestGetPreviousVersionTag(t *testing.T) {
+	tags := []string{"v1.2.0", "v1.1.0-beta.1", "v1.0.0"}
+
+	// Test preview - should return latest
+	result := getPreviousVersionTag(true, tags)
+	assert.Equal(t, "v1.2.0", result)
+
+	// Test stable - should return latest stable
+	result = getPreviousVersionTag(false, tags)
+	assert.Equal(t, "v1.2.0", result)
+
+	tags = []string{"v1.1.0-beta.2", "v1.1.0-beta.1", "v1.0.0"}
+
+	// Test preview - should return latest beta
+	result = getPreviousVersionTag(true, tags)
+	assert.Equal(t, "v1.1.0-beta.2", result)
+
+	// Test stable - should return latest stable
+	result = getPreviousVersionTag(false, tags)
+	assert.Equal(t, "v1.0.0", result)
 }

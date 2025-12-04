@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -77,26 +78,26 @@ func (pk PartitionKey) AppendNull() PartitionKey {
 func (pk *PartitionKey) toJsonString() (string, error) {
 	var completeJson strings.Builder
 	completeJson.Grow(256)
-	completeJson.WriteString("[")
+	fmt.Fprint(&completeJson, "[")
 	for index, i := range pk.values {
 		switch v := i.(type) {
 		case string:
 			// json marshall does not support escaping ASCII as an option
 			escaped := strconv.QuoteToASCII(v)
-			completeJson.WriteString(escaped)
+			fmt.Fprint(&completeJson, escaped)
 		default:
 			res, err := json.Marshal(v)
 			if err != nil {
 				return "", err
 			}
-			completeJson.WriteString(string(res))
+			fmt.Fprint(&completeJson, string(res))
 		}
 
 		if index < len(pk.values)-1 {
-			completeJson.WriteString(",")
+			fmt.Fprint(&completeJson, ",")
 		}
 	}
 
-	completeJson.WriteString("]")
+	fmt.Fprint(&completeJson, "]")
 	return completeJson.String(), nil
 }

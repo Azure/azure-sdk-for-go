@@ -49,10 +49,11 @@ func NewVMCollectionClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// Update - Update the vm details that will be monitored by the Elastic monitor resource.
+// Update - Update the VM details that will be monitored by the Elastic monitor resource, ensuring optimal observability and
+// performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - VMCollectionClientUpdateOptions contains the optional parameters for the VMCollectionClient.Update method.
@@ -97,7 +98,7 @@ func (client *VMCollectionClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

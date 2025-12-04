@@ -49,10 +49,10 @@ func NewCreateAndAssociateIPFilterClient(subscriptionID string, credential azcor
 	return client, nil
 }
 
-// BeginCreate - Create and Associate IP traffic filter for the given deployment.
+// BeginCreate - Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - CreateAndAssociateIPFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociateIPFilterClient.BeginCreate
@@ -75,10 +75,10 @@ func (client *CreateAndAssociateIPFilterClient) BeginCreate(ctx context.Context,
 	}
 }
 
-// Create - Create and Associate IP traffic filter for the given deployment.
+// Create - Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 func (client *CreateAndAssociateIPFilterClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociateIPFilterClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CreateAndAssociateIPFilterClient.BeginCreate"
@@ -120,7 +120,7 @@ func (client *CreateAndAssociateIPFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.IPs != nil {
 		reqQP.Set("ips", *options.IPs)
 	}

@@ -12,6 +12,10 @@ You are an expert Go programmer that attempts to answer questions and provide co
 
 For detailed workflow instructions, see [SDK Release](../eng/common/instructions/copilot/sdk-release.instructions.md).
 
+## SDK review
+
+For detailed workflow instructions, see [SDK Review](./instructions/sdk-review.instructions.md).
+
 ### Changelog checking
 
 If the CHANGELOG.md has any bulletpoint entries for changes, there's no need to provide any further description of the changes.

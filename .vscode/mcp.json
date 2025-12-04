@@ -4,6 +4,10 @@
         "type": "stdio",
         "command": "pwsh",        
         "args": ["${workspaceFolder}/eng/common/mcp/azure-sdk-mcp.ps1", "-Run"]
-    },
+      },
+      "azure-sdk-code-review": {
+        "command": "C:/Users/jiaqzhang/AppData/Local/Programs/Python/Python313/python.exe",
+        "args": ["c:/Users/jiaqzhang/work/azure-sdk-tools/tools/sdk-ai-bots/code-review-mcp/server.py"]
+      } 
   }
 }

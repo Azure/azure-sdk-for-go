@@ -137,6 +137,12 @@ type BareMetalMachinesClientRunDataExtractsResponse struct {
 	OperationStatusResult
 }
 
+// BareMetalMachinesClientRunDataExtractsRestrictedResponse contains the response from method BareMetalMachinesClient.BeginRunDataExtractsRestricted.
+type BareMetalMachinesClientRunDataExtractsRestrictedResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // BareMetalMachinesClientRunReadCommandsResponse contains the response from method BareMetalMachinesClient.BeginRunReadCommands.
 type BareMetalMachinesClientRunReadCommandsResponse struct {
 	// The current status of an async operation.
@@ -632,6 +638,12 @@ type StorageAppliancesClientListBySubscriptionResponse struct {
 	StorageApplianceList
 }
 
+// StorageAppliancesClientRunReadCommandsResponse contains the response from method StorageAppliancesClient.BeginRunReadCommands.
+type StorageAppliancesClientRunReadCommandsResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
 // StorageAppliancesClientUpdateResponse contains the response from method StorageAppliancesClient.BeginUpdate.
 type StorageAppliancesClientUpdateResponse struct {
 	// StorageAppliance represents on-premises Network Cloud storage appliance.
@@ -672,6 +684,12 @@ type TrunkedNetworksClientListBySubscriptionResponse struct {
 type TrunkedNetworksClientUpdateResponse struct {
 	// TrunkedNetwork represents a network that utilizes multiple isolation domains and specified VLANs to create a trunked network.
 	TrunkedNetwork
+}
+
+// VirtualMachinesClientAssignRelayResponse contains the response from method VirtualMachinesClient.BeginAssignRelay.
+type VirtualMachinesClientAssignRelayResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
 }
 
 // VirtualMachinesClientCreateOrUpdateResponse contains the response from method VirtualMachinesClient.BeginCreateOrUpdate.

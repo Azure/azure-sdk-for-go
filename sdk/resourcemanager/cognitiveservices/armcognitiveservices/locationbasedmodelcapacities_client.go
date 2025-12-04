@@ -27,7 +27,7 @@ type LocationBasedModelCapacitiesClient struct {
 // NewLocationBasedModelCapacitiesClient creates a new instance of LocationBasedModelCapacitiesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationBasedModelCapacitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationBasedModelCapacitiesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewLocationBasedModelCapacitiesClient(subscriptionID string, credential azc
 
 // NewListPager - List Location Based ModelCapacities.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2025-09-01
 //   - location - Resource location.
 //   - modelFormat - The format of the Model
 //   - modelName - The name of the Model
@@ -88,7 +88,7 @@ func (client *LocationBasedModelCapacitiesClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", "2025-09-01")
 	reqQP.Set("modelFormat", modelFormat)
 	reqQP.Set("modelName", modelName)
 	reqQP.Set("modelVersion", modelVersion)

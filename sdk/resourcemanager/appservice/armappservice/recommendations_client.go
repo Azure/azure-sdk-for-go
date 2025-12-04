@@ -28,7 +28,7 @@ type RecommendationsClient struct {
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
 //   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecommendationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewRecommendationsClient(subscriptionID string, credential azcore.TokenCred
 // DisableAllForHostingEnvironment - Description for Disable all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - environmentName - Name of the app.
 //   - options - RecommendationsClientDisableAllForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.DisableAllForHostingEnvironment
@@ -90,7 +90,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	reqQP.Set("environmentName", environmentName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -100,7 +100,7 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 // DisableAllForWebApp - Description for Disable all recommendations for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - siteName - Name of the app.
 //   - options - RecommendationsClientDisableAllForWebAppOptions contains the optional parameters for the RecommendationsClient.DisableAllForWebApp
@@ -146,7 +146,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +155,7 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 // DisableRecommendationForHostingEnvironment - Description for Disables the specific rule for a web site permanently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - environmentName - Site name
 //   - name - Rule name
@@ -206,7 +206,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	reqQP.Set("environmentName", environmentName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -216,7 +216,7 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 // DisableRecommendationForSite - Description for Disables the specific rule for a web site permanently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - siteName - Site name
 //   - name - Rule name
@@ -267,7 +267,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 // in the future.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - name - Rule name
 //   - options - RecommendationsClientDisableRecommendationForSubscriptionOptions contains the optional parameters for the RecommendationsClient.DisableRecommendationForSubscription
 //     method.
@@ -318,7 +318,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +327,7 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 // GetRuleDetailsByHostingEnvironment - Description for Get a recommendation rule for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - hostingEnvironmentName - Name of the hosting environment.
 //   - name - Name of the recommendation.
@@ -379,7 +379,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
@@ -403,7 +403,7 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleRes
 // GetRuleDetailsByWebApp - Description for Get a recommendation rule for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - siteName - Name of the app.
 //   - name - Name of the recommendation.
@@ -455,7 +455,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
@@ -478,7 +478,7 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 
 // NewListPager - Description for List all recommendations for a subscription.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
 //     method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
@@ -516,7 +516,7 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, opti
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
@@ -542,7 +542,7 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (Re
 // NewListHistoryForHostingEnvironmentPager - Description for Get past recommendations for an app, optionally specified by
 // the time range.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - hostingEnvironmentName - Name of the hosting environment.
 //   - options - RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForHostingEnvironmentPager
@@ -590,7 +590,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.ExpiredOnly != nil {
 		reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 	}
@@ -615,7 +615,7 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleRespo
 
 // NewListHistoryForWebAppPager - Description for Get past recommendations for an app, optionally specified by the time range.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - siteName - Name of the app.
 //   - options - RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForWebAppPager
@@ -663,7 +663,7 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.ExpiredOnly != nil {
 		reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 	}
@@ -688,7 +688,7 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 
 // NewListRecommendedRulesForHostingEnvironmentPager - Description for Get all recommendations for a hosting environment.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - hostingEnvironmentName - Name of the app.
 //   - options - RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the
@@ -736,7 +736,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
@@ -761,7 +761,7 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHa
 
 // NewListRecommendedRulesForWebAppPager - Description for Get all recommendations for an app.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - siteName - Name of the app.
 //   - options - RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListRecommendedRulesForWebAppPager
@@ -809,7 +809,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
@@ -835,7 +835,7 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse
 // ResetAllFilters - Description for Reset all recommendation opt-out settings for a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - options - RecommendationsClientResetAllFiltersOptions contains the optional parameters for the RecommendationsClient.ResetAllFilters
 //     method.
 func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, options *RecommendationsClientResetAllFiltersOptions) (RecommendationsClientResetAllFiltersResponse, error) {
@@ -871,7 +871,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -880,7 +880,7 @@ func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Co
 // ResetAllFiltersForHostingEnvironment - Description for Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - environmentName - Name of the app.
 //   - options - RecommendationsClientResetAllFiltersForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForHostingEnvironment
@@ -926,7 +926,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	reqQP.Set("environmentName", environmentName)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -936,7 +936,7 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 // ResetAllFiltersForWebApp - Description for Reset all recommendation opt-out settings for an app.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - Name of the resource group to which the resource belongs.
 //   - siteName - Name of the app.
 //   - options - RecommendationsClientResetAllFiltersForWebAppOptions contains the optional parameters for the RecommendationsClient.ResetAllFiltersForWebApp
@@ -982,7 +982,7 @@ func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

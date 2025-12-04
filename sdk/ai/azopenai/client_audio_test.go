@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -14,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
@@ -23,7 +20,7 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
-	client := newStainlessTestClient(t, azureOpenAI.Whisper.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Whisper.Endpoint)
 	model := azureOpenAI.Whisper.Model
 
 	// We're experiencing load issues on some of our shared test resources so we'll just spot check.
@@ -58,7 +55,7 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
 	}
 
-	client := newStainlessTestClient(t, azureOpenAI.Whisper.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Whisper.Endpoint)
 	model := azureOpenAI.Whisper.Model
 
 	resp, err := client.Audio.Translations.New(context.Background(), openai.AudioTranslationNewParams{
@@ -82,7 +79,7 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 
 	// Generate some speech from text.
 	{
-		speechClient := newStainlessTestClient(t, azureOpenAI.Speech.Endpoint)
+		speechClient := newStainlessTestClientWithAzureURL(t, azureOpenAI.Speech.Endpoint)
 
 		audioResp, err := speechClient.Audio.Speech.New(context.Background(), openai.AudioSpeechNewParams{
 			Input:          "i am a computer",
@@ -107,7 +104,11 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 		// when it sends the request.
 		tempFile, err = os.CreateTemp("", "audio*.flac")
 		require.NoError(t, err)
-		defer tempFile.Close()
+
+		t.Cleanup(func() {
+			err := tempFile.Close()
+			require.NoError(t, err)
+		})
 
 		_, err = tempFile.Write(audioBytes)
 		require.NoError(t, err)
@@ -117,7 +118,7 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 	}
 
 	// as a simple check we'll now transcribe the audio file we just generated...
-	transcriptClient := newStainlessTestClient(t, azureOpenAI.Whisper.Endpoint)
+	transcriptClient := newStainlessTestClientWithAzureURL(t, azureOpenAI.Whisper.Endpoint)
 
 	// now send _it_ back through the transcription API and see if we can get something useful.
 	transcriptResp, err := transcriptClient.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{

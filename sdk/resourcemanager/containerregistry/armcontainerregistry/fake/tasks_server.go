@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,13 +21,13 @@ import (
 
 // TasksServer is a fake server for instances of the armcontainerregistry.TasksClient type.
 type TasksServer struct {
-	// Create is the fake for method TasksClient.Create
+	// BeginCreate is the fake for method TasksClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters armcontainerregistry.Task, options *armcontainerregistry.TasksClientCreateOptions) (resp azfake.Responder[armcontainerregistry.TasksClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters armcontainerregistry.Task, options *armcontainerregistry.TasksClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.TasksClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method TasksClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *armcontainerregistry.TasksClientDeleteOptions) (resp azfake.Responder[armcontainerregistry.TasksClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method TasksClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *armcontainerregistry.TasksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.TasksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TasksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -41,9 +41,9 @@ type TasksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.TasksClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.TasksClientListResponse])
 
-	// Update is the fake for method TasksClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters armcontainerregistry.TaskUpdateParameters, options *armcontainerregistry.TasksClientUpdateOptions) (resp azfake.Responder[armcontainerregistry.TasksClientUpdateResponse], errResp azfake.ErrorResponder)
+	// BeginUpdate is the fake for method TasksClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters armcontainerregistry.TaskUpdateParameters, options *armcontainerregistry.TasksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.TasksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTasksServerTransport creates a new instance of TasksServerTransport with the provided implementation.
@@ -52,7 +52,10 @@ type TasksServer struct {
 func NewTasksServerTransport(srv *TasksServer) *TasksServerTransport {
 	return &TasksServerTransport{
 		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.TasksClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.TasksClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.TasksClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.TasksClientUpdateResponse]](),
 	}
 }
 
@@ -60,7 +63,10 @@ func NewTasksServerTransport(srv *TasksServer) *TasksServerTransport {
 // Don't use this type directly, use NewTasksServerTransport instead.
 type TasksServerTransport struct {
 	srv          *TasksServer
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.TasksClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.TasksClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.TasksClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.TasksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for TasksServerTransport.
@@ -86,18 +92,18 @@ func (t *TasksServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
-			case "TasksClient.Create":
-				res.resp, res.err = t.dispatchCreate(req)
-			case "TasksClient.Delete":
-				res.resp, res.err = t.dispatchDelete(req)
+			case "TasksClient.BeginCreate":
+				res.resp, res.err = t.dispatchBeginCreate(req)
+			case "TasksClient.BeginDelete":
+				res.resp, res.err = t.dispatchBeginDelete(req)
 			case "TasksClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TasksClient.GetDetails":
 				res.resp, res.err = t.dispatchGetDetails(req)
 			case "TasksClient.NewListPager":
 				res.resp, res.err = t.dispatchNewListPager(req)
-			case "TasksClient.Update":
-				res.resp, res.err = t.dispatchUpdate(req)
+			case "TasksClient.BeginUpdate":
+				res.resp, res.err = t.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -117,81 +123,103 @@ func (t *TasksServerTransport) dispatchToMethodFake(req *http.Request, method st
 	}
 }
 
-func (t *TasksServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if t.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+func (t *TasksServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreate := t.beginCreate.get(req)
+	if beginCreate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.Task](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		taskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreate(req.Context(), resourceGroupNameParam, registryNameParam, taskNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreate = &respr
+		t.beginCreate.add(req, beginCreate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.Task](req)
+
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginCreate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreate) {
+		t.beginCreate.remove(req)
 	}
-	taskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Create(req.Context(), resourceGroupNameParam, registryNameParam, taskNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Task, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
-func (t *TasksServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if t.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+func (t *TasksServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := t.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		taskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, registryNameParam, taskNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		t.beginDelete.add(req, beginDelete)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		t.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	taskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		t.beginDelete.remove(req)
 	}
-	respr, errRespr := t.srv.Delete(req.Context(), resourceGroupNameParam, registryNameParam, taskNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 
@@ -202,7 +230,7 @@ func (t *TasksServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -239,7 +267,7 @@ func (t *TasksServerTransport) dispatchGetDetails(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -278,7 +306,7 @@ func (t *TasksServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -310,44 +338,55 @@ func (t *TasksServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (t *TasksServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+func (t *TasksServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginUpdate := t.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/tasks/(?P<taskName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.TaskUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+		if err != nil {
+			return nil, err
+		}
+		taskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, taskNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		t.beginUpdate.add(req, beginUpdate)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.TaskUpdateParameters](req)
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
 	if err != nil {
 		return nil, err
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginUpdate) {
+		t.beginUpdate.remove(req)
 	}
-	taskNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := t.srv.Update(req.Context(), resourceGroupNameParam, registryNameParam, taskNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Task, req)
-	if err != nil {
-		return nil, err
-	}
+
 	return resp, nil
 }
 

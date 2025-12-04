@@ -24,7 +24,7 @@ type SitesByServiceGroupClient struct {
 
 // NewSitesByServiceGroupClient creates a new instance of SitesByServiceGroupClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSitesByServiceGroupClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesByServiceGroupClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,8 +41,8 @@ func NewSitesByServiceGroupClient(credential azcore.TokenCredential, options *ar
 //
 // Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
-//   - siteName - The name of the site
-//   - resource - The properties of the site
+//   - siteName - The name of the Site
+//   - resource - Resource create parameters.
 //   - options - SitesByServiceGroupClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesByServiceGroupClient.BeginCreateOrUpdate
 //     method.
 func (client *SitesByServiceGroupClient) BeginCreateOrUpdate(ctx context.Context, servicegroupName string, siteName string, resource Site, options *SitesByServiceGroupClientBeginCreateOrUpdateOptions) (*runtime.Poller[SitesByServiceGroupClientCreateOrUpdateResponse], error) {
@@ -118,7 +118,7 @@ func (client *SitesByServiceGroupClient) createOrUpdateCreateRequest(ctx context
 //
 // Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
-//   - siteName - The name of the site
+//   - siteName - The name of the Site
 //   - options - SitesByServiceGroupClientDeleteOptions contains the optional parameters for the SitesByServiceGroupClient.Delete
 //     method.
 func (client *SitesByServiceGroupClient) Delete(ctx context.Context, servicegroupName string, siteName string, options *SitesByServiceGroupClientDeleteOptions) (SitesByServiceGroupClientDeleteResponse, error) {
@@ -168,7 +168,7 @@ func (client *SitesByServiceGroupClient) deleteCreateRequest(ctx context.Context
 //
 // Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
-//   - siteName - The name of the site
+//   - siteName - The name of the Site
 //   - options - SitesByServiceGroupClientGetOptions contains the optional parameters for the SitesByServiceGroupClient.Get method.
 func (client *SitesByServiceGroupClient) Get(ctx context.Context, servicegroupName string, siteName string, options *SitesByServiceGroupClientGetOptions) (SitesByServiceGroupClientGetResponse, error) {
 	var err error
@@ -284,8 +284,8 @@ func (client *SitesByServiceGroupClient) listByServiceGroupHandleResponse(resp *
 //
 // Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
-//   - siteName - The name of the site
-//   - properties - The properties of the site
+//   - siteName - The name of the Site
+//   - properties - Resource create parameters.
 //   - options - SitesByServiceGroupClientUpdateOptions contains the optional parameters for the SitesByServiceGroupClient.Update
 //     method.
 func (client *SitesByServiceGroupClient) Update(ctx context.Context, servicegroupName string, siteName string, properties SiteUpdate, options *SitesByServiceGroupClientUpdateOptions) (SitesByServiceGroupClientUpdateResponse, error) {

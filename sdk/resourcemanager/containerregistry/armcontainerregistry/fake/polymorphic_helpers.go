@@ -7,7 +7,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
 )
 
 func unmarshalRunRequestClassification(rawMsg json.RawMessage) (armcontainerregistry.RunRequestClassification, error) {

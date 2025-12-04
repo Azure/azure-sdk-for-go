@@ -10,7 +10,7 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/exported"
 )
 
 // Policy is a pipeline policy for managing Sync-Token

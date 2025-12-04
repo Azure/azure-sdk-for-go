@@ -24,7 +24,7 @@ type SchemaReferencesClient struct {
 
 // NewSchemaReferencesClient creates a new instance of SchemaReferencesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSchemaReferencesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SchemaReferencesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -34,6 +34,154 @@ func NewSchemaReferencesClient(credential azcore.TokenCredential, options *arm.C
 		internal: cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrUpdate - Create or update a Schema Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - schemaReferenceName - The name of the SchemaReference
+//   - resource - Resource create parameters.
+//   - options - SchemaReferencesClientBeginCreateOrUpdateOptions contains the optional parameters for the SchemaReferencesClient.BeginCreateOrUpdate
+//     method.
+func (client *SchemaReferencesClient) BeginCreateOrUpdate(ctx context.Context, resourceURI string, schemaReferenceName string, resource SchemaReference, options *SchemaReferencesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SchemaReferencesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceURI, schemaReferenceName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemaReferencesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemaReferencesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create or update a Schema Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
+func (client *SchemaReferencesClient) createOrUpdate(ctx context.Context, resourceURI string, schemaReferenceName string, resource SchemaReference, options *SchemaReferencesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SchemaReferencesClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceURI, schemaReferenceName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *SchemaReferencesClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, resource SchemaReference, _ *SchemaReferencesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if schemaReferenceName == "" {
+		return nil, errors.New("parameter schemaReferenceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schemaReferenceName}", url.PathEscape(schemaReferenceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete a Schema Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - schemaReferenceName - The name of the SchemaReference
+//   - options - SchemaReferencesClientBeginDeleteOptions contains the optional parameters for the SchemaReferencesClient.BeginDelete
+//     method.
+func (client *SchemaReferencesClient) BeginDelete(ctx context.Context, resourceURI string, schemaReferenceName string, options *SchemaReferencesClientBeginDeleteOptions) (*runtime.Poller[SchemaReferencesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceURI, schemaReferenceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SchemaReferencesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SchemaReferencesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete a Schema Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
+func (client *SchemaReferencesClient) deleteOperation(ctx context.Context, resourceURI string, schemaReferenceName string, options *SchemaReferencesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SchemaReferencesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceURI, schemaReferenceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the Delete request.
+func (client *SchemaReferencesClient) deleteCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, _ *SchemaReferencesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if schemaReferenceName == "" {
+		return nil, errors.New("parameter schemaReferenceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schemaReferenceName}", url.PathEscape(schemaReferenceName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
 }
 
 // Get - Get a Schema Reference Resource
@@ -68,6 +216,9 @@ func (client *SchemaReferencesClient) Get(ctx context.Context, resourceURI strin
 // getCreateRequest creates the Get request.
 func (client *SchemaReferencesClient) getCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, _ *SchemaReferencesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	if schemaReferenceName == "" {
 		return nil, errors.New("parameter schemaReferenceName cannot be empty")
@@ -125,6 +276,9 @@ func (client *SchemaReferencesClient) NewListByResourceGroupPager(resourceURI st
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *SchemaReferencesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceURI string, _ *SchemaReferencesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -142,6 +296,71 @@ func (client *SchemaReferencesClient) listByResourceGroupHandleResponse(resp *ht
 	result := SchemaReferencesClientListByResourceGroupResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaReferenceListResult); err != nil {
 		return SchemaReferencesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// Update - update a Schema Reference Resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - schemaReferenceName - The name of the SchemaReference
+//   - properties - The resource properties to be updated.
+//   - options - SchemaReferencesClientUpdateOptions contains the optional parameters for the SchemaReferencesClient.Update method.
+func (client *SchemaReferencesClient) Update(ctx context.Context, resourceURI string, schemaReferenceName string, properties SchemaReference, options *SchemaReferencesClientUpdateOptions) (SchemaReferencesClientUpdateResponse, error) {
+	var err error
+	const operationName = "SchemaReferencesClient.Update"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceURI, schemaReferenceName, properties, options)
+	if err != nil {
+		return SchemaReferencesClientUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return SchemaReferencesClientUpdateResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SchemaReferencesClientUpdateResponse{}, err
+	}
+	resp, err := client.updateHandleResponse(httpResp)
+	return resp, err
+}
+
+// updateCreateRequest creates the Update request.
+func (client *SchemaReferencesClient) updateCreateRequest(ctx context.Context, resourceURI string, schemaReferenceName string, properties SchemaReference, _ *SchemaReferencesClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.Edge/schemaReferences/{schemaReferenceName}"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if schemaReferenceName == "" {
+		return nil, errors.New("parameter schemaReferenceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{schemaReferenceName}", url.PathEscape(schemaReferenceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateHandleResponse handles the Update response.
+func (client *SchemaReferencesClient) updateHandleResponse(resp *http.Response) (SchemaReferencesClientUpdateResponse, error) {
+	result := SchemaReferencesClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaReference); err != nil {
+		return SchemaReferencesClientUpdateResponse{}, err
 	}
 	return result, nil
 }

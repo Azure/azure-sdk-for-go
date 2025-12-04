@@ -24,6 +24,10 @@ type DeletedSecret struct {
 	// The secret id.
 	ID *ID
 
+	// The version of the previous certificate, if applicable. Applies only to certificates created after June 1, 2025. Certificates
+	// created before this date are not retroactively updated.
+	PreviousVersion *string
+
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string
 
@@ -102,6 +106,10 @@ type Secret struct {
 
 	// The secret id.
 	ID *ID
+
+	// The version of the previous certificate, if applicable. Applies only to certificates created after June 1, 2025. Certificates
+	// created before this date are not retroactively updated.
+	PreviousVersion *string
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string

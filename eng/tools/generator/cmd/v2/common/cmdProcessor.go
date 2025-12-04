@@ -123,7 +123,7 @@ func ExecuteGoimports(path string) error {
 }
 
 func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
-	refName := fmt.Sprintf(branchName + ":" + branchName)
+	refName := fmt.Sprintf("%s", branchName+":"+branchName)
 	cmd := exec.Command("git", "push", remoteName, refName)
 	cmd.Dir = path
 	msg, err := cmd.CombinedOutput()
@@ -182,17 +182,6 @@ func ExecuteGo(dir string, args ...string) error {
 	combinedOutput, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("failed to execute `go %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
-	}
-
-	return nil
-}
-
-func ExecuteGoFmt(dir string, args ...string) error {
-	cmd := exec.Command("gofmt", args...)
-	cmd.Dir = dir
-	combinedOutput, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
 	}
 
 	return nil

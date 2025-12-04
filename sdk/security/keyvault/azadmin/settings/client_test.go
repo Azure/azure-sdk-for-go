@@ -78,9 +78,10 @@ func TestUpdateSetting(t *testing.T) {
 	require.NoError(t, err)
 	_ = res
 
-	if *res.Value == "true" {
+	switch *res.Value {
+	case "true":
 		updatedBool = "false"
-	} else if *res.Value == "false" {
+	case "false":
 		updatedBool = "true"
 	}
 

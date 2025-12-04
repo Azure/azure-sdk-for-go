@@ -15,8 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v5"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create_Other_SourceTypes_Validate_Migrate.json
-func ExampleMigrationsClient_Create_createMigrationWithOtherSourceTypesForValidateAndMigrate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreateValidateOnly.json
+func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -26,24 +26,242 @@ func ExampleMigrationsClient_Create_createMigrationWithOtherSourceTypesForValida
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
 			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
 			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			MigrationOption:      to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
+			MigrationOption:      to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
+			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
+				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
+					SourceServerPassword: to.Ptr("examplesourcepassword"),
+					TargetServerPassword: to.Ptr("exampletargetpassword"),
+				},
+			},
+			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstateValidationInProgress),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreateWithOtherUsers.json
+func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
+			DbsToMigrate: []*string{
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
+			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
+				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
+					SourceServerPassword: to.Ptr("examplesourcepassword"),
+					TargetServerPassword: to.Ptr("exampletargetpassword"),
+				},
+				SourceServerUsername: to.Ptr("newadmin@examplesource"),
+				TargetServerUsername: to.Ptr("targetadmin"),
+			},
+			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreateWithFullyQualifiedDomainName.json
+func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainNamesForSourceAndTargetServers() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
+			DbsToMigrate: []*string{
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
+			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
 				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
 					SourceServerPassword: to.Ptr("xxxxxxxx"),
 					TargetServerPassword: to.Ptr("xxxxxxxx"),
 				},
 			},
-			SourceDbServerResourceID: to.Ptr("testsource:5432@pguser"),
+			SourceDbServerFullyQualifiedDomainName: to.Ptr("examplesource.contoso.com"),
+			SourceDbServerResourceID:               to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+			TargetDbServerFullyQualifiedDomainName: to.Ptr("exampletarget.contoso.com"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerFullyQualifiedDomainName: to.Ptr("examplesource.contoso.com"),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerFullyQualifiedDomainName: to.Ptr("exampletarget.contoso.com"),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreateOtherSourceTypesValidateMigrate.json
+func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValidatingAndMigrating() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
+			DbsToMigrate: []*string{
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
+			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+			MigrationOption:      to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
+			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
+				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
+					SourceServerPassword: to.Ptr("examplesourcepassword"),
+					TargetServerPassword: to.Ptr("exampletargetpassword"),
+				},
+			},
+			SourceDbServerResourceID: to.Ptr("examplesource:5432@exampleuser"),
 			SourceType:               to.Ptr(armpostgresqlflexibleservers.SourceTypeOnPremises),
 			SSLMode:                  to.Ptr(armpostgresqlflexibleservers.SSLModePrefer),
 		},
@@ -54,45 +272,45 @@ func ExampleMigrationsClient_Create_createMigrationWithOtherSourceTypesForValida
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
 	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
 	// 	Tags: map[string]*string{
 	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
 	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateValidationInProgress),
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstateValidationInProgress),
 	// 			},
 	// 			Error: to.Ptr(""),
 	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
 	// 		},
 	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerResourceID: to.Ptr("testsource:5432@pguser"),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerResourceID: to.Ptr("examplesource:5432@exampleuser"),
 	// 			SourceType: to.Ptr(armpostgresqlflexibleservers.SourceTypeOnPremises),
 	// 			SSLMode: to.Ptr(armpostgresqlflexibleservers.SSLModePrefer),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create_Validate_Only.json
-func ExampleMigrationsClient_Create_createPreMigrationValidation() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreateWithPrivateEndpointServers.json
+func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -102,242 +320,24 @@ func ExampleMigrationsClient_Create_createPreMigrationValidation() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
 			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
-			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			MigrationOption:      to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
-				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
-					SourceServerPassword: to.Ptr("xxxxxxxx"),
-					TargetServerPassword: to.Ptr("xxxxxxxx"),
-				},
-			},
-			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateValidationInProgress),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create_With_Other_Users.json
-func ExampleMigrationsClient_Create_migrationsCreateByPassingUserNames() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
-			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
-				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
-					SourceServerPassword: to.Ptr("xxxxxxxx"),
-					TargetServerPassword: to.Ptr("xxxxxxxx"),
-				},
-				SourceServerUsername: to.Ptr("newadmin@testsource"),
-				TargetServerUsername: to.Ptr("targetadmin"),
-			},
-			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumFalse),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create_With_FullyQualifiedDomainName.json
-func ExampleMigrationsClient_Create_migrationsCreateWithFullyQualifiedDomainName() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
-			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
-				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
-					SourceServerPassword: to.Ptr("xxxxxxxx"),
-					TargetServerPassword: to.Ptr("xxxxxxxx"),
-				},
-			},
-			SourceDbServerFullyQualifiedDomainName: to.Ptr("testsourcefqdn.example.com"),
-			SourceDbServerResourceID:               to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-			TargetDbServerFullyQualifiedDomainName: to.Ptr("test-target-fqdn.example.com"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-10T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerFullyQualifiedDomainName: to.Ptr("testsourcefqdn.example.com"),
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerFullyQualifiedDomainName: to.Ptr("test-target-fqdn.example.com"),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create_With_PrivateEndpoint_Servers.json
-func ExampleMigrationsClient_Create_migrationsCreateWithPrivateEndpoint() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
-			MigrationInstanceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testsourcemigration"),
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
+			MigrationInstanceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/examplesourcemigration"),
 			MigrationMode:               to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			OverwriteDbsInTarget:        to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
+			OverwriteDbsInTarget:        to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
 			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
 				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
-					SourceServerPassword: to.Ptr("xxxxxxxx"),
-					TargetServerPassword: to.Ptr("xxxxxxxx"),
+					SourceServerPassword: to.Ptr("examplesourcepassword"),
+					TargetServerPassword: to.Ptr("exampletargetpassword"),
 				},
 			},
-			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
+			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
 		},
 	}, nil)
 	if err != nil {
@@ -346,300 +346,233 @@ func ExampleMigrationsClient_Create_migrationsCreateWithPrivateEndpoint() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
 	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationInstanceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testsourcemigration"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create_With_Roles.json
-func ExampleMigrationsClient_Create_migrationsCreateWithRoles() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
-			MigrateRoles:         to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumTrue),
-			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
-				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
-					SourceServerPassword: to.Ptr("xxxxxxxx"),
-					TargetServerPassword: to.Ptr("xxxxxxxx"),
-				},
-			},
-			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumTrue),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Create.json
-func ExampleMigrationsClient_Create_migrationsCreate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Create(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResource{
-		Location: to.Ptr("westus"),
-		Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-			DbsToMigrate: []*string{
-				to.Ptr("db1"),
-				to.Ptr("db2"),
-				to.Ptr("db3"),
-				to.Ptr("db4")},
-			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
-			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
-				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
-					SourceServerPassword: to.Ptr("xxxxxxxx"),
-					TargetServerPassword: to.Ptr("xxxxxxxx"),
-				},
-			},
-			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Tags: map[string]*string{
-	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 	},
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Get.json
-func ExampleMigrationsClient_Get_migrationsGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Get(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
-	// 			},
-	// 			Error: to.Ptr(""),
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumFalse),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
-	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("westus"),
-	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
-	// 					Name: to.Ptr("B_Gen5_2"),
-	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Basic")),
-	// 				},
-	// 				StorageMb: to.Ptr[int32](1024),
-	// 				Version: to.Ptr("10"),
-	// 			},
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
-	// 			TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("westus"),
-	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
-	// 					Name: to.Ptr("Standard_D4ds_v5"),
-	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
-	// 				},
-	// 				StorageMb: to.Ptr[int32](2048),
-	// 				Version: to.Ptr("16"),
-	// 			},
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_GetMigrationWithSuccessfulValidationAndMigration.json
-func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationAndMigration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Get(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigrationwithsuccessfulvalidationandmigration", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigrationwithsuccessfulvalidationandmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigrationwithsuccessfulvalidationandmigration"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
 	// 	Location: to.Ptr("eastus"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	// 	Tags: map[string]*string{
+	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
 	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateCompleted),
-	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DbMigrationStatus{
-	// 					"testdb3": &armpostgresqlflexibleservers.DbMigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationInstanceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/examplesourcemigration"),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreateWithRoles.json
+func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
+			DbsToMigrate: []*string{
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
+			MigrateRoles:         to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsTrue),
+			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
+				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
+					SourceServerPassword: to.Ptr("examplesourcepassword"),
+					TargetServerPassword: to.Ptr("exampletargetpassword"),
+				},
+			},
+			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsTrue),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCreate.json
+func ExampleMigrationsClient_Create_createAMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Create(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.Migration{
+		Location: to.Ptr("eastus"),
+		Properties: &armpostgresqlflexibleservers.MigrationProperties{
+			DbsToMigrate: []*string{
+				to.Ptr("exampledatabase1"),
+				to.Ptr("exampledatabase2"),
+				to.Ptr("exampledatabase3"),
+				to.Ptr("exampledatabase4")},
+			MigrationMode:        to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+			SecretParameters: &armpostgresqlflexibleservers.MigrationSecretParameters{
+				AdminCredentials: &armpostgresqlflexibleservers.AdminCredentials{
+					SourceServerPassword: to.Ptr("examplesourcepassword"),
+					TargetServerPassword: to.Ptr("exampletargetpassword"),
+				},
+			},
+			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1624": to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 	},
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
+func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationAndSuccessfulMigration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Get(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstateCompleted),
+	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DatabaseMigrationState{
+	// 					"exampledatabase": &armpostgresqlflexibleservers.DatabaseMigrationState{
 	// 						AppliedChanges: to.Ptr[int32](0),
 	// 						CdcDeleteCounter: to.Ptr[int32](0),
 	// 						CdcInsertCounter: to.Ptr[int32](0),
 	// 						CdcUpdateCounter: to.Ptr[int32](0),
-	// 						DatabaseName: to.Ptr("testdb3"),
-	// 						EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:55:49.681Z"); return t}()),
+	// 						DatabaseName: to.Ptr("exampledatabase"),
+	// 						EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
 	// 						FullLoadCompletedTables: to.Ptr[int32](10),
 	// 						FullLoadErroredTables: to.Ptr[int32](0),
 	// 						FullLoadLoadingTables: to.Ptr[int32](0),
 	// 						FullLoadQueuedTables: to.Ptr[int32](0),
 	// 						IncomingChanges: to.Ptr[int32](0),
 	// 						Latency: to.Ptr[int32](0),
-	// 						MigrationState: to.Ptr(armpostgresqlflexibleservers.MigrationDbStateSucceeded),
-	// 						StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:55:28.995Z"); return t}()),
+	// 						MigrationState: to.Ptr(armpostgresqlflexibleservers.MigrationDatabaseStateSucceeded),
+	// 						StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 					},
 	// 				},
 	// 				ValidationDetails: &armpostgresqlflexibleservers.ValidationDetails{
 	// 					DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 						{
-	// 							DatabaseName: to.Ptr("testdb3"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:54:29.894Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:54:29.553Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -668,31 +601,31 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationA
 	// 							State: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
 	// 					}},
 	// 					Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
-	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:55:00.499Z"); return t}()),
-	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:54:28.077Z"); return t}()),
+	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 				},
 	// 			},
 	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateSucceeded),
 	// 		},
 	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("testdb3")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+	// 			to.Ptr("exampledatabase")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("f2354e72-2828-4a19-ad20-b4cd9e2673c1"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:57:30.736Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-12T05:54:15.999Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("20.228.214.65:5432@postgres"),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumTrue),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverTrue),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_GetMigrationWithSuccessfulValidationButMigrationFailure.json
-func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationButMigrationFailure() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
+func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationButFailedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -702,30 +635,30 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationB
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMigrationsClient().Get(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigrationwithsuccessfulvalidationbutmigrationfailure", nil)
+	res, err := clientFactory.NewMigrationsClient().Get(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigrationwithsuccessfulvalidationbutmigrationfailure"),
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
 	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigrationwithsuccessfulvalidationbutmigrationfailure"),
-	// 	Location: to.Ptr("eastus2"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
 	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateCompleted),
-	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DbMigrationStatus{
-	// 					"testdb6": &armpostgresqlflexibleservers.DbMigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstateCompleted),
+	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DatabaseMigrationState{
+	// 					"exampledatabase": &armpostgresqlflexibleservers.DatabaseMigrationState{
 	// 						AppliedChanges: to.Ptr[int32](0),
 	// 						CdcDeleteCounter: to.Ptr[int32](0),
 	// 						CdcInsertCounter: to.Ptr[int32](0),
 	// 						CdcUpdateCounter: to.Ptr[int32](0),
-	// 						DatabaseName: to.Ptr("testdb6"),
-	// 						EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:09:53.252Z"); return t}()),
+	// 						DatabaseName: to.Ptr("exampledatabase"),
+	// 						EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
 	// 						FullLoadCompletedTables: to.Ptr[int32](0),
 	// 						FullLoadErroredTables: to.Ptr[int32](0),
 	// 						FullLoadLoadingTables: to.Ptr[int32](0),
@@ -733,16 +666,16 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationB
 	// 						IncomingChanges: to.Ptr[int32](0),
 	// 						Latency: to.Ptr[int32](0),
 	// 						Message: to.Ptr("Collation/Encoding not Supported Error:  User defined Collations are present in the source database. Please drop them before retrying the migration."),
-	// 						MigrationState: to.Ptr(armpostgresqlflexibleservers.MigrationDbStateFailed),
-	// 						StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:09:52.922Z"); return t}()),
+	// 						MigrationState: to.Ptr(armpostgresqlflexibleservers.MigrationDatabaseStateFailed),
+	// 						StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 					},
 	// 				},
 	// 				ValidationDetails: &armpostgresqlflexibleservers.ValidationDetails{
 	// 					DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 						{
 	// 							DatabaseName: to.Ptr("address_standardizer"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:04:24.565Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:04:24.565Z"); return t}()),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("ExtensionsValidation"),
@@ -755,45 +688,45 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationB
 	// 							State: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
 	// 					}},
 	// 					Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
-	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:04:24.565Z"); return t}()),
-	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:04:21.623Z"); return t}()),
+	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 				},
 	// 			},
-	// 			Error: to.Ptr("testdb6: Collation/Encoding not Supported Error:  User defined Collations are present in the source database. Please drop them before retrying the migration. "),
+	// 			Error: to.Ptr("exampledatabase: Collation/Encoding not Supported Error:  User defined Collations are present in the source database. Please drop them before retrying the migration."),
 	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateFailed),
 	// 		},
 	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("testdb6")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+	// 			to.Ptr("exampledatabase")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("da52db29-cfeb-4670-a1ad-683edb14c621"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:04:24.565Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-21T13:04:24.565Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("eastus2"),
+	// 				Location: to.Ptr("eastus"),
 	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
 	// 				},
 	// 				StorageMb: to.Ptr[int32](102400),
 	// 			},
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/source-rg/providers/Microsoft.DBforPostgreSQL/servers/testsource"),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/servers/examplesource"),
 	// 			TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("East US 2"),
+	// 				Location: to.Ptr("eastus"),
 	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
 	// 					Name: to.Ptr("Standard_D2ds_v4"),
 	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Standard_D2ds_v4")),
 	// 				},
 	// 				StorageMb: to.Ptr[int32](131072),
 	// 			},
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testtarget"),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget"),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_GetMigrationWithSuccessfulValidationOnly.json
-func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationOnly() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsGetMigrationWithSuccessfulValidationOnly.json
+func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -803,30 +736,30 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationO
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMigrationsClient().Get(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigrationwithsuccessfulvalidationonly", nil)
+	res, err := clientFactory.NewMigrationsClient().Get(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigrationwithsuccessfulvalidationonly"),
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
 	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigrationwithsuccessfulvalidationonly"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
 	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateCompleted),
-	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DbMigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstateCompleted),
+	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DatabaseMigrationState{
 	// 				},
 	// 				ValidationDetails: &armpostgresqlflexibleservers.ValidationDetails{
 	// 					DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 						{
 	// 							DatabaseName: to.Ptr("UnknownCollationTest"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-16T05:29:39.248Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-16T05:29:38.904Z"); return t}()),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -855,31 +788,31 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithSuccessfulValidationO
 	// 							State: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
 	// 					}},
 	// 					Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
-	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-16T05:29:39.666Z"); return t}()),
-	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-16T05:29:35.634Z"); return t}()),
+	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 				},
 	// 			},
 	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateSucceeded),
 	// 		},
 	// 		DbsToMigrate: []*string{
 	// 			to.Ptr("UnknownCollationTest")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("77840327-7be8-44b8-adc0-af0ccccfeb36"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-16T05:30:05.885Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-16T05:28:58.775Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("20.228.214.65:5432@postgres"),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumTrue),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverTrue),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_GetMigrationWithValidationFailures.json
-func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsGetMigrationWithValidationFailures.json
+func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFailures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -889,30 +822,30 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMigrationsClient().Get(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigrationwithvalidationfailure", nil)
+	res, err := clientFactory.NewMigrationsClient().Get(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigrationwithvalidationfailure"),
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
 	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testtarget/migrations/testmigrationwithvalidationfailure"),
-	// 	Location: to.Ptr("East US"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
 	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateCompleted),
-	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DbMigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstateCompleted),
+	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DatabaseMigrationState{
 	// 				},
 	// 				ValidationDetails: &armpostgresqlflexibleservers.ValidationDetails{
 	// 					DbLevelValidationDetails: []*armpostgresqlflexibleservers.DbLevelValidationStatus{
 	// 						{
-	// 							DatabaseName: to.Ptr("c.utf-8"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase1"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -933,9 +866,9 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							}},
 	// 						},
 	// 						{
-	// 							DatabaseName: to.Ptr("postgres"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase2"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -951,9 +884,9 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							}},
 	// 						},
 	// 						{
-	// 							DatabaseName: to.Ptr("readme_to_recover"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase3"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -969,9 +902,9 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							}},
 	// 						},
 	// 						{
-	// 							DatabaseName: to.Ptr("testdb1"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase4"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -983,9 +916,9 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							}},
 	// 						},
 	// 						{
-	// 							DatabaseName: to.Ptr("testdb2"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase5"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -997,9 +930,9 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							}},
 	// 						},
 	// 						{
-	// 							DatabaseName: to.Ptr("testSchema"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase6"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -1011,9 +944,9 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							}},
 	// 						},
 	// 						{
-	// 							DatabaseName: to.Ptr("UnknownCollationTest"),
-	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:02.810Z"); return t}()),
-	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:01.830Z"); return t}()),
+	// 							DatabaseName: to.Ptr("exampledatabase7"),
+	// 							EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 							StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 							Summary: []*armpostgresqlflexibleservers.ValidationSummaryItem{
 	// 								{
 	// 									Type: to.Ptr("SchemaValidation"),
@@ -1043,37 +976,37 @@ func ExampleMigrationsClient_Get_migrationsGetMigrationWithValidationFailures() 
 	// 							State: to.Ptr(armpostgresqlflexibleservers.ValidationStateSucceeded),
 	// 					}},
 	// 					Status: to.Ptr(armpostgresqlflexibleservers.ValidationStateFailed),
-	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:20:33.136Z"); return t}()),
-	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:19:59.917Z"); return t}()),
+	// 					ValidationEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 					ValidationStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
 	// 				},
 	// 			},
 	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateValidationFailed),
 	// 		},
 	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("c.utf-8"),
-	// 			to.Ptr("postgres"),
-	// 			to.Ptr("readme_to_recover"),
-	// 			to.Ptr("testdb1"),
-	// 			to.Ptr("testdb2"),
-	// 			to.Ptr("testSchema"),
-	// 			to.Ptr("UnknownCollationTest")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4"),
+	// 			to.Ptr("exampledatabase5"),
+	// 			to.Ptr("exampledatabase6"),
+	// 			to.Ptr("exampledatabase7")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("a3e2d3cc-b139-4201-9431-e4f3003140fd"),
 	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
 	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidate),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:21:00.043Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-17T19:19:47.448Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
+	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
 	// 			SourceDbServerResourceID: to.Ptr("20.228.214.65:5432@postgres"),
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumTrue),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverTrue),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Cancel.json
-func ExampleMigrationsClient_Update_cancelMigration() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsGet.json
+func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1083,105 +1016,38 @@ func ExampleMigrationsClient_Update_cancelMigration() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewMigrationsClient().Update(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResourceForPatch{
-		Properties: &armpostgresqlflexibleservers.MigrationResourcePropertiesForPatch{
-			Cancel: to.Ptr(armpostgresqlflexibleservers.CancelEnumTrue),
-		},
-	}, nil)
+	res, err := clientFactory.NewMigrationsClient().Get(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
 	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
 	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStateCompleted),
-	// 			},
-	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateCanceled),
-	// 		},
-	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("postgres")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
-	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOnline),
-	// 			MigrationWindowEndTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-15T07:23:56.326Z"); return t}()),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-15T07:22:57.700Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumTrue),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
-	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("eastasia"),
-	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
-	// 					Name: to.Ptr("B_Gen5_2"),
-	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Basic")),
-	// 				},
-	// 			},
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("East Asia"),
-	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
-	// 					Name: to.Ptr("Standard_D2ds_v4"),
-	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Standard_D2ds_v4")),
-	// 				},
-	// 			},
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Update.json
-func ExampleMigrationsClient_Update_migrationsUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMigrationsClient().Update(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", armpostgresqlflexibleservers.MigrationResourceForPatch{
-		Properties: &armpostgresqlflexibleservers.MigrationResourcePropertiesForPatch{
-			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.MigrationResource = armpostgresqlflexibleservers.MigrationResource{
-	// 	Name: to.Ptr("testmigration"),
-	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-	// 	Location: to.Ptr("westus"),
-	// 	Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
-	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
 	// 			},
 	// 			Error: to.Ptr(""),
 	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
 	// 		},
 	// 		DbsToMigrate: []*string{
-	// 			to.Ptr("db1"),
-	// 			to.Ptr("db2"),
-	// 			to.Ptr("db3"),
-	// 			to.Ptr("db4")},
-	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumFalse),
-	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumTrue),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("westus"),
+	// 				Location: to.Ptr("eastus"),
 	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
 	// 					Name: to.Ptr("B_Gen5_2"),
 	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Basic")),
@@ -1189,25 +1055,25 @@ func ExampleMigrationsClient_Update_migrationsUpdate() {
 	// 				StorageMb: to.Ptr[int32](1024),
 	// 				Version: to.Ptr("10"),
 	// 			},
-	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
 	// 			TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-	// 				Location: to.Ptr("westus"),
+	// 				Location: to.Ptr("eastus"),
 	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
 	// 					Name: to.Ptr("Standard_D4ds_v5"),
 	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 	// 				},
 	// 				StorageMb: to.Ptr[int32](2048),
-	// 				Version: to.Ptr("16"),
+	// 				Version: to.Ptr("17"),
 	// 			},
-	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_Delete.json
-func ExampleMigrationsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsUpdate.json
+func ExampleMigrationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1217,13 +1083,129 @@ func ExampleMigrationsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewMigrationsClient().Delete(ctx, "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration", nil)
+	res, err := clientFactory.NewMigrationsClient().Update(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", armpostgresqlflexibleservers.MigrationResourceForPatch{
+		Properties: &armpostgresqlflexibleservers.MigrationPropertiesForPatch{
+			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 			},
+	// 			Error: to.Ptr(""),
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
+	// 			SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
+	// 				Location: to.Ptr("eastus"),
+	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
+	// 					Name: to.Ptr("B_Gen5_2"),
+	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Basic")),
+	// 				},
+	// 				StorageMb: to.Ptr[int32](1024),
+	// 				Version: to.Ptr("10"),
+	// 			},
+	// 			SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+	// 			StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
+	// 			TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
+	// 				Location: to.Ptr("eastus"),
+	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
+	// 					Name: to.Ptr("Standard_D4ds_v5"),
+	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 				},
+	// 				StorageMb: to.Ptr[int32](2048),
+	// 				Version: to.Ptr("17"),
+	// 			},
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b1f4d539964453ce8008e4b069e59885e12ba441/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2025-01-01-preview/examples/Migrations_ListByTargetServer.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCancel.json
+func ExampleMigrationsClient_Cancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().Cancel(ctx, "exampleresourcegroup", "exampleserver", "examplemigration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Migration = armpostgresqlflexibleservers.Migration{
+	// 	Name: to.Ptr("examplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
+	// 	ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget/migrations/examplemigration"),
+	// 	Location: to.Ptr("East US"),
+	// 	Properties: &armpostgresqlflexibleservers.MigrationProperties{
+	// 		CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
+	// 			CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+	// 				CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
+	// 				DbDetails: map[string]*armpostgresqlflexibleservers.DatabaseMigrationState{
+	// 				},
+	// 			},
+	// 			State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
+	// 		},
+	// 		DbsToMigrate: []*string{
+	// 			to.Ptr("exampledatabase1"),
+	// 			to.Ptr("exampledatabase2"),
+	// 			to.Ptr("exampledatabase3"),
+	// 			to.Ptr("exampledatabase4")},
+	// 			MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
+	// 			MigrationID: to.Ptr("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
+	// 			MigrationMode: to.Ptr(armpostgresqlflexibleservers.MigrationModeOffline),
+	// 			MigrationOption: to.Ptr(armpostgresqlflexibleservers.MigrationOptionValidateAndMigrate),
+	// 			MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T18:30:22.123Z"); return t}()),
+	// 			OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerTrue),
+	// 			SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerTrue),
+	// 			SourceDbServerResourceID: to.Ptr("examplesource:5432@exampleadministratorlogin"),
+	// 			SourceType: to.Ptr(armpostgresqlflexibleservers.SourceTypeOnPremises),
+	// 			SSLMode: to.Ptr(armpostgresqlflexibleservers.SSLModePrefer),
+	// 			TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
+	// 				Location: to.Ptr("East US"),
+	// 				SKU: &armpostgresqlflexibleservers.ServerSKU{
+	// 					Name: to.Ptr("Standard_D4ds_v4"),
+	// 					Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
+	// 				},
+	// 				StorageMb: to.Ptr[int32](131072),
+	// 				Version: to.Ptr("17"),
+	// 			},
+	// 			TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+	// 			TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverTrue),
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsListByTargetServer.json
 func ExampleMigrationsClient_NewListByTargetServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1234,7 +1216,7 @@ func ExampleMigrationsClient_NewListByTargetServerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewMigrationsClient().NewListByTargetServerPager("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", &armpostgresqlflexibleservers.MigrationsClientListByTargetServerOptions{MigrationListFilter: to.Ptr(armpostgresqlflexibleservers.MigrationListFilterAll)})
+	pager := clientFactory.NewMigrationsClient().NewListByTargetServerPager("exampleresourcegroup", "exampleserver", &armpostgresqlflexibleservers.MigrationsClientListByTargetServerOptions{MigrationListFilter: to.Ptr(armpostgresqlflexibleservers.MigrationListFilterAll)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1245,33 +1227,33 @@ func ExampleMigrationsClient_NewListByTargetServerPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.MigrationResourceListResult = armpostgresqlflexibleservers.MigrationResourceListResult{
-		// 	Value: []*armpostgresqlflexibleservers.MigrationResource{
+		// page.MigrationList = armpostgresqlflexibleservers.MigrationList{
+		// 	Value: []*armpostgresqlflexibleservers.Migration{
 		// 		{
-		// 			Name: to.Ptr("testmigration"),
+		// 			Name: to.Ptr("examplemigration"),
 		// 			Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
-		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget/migrations/testmigration"),
-		// 			Location: to.Ptr("westus"),
-		// 			Properties: &armpostgresqlflexibleservers.MigrationResourceProperties{
+		// 			ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
+		// 			Location: to.Ptr("eastus"),
+		// 			Properties: &armpostgresqlflexibleservers.MigrationProperties{
 		// 				CurrentStatus: &armpostgresqlflexibleservers.MigrationStatus{
-		// 					CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubStateDetails{
-		// 						CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubStatePerformingPreRequisiteSteps),
+		// 					CurrentSubStateDetails: &armpostgresqlflexibleservers.MigrationSubstateDetails{
+		// 						CurrentSubState: to.Ptr(armpostgresqlflexibleservers.MigrationSubstatePerformingPreRequisiteSteps),
 		// 					},
 		// 					Error: to.Ptr(""),
 		// 					State: to.Ptr(armpostgresqlflexibleservers.MigrationStateInProgress),
 		// 				},
 		// 				DbsToMigrate: []*string{
-		// 					to.Ptr("db1"),
-		// 					to.Ptr("db2"),
-		// 					to.Ptr("db3"),
-		// 					to.Ptr("db4")},
-		// 					MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesEnumFalse),
+		// 					to.Ptr("exampledatabase1"),
+		// 					to.Ptr("exampledatabase2"),
+		// 					to.Ptr("exampledatabase3"),
+		// 					to.Ptr("exampledatabase4")},
+		// 					MigrateRoles: to.Ptr(armpostgresqlflexibleservers.MigrateRolesAndPermissionsFalse),
 		// 					MigrationID: to.Ptr("d3ceacbb-a5fd-43dc-a9db-6022b5154856"),
-		// 					MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-06T16:05:58.895Z"); return t}()),
-		// 					OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDbsInTargetEnumFalse),
-		// 					SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceDbEnumFalse),
+		// 					MigrationWindowStartTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123Z"); return t}()),
+		// 					OverwriteDbsInTarget: to.Ptr(armpostgresqlflexibleservers.OverwriteDatabasesOnTargetServerFalse),
+		// 					SetupLogicalReplicationOnSourceDbIfNeeded: to.Ptr(armpostgresqlflexibleservers.LogicalReplicationOnSourceServerFalse),
 		// 					SourceDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-		// 						Location: to.Ptr("westus"),
+		// 						Location: to.Ptr("eastus"),
 		// 						SKU: &armpostgresqlflexibleservers.ServerSKU{
 		// 							Name: to.Ptr("B_Gen5_2"),
 		// 							Tier: to.Ptr(armpostgresqlflexibleservers.SKUTier("Basic")),
@@ -1279,21 +1261,49 @@ func ExampleMigrationsClient_NewListByTargetServerPager() {
 		// 						StorageMb: to.Ptr[int32](1024),
 		// 						Version: to.Ptr("10"),
 		// 					},
-		// 					SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/servers/testsource"),
-		// 					StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationEnumFalse),
+		// 					SourceDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/servers/examplesource"),
+		// 					StartDataMigration: to.Ptr(armpostgresqlflexibleservers.StartDataMigrationFalse),
 		// 					TargetDbServerMetadata: &armpostgresqlflexibleservers.DbServerMetadata{
-		// 						Location: to.Ptr("westus"),
+		// 						Location: to.Ptr("eastus"),
 		// 						SKU: &armpostgresqlflexibleservers.ServerSKU{
 		// 							Name: to.Ptr("Standard_D4ds_v5"),
 		// 							Tier: to.Ptr(armpostgresqlflexibleservers.SKUTierGeneralPurpose),
 		// 						},
 		// 						StorageMb: to.Ptr[int32](2048),
-		// 						Version: to.Ptr("16"),
+		// 						Version: to.Ptr("17"),
 		// 					},
-		// 					TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBForPostgreSql/flexibleServers/testtarget"),
-		// 					TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverEnumFalse),
+		// 					TargetDbServerResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget"),
+		// 					TriggerCutover: to.Ptr(armpostgresqlflexibleservers.TriggerCutoverFalse),
 		// 				},
 		// 		}},
 		// 	}
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e96c24570a484cff13d153fb472f812878866a39/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/MigrationsCheckNameAvailability.json
+func ExampleMigrationsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMigrationsClient().CheckNameAvailability(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.MigrationNameAvailability{
+		Name: to.Ptr("examplemigration"),
+		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.MigrationNameAvailability = armpostgresqlflexibleservers.MigrationNameAvailability{
+	// 	Name: to.Ptr("naexamplemigration"),
+	// 	Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
+	// 	NameAvailable: to.Ptr(true),
+	// }
 }

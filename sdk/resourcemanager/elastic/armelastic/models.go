@@ -81,17 +81,20 @@ type CompanyInfo struct {
 
 // ConnectedPartnerResourceProperties - Connected Partner Resource Properties
 type ConnectedPartnerResourceProperties struct {
-	// The azure resource Id of the deployment.
+	// The azure resource Id of the resource.
 	AzureResourceID *string
 
-	// The location of the deployment.
+	// The location of the resource.
 	Location *string
 
-	// Elastic deployment name
+	// Elastic resource name
 	PartnerDeploymentName *string
 
-	// Deployment URL of the elasticsearch in Elastic cloud deployment.
+	// URL of the resource in Elastic cloud.
 	PartnerDeploymentURI *string
+
+	// The hosting type of the resource.
+	Type *string
 }
 
 // ConnectedPartnerResourcesListFormat - Connected Partner Resources List Format
@@ -111,6 +114,9 @@ type ConnectedPartnerResourcesListResponse struct {
 
 // DeploymentInfoResponse - The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource.
 type DeploymentInfoResponse struct {
+	// READ-ONLY; ConfigurationType Type - Applicable for Serverless only.
+	ConfigurationType *string
+
 	// READ-ONLY; Deployment URL of the elasticsearch in Elastic cloud deployment.
 	DeploymentURL *string
 
@@ -126,6 +132,9 @@ type DeploymentInfoResponse struct {
 
 	// READ-ONLY; RAM capacity of the elasticsearch in Elastic cloud deployment.
 	MemoryCapacity *string
+
+	// READ-ONLY; Project Type - Applicable for Serverless only.
+	ProjectType *string
 
 	// READ-ONLY; The Elastic deployment status.
 	Status *ElasticDeploymentStatus
@@ -226,6 +235,12 @@ type MarketplaceSaaSInfo struct {
 type MarketplaceSaaSInfoMarketplaceSubscription struct {
 	// Marketplace Subscription Id. This is a GUID-formatted string.
 	ID *string
+
+	// Offer Id of the Marketplace offer,
+	OfferID *string
+
+	// Publisher Id of the Marketplace offer.
+	PublisherID *string
 }
 
 // MonitorProperties - Properties specific to the monitor resource.
@@ -236,14 +251,17 @@ type MonitorProperties struct {
 	// Flag to determine if User API Key has to be generated and shared.
 	GenerateAPIKey *bool
 
+	// Hosting type of the monitor resource - either Hosted deployments OR Serverless Projects.
+	HostingType *HostingType
+
 	// Flag specifying if the resource monitoring is enabled or disabled.
 	MonitoringStatus *MonitoringStatus
 
 	// Plan details of the monitor resource.
 	PlanDetails *PlanDetails
 
-	// Provisioning state of the monitor resource.
-	ProvisioningState *ProvisioningState
+	// Project details of the monitor resource IF it belongs to Serverless offer kind.
+	ProjectDetails *ProjectDetails
 
 	// Status of Azure Subscription where Marketplace SaaS is located.
 	SaaSAzureSubscriptionStatus *string
@@ -268,6 +286,9 @@ type MonitorProperties struct {
 
 	// READ-ONLY; The priority of the resource.
 	LiftrResourcePreference *int32
+
+	// READ-ONLY; Provisioning state of the monitor resource.
+	ProvisioningState *ProvisioningState
 }
 
 // MonitorResource - Monitor resource.
@@ -277,6 +298,9 @@ type MonitorResource struct {
 
 	// Identity properties of the monitor resource.
 	Identity *IdentityProperties
+
+	// The kind of the Elastic resource - observability, security, search etc.
+	Kind *string
 
 	// Properties of the monitor resource.
 	Properties *MonitorProperties
@@ -342,6 +366,42 @@ type MonitoredResourceListResponse struct {
 	Value []*MonitoredResource
 }
 
+// MonitoredSubscription - The list of subscriptions and it's monitoring status by current Elastic monitor.
+type MonitoredSubscription struct {
+	// The reason of not monitoring the subscription.
+	Error *string
+
+	// The state of monitoring.
+	Status *Status
+
+	// The subscriptionId to be monitored.
+	SubscriptionID *string
+
+	// Definition of the properties for a TagRules resource.
+	TagRules *MonitoringTagRulesProperties
+}
+
+// MonitoredSubscriptionProperties - The request to update subscriptions needed to be monitored by the Elastic monitor resource.
+type MonitoredSubscriptionProperties struct {
+	// The request to update subscriptions needed to be monitored by the Elastic monitor resource.
+	Properties *SubscriptionList
+
+	// READ-ONLY; The id of the monitored subscription resource.
+	ID *string
+
+	// READ-ONLY; Name of the monitored subscription resource.
+	Name *string
+
+	// READ-ONLY; The type of the monitored subscription resource.
+	Type *string
+}
+
+type MonitoredSubscriptionPropertiesList struct {
+	// The link to the next page of items
+	NextLink *string
+	Value    []*MonitoredSubscriptionProperties
+}
+
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
 type MonitoringTagRules struct {
 	// Properties of the monitoring tag rules.
@@ -374,7 +434,7 @@ type MonitoringTagRulesProperties struct {
 	// Rules for sending logs.
 	LogRules *LogRules
 
-	// Provisioning state of the monitoring tag rules.
+	// READ-ONLY; Provisioning state of the monitoring tag rules.
 	ProvisioningState *ProvisioningState
 }
 
@@ -382,6 +442,9 @@ type MonitoringTagRulesProperties struct {
 type OpenAIIntegrationProperties struct {
 	// Value of API key for Open AI resource
 	Key *string
+
+	// The connector id of Open AI resource
+	OpenAIConnectorID *string
 
 	// The API endpoint for Open AI resource
 	OpenAIResourceEndpoint *string
@@ -522,6 +585,15 @@ type PlanDetails struct {
 	TermID *string
 }
 
+// ProjectDetails - Project details of the monitor resource IF it belongs to Serverless offer kind.
+type ProjectDetails struct {
+	// Configuration type of the Elasticsearch project
+	ConfigurationType *ConfigurationType
+
+	// Project type; ex: Elasticsearch / Observability / Security
+	ProjectType *ProjectType
+}
+
 // Properties - Elastic Resource Properties.
 type Properties struct {
 	// Details of the elastic cloud deployment.
@@ -535,6 +607,36 @@ type Properties struct {
 type ResourceSKU struct {
 	// REQUIRED; Name of the SKU.
 	Name *string
+}
+
+// ResubscribeProperties - Resubscribe Properties
+type ResubscribeProperties struct {
+	// Organization Id of the Elastic Organization that needs to be resubscribed
+	OrganizationID *string
+
+	// Newly selected plan Id to create the new Marketplace subscription for Resubscribe
+	PlanID *string
+
+	// Newly selected Azure resource group in which the new Marketplace subscription will be created for Resubscribe
+	ResourceGroup *string
+
+	// Newly selected Azure Subscription Id in which the new Marketplace subscription will be created for Resubscribe
+	SubscriptionID *string
+
+	// Newly selected term to create the new Marketplace subscription for Resubscribe
+	Term *string
+}
+
+// SubscriptionList - The request to update subscriptions needed to be monitored by the Elastic monitor resource.
+type SubscriptionList struct {
+	// List of subscriptions and the state of the monitoring.
+	MonitoredSubscriptionList []*MonitoredSubscription
+
+	// The operation for the patch on the resource.
+	Operation *Operation
+
+	// READ-ONLY; Provisioning State of the resource
+	ProvisioningState *ProvisioningState
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

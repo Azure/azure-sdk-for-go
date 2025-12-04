@@ -42,7 +42,7 @@ func NewResourceQuotaLimitsAccountClient(subscriptionID string, credential azcor
 // Get - Get the default, current and usages account quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - quotaLimitName - The name of the Quota Limit
@@ -94,7 +94,7 @@ func (client *ResourceQuotaLimitsAccountClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -112,7 +112,7 @@ func (client *ResourceQuotaLimitsAccountClient) getHandleResponse(resp *http.Res
 // NewListPager - Gets a list of quota limits for all quotas that are under account. Currently PoolsPerAccount is the only
 // one.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-09-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - ResourceQuotaLimitsAccountClientListOptions contains the optional parameters for the ResourceQuotaLimitsAccountClient.NewListPager
@@ -160,7 +160,7 @@ func (client *ResourceQuotaLimitsAccountClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

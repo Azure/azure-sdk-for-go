@@ -49,10 +49,10 @@ func NewUpgradableVersionsClient(subscriptionID string, credential azcore.TokenC
 	return client, nil
 }
 
-// Details - List of upgradable versions for a given monitor resource.
+// Details - List all upgradable versions for your Elastic monitor resource, helping you plan and execute upgrades.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - UpgradableVersionsClientDetailsOptions contains the optional parameters for the UpgradableVersionsClient.Details
@@ -80,7 +80,7 @@ func (client *UpgradableVersionsClient) Details(ctx context.Context, resourceGro
 }
 
 // detailsCreateRequest creates the Details request.
-func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *UpgradableVersionsClientDetailsOptions) (*policy.Request, error) {
+func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *UpgradableVersionsClientDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listUpgradableVersions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,7 +99,7 @@ func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

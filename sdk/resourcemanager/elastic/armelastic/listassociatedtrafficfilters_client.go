@@ -49,10 +49,10 @@ func NewListAssociatedTrafficFiltersClient(subscriptionID string, credential azc
 	return client, nil
 }
 
-// List - Get the list of all associated traffic filters for the given deployment.
+// List - List all traffic filters associated with your Elastic monitor resource, helping you manage network traffic control.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - ListAssociatedTrafficFiltersClientListOptions contains the optional parameters for the ListAssociatedTrafficFiltersClient.List
@@ -80,7 +80,7 @@ func (client *ListAssociatedTrafficFiltersClient) List(ctx context.Context, reso
 }
 
 // listCreateRequest creates the List request.
-func (client *ListAssociatedTrafficFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *ListAssociatedTrafficFiltersClientListOptions) (*policy.Request, error) {
+func (client *ListAssociatedTrafficFiltersClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *ListAssociatedTrafficFiltersClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/listAssociatedTrafficFilters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -99,7 +99,7 @@ func (client *ListAssociatedTrafficFiltersClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

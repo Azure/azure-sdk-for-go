@@ -15,7 +15,9 @@ import (
 	"strings"
 )
 
-// Client - The key vault client performs cryptographic key operations and vault operations against the Key Vault service.
+// Client - The Azure Key Vault Administration service client performs administrative operations
+// including RBAC, BackupRestore, and settings management
+// against the Azure Key Vault service.
 // Don't use this type directly, use a constructor function instead.
 type Client struct {
 	internal     *azcore.Client

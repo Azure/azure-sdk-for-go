@@ -1,0 +1,4 @@
+batch:
+  - ./backup
+  - ./rbac
+  - ./settings

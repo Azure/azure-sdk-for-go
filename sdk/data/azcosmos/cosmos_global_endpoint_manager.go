@@ -19,14 +19,13 @@ import (
 const defaultUnavailableLocationRefreshInterval = 5 * time.Minute
 
 type globalEndpointManager struct {
-	clientEndpoint       string
-	pipeline             azruntime.Pipeline
-	preferredLocations   []string
-	locationCache        *locationCache
-	refreshTimeInterval  time.Duration
-	gemMutex             sync.RWMutex
-	lastUpdateTime       time.Time
-	outstandingRefreshes sync.WaitGroup
+	clientEndpoint      string
+	pipeline            azruntime.Pipeline
+	preferredLocations  []string
+	locationCache       *locationCache
+	refreshTimeInterval time.Duration
+	gemMutex            sync.RWMutex
+	lastUpdateTime      time.Time
 }
 
 func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
@@ -176,21 +175,4 @@ func newAccountProperties(azResponse *http.Response) (accountProperties, error) 
 	}
 
 	return properties, unmarshalErr
-}
-
-func (gem *globalEndpointManager) BackgroundRefresh(ctx context.Context) {
-	if gem.ShouldRefresh() {
-		gem.outstandingRefreshes.Add(1)
-		go func() {
-			defer gem.outstandingRefreshes.Done()
-			// Use the same context, but without the cancellation signal.
-			// We DO want to preserve things like context values, but the GEM update needs to complete fully, even if the user cancels the triggering request.
-			_ = gem.Update(context.WithoutCancel(ctx), false)
-		}()
-	}
-}
-
-// WaitForOutstandingRefreshes waits for any outstanding GEM refreshes to complete. Intended for testing.
-func (gem *globalEndpointManager) WaitForOutstandingRefreshes() {
-	gem.outstandingRefreshes.Wait()
 }

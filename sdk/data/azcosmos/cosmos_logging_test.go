@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -45,10 +46,6 @@ func TestLoggingSuccessResponse(t *testing.T) {
 		},
 	})
 
-	// The GEM may have outstanding refreshes from client creation; wait for them to complete before moving to the next test.
-	// If we don't do this, we risk setting a log listener while the GEM is writing to the log during a background refresh.
-	defer client.gem.WaitForOutstandingRefreshes()
-
 	_, err := client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
 	if err != nil {
 		t.Errorf("Error creating database: %v", err)
@@ -66,6 +63,11 @@ func TestLoggingSuccessResponse(t *testing.T) {
 	if !found {
 		t.Errorf("Expected 200 OK response log, but not found. Logs:\n%s", logger.getAllLogs())
 	}
+
+	// The GEM may have outstanding refreshes going on, and if those occur while another test is messing with logging,
+	// it can cause a data race. Wait for any outstanding GEM refreshes to complete before ending the test.
+	// Sleeping isn't the ideal solution, but we don't really want to add any more hooks or tracking just for tests.
+	time.Sleep(1 * time.Second)
 }
 
 func TestLoggingFailureResponse(t *testing.T) {
@@ -96,10 +98,6 @@ func TestLoggingFailureResponse(t *testing.T) {
 		},
 	})
 
-	// The GEM may have outstanding refreshes from client creation; wait for them to complete before moving to the next test.
-	// If we don't do this, we risk setting a log listener while the GEM is writing to the log during a background refresh.
-	defer client.gem.WaitForOutstandingRefreshes()
-
 	// We expect an error here due to 500 response
 	_, _ = client.CreateDatabase(context.Background(), DatabaseProperties{ID: "testdb"}, nil)
 
@@ -115,4 +113,9 @@ func TestLoggingFailureResponse(t *testing.T) {
 	if !found {
 		t.Errorf("Expected 500 Internal Server Error response log, but not found. Logs:\n%s", logger.getAllLogs())
 	}
+
+	// The GEM may have outstanding refreshes going on, and if those occur while another test is messing with logging,
+	// it can cause a data race. Wait for any outstanding GEM refreshes to complete before ending the test.
+	// Sleeping isn't the ideal solution, but we don't really want to add any more hooks or tracking just for tests.
+	time.Sleep(1 * time.Second)
 }

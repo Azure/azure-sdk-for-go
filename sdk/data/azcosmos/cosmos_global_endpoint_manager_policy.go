@@ -12,9 +12,8 @@ import (
 )
 
 type globalEndpointManagerPolicy struct {
-	gem                  *globalEndpointManager
-	once                 sync.Once
-	outstandingRefreshes sync.WaitGroup
+	gem  *globalEndpointManager
+	once sync.Once
 }
 
 func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, error) {

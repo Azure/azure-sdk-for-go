@@ -8,8 +8,9 @@ package armdatafactory
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AccessPolicyResponse.
@@ -19312,13 +19313,13 @@ func (e *EncryptionConfiguration) UnmarshalJSON(data []byte) error {
 		case "identity":
 			err = unpopulate(val, "Identity", &e.Identity)
 			delete(rawMsg, key)
-		case "keyName":
+		case "keyName", "KeyName":
 			err = unpopulate(val, "KeyName", &e.KeyName)
 			delete(rawMsg, key)
-		case "keyVersion":
+		case "keyVersion", "KeyVersion":
 			err = unpopulate(val, "KeyVersion", &e.KeyVersion)
 			delete(rawMsg, key)
-		case "vaultBaseUrl":
+		case "vaultBaseUrl", "VaultBaseUrl":
 			err = unpopulate(val, "VaultBaseURL", &e.VaultBaseURL)
 			delete(rawMsg, key)
 		}

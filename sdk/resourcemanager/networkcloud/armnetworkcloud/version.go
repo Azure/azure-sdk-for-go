@@ -6,5 +6,5 @@ package armnetworkcloud
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
-	moduleVersion = "v1.4.0-beta.1"
+	moduleVersion = "v1.4.0"
 )

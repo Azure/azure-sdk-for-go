@@ -44,7 +44,7 @@ func NewL3NetworksClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create a new layer 3 (L3) network or update the properties of the existing network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3NetworkName - The name of the L3 network.
 //   - l3NetworkParameters - The request body.
@@ -71,7 +71,7 @@ func (client *L3NetworksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create a new layer 3 (L3) network or update the properties of the existing network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *L3NetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, l3NetworkName string, l3NetworkParameters L3Network, options *L3NetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "L3NetworksClient.BeginCreateOrUpdate"
@@ -113,7 +113,7 @@ func (client *L3NetworksClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -131,7 +131,7 @@ func (client *L3NetworksClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Delete the provided layer 3 (L3) network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3NetworkName - The name of the L3 network.
 //   - options - L3NetworksClientBeginDeleteOptions contains the optional parameters for the L3NetworksClient.BeginDelete method.
@@ -156,7 +156,7 @@ func (client *L3NetworksClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete the provided layer 3 (L3) network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *L3NetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, l3NetworkName string, options *L3NetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "L3NetworksClient.BeginDelete"
@@ -198,7 +198,7 @@ func (client *L3NetworksClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -213,7 +213,7 @@ func (client *L3NetworksClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get properties of the provided layer 3 (L3) network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3NetworkName - The name of the L3 network.
 //   - options - L3NetworksClientGetOptions contains the optional parameters for the L3NetworksClient.Get method.
@@ -259,7 +259,7 @@ func (client *L3NetworksClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *L3NetworksClient) getHandleResponse(resp *http.Response) (L3Networ
 
 // NewListByResourceGroupPager - Get a list of layer 3 (L3) networks in the provided resource group.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - L3NetworksClientListByResourceGroupOptions contains the optional parameters for the L3NetworksClient.NewListByResourceGroupPager
 //     method.
@@ -325,7 +325,7 @@ func (client *L3NetworksClient) listByResourceGroupCreateRequest(ctx context.Con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +342,7 @@ func (client *L3NetworksClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - Get a list of layer 3 (L3) networks in the provided subscription.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - options - L3NetworksClientListBySubscriptionOptions contains the optional parameters for the L3NetworksClient.NewListBySubscriptionPager
 //     method.
 func (client *L3NetworksClient) NewListBySubscriptionPager(options *L3NetworksClientListBySubscriptionOptions) *runtime.Pager[L3NetworksClientListBySubscriptionResponse] {
@@ -386,7 +386,7 @@ func (client *L3NetworksClient) listBySubscriptionCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -404,7 +404,7 @@ func (client *L3NetworksClient) listBySubscriptionHandleResponse(resp *http.Resp
 // Update - Update tags associated with the provided layer 3 (L3) network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3NetworkName - The name of the L3 network.
 //   - l3NetworkUpdateParameters - The request body.
@@ -451,7 +451,7 @@ func (client *L3NetworksClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (2025-11-11)
+## 1.4.0 (2025-12-26)
 ### Features Added
 
 - New value `BareMetalMachineKeySetPrivilegeLevelOther` added to enum type `BareMetalMachineKeySetPrivilegeLevel`
@@ -9,12 +9,12 @@
 - New enum type `BareMetalMachineReplaceStoragePolicy` with values `BareMetalMachineReplaceStoragePolicyDiscardAll`, `BareMetalMachineReplaceStoragePolicyPreserve`
 - New enum type `CloudServicesNetworkStorageMode` with values `CloudServicesNetworkStorageModeNone`, `CloudServicesNetworkStorageModeStandard`
 - New enum type `CloudServicesNetworkStorageStatusStatus` with values `CloudServicesNetworkStorageStatusStatusAvailable`, `CloudServicesNetworkStorageStatusStatusExpandingVolume`, `CloudServicesNetworkStorageStatusStatusExpansionFailed`
-- New enum type `CommandOutputType` with values `CommandOutputTypeBareMetalMachineRunCommand`, `CommandOutputTypeBareMetalMachineRunDataExtracts`, `CommandOutputTypeBareMetalMachineRunReadCommands`, `CommandOutputTypeStorageRunReadCommands`
+- New enum type `CommandOutputType` with values `CommandOutputTypeBareMetalMachineRunCommand`, `CommandOutputTypeBareMetalMachineRunDataExtracts`, `CommandOutputTypeBareMetalMachineRunDataExtractsRestricted`, `CommandOutputTypeBareMetalMachineRunReadCommands`, `CommandOutputTypeStorageRunReadCommands`
 - New enum type `RelayType` with values `RelayTypePlatform`, `RelayTypePublic`
 - New enum type `StepStateStatus` with values `StepStateStatusCompleted`, `StepStateStatusFailed`, `StepStateStatusInProgress`, `StepStateStatusNotStarted`
-- New function `*BareMetalMachinesClient.BeginRunDataExtractsRestricted(context.Context, string, string, BareMetalMachineRunDataExtractsParameters, *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsRestrictedResponse], error)`
-- New function `*StorageAppliancesClient.BeginRunReadCommands(context.Context, string, string, StorageApplianceRunReadCommandsParameters, *StorageAppliancesClientBeginRunReadCommandsOptions) (*runtime.Poller[StorageAppliancesClientRunReadCommandsResponse], error)`
-- New function `*VirtualMachinesClient.BeginAssignRelay(context.Context, string, string, *VirtualMachinesClientBeginAssignRelayOptions) (*runtime.Poller[VirtualMachinesClientAssignRelayResponse], error)`
+- New function `*BareMetalMachinesClient.BeginRunDataExtractsRestricted(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*runtime.Poller[BareMetalMachinesClientRunDataExtractsRestrictedResponse], error)`
+- New function `*StorageAppliancesClient.BeginRunReadCommands(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceRunReadCommandsParameters StorageApplianceRunReadCommandsParameters, options *StorageAppliancesClientBeginRunReadCommandsOptions) (*runtime.Poller[StorageAppliancesClientRunReadCommandsResponse], error)`
+- New function `*VirtualMachinesClient.BeginAssignRelay(ctx context.Context, resourceGroupName string, virtualMachineName string, options *VirtualMachinesClientBeginAssignRelayOptions) (*runtime.Poller[VirtualMachinesClientAssignRelayResponse], error)`
 - New struct `ActionState`
 - New struct `CertificateInfo`
 - New struct `CloudServicesNetworkStorageOptions`

@@ -1,0 +1,4 @@
+directory: specification/postgresql/DBforPostgreSQL.Management
+commit: fc6c9fd708a8fd0cc532cfe78fb844d835884cee
+repo: i-specs
+additionalDirectories: 

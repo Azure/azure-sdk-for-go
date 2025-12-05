@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfileOperations_GenerateUpdateRun_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfileOperationsClient_BeginGenerateUpdateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -36,6 +36,35 @@ type AutoUpgradeProfilesClientListByFleetResponse struct {
 	AutoUpgradeProfileListResult
 }
 
+// FleetManagedNamespacesClientCreateOrUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginCreateOrUpdate.
+type FleetManagedNamespacesClientCreateOrUpdateResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
+// FleetManagedNamespacesClientDeleteResponse contains the response from method FleetManagedNamespacesClient.BeginDelete.
+type FleetManagedNamespacesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FleetManagedNamespacesClientGetResponse contains the response from method FleetManagedNamespacesClient.Get.
+type FleetManagedNamespacesClientGetResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
+// FleetManagedNamespacesClientListByFleetResponse contains the response from method FleetManagedNamespacesClient.NewListByFleetPager.
+type FleetManagedNamespacesClientListByFleetResponse struct {
+	// The response of a FleetManagedNamespace list operation.
+	FleetManagedNamespaceListResult
+}
+
+// FleetManagedNamespacesClientUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginUpdate.
+type FleetManagedNamespacesClientUpdateResponse struct {
+	// A fleet managed namespace.
+	FleetManagedNamespace
+}
+
 // FleetMembersClientCreateResponse contains the response from method FleetMembersClient.BeginCreate.
 type FleetMembersClientCreateResponse struct {
 	// A member of the Fleet. It contains a reference to an existing Kubernetes cluster on Azure.

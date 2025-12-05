@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_CreateOrUpdate.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_CreateOrUpdate.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRun() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate_createAnUpdateRunGeneratedByMax
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Delete.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Delete.json
 func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +483,7 @@ func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResource() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Delete_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,7 +510,7 @@ func ExampleUpdateRunsClient_BeginDelete_deleteAnUpdateRunResourceGeneratedByMax
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Get.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Get.json
 func ExampleUpdateRunsClient_Get_getsAnUpdateRunResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -664,7 +664,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResource() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Get_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -857,7 +857,7 @@ func ExampleUpdateRunsClient_Get_getsAnUpdateRunResourceGeneratedByMaximumSetRul
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_ListByFleet.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_ListByFleet.json
 func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1021,7 +1021,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_ListByFleet_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_ListByFleet_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1224,7 +1224,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager_listsTheUpdateRunResourcesByFle
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Skip.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Skip.json
 func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageWaitSOfAnUpdateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1358,7 +1358,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Skip_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Skip_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageWaitSOfAnUpdateRunGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1567,7 +1567,7 @@ func ExampleUpdateRunsClient_BeginSkip_skipsOneOrMoreMemberGroupStageAfterStageW
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Start.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Start.json
 func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1671,7 +1671,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRun() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Start_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Start_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1869,7 +1869,7 @@ func ExampleUpdateRunsClient_BeginStart_startsAnUpdateRunGeneratedByMaximumSetRu
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Stop.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Stop.json
 func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1973,7 +1973,7 @@ func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRun() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateRuns_Stop_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/UpdateRuns_Stop_MaximumSet_Gen.json
 func ExampleUpdateRunsClient_BeginStop_stopsAnUpdateRunGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

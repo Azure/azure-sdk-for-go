@@ -45,6 +45,50 @@ type AutoUpgradeProfilesClientListByFleetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FleetManagedNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginCreateOrUpdate
+// method.
+type FleetManagedNamespacesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetManagedNamespacesClientBeginDeleteOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginDelete
+// method.
+type FleetManagedNamespacesClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetManagedNamespacesClientBeginUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginUpdate
+// method.
+type FleetManagedNamespacesClientBeginUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetManagedNamespacesClientGetOptions contains the optional parameters for the FleetManagedNamespacesClient.Get method.
+type FleetManagedNamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetManagedNamespacesClientListByFleetOptions contains the optional parameters for the FleetManagedNamespacesClient.NewListByFleetPager
+// method.
+type FleetManagedNamespacesClientListByFleetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // FleetMembersClientBeginCreateOptions contains the optional parameters for the FleetMembersClient.BeginCreate method.
 type FleetMembersClientBeginCreateOptions struct {
 	// The request should only proceed if an entity matches this string.

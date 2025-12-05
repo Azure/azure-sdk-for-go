@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateStrategyGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateStrategies_CreateOrUpdate.json
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_CreateOrUpdate.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateStrategy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate_createAFleetUpdateSt
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_Delete_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyRe
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateStrategies_Delete.json
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_Delete.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete_deleteAFleetUpdateStrategyRe
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_Get_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResourceGener
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateStrategies_Get.json
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_Get.json
 func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,7 +387,7 @@ func ExampleFleetUpdateStrategiesClient_Get_getAFleetUpdateStrategyResource() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/FleetUpdateStrategies_ListByFleet_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/FleetUpdateStrategies_ListByFleet_MaximumSet_Gen.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateStrategyResourcesByFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,7 +449,7 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateSt
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/UpdateStrategies_ListByFleet.json
+// Generated from example definition: 2025-08-01-preview/UpdateStrategies_ListByFleet.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager_listTheFleetUpdateStrategyResourcesByFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -21,6 +21,9 @@ type ServerFactory struct {
 	// AutoUpgradeProfilesServer contains the fakes for client AutoUpgradeProfilesClient
 	AutoUpgradeProfilesServer AutoUpgradeProfilesServer
 
+	// FleetManagedNamespacesServer contains the fakes for client FleetManagedNamespacesClient
+	FleetManagedNamespacesServer FleetManagedNamespacesServer
+
 	// FleetMembersServer contains the fakes for client FleetMembersClient
 	FleetMembersServer FleetMembersServer
 
@@ -56,6 +59,7 @@ type ServerFactoryTransport struct {
 	trMu                                 sync.Mutex
 	trAutoUpgradeProfileOperationsServer *AutoUpgradeProfileOperationsServerTransport
 	trAutoUpgradeProfilesServer          *AutoUpgradeProfilesServerTransport
+	trFleetManagedNamespacesServer       *FleetManagedNamespacesServerTransport
 	trFleetMembersServer                 *FleetMembersServerTransport
 	trFleetUpdateStrategiesServer        *FleetUpdateStrategiesServerTransport
 	trFleetsServer                       *FleetsServerTransport
@@ -87,6 +91,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAutoUpgradeProfilesServerTransport(&s.srv.AutoUpgradeProfilesServer)
 		})
 		resp, err = s.trAutoUpgradeProfilesServer.Do(req)
+	case "FleetManagedNamespacesClient":
+		initServer(s, &s.trFleetManagedNamespacesServer, func() *FleetManagedNamespacesServerTransport {
+			return NewFleetManagedNamespacesServerTransport(&s.srv.FleetManagedNamespacesServer)
+		})
+		resp, err = s.trFleetManagedNamespacesServer.Do(req)
 	case "FleetMembersClient":
 		initServer(s, &s.trFleetMembersServer, func() *FleetMembersServerTransport { return NewFleetMembersServerTransport(&s.srv.FleetMembersServer) })
 		resp, err = s.trFleetMembersServer.Do(req)

@@ -57,17 +57,10 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		require.NotEmpty(t, choice.Message.Content)
 		require.Equal(t, "stop", choice.FinishReason)
 
-		require.Equal(t, openai.CompletionUsage{
-			// these change depending on which model you use. These #'s work for gpt-4, which is
-			// what I'm using for these tests.
-			CompletionTokens: 29,
-			PromptTokens:     42,
-			TotalTokens:      71,
-		}, openai.CompletionUsage{
-			CompletionTokens: resp.Usage.CompletionTokens,
-			PromptTokens:     resp.Usage.PromptTokens,
-			TotalTokens:      resp.Usage.TotalTokens,
-		})
+		// let's just make sure that the #'s are filled out.
+		require.Greater(t, resp.Usage.CompletionTokens, int64(0))
+		require.Greater(t, resp.Usage.PromptTokens, int64(0))
+		require.Greater(t, resp.Usage.TotalTokens, int64(0))
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed `cloud.AzureGovernment` and `cloud.AzureChina` audience values so they align with Azure CLI and other SDKs.
+
 ### Other Changes
 
 ## 1.20.0 (2025-11-06)

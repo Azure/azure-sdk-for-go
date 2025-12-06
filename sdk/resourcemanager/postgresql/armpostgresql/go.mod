@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2
 
 go 1.24.0
 

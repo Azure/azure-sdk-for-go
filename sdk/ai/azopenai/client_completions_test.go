@@ -15,6 +15,8 @@ import (
 )
 
 func TestClient_GetCompletions(t *testing.T) {
+	t.Skip("Disabled until we find a compatible model")
+
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	resp, err := client.Completions.New(context.Background(), openai.CompletionNewParams{
@@ -55,6 +57,8 @@ func TestClient_GetCompletions(t *testing.T) {
 }
 
 func TestGetCompletionsStream(t *testing.T) {
+	t.Skip("Disabled until we find a compatible model")
+
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	stream := client.Completions.NewStreaming(context.TODO(), openai.CompletionNewParams{

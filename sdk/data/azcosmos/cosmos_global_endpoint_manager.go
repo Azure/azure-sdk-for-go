@@ -171,7 +171,7 @@ func newAccountProperties(azResponse *http.Response) (accountProperties, error) 
 			string(bodyBytes)+"\n"+
 			"==================================================\n")
 	} else {
-		log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n<Failed to parse>\n==================================================\n")
+		log.Write(azlog.EventResponse, "failed to read Database Account Properties")
 	}
 
 	return properties, unmarshalErr

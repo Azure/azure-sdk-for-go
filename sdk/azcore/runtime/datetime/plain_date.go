@@ -17,19 +17,19 @@ const (
 	jsonFormat   = `%04d-%02d-%02d`
 )
 
-type DateType time.Time
+type PlainDate time.Time
 
-func (t DateType) MarshalJSON() ([]byte, error) {
+func (t PlainDate) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(jsonFormat, time.Time(t).Year(), time.Time(t).Month(), time.Time(t).Day())), nil
 }
 
-func (d *DateType) UnmarshalJSON(data []byte) (err error) {
+func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
 	t, err := time.Parse(fullDateJSON, string(data))
-	*d = (DateType)(t)
+	*d = (PlainDate)(t)
 	return err
 }
 
-func PopulateDateType(m map[string]any, k string, t *time.Time) {
+func PopulatePlainDate(m map[string]any, k string, t *time.Time) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
@@ -38,14 +38,14 @@ func PopulateDateType(m map[string]any, k string, t *time.Time) {
 	} else if reflect.ValueOf(t).IsNil() {
 		return
 	}
-	m[k] = (*DateType)(t)
+	m[k] = (*PlainDate)(t)
 }
 
-func UnpopulateDateType(data json.RawMessage, fn string, t **time.Time) error {
+func UnpopulatePlainDate(data json.RawMessage, fn string, t **time.Time) error {
 	if data == nil || string(data) == "null" {
 		return nil
 	}
-	var aux DateType
+	var aux PlainDate
 	if err := json.Unmarshal(data, &aux); err != nil {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}

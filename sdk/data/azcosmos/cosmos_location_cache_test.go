@@ -400,8 +400,62 @@ func TestReadEndpointsUsesDefaultEndpointAsFallback(t *testing.T) {
 		actualReadEndpointOrder.WriteString(endpoint.String() + ",")
 	}
 
+	// The correct order is:
+	// For write: loc1, loc2, loc3, default
+	// For read: loc1, loc2, default
+	// loc3 is not enabled for read, and loc4 (which IS enabled for read) is not in the preferred locations list
 	expectedWriteEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + "," + loc3Endpoint.String() + "," + defaultEndpoint.String() + ","
-	expectedReadEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + "," + loc3Endpoint.String() + ","
+	expectedReadEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + ","
+
+	if actualWriteEndpointOrder.String() != expectedWriteEndpointOrder {
+		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointOrder.String())
+	}
+
+	if actualReadEndpointOrder.String() != expectedReadEndpointOrder {
+		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointOrder.String())
+	}
+}
+
+func TestWriteEndpointUsedAsFallbackForRead(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.enableMultipleWriteLocations = true
+	lc.locationInfo.prefLocations = []regionId{loc3.Name, loc2.Name, loc1.Name}
+	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
+	err := lc.databaseAccountRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
+
+	// Get write endpoints - loc1 should be first (most preferred)
+	actualWriteEndpoints, err := lc.writeEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting write endpoints: %s", err.Error())
+	}
+
+	// Get read endpoints
+	actualReadEndpoints, err := lc.readEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting read endpoints: %s", err.Error())
+	}
+
+	// Assert the expected ordering of endpoints
+	var actualWriteEndpointOrder strings.Builder
+	var actualReadEndpointOrder strings.Builder
+	for _, endpoint := range actualWriteEndpoints {
+		actualWriteEndpointOrder.WriteString(endpoint.String() + ",")
+	}
+	for _, endpoint := range actualReadEndpoints {
+		actualReadEndpointOrder.WriteString(endpoint.String() + ",")
+	}
+
+	// The correct order is:
+	// For write: loc3, loc2, loc1, default
+	// For read: loc2, loc1, loc3
+	// loc3 is not enabled for read, but since it's the most-preferred write location, it should be used as the fallback for read
+	expectedWriteEndpointOrder := loc3Endpoint.String() + "," + loc2Endpoint.String() + "," + loc1Endpoint.String() + "," + defaultEndpoint.String() + ","
+	expectedReadEndpointOrder := loc2Endpoint.String() + "," + loc1Endpoint.String() + "," + loc3Endpoint.String() + ","
 
 	if actualWriteEndpointOrder.String() != expectedWriteEndpointOrder {
 		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointOrder.String())

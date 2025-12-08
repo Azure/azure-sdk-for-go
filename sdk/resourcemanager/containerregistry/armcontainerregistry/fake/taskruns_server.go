@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,9 +25,9 @@ type TaskRunsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun armcontainerregistry.TaskRun, options *armcontainerregistry.TaskRunsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.TaskRunsClientCreateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method TaskRunsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *armcontainerregistry.TaskRunsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.TaskRunsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// Delete is the fake for method TaskRunsClient.Delete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	Delete func(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *armcontainerregistry.TaskRunsClientDeleteOptions) (resp azfake.Responder[armcontainerregistry.TaskRunsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method TaskRunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -53,7 +53,6 @@ func NewTaskRunsServerTransport(srv *TaskRunsServer) *TaskRunsServerTransport {
 	return &TaskRunsServerTransport{
 		srv:          srv,
 		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientDeleteResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.TaskRunsClientListResponse]](),
 		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientUpdateResponse]](),
 	}
@@ -64,7 +63,6 @@ func NewTaskRunsServerTransport(srv *TaskRunsServer) *TaskRunsServerTransport {
 type TaskRunsServerTransport struct {
 	srv          *TaskRunsServer
 	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientCreateResponse]]
-	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientDeleteResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.TaskRunsClientListResponse]]
 	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.TaskRunsClientUpdateResponse]]
 }
@@ -94,8 +92,8 @@ func (t *TaskRunsServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "TaskRunsClient.BeginCreate":
 				res.resp, res.err = t.dispatchBeginCreate(req)
-			case "TaskRunsClient.BeginDelete":
-				res.resp, res.err = t.dispatchBeginDelete(req)
+			case "TaskRunsClient.Delete":
+				res.resp, res.err = t.dispatchDelete(req)
 			case "TaskRunsClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
 			case "TaskRunsClient.GetDetails":
@@ -175,51 +173,40 @@ func (t *TaskRunsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (t *TaskRunsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
+func (t *TaskRunsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if t.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	beginDelete := t.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginDelete(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		t.beginDelete.add(req, beginDelete)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/taskRuns/(?P<taskRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		t.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginDelete) {
-		t.beginDelete.remove(req)
+	taskRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("taskRunName")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := t.srv.Delete(req.Context(), resourceGroupNameParam, registryNameParam, taskRunNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

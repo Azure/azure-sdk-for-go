@@ -28,7 +28,7 @@ type RunsClient struct {
 // NewRunsClient creates a new instance of RunsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RunsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,58 +41,37 @@ func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, opt
 	return client, nil
 }
 
-// BeginCancel - Cancel an existing run.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
-//   - runID - The run ID.
-//   - options - RunsClientBeginCancelOptions contains the optional parameters for the RunsClient.BeginCancel method.
-func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientBeginCancelOptions) (*runtime.Poller[RunsClientCancelResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.cancel(ctx, resourceGroupName, registryName, runID, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RunsClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RunsClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
 // Cancel - Cancel an existing run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-func (client *RunsClient) cancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientBeginCancelOptions) (*http.Response, error) {
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
+//   - runID - The run ID.
+//   - options - RunsClientCancelOptions contains the optional parameters for the RunsClient.Cancel method.
+func (client *RunsClient) Cancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientCancelOptions) (RunsClientCancelResponse, error) {
 	var err error
-	const operationName = "RunsClient.BeginCancel"
+	const operationName = "RunsClient.Cancel"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
-		return nil, err
+		return RunsClientCancelResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RunsClientCancelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return RunsClientCancelResponse{}, err
 	}
-	return httpResp, nil
+	return RunsClientCancelResponse{}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, _ *RunsClientBeginCancelOptions) (*policy.Request, error) {
+func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, _ *RunsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -115,7 +94,7 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -124,9 +103,9 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 // Get - Gets the detailed information for a given run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - runID - The run ID.
 //   - options - RunsClientGetOptions contains the optional parameters for the RunsClient.Get method.
 func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientGetOptions) (RunsClientGetResponse, error) {
@@ -175,7 +154,7 @@ func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,9 +172,9 @@ func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsClientGetR
 // GetLogSasURL - Gets a link to download the run logs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - runID - The run ID.
 //   - options - RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
 func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientGetLogSasURLOptions) (RunsClientGetLogSasURLResponse, error) {
@@ -244,7 +223,7 @@ func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,9 +240,9 @@ func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsC
 
 // NewListPager - Gets all the runs for a registry.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - options - RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
 func (client *RunsClient) NewListPager(resourceGroupName string, registryName string, options *RunsClientListOptions) *runtime.Pager[RunsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RunsClientListResponse]{
@@ -314,7 +293,7 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -329,59 +308,39 @@ func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsClientLis
 	return result, nil
 }
 
-// BeginUpdate - Patch the run properties.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
-//   - runID - The run ID.
-//   - runUpdateParameters - The run update properties.
-//   - options - RunsClientBeginUpdateOptions contains the optional parameters for the RunsClient.BeginUpdate method.
-func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsClientBeginUpdateOptions) (*runtime.Poller[RunsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RunsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RunsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
 // Update - Patch the run properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-func (client *RunsClient) update(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsClientBeginUpdateOptions) (*http.Response, error) {
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
+//   - runID - The run ID.
+//   - runUpdateParameters - The run update properties.
+//   - options - RunsClientUpdateOptions contains the optional parameters for the RunsClient.Update method.
+func (client *RunsClient) Update(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsClientUpdateOptions) (RunsClientUpdateResponse, error) {
 	var err error
-	const operationName = "RunsClient.BeginUpdate"
+	const operationName = "RunsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
 	if err != nil {
-		return nil, err
+		return RunsClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RunsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return RunsClientUpdateResponse{}, err
 	}
-	return httpResp, nil
+	resp, err := client.updateHandleResponse(httpResp)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, _ *RunsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, _ *RunsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -404,11 +363,20 @@ func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runUpdateParameters); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// updateHandleResponse handles the Update response.
+func (client *RunsClient) updateHandleResponse(resp *http.Response) (RunsClientUpdateResponse, error) {
+	result := RunsClientUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Run); err != nil {
+		return RunsClientUpdateResponse{}, err
+	}
+	return result, nil
 }

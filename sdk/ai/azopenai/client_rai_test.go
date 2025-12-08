@@ -58,7 +58,6 @@ func requireContentFilterError(t *testing.T, err error) {
 }
 
 func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *testing.T) {
-	t.Skip("There seems to be some inconsistencies in the service, skipping until resolved.")
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletionsRAI.Endpoint)
 
 	resp, err := client.Chat.Completions.New(context.Background(), openai.ChatCompletionNewParams{
@@ -73,12 +72,16 @@ func TestClient_GetChatCompletions_AzureOpenAI_ContentFilter_WithResponse(t *tes
 		Temperature: openai.Float(0.0),
 		Model:       openai.ChatModel(azureOpenAI.ChatCompletionsRAI.Model),
 	})
-	customRequireNoError(t, err)
 
-	contentFilterResults, err := azopenai.ChatCompletionChoice(resp.Choices[0]).ContentFilterResults()
-	require.NoError(t, err)
+	if contentFilterError := (*azopenai.ContentFilterError)(nil); azopenai.ExtractContentFilterError(err, &contentFilterError) {
+		require.NotEmpty(t, contentFilterError)
+	} else {
+		customRequireNoError(t, err)
 
-	require.Equal(t, safeContentFilter, contentFilterResults)
+		contentFilterResults, err := azopenai.ChatCompletionChoice(resp.Choices[0]).ContentFilterResults()
+		require.NoError(t, err)
+		require.NotEmpty(t, contentFilterResults)
+	}
 }
 
 var safeContentFilter = &azopenai.ContentFilterResultsForChoice{

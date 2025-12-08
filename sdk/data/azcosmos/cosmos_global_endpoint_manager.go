@@ -166,7 +166,7 @@ func newAccountProperties(azResponse *http.Response) (accountProperties, error) 
 	bodyBytes, err := azruntime.Payload(azResponse)
 
 	// Log the raw JSON
-	if err != nil {
+	if err == nil {
 		log.Write(azlog.EventResponse, "\n===== Database Account Properties =====\n"+
 			string(bodyBytes)+"\n"+
 			"==================================================\n")

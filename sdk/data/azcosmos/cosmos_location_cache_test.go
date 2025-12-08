@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 	"time"
 )
@@ -362,5 +363,51 @@ func TestWriteEndpoints(t *testing.T) {
 				t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), actualWriteEndpoints[i].String())
 			}
 		}
+	}
+}
+
+func TestReadEndpointsUsesDefaultEndpointAsFallback(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.enableMultipleWriteLocations = true
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, loc3.Name}
+	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
+	err := lc.databaseAccountRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
+
+	// Get write endpoints - loc1 should be first (most preferred)
+	actualWriteEndpoints, err := lc.writeEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting write endpoints: %s", err.Error())
+	}
+
+	// Get read endpoints
+	actualReadEndpoints, err := lc.readEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting read endpoints: %s", err.Error())
+	}
+
+	// Assert the expected ordering of endpoints
+	var actualWriteEndpointOrder strings.Builder
+	var actualReadEndpointOrder strings.Builder
+	for _, endpoint := range actualWriteEndpoints {
+		actualWriteEndpointOrder.WriteString(endpoint.String() + ",")
+	}
+	for _, endpoint := range actualReadEndpoints {
+		actualReadEndpointOrder.WriteString(endpoint.String() + ",")
+	}
+
+	expectedWriteEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + "," + loc3Endpoint.String() + "," + defaultEndpoint.String() + ","
+	expectedReadEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + "," + loc3Endpoint.String() + ","
+
+	if actualWriteEndpointOrder.String() != expectedWriteEndpointOrder {
+		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointOrder.String())
+	}
+
+	if actualReadEndpointOrder.String() != expectedReadEndpointOrder {
+		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointOrder.String())
 	}
 }

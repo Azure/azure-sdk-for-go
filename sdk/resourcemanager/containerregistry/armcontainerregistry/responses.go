@@ -246,7 +246,7 @@ type RegistriesClientRegenerateCredentialResponse struct {
 	RegistryListCredentialsResult
 }
 
-// RegistriesClientScheduleRunResponse contains the response from method RegistriesClient.BeginScheduleRun.
+// RegistriesClientScheduleRunResponse contains the response from method RegistriesClient.ScheduleRun.
 type RegistriesClientScheduleRunResponse struct {
 	// Run resource properties
 	Run
@@ -287,7 +287,7 @@ type ReplicationsClientUpdateResponse struct {
 	Replication
 }
 
-// RunsClientCancelResponse contains the response from method RunsClient.BeginCancel.
+// RunsClientCancelResponse contains the response from method RunsClient.Cancel.
 type RunsClientCancelResponse struct {
 	// placeholder for future response values
 }
@@ -306,11 +306,11 @@ type RunsClientGetResponse struct {
 
 // RunsClientListResponse contains the response from method RunsClient.NewListPager.
 type RunsClientListResponse struct {
-	// Collection of runs.
+	// The collection of runs.
 	RunListResult
 }
 
-// RunsClientUpdateResponse contains the response from method RunsClient.BeginUpdate.
+// RunsClientUpdateResponse contains the response from method RunsClient.Update.
 type RunsClientUpdateResponse struct {
 	// Run resource properties
 	Run
@@ -352,7 +352,7 @@ type TaskRunsClientCreateResponse struct {
 	TaskRun
 }
 
-// TaskRunsClientDeleteResponse contains the response from method TaskRunsClient.BeginDelete.
+// TaskRunsClientDeleteResponse contains the response from method TaskRunsClient.Delete.
 type TaskRunsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -384,14 +384,14 @@ type TaskRunsClientUpdateResponse struct {
 	TaskRun
 }
 
-// TasksClientCreateResponse contains the response from method TasksClient.BeginCreate.
+// TasksClientCreateResponse contains the response from method TasksClient.Create.
 type TasksClientCreateResponse struct {
 	// The task that has the ARM resource and task properties.
 	// The task will have all information to schedule a run against it.
 	Task
 }
 
-// TasksClientDeleteResponse contains the response from method TasksClient.BeginDelete.
+// TasksClientDeleteResponse contains the response from method TasksClient.Delete.
 type TasksClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -416,7 +416,7 @@ type TasksClientListResponse struct {
 	TaskListResult
 }
 
-// TasksClientUpdateResponse contains the response from method TasksClient.BeginUpdate.
+// TasksClientUpdateResponse contains the response from method TasksClient.Update.
 type TasksClientUpdateResponse struct {
 	// The task that has the ARM resource and task properties.
 	// The task will have all information to schedule a run against it.

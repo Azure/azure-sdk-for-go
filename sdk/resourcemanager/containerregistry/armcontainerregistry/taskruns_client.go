@@ -27,7 +27,7 @@ type TaskRunsClient struct {
 // NewTaskRunsClient creates a new instance of TaskRunsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TaskRunsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +43,9 @@ func NewTaskRunsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreate - Creates a task run for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
 //   - taskRun - The parameters of a run that needs to scheduled.
 //   - options - TaskRunsClientBeginCreateOptions contains the optional parameters for the TaskRunsClient.BeginCreate method.
@@ -56,7 +56,8 @@ func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskRunsClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -69,7 +70,7 @@ func (client *TaskRunsClient) BeginCreate(ctx context.Context, resourceGroupName
 // Create - Creates a task run for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
+// Generated from API version 2025-03-01-preview
 func (client *TaskRunsClient) create(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, taskRun TaskRun, options *TaskRunsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskRunsClient.BeginCreate"
@@ -115,7 +116,7 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, taskRun); err != nil {
@@ -124,58 +125,37 @@ func (client *TaskRunsClient) createCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
-// BeginDelete - Deletes a specified task run resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
-//   - taskRunName - The name of the task run.
-//   - options - TaskRunsClientBeginDeleteOptions contains the optional parameters for the TaskRunsClient.BeginDelete method.
-func (client *TaskRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (*runtime.Poller[TaskRunsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, taskRunName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskRunsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TaskRunsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
 // Delete - Deletes a specified task run resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-func (client *TaskRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientBeginDeleteOptions) (*http.Response, error) {
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
+//   - taskRunName - The name of the task run.
+//   - options - TaskRunsClientDeleteOptions contains the optional parameters for the TaskRunsClient.Delete method.
+func (client *TaskRunsClient) Delete(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientDeleteOptions) (TaskRunsClientDeleteResponse, error) {
 	var err error
-	const operationName = "TaskRunsClient.BeginDelete"
+	const operationName = "TaskRunsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, taskRunName, options)
 	if err != nil {
-		return nil, err
+		return TaskRunsClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return TaskRunsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return TaskRunsClientDeleteResponse{}, err
 	}
-	return httpResp, nil
+	return TaskRunsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, _ *TaskRunsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, _ *TaskRunsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,7 +178,7 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,9 +187,9 @@ func (client *TaskRunsClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Gets the detailed information for a given task run.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
 //   - options - TaskRunsClientGetOptions contains the optional parameters for the TaskRunsClient.Get method.
 func (client *TaskRunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetOptions) (TaskRunsClientGetResponse, error) {
@@ -258,7 +238,7 @@ func (client *TaskRunsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,9 +256,9 @@ func (client *TaskRunsClient) getHandleResponse(resp *http.Response) (TaskRunsCl
 // GetDetails - Gets the detailed information for a given task run that includes all secrets.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
 //   - options - TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
 func (client *TaskRunsClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, options *TaskRunsClientGetDetailsOptions) (TaskRunsClientGetDetailsResponse, error) {
@@ -327,7 +307,7 @@ func (client *TaskRunsClient) getDetailsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,9 +324,9 @@ func (client *TaskRunsClient) getDetailsHandleResponse(resp *http.Response) (Tas
 
 // NewListPager - Lists all the task runs for a specified container registry.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - options - TaskRunsClientListOptions contains the optional parameters for the TaskRunsClient.NewListPager method.
 func (client *TaskRunsClient) NewListPager(resourceGroupName string, registryName string, options *TaskRunsClientListOptions) *runtime.Pager[TaskRunsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TaskRunsClientListResponse]{
@@ -391,7 +371,7 @@ func (client *TaskRunsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -409,9 +389,9 @@ func (client *TaskRunsClient) listHandleResponse(resp *http.Response) (TaskRunsC
 // BeginUpdate - Updates a task run with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskRunName - The name of the task run.
 //   - updateParameters - The parameters for updating a task run.
 //   - options - TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
@@ -422,7 +402,8 @@ func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TaskRunsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -435,7 +416,7 @@ func (client *TaskRunsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // Update - Updates a task run with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
+// Generated from API version 2025-03-01-preview
 func (client *TaskRunsClient) update(ctx context.Context, resourceGroupName string, registryName string, taskRunName string, updateParameters TaskRunUpdateParameters, options *TaskRunsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TaskRunsClient.BeginUpdate"
@@ -481,7 +462,7 @@ func (client *TaskRunsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateParameters); err != nil {

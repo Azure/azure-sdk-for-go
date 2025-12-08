@@ -14,10 +14,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCheckNameAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCheckNameAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCheckNameNotAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCheckNameNotAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryList.json
 func ExampleRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListByResourceGroup.json
 func ExampleRegistriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryGet.json
 func ExampleRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCreate.json
 func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCreateAbac.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCreateAbac.json
 func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,7 +504,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCreateZoneRedundant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryCreateZoneRedundant.json
 func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -597,7 +597,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryUpdate.json
 func ExampleRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -690,7 +690,7 @@ func ExampleRegistriesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryDelete.json
 func ExampleRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +711,7 @@ func ExampleRegistriesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryGenerateCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryGenerateCredentials.json
 func ExampleRegistriesClient_BeginGenerateCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,7 +752,7 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ImportImageByManifestDigest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ImportImageByManifestDigest.json
 func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -783,7 +783,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ImportImageByTag.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ImportImageByTag.json
 func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +814,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ImportImageFromPublicRegistry.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ImportImageFromPublicRegistry.json
 func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -845,7 +845,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListCredentials.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListCredentials.json
 func ExampleRegistriesClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -877,7 +877,7 @@ func ExampleRegistriesClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListUsages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListUsages.json
 func ExampleRegistriesClient_ListUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -912,7 +912,7 @@ func ExampleRegistriesClient_ListUsages() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListPrivateLinkResources.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryListPrivateLinkResources.json
 func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -953,7 +953,7 @@ func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryGetPrivateLinkResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryGetPrivateLinkResource.json
 func ExampleRegistriesClient_GetPrivateLinkResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -986,7 +986,7 @@ func ExampleRegistriesClient_GetPrivateLinkResource() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryRegenerateCredential.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/RegistryRegenerateCredential.json
 func ExampleRegistriesClient_RegenerateCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1020,8 +1020,8 @@ func ExampleRegistriesClient_RegenerateCredential() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRun() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesGetBuildSourceUploadUrl.json
+func ExampleRegistriesClient_GetBuildSourceUploadURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1031,7 +1031,31 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRun() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.DockerBuildRequest{
+	res, err := clientFactory.NewRegistriesClient().GetBuildSourceUploadURL(ctx, "myResourceGroup", "myRegistry", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SourceUploadDefinition = armcontainerregistry.SourceUploadDefinition{
+	// 	RelativePath: to.Ptr("source/201802130000/b52f12d8-c3d6-4d75-9107-220f0bfc681d.tar.gz"),
+	// 	UploadURL: to.Ptr("https://registrystorageaccount.blob.core.windows.net/registrycontainer/source/201802130000/b52f12d8-c3d6-4d75-9107-220f0bfc681d.tar.gz?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRun() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.DockerBuildRequest{
 		Type:             to.Ptr("DockerBuildRequest"),
 		IsArchiveEnabled: to.Ptr(true),
 		AgentConfiguration: &armcontainerregistry.AgentProperties{
@@ -1062,10 +1086,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRun() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1082,8 +1102,8 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRun() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunEncodedTaskRun() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunEncodedTaskRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1093,7 +1113,7 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunEncodedTaskRu
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.EncodedTaskRunRequest{
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.EncodedTaskRunRequest{
 		Type: to.Ptr("EncodedTaskRunRequest"),
 		AgentConfiguration: &armcontainerregistry.AgentProperties{
 			CPU: to.Ptr[int32](2),
@@ -1118,10 +1138,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunEncodedTaskRu
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1138,8 +1154,8 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunEncodedTaskRu
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTaskRun.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunFileTaskRun() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun_FileTaskRun.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunFileTaskRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1149,7 +1165,7 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunFileTaskRun()
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.FileTaskRunRequest{
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.FileTaskRunRequest{
 		Type: to.Ptr("FileTaskRunRequest"),
 		AgentConfiguration: &armcontainerregistry.AgentProperties{
 			CPU: to.Ptr[int32](2),
@@ -1175,10 +1191,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunFileTaskRun()
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1195,8 +1207,8 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunFileTaskRun()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun_Task.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTask() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun_Task.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunTask() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1206,7 +1218,7 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTask() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.TaskRunRequest{
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.TaskRunRequest{
 		Type: to.Ptr("TaskRunRequest"),
 		OverrideTaskStepProperties: &armcontainerregistry.OverrideTaskStepProperties{
 			Arguments: []*armcontainerregistry.Argument{
@@ -1240,10 +1252,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTask() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1260,8 +1268,8 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTask() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTaskWithCustomCredentials() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunTaskWithCustomCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1271,7 +1279,7 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTaskWithCusto
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.FileTaskRunRequest{
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.FileTaskRunRequest{
 		Type: to.Ptr("FileTaskRunRequest"),
 		Credentials: &armcontainerregistry.Credentials{
 			CustomRegistries: map[string]*armcontainerregistry.CustomRegistryCredentials{
@@ -1309,10 +1317,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTaskWithCusto
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1329,8 +1333,8 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunTaskWithCusto
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithCustomCredentials() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunWithCustomCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1340,7 +1344,7 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithCustomCre
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.DockerBuildRequest{
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.DockerBuildRequest{
 		Type:             to.Ptr("DockerBuildRequest"),
 		IsArchiveEnabled: to.Ptr(true),
 		AgentConfiguration: &armcontainerregistry.AgentProperties{
@@ -1399,10 +1403,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithCustomCre
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1419,8 +1419,8 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithCustomCre
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithLogTemplate.json
-func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithLogTemplate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b995d002a5d312e3439f74f75ede117bfacdc6aa/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RegistriesScheduleRun_WithLogTemplate.json
+func ExampleRegistriesClient_ScheduleRun_registriesScheduleRunWithLogTemplate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1430,7 +1430,7 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithLogTempla
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.DockerBuildRequest{
+	res, err := clientFactory.NewRegistriesClient().ScheduleRun(ctx, "myResourceGroup", "myRegistry", &armcontainerregistry.DockerBuildRequest{
 		Type:             to.Ptr("DockerBuildRequest"),
 		IsArchiveEnabled: to.Ptr(true),
 		LogTemplate:      to.Ptr("acr/tasks:{{.Run.OS}}"),
@@ -1462,10 +1462,6 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithLogTempla
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
@@ -1479,29 +1475,5 @@ func ExampleRegistriesClient_BeginScheduleRun_registriesScheduleRunWithLogTempla
 	// 		RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Status: to.Ptr(armcontainerregistry.RunStatusSucceeded),
 	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RegistriesGetBuildSourceUploadUrl.json
-func ExampleRegistriesClient_GetBuildSourceUploadURL() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRegistriesClient().GetBuildSourceUploadURL(ctx, "myResourceGroup", "myRegistry", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SourceUploadDefinition = armcontainerregistry.SourceUploadDefinition{
-	// 	RelativePath: to.Ptr("source/201802130000/b52f12d8-c3d6-4d75-9107-220f0bfc681d.tar.gz"),
-	// 	UploadURL: to.Ptr("https://registrystorageaccount.blob.core.windows.net/registrycontainer/source/201802130000/b52f12d8-c3d6-4d75-9107-220f0bfc681d.tar.gz?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
 	// }
 }

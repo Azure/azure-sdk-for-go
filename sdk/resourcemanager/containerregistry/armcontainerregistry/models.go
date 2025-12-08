@@ -22,25 +22,25 @@ type Actor struct {
 // AgentPool - The agentpool that has the ARM resource and properties. The agentpool will have all information to create an
 // agent pool.
 type AgentPool struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// The properties associated with the agent pool
 	Properties *AgentPoolProperties
 
-	// The tags of the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -1711,48 +1711,17 @@ type Run struct {
 	// The properties of a run.
 	Properties *RunProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// RunFilter - Properties that are enabled for Odata querying on runs.
-type RunFilter struct {
-	// The name of the agent pool that the run corresponds to.
-	AgentPoolName *string
-
-	// The create time for a run.
-	CreateTime *time.Time
-
-	// The time the run finished.
-	FinishTime *time.Time
-
-	// The value that indicates whether archiving is enabled or not.
-	IsArchiveEnabled *bool
-
-	// The list of comma-separated image manifests that were generated from the run. This is applicable if the run is of build
-	// type.
-	OutputImageManifests *string
-
-	// The unique identifier for the run.
-	RunID *string
-
-	// The type of run.
-	RunType *RunType
-
-	// The current status of the run.
-	Status *RunStatus
-
-	// The name of the task that the run corresponds to.
-	TaskName *string
 }
 
 // RunGetLogResult - The result of get log link operation.
@@ -1764,7 +1733,7 @@ type RunGetLogResult struct {
 	LogLink *string
 }
 
-// RunListResult - Collection of runs.
+// RunListResult - The collection of runs.
 type RunListResult struct {
 	// The URI that can be used to request the next set of paged results.
 	NextLink *string
@@ -1986,6 +1955,10 @@ type SourceProperties struct {
 
 // SourceRegistryCredentials - Describes the credential parameters for accessing the source registry.
 type SourceRegistryCredentials struct {
+	// The Entra identity used for source registry login. The value is [system] for system-assigned managed identity, [caller]
+	// for caller identity, and client ID for user-assigned managed identity.
+	Identity *string
+
 	// The authentication mode which determines the source registry login scope. The credentials for the source registry will
 	// be generated using the given scope. These credentials will be used to login to
 	// the source registry during the run.
@@ -2209,7 +2182,7 @@ type Target struct {
 // Task - The task that has the ARM resource and task properties. The task will have all information to schedule a run against
 // it.
 type Task struct {
-	// REQUIRED; The location of the resource. This cannot be changed after the resource is created.
+	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
 	// Identity for the resource.
@@ -2218,19 +2191,19 @@ type Task struct {
 	// The properties of a task.
 	Properties *TaskProperties
 
-	// The tags of the resource.
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -2324,16 +2297,16 @@ type TaskRun struct {
 	// The properties associated with the task run, i.e., request and result of the run
 	Properties *TaskRunProperties
 
-	// READ-ONLY; The resource ID.
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; The name of the resource.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

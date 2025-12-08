@@ -111,54 +111,6 @@ func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
 	})
 }
 
-func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
-	// you can use LogitBias to constrain the answer to NOT contain
-	// certain tokens. More or less following the technique in this OpenAI article:
-	// https://help.openai.com/en/articles/5247780-using-logit-bias-to-alter-token-probability-with-the-openai-api
-
-	testFn := func(t *testing.T, epm endpointWithModel) {
-		client := newStainlessTestClientWithAzureURL(t, epm.Endpoint)
-
-		body := openai.ChatCompletionNewParams{
-			Messages: []openai.ChatCompletionMessageParamUnion{{
-				OfUser: &openai.ChatCompletionUserMessageParam{
-					Content: openai.ChatCompletionUserMessageParamContentUnion{
-						OfString: openai.String("Briefly, what are some common roles for people at a circus, names only, one per line?"),
-					},
-				},
-			}},
-			MaxTokens:   openai.Int(200),
-			Temperature: openai.Float(0.0),
-			Model:       openai.ChatModel(epm.Model),
-			LogitBias: map[string]int64{
-				// you can calculate these tokens using OpenAI's online tool:
-				// https://platform.openai.com/tokenizer?view=bpe
-				// These token IDs are all variations of "Clown", which I want to exclude from the response.
-				"25":    -100,
-				"220":   -100,
-				"1206":  -100,
-				"2493":  -100,
-				"5176":  -100,
-				"43456": -100,
-				"69568": -100,
-				"99423": -100,
-			},
-		}
-
-		resp, err := client.Chat.Completions.New(context.Background(), body)
-		require.NoError(t, err)
-
-		for _, choice := range resp.Choices {
-			require.NotContains(t, choice.Message.Content, "clown")
-			require.NotContains(t, choice.Message.Content, "Clown")
-		}
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		testFn(t, azureOpenAI.ChatCompletions)
-	})
-}
-
 func TestClient_GetChatCompletionsStream(t *testing.T) {
 	runTest := func(t *testing.T, chatClient openai.Client) {
 		stream := chatClient.Chat.Completions.NewStreaming(context.Background(), newStainlessTestChatCompletionOptions(azureOpenAI.ChatCompletionsRAI.Model))

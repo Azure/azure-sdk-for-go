@@ -68,6 +68,14 @@ func TestMain(m *testing.M) {
 	os.Exit(status)
 }
 
+func endpointListToString(endpoints []url.URL) string {
+	var endpointStr strings.Builder
+	for _, endpoint := range endpoints {
+		endpointStr.WriteString(endpoint.String() + ",")
+	}
+	return endpointStr.String()
+}
+
 func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bool) accountProperties {
 	writeRegions := []accountRegion{loc1, loc2, loc3}
 	if !useMultipleWriteLocations && enforceSingleMasterWriteLoc {
@@ -262,13 +270,13 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 	// loc1: unavailable, loc2: available, loc5: non-existent
 	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, newRegionId("location5")}
 	prefWriteEndpoints := lc.getPrefAvailableEndpoints(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
-	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
-	expectedWriteEndpoints := []*url.URL{loc2Endpoint, defaultEndpoint, loc1Endpoint}
+	prefWriteEndpointsString := endpointListToString(prefWriteEndpoints)
 
-	for i, endpoint := range expectedWriteEndpoints {
-		if endpoint.String() != prefWriteEndpoints[i].String() {
-			t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), prefWriteEndpoints[i].String())
-		}
+	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
+	expectedWriteEndpoints := endpointListToString([]url.URL{*loc2Endpoint, *defaultEndpoint, *loc1Endpoint})
+
+	if prefWriteEndpointsString != expectedWriteEndpoints {
+		t.Errorf("Expected preferred available write endpoints to be %s, but was %s", expectedWriteEndpoints, prefWriteEndpointsString)
 	}
 }
 
@@ -282,19 +290,14 @@ func TestReadEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	expectedReadEndpoints := []*url.URL{loc2Endpoint, loc4Endpoint, loc1Endpoint}
+	expectedReadEndpoints := endpointListToString([]url.URL{*loc1Endpoint, *loc2Endpoint, *loc4Endpoint})
 	actualReadEndpoints, err := lc.readEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting read endpoints: %s", err.Error())
 	}
-	if len(expectedReadEndpoints) != len(actualReadEndpoints) {
-		t.Errorf("Expected %d read endpoints, but got %d", len(expectedReadEndpoints), len(actualReadEndpoints))
-	} else {
-		for i, endpoint := range expectedReadEndpoints {
-			if endpoint.String() != actualReadEndpoints[i].String() {
-				t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), actualReadEndpoints[i].String())
-			}
-		}
+	actualReadEndpointsOrder := endpointListToString(actualReadEndpoints)
+	if actualReadEndpointsOrder != expectedReadEndpoints {
+		t.Errorf("Expected read endpoints %s, but was %s", expectedReadEndpoints, actualReadEndpointsOrder)
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
@@ -302,21 +305,16 @@ func TestReadEndpoints(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	expectedReadEndpoints = []*url.URL{loc4Endpoint, loc1Endpoint, loc2Endpoint}
+	// loc2 is now unavailable, so it gets moved to the end of the list
+	expectedReadEndpoints = endpointListToString([]url.URL{*loc1Endpoint, *loc4Endpoint, *loc2Endpoint})
 	actualReadEndpoints, err = lc.readEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting read endpoints: %s", err.Error())
 	}
-	if len(expectedReadEndpoints) != len(actualReadEndpoints) {
-		t.Errorf("Expected %d read endpoints, but got %d", len(expectedReadEndpoints), len(actualReadEndpoints))
-	} else {
-		for i, endpoint := range expectedReadEndpoints {
-			if endpoint.String() != actualReadEndpoints[i].String() {
-				t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), actualReadEndpoints[i].String())
-			}
-		}
+	actualReadEndpointsOrder = endpointListToString(actualReadEndpoints)
+	if actualReadEndpointsOrder != expectedReadEndpoints {
+		t.Errorf("Expected read endpoints %s, but was %s", expectedReadEndpoints, actualReadEndpointsOrder)
 	}
-
 }
 
 func TestWriteEndpoints(t *testing.T) {
@@ -391,28 +389,22 @@ func TestReadEndpointsUsesDefaultEndpointAsFallback(t *testing.T) {
 	}
 
 	// Assert the expected ordering of endpoints
-	var actualWriteEndpointOrder strings.Builder
-	var actualReadEndpointOrder strings.Builder
-	for _, endpoint := range actualWriteEndpoints {
-		actualWriteEndpointOrder.WriteString(endpoint.String() + ",")
-	}
-	for _, endpoint := range actualReadEndpoints {
-		actualReadEndpointOrder.WriteString(endpoint.String() + ",")
-	}
+	actualWriteEndpointsOrder := endpointListToString(actualWriteEndpoints)
+	actualReadEndpointsOrder := endpointListToString(actualReadEndpoints)
 
 	// The correct order is:
 	// For write: loc1, loc2, loc3, default
-	// For read: loc1, loc2, default
+	// For read: loc1, loc2
 	// loc3 is not enabled for read, and loc4 (which IS enabled for read) is not in the preferred locations list
-	expectedWriteEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + "," + loc3Endpoint.String() + "," + defaultEndpoint.String() + ","
-	expectedReadEndpointOrder := loc1Endpoint.String() + "," + loc2Endpoint.String() + ","
+	expectedWriteEndpointOrder := endpointListToString([]url.URL{*loc1Endpoint, *loc2Endpoint, *loc3Endpoint, *defaultEndpoint})
+	expectedReadEndpointOrder := endpointListToString([]url.URL{*loc1Endpoint, *loc2Endpoint})
 
-	if actualWriteEndpointOrder.String() != expectedWriteEndpointOrder {
-		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointOrder.String())
+	if actualWriteEndpointsOrder != expectedWriteEndpointOrder {
+		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointsOrder)
 	}
 
-	if actualReadEndpointOrder.String() != expectedReadEndpointOrder {
-		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointOrder.String())
+	if actualReadEndpointsOrder != expectedReadEndpointOrder {
+		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointsOrder)
 	}
 }
 
@@ -441,27 +433,21 @@ func TestWriteEndpointUsedAsFallbackForRead(t *testing.T) {
 	}
 
 	// Assert the expected ordering of endpoints
-	var actualWriteEndpointOrder strings.Builder
-	var actualReadEndpointOrder strings.Builder
-	for _, endpoint := range actualWriteEndpoints {
-		actualWriteEndpointOrder.WriteString(endpoint.String() + ",")
-	}
-	for _, endpoint := range actualReadEndpoints {
-		actualReadEndpointOrder.WriteString(endpoint.String() + ",")
-	}
+	actualWriteEndpointsOrder := endpointListToString(actualWriteEndpoints)
+	actualReadEndpointsOrder := endpointListToString(actualReadEndpoints)
 
 	// The correct order is:
 	// For write: loc3, loc2, loc1, default
 	// For read: loc2, loc1, loc3
 	// loc3 is not enabled for read, but since it's the most-preferred write location, it should be used as the fallback for read
-	expectedWriteEndpointOrder := loc3Endpoint.String() + "," + loc2Endpoint.String() + "," + loc1Endpoint.String() + "," + defaultEndpoint.String() + ","
-	expectedReadEndpointOrder := loc2Endpoint.String() + "," + loc1Endpoint.String() + "," + loc3Endpoint.String() + ","
+	expectedWriteEndpointOrder := endpointListToString([]url.URL{*loc3Endpoint, *loc2Endpoint, *loc1Endpoint, *defaultEndpoint})
+	expectedReadEndpointOrder := endpointListToString([]url.URL{*loc2Endpoint, *loc1Endpoint, *loc3Endpoint})
 
-	if actualWriteEndpointOrder.String() != expectedWriteEndpointOrder {
-		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointOrder.String())
+	if actualWriteEndpointsOrder != expectedWriteEndpointOrder {
+		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointsOrder)
 	}
 
-	if actualReadEndpointOrder.String() != expectedReadEndpointOrder {
-		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointOrder.String())
+	if actualReadEndpointsOrder != expectedReadEndpointOrder {
+		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointsOrder)
 	}
 }

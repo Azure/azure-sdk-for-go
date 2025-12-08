@@ -314,11 +314,11 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[regionId]u
 					}
 				}
 			}
-			endpoints = append(endpoints, unavailEndpoints...)
 			if !addedFallback {
-				// If we didn't put the fallback endpoint anywhere in the list, add it to the end now
+				// If we didn't put the fallback endpoint anywhere yet, add it now
 				endpoints = append(endpoints, fallbackEndpoint)
 			}
+			endpoints = append(endpoints, unavailEndpoints...)
 		} else {
 			for _, loc := range locs {
 				if endpoint, ok := endpointsByLoc[loc]; ok && loc != "" {

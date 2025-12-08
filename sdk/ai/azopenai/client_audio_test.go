@@ -8,18 +8,14 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetAudioTranscription(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Whisper.Endpoint)
 	model := azureOpenAI.Whisper.Model
 
@@ -51,10 +47,6 @@ func TestClient_GetAudioTranscription(t *testing.T) {
 }
 
 func TestClient_GetAudioTranslation(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Whisper.Endpoint)
 	model := azureOpenAI.Whisper.Model
 
@@ -71,10 +63,6 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 }
 
 func TestClient_GetAudioSpeech(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	var tempFile *os.File
 
 	// Generate some speech from text.
@@ -100,21 +88,25 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 		require.NotEmpty(t, audioBytes)
 		require.Equal(t, "fLaC", string(audioBytes[0:4]))
 
-		// write the FLAC to a temp file - the Stainless API uses the filename of the file
-		// when it sends the request.
-		tempFile, err = os.CreateTemp("", "audio*.flac")
+		// For test recordings, make sure we write the FLAC to a temp file with a consistent base name - the
+		// Stainless API uses the filename of the file when it sends the request
+		flacPath := filepath.Join(t.TempDir(), "audio.flac")
 		require.NoError(t, err)
 
-		t.Cleanup(func() {
-			err := tempFile.Close()
-			require.NoError(t, err)
-		})
+		writer, err := os.Create(flacPath)
+		require.NoError(t, err)
+
+		tempFile = writer
 
 		_, err = tempFile.Write(audioBytes)
 		require.NoError(t, err)
 
 		_, err = tempFile.Seek(0, io.SeekStart)
 		require.NoError(t, err)
+
+		t.Cleanup(func() {
+			_ = tempFile.Close()
+		})
 	}
 
 	// as a simple check we'll now transcribe the audio file we just generated...

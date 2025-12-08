@@ -325,13 +325,17 @@ func newRecordingTransporter(t *testing.T) policy.Transporter {
 	transport, err := recording.NewRecordingHTTPClient(t, defaultOptions)
 	require.NoError(t, err)
 
-	err = recording.Start(t, RecordingDirectory, defaultOptions)
-	require.NoError(t, err)
-
-	t.Cleanup(func() {
-		err := recording.Stop(t, defaultOptions)
+	// if we're creating more than one client in a test (for instance, TestClient_GetAudioSpeech!)
+	// then we don't want to start or stop recording again.
+	if recording.GetRecordingId(t) == "" {
+		err = recording.Start(t, RecordingDirectory, defaultOptions)
 		require.NoError(t, err)
-	})
+
+		t.Cleanup(func() {
+			err := recording.Stop(t, defaultOptions)
+			require.NoError(t, err)
+		})
+	}
 
 	return transport
 }

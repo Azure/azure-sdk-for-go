@@ -40,10 +40,6 @@ var weatherFuncTool = []openai.ChatCompletionToolUnionParam{{
 }}
 
 func TestGetChatCompletions_usingFunctions(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("https://github.com/Azure/azure-sdk-for-go/issues/22869")
-	}
-
 	// https://platform.openai.com/docs/guides/gpt/function-calling
 
 	testFn := func(t *testing.T, chatClient *openai.Client, deploymentName string, toolChoice *openai.ChatCompletionToolChoiceOptionUnionParam) {
@@ -68,7 +64,11 @@ func TestGetChatCompletions_usingFunctions(t *testing.T) {
 
 		funcCall := resp.Choices[0].Message.ToolCalls[0]
 
-		require.Equal(t, "get_current_weather", funcCall.Function.Name)
+		if recording.GetRecordMode() == recording.PlaybackMode {
+			require.Equal(t, "Sanitized", funcCall.Function.Name)
+		} else {
+			require.Equal(t, "get_current_weather", funcCall.Function.Name)
+		}
 
 		type location struct {
 			Location string `json:"location"`

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,9 +22,9 @@ import (
 
 // RunsServer is a fake server for instances of the armcontainerregistry.RunsClient type.
 type RunsServer struct {
-	// BeginCancel is the fake for method RunsClient.BeginCancel
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginCancel func(ctx context.Context, resourceGroupName string, registryName string, runID string, options *armcontainerregistry.RunsClientBeginCancelOptions) (resp azfake.PollerResponder[armcontainerregistry.RunsClientCancelResponse], errResp azfake.ErrorResponder)
+	// Cancel is the fake for method RunsClient.Cancel
+	// HTTP status codes to indicate success: http.StatusOK
+	Cancel func(ctx context.Context, resourceGroupName string, registryName string, runID string, options *armcontainerregistry.RunsClientCancelOptions) (resp azfake.Responder[armcontainerregistry.RunsClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -38,9 +38,9 @@ type RunsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.RunsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.RunsClientListResponse])
 
-	// BeginUpdate is the fake for method RunsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters armcontainerregistry.RunUpdateParameters, options *armcontainerregistry.RunsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.RunsClientUpdateResponse], errResp azfake.ErrorResponder)
+	// Update is the fake for method RunsClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters armcontainerregistry.RunUpdateParameters, options *armcontainerregistry.RunsClientUpdateOptions) (resp azfake.Responder[armcontainerregistry.RunsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRunsServerTransport creates a new instance of RunsServerTransport with the provided implementation.
@@ -49,9 +49,7 @@ type RunsServer struct {
 func NewRunsServerTransport(srv *RunsServer) *RunsServerTransport {
 	return &RunsServerTransport{
 		srv:          srv,
-		beginCancel:  newTracker[azfake.PollerResponder[armcontainerregistry.RunsClientCancelResponse]](),
 		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.RunsClientListResponse]](),
-		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.RunsClientUpdateResponse]](),
 	}
 }
 
@@ -59,9 +57,7 @@ func NewRunsServerTransport(srv *RunsServer) *RunsServerTransport {
 // Don't use this type directly, use NewRunsServerTransport instead.
 type RunsServerTransport struct {
 	srv          *RunsServer
-	beginCancel  *tracker[azfake.PollerResponder[armcontainerregistry.RunsClientCancelResponse]]
 	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.RunsClientListResponse]]
-	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.RunsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for RunsServerTransport.
@@ -87,16 +83,16 @@ func (r *RunsServerTransport) dispatchToMethodFake(req *http.Request, method str
 		}
 		if !intercepted {
 			switch method {
-			case "RunsClient.BeginCancel":
-				res.resp, res.err = r.dispatchBeginCancel(req)
+			case "RunsClient.Cancel":
+				res.resp, res.err = r.dispatchCancel(req)
 			case "RunsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RunsClient.GetLogSasURL":
 				res.resp, res.err = r.dispatchGetLogSasURL(req)
 			case "RunsClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-			case "RunsClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
+			case "RunsClient.Update":
+				res.resp, res.err = r.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -116,51 +112,40 @@ func (r *RunsServerTransport) dispatchToMethodFake(req *http.Request, method str
 	}
 }
 
-func (r *RunsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginCancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCancel not implemented")}
+func (r *RunsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if r.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	beginCancel := r.beginCancel.get(req)
-	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		runIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("runId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginCancel(req.Context(), resourceGroupNameParam, registryNameParam, runIDParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCancel = &respr
-		r.beginCancel.add(req, beginCancel)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginCancel, req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		r.beginCancel.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginCancel) {
-		r.beginCancel.remove(req)
+	runIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("runId")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := r.srv.Cancel(req.Context(), resourceGroupNameParam, registryNameParam, runIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -306,55 +291,44 @@ func (r *RunsServerTransport) dispatchNewListPager(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (r *RunsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (r *RunsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.RunUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		runIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("runId")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, registryNameParam, runIDParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	body, err := server.UnmarshalRequestAsJSON[armcontainerregistry.RunUpdateParameters](req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
 	}
-
+	runIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("runId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Update(req.Context(), resourceGroupNameParam, registryNameParam, runIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Run, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

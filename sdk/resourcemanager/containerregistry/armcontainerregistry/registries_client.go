@@ -27,7 +27,7 @@ type RegistriesClient struct {
 // NewRegistriesClient creates a new instance of RegistriesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistriesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -404,8 +404,8 @@ func (client *RegistriesClient) getHandleResponse(resp *http.Response) (Registri
 // GetBuildSourceUploadURL - Get the upload location for the user to be able to upload the source.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - RegistriesClientGetBuildSourceUploadURLOptions contains the optional parameters for the RegistriesClient.GetBuildSourceUploadURL
 //     method.
@@ -451,7 +451,7 @@ func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -994,59 +994,38 @@ func (client *RegistriesClient) regenerateCredentialHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// BeginScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
-//   - runRequest - The parameters of a run that needs to scheduled.
-//   - options - RegistriesClientBeginScheduleRunOptions contains the optional parameters for the RegistriesClient.BeginScheduleRun
-//     method.
-func (client *RegistriesClient) BeginScheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientBeginScheduleRunOptions) (*runtime.Poller[RegistriesClientScheduleRunResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.scheduleRun(ctx, resourceGroupName, registryName, runRequest, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistriesClientScheduleRunResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistriesClientScheduleRunResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
 // ScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-func (client *RegistriesClient) scheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientBeginScheduleRunOptions) (*http.Response, error) {
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the container registry.
+//   - runRequest - The request body
+//   - options - RegistriesClientScheduleRunOptions contains the optional parameters for the RegistriesClient.ScheduleRun method.
+func (client *RegistriesClient) ScheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesClientScheduleRunOptions) (RegistriesClientScheduleRunResponse, error) {
 	var err error
-	const operationName = "RegistriesClient.BeginScheduleRun"
+	const operationName = "RegistriesClient.ScheduleRun"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.scheduleRunCreateRequest(ctx, resourceGroupName, registryName, runRequest, options)
 	if err != nil {
-		return nil, err
+		return RegistriesClientScheduleRunResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return RegistriesClientScheduleRunResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return RegistriesClientScheduleRunResponse{}, err
 	}
-	return httpResp, nil
+	resp, err := client.scheduleRunHandleResponse(httpResp)
+	return resp, err
 }
 
 // scheduleRunCreateRequest creates the ScheduleRun request.
-func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, _ *RegistriesClientBeginScheduleRunOptions) (*policy.Request, error) {
+func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, _ *RegistriesClientScheduleRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1065,13 +1044,22 @@ func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, runRequest); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// scheduleRunHandleResponse handles the ScheduleRun response.
+func (client *RegistriesClient) scheduleRunHandleResponse(resp *http.Response) (RegistriesClientScheduleRunResponse, error) {
+	result := RegistriesClientScheduleRunResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Run); err != nil {
+		return RegistriesClientScheduleRunResponse{}, err
+	}
+	return result, nil
 }
 
 // BeginUpdate - Updates a container registry with the specified parameters.

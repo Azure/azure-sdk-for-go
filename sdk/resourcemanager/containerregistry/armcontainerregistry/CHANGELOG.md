@@ -1,5 +1,22 @@
 # Release History
 
+## 3.0.0 (2025-12-08)
+### Breaking Changes
+
+- Operation `*RegistriesClient.BeginScheduleRun` has been changed to non-LRO, use `*RegistriesClient.ScheduleRun` instead.
+- Operation `*RunsClient.BeginCancel` has been changed to non-LRO, use `*RunsClient.Cancel` instead.
+- Operation `*RunsClient.BeginUpdate` has been changed to non-LRO, use `*RunsClient.Update` instead.
+- Operation `*TaskRunsClient.BeginDelete` has been changed to non-LRO, use `*TaskRunsClient.Delete` instead.
+- Operation `*TasksClient.BeginCreate` has been changed to non-LRO, use `*TasksClient.Create` instead.
+- Operation `*TasksClient.BeginDelete` has been changed to non-LRO, use `*TasksClient.Delete` instead.
+- Operation `*TasksClient.BeginUpdate` has been changed to non-LRO, use `*TasksClient.Update` instead.
+- Struct `RunFilter` has been removed
+
+### Features Added
+
+- New field `Identity` in struct `SourceRegistryCredentials`
+
+
 ## 2.0.0 (2025-11-05)
 ### Breaking Changes
 

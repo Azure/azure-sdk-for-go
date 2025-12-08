@@ -191,12 +191,6 @@ type RegistriesClientBeginImportImageOptions struct {
 	ResumeToken string
 }
 
-// RegistriesClientBeginScheduleRunOptions contains the optional parameters for the RegistriesClient.BeginScheduleRun method.
-type RegistriesClientBeginScheduleRunOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // RegistriesClientBeginUpdateOptions contains the optional parameters for the RegistriesClient.BeginUpdate method.
 type RegistriesClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -259,6 +253,11 @@ type RegistriesClientRegenerateCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RegistriesClientScheduleRunOptions contains the optional parameters for the RegistriesClient.ScheduleRun method.
+type RegistriesClientScheduleRunOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ReplicationsClientBeginCreateOptions contains the optional parameters for the ReplicationsClient.BeginCreate method.
 type ReplicationsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -287,16 +286,9 @@ type ReplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RunsClientBeginCancelOptions contains the optional parameters for the RunsClient.BeginCancel method.
-type RunsClientBeginCancelOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// RunsClientBeginUpdateOptions contains the optional parameters for the RunsClient.BeginUpdate method.
-type RunsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
+// RunsClientCancelOptions contains the optional parameters for the RunsClient.Cancel method.
+type RunsClientCancelOptions struct {
+	// placeholder for future optional parameters
 }
 
 // RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
@@ -317,6 +309,11 @@ type RunsClientListOptions struct {
 
 	// $top is supported for get list of runs, which limits the maximum number of runs to return.
 	Top *int32
+}
+
+// RunsClientUpdateOptions contains the optional parameters for the RunsClient.Update method.
+type RunsClientUpdateOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ScopeMapsClientBeginCreateOptions contains the optional parameters for the ScopeMapsClient.BeginCreate method.
@@ -353,16 +350,15 @@ type TaskRunsClientBeginCreateOptions struct {
 	ResumeToken string
 }
 
-// TaskRunsClientBeginDeleteOptions contains the optional parameters for the TaskRunsClient.BeginDelete method.
-type TaskRunsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // TaskRunsClientBeginUpdateOptions contains the optional parameters for the TaskRunsClient.BeginUpdate method.
 type TaskRunsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// TaskRunsClientDeleteOptions contains the optional parameters for the TaskRunsClient.Delete method.
+type TaskRunsClientDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
 // TaskRunsClientGetDetailsOptions contains the optional parameters for the TaskRunsClient.GetDetails method.
@@ -380,22 +376,14 @@ type TaskRunsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TasksClientBeginCreateOptions contains the optional parameters for the TasksClient.BeginCreate method.
-type TasksClientBeginCreateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
+// TasksClientCreateOptions contains the optional parameters for the TasksClient.Create method.
+type TasksClientCreateOptions struct {
+	// placeholder for future optional parameters
 }
 
-// TasksClientBeginDeleteOptions contains the optional parameters for the TasksClient.BeginDelete method.
-type TasksClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// TasksClientBeginUpdateOptions contains the optional parameters for the TasksClient.BeginUpdate method.
-type TasksClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
+// TasksClientDeleteOptions contains the optional parameters for the TasksClient.Delete method.
+type TasksClientDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
 // TasksClientGetDetailsOptions contains the optional parameters for the TasksClient.GetDetails method.
@@ -410,6 +398,11 @@ type TasksClientGetOptions struct {
 
 // TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
 type TasksClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TasksClientUpdateOptions contains the optional parameters for the TasksClient.Update method.
+type TasksClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationList.json
 func ExampleReplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleReplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationGet.json
 func ExampleReplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleReplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationCreate.json
 func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationCreateZoneRedundant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationCreateZoneRedundant.json
 func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationUpdate.json
 func ExampleReplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleReplicationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ReplicationDelete.json
 func ExampleReplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

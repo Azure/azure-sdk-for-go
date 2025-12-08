@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapList.json
 func ExampleScopeMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleScopeMapsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapGet.json
 func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleScopeMapsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapCreate.json
 func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapUpdate.json
 func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/ScopeMapDelete.json
 func ExampleScopeMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

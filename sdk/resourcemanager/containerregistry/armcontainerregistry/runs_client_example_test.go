@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RunsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RunsList.json
 func ExampleRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RunsGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RunsGet.json
 func ExampleRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,8 +161,8 @@ func ExampleRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RunsUpdate.json
-func ExampleRunsClient_BeginUpdate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RunsUpdate.json
+func ExampleRunsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -172,15 +172,11 @@ func ExampleRunsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRunsClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab", armcontainerregistry.RunUpdateParameters{
+	res, err := clientFactory.NewRunsClient().Update(ctx, "myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab", armcontainerregistry.RunUpdateParameters{
 		IsArchiveEnabled: to.Ptr(true),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -235,7 +231,24 @@ func ExampleRunsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RunsGetLogSasUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RunsCancel.json
+func ExampleRunsClient_Cancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewRunsClient().Cancel(ctx, "myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2025-03-01-preview/examples/RunsGetLogSasUrl.json
 func ExampleRunsClient_GetLogSasURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,25 +269,4 @@ func ExampleRunsClient_GetLogSasURL() {
 	// res.RunGetLogResult = armcontainerregistry.RunGetLogResult{
 	// 	LogLink: to.Ptr("https://registrystorageaccount.blob.core.windows.net/sascontainer/logs/0accec26-d6de-4757-8e74-d080f38eaaab/rawtext.log?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
 	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/RegistryTasks/preview/2019-06-01-preview/examples/RunsCancel.json
-func ExampleRunsClient_BeginCancel() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRunsClient().BeginCancel(ctx, "myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
 }

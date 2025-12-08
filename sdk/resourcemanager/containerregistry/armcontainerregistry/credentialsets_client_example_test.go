@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetList.json
 func ExampleCredentialSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleCredentialSetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetGet.json
 func ExampleCredentialSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleCredentialSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetCreate.json
 func ExampleCredentialSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetUpdate.json
 func ExampleCredentialSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleCredentialSetsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dde5cdd6b104898e71f88b8afe94655ddd9456a9/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4bff5062884015ef6c7270c2a042cbb5d326e47e/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/CredentialSetDelete.json
 func ExampleCredentialSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

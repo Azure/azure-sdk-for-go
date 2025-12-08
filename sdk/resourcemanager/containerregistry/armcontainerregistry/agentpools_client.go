@@ -27,7 +27,7 @@ type AgentPoolsClient struct {
 // NewAgentPoolsClient creates a new instance of AgentPoolsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentPoolsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +43,9 @@ func NewAgentPoolsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Creates an agent pool for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - agentPoolName - The name of the agent pool.
 //   - agentPool - The parameters of an agent pool that needs to scheduled.
 //   - options - AgentPoolsClientBeginCreateOptions contains the optional parameters for the AgentPoolsClient.BeginCreate method.
@@ -56,7 +56,8 @@ func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupNa
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolsClientCreateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -69,7 +70,7 @@ func (client *AgentPoolsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Creates an agent pool for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
+// Generated from API version 2025-03-01-preview
 func (client *AgentPoolsClient) create(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, agentPool AgentPool, options *AgentPoolsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolsClient.BeginCreate"
@@ -115,7 +116,7 @@ func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, agentPool); err != nil {
@@ -127,9 +128,9 @@ func (client *AgentPoolsClient) createCreateRequest(ctx context.Context, resourc
 // BeginDelete - Deletes a specified agent pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - agentPoolName - The name of the agent pool.
 //   - options - AgentPoolsClientBeginDeleteOptions contains the optional parameters for the AgentPoolsClient.BeginDelete method.
 func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*runtime.Poller[AgentPoolsClientDeleteResponse], error) {
@@ -139,7 +140,8 @@ func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupNa
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -152,7 +154,7 @@ func (client *AgentPoolsClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Deletes a specified agent pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
+// Generated from API version 2025-03-01-preview
 func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolsClient.BeginDelete"
@@ -167,7 +169,7 @@ func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGro
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -198,7 +200,7 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -207,9 +209,9 @@ func (client *AgentPoolsClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Gets the detailed information for a given agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - agentPoolName - The name of the agent pool.
 //   - options - AgentPoolsClientGetOptions contains the optional parameters for the AgentPoolsClient.Get method.
 func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, options *AgentPoolsClientGetOptions) (AgentPoolsClientGetResponse, error) {
@@ -258,7 +260,7 @@ func (client *AgentPoolsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,9 +278,9 @@ func (client *AgentPoolsClient) getHandleResponse(resp *http.Response) (AgentPoo
 // GetQueueStatus - Gets the count of queued runs for a given agent pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - agentPoolName - The name of the agent pool.
 //   - options - AgentPoolsClientGetQueueStatusOptions contains the optional parameters for the AgentPoolsClient.GetQueueStatus
 //     method.
@@ -328,7 +330,7 @@ func (client *AgentPoolsClient) getQueueStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,9 +347,9 @@ func (client *AgentPoolsClient) getQueueStatusHandleResponse(resp *http.Response
 
 // NewListPager - Lists all the agent pools for a specified container registry.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - options - AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
 func (client *AgentPoolsClient) NewListPager(resourceGroupName string, registryName string, options *AgentPoolsClientListOptions) *runtime.Pager[AgentPoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AgentPoolsClientListResponse]{
@@ -392,7 +394,7 @@ func (client *AgentPoolsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -410,9 +412,9 @@ func (client *AgentPoolsClient) listHandleResponse(resp *http.Response) (AgentPo
 // BeginUpdate - Updates an agent pool with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - agentPoolName - The name of the agent pool.
 //   - updateParameters - The parameters for updating an agent pool.
 //   - options - AgentPoolsClientBeginUpdateOptions contains the optional parameters for the AgentPoolsClient.BeginUpdate method.
@@ -423,7 +425,8 @@ func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentPoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -436,7 +439,7 @@ func (client *AgentPoolsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Updates an agent pool with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-06-01-preview
+// Generated from API version 2025-03-01-preview
 func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName string, registryName string, agentPoolName string, updateParameters AgentPoolUpdateParameters, options *AgentPoolsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentPoolsClient.BeginUpdate"
@@ -482,7 +485,7 @@ func (client *AgentPoolsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-06-01-preview")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateParameters); err != nil {

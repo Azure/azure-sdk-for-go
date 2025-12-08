@@ -178,9 +178,10 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 		}
 
 		override := new(bool)
-		if sdkReleaseType == "stable" {
+		switch sdkReleaseType {
+		case "stable":
 			*override = false
-		} else if sdkReleaseType == "beta" {
+		case "beta":
 			*override = true
 		}
 		// Determine if this should be a preview version

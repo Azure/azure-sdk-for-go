@@ -1,5 +1,12 @@
 # Release History
 
+## 0.4.2 (2025-12-08)
+
+### Bugs Fixed
+
+- Move logic of determining preview version after code generation to avoid incorrect version calculation.
+- Fix wrong override logic for stable/beta version determination.
+
 ## 0.4.1 (2025-12-02)
 
 ### Bugs Fixed

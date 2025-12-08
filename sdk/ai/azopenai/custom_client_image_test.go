@@ -15,10 +15,6 @@ import (
 )
 
 func TestImageGeneration_AzureOpenAI(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Ignoring poller-based test")
-	}
-
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.DallE.Endpoint)
 	// testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL, true)
 

@@ -318,7 +318,7 @@ func configureTestProxy(options recording.RecordingOptions) error {
 
 // newRecordingTransporter sets up our recording policy to sanitize endpoints and any parts of the response that might
 // involve UUIDs that would make the response/request inconsistent.
-func newRecordingTransporter(t *testing.T) policy.Transporter {
+func newRecordingTransporter(t *testing.T) *recording.RecordingHTTPClient {
 	defaultOptions := getRecordingOptions(t)
 	t.Logf("Using test proxy on port %d", defaultOptions.ProxyPort)
 
@@ -388,14 +388,15 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 }
 
 func newStainlessChatCompletionService(t *testing.T, ep endpoint) openai.ChatCompletionService {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skip("Skipping tests in playback mode")
-	}
-
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
-	return openai.NewChatCompletionService(azure.WithEndpoint(ep.URL, apiVersion),
+
+	recordingHTTPClient := newRecordingTransporter(t)
+
+	return openai.NewChatCompletionService(
+		azure.WithEndpoint(ep.URL, apiVersion),
 		azure.WithTokenCredential(tokenCredential),
+		option.WithHTTPClient(recordingHTTPClient),
 	)
 }
 

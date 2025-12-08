@@ -306,11 +306,11 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[regionId]u
 					if lc.isEndpointUnavailable(endpoint, availOps) {
 						unavailEndpoints = append(unavailEndpoints, endpoint)
 					} else {
-						// Remember that we added the fallback endpoint, so we don't duplicate it at the end
-						if endpoint == fallbackEndpoint {
-							addedFallback = true
-						}
 						endpoints = append(endpoints, endpoint)
+					}
+					// Remember that we added the fallback endpoint, so we don't duplicate it at the end
+					if endpoint == fallbackEndpoint {
+						addedFallback = true
 					}
 				}
 			}

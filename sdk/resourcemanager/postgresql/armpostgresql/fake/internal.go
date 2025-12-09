@@ -8,8 +8,14 @@ package fake
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
+	"reflect"
 	"sync"
 )
+
+type result struct {
+	resp *http.Response
+	err  error
+}
 
 type nonRetriableError struct {
 	error
@@ -26,6 +32,13 @@ func contains[T comparable](s []T, v T) bool {
 		}
 	}
 	return false
+}
+
+func getOptional[T any](v T) *T {
+	if reflect.ValueOf(v).IsZero() {
+		return nil
+	}
+	return &v
 }
 
 func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {

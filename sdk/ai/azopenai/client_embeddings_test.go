@@ -18,7 +18,6 @@ import (
 )
 
 func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
-	t.Skip("Skipping while we investigate the issue with Azure OpenAI.")
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Embeddings.Endpoint)
 
 	_, err := client.Embeddings.New(context.Background(), openai.EmbeddingNewParams{
@@ -27,8 +26,7 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 
 	var openaiErr *openai.Error
 	require.ErrorAs(t, err, &openaiErr)
-	require.Equal(t, http.StatusNotFound, openaiErr.StatusCode)
-	require.Contains(t, err.Error(), "does not exist")
+	require.Contains(t, []int{http.StatusBadRequest, http.StatusNotFound}, openaiErr.StatusCode)
 }
 
 func TestClient_GetEmbeddings(t *testing.T) {

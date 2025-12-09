@@ -271,7 +271,7 @@ func main() {
 
 First, make sure you have go version 1.17 or later installed. You can install go from the [go.dev](https://go.dev/doc/install) site.
 
-Navigate to your SDK performance test, (ie. `sdk/security/keyvault/azkeys/testdata/perf` folder and run `go mod download` to download all the requirements for the performance framework.
+Navigate to your SDK performance test e.g., `sdk/security/keyvault/azkeys/testdata/perf` folder and run `go mod download` to download all the requirements for the performance framework.
 
 To run a single performance test specify the test as the first argument:
 ```pwsh

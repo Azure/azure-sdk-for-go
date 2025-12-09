@@ -26,7 +26,7 @@ type BillingContainersClient struct {
 // NewBillingContainersClient creates a new instance of BillingContainersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBillingContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BillingContainersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewBillingContainersClient(subscriptionID string, credential azcore.TokenCr
 // Get - Get a BillingContainer
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - billingContainerName - Name of the billing container.
 //   - options - BillingContainersClientGetOptions contains the optional parameters for the BillingContainersClient.Get method.
 func (client *BillingContainersClient) Get(ctx context.Context, billingContainerName string, options *BillingContainersClientGetOptions) (BillingContainersClientGetResponse, error) {
@@ -83,7 +83,7 @@ func (client *BillingContainersClient) getCreateRequest(ctx context.Context, bil
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -100,7 +100,7 @@ func (client *BillingContainersClient) getHandleResponse(resp *http.Response) (B
 
 // NewListBySubscriptionPager - List BillingContainer resources by subscription ID
 //
-// Generated from API version 2024-11-01
+// Generated from API version 2025-10-01
 //   - options - BillingContainersClientListBySubscriptionOptions contains the optional parameters for the BillingContainersClient.NewListBySubscriptionPager
 //     method.
 func (client *BillingContainersClient) NewListBySubscriptionPager(options *BillingContainersClientListBySubscriptionOptions) *runtime.Pager[BillingContainersClientListBySubscriptionResponse] {
@@ -138,7 +138,7 @@ func (client *BillingContainersClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

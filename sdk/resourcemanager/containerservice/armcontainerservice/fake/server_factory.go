@@ -46,6 +46,9 @@ type ServerFactory struct {
 	// ManagedNamespacesServer contains the fakes for client ManagedNamespacesClient
 	ManagedNamespacesServer ManagedNamespacesServer
 
+	// MeshMembershipsServer contains the fakes for client MeshMembershipsClient
+	MeshMembershipsServer MeshMembershipsServer
+
 	// OperationStatusResultServer contains the fakes for client OperationStatusResultClient
 	OperationStatusResultServer OperationStatusResultServer
 
@@ -95,6 +98,7 @@ type ServerFactoryTransport struct {
 	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
 	trManagedNamespacesServer           *ManagedNamespacesServerTransport
+	trMeshMembershipsServer             *MeshMembershipsServerTransport
 	trOperationStatusResultServer       *OperationStatusResultServerTransport
 	trOperationsServer                  *OperationsServerTransport
 	trPrivateEndpointConnectionsServer  *PrivateEndpointConnectionsServerTransport
@@ -162,6 +166,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedNamespacesServerTransport(&s.srv.ManagedNamespacesServer)
 		})
 		resp, err = s.trManagedNamespacesServer.Do(req)
+	case "MeshMembershipsClient":
+		initServer(s, &s.trMeshMembershipsServer, func() *MeshMembershipsServerTransport {
+			return NewMeshMembershipsServerTransport(&s.srv.MeshMembershipsServer)
+		})
+		resp, err = s.trMeshMembershipsServer.Do(req)
 	case "OperationStatusResultClient":
 		initServer(s, &s.trOperationStatusResultServer, func() *OperationStatusResultServerTransport {
 			return NewOperationStatusResultServerTransport(&s.srv.OperationStatusResultServer)

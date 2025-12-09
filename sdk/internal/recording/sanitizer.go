@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -55,12 +52,15 @@ func handleProxyResponse(resp *http.Response, err error) error {
 		return err
 	}
 
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
 	if resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusOK {
 		return nil
 	}
 
 	body, err := io.ReadAll(resp.Body)
-	defer resp.Body.Close()
 	if err != nil {
 		return err
 	}

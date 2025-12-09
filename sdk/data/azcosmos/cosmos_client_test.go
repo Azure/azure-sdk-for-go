@@ -122,7 +122,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 	if err.Error() != asError.Error() {
 		t.Errorf("Expected %v, but got %v", err.Error(), asError.Error())
 	}
-	asError.RawResponse.Body.Close()
+	_ = asError.RawResponse.Body.Close()
 }
 
 func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {

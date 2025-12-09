@@ -867,6 +867,18 @@ type PlansClientGetRouteForVnetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PlansClientGetServerFarmInstanceDetailsOptions contains the optional parameters for the PlansClient.GetServerFarmInstanceDetails
+// method.
+type PlansClientGetServerFarmInstanceDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientGetServerFarmRdpPasswordOptions contains the optional parameters for the PlansClient.GetServerFarmRdpPassword
+// method.
+type PlansClientGetServerFarmRdpPasswordOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PlansClientGetServerFarmSKUsOptions contains the optional parameters for the PlansClient.GetServerFarmSKUs method.
 type PlansClientGetServerFarmSKUsOptions struct {
 	// placeholder for future optional parameters
@@ -951,6 +963,12 @@ type PlansClientListWebAppsOptions struct {
 
 // PlansClientRebootWorkerOptions contains the optional parameters for the PlansClient.RebootWorker method.
 type PlansClientRebootWorkerOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PlansClientRecycleManagedInstanceWorkerOptions contains the optional parameters for the PlansClient.RecycleManagedInstanceWorker
+// method.
+type PlansClientRecycleManagedInstanceWorkerOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4241,6 +4259,9 @@ type WebSiteManagementClientListCustomHostNameSitesOptions struct {
 // WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.NewListGeoRegionsPager
 // method.
 type WebSiteManagementClientListGeoRegionsOptions struct {
+	// Specify true if you want to filter to only regions that support App Service Plans with IsCustomMode set to true.
+	CustomModeWorkersEnabled *bool
+
 	// Specify true if you want to filter to only regions that support Linux Consumption Workers.
 	LinuxDynamicWorkersEnabled *bool
 

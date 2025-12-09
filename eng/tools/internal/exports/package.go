@@ -157,13 +157,17 @@ func (pkg Package) getText(start token.Pos, end token.Pos) string {
 // name can be nil, e.g. anonymous fields in structs, unnamed return types etc.
 func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string, *ast.Field)) {
 	for _, f := range fl {
-		var name *string
-		if f.Names != nil {
-			n := pkg.getText(f.Names[0].Pos(), f.Names[0].End())
-			name = &n
-		}
 		t := pkg.getText(f.Type.Pos(), f.Type.End())
-		cb(name, t, f)
+		if f.Names != nil {
+			// Handle multiple parameter names with the same type (e.g., func Foo(a, b string))
+			for _, name := range f.Names {
+				n := pkg.getText(name.Pos(), name.End())
+				cb(&n, t, f)
+			}
+		} else {
+			// Unnamed parameter
+			cb(nil, t, f)
+		}
 	}
 }
 
@@ -178,19 +182,21 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 		return s
 	}
 
-	// build the params type list
+	// build the params list
 	if ft.Params.List != nil {
-		p := ""
-		pkg.translateFieldList(ft.Params.List, func(n *string, t string, f *ast.Field) {
-			p = appendString(p, t)
+		pkg.translateFieldList(ft.Params.List, func(n *string, t string, field *ast.Field) {
+			param := Param{Type: t}
+			if n != nil {
+				param.Name = *n
+			}
+			f.Params = append(f.Params, param)
 		})
-		f.Params = &p
 	}
 
 	// build the return types list
 	if ft.Results != nil {
 		r := ""
-		pkg.translateFieldList(ft.Results.List, func(n *string, t string, f *ast.Field) {
+		pkg.translateFieldList(ft.Results.List, func(n *string, t string, field *ast.Field) {
 			r = appendString(r, t)
 		})
 		f.Returns = &r

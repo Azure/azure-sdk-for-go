@@ -62,7 +62,7 @@ func ExecuteGoGenerate(path string) error {
 		}
 	}
 
-	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
+	if stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
 			// filter go downloading log
 			// https://github.com/golang/go/blob/1f0c044d60211e435dc58844127544dd3ecb6a41/src/cmd/go/internal/modfetch/fetch.go#L201
@@ -123,7 +123,7 @@ func ExecuteGoimports(path string) error {
 }
 
 func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
-	refName := fmt.Sprintf("%s", branchName+":"+branchName)
+	refName := branchName + ":" + branchName
 	cmd := exec.Command("git", "push", remoteName, refName)
 	cmd.Dir = path
 	msg, err := cmd.CombinedOutput()

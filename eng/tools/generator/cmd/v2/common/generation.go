@@ -201,17 +201,16 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 }
 
 func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error {
-	packagePath := t.PackagePath
 	// same step for onboard and update
 	if t.SpecCommitHash == "" {
 		log.Printf("Change swagger config in `autorest.md` according to local path...")
-		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 		if err := ChangeConfigWithLocalPath(autorestMdPath, t.SpecReadmeFile, t.SpecReadmeGoFile); err != nil {
 			return err
 		}
 	} else {
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
-		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 		if err := ChangeConfigWithCommitID(autorestMdPath, t.SpecRepoURL, t.SpecCommitHash, generateParam.SpecRPName); err != nil {
 			return err
 		}
@@ -220,7 +219,7 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 	// add tag set
 	if !generateParam.RemoveTagSet && generateParam.NamespaceConfig != "" {
 		log.Printf("Add tag in `autorest.md`...")
-		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 		if err := AddTagSet(autorestMdPath, generateParam.NamespaceConfig); err != nil {
 			return err
 		}
@@ -229,7 +228,7 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 	// remove tag set
 	if generateParam.RemoveTagSet {
 		log.Printf("Remove tag set for swagger config in `autorest.md`...")
-		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 		if err := RemoveTagSet(autorestMdPath); err != nil {
 			return err
 		}
@@ -239,9 +238,8 @@ func (t *SwaggerCommonGenerator) PreGenerate(generateParam *GenerateParam) error
 }
 
 func (t *SwaggerCommonGenerator) Generate(generateParam *GenerateParam) error {
-	packagePath := t.PackagePath
 	log.Printf("Start to run `go generate` to regenerate the code...")
-	if err := ExecuteGoGenerate(packagePath); err != nil {
+	if err := ExecuteGoGenerate(t.PackagePath); err != nil {
 		return err
 	}
 	return nil
@@ -258,20 +256,18 @@ func (t *SwaggerCommonGenerator) GenChangeLog(generateParam *GenerateParam) erro
 }
 
 func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
-	packagePath := t.PackagePath
-
 	// Example generation should be the last step because the package import relay on the new calculated version
 	if !generateParam.SkipGenerateExample {
 		log.Printf("Start to generate examples...")
 		var flags []string
-		alwaysSetBodyParamRequiredFlag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(packagePath, "build.go"))
+		alwaysSetBodyParamRequiredFlag, err := GetAlwaysSetBodyParamRequiredFlag(filepath.Join(t.PackagePath, "build.go"))
 		if err != nil {
 			return nil, err
 		}
 		if len(alwaysSetBodyParamRequiredFlag) > 0 {
 			flags = append(flags, alwaysSetBodyParamRequiredFlag)
 		}
-		clientFactoryParamsFlag, err := GetFactoryGatherAllParamsFlag(filepath.Join(packagePath, "build.go"))
+		clientFactoryParamsFlag, err := GetFactoryGatherAllParamsFlag(filepath.Join(t.PackagePath, "build.go"))
 		if err != nil {
 			return nil, err
 		}
@@ -279,7 +275,7 @@ func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*G
 			flags = append(flags, clientFactoryParamsFlag)
 		}
 		log.Println(flags)
-		if err := ExecuteExampleGenerate(packagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flags); err != nil {
+		if err := ExecuteExampleGenerate(t.PackagePath, filepath.Join("resourcemanager", generateParam.RPName, generateParam.NamespaceName), flags); err != nil {
 			return nil, err
 		}
 	}
@@ -294,9 +290,7 @@ func (t *SwaggerCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*G
 
 func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam) error {
 	var err error
-	version := t.Version
-	packagePath := t.PackagePath
-	log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
+	log.Printf("Package '%s' changelog not exist, do onboard process", t.PackagePath)
 
 	if generateParam.SpecificPackageTitle == "" {
 		generateParam.SpecificPackageTitle = strings.Title(generateParam.RPName)
@@ -312,7 +306,7 @@ func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam) erro
 		PackageTitle:   generateParam.SpecificPackageTitle,
 		Commit:         t.SpecCommitHash,
 		PackageConfig:  generateParam.NamespaceConfig,
-		PackageVersion: version.String(),
+		PackageVersion: t.Version.String(),
 		ReleaseDate:    generateParam.ReleaseDate,
 	}); err != nil {
 		return err
@@ -323,23 +317,16 @@ func (t *SwaggerOnBoardGenerator) PreGenerate(generateParam *GenerateParam) erro
 	return nil
 }
 
-func (t *SwaggerOnBoardGenerator) GenChangeLog(generateParam *GenerateParam) error {
-	if err := t.SwaggerCommonGenerator.GenChangeLog(generateParam); err != nil {
-		return err
-	}
-	if err := changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
 	var err error
 	var prl utils.PullRequestLabel
-	version := t.Version
-	packagePath := t.PackagePath
 	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
-	if err = ReplaceNewClientNamePlaceholder(packagePath, *t.ChangelogResult.NewExports); err != nil {
+	if err = ReplaceNewClientNamePlaceholder(t.PackagePath, *t.ChangelogResult.NewExports); err != nil {
+		return nil, err
+	}
+
+	log.Printf("Create changelog file...")
+	if err = changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate); err != nil {
 		return nil, err
 	}
 
@@ -351,10 +338,10 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	prl = utils.FirstBetaLabel
 	packageRelativePath := fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)
 	return &GenerateResult{
-		Version:             version.String(),
+		Version:             t.Version.String(),
 		RPName:              generateParam.RPName,
 		PackageName:         generateParam.NamespaceName,
-		PackageAbsPath:      packagePath,
+		PackageAbsPath:      t.PackagePath,
 		Changelog:           *t.ChangelogResult.ChangelogData,
 		ChangelogMD:         t.ChangelogResult.ChangelogData.ToCompactMarkdown() + "\n" + t.ChangelogResult.ChangelogData.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
@@ -364,20 +351,11 @@ func (t *SwaggerOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (*
 }
 
 func (t *SwaggerUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
-	packagePath := t.PackagePath
 	var err error
-	log.Printf("Package '%s' existed, do update process", packagePath)
+	log.Printf("Package '%s' existed, do update process", t.PackagePath)
 
 	log.Printf("Remove all the generated files ...")
-	if err = CleanSDKGeneratedFiles(packagePath); err != nil {
-		return err
-	}
-
-	override := new(bool)
-	if generateParam.ForceStableVersion {
-		*override = true
-	}
-	if t.IsCurrentPreview, err = version.IsCurrentPreviewVersion(packagePath, *t.SDKRepo, override); err != nil {
+	if err = CleanSDKGeneratedFiles(t.PackagePath); err != nil {
 		return err
 	}
 
@@ -387,29 +365,45 @@ func (t *SwaggerUpdateGenerator) PreGenerate(generateParam *GenerateParam) error
 	return nil
 }
 
-func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
-	isCurrentPreview := t.IsCurrentPreview
-	packagePath := t.PackagePath
+func (t *SwaggerUpdateGenerator) Generate(generateParam *GenerateParam) error {
+	if err := t.SwaggerCommonGenerator.Generate(generateParam); err != nil {
+		return err
+	}
 
+	log.Printf("Determine if current version is preview...")
+	var err error
+	var override *bool
+	if generateParam.ForceStableVersion {
+		override = new(bool)
+		*override = true
+	}
+	if t.IsCurrentPreview, err = version.IsCurrentPreviewVersion(t.PackagePath, *t.SDKRepo, override); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
 	log.Printf("Calculate new version...")
-	newVersion, prl, err := version.CalculateNewVersion(t.ChangelogResult.ChangelogData, t.ChangelogResult.PreviousVersion, isCurrentPreview)
+	newVersion, prl, err := version.CalculateNewVersion(t.ChangelogResult.ChangelogData, t.ChangelogResult.PreviousVersion, t.IsCurrentPreview)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Printf("Add changelog to file...")
-	changelogMd, err := changelog.AddChangelogToFileWithReplacement(t.ChangelogResult.ChangelogData, newVersion, packagePath, generateParam.ReleaseDate)
+	changelogMd, err := changelog.AddChangelogToFileWithReplacement(t.ChangelogResult.ChangelogData, newVersion, t.PackagePath, generateParam.ReleaseDate)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Printf("Update all version files...")
-	if err = version.UpdateAllVersionFiles(packagePath, newVersion, *t.SDKRepo); err != nil {
+	if err = version.UpdateAllVersionFiles(t.PackagePath, newVersion, *t.SDKRepo); err != nil {
 		return nil, err
 	}
 
 	log.Printf("Replace README.md NewClient name...")
-	if err = ReplaceReadmeNewClientName(packagePath, *t.ChangelogResult.NewExports); err != nil {
+	if err = ReplaceReadmeNewClientName(t.PackagePath, *t.ChangelogResult.NewExports); err != nil {
 		return nil, err
 	}
 
@@ -422,7 +416,7 @@ func (t *SwaggerUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*G
 		Version:             newVersion.String(),
 		RPName:              generateParam.RPName,
 		PackageName:         generateParam.NamespaceName,
-		PackageAbsPath:      packagePath,
+		PackageAbsPath:      t.PackagePath,
 		Changelog:           *t.ChangelogResult.ChangelogData,
 		ChangelogMD:         changelogMd + "\n" + t.ChangelogResult.ChangelogData.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
@@ -532,13 +526,10 @@ func (t *TypeSpecCommonGenerator) GenChangeLog(generateParam *GenerateParam) err
 }
 
 func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
-	version := t.Version
-	ctx := t.GenerateContext
 	log.Printf("Start to run `tsp-client init` to generate the code...")
-	defaultModuleVersion := version.String()
 	emitOption := ""
 	if !t.IsSubPackage {
-		emitOption = fmt.Sprintf("module-version=%s", defaultModuleVersion)
+		emitOption = fmt.Sprintf("module-version=%s", t.Version.String())
 	}
 	if generateParam.TypeSpecEmitOption != "" {
 		emitOption = fmt.Sprintf("%s;%s", emitOption, generateParam.TypeSpecEmitOption)
@@ -546,7 +537,7 @@ func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 	if generateParam.ApiVersion != "" {
 		emitOption = fmt.Sprintf("%s;api-version=%s", emitOption, generateParam.ApiVersion)
 	}
-	err := ExecuteTypeSpecGenerate(ctx, emitOption, generateParam.TspClientOptions)
+	err := ExecuteTypeSpecGenerate(t.GenerateContext, emitOption, generateParam.TspClientOptions)
 	if err != nil {
 		return err
 	}
@@ -554,11 +545,9 @@ func (t *TypeSpecCommonGenerator) Generate(generateParam *GenerateParam) error {
 }
 
 func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
-	packagePath := t.PackagePath
-	modulePath := t.ModulePath
 	if t.IsSubPackage {
 		// remove go.mod for sub package
-		goModPath := filepath.Join(packagePath, utils.GoModFileName)
+		goModPath := filepath.Join(t.PackagePath, utils.GoModFileName)
 		if _, err := os.Stat(goModPath); !os.IsNotExist(err) {
 			if err = os.Remove(goModPath); err != nil {
 				return nil, err
@@ -567,18 +556,18 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	}
 
 	if !generateParam.SkipUpdateDep {
-		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in %s\n", modulePath)
-		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.24.0"); err != nil {
+		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in %s\n", t.ModulePath)
+		if err := ExecuteGo(t.ModulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.24.0"); err != nil {
 			return nil, err
 		}
-		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in %s\n", modulePath)
-		if err := ExecuteGo(modulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.24.0"); err != nil {
+		log.Printf("##[command]Executing go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in %s\n", t.ModulePath)
+		if err := ExecuteGo(t.ModulePath, "get", "-u", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.24.0"); err != nil {
 			return nil, err
 		}
 	}
 
-	log.Printf("##[command]Executing go mod tidy in %s\n", modulePath)
-	if err := ExecuteGo(modulePath, "mod", "tidy"); err != nil {
+	log.Printf("##[command]Executing go mod tidy in %s\n", t.ModulePath)
+	if err := ExecuteGo(t.ModulePath, "mod", "tidy"); err != nil {
 		return nil, err
 	}
 
@@ -592,11 +581,7 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*
 }
 
 func (t *TypeSpecOnBoardGenerator) PreGenerate(generateParam *GenerateParam) error {
-	version := t.Version
-	modulePath := t.ModulePath
-	moduleRelativePath := t.ModuleRelativePath
-
-	log.Printf("Module '%s' changelog not exist, do onboard process", modulePath)
+	log.Printf("Module '%s' changelog not exist, do onboard process", t.ModulePath)
 	if generateParam.SpecificPackageTitle == "" {
 		generateParam.SpecificPackageTitle = cases.Title(language.English).String(generateParam.RPName)
 	}
@@ -608,60 +593,55 @@ func (t *TypeSpecOnBoardGenerator) PreGenerate(generateParam *GenerateParam) err
 	sdkBasicInfo := map[string]any{
 		"rpName":             generateParam.RPName,
 		"packageName":        generateParam.NamespaceName,
-		"moduleRelativePath": moduleRelativePath,
-		"serviceDir":         strings.Replace(moduleRelativePath, "sdk/", "", 1),
+		"moduleRelativePath": t.ModuleRelativePath,
+		"serviceDir":         strings.Replace(t.ModuleRelativePath, "sdk/", "", 1),
 		"packageTitle":       generateParam.SpecificPackageTitle,
-		"packageVersion":     version.String(),
+		"packageVersion":     t.Version.String(),
 		"releaseDate":        generateParam.ReleaseDate,
 	}
-	return typespec.ParseTypeSpecTemplates(filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec"), modulePath, sdkBasicInfo, nil)
+	return typespec.ParseTypeSpecTemplates(filepath.Join(t.SDKPath, "eng/tools/generator/template/typespec"), t.ModulePath, sdkBasicInfo, nil)
 }
 
 func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (*GenerateResult, error) {
 	var err error
-	version := t.Version
-	modulePath := t.ModulePath
-	packagePath := t.PackagePath
-	packageRelativePath := t.PackageRelativePath
-
 	var prl utils.PullRequestLabel
 	log.Printf("Replace {{NewClientName}} placeholder in the README.md ")
-	if err = ReplaceNewClientNamePlaceholder(modulePath, *t.ChangelogResult.NewExports); err != nil {
+	if err = ReplaceNewClientNamePlaceholder(t.ModulePath, *t.ChangelogResult.NewExports); err != nil {
 		return nil, err
 	}
 
-	if !generateParam.SkipGenerateExample {
-		log.Printf("Generate examples...")
-	}
-
+	log.Printf("Create changelog file...")
 	if err = changelog.CreateNewChangelog(t.PackagePath, *t.SDKRepo, "0.1.0", generateParam.ReleaseDate); err != nil {
 		return nil, err
 	}
-
-	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
-	prl = utils.FirstBetaLabel
 
 	if _, err := t.TypeSpecCommonGenerator.AfterGenerate(generateParam); err != nil {
 		return nil, err
 	}
 
+	// issue: https://github.com/Azure/azure-sdk-for-go/issues/23877
+	prl = utils.FirstBetaLabel
 	return &GenerateResult{
-		Version:             version.String(),
+		Version:             t.Version.String(),
 		RPName:              generateParam.RPName,
 		PackageName:         generateParam.NamespaceName,
-		PackageAbsPath:      packagePath,
+		PackageAbsPath:      t.PackagePath,
 		Changelog:           *t.ChangelogResult.ChangelogData,
 		ChangelogMD:         t.ChangelogResult.ChangelogData.ToCompactMarkdown() + "\n" + t.ChangelogResult.ChangelogData.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
-		PackageRelativePath: packageRelativePath,
+		PackageRelativePath: t.PackageRelativePath,
 		ModuleRelativePath:  t.ModuleRelativePath,
 		GenerationType:      "TypeSpecOnBoard",
 	}, nil
 }
 
-func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
-	log.Printf("Package '%s' existed, do update process", t.PackagePath)
+func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
+	err := t.TypeSpecCommonGenerator.Generate(generateParam)
+	if err != nil {
+		return err
+	}
 
+	log.Printf("Determine if current version is preview...")
 	var override *bool
 	switch generateParam.SdkReleaseType {
 	case utils.SDKReleaseTypeBeta:
@@ -672,7 +652,6 @@ func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) erro
 		*override = false
 	}
 
-	var err error
 	t.IsCurrentPreview, err = version.IsCurrentPreviewVersion(t.PackagePath, *t.SDKRepo, override)
 	if err != nil {
 		return err
@@ -685,31 +664,26 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	var prl utils.PullRequestLabel
 	var err error
 	var newVersion *semver.Version
-	packagePath := t.PackagePath
-	modulePath := t.ModulePath
-	packageRelativePath := t.PackageRelativePath
-	moduleRelativePath := t.ModuleRelativePath
-	isCurrentPreview := t.IsCurrentPreview
 
 	log.Printf("Calculate new version...")
-	newVersion, prl, err = version.CalculateNewVersion(t.ChangelogResult.ChangelogData, t.ChangelogResult.PreviousVersion, isCurrentPreview)
+	newVersion, prl, err = version.CalculateNewVersion(t.ChangelogResult.ChangelogData, t.ChangelogResult.PreviousVersion, t.IsCurrentPreview)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Printf("Add changelog to file...")
-	changelogMd, err := changelog.AddChangelogToFileWithReplacement(t.ChangelogResult.ChangelogData, newVersion, modulePath, generateParam.ReleaseDate)
+	changelogMd, err := changelog.AddChangelogToFileWithReplacement(t.ChangelogResult.ChangelogData, newVersion, t.ModulePath, generateParam.ReleaseDate)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Printf("Update all version files...")
-	if err = version.UpdateAllVersionFiles(packagePath, newVersion, *t.SDKRepo); err != nil {
+	if err = version.UpdateAllVersionFiles(t.PackagePath, newVersion, *t.SDKRepo); err != nil {
 		return nil, err
 	}
 
 	log.Printf("Replace README.md NewClient name...")
-	if err = ReplaceReadmeNewClientName(modulePath, *t.ChangelogResult.NewExports); err != nil {
+	if err = ReplaceReadmeNewClientName(t.ModulePath, *t.ChangelogResult.NewExports); err != nil {
 		return nil, err
 	}
 
@@ -721,7 +695,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	generationType := "TypeSpecUpdate"
 
 	// remove autorest.md and build.go
-	autorestMdPath := filepath.Join(packagePath, "autorest.md")
+	autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 	if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
 		log.Println("Remove autorest.md...")
 		if err = os.Remove(autorestMdPath); err != nil {
@@ -729,7 +703,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 		}
 		generationType = "MigrateToTypeSpec"
 	}
-	buildGoPath := filepath.Join(packagePath, "build.go")
+	buildGoPath := filepath.Join(t.PackagePath, "build.go")
 	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
 		log.Println("Remove build.go...")
 		if err = os.Remove(buildGoPath); err != nil {
@@ -745,12 +719,12 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 		Version:             newVersion.String(),
 		RPName:              generateParam.RPName,
 		PackageName:         generateParam.NamespaceName,
-		PackageAbsPath:      packagePath,
+		PackageAbsPath:      t.PackagePath,
 		Changelog:           *t.ChangelogResult.ChangelogData,
 		ChangelogMD:         changelogMd + "\n" + t.ChangelogResult.ChangelogData.GetChangeSummary(),
 		PullRequestLabels:   string(prl),
-		PackageRelativePath: packageRelativePath,
-		ModuleRelativePath:  moduleRelativePath,
+		PackageRelativePath: t.PackageRelativePath,
+		ModuleRelativePath:  t.ModuleRelativePath,
 		GenerationType:      generationType,
 	}, nil
 }

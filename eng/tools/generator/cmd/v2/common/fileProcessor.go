@@ -27,31 +27,11 @@ const (
 )
 
 var (
-	v2BeginRegex                    = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
-	v2EndRegex                      = regexp.MustCompile("^\\s*```\\s*$")
-	newClientMethodNameRegex        = regexp.MustCompile("^New.*Client$")
-	versionLineRegex                = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
-	changelogPosWithPreviewRegex    = regexp.MustCompile(`##\s*(?P<version>.+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
-	changelogPosWithoutPreviewRegex = regexp.MustCompile(`##\s*(?P<version>\d+\.\d+\.\d+)\s*\((\d{4}-\d{2}-\d{2}|Unreleased)\)`)
-	packageConfigRegex              = regexp.MustCompile(`\$\((package-.+)\)`)
+	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
+	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
+	newClientMethodNameRegex = regexp.MustCompile("^New.*Client$")
+	packageConfigRegex       = regexp.MustCompile(`\$\((package-.+)\)`)
 )
-
-// paramsToString converts a parameter list to a comma-delimited string with names and types
-func paramsToString(params []exports.Param) string {
-	if len(params) == 0 {
-		return ""
-	}
-
-	var parts []string
-	for _, p := range params {
-		if p.Name != "" {
-			parts = append(parts, p.Name+" "+p.Type)
-		} else {
-			parts = append(parts, p.Type)
-		}
-	}
-	return strings.Join(parts, ", ")
-}
 
 // hasExpectedClientParams checks if params match the expected ARM client constructor signature
 func hasExpectedClientParams(params []exports.Param) bool {
@@ -260,7 +240,7 @@ func GetSpecRpName(packageRootPath string) (string, error) {
 			}
 		}
 	}
-	return "", fmt.Errorf("cannot get sepc rp name from config")
+	return "", fmt.Errorf("cannot get spec rp name from config")
 }
 
 // ReplaceNewClientNamePlaceholder replaces `{{NewClientName}}` placeholder in README.md by first func name according to `^New.+Method$` pattern
@@ -431,9 +411,9 @@ func UpdateReadmeClientFactory(path string) error {
 	}
 	noOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\((.*?)(?:,\s*)?cred,\s*nil\)`)
 	withOptionalFactoryReg := regexp.MustCompile(`NewClientFactory\((.*?)(?:,\s*)?cred,\s*&options\)`)
-	oldnoOptionalFactory := noOptionalFactoryReg.FindString(string(readmeFile))
-	oldwithOptionalFactory := withOptionalFactoryReg.FindString(string(readmeFile))
-	if oldnoOptionalFactory == "" && oldwithOptionalFactory == "" {
+	oldNoOptionalFactory := noOptionalFactoryReg.FindString(string(readmeFile))
+	oldWithOptionalFactory := withOptionalFactoryReg.FindString(string(readmeFile))
+	if oldNoOptionalFactory == "" && oldWithOptionalFactory == "" {
 		return nil
 	}
 	clientFactoryFile, err := os.ReadFile(filepath.Join(path, utils.ClientFactoryFileName))
@@ -469,10 +449,10 @@ func UpdateReadmeClientFactory(path string) error {
 	withOptionsParams := append(factoryParams, []string{"cred", "&options"}...)
 	newNoOptionalFactory := fmt.Sprintf("NewClientFactory(%s)", strings.Join(noOptionsParams, ", "))
 	newWithOptionalFactory := fmt.Sprintf("NewClientFactory(%s)", strings.Join(withOptionsParams, ", "))
-	if oldnoOptionalFactory == newNoOptionalFactory && oldwithOptionalFactory == newWithOptionalFactory {
+	if oldNoOptionalFactory == newNoOptionalFactory && oldWithOptionalFactory == newWithOptionalFactory {
 		return nil
 	}
-	content := strings.ReplaceAll(string(readmeFile), oldnoOptionalFactory, newNoOptionalFactory)
-	content = strings.ReplaceAll(content, oldwithOptionalFactory, newWithOptionalFactory)
+	content := strings.ReplaceAll(string(readmeFile), oldNoOptionalFactory, newNoOptionalFactory)
+	content = strings.ReplaceAll(content, oldWithOptionalFactory, newWithOptionalFactory)
 	return os.WriteFile(readmePath, []byte(content), 0644)
 }

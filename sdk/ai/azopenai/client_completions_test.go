@@ -10,12 +10,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetCompletions(t *testing.T) {
-	t.Skip("Disabled until we find a compatible model")
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("Disablng live testing until we find a compatible model")
+	}
 
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
@@ -57,7 +60,9 @@ func TestClient_GetCompletions(t *testing.T) {
 }
 
 func TestGetCompletionsStream(t *testing.T) {
-	t.Skip("Disabled until we find a compatible model")
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("Disablng live testing until we find a compatible model")
+	}
 
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 

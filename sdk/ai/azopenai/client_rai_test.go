@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
@@ -18,6 +19,10 @@ import (
 // classification of the failures into categories like Hate, Violence, etc...
 
 func TestClient_GetCompletions_AzureOpenAI_ContentFilter_Response(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("Disablng live testing until we find a compatible model")
+	}
+
 	// Scenario: Your API call asks for multiple responses (N>1) and at least 1 of the responses is filtered
 	// https://github.com/MicrosoftDocs/azure-docs/blob/main/articles/cognitive-services/openai/concepts/content-filter.md#scenario-your-api-call-asks-for-multiple-responses-n1-and-at-least-1-of-the-responses-is-filtered
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)

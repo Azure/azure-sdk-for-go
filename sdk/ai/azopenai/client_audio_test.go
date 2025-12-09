@@ -62,6 +62,21 @@ func TestClient_GetAudioTranslation(t *testing.T) {
 	require.NotEmpty(t, resp.Text)
 }
 
+// fakeFlacFile works around a problem with the Stainless client's use of .Name() on the
+// passed in file and how it causes our test recordings to not match if the filename or
+// path is randomized.
+type fakeFlacFile struct {
+	inner io.Reader
+}
+
+func (f *fakeFlacFile) Read(p []byte) (n int, err error) {
+	return f.inner.Read(p)
+}
+
+func (f *fakeFlacFile) Name() string {
+	return "audio.flac"
+}
+
 func TestClient_GetAudioSpeech(t *testing.T) {
 	var tempFile *os.File
 
@@ -115,7 +130,7 @@ func TestClient_GetAudioSpeech(t *testing.T) {
 	// now send _it_ back through the transcription API and see if we can get something useful.
 	transcriptResp, err := transcriptClient.Audio.Transcriptions.New(context.Background(), openai.AudioTranscriptionNewParams{
 		Model:          openai.AudioModel(azureOpenAI.Whisper.Model),
-		File:           tempFile,
+		File:           &fakeFlacFile{tempFile},
 		ResponseFormat: openai.AudioResponseFormatVerboseJSON,
 		Language:       openai.String("en"),
 		Temperature:    openai.Float(0.0),

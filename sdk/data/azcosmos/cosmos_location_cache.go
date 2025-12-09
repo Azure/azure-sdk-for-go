@@ -16,10 +16,10 @@ import (
 const defaultExpirationTime time.Duration = time.Minute * 5
 
 const (
-	none requestedOperations = iota
-	read
-	write
-	all
+	none  requestedOperations = 0
+	read                      = 0b01
+	write                     = 0b10
+	all                       = read | write
 )
 
 type requestedOperations int
@@ -300,15 +300,23 @@ func (lc *locationCache) getPrefAvailableEndpoints(endpointsByLoc map[regionId]u
 	if lc.enableCrossRegionRetries {
 		if lc.canUseMultipleWriteLocs() || availOps&read != 0 {
 			unavailEndpoints := make([]url.URL, 0)
-			unavailEndpoints = append(unavailEndpoints, fallbackEndpoint)
+			addedFallback := false
 			for _, loc := range lc.locationInfo.prefLocations {
-				if endpoint, ok := endpointsByLoc[loc]; ok && endpoint != fallbackEndpoint {
+				if endpoint, ok := endpointsByLoc[loc]; ok {
 					if lc.isEndpointUnavailable(endpoint, availOps) {
 						unavailEndpoints = append(unavailEndpoints, endpoint)
 					} else {
 						endpoints = append(endpoints, endpoint)
 					}
+					// Remember that we added the fallback endpoint, so we don't duplicate it at the end
+					if endpoint == fallbackEndpoint {
+						addedFallback = true
+					}
 				}
+			}
+			if !addedFallback {
+				// If we didn't put the fallback endpoint anywhere yet, add it now
+				endpoints = append(endpoints, fallbackEndpoint)
 			}
 			endpoints = append(endpoints, unavailEndpoints...)
 		} else {

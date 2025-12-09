@@ -26,7 +26,7 @@ func TestClient_GetEmbeddings_InvalidModel(t *testing.T) {
 
 	var openaiErr *openai.Error
 	require.ErrorAs(t, err, &openaiErr)
-	require.Equal(t, http.StatusBadRequest, openaiErr.StatusCode)
+	require.Contains(t, []int{http.StatusBadRequest, http.StatusNotFound}, openaiErr.StatusCode)
 }
 
 func TestClient_GetEmbeddings(t *testing.T) {

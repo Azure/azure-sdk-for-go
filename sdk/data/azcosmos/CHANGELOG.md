@@ -1,5 +1,11 @@
 # Release History
 
+## 1.4.2 (Unreleased)
+
+### Bugs Fixed
+
+* Fixed issue with read endpoint selection causing most-preferred region to be skipped when selecting read region. See [PR 25738](https://github.com/Azure/azure-sdk-for-go/pull/25738)
+
 ## 1.4.1 (2025-08-27)
 
 ### Bugs Fixed

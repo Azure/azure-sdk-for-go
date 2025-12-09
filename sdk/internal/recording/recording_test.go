@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -39,7 +36,7 @@ func TestRecording(t *testing.T) {
 
 func (s *recordingTests) SetupSuite() {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(proxyManualStartEnv, "false")
+	require.NoError(s.T(), os.Setenv(proxyManualStartEnv, "false"))
 	proxy, err := StartTestProxy("", nil)
 	s.proxy = proxy
 	require.NoError(s.T(), err)
@@ -107,8 +104,10 @@ func (s *recordingTests) TestRecordingOptions() {
 
 func (s *recordingTests) TestStartStop() {
 	require := require.New(s.T())
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	require.NoError(os.Setenv("AZURE_RECORD_MODE", "record"))
+	defer func() {
+		require.NoError(os.Unsetenv("AZURE_RECORD_MODE"))
+	}()
 
 	err := Start(s.T(), packagePath, nil)
 	require.NoError(err)
@@ -135,7 +134,7 @@ func (s *recordingTests) TestStartStop() {
 	// Make sure the file is there
 	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.NoError(err)
-	defer jsonFile.Close()
+	require.NoError(jsonFile.Close())
 }
 
 func (s *recordingTests) TestStartStopRecordingClient() {
@@ -186,15 +185,16 @@ func (s *recordingTests) TestStartStopRecordingClient() {
 
 func (s *recordingTests) TestStopRecordingNoStart() {
 	require := require.New(s.T())
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	require.NoError(os.Setenv("AZURE_RECORD_MODE", "record"))
+	defer func() {
+		require.NoError(os.Unsetenv("AZURE_RECORD_MODE"))
+	}()
 
 	err := Stop(s.T(), nil)
 	require.Error(err)
 
-	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
+	_, err = os.Open(fmt.Sprintf("./testdata/recordings/%s.json", s.T().Name()))
 	require.Error(err)
-	defer jsonFile.Close()
 }
 
 func (s *recordingTests) TestLiveModeOnly() {
@@ -234,8 +234,10 @@ func (s *recordingTests) TestBackwardSlashPath() {
 	s.T().Skip("Temporarily skipping due to changes in test-proxy.")
 
 	require := require.New(s.T())
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	require.NoError(os.Setenv("AZURE_RECORD_MODE", "record"))
+	defer func() {
+		require.NoError(os.Unsetenv("AZURE_RECORD_MODE"))
+	}()
 
 	packagePathBackslash := "sdk\\internal\\recording\\testdata"
 
@@ -304,7 +306,7 @@ func (s *recordingTests) TestRecordingAssetConfig() {
 		_ = os.Remove(c.testFileLocation)
 		o, err := os.Create(c.testFileLocation)
 		require.NoError(err)
-		o.Close()
+		require.NoError(o.Close())
 
 		absPath, relPath, err := getAssetsConfigLocation(c.searchDirectory)
 		// Clean up first in case of an assertion panic
@@ -322,12 +324,11 @@ func (s *recordingTests) TestRecordingAssetConfig() {
 
 func (s *recordingTests) TestFindProxyCertLocation() {
 	require := require.New(s.T())
-	savedValue, ok := os.LookupEnv("PROXY_CERT")
-	if ok {
-		defer os.Setenv("PROXY_CERT", savedValue)
-	}
+	if savedValue, ok := os.LookupEnv("PROXY_CERT"); ok {
+		defer func() {
+			require.NoError(os.Setenv("PROXY_CERT", savedValue))
+		}()
 
-	if ok {
 		location, err := findProxyCertLocation()
 		require.NoError(err)
 		require.Contains(location, "dotnet-devcert.crt")

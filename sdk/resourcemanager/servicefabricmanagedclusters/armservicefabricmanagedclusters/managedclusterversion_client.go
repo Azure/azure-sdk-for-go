@@ -26,7 +26,7 @@ type ManagedClusterVersionClient struct {
 // NewManagedClusterVersionClient creates a new instance of ManagedClusterVersionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedClusterVersionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedClusterVersionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewManagedClusterVersionClient(subscriptionID string, credential azcore.Tok
 // Gets information about an available Service Fabric managed cluster code version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - clusterVersion - The cluster code version.
 //   - options - ManagedClusterVersionClientGetOptions contains the optional parameters for the ManagedClusterVersionClient.Get
@@ -91,7 +91,7 @@ func (client *ManagedClusterVersionClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,7 +111,7 @@ func (client *ManagedClusterVersionClient) getHandleResponse(resp *http.Response
 // Gets information about an available Service Fabric cluster code version by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - environment - The operating system of the cluster.
 //   - clusterVersion - The cluster code version.
@@ -163,7 +163,7 @@ func (client *ManagedClusterVersionClient) getByEnvironmentCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *ManagedClusterVersionClient) getByEnvironmentHandleResponse(resp *
 // Gets all available code versions for Service Fabric cluster resources by location.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - options - ManagedClusterVersionClientListOptions contains the optional parameters for the ManagedClusterVersionClient.List
 //     method.
@@ -225,7 +225,7 @@ func (client *ManagedClusterVersionClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *ManagedClusterVersionClient) listHandleResponse(resp *http.Respons
 // Gets all available code versions for Service Fabric cluster resources by environment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - location - The location for the cluster code versions. This is different from cluster location.
 //   - environment - The operating system of the cluster.
 //   - options - ManagedClusterVersionClientListByEnvironmentOptions contains the optional parameters for the ManagedClusterVersionClient.ListByEnvironment
@@ -292,7 +292,7 @@ func (client *ManagedClusterVersionClient) listByEnvironmentCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

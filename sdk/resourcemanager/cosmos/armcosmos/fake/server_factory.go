@@ -46,6 +46,15 @@ type ServerFactory struct {
 	// DatabaseServer contains the fakes for client DatabaseClient
 	DatabaseServer DatabaseServer
 
+	// FleetServer contains the fakes for client FleetClient
+	FleetServer FleetServer
+
+	// FleetspaceAccountServer contains the fakes for client FleetspaceAccountClient
+	FleetspaceAccountServer FleetspaceAccountServer
+
+	// FleetspaceServer contains the fakes for client FleetspaceClient
+	FleetspaceServer FleetspaceServer
+
 	// GremlinResourcesServer contains the fakes for client GremlinResourcesClient
 	GremlinResourcesServer GremlinResourcesServer
 
@@ -152,6 +161,9 @@ type ServerFactoryTransport struct {
 	trDatabaseAccountRegionServer        *DatabaseAccountRegionServerTransport
 	trDatabaseAccountsServer             *DatabaseAccountsServerTransport
 	trDatabaseServer                     *DatabaseServerTransport
+	trFleetServer                        *FleetServerTransport
+	trFleetspaceAccountServer            *FleetspaceAccountServerTransport
+	trFleetspaceServer                   *FleetspaceServerTransport
 	trGremlinResourcesServer             *GremlinResourcesServerTransport
 	trLocationsServer                    *LocationsServerTransport
 	trMongoDBResourcesServer             *MongoDBResourcesServerTransport
@@ -240,6 +252,17 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DatabaseClient":
 		initServer(s, &s.trDatabaseServer, func() *DatabaseServerTransport { return NewDatabaseServerTransport(&s.srv.DatabaseServer) })
 		resp, err = s.trDatabaseServer.Do(req)
+	case "FleetClient":
+		initServer(s, &s.trFleetServer, func() *FleetServerTransport { return NewFleetServerTransport(&s.srv.FleetServer) })
+		resp, err = s.trFleetServer.Do(req)
+	case "FleetspaceAccountClient":
+		initServer(s, &s.trFleetspaceAccountServer, func() *FleetspaceAccountServerTransport {
+			return NewFleetspaceAccountServerTransport(&s.srv.FleetspaceAccountServer)
+		})
+		resp, err = s.trFleetspaceAccountServer.Do(req)
+	case "FleetspaceClient":
+		initServer(s, &s.trFleetspaceServer, func() *FleetspaceServerTransport { return NewFleetspaceServerTransport(&s.srv.FleetspaceServer) })
+		resp, err = s.trFleetspaceServer.Do(req)
 	case "GremlinResourcesClient":
 		initServer(s, &s.trGremlinResourcesServer, func() *GremlinResourcesServerTransport {
 			return NewGremlinResourcesServerTransport(&s.srv.GremlinResourcesServer)

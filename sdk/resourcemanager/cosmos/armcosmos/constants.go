@@ -5,11 +5,6 @@
 
 package armcosmos
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v3.3.0"
-)
-
 // APIType - Enum to indicate the API type of the restorable database account.
 type APIType string
 
@@ -342,6 +337,22 @@ func PossibleDefaultConsistencyLevelValues() []DefaultConsistencyLevel {
 	}
 }
 
+// DefaultPriorityLevel - Enum to indicate default priorityLevel of requests
+type DefaultPriorityLevel string
+
+const (
+	DefaultPriorityLevelHigh DefaultPriorityLevel = "High"
+	DefaultPriorityLevelLow  DefaultPriorityLevel = "Low"
+)
+
+// PossibleDefaultPriorityLevelValues returns the possible values for the DefaultPriorityLevel const type.
+func PossibleDefaultPriorityLevelValues() []DefaultPriorityLevel {
+	return []DefaultPriorityLevel{
+		DefaultPriorityLevelHigh,
+		DefaultPriorityLevelLow,
+	}
+}
+
 // DistanceFunction - The distance function to use for distance calculation in between vectors.
 type DistanceFunction string
 
@@ -357,6 +368,37 @@ func PossibleDistanceFunctionValues() []DistanceFunction {
 		DistanceFunctionCosine,
 		DistanceFunctionDotproduct,
 		DistanceFunctionEuclidean,
+	}
+}
+
+// FleetspacePropertiesFleetspaceAPIKind - The kind of API this fleetspace belongs to. Acceptable values: 'NoSQL'
+type FleetspacePropertiesFleetspaceAPIKind string
+
+const (
+	FleetspacePropertiesFleetspaceAPIKindNoSQL FleetspacePropertiesFleetspaceAPIKind = "NoSQL"
+)
+
+// PossibleFleetspacePropertiesFleetspaceAPIKindValues returns the possible values for the FleetspacePropertiesFleetspaceAPIKind const type.
+func PossibleFleetspacePropertiesFleetspaceAPIKindValues() []FleetspacePropertiesFleetspaceAPIKind {
+	return []FleetspacePropertiesFleetspaceAPIKind{
+		FleetspacePropertiesFleetspaceAPIKindNoSQL,
+	}
+}
+
+// FleetspacePropertiesServiceTier - Service Tier for the fleetspace. GeneralPurpose types refers to single write region accounts
+// that can be added to this fleetspace, whereas BusinessCritical refers to multi write region.
+type FleetspacePropertiesServiceTier string
+
+const (
+	FleetspacePropertiesServiceTierBusinessCritical FleetspacePropertiesServiceTier = "BusinessCritical"
+	FleetspacePropertiesServiceTierGeneralPurpose   FleetspacePropertiesServiceTier = "GeneralPurpose"
+)
+
+// PossibleFleetspacePropertiesServiceTierValues returns the possible values for the FleetspacePropertiesServiceTier const type.
+func PossibleFleetspacePropertiesServiceTierValues() []FleetspacePropertiesServiceTier {
+	return []FleetspacePropertiesServiceTier{
+		FleetspacePropertiesServiceTierBusinessCritical,
+		FleetspacePropertiesServiceTierGeneralPurpose,
 	}
 }
 
@@ -825,21 +867,31 @@ func PossibleSpatialTypeValues() []SpatialType {
 type Status string
 
 const (
+	StatusCanceled        Status = "Canceled"
+	StatusCreating        Status = "Creating"
 	StatusDeleting        Status = "Deleting"
+	StatusFailed          Status = "Failed"
 	StatusInitializing    Status = "Initializing"
 	StatusInternallyReady Status = "InternallyReady"
 	StatusOnline          Status = "Online"
+	StatusSucceeded       Status = "Succeeded"
 	StatusUninitialized   Status = "Uninitialized"
+	StatusUpdating        Status = "Updating"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
 func PossibleStatusValues() []Status {
 	return []Status{
+		StatusCanceled,
+		StatusCreating,
 		StatusDeleting,
+		StatusFailed,
 		StatusInitializing,
 		StatusInternallyReady,
 		StatusOnline,
+		StatusSucceeded,
 		StatusUninitialized,
+		StatusUpdating,
 	}
 }
 
@@ -941,6 +993,7 @@ func PossibleUnitTypeValues() []UnitType {
 type VectorDataType string
 
 const (
+	VectorDataTypeFloat16 VectorDataType = "float16"
 	VectorDataTypeFloat32 VectorDataType = "float32"
 	VectorDataTypeInt8    VectorDataType = "int8"
 	VectorDataTypeUint8   VectorDataType = "uint8"
@@ -949,6 +1002,7 @@ const (
 // PossibleVectorDataTypeValues returns the possible values for the VectorDataType const type.
 func PossibleVectorDataTypeValues() []VectorDataType {
 	return []VectorDataType{
+		VectorDataTypeFloat16,
 		VectorDataTypeFloat32,
 		VectorDataTypeInt8,
 		VectorDataTypeUint8,

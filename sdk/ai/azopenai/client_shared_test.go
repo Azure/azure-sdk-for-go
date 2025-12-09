@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -19,9 +20,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/azure"
-	"github.com/openai/openai-go/option"
+	"github.com/joho/godotenv"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
+	"github.com/openai/openai-go/v3/option"
 	"github.com/stretchr/testify/require"
 )
 
@@ -72,14 +74,8 @@ func getEnvVariable(varName string, playbackValue string) string {
 	return val
 }
 
-func getEndpoint(ev string, azure bool) string {
-	fakeEP := fakeAzureEndpoint
-
-	if !azure {
-		fakeEP = fakeOpenAIEndpoint
-	}
-
-	v := getEnvVariable(ev, fakeEP)
+func getEndpoint(ev string) string {
+	v := getEnvVariable(ev, fakeAzureEndpoint)
 
 	if !strings.HasSuffix(v, "/") {
 		// (this just makes recording replacement easier)
@@ -90,6 +86,22 @@ func getEndpoint(ev string, azure bool) string {
 }
 
 var azureOpenAI = func() testVars {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		// check if some of the variables are already in the environment - this'll happen with
+		// live testing.
+		if os.Getenv("COGNITIVE_SEARCH_API_ENDPOINT") == "" {
+			if err := godotenv.Load(); err != nil {
+				panic(fmt.Errorf("Failed to load .env file: %w", err))
+			} else {
+				log.Printf(".env file loaded")
+			}
+		} else {
+			log.Printf(".env file loading skipped - variables already in environment")
+		}
+	} else {
+		log.Printf(".env file loading skipped, since we're in playback mode")
+	}
+
 	servers := struct {
 		USEast         endpoint
 		USNorthCentral endpoint
@@ -98,22 +110,22 @@ var azureOpenAI = func() testVars {
 		OpenAI         endpoint
 	}{
 		USEast: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USEAST", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USEast2: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_USEAST2"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USEAST2_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		USNorthCentral: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_USNORTHCENTRAL"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_USNORTHCENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
 		SWECentral: endpoint{
-			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL", true),
+			URL:    getEndpoint("AOAI_ENDPOINT_SWECENTRAL"),
 			APIKey: getEnvVariable("AOAI_ENDPOINT_SWECENTRAL_API_KEY", fakeAPIKey),
 			Azure:  true,
 		},
@@ -205,9 +217,9 @@ var azureOpenAI = func() testVars {
 		}
 
 		for area, epm := range remaps {
-			os.Setenv("AOAI_"+area+"_ENDPOINT", epm.Endpoint.URL)
-			os.Setenv("AOAI_"+area+"_API_KEY", epm.Endpoint.APIKey)
-			os.Setenv("AOAI_"+area+"_MODEL", epm.Model)
+			_ = os.Setenv("AOAI_"+area+"_ENDPOINT", epm.Endpoint.URL)
+			_ = os.Setenv("AOAI_"+area+"_API_KEY", epm.Endpoint.APIKey)
+			_ = os.Setenv("AOAI_"+area+"_MODEL", epm.Model)
 		}
 	}
 
@@ -216,6 +228,12 @@ var azureOpenAI = func() testVars {
 
 type stainlessTestClientOptions struct {
 	UseAPIKey bool
+	// UseV1Endpoint controls which endpoint style we use for the created client.
+	//    - If true, we use the /openai/v1 style endpoint. See the [api-doc] for what parts of the OpenAI are implemented.
+	//    - If false, we use the older style Azure OpenAI endpoints, which contain a deployment in the URL
+	//
+	// [api-doc]: https://github.com/MicrosoftDocs/azure-ai-docs/blob/main/articles/ai-foundry/openai/latest.md
+	UseV1Endpoint bool
 }
 
 func getRecordingOptions(t *testing.T) *recording.RecordingOptions {
@@ -238,12 +256,19 @@ func getRecordingOptions(t *testing.T) *recording.RecordingOptions {
 	}
 }
 
-func newStainlessTestClient(t *testing.T, ep endpoint) openai.Client {
-	return newStainlessTestClientWithOptions(t, ep, nil)
+func newStainlessTestClientWithAzureURL(t *testing.T, ep endpoint) openai.Client {
+	return newStainlessTestClientWithOptions(t, ep, &stainlessTestClientOptions{
+		UseV1Endpoint: false,
+	})
+}
+
+func newStainlessTestClientWithV1URL(t *testing.T, ep endpoint) openai.Client {
+	return newStainlessTestClientWithOptions(t, ep, &stainlessTestClientOptions{
+		UseV1Endpoint: true,
+	})
 }
 
 const fakeAzureEndpoint = "https://Sanitized.openai.azure.com/"
-const fakeOpenAIEndpoint = "https://Sanitized.openai.com/v1"
 const fakeAPIKey = "redacted"
 const fakeCognitiveEndpoint = "https://Sanitized.openai.azure.com"
 const fakeCognitiveIndexName = "index"
@@ -320,6 +345,10 @@ func (d *recordingRoundTripper) RoundTrip(req *http.Request) (*http.Response, er
 }
 
 func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stainlessTestClientOptions) openai.Client {
+	if options == nil {
+		options = &stainlessTestClientOptions{}
+	}
+
 	var client *http.Client
 	if recording.GetRecordMode() == recording.LiveMode {
 		client = &http.Client{}
@@ -330,9 +359,15 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 		}
 	}
 
-	if options != nil && options.UseAPIKey {
+	endpointOption := azure.WithEndpoint(ep.URL, apiVersion)
+
+	if options.UseV1Endpoint {
+		endpointOption = option.WithBaseURL(ep.URL + "openai/v1")
+	}
+
+	if options.UseAPIKey {
 		return openai.NewClient(
-			azure.WithEndpoint(ep.URL, apiVersion),
+			endpointOption,
 			azure.WithAPIKey(ep.APIKey),
 			option.WithHTTPClient(client),
 		)
@@ -342,7 +377,7 @@ func newStainlessTestClientWithOptions(t *testing.T, ep endpoint, options *stain
 	require.NoError(t, err)
 
 	return openai.NewClient(
-		azure.WithEndpoint(ep.URL, apiVersion),
+		endpointOption,
 		azure.WithTokenCredential(tokenCredential),
 		option.WithHTTPClient(client),
 	)
@@ -369,6 +404,8 @@ func skipNowIfThrottled(t *testing.T, err error) {
 // customRequireNoError checks the error but allows throttling errors to account for resources that are
 // constrained.
 func customRequireNoError(t *testing.T, err error) {
+	t.Helper()
+
 	if err == nil {
 		return
 	}

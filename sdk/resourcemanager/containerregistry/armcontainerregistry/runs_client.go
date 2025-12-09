@@ -28,7 +28,7 @@ type RunsClient struct {
 // NewRunsClient creates a new instance of RunsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RunsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,8 +45,8 @@ func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, opt
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - runID - The run ID.
 //   - options - RunsClientCancelOptions contains the optional parameters for the RunsClient.Cancel method.
 func (client *RunsClient) Cancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientCancelOptions) (RunsClientCancelResponse, error) {
@@ -104,8 +104,8 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - runID - The run ID.
 //   - options - RunsClientGetOptions contains the optional parameters for the RunsClient.Get method.
 func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientGetOptions) (RunsClientGetResponse, error) {
@@ -173,8 +173,8 @@ func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsClientGetR
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - runID - The run ID.
 //   - options - RunsClientGetLogSasURLOptions contains the optional parameters for the RunsClient.GetLogSasURL method.
 func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsClientGetLogSasURLOptions) (RunsClientGetLogSasURLResponse, error) {
@@ -241,8 +241,8 @@ func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsC
 // NewListPager - Gets all the runs for a registry.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - options - RunsClientListOptions contains the optional parameters for the RunsClient.NewListPager method.
 func (client *RunsClient) NewListPager(resourceGroupName string, registryName string, options *RunsClientListOptions) *runtime.Pager[RunsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RunsClientListResponse]{
@@ -312,8 +312,8 @@ func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsClientLis
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - runID - The run ID.
 //   - runUpdateParameters - The run update properties.
 //   - options - RunsClientUpdateOptions contains the optional parameters for the RunsClient.Update method.

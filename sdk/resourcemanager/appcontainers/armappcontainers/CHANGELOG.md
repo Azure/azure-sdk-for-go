@@ -1,5 +1,103 @@
 # Release History
 
+## 4.0.0 (2025-10-23)
+### Breaking Changes
+
+- Function `*ConnectedEnvironmentsClient.Update` parameter(s) have been changed from `(context.Context, string, string, *ConnectedEnvironmentsClientUpdateOptions)` to `(context.Context, string, string, ConnectedEnvironmentPatchResource, *ConnectedEnvironmentsClientUpdateOptions)`
+- Operation `*ConnectedEnvironmentsCertificatesClient.CreateOrUpdate` has been changed to LRO, use `*ConnectedEnvironmentsCertificatesClient.BeginCreateOrUpdate` instead.
+- Operation `*ConnectedEnvironmentsCertificatesClient.Delete` has been changed to LRO, use `*ConnectedEnvironmentsCertificatesClient.BeginDelete` instead.
+- Operation `*ConnectedEnvironmentsCertificatesClient.Update` has been changed to LRO, use `*ConnectedEnvironmentsCertificatesClient.BeginUpdate` instead.
+- Operation `*ConnectedEnvironmentsDaprComponentsClient.CreateOrUpdate` has been changed to LRO, use `*ConnectedEnvironmentsDaprComponentsClient.BeginCreateOrUpdate` instead.
+- Operation `*ConnectedEnvironmentsDaprComponentsClient.Delete` has been changed to LRO, use `*ConnectedEnvironmentsDaprComponentsClient.BeginDelete` instead.
+- Operation `*ConnectedEnvironmentsStoragesClient.CreateOrUpdate` has been changed to LRO, use `*ConnectedEnvironmentsStoragesClient.BeginCreateOrUpdate` instead.
+- Operation `*ConnectedEnvironmentsStoragesClient.Delete` has been changed to LRO, use `*ConnectedEnvironmentsStoragesClient.BeginDelete` instead.
+
+### Features Added
+
+- New value `BindingTypeAuto` added to enum type `BindingType`
+- New value `CertificateProvisioningStateDeleting` added to enum type `CertificateProvisioningState`
+- New enum type `ConnectedEnvironmentStorageProvisioningState` with values `ConnectedEnvironmentStorageProvisioningStateCanceled`, `ConnectedEnvironmentStorageProvisioningStateDeleting`, `ConnectedEnvironmentStorageProvisioningStateFailed`, `ConnectedEnvironmentStorageProvisioningStateInProgress`, `ConnectedEnvironmentStorageProvisioningStateSucceeded`
+- New enum type `DaprComponentProvisioningState` with values `DaprComponentProvisioningStateCanceled`, `DaprComponentProvisioningStateDeleting`, `DaprComponentProvisioningStateFailed`, `DaprComponentProvisioningStateInProgress`, `DaprComponentProvisioningStateSucceeded`
+- New enum type `HTTPRouteProvisioningState` with values `HTTPRouteProvisioningStateCanceled`, `HTTPRouteProvisioningStateDeleting`, `HTTPRouteProvisioningStateFailed`, `HTTPRouteProvisioningStatePending`, `HTTPRouteProvisioningStateSucceeded`, `HTTPRouteProvisioningStateUpdating`, `HTTPRouteProvisioningStateWaiting`
+- New enum type `Kind` with values `KindFunctionapp`, `KindWorkflowapp`
+- New enum type `PrivateEndpointConnectionProvisioningState` with values `PrivateEndpointConnectionProvisioningStateCanceled`, `PrivateEndpointConnectionProvisioningStateDeleting`, `PrivateEndpointConnectionProvisioningStateFailed`, `PrivateEndpointConnectionProvisioningStatePending`, `PrivateEndpointConnectionProvisioningStateSucceeded`, `PrivateEndpointConnectionProvisioningStateUpdating`, `PrivateEndpointConnectionProvisioningStateWaiting`
+- New enum type `PrivateEndpointServiceConnectionStatus` with values `PrivateEndpointServiceConnectionStatusApproved`, `PrivateEndpointServiceConnectionStatusDisconnected`, `PrivateEndpointServiceConnectionStatusPending`, `PrivateEndpointServiceConnectionStatusRejected`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New enum type `WeekDay` with values `WeekDayFriday`, `WeekDayMonday`, `WeekDaySaturday`, `WeekDaySunday`, `WeekDayThursday`, `WeekDayTuesday`, `WeekDayWednesday`
+- New enum type `WorkflowHealthState` with values `WorkflowHealthStateHealthy`, `WorkflowHealthStateNotSpecified`, `WorkflowHealthStateUnhealthy`, `WorkflowHealthStateUnknown`
+- New enum type `WorkflowKind` with values `WorkflowKindAgentic`, `WorkflowKindStateful`, `WorkflowKindStateless`
+- New enum type `WorkflowState` with values `WorkflowStateCompleted`, `WorkflowStateDeleted`, `WorkflowStateDisabled`, `WorkflowStateEnabled`, `WorkflowStateNotSpecified`, `WorkflowStateSuspended`
+- New function `*ClientFactory.NewHTTPRouteConfigClient() *HTTPRouteConfigClient`
+- New function `*ClientFactory.NewLogicAppsClient() *LogicAppsClient`
+- New function `*ClientFactory.NewMaintenanceConfigurationsClient() *MaintenanceConfigurationsClient`
+- New function `*ClientFactory.NewManagedEnvironmentPrivateEndpointConnectionsClient() *ManagedEnvironmentPrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewManagedEnvironmentPrivateLinkResourcesClient() *ManagedEnvironmentPrivateLinkResourcesClient`
+- New function `NewHTTPRouteConfigClient(string, azcore.TokenCredential, *arm.ClientOptions) (*HTTPRouteConfigClient, error)`
+- New function `*HTTPRouteConfigClient.CreateOrUpdate(context.Context, string, string, string, *HTTPRouteConfigClientCreateOrUpdateOptions) (HTTPRouteConfigClientCreateOrUpdateResponse, error)`
+- New function `*HTTPRouteConfigClient.BeginDelete(context.Context, string, string, string, *HTTPRouteConfigClientBeginDeleteOptions) (*runtime.Poller[HTTPRouteConfigClientDeleteResponse], error)`
+- New function `*HTTPRouteConfigClient.Get(context.Context, string, string, string, *HTTPRouteConfigClientGetOptions) (HTTPRouteConfigClientGetResponse, error)`
+- New function `*HTTPRouteConfigClient.NewListPager(string, string, *HTTPRouteConfigClientListOptions) *runtime.Pager[HTTPRouteConfigClientListResponse]`
+- New function `*HTTPRouteConfigClient.Update(context.Context, string, string, string, HTTPRouteConfig, *HTTPRouteConfigClientUpdateOptions) (HTTPRouteConfigClientUpdateResponse, error)`
+- New function `NewLogicAppsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*LogicAppsClient, error)`
+- New function `*LogicAppsClient.CreateOrUpdate(context.Context, string, string, string, *LogicAppsClientCreateOrUpdateOptions) (LogicAppsClientCreateOrUpdateResponse, error)`
+- New function `*LogicAppsClient.Delete(context.Context, string, string, string, *LogicAppsClientDeleteOptions) (LogicAppsClientDeleteResponse, error)`
+- New function `*LogicAppsClient.Get(context.Context, string, string, string, *LogicAppsClientGetOptions) (LogicAppsClientGetResponse, error)`
+- New function `*LogicAppsClient.GetWorkflow(context.Context, string, string, string, string, *LogicAppsClientGetWorkflowOptions) (LogicAppsClientGetWorkflowResponse, error)`
+- New function `*LogicAppsClient.ListWorkflowsConnections(context.Context, string, string, string, *LogicAppsClientListWorkflowsConnectionsOptions) (LogicAppsClientListWorkflowsConnectionsResponse, error)`
+- New function `*LogicAppsClient.NewListWorkflowsPager(string, string, string, *LogicAppsClientListWorkflowsOptions) *runtime.Pager[LogicAppsClientListWorkflowsResponse]`
+- New function `NewMaintenanceConfigurationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*MaintenanceConfigurationsClient, error)`
+- New function `*MaintenanceConfigurationsClient.CreateOrUpdate(context.Context, string, string, string, MaintenanceConfigurationResource, *MaintenanceConfigurationsClientCreateOrUpdateOptions) (MaintenanceConfigurationsClientCreateOrUpdateResponse, error)`
+- New function `*MaintenanceConfigurationsClient.Delete(context.Context, string, string, string, *MaintenanceConfigurationsClientDeleteOptions) (MaintenanceConfigurationsClientDeleteResponse, error)`
+- New function `*MaintenanceConfigurationsClient.Get(context.Context, string, string, string, *MaintenanceConfigurationsClientGetOptions) (MaintenanceConfigurationsClientGetResponse, error)`
+- New function `*MaintenanceConfigurationsClient.NewListPager(string, string, *MaintenanceConfigurationsClientListOptions) *runtime.Pager[MaintenanceConfigurationsClientListResponse]`
+- New function `NewManagedEnvironmentPrivateEndpointConnectionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedEnvironmentPrivateEndpointConnectionsClient, error)`
+- New function `*ManagedEnvironmentPrivateEndpointConnectionsClient.BeginCreateOrUpdate(context.Context, string, string, string, PrivateEndpointConnection, *ManagedEnvironmentPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedEnvironmentPrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*ManagedEnvironmentPrivateEndpointConnectionsClient.BeginDelete(context.Context, string, string, string, *ManagedEnvironmentPrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[ManagedEnvironmentPrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*ManagedEnvironmentPrivateEndpointConnectionsClient.Get(context.Context, string, string, string, *ManagedEnvironmentPrivateEndpointConnectionsClientGetOptions) (ManagedEnvironmentPrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*ManagedEnvironmentPrivateEndpointConnectionsClient.NewListPager(string, string, *ManagedEnvironmentPrivateEndpointConnectionsClientListOptions) *runtime.Pager[ManagedEnvironmentPrivateEndpointConnectionsClientListResponse]`
+- New function `NewManagedEnvironmentPrivateLinkResourcesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*ManagedEnvironmentPrivateLinkResourcesClient, error)`
+- New function `*ManagedEnvironmentPrivateLinkResourcesClient.NewListPager(string, string, *ManagedEnvironmentPrivateLinkResourcesClientListOptions) *runtime.Pager[ManagedEnvironmentPrivateLinkResourcesClientListResponse]`
+- New struct `ConnectedEnvironmentPatchResource`
+- New struct `DaprAppHealth`
+- New struct `ErrorEntity`
+- New struct `HTTPRoute`
+- New struct `HTTPRouteAction`
+- New struct `HTTPRouteConfig`
+- New struct `HTTPRouteConfigCollection`
+- New struct `HTTPRouteConfigProperties`
+- New struct `HTTPRouteMatch`
+- New struct `HTTPRouteProvisioningErrors`
+- New struct `HTTPRouteRule`
+- New struct `HTTPRouteTarget`
+- New struct `IngressConfiguration`
+- New struct `LogicApp`
+- New struct `MaintenanceConfigurationCollection`
+- New struct `MaintenanceConfigurationResource`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `ResourceTags`
+- New struct `ScheduledEntries`
+- New struct `ScheduledEntry`
+- New struct `SecretKeyVaultProperties`
+- New struct `WorkflowEnvelope`
+- New struct `WorkflowEnvelopeCollection`
+- New struct `WorkflowEnvelopeProperties`
+- New struct `WorkflowHealth`
+- New field `AccountKeyVaultProperties` in struct `AzureFileProperties`
+- New field `DeploymentErrors` in struct `CertificateProperties`
+- New field `DeploymentErrors`, `ProvisioningState` in struct `ConnectedEnvironmentStorageProperties`
+- New field `Kind` in struct `ContainerApp`
+- New field `AppHealth`, `MaxConcurrency` in struct `Dapr`
+- New field `DeploymentErrors`, `ProvisioningState` in struct `DaprComponentProperties`
+- New field `IngressConfiguration`, `PrivateEndpointConnections`, `PublicNetworkAccess` in struct `ManagedEnvironmentProperties`
+
+
 ## 4.0.0-beta.1 (2025-09-22)
 ### Breaking Changes
 

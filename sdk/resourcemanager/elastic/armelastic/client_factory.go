@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -144,6 +141,14 @@ func (c *ClientFactory) NewMonitorClient() *MonitorClient {
 // NewMonitoredResourcesClient creates a new instance of MonitoredResourcesClient.
 func (c *ClientFactory) NewMonitoredResourcesClient() *MonitoredResourcesClient {
 	return &MonitoredResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMonitoredSubscriptionsClient creates a new instance of MonitoredSubscriptionsClient.
+func (c *ClientFactory) NewMonitoredSubscriptionsClient() *MonitoredSubscriptionsClient {
+	return &MonitoredSubscriptionsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

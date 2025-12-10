@@ -27,7 +27,7 @@ type AccessPolicyAssignmentClient struct {
 // NewAccessPolicyAssignmentClient creates a new instance of AccessPolicyAssignmentClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessPolicyAssignmentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessPolicyAssignmentClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAccessPolicyAssignmentClient(subscriptionID string, credential azcore.To
 // BeginCreateUpdate - Creates/Updates a particular access policy assignment for a database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -73,7 +73,7 @@ func (client *AccessPolicyAssignmentClient) BeginCreateUpdate(ctx context.Contex
 // CreateUpdate - Creates/Updates a particular access policy assignment for a database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-08-01-preview
 func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, parameters AccessPolicyAssignment, options *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyAssignmentClient.BeginCreateUpdate"
@@ -123,7 +123,7 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -135,7 +135,7 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 // BeginDelete - Deletes a single access policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -164,7 +164,7 @@ func (client *AccessPolicyAssignmentClient) BeginDelete(ctx context.Context, res
 // Delete - Deletes a single access policy assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-08-01-preview
 func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, options *AccessPolicyAssignmentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyAssignmentClient.BeginDelete"
@@ -214,7 +214,7 @@ func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -223,7 +223,7 @@ func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Cont
 // Get - Gets information about access policy assignment for database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -281,7 +281,7 @@ func (client *AccessPolicyAssignmentClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -298,7 +298,7 @@ func (client *AccessPolicyAssignmentClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - Gets all access policy assignments..
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -352,7 +352,7 @@ func (client *AccessPolicyAssignmentClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

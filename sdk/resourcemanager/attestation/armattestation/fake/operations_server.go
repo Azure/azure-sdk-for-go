@@ -44,21 +44,40 @@ func (o *OperationsServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OperationsClient.List":
-		resp, err = o.dispatchList(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OperationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if operationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = operationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OperationsClient.List":
+				res.resp, res.err = o.dispatchList(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (o *OperationsServerTransport) dispatchList(req *http.Request) (*http.Response, error) {
@@ -78,4 +97,10 @@ func (o *OperationsServerTransport) dispatchList(req *http.Request) (*http.Respo
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to OperationsServerTransport
+var operationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

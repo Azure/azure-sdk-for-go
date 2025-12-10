@@ -5,8 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.2.0
+tag: package-2021-06-01
+module-version: 1.3.0
 ```

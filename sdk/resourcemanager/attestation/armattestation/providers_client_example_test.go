@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Get_AttestationProvider.json
 func ExampleProvidersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,15 @@ func ExampleProvidersClient_Get() {
 	// 	},
 	// 	Properties: &armattestation.StatusResult{
 	// 		AttestURI: to.Ptr("https://superservice.attestation.azure.net"),
+	// 		PublicNetworkAccess: to.Ptr(armattestation.PublicNetworkAccessTypeEnabled),
 	// 		Status: to.Ptr(armattestation.AttestationServiceStatusReady),
+	// 		TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeEnabled),
 	// 		TrustModel: to.Ptr("Isolated"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Create_AttestationProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Create_AttestationProvider.json
 func ExampleProvidersClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +64,18 @@ func ExampleProvidersClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewProvidersClient().Create(ctx, "MyResourceGroup", "myattestationprovider", armattestation.ServiceCreationParams{}, nil)
+	res, err := clientFactory.NewProvidersClient().Create(ctx, "MyResourceGroup", "myattestationprovider", armattestation.ServiceCreationParams{
+		Location: to.Ptr("East US"),
+		Properties: &armattestation.ServiceCreationSpecificParams{
+			PublicNetworkAccess:          to.Ptr(armattestation.PublicNetworkAccessTypeEnabled),
+			TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeEnabled),
+		},
+		Tags: map[string]*string{
+			"Property1": to.Ptr("Value1"),
+			"Property2": to.Ptr("Value2"),
+			"Property3": to.Ptr("Value3"),
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -80,14 +93,16 @@ func ExampleProvidersClient_Create() {
 	// 		"Property3": to.Ptr("Value3"),
 	// 	},
 	// 	Properties: &armattestation.StatusResult{
-	// 		AttestURI: to.Ptr("https://superservice.attestation.azure.net"),
+	// 		AttestURI: to.Ptr("https://myattestationprovider.eus.attest.azure.net"),
+	// 		PublicNetworkAccess: to.Ptr(armattestation.PublicNetworkAccessTypeEnabled),
 	// 		Status: to.Ptr(armattestation.AttestationServiceStatusReady),
-	// 		TrustModel: to.Ptr("Isolated"),
+	// 		TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeEnabled),
+	// 		TrustModel: to.Ptr("AAD"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Update_AttestationProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Update_AttestationProvider.json
 func ExampleProvidersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,6 +114,10 @@ func ExampleProvidersClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewProvidersClient().Update(ctx, "MyResourceGroup", "myattestationprovider", armattestation.ServicePatchParams{
+		Properties: &armattestation.ServicePatchSpecificParams{
+			PublicNetworkAccess:          to.Ptr(armattestation.PublicNetworkAccessTypeDisabled),
+			TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeDisabled),
+		},
 		Tags: map[string]*string{
 			"Property1": to.Ptr("Value1"),
 			"Property2": to.Ptr("Value2"),
@@ -123,13 +142,15 @@ func ExampleProvidersClient_Update() {
 	// 	},
 	// 	Properties: &armattestation.StatusResult{
 	// 		AttestURI: to.Ptr("https://superservice.attestation.azure.net"),
+	// 		PublicNetworkAccess: to.Ptr(armattestation.PublicNetworkAccessTypeDisabled),
 	// 		Status: to.Ptr(armattestation.AttestationServiceStatusReady),
+	// 		TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeDisabled),
 	// 		TrustModel: to.Ptr("Isolated"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Delete_AttestationProvider.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Delete_AttestationProvider.json
 func ExampleProvidersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +167,7 @@ func ExampleProvidersClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvidersList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Get_AttestationProvidersList.json
 func ExampleProvidersClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +208,7 @@ func ExampleProvidersClient_List() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_AttestationProvidersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Get_AttestationProvidersListByResourceGroup.json
 func ExampleProvidersClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +249,7 @@ func ExampleProvidersClient_ListByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_DefaultProviders.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Get_DefaultProviders.json
 func ExampleProvidersClient_ListDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +276,9 @@ func ExampleProvidersClient_ListDefault() {
 	// 			Location: to.Ptr("Central US"),
 	// 			Properties: &armattestation.StatusResult{
 	// 				AttestURI: to.Ptr("https://sharedcus.cus.attest.azure.net"),
+	// 				PublicNetworkAccess: to.Ptr(armattestation.PublicNetworkAccessTypeEnabled),
 	// 				Status: to.Ptr(armattestation.AttestationServiceStatusReady),
+	// 				TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeEnabled),
 	// 				TrustModel: to.Ptr("AAD"),
 	// 			},
 	// 		},
@@ -266,14 +289,16 @@ func ExampleProvidersClient_ListDefault() {
 	// 			Location: to.Ptr("UK South"),
 	// 			Properties: &armattestation.StatusResult{
 	// 				AttestURI: to.Ptr("https://shareduks.uks.attest.azure.net"),
+	// 				PublicNetworkAccess: to.Ptr(armattestation.PublicNetworkAccessTypeEnabled),
 	// 				Status: to.Ptr(armattestation.AttestationServiceStatusReady),
+	// 				TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeEnabled),
 	// 				TrustModel: to.Ptr("AAD"),
 	// 			},
 	// 	}},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/Get_DefaultProviderByLocation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/Get_DefaultProviderByLocation.json
 func ExampleProvidersClient_GetDefaultByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +323,9 @@ func ExampleProvidersClient_GetDefaultByLocation() {
 	// 	Location: to.Ptr("Central US"),
 	// 	Properties: &armattestation.StatusResult{
 	// 		AttestURI: to.Ptr("https://sharedcus.cus.attest.azure.net"),
+	// 		PublicNetworkAccess: to.Ptr(armattestation.PublicNetworkAccessTypeEnabled),
 	// 		Status: to.Ptr(armattestation.AttestationServiceStatusReady),
+	// 		TpmAttestationAuthentication: to.Ptr(armattestation.TpmAttestationAuthenticationTypeEnabled),
 	// 		TrustModel: to.Ptr("AAD"),
 	// 	},
 	// }

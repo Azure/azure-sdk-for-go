@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderListPrivateEndpointConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/AttestationProviderListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderGetPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/AttestationProviderGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderPutPrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/AttestationProviderPutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/attestation/resource-manager/Microsoft.Attestation/stable/2020-10-01/examples/AttestationProviderDeletePrivateEndpointConnection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/attestation/resource-manager/Microsoft.Attestation/Attestation/stable/2021-06-01/examples/AttestationProviderDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

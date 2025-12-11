@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/exported"
 )
 
 const credNameWorkloadIdentity = "WorkloadIdentityCredential"
@@ -23,11 +24,15 @@ const credNameWorkloadIdentity = "WorkloadIdentityCredential"
 //
 // [Azure Kubernetes Service documentation]: https://learn.microsoft.com/azure/aks/workload-identity-overview
 type WorkloadIdentityCredential struct {
-	assertion, file string
-	cred            *ClientAssertionCredential
-	expires         time.Time
-	mtx             *sync.RWMutex
+	assertion, file      string
+	getAssertionOverride func(ctx context.Context) (string, error)
+	cred                 *ClientAssertionCredential
+	expires              time.Time
+	mtx                  *sync.RWMutex
 }
+
+// WorkloadIdentityCustomTokenProxyOptions contains optional parameters for configuring WorkloadIdentity Custom Token Proxy.
+type WorkloadIdentityCustomTokenProxyOptions = exported.CustomTokenProxyOptions
 
 // WorkloadIdentityCredentialOptions contains optional parameters for WorkloadIdentityCredential.
 type WorkloadIdentityCredentialOptions struct {
@@ -52,8 +57,9 @@ type WorkloadIdentityCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
-	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables. When
-	// this value is true and proxy configuration isn't present or this value is false, the credential will request
+	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables or
+	// from the CustomTokenProxy field.
+	// When this value is true and proxy configuration isn't present or this value is false, the credential will request
 	// tokens directly from Entra ID.
 	//
 	// The proxy feature is designed for applications that deploy to many clusters and clusters that host many
@@ -61,12 +67,22 @@ type WorkloadIdentityCredentialOptions struct {
 	// to set this option: https://learn.microsoft.com/azure/aks/identity-bindings-concepts
 	EnableAzureProxy bool
 
+	// CustomTokenProxy specifies the options for the custom token proxy.
+	// It should not be set if EnableAzureProxy is true.
+	CustomTokenProxy *WorkloadIdentityCustomTokenProxyOptions
+
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
 
-	// TokenFilePath is the path of a file containing a Kubernetes service account token. Defaults to the value of the
-	// environment variable AZURE_FEDERATED_TOKEN_FILE.
+	// TokenFilePath is the path of a file containing a Kubernetes service account token.
+	// This field is mutually exclusive with GetFederatedToken.
+	// If neither is specified, the credential will attempt to read the token path from the AZURE_FEDERATED_TOKEN_FILE environment variable.
 	TokenFilePath string
+
+	// GetFederatedToken defines an optional func to get the Kubernetes service account token.
+	// This field is mutually exclusive with TokenFilePath.
+	// If neither is specified, the credential will attempt to read the token path from the AZURE_FEDERATED_TOKEN_FILE environment variable.
+	GetFederatedToken func(ctx context.Context) (string, error)
 }
 
 // NewWorkloadIdentityCredential constructs a WorkloadIdentityCredential. Service principal configuration is read
@@ -83,9 +99,12 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		}
 	}
 	file := options.TokenFilePath
-	if file == "" {
+	if file != "" && options.GetFederatedToken != nil {
+		return nil, errors.New("TokenFilePath and GetFederatedToken cannot be set at the same time")
+	}
+	if file == "" && options.GetFederatedToken == nil {
 		if file, ok = os.LookupEnv(azureFederatedTokenFile); !ok {
-			return nil, errors.New("no token file specified. Check pod configuration or set TokenFilePath in the options")
+			return nil, errors.New("no token source specified. Check pod configuration or set GetFederatedToken or TokenFilePath in the options")
 		}
 	}
 	tenantID := options.TenantID
@@ -94,8 +113,15 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 			return nil, errors.New("no tenant ID specified. Check pod configuration or set TenantID in the options")
 		}
 	}
+	if !options.EnableAzureProxy && options.CustomTokenProxy != nil {
+		return nil, errors.New("CustomTokenProxy should not be set if EnableAzureProxy is false")
+	}
 
-	w := WorkloadIdentityCredential{file: file, mtx: &sync.RWMutex{}}
+	w := WorkloadIdentityCredential{
+		file:                 file,
+		getAssertionOverride: options.GetFederatedToken,
+		mtx:                  &sync.RWMutex{},
+	}
 	caco := &ClientAssertionCredentialOptions{
 		AdditionallyAllowedTenants: options.AdditionallyAllowedTenants,
 		Cache:                      options.Cache,
@@ -104,9 +130,15 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 	}
 
 	if options.EnableAzureProxy {
-		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
+		customTokenProxyOptions := options.CustomTokenProxy
+		if customTokenProxyOptions == nil {
+			customTokenProxyOptions = &WorkloadIdentityCustomTokenProxyOptions{}
+		}
+		mutateClientOptions, err := customtokenproxy.GetClientOptionsConfigurer(customTokenProxyOptions)
+		if err != nil {
 			return nil, err
 		}
+		mutateClientOptions(&caco.ClientOptions)
 	}
 
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)
@@ -130,7 +162,11 @@ func (w *WorkloadIdentityCredential) GetToken(ctx context.Context, opts policy.T
 
 // getAssertion returns the specified file's content, which is expected to be a Kubernetes service account token.
 // Kubernetes is responsible for updating the file as service account tokens expire.
-func (w *WorkloadIdentityCredential) getAssertion(context.Context) (string, error) {
+func (w *WorkloadIdentityCredential) getAssertion(ctx context.Context) (string, error) {
+	if w.getAssertionOverride != nil {
+		return w.getAssertionOverride(ctx)
+	}
+
 	w.mtx.RLock()
 	if w.expires.Before(time.Now()) {
 		// ensure only one goroutine at a time updates the assertion

@@ -357,8 +357,8 @@ func TestDefaultAzureCredential_WorkloadIdentity(t *testing.T) {
 		t.Setenv(azureTokenCredentials, credNameWorkloadIdentity)
 		// these values should trigger validation errors if WorkloadIdentityCredential
 		// tries to configure identity binding mode...
-		t.Setenv(customtokenproxy.AzureKubernetesCAData, "not a valid cert")
-		t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "http://timeout.local&fail=yes#please")
+		t.Setenv(customtokenproxy.EnvAzureKubernetesCAData, "not a valid cert")
+		t.Setenv(customtokenproxy.EnvAzureKubernetesTokenProxy, "http://timeout.local&fail=yes#please")
 
 		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
 			ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},

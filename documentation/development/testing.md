@@ -203,6 +203,7 @@ func run(m *testing.M) int {
 ```
 
 ##### Then you can add the test file
+this is an example for testing an operation, developer could test their own operations here
 
 `operation_live_test.go`
 

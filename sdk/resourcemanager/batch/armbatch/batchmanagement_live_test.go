@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -21,19 +21,19 @@ import (
 type BatchManagementTestSuite struct {
 	suite.Suite
 
-	ctx                context.Context
-	cred               azcore.TokenCredential
-	options            *arm.ClientOptions
-	accountName        string
-	applicationName    string
-	batchAccountId     string
-	poolName           string
-	storageAccountId   string
-	storageAccountName string
-	versionName        string
-	location           string
-	resourceGroupName  string
-	subscriptionId     string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	accountName		string
+	applicationName		string
+	batchAccountId		string
+	poolName		string
+	storageAccountId	string
+	storageAccountName	string
+	versionName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *BatchManagementTestSuite) SetupSuite() {
@@ -70,74 +70,74 @@ func (testsuite *BatchManagementTestSuite) Prepare() {
 	var err error
 	// From step Create_StorageAccount
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"outputs": map[string]any{
 			"storageAccountId": map[string]any{
-				"type":  "string",
-				"value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+				"type":		"string",
+				"value":	"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
 			},
 		},
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"storageAccountName": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.storageAccountName,
+				"type":		"string",
+				"defaultValue":	testsuite.storageAccountName,
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('storageAccountName')]",
-				"type":       "Microsoft.Storage/storageAccounts",
-				"apiVersion": "2022-05-01",
-				"kind":       "StorageV2",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('storageAccountName')]",
+				"type":		"Microsoft.Storage/storageAccounts",
+				"apiVersion":	"2022-05-01",
+				"kind":		"StorageV2",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"accessTier":                   "Hot",
-					"allowBlobPublicAccess":        true,
-					"allowCrossTenantReplication":  true,
-					"allowSharedKeyAccess":         true,
-					"defaultToOAuthAuthentication": false,
-					"dnsEndpointType":              "Standard",
+					"accessTier":			"Hot",
+					"allowBlobPublicAccess":	true,
+					"allowCrossTenantReplication":	true,
+					"allowSharedKeyAccess":		true,
+					"defaultToOAuthAuthentication":	false,
+					"dnsEndpointType":		"Standard",
 					"encryption": map[string]any{
-						"keySource":                       "Microsoft.Storage",
-						"requireInfrastructureEncryption": false,
+						"keySource":				"Microsoft.Storage",
+						"requireInfrastructureEncryption":	false,
 						"services": map[string]any{
 							"blob": map[string]any{
-								"enabled": true,
-								"keyType": "Account",
+								"enabled":	true,
+								"keyType":	"Account",
 							},
 							"file": map[string]any{
-								"enabled": true,
-								"keyType": "Account",
+								"enabled":	true,
+								"keyType":	"Account",
 							},
 						},
 					},
-					"minimumTlsVersion": "TLS1_2",
+					"minimumTlsVersion":	"TLS1_2",
 					"networkAcls": map[string]any{
-						"bypass":              "AzureServices",
-						"defaultAction":       "Allow",
-						"ipRules":             []any{},
-						"virtualNetworkRules": []any{},
+						"bypass":		"AzureServices",
+						"defaultAction":	"Allow",
+						"ipRules":		[]any{},
+						"virtualNetworkRules":	[]any{},
 					},
-					"publicNetworkAccess":      "Enabled",
-					"supportsHttpsTrafficOnly": true,
+					"publicNetworkAccess":		"Enabled",
+					"supportsHttpsTrafficOnly":	true,
 				},
 				"sku": map[string]any{
-					"name": "Standard_RAGRS",
-					"tier": "Standard",
+					"name":	"Standard_RAGRS",
+					"tier":	"Standard",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)
@@ -149,7 +149,7 @@ func (testsuite *BatchManagementTestSuite) Prepare() {
 	accountClient, err := armbatch.NewAccountClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	accountClientCreateResponsePoller, err := accountClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armbatch.AccountCreateParameters{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armbatch.AccountCreateProperties{
 			AutoStorage: &armbatch.AutoStorageBaseProperties{
 				StorageAccountID: to.Ptr(testsuite.storageAccountId),
@@ -169,8 +169,8 @@ func (testsuite *BatchManagementTestSuite) Prepare() {
 	_, err = applicationClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.applicationName, &armbatch.ApplicationClientCreateOptions{
 		Parameters: &armbatch.Application{
 			Properties: &armbatch.ApplicationProperties{
-				AllowUpdates: to.Ptr(false),
-				DisplayName:  to.Ptr("myAppName"),
+				AllowUpdates:	to.Ptr(false),
+				DisplayName:	to.Ptr("myAppName"),
 			},
 		},
 	})
@@ -186,15 +186,15 @@ func (testsuite *BatchManagementTestSuite) TestLocation() {
 	locationClient, err := armbatch.NewLocationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = locationClient.CheckNameAvailability(testsuite.ctx, locationName, armbatch.CheckNameAvailabilityParameters{
-		Name: to.Ptr("newaccountname"),
-		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
+		Name:	to.Ptr("newaccountname"),
+		Type:	to.Ptr("Microsoft.Batch/batchAccounts"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Location_ListSupportedCloudServiceSkus
 	fmt.Println("Call operation: Location_ListSupportedCloudServiceSkus")
 	locationClientNewListSupportedCloudServiceSKUsPager := locationClient.NewListSupportedCloudServiceSKUsPager(locationName, &armbatch.LocationClientListSupportedCloudServiceSKUsOptions{Maxresults: nil,
-		Filter: nil,
+		Filter:	nil,
 	})
 	for locationClientNewListSupportedCloudServiceSKUsPager.More() {
 		_, err := locationClientNewListSupportedCloudServiceSKUsPager.NextPage(testsuite.ctx)
@@ -210,7 +210,7 @@ func (testsuite *BatchManagementTestSuite) TestLocation() {
 	// From step Location_ListSupportedVirtualMachineSkus
 	fmt.Println("Call operation: Location_ListSupportedVirtualMachineSkus")
 	locationClientNewListSupportedVirtualMachineSKUsPager := locationClient.NewListSupportedVirtualMachineSKUsPager(locationName, &armbatch.LocationClientListSupportedVirtualMachineSKUsOptions{Maxresults: nil,
-		Filter: nil,
+		Filter:	nil,
 	})
 	for locationClientNewListSupportedVirtualMachineSKUsPager.More() {
 		_, err := locationClientNewListSupportedVirtualMachineSKUsPager.NextPage(testsuite.ctx)
@@ -316,18 +316,18 @@ func (testsuite *BatchManagementTestSuite) TestPool() {
 					TargetDedicatedNodes: to.Ptr[int32](3),
 				},
 			},
-			VMSize: to.Ptr("STANDARD_D4"),
+			VMSize:	to.Ptr("STANDARD_D4"),
 		},
 	}, &armbatch.PoolClientCreateOptions{IfMatch: nil,
-		IfNoneMatch: nil,
+		IfNoneMatch:	nil,
 	})
 	testsuite.Require().NoError(err)
 
 	// From step Pool_ListByBatchAccount
 	fmt.Println("Call operation: Pool_ListByBatchAccount")
 	poolClientNewListByBatchAccountPager := poolClient.NewListByBatchAccountPager(testsuite.resourceGroupName, testsuite.accountName, &armbatch.PoolClientListByBatchAccountOptions{Maxresults: nil,
-		Select: nil,
-		Filter: nil,
+		Select:	nil,
+		Filter:	nil,
 	})
 	for poolClientNewListByBatchAccountPager.More() {
 		_, err := poolClientNewListByBatchAccountPager.NextPage(testsuite.ctx)
@@ -346,10 +346,10 @@ func (testsuite *BatchManagementTestSuite) TestPool() {
 		Properties: &armbatch.PoolProperties{
 			ScaleSettings: &armbatch.ScaleSettings{
 				FixedScale: &armbatch.FixedScaleSettings{
-					NodeDeallocationOption: to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
-					ResizeTimeout:          to.Ptr("PT8M"),
-					TargetDedicatedNodes:   to.Ptr[int32](5),
-					TargetLowPriorityNodes: to.Ptr[int32](0),
+					NodeDeallocationOption:	to.Ptr(armbatch.ComputeNodeDeallocationOptionTaskCompletion),
+					ResizeTimeout:		to.Ptr("PT8M"),
+					TargetDedicatedNodes:	to.Ptr[int32](5),
+					TargetLowPriorityNodes:	to.Ptr[int32](0),
 				},
 			},
 		},
@@ -397,8 +397,8 @@ func (testsuite *BatchManagementTestSuite) TestApplication() {
 	fmt.Println("Call operation: Application_Update")
 	_, err = applicationClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.applicationName, armbatch.Application{
 		Properties: &armbatch.ApplicationProperties{
-			AllowUpdates: to.Ptr(true),
-			DisplayName:  to.Ptr("myAppName"),
+			AllowUpdates:	to.Ptr(true),
+			DisplayName:	to.Ptr("myAppName"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -456,78 +456,78 @@ func (testsuite *BatchManagementTestSuite) TestPrivateEndpointConnection() {
 	var err error
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]any{
 			"batchAccountId": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.batchAccountId,
+				"type":		"string",
+				"defaultValue":	testsuite.batchAccountId,
 			},
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"networkInterfaceName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epbatch-nic",
+				"type":		"string",
+				"defaultValue":	"epbatch-nic",
 			},
 			"privateEndpointName": map[string]any{
-				"type":         "string",
-				"defaultValue": "epbatch",
+				"type":		"string",
+				"defaultValue":	"epbatch",
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "batchvnet",
+				"type":		"string",
+				"defaultValue":	"batchvnet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []any{
 						map[string]any{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]any{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []any{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]any{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []any{},
+					"virtualNetworkPeerings":	[]any{},
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('networkInterfaceName')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('networkInterfaceName')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"dnsSettings": map[string]any{
 						"dnsServers": []any{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []any{
 						map[string]any{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]any{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]any{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -537,29 +537,29 @@ func (testsuite *BatchManagementTestSuite) TestPrivateEndpointConnection() {
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('privateEndpointName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"customDnsConfigs":                    []any{},
-					"manualPrivateLinkServiceConnections": []any{},
+					"customDnsConfigs":			[]any{},
+					"manualPrivateLinkServiceConnections":	[]any{},
 					"privateLinkServiceConnections": []any{
 						map[string]any{
-							"name": "[parameters('privateEndpointName')]",
+							"name":	"[parameters('privateEndpointName')]",
 							"properties": map[string]any{
 								"groupIds": []any{
 									"batchAccount",
 								},
 								"privateLinkServiceConnectionState": map[string]any{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('batchAccountId')]",
+								"privateLinkServiceId":	"[parameters('batchAccountId')]",
 							},
 						},
 					},
@@ -569,26 +569,26 @@ func (testsuite *BatchManagementTestSuite) TestPrivateEndpointConnection() {
 				},
 			},
 			map[string]any{
-				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
-				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('virtualNetworksName'), '/default')]",
+				"type":		"Microsoft.Network/virtualNetworks/subnets",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
-					"addressPrefix":                     "10.0.0.0/24",
-					"delegations":                       []any{},
-					"privateEndpointNetworkPolicies":    "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
+					"addressPrefix":			"10.0.0.0/24",
+					"delegations":				[]any{},
+					"privateEndpointNetworkPolicies":	"Disabled",
+					"privateLinkServiceNetworkPolicies":	"Enabled",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -612,8 +612,8 @@ func (testsuite *BatchManagementTestSuite) TestPrivateEndpointConnection() {
 	privateEndpointConnectionClientUpdateResponsePoller, err := privateEndpointConnectionClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, privateEndpointConnectionName, armbatch.PrivateEndpointConnection{
 		Properties: &armbatch.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armbatch.PrivateLinkServiceConnectionState{
-				Description: to.Ptr("Approved by xyz.abc@company.com"),
-				Status:      to.Ptr(armbatch.PrivateLinkServiceConnectionStatusRejected),
+				Description:	to.Ptr("Approved by xyz.abc@company.com"),
+				Status:		to.Ptr(armbatch.PrivateLinkServiceConnectionStatusRejected),
 			},
 		},
 	}, &armbatch.PrivateEndpointConnectionClientBeginUpdateOptions{IfMatch: nil})

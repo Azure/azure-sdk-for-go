@@ -12,6 +12,25 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestCacheDir(t *testing.T) {
+	t.Run("no XDG_CACHE_HOME", func(t *testing.T) {
+		home, err := os.UserHomeDir()
+		require.NoError(t, err)
+		expected := filepath.Join(home, ".cache")
+		t.Setenv("XDG_CACHE_HOME", "")
+		actual, err := cacheDir()
+		require.NoError(t, err)
+		require.Equal(t, expected, actual)
+	})
+	t.Run("XDG_CACHE_HOME", func(t *testing.T) {
+		expected := string(filepath.Separator) + "foo"
+		t.Setenv("XDG_CACHE_HOME", expected)
+		actual, err := cacheDir()
+		require.NoError(t, err)
+		require.Equal(t, expected, actual)
+	})
+}
+
 func TestKeyExistsButNotFile(t *testing.T) {
 	expected := []byte(t.Name())
 	a, err := storage(t.Name())

@@ -20,6 +20,20 @@ func PossibleAccessProfileTypeValues() []AccessProfileType {
 	}
 }
 
+// ArtifactType - Appliance ArtifactType definition.
+type ArtifactType string
+
+const (
+	ArtifactTypeLogsArtifactType ArtifactType = "LogsArtifactType"
+)
+
+// PossibleArtifactTypeValues returns the possible values for the ArtifactType const type.
+func PossibleArtifactTypeValues() []ArtifactType {
+	return []ArtifactType{
+		ArtifactTypeLogsArtifactType,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -89,6 +103,28 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return []ResourceIdentityType{
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
+	}
+}
+
+// SSHKeyType - Appliance SSHKeyType definition.
+type SSHKeyType string
+
+const (
+	SSHKeyTypeLogsKey           SSHKeyType = "LogsKey"
+	SSHKeyTypeManagementCAKey   SSHKeyType = "ManagementCAKey"
+	SSHKeyTypeSSHCustomerUser   SSHKeyType = "SSHCustomerUser"
+	SSHKeyTypeScopedAccessKey   SSHKeyType = "ScopedAccessKey"
+	SSHKeyTypeUserManagementKey SSHKeyType = "UserManagementKey"
+)
+
+// PossibleSSHKeyTypeValues returns the possible values for the SSHKeyType const type.
+func PossibleSSHKeyTypeValues() []SSHKeyType {
+	return []SSHKeyType{
+		SSHKeyTypeLogsKey,
+		SSHKeyTypeManagementCAKey,
+		SSHKeyTypeSSHCustomerUser,
+		SSHKeyTypeScopedAccessKey,
+		SSHKeyTypeUserManagementKey,
 	}
 }
 

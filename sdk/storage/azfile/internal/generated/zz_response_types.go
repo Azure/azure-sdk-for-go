@@ -442,6 +442,12 @@ type FileClientCreateHardLinkResponse struct {
 
 // FileClientCreateResponse contains the response from method FileClient.Create.
 type FileClientCreateResponse struct {
+	// ContentLength contains the information returned from the Content-Length header response.
+	ContentLength *int64
+
+	// ContentMD5 contains the information returned from the Content-MD5 header response.
+	ContentMD5 []byte
+
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
 
@@ -1112,6 +1118,24 @@ type ServiceClientGetPropertiesResponse struct {
 	Version *string
 }
 
+// ServiceClientGetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
+type ServiceClientGetUserDelegationKeyResponse struct {
+	// A user delegation key
+	UserDelegationKey
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // ServiceClientListSharesSegmentResponse contains the response from method ServiceClient.NewListSharesSegmentPager.
 type ServiceClientListSharesSegmentResponse struct {
 	// An enumeration of shares.
@@ -1348,6 +1372,9 @@ type ShareClientGetPropertiesResponse struct {
 
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
+
+	// EnableSmbDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	EnableSmbDirectoryLease *bool
 
 	// EnableSnapshotVirtualDirectoryAccess contains the information returned from the x-ms-enable-snapshot-virtual-directory-access
 	// header response.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_CheckNameAvailability.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_CheckNameAvailability.json
 func ExampleCodeSigningAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,6 +24,7 @@ func ExampleCodeSigningAccountsClient_CheckNameAvailability() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewCodeSigningAccountsClient().CheckNameAvailability(ctx, armtrustedsigning.CheckNameAvailability{
+		Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts"),
 		Name: to.Ptr("sample-account"),
 	}, nil)
 	if err != nil {
@@ -39,7 +40,7 @@ func ExampleCodeSigningAccountsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_Create.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_Create.json
 func ExampleCodeSigningAccountsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +85,7 @@ func ExampleCodeSigningAccountsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_Delete.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_Delete.json
 func ExampleCodeSigningAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +106,7 @@ func ExampleCodeSigningAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_Get.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_Get.json
 func ExampleCodeSigningAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +143,7 @@ func ExampleCodeSigningAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_ListByResourceGroup.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_ListByResourceGroup.json
 func ExampleCodeSigningAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +189,7 @@ func ExampleCodeSigningAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_ListBySubscription.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_ListBySubscription.json
 func ExampleCodeSigningAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,7 +235,7 @@ func ExampleCodeSigningAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-02-05-preview/CodeSigningAccounts_Update.json
+// Generated from example definition: 2025-10-13/CodeSigningAccounts_Update.json
 func ExampleCodeSigningAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -24,15 +24,11 @@ import (
 type LogicAppsServer struct {
 	// CreateOrUpdate is the fake for method LogicAppsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, resource armappcontainers.LogicApp, options *armappcontainers.LogicAppsClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *armappcontainers.LogicAppsClientCreateOrUpdateOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method LogicAppsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *armappcontainers.LogicAppsClientDeleteOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// DeployWorkflowArtifacts is the fake for method LogicAppsClient.DeployWorkflowArtifacts
-	// HTTP status codes to indicate success: http.StatusOK
-	DeployWorkflowArtifacts func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, options *armappcontainers.LogicAppsClientDeployWorkflowArtifactsOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientDeployWorkflowArtifactsResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method LogicAppsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -41,10 +37,6 @@ type LogicAppsServer struct {
 	// GetWorkflow is the fake for method LogicAppsClient.GetWorkflow
 	// HTTP status codes to indicate success: http.StatusOK
 	GetWorkflow func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, workflowName string, options *armappcontainers.LogicAppsClientGetWorkflowOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientGetWorkflowResponse], errResp azfake.ErrorResponder)
-
-	// Invoke is the fake for method LogicAppsClient.Invoke
-	// HTTP status codes to indicate success: http.StatusOK
-	Invoke func(ctx context.Context, resourceGroupName string, containerAppName string, logicAppName string, xmsLogicAppsProxyPath string, xmsLogicAppsProxyMethod armappcontainers.LogicAppsProxyMethod, options *armappcontainers.LogicAppsClientInvokeOptions) (resp azfake.Responder[armappcontainers.LogicAppsClientInvokeResponse], errResp azfake.ErrorResponder)
 
 	// NewListWorkflowsPager is the fake for method LogicAppsClient.NewListWorkflowsPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -99,14 +91,10 @@ func (l *LogicAppsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = l.dispatchCreateOrUpdate(req)
 			case "LogicAppsClient.Delete":
 				res.resp, res.err = l.dispatchDelete(req)
-			case "LogicAppsClient.DeployWorkflowArtifacts":
-				res.resp, res.err = l.dispatchDeployWorkflowArtifacts(req)
 			case "LogicAppsClient.Get":
 				res.resp, res.err = l.dispatchGet(req)
 			case "LogicAppsClient.GetWorkflow":
 				res.resp, res.err = l.dispatchGetWorkflow(req)
-			case "LogicAppsClient.Invoke":
-				res.resp, res.err = l.dispatchInvoke(req)
 			case "LogicAppsClient.NewListWorkflowsPager":
 				res.resp, res.err = l.dispatchNewListWorkflowsPager(req)
 			case "LogicAppsClient.ListWorkflowsConnections":
@@ -156,7 +144,13 @@ func (l *LogicAppsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := l.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, containerAppNameParam, logicAppNameParam, body, nil)
+	var options *armappcontainers.LogicAppsClientCreateOrUpdateOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armappcontainers.LogicAppsClientCreateOrUpdateOptions{
+			Resource: &body,
+		}
+	}
+	respr, errRespr := l.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, containerAppNameParam, logicAppNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -200,53 +194,6 @@ func (l *LogicAppsServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	respContent := server.GetResponseContent(respr)
 	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LogicAppsServerTransport) dispatchDeployWorkflowArtifacts(req *http.Request) (*http.Response, error) {
-	if l.srv.DeployWorkflowArtifacts == nil {
-		return nil, &nonRetriableError{errors.New("fake for method DeployWorkflowArtifacts not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/logicApps/(?P<logicAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployWorkflowArtifacts`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armappcontainers.WorkflowArtifacts](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	logicAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logicAppName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armappcontainers.LogicAppsClientDeployWorkflowArtifactsOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armappcontainers.LogicAppsClientDeployWorkflowArtifactsOptions{
-			WorkflowArtifacts: &body,
-		}
-	}
-	respr, errRespr := l.srv.DeployWorkflowArtifacts(req.Context(), resourceGroupNameParam, containerAppNameParam, logicAppNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
@@ -327,43 +274,6 @@ func (l *LogicAppsServerTransport) dispatchGetWorkflow(req *http.Request) (*http
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowEnvelope, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (l *LogicAppsServerTransport) dispatchInvoke(req *http.Request) (*http.Response, error) {
-	if l.srv.Invoke == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Invoke not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/containerApps/(?P<containerAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/logicApps/(?P<logicAppName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoke`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	containerAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerAppName")])
-	if err != nil {
-		return nil, err
-	}
-	logicAppNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("logicAppName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.Invoke(req.Context(), resourceGroupNameParam, containerAppNameParam, logicAppNameParam, getHeaderValue(req.Header, "x-ms-logicApps-proxy-path"), armappcontainers.LogicAppsProxyMethod(getHeaderValue(req.Header, "x-ms-logicApps-proxy-method")), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Interface, req)
 	if err != nil {
 		return nil, err
 	}

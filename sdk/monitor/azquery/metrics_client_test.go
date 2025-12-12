@@ -50,9 +50,9 @@ func TestQueryResource_BasicQuerySuccess(t *testing.T) {
 			MetricNamespace: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 		})
 	require.NoError(t, err)
-	require.NotNil(t, res.Response.Timespan)
-	require.Equal(t, *res.Response.Value[0].ErrorCode, "Success")
-	require.Equal(t, *res.Response.Namespace, "Microsoft.AppConfiguration/configurationStores")
+	require.NotNil(t, res.Timespan)
+	require.Equal(t, *res.Value[0].ErrorCode, "Success")
+	require.Equal(t, *res.Namespace, "Microsoft.AppConfiguration/configurationStores")
 
 	testSerde(t, &res)
 	testSerde(t, res.Value[0])

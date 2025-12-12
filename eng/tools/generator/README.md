@@ -9,7 +9,7 @@ The generator tool provides several commands to support the Azure SDK for Go dev
 - **Environment**: Check and validate development environment prerequisites
 - **Generate**: Generate individual SDK packages from TypeSpec specifications
 - **Issue Management**: Parse GitHub release request issues into configuration
-- **Release Generation**: Generate new SDK releases from TypeSpec or Swagger specifications  
+- **Release Generation**: Generate new SDK releases from TypeSpec or Swagger specifications
 - **Automation**: Process batch SDK generation for CI/CD pipelines
 - **Refresh**: Regenerate all existing SDK packages
 - **Templates**: Scaffold the package for onboard services
@@ -18,20 +18,160 @@ The generator tool provides several commands to support the Azure SDK for Go dev
 
 This CLI tool provides the following commands:
 
-### The `environment` command
+### Inner Loop Development Commands
+
+The following commands support inner loop development workflows for working with SDK packages:
+
+#### The `build` command
+
+The `build` command compiles and validates Go packages in a specified folder using `go build` and `go vet`.
+
+**Usage:**
+
+```bash
+generator build <folder-path>
+```
+
+**Arguments:**
+
+- `folder-path`: Path to the folder containing Go packages to build and vet
+
+**Flags:**
+
+- `--verbose`: Enable verbose output showing build details
+- `-o, --output`: Output format, either "text" or "json" (default: "text")
+
+**What it does:**
+
+1. Runs `go build` to compile the Go packages
+2. Runs `go vet` to check for common Go programming errors
+3. Reports any issues found during build or vet process
+
+**Examples:**
+
+```bash
+# Build and vet packages in a specific folder
+generator build /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+
+# Build with verbose output
+generator build /path/to/package --verbose
+
+# Build with JSON output
+generator build /path/to/package --output json
+```
+
+#### The `changelog` command
+
+The `changelog` command generates and updates changelog content for SDK packages based on code changes.
+
+**Usage:**
+
+```bash
+generator changelog <package-path>
+```
+
+**Arguments:**
+
+- `package-path`: Absolute path to a Go module (containing go.mod file)
+
+**Flags:**
+
+- `--verbose`: Enable verbose output
+- `-o, --output`: Output format, either "text" or "json" (default: "text")
+
+**What it does:**
+
+1. Determines the package status (new package vs. existing package)
+2. For new packages: generates changelog according to the template
+3. For existing packages: compares current package exports with previous released version and calculates the changelog
+4. Updates the CHANGELOG.md file, replacing existing version entry if it exists
+
+**Examples:**
+
+```bash
+# Update changelog for an existing package
+generator changelog /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+
+# Update changelog with verbose output
+generator changelog /path/to/package --verbose
+
+# Generate changelog with JSON output
+generator changelog /path/to/package --output json
+```
+
+#### The `version` command
+
+The `version` command calculates and updates version numbers across all version-related files in an SDK package.
+
+**Usage:**
+
+```bash
+generator version <package-path>
+```
+
+**Arguments:**
+
+- `package-path`: Absolute path to a Go module (containing go.mod and version.go files)
+
+**Flags:**
+
+- `--sdkversion`: Specific SDK version to set (e.g., "1.2.0" or "1.2.0-beta.1")
+- `--sdkreleasetype`: SDK release type ("beta" or "stable"), only used when --sdkversion is not specified
+- `--verbose`: Enable verbose output
+- `-o, --output`: Output format, either "text" or "json" (default: "text")
+
+**What it does:**
+
+1. If `--sdkversion` is specified: updates all version files with the provided version
+2. If `--sdkversion` is not specified: calculates new version based on package changes and release type, then updates all version files
+3. Updates version in autorest.md (if exists), version.go, go.mod, README.md, and import paths
+
+**Examples:**
+
+```bash
+# Update version files with a specific version
+generator version /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute --sdkversion 1.2.0
+
+# Calculate and update version based on changes
+generator version /path/to/package
+
+# Calculate and update version as stable release
+generator version /path/to/package --sdkreleasetype stable
+
+# Calculate and update version as beta release
+generator version /path/to/package --sdkreleasetype beta
+
+# Calculate and update version with JSON output
+generator version /path/to/package --output json
+```
+
+**Sample Output:**
+
+```
+✓ Version updated successfully!
+
+Package: /path/to/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
+Previous Version: 1.1.0
+New Version: 1.2.0
+```
+
+#### The `environment` command
 
 The `environment` command checks and validates environment prerequisites for Azure Go SDK generation. It verifies the installation and versions of required tools and can automatically install missing TypeSpec tools.
 
 **Usage:**
+
 ```bash
 generator environment [flags]
 ```
 
 **Flags:**
+
 - `--auto-install`: Automatically install missing TypeSpec tools (default: true)
 - `-o, --output`: Output format, either "text" or "json" (default: "text")
 
 **What it checks:**
+
 - **Go**: Minimum version 1.23
 - **Node.js**: Minimum version 20.0.0
 - **TypeSpec compiler**: `@typespec/compiler` package
@@ -39,6 +179,7 @@ generator environment [flags]
 - **GitHub CLI**: Installation and authentication status
 
 **Examples:**
+
 ```bash
 # Check environment with auto-install (default)
 generator environment
@@ -53,34 +194,27 @@ generator environment --output json
 generator environment --help
 ```
 
-**Sample Output:**
-```
-All environment checks are satisfied! ✓
+### SDK Generation Commands
 
-✓ Go: Go version 1.24 is installed ✓
-✓ Node.js: Node.js version 22.17.1 is installed ✓
-✓ TypeSpec Compiler: TypeSpec compiler is installed ✓
-✓ TypeSpec Client Generator CLI: TypeSpec client generator CLI is installed ✓
-✓ GitHub CLI: GitHub CLI 2.40.1 is installed ✓
-✓ GitHub CLI Authentication: GitHub CLI is authenticated ✓
+The following commands support SDK generation from TypeSpec and Swagger specifications:
 
-✓ Automatically installed: TypeSpec compiler, TypeSpec client generator CLI
-```
-
-### The `generate` command
+#### The `generate` command
 
 The `generate` command generates Azure Go SDK packages from TypeSpec specifications. It can work with either a direct path to a TypeSpec configuration file or a GitHub PR link.
 
 **Usage:**
+
 ```bash
 generator generate <sdk-repo-path> <spec-repo-path> [flags]
 ```
 
 **Arguments:**
+
 - `sdk-repo-path`: Path to the local Azure SDK for Go repository
 - `spec-repo-path`: Path to the local Azure REST API Specs repository
 
 **Flags:**
+
 - `--tsp-config`: Direct path to tspconfig.yaml file (relative to spec repo root)
 - `--github-pr`: GitHub PR link to extract TypeSpec configuration from
 - `--debug`: Enable debug output
@@ -89,6 +223,7 @@ generator generate <sdk-repo-path> <spec-repo-path> [flags]
 **Note:** You must provide exactly one of `--tsp-config` or `--github-pr`.
 
 **Examples:**
+
 ```bash
 # Generate from direct TypeSpec config path
 generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
@@ -105,39 +240,26 @@ generator generate /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
 ```
 
 **What it does:**
+
 1. Validates the provided repository paths
 2. Resolves the TypeSpec configuration (checking out PR branch if needed using GitHub CLI)
 3. Generates the Go SDK using the TypeSpec-Go emitter
 4. Reports generation results including package info, version, and breaking changes
 
-**Sample Output:**
-```
-✓ SDK generation completed successfully!
-
-Package Name: armcognitiveservices
-Package Path: /path/to/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices
-Spec Folder: /path/to/azure-rest-api-specs/specification/cognitiveservices/OpenAI.Inference
-Version: 1.0.0
-Generation Type: mgmt
-✓ Has Breaking Changes: No
-
-Changelog:
-### Features Added
-- New client `armcognitiveservices.ClientFactory` which is a client factory used to create any client in this module
-```
-
-### The `issue` command
+#### The `issue` command
 
 The `issue` command fetches release request issues from `github.com/Azure/sdk-release-request/issues` and parses them into configuration that other commands consume. The configuration outputs to stdout.
 
 **Usage:**
+
 ```bash
 generator issue [flags]
 ```
 
 **Flags:**
+
 - `-t, --token`: Personal access token for GitHub authentication
-- `-u, --username`: GitHub username 
+- `-u, --username`: GitHub username
 - `-p, --password`: GitHub password
 - `--otp`: Two-factor authentication code
 - `--include-data-plane`: Include data plane RP requests
@@ -146,16 +268,19 @@ generator issue [flags]
 
 **Authentication:**
 You need to provide authentication to query GitHub issues. Either:
+
 1. Use a personal access token: `-t $YOUR_PERSONAL_ACCESS_TOKEN`
 2. Use username/password (and OTP if needed): `-u username -p password --otp code`
 
 **Example:**
+
 ```bash
 generator issue -t $YOUR_PERSONAL_ACCESS_TOKEN > sdk-release.json
 ```
 
 **Output Format:**
 The command outputs a JSON configuration:
+
 ```json
 {
   "track2Requests": {
@@ -172,20 +297,23 @@ The command outputs a JSON configuration:
 }
 ```
 
-### The `automation-v2` command
+#### The `automation-v2` command
 
 The `automation-v2` command processes batch SDK generation for automation pipelines. This command is designed to run in the root directory of azure-sdk-for-go and handles multiple SDK generations in a single execution.
 
 **Usage:**
+
 ```bash
 generator automation-v2 <generate input filepath> <generate output filepath>
 ```
 
 **Arguments:**
+
 - `generate input filepath`: Path to the generation input JSON file
 - `generate output filepath`: Path where generation output JSON will be written
 
 **What it does:**
+
 1. Reads the input configuration file containing specification details
 2. Processes multiple TypeSpec projects and README files
 3. Generates SDKs for all specified services
@@ -194,6 +322,7 @@ generator automation-v2 <generate input filepath> <generate output filepath>
 
 **Input Format:**
 The input file should contain:
+
 ```json
 {
   "specFolder": "/path/to/azure-rest-api-specs",
@@ -208,6 +337,7 @@ The input file should contain:
 
 **Output Format:**
 The command generates a JSON output file with generation results:
+
 ```json
 {
   "packages": [
@@ -224,6 +354,7 @@ The command generates a JSON output file with generation results:
 ```
 
 **Examples:**
+
 ```bash
 # Process automation input file
 generator automation-v2 ./input.json ./output.json
@@ -232,22 +363,25 @@ generator automation-v2 ./input.json ./output.json
 generator automation-v2 /tmp/generation-input.json /tmp/generation-output.json
 ```
 
-### The `release-v2` command
+#### The `release-v2` command
 
 The `release-v2` command generates individual SDK releases for specific resource providers. It creates new SDK packages or updates existing ones with new API versions.
 
 **Usage:**
+
 ```bash
 generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs directory> <rp-name/config-file> [namespaceName]
 ```
 
 **Arguments:**
+
 - `azure-sdk-for-go directory`: Path to azure-sdk-for-go repository or commit ID
-- `azure-rest-api-specs directory`: Path to azure-rest-api-specs repository or commit ID  
+- `azure-rest-api-specs directory`: Path to azure-rest-api-specs repository or commit ID
 - `rp-name/config-file`: Resource provider name or JSON config file from `issue` command
 - `namespaceName`: Namespace name (default: "arm" + rp-name)
 
 **Flags:**
+
 - `--package-title`: Package title for the release
 - `--sdk-repo`: SDK repository URL (default: https://github.com/Azure/azure-sdk-for-go)
 - `--spec-repo`: Spec repository URL (default: https://github.com/Azure/azure-rest-api-specs)
@@ -257,11 +391,13 @@ generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `--skip-generate-example`: Skip generating examples
 - `--package-config`: Additional package configuration
 - `-t, --token`: Personal access token for GitHub operations
+- `--force-stable-version`: Force generation of stable SDK versions even when input files contain preview API versions. The tag must not contain preview when using this flag
 - `--tsp-config`: Path to TypeSpec tspconfig.yaml
 - `--tsp-option`: TypeSpec-go emit options (format: option1=value1;option2=value2)
 - `--tsp-client-option`: tsp-client options (e.g., --save-inputs, --debug)
 
 **What it does:**
+
 1. Creates or updates SDK packages for specified resource providers
 2. Generates Go client code from TypeSpec or Swagger specifications
 3. Creates appropriate changelogs and documentation
@@ -269,6 +405,7 @@ generator release-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 5. Optionally creates release branches for the changes
 
 **Examples:**
+
 ```bash
 # Generate release for a specific RP
 generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs network
@@ -283,24 +420,31 @@ generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs con
 # Skip branch creation and examples
 generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs compute \
   --skip-create-branch --skip-generate-example
+
+# Force stable version generation even with preview input files
+generator release-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs network \
+  --force-stable-version
 ```
 
-### The `refresh-v2` command
+#### The `refresh-v2` command
 
 The `refresh-v2` command regenerates all existing SDK packages using the latest specifications. This is useful for bulk updates across multiple packages.
 
 **Usage:**
+
 ```bash
 generator refresh-v2 <azure-sdk-for-go directory> <azure-rest-api-specs directory> [flags]
 ```
 
 **Arguments:**
+
 - `azure-sdk-for-go directory`: Path to azure-sdk-for-go repository
 - `azure-rest-api-specs directory`: Path to azure-rest-api-specs repository
 
 **Flags:**
+
 - `--sdk-repo`: SDK repository URL
-- `--spec-repo`: Spec repository URL  
+- `--spec-repo`: Spec repository URL
 - `--release-date`: Release date for changelog
 - `--skip-create-branch`: Skip creating release branch
 - `--skip-generate-example`: Skip generating examples
@@ -308,6 +452,7 @@ generator refresh-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 - `--update-spec-version`: Whether to update commit ID (default: true)
 
 **What it does:**
+
 1. Discovers all existing SDK packages in the repository
 2. Regenerates each package using current specifications
 3. Updates version numbers and changelogs as needed
@@ -315,6 +460,7 @@ generator refresh-v2 <azure-sdk-for-go directory> <azure-rest-api-specs director
 5. Optionally creates release branches for all changes
 
 **Examples:**
+
 ```bash
 # Refresh all existing packages
 generator refresh-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs
@@ -332,19 +478,22 @@ generator refresh-v2 /path/to/azure-sdk-for-go /path/to/azure-rest-api-specs \
   --release-date 2024-01-15
 ```
 
-### The `template` command
+#### The `template` command
 
 The `template` command generates package templates and scaffolding for new SDK packages. It creates the necessary directory structure and boilerplate code to onboard new services to the Azure SDK for Go.
 
 **Usage:**
+
 ```bash
 generator template <service-name> [flags]
 ```
 
 **Arguments:**
+
 - `service-name`: Name of the service to create a template for
 
 **Flags:**
+
 - `--output-dir`: Output directory for the generated template (default: current directory)
 - `--package-name`: Custom package name (default: derived from service name)
 - `--namespace`: Namespace for the service (default: arm + service name)
@@ -352,6 +501,7 @@ generator template <service-name> [flags]
 - `--force`: Overwrite existing files if they exist
 
 **What it does:**
+
 1. Creates the standard Azure SDK for Go package directory structure
 2. Generates boilerplate Go files with proper package structure
 3. Creates example files and test scaffolding
@@ -359,6 +509,7 @@ generator template <service-name> [flags]
 5. Includes standard documentation templates
 
 **Examples:**
+
 ```bash
 # Generate a management plane template for a new service
 generator template myservice

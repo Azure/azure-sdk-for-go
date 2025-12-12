@@ -26,7 +26,7 @@ type GiVersionsClient struct {
 // NewGiVersionsClient creates a new instance of GiVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGiVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GiVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewGiVersionsClient(subscriptionID string, credential azcore.TokenCredentia
 // Get - Get a GiVersion
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - options - GiVersionsClientGetOptions contains the optional parameters for the GiVersionsClient.Get method.
@@ -88,7 +88,7 @@ func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *GiVersionsClient) getHandleResponse(resp *http.Response) (GiVersio
 
 // NewListByLocationPager - List GiVersion resources by SubscriptionLocationResource
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - GiVersionsClientListByLocationOptions contains the optional parameters for the GiVersionsClient.NewListByLocationPager
 //     method.
@@ -148,9 +148,12 @@ func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	if options != nil && options.Shape != nil {
 		reqQP.Set("shape", string(*options.Shape))
+	}
+	if options != nil && options.ShapeAttribute != nil {
+		reqQP.Set("shapeAttribute", *options.ShapeAttribute)
 	}
 	if options != nil && options.Zone != nil {
 		reqQP.Set("zone", *options.Zone)

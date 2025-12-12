@@ -1,4 +1,4 @@
 directory: specification/programmableconnectivity/ProgrammableConnectivity.Management
-commit: f2b8c86a5b4b2769012b778fb3e2c5280ae47bc1
+commit: 113b466bf76cd86da547beee5300d2ef5210cfb3
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

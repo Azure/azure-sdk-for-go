@@ -45,6 +45,27 @@ type AdditionalNetworkInterfaceConfiguration struct {
 	EnableAcceleratedNetworking *bool
 }
 
+// ApplicationFetchHealthRequest - Parameters for fetching the health of an application.
+type ApplicationFetchHealthRequest struct {
+	// Allows filtering of the deployed applications health state objects returned in the result of application health query based
+	// on their health state.
+	DeployedApplicationsHealthStateFilter *HealthFilter
+
+	// Allows filtering of the health events returned in the response based on health state.
+	EventsHealthStateFilter *HealthFilter
+
+	// Indicates whether the health statistics should be returned as part of the query result. False by default. The statistics
+	// show the number of children entities in health state Ok, Warning, and Error.
+	ExcludeHealthStatistics *bool
+
+	// Allows filtering of the services health state objects returned in the result of services health query based on their health
+	// state.
+	ServicesHealthStateFilter *HealthFilter
+
+	// Request timeout for the health query in seconds. The default value is 60 seconds.
+	Timeout *int64
+}
+
 // ApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children
 // entities.
 type ApplicationHealthPolicy struct {
@@ -225,8 +246,17 @@ type ApplicationTypeVersionsCleanupPolicy struct {
 
 // ApplicationUpdateParameters - Application update request.
 type ApplicationUpdateParameters struct {
+	// Application update parameters properties.
+	Properties *ApplicationUpdateParametersProperties
+
 	// Application update parameters
 	Tags map[string]*string
+}
+
+// ApplicationUpdateParametersProperties - Properties for application update request.
+type ApplicationUpdateParametersProperties struct {
+	// List of application parameters with overridden values from their default values specified in the application manifest.
+	Parameters map[string]*string
 }
 
 // ApplicationUpgradePolicy - Describes the policy for a monitored application upgrade.
@@ -1438,6 +1468,51 @@ type ResourceAzStatus struct {
 	ResourceType *string
 }
 
+// RestartDeployedCodePackageRequest - Parameters for restarting a deployed code package.
+type RestartDeployedCodePackageRequest struct {
+	// REQUIRED; The instance ID for currently running entry point. For a code package setup entry point (if specified) runs first
+	// and after it finishes main entry point is started. Each time entry point executable is run, its instance ID will change.
+	// If 0 is passed in as the code package instance ID, the API will restart the code package with whatever instance ID it is
+	// currently running. If an instance ID other than 0 is passed in, the API will restart the code package only if the current
+	// Instance ID matches the passed in instance ID. Note, passing in the exact instance ID (not 0) in the API is safer, because
+	// if ensures at most one restart of the code package.
+	CodePackageInstanceID *string
+
+	// REQUIRED; The name of the code package as specified in the service manifest.
+	CodePackageName *string
+
+	// REQUIRED; The name of the node where the code package needs to be restarted. Use '*' to restart on all nodes where the
+	// code package is running.
+	NodeName *string
+
+	// REQUIRED; The name of the service manifest as specified in the code package.
+	ServiceManifestName *string
+
+	// The activation id of a deployed service package. If ServicePackageActivationMode specified at the time of creating the
+	// service is 'SharedProcess' (or if it is not specified, in which case it defaults to 'SharedProcess'), then value of ServicePackageActivationId
+	// is always an empty string.
+	ServicePackageActivationID *string
+}
+
+// RestartReplicaRequest - Request to restart a replica.
+type RestartReplicaRequest struct {
+	// REQUIRED; The ID of the partition.
+	PartitionID *string
+
+	// REQUIRED; The IDs of the replicas to be restarted.
+	ReplicaIDs []*int64
+
+	// REQUIRED; The kind of restart to perform.
+	RestartKind *RestartKind
+
+	// If true, the restart operation will be forced. Use this option with care, as it may cause data loss.
+	ForceRestart *bool
+
+	// The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is
+	// willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+	Timeout *int64
+}
+
 // RollingUpgradeMonitoringPolicy - The policy used for monitoring the application upgrade
 type RollingUpgradeMonitoringPolicy struct {
 	// REQUIRED; The compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations.
@@ -1466,10 +1541,127 @@ type RollingUpgradeMonitoringPolicy struct {
 	UpgradeTimeout *string
 }
 
+// RuntimeApplicationHealthPolicy - Cluster level definition for a health policy used to evaluate the health of an application
+// or one of its children entities.
+type RuntimeApplicationHealthPolicy struct {
+	// REQUIRED; Indicates whether warnings are treated with the same severity as errors.
+	ConsiderWarningAsError *bool
+
+	// REQUIRED; The maximum allowed percentage of unhealthy deployed applications. Allowed values are Byte values from zero to
+	// 100.
+	// The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before the application
+	// is considered in error.
+	// This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the application
+	// is currently deployed on in the cluster.
+	// The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
+	MaxPercentUnhealthyDeployedApplications *int32
+
+	// The health policy used by default to evaluate the health of a service type.
+	DefaultServiceTypeHealthPolicy *RuntimeServiceTypeHealthPolicy
+
+	// The map with service type health policy per service type name. The map is empty by default.
+	ServiceTypeHealthPolicyMap map[string]*RuntimeServiceTypeHealthPolicy
+}
+
 // RuntimeResumeApplicationUpgradeParameters - Parameters for Resume Upgrade action. The upgrade domain name must be specified.
 type RuntimeResumeApplicationUpgradeParameters struct {
 	// The upgrade domain name. Expected to be the next upgrade domain if the application is upgrading.
 	UpgradeDomainName *string
+}
+
+// RuntimeRollingUpgradeUpdateMonitoringPolicy - Describes the parameters for updating a rolling upgrade of application or
+// cluster.
+type RuntimeRollingUpgradeUpdateMonitoringPolicy struct {
+	// REQUIRED; The mode used to monitor health during a rolling upgrade.
+	RollingUpgradeMode *RuntimeRollingUpgradeMode
+
+	// The compensating action to perform when a Monitored upgrade encounters monitoring policy or health policy violations. Invalid
+	// indicates the failure action is invalid. Rollback specifies that the upgrade will start rolling back automatically. Manual
+	// indicates that the upgrade will switch to UnmonitoredManual upgrade mode
+	FailureAction *RuntimeFailureAction
+
+	// If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the upgrade
+	// only changes configuration or data).
+	ForceRestart *bool
+
+	// The amount of time to retry health evaluation when the application or cluster is unhealthy before FailureAction is executed.
+	// It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number
+	// representing the total number of milliseconds.
+	HealthCheckRetryTimeoutInMilliseconds *string
+
+	// The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade
+	// domain. It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as
+	// a number representing the total number of milliseconds.
+	HealthCheckStableDurationInMilliseconds *string
+
+	// The amount of time to wait after completing an upgrade domain before applying health policies. It is first interpreted
+	// as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total
+	// number of milliseconds.
+	HealthCheckWaitDurationInMilliseconds *string
+
+	// Duration in seconds, to wait before a stateless instance is closed, to allow the active requests to drain gracefully. This
+	// would be effective when the instance is closing during the application/cluster upgrade, only for those instances which
+	// have a non-zero delay duration configured in the service description.
+	InstanceCloseDelayDurationInSeconds *int64
+
+	// The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there are unexpected
+	// issues. When this timeout expires, processing of the upgrade domain will proceed regardless of availability loss issues.
+	// The timeout is reset at the start of each upgrade domain. Valid values are between 0 and 42949672925 inclusive. (unsigned
+	// 32-bit integer).
+	ReplicaSetCheckTimeoutInMilliseconds *int64
+
+	// The amount of time each upgrade domain has to complete before FailureAction is executed. It is first interpreted as a string
+	// representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds.
+	UpgradeDomainTimeoutInMilliseconds *string
+
+	// The amount of time the overall upgrade has to complete before FailureAction is executed. It is first interpreted as a string
+	// representing an ISO 8601 duration. If that fails, then it is interpreted as a number representing the total number of milliseconds.
+	UpgradeTimeoutInMilliseconds *string
+}
+
+// RuntimeServiceTypeHealthPolicy - Cluster level definition that represents the health policy used to evaluate the health
+// of services belonging to a service type.
+type RuntimeServiceTypeHealthPolicy struct {
+	// REQUIRED; The maximum allowed percentage of unhealthy partitions per service.
+	// The percentage represents the maximum tolerated percentage of partitions that can be unhealthy before the service is considered
+	// in error.
+	// If the percentage is respected but there is at least one unhealthy partition, the health is evaluated as Warning.
+	// The percentage is calculated by dividing the number of unhealthy partitions over the total number of partitions in the
+	// service.
+	// The computation rounds up to tolerate one failure on small numbers of partitions.
+	MaxPercentUnhealthyPartitionsPerService *int32
+
+	// REQUIRED; The maximum allowed percentage of unhealthy replicas per partition.
+	// The percentage represents the maximum tolerated percentage of replicas that can be unhealthy before the partition is considered
+	// in error.
+	// If the percentage is respected but there is at least one unhealthy replica, the health is evaluated as Warning.
+	// The percentage is calculated by dividing the number of unhealthy replicas over the total number of replicas in the partition.
+	// The computation rounds up to tolerate one failure on small numbers of replicas.
+	MaxPercentUnhealthyReplicasPerPartition *int32
+
+	// REQUIRED; The maximum allowed percentage of unhealthy services.
+	// The percentage represents the maximum tolerated percentage of services that can be unhealthy before the application is
+	// considered in error.
+	// If the percentage is respected but there is at least one unhealthy service, the health is evaluated as Warning.
+	// This is calculated by dividing the number of unhealthy services of the specific service type over the total number of services
+	// of the specific service type.
+	// The computation rounds up to tolerate one failure on small numbers of services.
+	MaxPercentUnhealthyServices *int32
+}
+
+// RuntimeUpdateApplicationUpgradeParameters - Parameters for the Update Upgrade action.
+type RuntimeUpdateApplicationUpgradeParameters struct {
+	// REQUIRED; The name of the application, including the 'fabric:' URI scheme.
+	Name *string
+
+	// REQUIRED; The kind of the upgrade.
+	UpgradeKind *RuntimeUpgradeKind
+
+	// Defines a health policy used to evaluate the health of an application or one of its children entities.
+	ApplicationHealthPolicy *RuntimeApplicationHealthPolicy
+
+	// Describes the parameters for updating a rolling upgrade of application or cluster and a monitoring policy.
+	UpdateDescription *RuntimeRollingUpgradeUpdateMonitoringPolicy
 }
 
 // SKU - Service Fabric managed cluster Sku definition

@@ -26,7 +26,7 @@ type FleetUpdateStrategiesClient struct {
 // NewFleetUpdateStrategiesClient creates a new instance of FleetUpdateStrategiesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFleetUpdateStrategiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetUpdateStrategiesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewFleetUpdateStrategiesClient(subscriptionID string, credential azcore.Tok
 // BeginCreateOrUpdate - Create a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - updateStrategyName - The name of the UpdateStrategy resource.
@@ -70,7 +70,7 @@ func (client *FleetUpdateStrategiesClient) BeginCreateOrUpdate(ctx context.Conte
 // CreateOrUpdate - Create a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FleetUpdateStrategiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, resource FleetUpdateStrategy, options *FleetUpdateStrategiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetUpdateStrategiesClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -135,7 +135,7 @@ func (client *FleetUpdateStrategiesClient) createOrUpdateCreateRequest(ctx conte
 // BeginDelete - Delete a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - updateStrategyName - The name of the UpdateStrategy resource.
@@ -161,7 +161,7 @@ func (client *FleetUpdateStrategiesClient) BeginDelete(ctx context.Context, reso
 // Delete - Delete a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-01-preview
 func (client *FleetUpdateStrategiesClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, updateStrategyName string, options *FleetUpdateStrategiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetUpdateStrategiesClient.BeginDelete"
@@ -207,7 +207,7 @@ func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -218,7 +218,7 @@ func (client *FleetUpdateStrategiesClient) deleteCreateRequest(ctx context.Conte
 // Get - Get a FleetUpdateStrategy
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - updateStrategyName - The name of the UpdateStrategy resource.
@@ -270,7 +270,7 @@ func (client *FleetUpdateStrategiesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,7 +287,7 @@ func (client *FleetUpdateStrategiesClient) getHandleResponse(resp *http.Response
 
 // NewListByFleetPager - List FleetUpdateStrategy resources by Fleet
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - The name of the Fleet resource.
 //   - options - FleetUpdateStrategiesClientListByFleetOptions contains the optional parameters for the FleetUpdateStrategiesClient.NewListByFleetPager
@@ -335,7 +335,7 @@ func (client *FleetUpdateStrategiesClient) listByFleetCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

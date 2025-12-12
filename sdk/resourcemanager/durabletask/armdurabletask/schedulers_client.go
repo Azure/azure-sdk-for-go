@@ -26,7 +26,7 @@ type SchedulersClient struct {
 // NewSchedulersClient creates a new instance of SchedulersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSchedulersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SchedulersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewSchedulersClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create or update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *SchedulersClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create or update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, options *SchedulersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Delete a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - SchedulersClientBeginDeleteOptions contains the optional parameters for the SchedulersClient.BeginDelete method.
@@ -147,7 +147,7 @@ func (client *SchedulersClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginDelete"
@@ -189,7 +189,7 @@ func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -197,7 +197,7 @@ func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - SchedulersClientGetOptions contains the optional parameters for the SchedulersClient.Get method.
@@ -243,7 +243,7 @@ func (client *SchedulersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +260,7 @@ func (client *SchedulersClient) getHandleResponse(resp *http.Response) (Schedule
 
 // NewListByResourceGroupPager - List Schedulers by resource group
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SchedulersClientListByResourceGroupOptions contains the optional parameters for the SchedulersClient.NewListByResourceGroupPager
 //     method.
@@ -303,7 +303,7 @@ func (client *SchedulersClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +320,7 @@ func (client *SchedulersClient) listByResourceGroupHandleResponse(resp *http.Res
 
 // NewListBySubscriptionPager - List Schedulers by subscription
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - options - SchedulersClientListBySubscriptionOptions contains the optional parameters for the SchedulersClient.NewListBySubscriptionPager
 //     method.
 func (client *SchedulersClient) NewListBySubscriptionPager(options *SchedulersClientListBySubscriptionOptions) *runtime.Pager[SchedulersClientListBySubscriptionResponse] {
@@ -358,7 +358,7 @@ func (client *SchedulersClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,7 +376,7 @@ func (client *SchedulersClient) listBySubscriptionHandleResponse(resp *http.Resp
 // BeginUpdate - Update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - properties - The resource properties to be updated.
@@ -401,7 +401,7 @@ func (client *SchedulersClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-11-01
 func (client *SchedulersClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginUpdate"
@@ -443,7 +443,7 @@ func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

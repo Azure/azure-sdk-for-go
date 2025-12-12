@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -11,12 +8,12 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
-	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	inputParams := openai.ChatCompletionNewParams{
 		Model:     openai.ChatModel(azureOpenAI.ChatCompletionsOYD.Model),
@@ -50,7 +47,7 @@ func TestChatCompletions_extensions_bringYourOwnData(t *testing.T) {
 }
 
 func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
-	client := newStainlessTestClient(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
+	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.ChatCompletionsOYD.Endpoint)
 
 	inputParams := openai.ChatCompletionNewParams{
 		Model:     openai.ChatModel(azureOpenAI.ChatCompletionsOYD.Model),
@@ -69,7 +66,10 @@ func TestChatExtensionsStreaming_extensions_bringYourOwnData(t *testing.T) {
 			&azureOpenAI.Cognitive,
 		))
 
-	defer streamer.Close()
+	t.Cleanup(func() {
+		err := streamer.Close()
+		require.NoError(t, err)
+	})
 
 	text := ""
 

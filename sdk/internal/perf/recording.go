@@ -187,10 +187,13 @@ func (c *RecordingHTTPClient) start() error {
 		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}
 
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
 	recID := resp.Header.Get(idHeader)
 	if recID == "" {
 		b, err := io.ReadAll(resp.Body)
-		defer resp.Body.Close()
 		if err != nil {
 			return fmt.Errorf("there was an error reading the body: %s", err.Error())
 		}
@@ -215,16 +218,20 @@ func (c *RecordingHTTPClient) stop() error {
 
 	req.Header.Set("x-recording-id", c.recID)
 	resp, err := defaultHTTPClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
+	}
+
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
 	if resp.StatusCode != 200 {
 		b, err := io.ReadAll(resp.Body)
-		defer resp.Body.Close()
 		if err == nil {
 			return fmt.Errorf("proxy did not stop the recording properly: %s", string(b))
 		}
 		return fmt.Errorf("proxy did not stop the recording properly: %s", err.Error())
-	}
-	if err != nil {
-		return fmt.Errorf("there was an error communicating with the test proxy: %s", err.Error())
 	}
 	return nil
 }

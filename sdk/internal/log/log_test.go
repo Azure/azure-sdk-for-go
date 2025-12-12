@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -58,8 +60,10 @@ func TestLoggingEvent(t *testing.T) {
 }
 
 func TestEnvironment(t *testing.T) {
-	os.Setenv("AZURE_SDK_GO_LOGGING", "all")
-	defer os.Unsetenv("AZURE_SDK_GO_LOGGING")
+	require.NoError(t, os.Setenv("AZURE_SDK_GO_LOGGING", "all"))
+	defer func() {
+		require.NoError(t, os.Unsetenv("AZURE_SDK_GO_LOGGING"))
+	}()
 	initLogging()
 	if log.lst == nil {
 		t.Fatal("unexpected nil listener")

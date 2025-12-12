@@ -75,10 +75,26 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	scope, err := createScopeFromEndpoint(endpointUrl)
-	if err != nil {
-		return nil, err
+
+	var scope []string
+
+	if o != nil && o.Cloud.Services != nil {
+		if svcCfg, ok := o.Cloud.Services[ServiceName]; ok && svcCfg.Audience != "" {
+			audience := svcCfg.Audience
+			scope = []string{audience + "/.default"}
+			log.Write(azlog.EventRequest, fmt.Sprintf("Using custom scope for authentication: %s", scope[0]))
+		}
 	}
+
+	if scope == nil {
+		// Fallback to account-scope
+		scope, err = createScopeFromEndpoint(endpointUrl)
+		if err != nil {
+			return nil, err
+		}
+		log.Write(azlog.EventRequest, fmt.Sprintf("Using account scope from endpoint for authentication: %s", scope[0]))
+	}
+
 	preferredRegions := []string{}
 	enableCrossRegionRetries := true
 	if o != nil {

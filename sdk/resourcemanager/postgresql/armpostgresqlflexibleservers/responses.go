@@ -5,91 +5,136 @@
 
 package armpostgresqlflexibleservers
 
-// AdministratorsClientCreateResponse contains the response from method AdministratorsClient.BeginCreate.
-type AdministratorsClientCreateResponse struct {
-	// Represents an Microsoft Entra Administrator.
-	ActiveDirectoryAdministrator
+// AdministratorsMicrosoftEntraClientCreateOrUpdateResponse contains the response from method AdministratorsMicrosoftEntraClient.BeginCreateOrUpdate.
+type AdministratorsMicrosoftEntraClientCreateOrUpdateResponse struct {
+	// Server administrator associated to a Microsoft Entra principal.
+	AdministratorMicrosoftEntra
 }
 
-// AdministratorsClientDeleteResponse contains the response from method AdministratorsClient.BeginDelete.
-type AdministratorsClientDeleteResponse struct {
+// AdministratorsMicrosoftEntraClientDeleteResponse contains the response from method AdministratorsMicrosoftEntraClient.BeginDelete.
+type AdministratorsMicrosoftEntraClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AdministratorsClientGetResponse contains the response from method AdministratorsClient.Get.
-type AdministratorsClientGetResponse struct {
-	// Represents an Microsoft Entra Administrator.
-	ActiveDirectoryAdministrator
+// AdministratorsMicrosoftEntraClientGetResponse contains the response from method AdministratorsMicrosoftEntraClient.Get.
+type AdministratorsMicrosoftEntraClientGetResponse struct {
+	// Server administrator associated to a Microsoft Entra principal.
+	AdministratorMicrosoftEntra
 }
 
-// AdministratorsClientListByServerResponse contains the response from method AdministratorsClient.NewListByServerPager.
-type AdministratorsClientListByServerResponse struct {
-	// A list of Microsoft Entra Administrators.
-	AdministratorListResult
+// AdministratorsMicrosoftEntraClientListByServerResponse contains the response from method AdministratorsMicrosoftEntraClient.NewListByServerPager.
+type AdministratorsMicrosoftEntraClientListByServerResponse struct {
+	// List of server administrators associated to Microsoft Entra principals.
+	AdministratorMicrosoftEntraList
 }
 
-// BackupsClientCreateResponse contains the response from method BackupsClient.BeginCreate.
-type BackupsClientCreateResponse struct {
-	// Server backup properties
-	ServerBackup
+// AdvancedThreatProtectionSettingsClientGetResponse contains the response from method AdvancedThreatProtectionSettingsClient.Get.
+type AdvancedThreatProtectionSettingsClientGetResponse struct {
+	// Advanced threat protection settings of the server.
+	AdvancedThreatProtectionSettingsModel
 }
 
-// BackupsClientDeleteResponse contains the response from method BackupsClient.BeginDelete.
-type BackupsClientDeleteResponse struct {
+// AdvancedThreatProtectionSettingsClientListByServerResponse contains the response from method AdvancedThreatProtectionSettingsClient.NewListByServerPager.
+type AdvancedThreatProtectionSettingsClientListByServerResponse struct {
+	// List of advanced threat protection settings for a server.
+	AdvancedThreatProtectionSettingsList
+}
+
+// BackupsAutomaticAndOnDemandClientCreateResponse contains the response from method BackupsAutomaticAndOnDemandClient.BeginCreate.
+type BackupsAutomaticAndOnDemandClientCreateResponse struct {
+	// Properties of a backup.
+	BackupAutomaticAndOnDemand
+}
+
+// BackupsAutomaticAndOnDemandClientDeleteResponse contains the response from method BackupsAutomaticAndOnDemandClient.BeginDelete.
+type BackupsAutomaticAndOnDemandClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// BackupsClientGetResponse contains the response from method BackupsClient.Get.
-type BackupsClientGetResponse struct {
-	// Server backup properties
-	ServerBackup
+// BackupsAutomaticAndOnDemandClientGetResponse contains the response from method BackupsAutomaticAndOnDemandClient.Get.
+type BackupsAutomaticAndOnDemandClientGetResponse struct {
+	// Properties of a backup.
+	BackupAutomaticAndOnDemand
 }
 
-// BackupsClientListByServerResponse contains the response from method BackupsClient.NewListByServerPager.
-type BackupsClientListByServerResponse struct {
-	// A list of server backups.
-	ServerBackupListResult
+// BackupsAutomaticAndOnDemandClientListByServerResponse contains the response from method BackupsAutomaticAndOnDemandClient.NewListByServerPager.
+type BackupsAutomaticAndOnDemandClientListByServerResponse struct {
+	// List of backups.
+	BackupAutomaticAndOnDemandList
 }
 
-// CheckNameAvailabilityClientExecuteResponse contains the response from method CheckNameAvailabilityClient.Execute.
-type CheckNameAvailabilityClientExecuteResponse struct {
-	// Represents a resource name availability.
-	NameAvailability
+// BackupsLongTermRetentionClientCheckPrerequisitesResponse contains the response from method BackupsLongTermRetentionClient.CheckPrerequisites.
+type BackupsLongTermRetentionClientCheckPrerequisitesResponse struct {
+	// Response for the LTR pre-backup API call
+	LtrPreBackupResponse
+
+	// XMSRequestID contains the information returned from the x-ms-request-id header response.
+	XMSRequestID *string
 }
 
-// CheckNameAvailabilityWithLocationClientExecuteResponse contains the response from method CheckNameAvailabilityWithLocationClient.Execute.
-type CheckNameAvailabilityWithLocationClientExecuteResponse struct {
-	// Represents a resource name availability.
-	NameAvailability
+// BackupsLongTermRetentionClientGetResponse contains the response from method BackupsLongTermRetentionClient.Get.
+type BackupsLongTermRetentionClientGetResponse struct {
+	// Response for the LTR backup Operation API call
+	BackupsLongTermRetentionOperation
+}
+
+// BackupsLongTermRetentionClientListByServerResponse contains the response from method BackupsLongTermRetentionClient.NewListByServerPager.
+type BackupsLongTermRetentionClientListByServerResponse struct {
+	// A list of long term retention backup operations for server.
+	LtrServerBackupOperationList
+}
+
+// BackupsLongTermRetentionClientStartResponse contains the response from method BackupsLongTermRetentionClient.BeginStart.
+type BackupsLongTermRetentionClientStartResponse struct {
+	// Response for the LTR backup API call
+	BackupsLongTermRetentionResponse
+}
+
+// CapabilitiesByLocationClientListResponse contains the response from method CapabilitiesByLocationClient.NewListPager.
+type CapabilitiesByLocationClientListResponse struct {
+	// List of capabilities for the Azure Database for PostgreSQL flexible server.
+	CapabilityList
+}
+
+// CapabilitiesByServerClientListResponse contains the response from method CapabilitiesByServerClient.NewListPager.
+type CapabilitiesByServerClientListResponse struct {
+	// List of capabilities for the Azure Database for PostgreSQL flexible server.
+	CapabilityList
+}
+
+// CapturedLogsClientListByServerResponse contains the response from method CapturedLogsClient.NewListByServerPager.
+type CapturedLogsClientListByServerResponse struct {
+	// List of log files.
+	CapturedLogList
 }
 
 // ConfigurationsClientGetResponse contains the response from method ConfigurationsClient.Get.
 type ConfigurationsClientGetResponse struct {
-	// Represents a Configuration.
+	// Configuration (also known as server parameter).
 	Configuration
 }
 
 // ConfigurationsClientListByServerResponse contains the response from method ConfigurationsClient.NewListByServerPager.
 type ConfigurationsClientListByServerResponse struct {
-	// A list of server configurations.
-	ConfigurationListResult
+	// List of configurations (also known as server parameters).
+	ConfigurationList
 }
 
 // ConfigurationsClientPutResponse contains the response from method ConfigurationsClient.BeginPut.
 type ConfigurationsClientPutResponse struct {
-	// Represents a Configuration.
+	// Configuration (also known as server parameter).
 	Configuration
 }
 
 // ConfigurationsClientUpdateResponse contains the response from method ConfigurationsClient.BeginUpdate.
 type ConfigurationsClientUpdateResponse struct {
-	// Represents a Configuration.
+	// Configuration (also known as server parameter).
 	Configuration
 }
 
 // DatabasesClientCreateResponse contains the response from method DatabasesClient.BeginCreate.
 type DatabasesClientCreateResponse struct {
-	// Represents a Database.
+	// Represents a database.
 	Database
 }
 
@@ -100,19 +145,19 @@ type DatabasesClientDeleteResponse struct {
 
 // DatabasesClientGetResponse contains the response from method DatabasesClient.Get.
 type DatabasesClientGetResponse struct {
-	// Represents a Database.
+	// Represents a database.
 	Database
 }
 
 // DatabasesClientListByServerResponse contains the response from method DatabasesClient.NewListByServerPager.
 type DatabasesClientListByServerResponse struct {
-	// A List of databases.
-	DatabaseListResult
+	// List of all databases in a server.
+	DatabaseList
 }
 
 // FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.BeginCreateOrUpdate.
 type FirewallRulesClientCreateOrUpdateResponse struct {
-	// Represents a server firewall rule.
+	// Firewall rule.
 	FirewallRule
 }
 
@@ -123,111 +168,79 @@ type FirewallRulesClientDeleteResponse struct {
 
 // FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
 type FirewallRulesClientGetResponse struct {
-	// Represents a server firewall rule.
+	// Firewall rule.
 	FirewallRule
 }
 
 // FirewallRulesClientListByServerResponse contains the response from method FirewallRulesClient.NewListByServerPager.
 type FirewallRulesClientListByServerResponse struct {
-	// A list of firewall rules.
-	FirewallRuleListResult
+	// List of firewall rules.
+	FirewallRuleList
 }
 
-// FlexibleServerClientStartLtrBackupResponse contains the response from method FlexibleServerClient.BeginStartLtrBackup.
-type FlexibleServerClientStartLtrBackupResponse struct {
-	// Response for the LTR backup API call
-	LtrBackupResponse
+// MigrationsClientCancelResponse contains the response from method MigrationsClient.Cancel.
+type MigrationsClientCancelResponse struct {
+	// Properties of a migration.
+	Migration
 }
 
-// FlexibleServerClientTriggerLtrPreBackupResponse contains the response from method FlexibleServerClient.TriggerLtrPreBackup.
-type FlexibleServerClientTriggerLtrPreBackupResponse struct {
-	// Response for the LTR pre-backup API call
-	LtrPreBackupResponse
-
-	// XMSRequestID contains the information returned from the x-ms-request-id header response.
-	XMSRequestID *string
-}
-
-// GetPrivateDNSZoneSuffixClientExecuteResponse contains the response from method GetPrivateDNSZoneSuffixClient.Execute.
-type GetPrivateDNSZoneSuffixClientExecuteResponse struct {
-	// Represents a resource name availability.
-	Value *string
-}
-
-// LocationBasedCapabilitiesClientExecuteResponse contains the response from method LocationBasedCapabilitiesClient.NewExecutePager.
-type LocationBasedCapabilitiesClientExecuteResponse struct {
-	// Capability for the PostgreSQL server
-	CapabilitiesListResult
-}
-
-// LogFilesClientListByServerResponse contains the response from method LogFilesClient.NewListByServerPager.
-type LogFilesClientListByServerResponse struct {
-	// A List of logFiles.
-	LogFileListResult
-}
-
-// LtrBackupOperationsClientGetResponse contains the response from method LtrBackupOperationsClient.Get.
-type LtrBackupOperationsClientGetResponse struct {
-	// Response for the LTR backup Operation API call
-	LtrServerBackupOperation
-}
-
-// LtrBackupOperationsClientListByServerResponse contains the response from method LtrBackupOperationsClient.NewListByServerPager.
-type LtrBackupOperationsClientListByServerResponse struct {
-	// A list of long term retention backup operations for server.
-	LtrServerBackupOperationList
+// MigrationsClientCheckNameAvailabilityResponse contains the response from method MigrationsClient.CheckNameAvailability.
+type MigrationsClientCheckNameAvailabilityResponse struct {
+	// Availability of a migration name.
+	MigrationNameAvailability
 }
 
 // MigrationsClientCreateResponse contains the response from method MigrationsClient.Create.
 type MigrationsClientCreateResponse struct {
-	// Represents a migration resource.
-	MigrationResource
-}
-
-// MigrationsClientDeleteResponse contains the response from method MigrationsClient.Delete.
-type MigrationsClientDeleteResponse struct {
-	// placeholder for future response values
+	// Properties of a migration.
+	Migration
 }
 
 // MigrationsClientGetResponse contains the response from method MigrationsClient.Get.
 type MigrationsClientGetResponse struct {
-	// Represents a migration resource.
-	MigrationResource
+	// Properties of a migration.
+	Migration
 }
 
 // MigrationsClientListByTargetServerResponse contains the response from method MigrationsClient.NewListByTargetServerPager.
 type MigrationsClientListByTargetServerResponse struct {
-	// A list of migration resources.
-	MigrationResourceListResult
+	// List of migrations.
+	MigrationList
 }
 
 // MigrationsClientUpdateResponse contains the response from method MigrationsClient.Update.
 type MigrationsClientUpdateResponse struct {
-	// Represents a migration resource.
-	MigrationResource
+	// Properties of a migration.
+	Migration
+}
+
+// NameAvailabilityClientCheckGloballyResponse contains the response from method NameAvailabilityClient.CheckGlobally.
+type NameAvailabilityClientCheckGloballyResponse struct {
+	// Availability of a name.
+	NameAvailabilityModel
+}
+
+// NameAvailabilityClientCheckWithLocationResponse contains the response from method NameAvailabilityClient.CheckWithLocation.
+type NameAvailabilityClientCheckWithLocationResponse struct {
+	// Availability of a name.
+	NameAvailabilityModel
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
-	// A list of resource provider operations.
-	OperationListResult
+	// List of resource provider operations.
+	OperationList
 }
 
-// PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse contains the response from method PostgreSQLManagementClient.CheckMigrationNameAvailability.
-type PostgreSQLManagementClientCheckMigrationNameAvailabilityResponse struct {
-	// Represents a migration name's availability.
-	MigrationNameAvailabilityResource
+// PrivateDNSZoneSuffixClientGetResponse contains the response from method PrivateDNSZoneSuffixClient.Get.
+type PrivateDNSZoneSuffixClientGetResponse struct {
+	// Private DNS suffix.
+	Value *string
 }
 
-// PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.BeginDelete.
-type PrivateEndpointConnectionClientDeleteResponse struct {
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
-}
-
-// PrivateEndpointConnectionClientUpdateResponse contains the response from method PrivateEndpointConnectionClient.BeginUpdate.
-type PrivateEndpointConnectionClientUpdateResponse struct {
-	// The private endpoint connection resource.
-	PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
@@ -238,8 +251,14 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 
 // PrivateEndpointConnectionsClientListByServerResponse contains the response from method PrivateEndpointConnectionsClient.NewListByServerPager.
 type PrivateEndpointConnectionsClientListByServerResponse struct {
-	// A list of private endpoint connections.
-	PrivateEndpointConnectionListResult
+	// List of private endpoint connections.
+	PrivateEndpointConnectionList
+}
+
+// PrivateEndpointConnectionsClientUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginUpdate.
+type PrivateEndpointConnectionsClientUpdateResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
 }
 
 // PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
@@ -251,48 +270,30 @@ type PrivateLinkResourcesClientGetResponse struct {
 // PrivateLinkResourcesClientListByServerResponse contains the response from method PrivateLinkResourcesClient.NewListByServerPager.
 type PrivateLinkResourcesClientListByServerResponse struct {
 	// A list of private link resources
-	PrivateLinkResourceListResult
+	PrivateLinkResourceList
 }
 
 // QuotaUsagesClientListResponse contains the response from method QuotaUsagesClient.NewListPager.
 type QuotaUsagesClientListResponse struct {
 	// Capability for the PostgreSQL server
-	QuotaUsagesListResult
+	QuotaUsageList
 }
 
 // ReplicasClientListByServerResponse contains the response from method ReplicasClient.NewListByServerPager.
 type ReplicasClientListByServerResponse struct {
 	// A list of servers.
-	ServerListResult
-}
-
-// ServerCapabilitiesClientListResponse contains the response from method ServerCapabilitiesClient.NewListPager.
-type ServerCapabilitiesClientListResponse struct {
-	// Capability for the PostgreSQL server
-	CapabilitiesListResult
+	ServerList
 }
 
 // ServerThreatProtectionSettingsClientCreateOrUpdateResponse contains the response from method ServerThreatProtectionSettingsClient.BeginCreateOrUpdate.
 type ServerThreatProtectionSettingsClientCreateOrUpdateResponse struct {
-	// Server's Advanced Threat Protection settings.
-	ServerThreatProtectionSettingsModel
+	// Advanced threat protection settings of the server.
+	AdvancedThreatProtectionSettingsModel
 }
 
-// ServerThreatProtectionSettingsClientGetResponse contains the response from method ServerThreatProtectionSettingsClient.Get.
-type ServerThreatProtectionSettingsClientGetResponse struct {
-	// Server's Advanced Threat Protection settings.
-	ServerThreatProtectionSettingsModel
-}
-
-// ServerThreatProtectionSettingsClientListByServerResponse contains the response from method ServerThreatProtectionSettingsClient.NewListByServerPager.
-type ServerThreatProtectionSettingsClientListByServerResponse struct {
-	// A list of the server's Advanced Threat Protection settings.
-	ServerThreatProtectionListResult
-}
-
-// ServersClientCreateResponse contains the response from method ServersClient.BeginCreate.
-type ServersClientCreateResponse struct {
-	// Represents a server.
+// ServersClientCreateOrUpdateResponse contains the response from method ServersClient.BeginCreateOrUpdate.
+type ServersClientCreateOrUpdateResponse struct {
+	// Properties of a server.
 	Server
 }
 
@@ -303,20 +304,20 @@ type ServersClientDeleteResponse struct {
 
 // ServersClientGetResponse contains the response from method ServersClient.Get.
 type ServersClientGetResponse struct {
-	// Represents a server.
+	// Properties of a server.
 	Server
 }
 
 // ServersClientListByResourceGroupResponse contains the response from method ServersClient.NewListByResourceGroupPager.
 type ServersClientListByResourceGroupResponse struct {
 	// A list of servers.
-	ServerListResult
+	ServerList
 }
 
-// ServersClientListResponse contains the response from method ServersClient.NewListPager.
-type ServersClientListResponse struct {
+// ServersClientListBySubscriptionResponse contains the response from method ServersClient.NewListBySubscriptionPager.
+type ServersClientListBySubscriptionResponse struct {
 	// A list of servers.
-	ServerListResult
+	ServerList
 }
 
 // ServersClientRestartResponse contains the response from method ServersClient.BeginRestart.
@@ -336,64 +337,32 @@ type ServersClientStopResponse struct {
 
 // ServersClientUpdateResponse contains the response from method ServersClient.BeginUpdate.
 type ServersClientUpdateResponse struct {
-	// Represents a server.
+	// Properties of a server.
 	Server
-}
-
-// TuningConfigurationClientDisableResponse contains the response from method TuningConfigurationClient.BeginDisable.
-type TuningConfigurationClientDisableResponse struct {
-	// placeholder for future response values
-}
-
-// TuningConfigurationClientEnableResponse contains the response from method TuningConfigurationClient.BeginEnable.
-type TuningConfigurationClientEnableResponse struct {
-	// placeholder for future response values
-}
-
-// TuningConfigurationClientListSessionDetailsResponse contains the response from method TuningConfigurationClient.NewListSessionDetailsPager.
-type TuningConfigurationClientListSessionDetailsResponse struct {
-	// A list of tuning configuration sessions.
-	SessionDetailsListResult
-}
-
-// TuningConfigurationClientListSessionsResponse contains the response from method TuningConfigurationClient.NewListSessionsPager.
-type TuningConfigurationClientListSessionsResponse struct {
-	// A list of tuning configuration sessions.
-	SessionsListResult
-}
-
-// TuningConfigurationClientStartSessionResponse contains the response from method TuningConfigurationClient.BeginStartSession.
-type TuningConfigurationClientStartSessionResponse struct {
-	// placeholder for future response values
-}
-
-// TuningConfigurationClientStopSessionResponse contains the response from method TuningConfigurationClient.BeginStopSession.
-type TuningConfigurationClientStopSessionResponse struct {
-	// placeholder for future response values
-}
-
-// TuningIndexClientListRecommendationsResponse contains the response from method TuningIndexClient.NewListRecommendationsPager.
-type TuningIndexClientListRecommendationsResponse struct {
-	// A list of available index recommendations.
-	IndexRecommendationListResult
 }
 
 // TuningOptionsClientGetResponse contains the response from method TuningOptionsClient.Get.
 type TuningOptionsClientGetResponse struct {
-	// Stores property that features impact on some metric if this recommended action is applied.
-	TuningOptionsResource
+	// Impact on some metric if this recommended action is applied.
+	TuningOptions
 }
 
 // TuningOptionsClientListByServerResponse contains the response from method TuningOptionsClient.NewListByServerPager.
 type TuningOptionsClientListByServerResponse struct {
-	// A list of server tuning options.
-	TuningOptionsListResult
+	// List of server tuning options.
+	TuningOptionsList
+}
+
+// TuningOptionsClientListRecommendationsResponse contains the response from method TuningOptionsClient.NewListRecommendationsPager.
+type TuningOptionsClientListRecommendationsResponse struct {
+	// List of available object recommendations.
+	ObjectRecommendationList
 }
 
 // VirtualEndpointsClientCreateResponse contains the response from method VirtualEndpointsClient.BeginCreate.
 type VirtualEndpointsClientCreateResponse struct {
-	// Represents a virtual endpoint for a server.
-	VirtualEndpointResource
+	// Pair of virtual endpoints for a server.
+	VirtualEndpoint
 }
 
 // VirtualEndpointsClientDeleteResponse contains the response from method VirtualEndpointsClient.BeginDelete.
@@ -403,24 +372,24 @@ type VirtualEndpointsClientDeleteResponse struct {
 
 // VirtualEndpointsClientGetResponse contains the response from method VirtualEndpointsClient.Get.
 type VirtualEndpointsClientGetResponse struct {
-	// Represents a virtual endpoint for a server.
-	VirtualEndpointResource
+	// Pair of virtual endpoints for a server.
+	VirtualEndpoint
 }
 
 // VirtualEndpointsClientListByServerResponse contains the response from method VirtualEndpointsClient.NewListByServerPager.
 type VirtualEndpointsClientListByServerResponse struct {
-	// A list of virtual endpoints.
-	VirtualEndpointsListResult
+	// List of virtual endpoints.
+	VirtualEndpointsList
 }
 
 // VirtualEndpointsClientUpdateResponse contains the response from method VirtualEndpointsClient.BeginUpdate.
 type VirtualEndpointsClientUpdateResponse struct {
-	// Represents a virtual endpoint for a server.
-	VirtualEndpointResource
+	// Pair of virtual endpoints for a server.
+	VirtualEndpoint
 }
 
-// VirtualNetworkSubnetUsageClientExecuteResponse contains the response from method VirtualNetworkSubnetUsageClient.Execute.
-type VirtualNetworkSubnetUsageClientExecuteResponse struct {
+// VirtualNetworkSubnetUsageClientListResponse contains the response from method VirtualNetworkSubnetUsageClient.List.
+type VirtualNetworkSubnetUsageClientListResponse struct {
 	// Virtual network subnet usage data.
-	VirtualNetworkSubnetUsageResult
+	VirtualNetworkSubnetUsageModel
 }

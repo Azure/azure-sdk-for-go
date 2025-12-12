@@ -1,6 +1,6 @@
 # Azure OpenAI extensions module for Go
 
-This module provides models and convenience functions to make it simpler to use Azure OpenAI features, such as [Azure OpenAI On Your Data][openai_on_your_data], with the OpenAI Go client (https://pkg.go.dev/github.com/openai/openai-go).
+This module provides models and convenience functions to make it simpler to use Azure OpenAI features, such as [Azure OpenAI On Your Data][openai_on_your_data], with the OpenAI Go client (https://pkg.go.dev/github.com/openai/openai-go/v3).
 
 [Source code][repo] | [Package (pkg.go.dev)][pkggodev] | [REST API documentation][openai_rest_docs] | [Product documentation][openai_docs]
 
@@ -8,9 +8,9 @@ This module provides models and convenience functions to make it simpler to use 
 
 ### Prerequisites
 
-* Go, version 1.23 or higher - [Install Go](https://go.dev/doc/install)
-* [Azure subscription][azure_sub]
-* [Azure OpenAI access][azure_openai_access]
+- Go, version 1.23 or higher - [Install Go](https://go.dev/doc/install)
+- [Azure subscription][azure_sub]
+- [Azure OpenAI access][azure_openai_access]
 
 ### Install the packages
 
@@ -31,7 +31,7 @@ See [Key concepts][openai_key_concepts] in the product documentation for more de
 
 # Examples
 
-Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://aka.ms/azsdk/go/azopenaiextensions/pkg#pkg-examples) or in the example*_test.go files in our GitHub repo for [azopenai](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai).
+Examples for scenarios specific to Azure can be found on [pkg.go.dev](https://aka.ms/azsdk/go/azopenaiextensions/pkg#pkg-examples) or in the example\*\_test.go files in our GitHub repo for [azopenai](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/ai/azopenai).
 
 For examples on using the openai-go client, see the examples in the [openai-go](https://github.com/openai/openai-go/tree/main/examples) repository.
 
@@ -48,6 +48,7 @@ the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_conta
 comments.
 
 <!-- LINKS -->
+
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_openai_quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart

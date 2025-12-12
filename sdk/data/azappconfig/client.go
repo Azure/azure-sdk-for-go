@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -15,9 +12,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/auth"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/internal/synctoken"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
 )
 
 const timeFormat = time.RFC3339Nano
@@ -98,7 +95,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 		options = &AddSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
@@ -156,7 +153,7 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
 		SyncToken:    SyncToken(*resp.SyncToken),
-		LastModified: resp.KeyValue.LastModified,
+		LastModified: resp.LastModified,
 	}, nil
 }
 
@@ -209,7 +206,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 		options = &SetSettingOptions{}
 	}
 
-	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType}
+	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	kv, opts := setting.toGeneratedPutOptions(options.OnlyIfUnchanged, nil)
 	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
@@ -474,9 +471,9 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 			ETag:            (*azcore.ETag)(getResp.Etag),
 			Expires:         getResp.Expires,
 			ItemsCount:      getResp.ItemsCount,
-			Name:            getResp.Snapshot.Name,
+			Name:            getResp.Name,
 			Size:            getResp.Size,
-			Status:          getResp.Snapshot.Status,
+			Status:          getResp.Status,
 		},
 		SyncToken: SyncToken(*getResp.SyncToken),
 		Link:      getResp.Link,
@@ -569,9 +566,9 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 			ETag:            (*azcore.ETag)(updateResp.Etag),
 			Expires:         updateResp.Expires,
 			ItemsCount:      updateResp.ItemsCount,
-			Name:            updateResp.Snapshot.Name,
+			Name:            updateResp.Name,
 			Size:            updateResp.Size,
-			Status:          updateResp.Snapshot.Status,
+			Status:          updateResp.Status,
 		},
 		SyncToken: SyncToken(*updateResp.SyncToken),
 		Link:      updateResp.Link,

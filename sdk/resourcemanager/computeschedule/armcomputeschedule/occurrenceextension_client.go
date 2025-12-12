@@ -6,6 +6,7 @@ package armcomputeschedule
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -22,7 +23,7 @@ type OccurrenceExtensionClient struct {
 
 // NewOccurrenceExtensionClient creates a new instance of OccurrenceExtensionClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOccurrenceExtensionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OccurrenceExtensionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -66,6 +67,9 @@ func (client *OccurrenceExtensionClient) NewListOccurrenceByVMsPager(resourceURI
 // listOccurrenceByVMsCreateRequest creates the ListOccurrenceByVMs request.
 func (client *OccurrenceExtensionClient) listOccurrenceByVMsCreateRequest(ctx context.Context, resourceURI string, _ *OccurrenceExtensionClientListOccurrenceByVMsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ComputeSchedule/associatedOccurrences"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

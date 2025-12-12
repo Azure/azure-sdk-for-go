@@ -44,7 +44,7 @@ func NewBareMetalMachinesClient(subscriptionID string, credential azcore.TokenCr
 // BeginCordon - Cordon the provided bare metal machine's Kubernetes node.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginCordonOptions contains the optional parameters for the BareMetalMachinesClient.BeginCordon
@@ -70,7 +70,7 @@ func (client *BareMetalMachinesClient) BeginCordon(ctx context.Context, resource
 // Cordon - Cordon the provided bare metal machine's Kubernetes node.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) cordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginCordonOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginCordon"
@@ -112,7 +112,7 @@ func (client *BareMetalMachinesClient) cordonCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.BareMetalMachineCordonParameters != nil {
@@ -128,7 +128,7 @@ func (client *BareMetalMachinesClient) cordonCreateRequest(ctx context.Context, 
 // requests will be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - bareMetalMachineParameters - The request body.
@@ -156,7 +156,7 @@ func (client *BareMetalMachinesClient) BeginCreateOrUpdate(ctx context.Context, 
 // will be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineParameters BareMetalMachine, options *BareMetalMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginCreateOrUpdate"
@@ -198,7 +198,7 @@ func (client *BareMetalMachinesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -217,7 +217,7 @@ func (client *BareMetalMachinesClient) createOrUpdateCreateRequest(ctx context.C
 // of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginDeleteOptions contains the optional parameters for the BareMetalMachinesClient.BeginDelete
@@ -244,7 +244,7 @@ func (client *BareMetalMachinesClient) BeginDelete(ctx context.Context, resource
 // this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginDelete"
@@ -286,7 +286,7 @@ func (client *BareMetalMachinesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -301,7 +301,7 @@ func (client *BareMetalMachinesClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get properties of the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientGetOptions contains the optional parameters for the BareMetalMachinesClient.Get method.
@@ -347,7 +347,7 @@ func (client *BareMetalMachinesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +364,7 @@ func (client *BareMetalMachinesClient) getHandleResponse(resp *http.Response) (B
 
 // NewListByResourceGroupPager - Get a list of bare metal machines in the provided resource group.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BareMetalMachinesClientListByResourceGroupOptions contains the optional parameters for the BareMetalMachinesClient.NewListByResourceGroupPager
 //     method.
@@ -413,7 +413,7 @@ func (client *BareMetalMachinesClient) listByResourceGroupCreateRequest(ctx cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -430,7 +430,7 @@ func (client *BareMetalMachinesClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionPager - Get a list of bare metal machines in the provided subscription.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - options - BareMetalMachinesClientListBySubscriptionOptions contains the optional parameters for the BareMetalMachinesClient.NewListBySubscriptionPager
 //     method.
 func (client *BareMetalMachinesClient) NewListBySubscriptionPager(options *BareMetalMachinesClientListBySubscriptionOptions) *runtime.Pager[BareMetalMachinesClientListBySubscriptionResponse] {
@@ -474,7 +474,7 @@ func (client *BareMetalMachinesClient) listBySubscriptionCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -492,7 +492,7 @@ func (client *BareMetalMachinesClient) listBySubscriptionHandleResponse(resp *ht
 // BeginPowerOff - Power off the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginPowerOffOptions contains the optional parameters for the BareMetalMachinesClient.BeginPowerOff
@@ -518,7 +518,7 @@ func (client *BareMetalMachinesClient) BeginPowerOff(ctx context.Context, resour
 // PowerOff - Power off the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) powerOff(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginPowerOffOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginPowerOff"
@@ -560,7 +560,7 @@ func (client *BareMetalMachinesClient) powerOffCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.BareMetalMachinePowerOffParameters != nil {
@@ -575,7 +575,7 @@ func (client *BareMetalMachinesClient) powerOffCreateRequest(ctx context.Context
 // BeginReimage - Reimage the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginReimageOptions contains the optional parameters for the BareMetalMachinesClient.BeginReimage
@@ -601,7 +601,7 @@ func (client *BareMetalMachinesClient) BeginReimage(ctx context.Context, resourc
 // Reimage - Reimage the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) reimage(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReimageOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginReimage"
@@ -643,7 +643,7 @@ func (client *BareMetalMachinesClient) reimageCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -652,7 +652,7 @@ func (client *BareMetalMachinesClient) reimageCreateRequest(ctx context.Context,
 // BeginReplace - Replace the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginReplaceOptions contains the optional parameters for the BareMetalMachinesClient.BeginReplace
@@ -678,7 +678,7 @@ func (client *BareMetalMachinesClient) BeginReplace(ctx context.Context, resourc
 // Replace - Replace the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) replace(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginReplace"
@@ -720,7 +720,7 @@ func (client *BareMetalMachinesClient) replaceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.BareMetalMachineReplaceParameters != nil {
@@ -735,7 +735,7 @@ func (client *BareMetalMachinesClient) replaceCreateRequest(ctx context.Context,
 // BeginRestart - Restart the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginRestartOptions contains the optional parameters for the BareMetalMachinesClient.BeginRestart
@@ -761,7 +761,7 @@ func (client *BareMetalMachinesClient) BeginRestart(ctx context.Context, resourc
 // Restart - Restart the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) restart(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginRestart"
@@ -803,7 +803,7 @@ func (client *BareMetalMachinesClient) restartCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -814,7 +814,7 @@ func (client *BareMetalMachinesClient) restartCreateRequest(ctx context.Context,
 // once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - bareMetalMachineRunCommandParameters - The request body.
@@ -843,7 +843,7 @@ func (client *BareMetalMachinesClient) BeginRunCommand(ctx context.Context, reso
 // once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) runCommand(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunCommandParameters BareMetalMachineRunCommandParameters, options *BareMetalMachinesClientBeginRunCommandOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginRunCommand"
@@ -885,7 +885,7 @@ func (client *BareMetalMachinesClient) runCommandCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunCommandParameters); err != nil {
@@ -899,7 +899,7 @@ func (client *BareMetalMachinesClient) runCommandCreateRequest(ctx context.Conte
 // API once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - bareMetalMachineRunDataExtractsParameters - The request body.
@@ -928,7 +928,7 @@ func (client *BareMetalMachinesClient) BeginRunDataExtracts(ctx context.Context,
 // API once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) runDataExtracts(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginRunDataExtracts"
@@ -970,7 +970,7 @@ func (client *BareMetalMachinesClient) runDataExtractsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunDataExtractsParameters); err != nil {
@@ -984,7 +984,7 @@ func (client *BareMetalMachinesClient) runDataExtractsCreateRequest(ctx context.
 // operation status API once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - bareMetalMachineRunDataExtractsRestrictedParameters - The request body.
@@ -1013,7 +1013,7 @@ func (client *BareMetalMachinesClient) BeginRunDataExtractsRestricted(ctx contex
 // operation status API once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) runDataExtractsRestricted(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunDataExtractsRestrictedParameters BareMetalMachineRunDataExtractsParameters, options *BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginRunDataExtractsRestricted"
@@ -1055,7 +1055,7 @@ func (client *BareMetalMachinesClient) runDataExtractsRestrictedCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunDataExtractsRestrictedParameters); err != nil {
@@ -1069,7 +1069,7 @@ func (client *BareMetalMachinesClient) runDataExtractsRestrictedCreateRequest(ct
 // status API once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - bareMetalMachineRunReadCommandsParameters - The request body.
@@ -1098,7 +1098,7 @@ func (client *BareMetalMachinesClient) BeginRunReadCommands(ctx context.Context,
 // status API once available.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) runReadCommands(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineRunReadCommandsParameters BareMetalMachineRunReadCommandsParameters, options *BareMetalMachinesClientBeginRunReadCommandsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginRunReadCommands"
@@ -1140,7 +1140,7 @@ func (client *BareMetalMachinesClient) runReadCommandsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, bareMetalMachineRunReadCommandsParameters); err != nil {
@@ -1152,7 +1152,7 @@ func (client *BareMetalMachinesClient) runReadCommandsCreateRequest(ctx context.
 // BeginStart - Start the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginStartOptions contains the optional parameters for the BareMetalMachinesClient.BeginStart
@@ -1178,7 +1178,7 @@ func (client *BareMetalMachinesClient) BeginStart(ctx context.Context, resourceG
 // Start - Start the provided bare metal machine.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) start(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginStart"
@@ -1220,7 +1220,7 @@ func (client *BareMetalMachinesClient) startCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1229,7 +1229,7 @@ func (client *BareMetalMachinesClient) startCreateRequest(ctx context.Context, r
 // BeginUncordon - Uncordon the provided bare metal machine's Kubernetes node.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - options - BareMetalMachinesClientBeginUncordonOptions contains the optional parameters for the BareMetalMachinesClient.BeginUncordon
@@ -1255,7 +1255,7 @@ func (client *BareMetalMachinesClient) BeginUncordon(ctx context.Context, resour
 // Uncordon - Uncordon the provided bare metal machine's Kubernetes node.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) uncordon(ctx context.Context, resourceGroupName string, bareMetalMachineName string, options *BareMetalMachinesClientBeginUncordonOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginUncordon"
@@ -1297,7 +1297,7 @@ func (client *BareMetalMachinesClient) uncordonCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1307,7 +1307,7 @@ func (client *BareMetalMachinesClient) uncordonCreateRequest(ctx context.Context
 // Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - bareMetalMachineName - The name of the bare metal machine.
 //   - bareMetalMachineUpdateParameters - The request body.
@@ -1335,7 +1335,7 @@ func (client *BareMetalMachinesClient) BeginUpdate(ctx context.Context, resource
 // and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *BareMetalMachinesClient) update(ctx context.Context, resourceGroupName string, bareMetalMachineName string, bareMetalMachineUpdateParameters BareMetalMachinePatchParameters, options *BareMetalMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BareMetalMachinesClient.BeginUpdate"
@@ -1377,7 +1377,7 @@ func (client *BareMetalMachinesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

@@ -44,7 +44,7 @@ func NewConsolesClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginCreateOrUpdate - Create a new virtual machine console or update the properties of the existing virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -72,7 +72,7 @@ func (client *ConsolesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // CreateOrUpdate - Create a new virtual machine console or update the properties of the existing virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *ConsolesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleParameters Console, options *ConsolesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConsolesClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *ConsolesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -136,7 +136,7 @@ func (client *ConsolesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // BeginDelete - Delete the provided virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -162,7 +162,7 @@ func (client *ConsolesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete the provided virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *ConsolesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, options *ConsolesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConsolesClient.BeginDelete"
@@ -208,7 +208,7 @@ func (client *ConsolesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -223,7 +223,7 @@ func (client *ConsolesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get properties of the provided virtual machine console.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -274,7 +274,7 @@ func (client *ConsolesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -291,7 +291,7 @@ func (client *ConsolesClient) getHandleResponse(resp *http.Response) (ConsolesCl
 
 // NewListByVirtualMachinePager - Get a list of consoles for the provided virtual machine.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - options - ConsolesClientListByVirtualMachineOptions contains the optional parameters for the ConsolesClient.NewListByVirtualMachinePager
@@ -345,7 +345,7 @@ func (client *ConsolesClient) listByVirtualMachineCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +364,7 @@ func (client *ConsolesClient) listByVirtualMachineHandleResponse(resp *http.Resp
 // machine console. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualMachineName - The name of the virtual machine.
 //   - consoleName - The name of the virtual machine console.
@@ -392,7 +392,7 @@ func (client *ConsolesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // console. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *ConsolesClient) update(ctx context.Context, resourceGroupName string, virtualMachineName string, consoleName string, consoleUpdateParameters ConsolePatchParameters, options *ConsolesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConsolesClient.BeginUpdate"
@@ -438,7 +438,7 @@ func (client *ConsolesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

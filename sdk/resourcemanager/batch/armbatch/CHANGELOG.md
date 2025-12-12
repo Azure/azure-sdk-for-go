@@ -1,5 +1,40 @@
 # Release History
 
+## 4.0.0 (2025-12-11)
+### Breaking Changes
+
+- Function `*ApplicationClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, parameters Application, options *ApplicationClientCreateOptions)`
+- Function `*ApplicationPackageClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, options *ApplicationPackageClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, applicationName string, versionName string, parameters ApplicationPackage, options *ApplicationPackageClientCreateOptions)`
+- Type of `AccessRuleProperties.Subscriptions` has been changed from `[]*AccessRulePropertiesSubscriptionsItem` to `[]*AccessRulePropertiesSubscription`
+- Type of `CheckNameAvailabilityParameters.Type` has been changed from `*string` to `*ResourceType`
+- Type of `DiffDiskSettings.Placement` has been changed from `*string` to `*DiffDiskPlacement`
+- Type of `IPRule.Action` has been changed from `*string` to `*IPRuleAction`
+- Struct `AccessRulePropertiesSubscriptionsItem` has been removed
+- Struct `AzureProxyResource` has been removed
+- Struct `AzureResource` has been removed
+- Struct `CertificateBaseProperties` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Field `Parameters` of struct `ApplicationClientCreateOptions` has been removed
+- Field `Parameters` of struct `ApplicationPackageClientCreateOptions` has been removed
+- Field `Username` of struct `CIFSMountConfiguration` has been removed
+- Field `DynamicVNetAssignmentScope` of struct `NetworkConfiguration` has been removed
+- Field `ActionRequired` of struct `PrivateLinkServiceConnectionState` has been removed
+
+### Features Added
+
+- New enum type `DiffDiskPlacement` with values `DiffDiskPlacementCacheDisk`
+- New enum type `IPRuleAction` with values `IPRuleActionAllow`
+- New enum type `ResourceType` with values `ResourceTypeMicrosoftBatchBatchAccounts`
+- New struct `AccessRulePropertiesSubscription`
+- New field `UserName` in struct `CIFSMountConfiguration`
+- New field `DynamicVnetAssignmentScope` in struct `NetworkConfiguration`
+- New field `ActionsRequired` in struct `PrivateLinkServiceConnectionState`
+
+
 ## 3.0.0 (2024-09-27)
 ### Breaking Changes
 

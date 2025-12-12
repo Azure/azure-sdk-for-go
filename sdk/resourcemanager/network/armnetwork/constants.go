@@ -200,6 +200,22 @@ func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGa
 	}
 }
 
+// ApplicationGatewayClientAuthVerificationModes - Verify client Authentication mode.
+type ApplicationGatewayClientAuthVerificationModes string
+
+const (
+	ApplicationGatewayClientAuthVerificationModesPassthrough ApplicationGatewayClientAuthVerificationModes = "Passthrough"
+	ApplicationGatewayClientAuthVerificationModesStrict      ApplicationGatewayClientAuthVerificationModes = "Strict"
+)
+
+// PossibleApplicationGatewayClientAuthVerificationModesValues returns the possible values for the ApplicationGatewayClientAuthVerificationModes const type.
+func PossibleApplicationGatewayClientAuthVerificationModesValues() []ApplicationGatewayClientAuthVerificationModes {
+	return []ApplicationGatewayClientAuthVerificationModes{
+		ApplicationGatewayClientAuthVerificationModesPassthrough,
+		ApplicationGatewayClientAuthVerificationModesStrict,
+	}
+}
+
 // ApplicationGatewayClientRevocationOptions - Verify client certificate revocation status.
 type ApplicationGatewayClientRevocationOptions string
 
@@ -648,6 +664,22 @@ func PossibleApplicationGatewayTierTypesValues() []ApplicationGatewayTierTypes {
 	}
 }
 
+// ApplicationGatewayUnAuthorizedRequestAction - Unauthorized request action.
+type ApplicationGatewayUnAuthorizedRequestAction string
+
+const (
+	ApplicationGatewayUnAuthorizedRequestActionAllow ApplicationGatewayUnAuthorizedRequestAction = "Allow"
+	ApplicationGatewayUnAuthorizedRequestActionDeny  ApplicationGatewayUnAuthorizedRequestAction = "Deny"
+)
+
+// PossibleApplicationGatewayUnAuthorizedRequestActionValues returns the possible values for the ApplicationGatewayUnAuthorizedRequestAction const type.
+func PossibleApplicationGatewayUnAuthorizedRequestActionValues() []ApplicationGatewayUnAuthorizedRequestAction {
+	return []ApplicationGatewayUnAuthorizedRequestAction{
+		ApplicationGatewayUnAuthorizedRequestActionAllow,
+		ApplicationGatewayUnAuthorizedRequestActionDeny,
+	}
+}
+
 // ApplicationGatewayWafRuleActionTypes - The string representation of the web application firewall rule action.
 type ApplicationGatewayWafRuleActionTypes string
 
@@ -677,7 +709,6 @@ const (
 	ApplicationGatewayWafRuleSensitivityTypesHigh   ApplicationGatewayWafRuleSensitivityTypes = "High"
 	ApplicationGatewayWafRuleSensitivityTypesLow    ApplicationGatewayWafRuleSensitivityTypes = "Low"
 	ApplicationGatewayWafRuleSensitivityTypesMedium ApplicationGatewayWafRuleSensitivityTypes = "Medium"
-	ApplicationGatewayWafRuleSensitivityTypesNone   ApplicationGatewayWafRuleSensitivityTypes = "None"
 )
 
 // PossibleApplicationGatewayWafRuleSensitivityTypesValues returns the possible values for the ApplicationGatewayWafRuleSensitivityTypes const type.
@@ -686,7 +717,6 @@ func PossibleApplicationGatewayWafRuleSensitivityTypesValues() []ApplicationGate
 		ApplicationGatewayWafRuleSensitivityTypesHigh,
 		ApplicationGatewayWafRuleSensitivityTypesLow,
 		ApplicationGatewayWafRuleSensitivityTypesMedium,
-		ApplicationGatewayWafRuleSensitivityTypesNone,
 	}
 }
 
@@ -1367,6 +1397,20 @@ func PossibleCustomIPPrefixTypeValues() []CustomIPPrefixType {
 	}
 }
 
+// DdosDetectionMode - The detection mode for the DDoS detection rule.
+type DdosDetectionMode string
+
+const (
+	DdosDetectionModeTrafficThreshold DdosDetectionMode = "TrafficThreshold"
+)
+
+// PossibleDdosDetectionModeValues returns the possible values for the DdosDetectionMode const type.
+func PossibleDdosDetectionModeValues() []DdosDetectionMode {
+	return []DdosDetectionMode{
+		DdosDetectionModeTrafficThreshold,
+	}
+}
+
 // DdosSettingsProtectionMode - The DDoS protection mode of the public IP
 type DdosSettingsProtectionMode string
 
@@ -1382,6 +1426,24 @@ func PossibleDdosSettingsProtectionModeValues() []DdosSettingsProtectionMode {
 		DdosSettingsProtectionModeDisabled,
 		DdosSettingsProtectionModeEnabled,
 		DdosSettingsProtectionModeVirtualNetworkInherited,
+	}
+}
+
+// DdosTrafficType - The traffic type (one of Tcp, Udp, TcpSyn) that the detection rule will be applied upon.
+type DdosTrafficType string
+
+const (
+	DdosTrafficTypeTCP    DdosTrafficType = "Tcp"
+	DdosTrafficTypeTCPSyn DdosTrafficType = "TcpSyn"
+	DdosTrafficTypeUDP    DdosTrafficType = "Udp"
+)
+
+// PossibleDdosTrafficTypeValues returns the possible values for the DdosTrafficType const type.
+func PossibleDdosTrafficTypeValues() []DdosTrafficType {
+	return []DdosTrafficType{
+		DdosTrafficTypeTCP,
+		DdosTrafficTypeTCPSyn,
+		DdosTrafficTypeUDP,
 	}
 }
 
@@ -2711,6 +2773,22 @@ func PossibleIsGlobalValues() []IsGlobal {
 	}
 }
 
+// IsRollback - When true, reverts from Static to Dynamic allocation (undo reservation).
+type IsRollback string
+
+const (
+	IsRollbackFalse IsRollback = "false"
+	IsRollbackTrue  IsRollback = "true"
+)
+
+// PossibleIsRollbackValues returns the possible values for the IsRollback const type.
+func PossibleIsRollbackValues() []IsRollback {
+	return []IsRollback{
+		IsRollbackFalse,
+		IsRollbackTrue,
+	}
+}
+
 // IsWorkloadProtected - Value indicating whether the IP address is DDoS workload protected or not.
 type IsWorkloadProtected string
 
@@ -3467,6 +3545,28 @@ func PossiblePreferredRoutingGatewayValues() []PreferredRoutingGateway {
 	}
 }
 
+// PrivateEndpointIPVersionType - Specifies the IP version type for the private IPs of the private endpoint. If not defined,
+// this defaults to IPv4.
+type PrivateEndpointIPVersionType string
+
+const (
+	// PrivateEndpointIPVersionTypeDualStack - Indicates that the Private IPs of the private endpoint can be both IPv4 and IPv6.
+	PrivateEndpointIPVersionTypeDualStack PrivateEndpointIPVersionType = "DualStack"
+	// PrivateEndpointIPVersionTypeIPv4 - Indicates that the Private IPs of the private endpoint will be IPv4 only.
+	PrivateEndpointIPVersionTypeIPv4 PrivateEndpointIPVersionType = "IPv4"
+	// PrivateEndpointIPVersionTypeIPv6 - Indicates that the Private IPs of the private endpoint will be IPv6 only.
+	PrivateEndpointIPVersionTypeIPv6 PrivateEndpointIPVersionType = "IPv6"
+)
+
+// PossiblePrivateEndpointIPVersionTypeValues returns the possible values for the PrivateEndpointIPVersionType const type.
+func PossiblePrivateEndpointIPVersionTypeValues() []PrivateEndpointIPVersionType {
+	return []PrivateEndpointIPVersionType{
+		PrivateEndpointIPVersionTypeDualStack,
+		PrivateEndpointIPVersionTypeIPv4,
+		PrivateEndpointIPVersionTypeIPv6,
+	}
+}
+
 // PrivateEndpointVNetPolicies - Private Endpoint VNet Policies.
 type PrivateEndpointVNetPolicies string
 
@@ -4167,7 +4267,6 @@ const (
 	SensitivityTypeHigh   SensitivityType = "High"
 	SensitivityTypeLow    SensitivityType = "Low"
 	SensitivityTypeMedium SensitivityType = "Medium"
-	SensitivityTypeNone   SensitivityType = "None"
 )
 
 // PossibleSensitivityTypeValues returns the possible values for the SensitivityType const type.
@@ -4176,7 +4275,6 @@ func PossibleSensitivityTypeValues() []SensitivityType {
 		SensitivityTypeHigh,
 		SensitivityTypeLow,
 		SensitivityTypeMedium,
-		SensitivityTypeNone,
 	}
 }
 

@@ -28,7 +28,7 @@ type FirewallPolicyRuleCollectionGroupDraftsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFirewallPolicyRuleCollectionGroupDraftsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallPolicyRuleCollectionGroupDraftsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewFirewallPolicyRuleCollectionGroupDraftsClient(subscriptionID string, cre
 // CreateOrUpdate - Create or Update Rule Collection Group Draft.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -97,7 +97,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) createOrUpdateCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,7 +118,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) createOrUpdateHandl
 // Delete - Delete Rule Collection Group Draft.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -169,7 +169,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) deleteCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,7 +178,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) deleteCreateRequest
 // Get - Get Rule Collection Group Draft.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - firewallPolicyName - The name of the Firewall Policy.
 //   - ruleCollectionGroupName - The name of the FirewallPolicyRuleCollectionGroup.
@@ -230,7 +230,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) getCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

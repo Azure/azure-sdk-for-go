@@ -2169,6 +2169,12 @@ type PublicIPAddressesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse contains the response from method PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP.
+type PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
+}
+
 // PublicIPAddressesClientGetCloudServicePublicIPAddressResponse contains the response from method PublicIPAddressesClient.GetCloudServicePublicIPAddress.
 type PublicIPAddressesClientGetCloudServicePublicIPAddressResponse struct {
 	// Public IP address resource.
@@ -2221,6 +2227,12 @@ type PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse 
 type PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse struct {
 	// Response for ListPublicIpAddresses API service call.
 	PublicIPAddressListResult
+}
+
+// PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse contains the response from method PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress.
+type PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
 }
 
 // PublicIPAddressesClientUpdateTagsResponse contains the response from method PublicIPAddressesClient.UpdateTags.

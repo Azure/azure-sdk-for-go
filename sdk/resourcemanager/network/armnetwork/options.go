@@ -2351,6 +2351,20 @@ type PublicIPAddressesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions contains the optional parameters for the PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP
+// method.
+type PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions contains the optional parameters for the PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress
+// method.
+type PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // PublicIPAddressesClientGetCloudServicePublicIPAddressOptions contains the optional parameters for the PublicIPAddressesClient.GetCloudServicePublicIPAddress
 // method.
 type PublicIPAddressesClientGetCloudServicePublicIPAddressOptions struct {

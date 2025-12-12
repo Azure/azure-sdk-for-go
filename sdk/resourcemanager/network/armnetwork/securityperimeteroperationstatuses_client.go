@@ -28,7 +28,7 @@ type SecurityPerimeterOperationStatusesClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPerimeterOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPerimeterOperationStatusesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewSecurityPerimeterOperationStatusesClient(subscriptionID string, credenti
 // Get - Gets the operation status for the given operation id.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 //   - location - The location of network security perimeter.
 //   - operationID - The operation id of the async operation.
 //   - options - SecurityPerimeterOperationStatusesClientGetOptions contains the optional parameters for the SecurityPerimeterOperationStatusesClient.Get
@@ -91,7 +91,7 @@ func (client *SecurityPerimeterOperationStatusesClient) getCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

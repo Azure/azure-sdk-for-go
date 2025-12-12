@@ -34,6 +34,7 @@ type LeaseAccessConditions = exported.LeaseAccessConditions
 // ModifiedAccessConditions contains a group of parameters for specifying access conditions.
 type ModifiedAccessConditions = exported.ModifiedAccessConditions
 
+// BlobModifiedAccessConditions contains a group of parameters for specifying blob access conditions.
 type BlobModifiedAccessConditions = exported.BlobModifiedAccessConditions
 
 // CPKInfo contains a group of parameters for client provided encryption key.

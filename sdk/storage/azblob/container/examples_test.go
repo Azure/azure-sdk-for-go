@@ -266,7 +266,7 @@ func Example_container_ClientListBlobsHierarchy() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, blob := range resp.ListBlobsHierarchySegmentResponse.Segment.BlobItems {
+		for _, blob := range resp.Segment.BlobItems {
 			fmt.Println(*blob.Name)
 		}
 	}

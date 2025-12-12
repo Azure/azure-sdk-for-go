@@ -292,8 +292,8 @@ func (p *QueryParameters) SignedDirectoryDepth() string {
 }
 
 // SignedDelegatedUserObjectId returns signedDelegatedUserObjectId
-func (p *QueryParameters) SignedDelegatedUserObjectId() string { 
-	return p.signedDelegatedUserObjectId 
+func (p *QueryParameters) SignedDelegatedUserObjectId() string {
+	return p.signedDelegatedUserObjectId
 }
 
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.

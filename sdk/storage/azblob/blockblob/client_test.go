@@ -444,8 +444,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
-	_require.NotNil(blockList.BlockList.UncommittedBlocks)
-	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
+	_require.NotNil(blockList.UncommittedBlocks)
+	_require.Len(blockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	_, err = destBlob.CommitBlockList(context.Background(), blockIDs, nil)
@@ -534,8 +534,8 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
 	_require.Nil(blockList.BlockList.CommittedBlocks)
-	_require.NotNil(blockList.BlockList.UncommittedBlocks)
-	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
+	_require.NotNil(blockList.UncommittedBlocks)
+	_require.Len(blockList.UncommittedBlocks, 2)
 
 	// Commit block list.
 	_, err = destBlob.CommitBlockList(context.Background(), blockIDs, nil)
@@ -3016,7 +3016,7 @@ func (s *BlockBlobRecordedTestsSuite) TestRehydrateStatus() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		blobs = append(blobs, resp.ListBlobsFlatSegmentResponse.Segment.BlobItems...)
+		blobs = append(blobs, resp.Segment.BlobItems...)
 		if err != nil {
 			break
 		}
@@ -4441,7 +4441,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	// where := "foo=\"value 1\""
 	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
+	_require.Len(lResp.Blobs[0].Tags.BlobTagSet, 2)
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
 	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[2])
 
@@ -5319,7 +5319,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnVersions() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		for _, b := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+		for _, b := range resp.Segment.BlobItems {
 			_require.Equal(*b.Properties.AccessTier, blob.AccessTierHot)
 		}
 		if err != nil {
@@ -5383,7 +5383,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlockBlobSetTierOnSnapshots() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		for _, b := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+		for _, b := range resp.Segment.BlobItems {
 			_require.Equal(*b.Properties.AccessTier, blob.AccessTierHot)
 		}
 		if err != nil {

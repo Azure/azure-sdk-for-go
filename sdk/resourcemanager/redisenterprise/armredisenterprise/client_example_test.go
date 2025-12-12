@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseCreate.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,14 +38,41 @@ func ExampleClient_BeginCreate() {
 			},
 		},
 		Properties: &armredisenterprise.ClusterCreateProperties{
-			Encryption: &armredisenterprise.ClusterCommonPropertiesEncryption{
-				CustomerManagedKeyEncryption: &armredisenterprise.ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption{
-					KeyEncryptionKeyIdentity: &armredisenterprise.ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity{
+			Encryption: &armredisenterprise.ClusterPropertiesEncryption{
+				CustomerManagedKeyEncryption: &armredisenterprise.ClusterPropertiesEncryptionCustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armredisenterprise.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity{
 						IdentityType:                   to.Ptr(armredisenterprise.CmkIdentityTypeUserAssignedIdentity),
 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity"),
 					},
 					KeyEncryptionKeyURL: to.Ptr("https://your-kv.vault.azure.net/keys/your-key/your-key-version"),
 				},
+			},
+			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
+				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
+					{
+						Type:     to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+						Duration: to.Ptr("PT6H"),
+						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
+						},
+						StartHourUTC: to.Ptr[int32](3),
+					},
+					{
+						Type:     to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+						Duration: to.Ptr("PT6H"),
+						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
+						},
+						StartHourUTC: to.Ptr[int32](3),
+					},
+					{
+						Type:     to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+						Duration: to.Ptr("PT6H"),
+						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
+						},
+						StartHourUTC: to.Ptr[int32](3),
+					}},
 			},
 			MinimumTLSVersion:   to.Ptr(armredisenterprise.TLSVersionOne2),
 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
@@ -89,6 +116,33 @@ func ExampleClient_BeginCreate() {
 	// 	Kind: to.Ptr(armredisenterprise.KindV1),
 	// 	Properties: &armredisenterprise.ClusterCreateProperties{
 	// 		HostName: to.Ptr("cache1.westus.something.azure.net"),
+	// 		MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
+	// 			MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 				},
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 				},
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 			}},
+	// 		},
 	// 		MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 	// 		ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 	// 		RedisVersion: to.Ptr("5"),
@@ -106,7 +160,7 @@ func ExampleClient_BeginCreate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseUpdate.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,6 +173,33 @@ func ExampleClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "rg1", "cache1", armredisenterprise.ClusterUpdate{
 		Properties: &armredisenterprise.ClusterUpdateProperties{
+			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
+				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
+					{
+						Type:     to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+						Duration: to.Ptr("PT6H"),
+						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
+						},
+						StartHourUTC: to.Ptr[int32](3),
+					},
+					{
+						Type:     to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+						Duration: to.Ptr("PT6H"),
+						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
+						},
+						StartHourUTC: to.Ptr[int32](3),
+					},
+					{
+						Type:     to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+						Duration: to.Ptr("PT6H"),
+						Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+							DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
+						},
+						StartHourUTC: to.Ptr[int32](3),
+					}},
+			},
 			MinimumTLSVersion:   to.Ptr(armredisenterprise.TLSVersionOne2),
 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessEnabled),
 		},
@@ -154,6 +235,33 @@ func ExampleClient_BeginUpdate() {
 	// 	Kind: to.Ptr(armredisenterprise.KindV1),
 	// 	Properties: &armredisenterprise.ClusterCreateProperties{
 	// 		HostName: to.Ptr("cache1.westus.something.azure.com"),
+	// 		MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
+	// 			MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 				},
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 				},
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 			}},
+	// 		},
 	// 		MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 	// 		ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
 	// 		RedisVersion: to.Ptr("5"),
@@ -171,7 +279,7 @@ func ExampleClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseDelete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +300,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseGet.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,6 +328,33 @@ func ExampleClient_Get() {
 	// 	Kind: to.Ptr(armredisenterprise.KindV1),
 	// 	Properties: &armredisenterprise.ClusterCreateProperties{
 	// 		HostName: to.Ptr("cache1.westus.something.azure.com"),
+	// 		MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
+	// 			MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekMonday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 				},
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekTuesday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 				},
+	// 				{
+	// 					Type: to.Ptr(armredisenterprise.MaintenanceWindowTypeWeekly),
+	// 					Duration: to.Ptr("PT6H"),
+	// 					Schedule: &armredisenterprise.MaintenanceWindowSchedule{
+	// 						DayOfWeek: to.Ptr(armredisenterprise.MaintenanceDayOfWeekWednesday),
+	// 					},
+	// 					StartHourUTC: to.Ptr[int32](3),
+	// 			}},
+	// 		},
 	// 		MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 	// 		PrivateEndpointConnections: []*armredisenterprise.PrivateEndpointConnection{
 	// 			{
@@ -251,7 +386,7 @@ func ExampleClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +439,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseList.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +488,7 @@ func ExampleClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3855ffb4be0cd4d227b130b67d874fa816736c04/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/stable/2025-07-01/examples/RedisEnterpriseListSkusForScaling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/722156dbf05314fd42fef5568d06c5f766eb61c0/specification/redisenterprise/resource-manager/Microsoft.Cache/RedisEnterprise/preview/2025-08-01-preview/examples/RedisEnterpriseListSkusForScaling.json
 func ExampleClient_ListSKUsForScaling() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

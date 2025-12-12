@@ -1,5 +1,49 @@
 # Release History
 
+## 4.0.0-beta.1 (2025-12-10)
+### Breaking Changes
+
+- Type of `ClusterCreateProperties.Encryption` has been changed from `*ClusterCommonPropertiesEncryption` to `*ClusterPropertiesEncryption`
+- Type of `ClusterUpdateProperties.Encryption` has been changed from `*ClusterCommonPropertiesEncryption` to `*ClusterPropertiesEncryption`
+- Type of `DatabaseCreateProperties.GeoReplication` has been changed from `*DatabaseCommonPropertiesGeoReplication` to `*DatabasePropertiesGeoReplication`
+- Type of `DatabaseUpdateProperties.GeoReplication` has been changed from `*DatabaseCommonPropertiesGeoReplication` to `*DatabasePropertiesGeoReplication`
+- Struct `ClusterCommonProperties` has been removed
+- Struct `ClusterCommonPropertiesEncryption` has been removed
+- Struct `ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryption` has been removed
+- Struct `ClusterCommonPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity` has been removed
+- Struct `DatabaseCommonProperties` has been removed
+- Struct `DatabaseCommonPropertiesGeoReplication` has been removed
+
+### Features Added
+
+- New enum type `MaintenanceDayOfWeek` with values `MaintenanceDayOfWeekFriday`, `MaintenanceDayOfWeekMonday`, `MaintenanceDayOfWeekSaturday`, `MaintenanceDayOfWeekSunday`, `MaintenanceDayOfWeekThursday`, `MaintenanceDayOfWeekTuesday`, `MaintenanceDayOfWeekWednesday`
+- New enum type `MaintenanceWindowType` with values `MaintenanceWindowTypeWeekly`
+- New enum type `MigrationProvisioningState` with values `MigrationProvisioningStateAccepted`, `MigrationProvisioningStateCancelled`, `MigrationProvisioningStateCancelling`, `MigrationProvisioningStateFailed`, `MigrationProvisioningStateInProgress`, `MigrationProvisioningStateReadyForDNSSwitch`, `MigrationProvisioningStateSucceeded`
+- New enum type `SourceType` with values `SourceTypeAzureCacheForRedis`
+- New function `*AzureCacheForRedisMigrationProperties.GetMigrationProperties() *MigrationProperties`
+- New function `*ClientFactory.NewMigrationClient() *MigrationClient`
+- New function `NewMigrationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationClient, error)`
+- New function `*MigrationClient.BeginCancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationClientBeginCancelOptions) (*runtime.Poller[MigrationClientCancelResponse], error)`
+- New function `*MigrationClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationClientGetOptions) (MigrationClientGetResponse, error)`
+- New function `*MigrationClient.NewListPager(resourceGroupName string, clusterName string, options *MigrationClientListOptions) *runtime.Pager[MigrationClientListResponse]`
+- New function `*MigrationClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationClientBeginStartOptions) (*runtime.Poller[MigrationClientStartResponse], error)`
+- New function `*MigrationProperties.GetMigrationProperties() *MigrationProperties`
+- New struct `AzureCacheForRedisMigrationProperties`
+- New struct `ClusterProperties`
+- New struct `ClusterPropertiesEncryption`
+- New struct `ClusterPropertiesEncryptionCustomerManagedKeyEncryption`
+- New struct `ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity`
+- New struct `DatabaseProperties`
+- New struct `DatabasePropertiesGeoReplication`
+- New struct `MaintenanceConfiguration`
+- New struct `MaintenanceWindow`
+- New struct `MaintenanceWindowSchedule`
+- New struct `Migration`
+- New struct `MigrationList`
+- New field `MaintenanceConfiguration` in struct `ClusterCreateProperties`
+- New field `MaintenanceConfiguration` in struct `ClusterUpdateProperties`
+
+
 ## 3.0.0 (2025-10-17)
 ### Breaking Changes
 

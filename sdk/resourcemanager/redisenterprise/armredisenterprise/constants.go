@@ -230,6 +230,46 @@ func PossibleLinkStateValues() []LinkState {
 	}
 }
 
+// MaintenanceDayOfWeek - Day of week. Required when the maintenance window type is 'Weekly'.
+type MaintenanceDayOfWeek string
+
+const (
+	MaintenanceDayOfWeekFriday    MaintenanceDayOfWeek = "Friday"
+	MaintenanceDayOfWeekMonday    MaintenanceDayOfWeek = "Monday"
+	MaintenanceDayOfWeekSaturday  MaintenanceDayOfWeek = "Saturday"
+	MaintenanceDayOfWeekSunday    MaintenanceDayOfWeek = "Sunday"
+	MaintenanceDayOfWeekThursday  MaintenanceDayOfWeek = "Thursday"
+	MaintenanceDayOfWeekTuesday   MaintenanceDayOfWeek = "Tuesday"
+	MaintenanceDayOfWeekWednesday MaintenanceDayOfWeek = "Wednesday"
+)
+
+// PossibleMaintenanceDayOfWeekValues returns the possible values for the MaintenanceDayOfWeek const type.
+func PossibleMaintenanceDayOfWeekValues() []MaintenanceDayOfWeek {
+	return []MaintenanceDayOfWeek{
+		MaintenanceDayOfWeekFriday,
+		MaintenanceDayOfWeekMonday,
+		MaintenanceDayOfWeekSaturday,
+		MaintenanceDayOfWeekSunday,
+		MaintenanceDayOfWeekThursday,
+		MaintenanceDayOfWeekTuesday,
+		MaintenanceDayOfWeekWednesday,
+	}
+}
+
+// MaintenanceWindowType - Maintenance window type.
+type MaintenanceWindowType string
+
+const (
+	MaintenanceWindowTypeWeekly MaintenanceWindowType = "Weekly"
+)
+
+// PossibleMaintenanceWindowTypeValues returns the possible values for the MaintenanceWindowType const type.
+func PossibleMaintenanceWindowTypeValues() []MaintenanceWindowType {
+	return []MaintenanceWindowType{
+		MaintenanceWindowTypeWeekly,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -247,6 +287,40 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// MigrationProvisioningState - Current provisioning status
+type MigrationProvisioningState string
+
+const (
+	// MigrationProvisioningStateAccepted - The request has been accepted and the migration operation is being initialized.
+	MigrationProvisioningStateAccepted MigrationProvisioningState = "Accepted"
+	// MigrationProvisioningStateCancelled - The migration operation has been cancelled.
+	MigrationProvisioningStateCancelled MigrationProvisioningState = "Cancelled"
+	// MigrationProvisioningStateCancelling - The migration operation is being cancelled.
+	MigrationProvisioningStateCancelling MigrationProvisioningState = "Cancelling"
+	// MigrationProvisioningStateFailed - The migration operation has failed.
+	MigrationProvisioningStateFailed MigrationProvisioningState = "Failed"
+	// MigrationProvisioningStateInProgress - The migration operation is in progress.
+	MigrationProvisioningStateInProgress MigrationProvisioningState = "InProgress"
+	// MigrationProvisioningStateReadyForDNSSwitch - The migration operation has completed transferring data and is ready for
+	// DNS switch.
+	MigrationProvisioningStateReadyForDNSSwitch MigrationProvisioningState = "ReadyForDnsSwitch"
+	// MigrationProvisioningStateSucceeded - The migration operation has completed successfully.
+	MigrationProvisioningStateSucceeded MigrationProvisioningState = "Succeeded"
+)
+
+// PossibleMigrationProvisioningStateValues returns the possible values for the MigrationProvisioningState const type.
+func PossibleMigrationProvisioningStateValues() []MigrationProvisioningState {
+	return []MigrationProvisioningState{
+		MigrationProvisioningStateAccepted,
+		MigrationProvisioningStateCancelled,
+		MigrationProvisioningStateCancelling,
+		MigrationProvisioningStateFailed,
+		MigrationProvisioningStateInProgress,
+		MigrationProvisioningStateReadyForDNSSwitch,
+		MigrationProvisioningStateSucceeded,
 	}
 }
 
@@ -567,6 +641,21 @@ func PossibleSKUNameValues() []SKUName {
 		SKUNameMemoryOptimizedM50,
 		SKUNameMemoryOptimizedM500,
 		SKUNameMemoryOptimizedM700,
+	}
+}
+
+// SourceType - Describes the source of the migration operation.
+type SourceType string
+
+const (
+	// SourceTypeAzureCacheForRedis - Migration from Azure Cache for Redis to Redis Enterprise.
+	SourceTypeAzureCacheForRedis SourceType = "AzureCacheForRedis"
+)
+
+// PossibleSourceTypeValues returns the possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{
+		SourceTypeAzureCacheForRedis,
 	}
 }
 

@@ -140,6 +140,29 @@ type DatabasesClientUpgradeDBRedisVersionResponse struct {
 	// placeholder for future response values
 }
 
+// MigrationClientCancelResponse contains the response from method MigrationClient.BeginCancel.
+type MigrationClientCancelResponse struct {
+	// placeholder for future response values
+}
+
+// MigrationClientGetResponse contains the response from method MigrationClient.Get.
+type MigrationClientGetResponse struct {
+	// Describes the current migration operation on a Redis Enterprise cluster.
+	Migration
+}
+
+// MigrationClientListResponse contains the response from method MigrationClient.NewListPager.
+type MigrationClientListResponse struct {
+	// The response of a list-all migrations.
+	MigrationList
+}
+
+// MigrationClientStartResponse contains the response from method MigrationClient.BeginStart.
+type MigrationClientStartResponse struct {
+	// Describes the current migration operation on a Redis Enterprise cluster.
+	Migration
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Clusters_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/Clusters_CreateOrUpdate.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Clusters_Delete.json
+// Generated from example definition: 2025-09-01/Clusters_Delete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleClustersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Clusters_Get.json
+// Generated from example definition: 2025-09-01/Clusters_Get.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Clusters_List.json
+// Generated from example definition: 2025-09-01/Clusters_List.json
 func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/Clusters_ListZones.json
+// Generated from example definition: 2025-09-01/Clusters_ListZones.json
 func ExampleClustersClient_ListZones_clustersListZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleClustersClient_ListZones_clustersListZones() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Clusters_ListZones_Stretched.json
+// Generated from example definition: 2025-09-01/Clusters_ListZones_Stretched.json
 func ExampleClustersClient_ListZones_clustersListZonesStretched() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleClustersClient_ListZones_clustersListZonesStretched() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Clusters_Update.json
+// Generated from example definition: 2025-09-01/Clusters_Update.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

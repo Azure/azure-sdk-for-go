@@ -42,7 +42,7 @@ func NewScriptCmdletsClient(subscriptionID string, credential azcore.TokenCreden
 // Get - Get a ScriptCmdlet
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - scriptPackageName - Name of the script package.
@@ -98,7 +98,7 @@ func (client *ScriptCmdletsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *ScriptCmdletsClient) getHandleResponse(resp *http.Response) (Scrip
 
 // NewListPager - List ScriptCmdlet resources by ScriptPackage
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - scriptPackageName - Name of the script package.
@@ -167,7 +167,7 @@ func (client *ScriptCmdletsClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

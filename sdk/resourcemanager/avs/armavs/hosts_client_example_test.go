@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Hosts_Get.json
+// Generated from example definition: 2025-09-01/Hosts_Get.json
 func ExampleHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Hosts_List.json
+// Generated from example definition: 2025-09-01/Hosts_List.json
 func ExampleHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

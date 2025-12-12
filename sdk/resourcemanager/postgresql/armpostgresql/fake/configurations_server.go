@@ -12,7 +12,8 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -20,10 +21,6 @@ import (
 
 // ConfigurationsServer is a fake server for instances of the armpostgresql.ConfigurationsClient type.
 type ConfigurationsServer struct {
-	// BeginCreateOrUpdate is the fake for method ConfigurationsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armpostgresql.Configuration, options *armpostgresql.ConfigurationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpostgresql.ConfigurationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
 	// Get is the fake for method ConfigurationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, options *armpostgresql.ConfigurationsClientGetOptions) (resp azfake.Responder[armpostgresql.ConfigurationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -31,6 +28,14 @@ type ConfigurationsServer struct {
 	// NewListByServerPager is the fake for method ConfigurationsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresql.ConfigurationsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresql.ConfigurationsClientListByServerResponse])
+
+	// BeginPut is the fake for method ConfigurationsClient.BeginPut
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPut func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armpostgresql.ConfigurationForUpdate, options *armpostgresql.ConfigurationsClientBeginPutOptions) (resp azfake.PollerResponder[armpostgresql.ConfigurationsClientPutResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ConfigurationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters armpostgresql.ConfigurationForUpdate, options *armpostgresql.ConfigurationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresql.ConfigurationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigurationsServerTransport creates a new instance of ConfigurationsServerTransport with the provided implementation.
@@ -39,8 +44,9 @@ type ConfigurationsServer struct {
 func NewConfigurationsServerTransport(srv *ConfigurationsServer) *ConfigurationsServerTransport {
 	return &ConfigurationsServerTransport{
 		srv:                  srv,
-		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armpostgresql.ConfigurationsClientCreateOrUpdateResponse]](),
 		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresql.ConfigurationsClientListByServerResponse]](),
+		beginPut:             newTracker[azfake.PollerResponder[armpostgresql.ConfigurationsClientPutResponse]](),
+		beginUpdate:          newTracker[azfake.PollerResponder[armpostgresql.ConfigurationsClientUpdateResponse]](),
 	}
 }
 
@@ -48,8 +54,9 @@ func NewConfigurationsServerTransport(srv *ConfigurationsServer) *Configurations
 // Don't use this type directly, use NewConfigurationsServerTransport instead.
 type ConfigurationsServerTransport struct {
 	srv                  *ConfigurationsServer
-	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armpostgresql.ConfigurationsClientCreateOrUpdateResponse]]
 	newListByServerPager *tracker[azfake.PagerResponder[armpostgresql.ConfigurationsClientListByServerResponse]]
+	beginPut             *tracker[azfake.PollerResponder[armpostgresql.ConfigurationsClientPutResponse]]
+	beginUpdate          *tracker[azfake.PollerResponder[armpostgresql.ConfigurationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationsServerTransport.
@@ -60,87 +67,56 @@ func (c *ConfigurationsServerTransport) Do(req *http.Request) (*http.Response, e
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
-
-	switch method {
-	case "ConfigurationsClient.BeginCreateOrUpdate":
-		resp, err = c.dispatchBeginCreateOrUpdate(req)
-	case "ConfigurationsClient.Get":
-		resp, err = c.dispatchGet(req)
-	case "ConfigurationsClient.NewListByServerPager":
-		resp, err = c.dispatchNewListByServerPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
-	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
+	return c.dispatchToMethodFake(req, method)
 }
 
-func (c *ConfigurationsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
-	}
-	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresql.Configuration](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdate = &respr
-		c.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
-	}
+func (c *ConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
 
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
-	if err != nil {
-		return nil, err
-	}
+	go func() {
+		var intercepted bool
+		var res result
+		if configurationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = configurationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ConfigurationsClient.Get":
+				res.resp, res.err = c.dispatchGet(req)
+			case "ConfigurationsClient.NewListByServerPager":
+				res.resp, res.err = c.dispatchNewListByServerPager(req)
+			case "ConfigurationsClient.BeginPut":
+				res.resp, res.err = c.dispatchBeginPut(req)
+			case "ConfigurationsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		c.beginCreateOrUpdate.remove(req)
-	}
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
 
-	return resp, nil
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
+	}
 }
 
 func (c *ConfigurationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -176,10 +152,10 @@ func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.R
 	}
 	newListByServerPager := c.newListByServerPager.get(req)
 	if newListByServerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -193,6 +169,9 @@ func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.R
 		resp := c.srv.NewListByServerPager(resourceGroupNameParam, serverNameParam, nil)
 		newListByServerPager = &resp
 		c.newListByServerPager.add(req, newListByServerPager)
+		server.PagerResponderInjectNextLinks(newListByServerPager, req, func(page *armpostgresql.ConfigurationsClientListByServerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
 	}
 	resp, err := server.PagerResponderNext(newListByServerPager, req)
 	if err != nil {
@@ -206,4 +185,114 @@ func (c *ConfigurationsServerTransport) dispatchNewListByServerPager(req *http.R
 		c.newListByServerPager.remove(req)
 	}
 	return resp, nil
+}
+
+func (c *ConfigurationsServerTransport) dispatchBeginPut(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginPut == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPut not implemented")}
+	}
+	beginPut := c.beginPut.get(req)
+	if beginPut == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresql.ConfigurationForUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginPut(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPut = &respr
+		c.beginPut.add(req, beginPut)
+	}
+
+	resp, err := server.PollerResponderNext(beginPut, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginPut.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPut) {
+		c.beginPut.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ConfigurationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresql.ConfigurationForUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		configurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, configurationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ConfigurationsServerTransport
+var configurationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

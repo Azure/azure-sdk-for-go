@@ -5,108 +5,798 @@
 
 package armpostgresql
 
+// AzureManagedDiskPerformanceTier - Storage tier of a server.
+type AzureManagedDiskPerformanceTier string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
-	moduleVersion = "v1.2.0"
+	// AzureManagedDiskPerformanceTierP1 - Entry-level SSD for minimal IOPS, ideal for light development or testing workloads.
+	AzureManagedDiskPerformanceTierP1 AzureManagedDiskPerformanceTier = "P1"
+	// AzureManagedDiskPerformanceTierP10 - Popular choice for general-purpose production workloads with scalable performance.
+	AzureManagedDiskPerformanceTierP10 AzureManagedDiskPerformanceTier = "P10"
+	// AzureManagedDiskPerformanceTierP15 - High IOPS tier for demanding apps with frequent read/write operations.
+	AzureManagedDiskPerformanceTierP15 AzureManagedDiskPerformanceTier = "P15"
+	// AzureManagedDiskPerformanceTierP2 - Slightly higher IOPS for small-scale applications needing consistent low latency.
+	AzureManagedDiskPerformanceTierP2 AzureManagedDiskPerformanceTier = "P2"
+	// AzureManagedDiskPerformanceTierP20 - Entry point for high-performance Solid State Disks (SSDs), suitable for small-scale
+	// I/O-intensive workloads.
+	AzureManagedDiskPerformanceTierP20 AzureManagedDiskPerformanceTier = "P20"
+	// AzureManagedDiskPerformanceTierP3 - Balanced performance for basic production workloads with moderate throughput.
+	AzureManagedDiskPerformanceTierP3 AzureManagedDiskPerformanceTier = "P3"
+	// AzureManagedDiskPerformanceTierP30 - Balanced tier for moderate throughput and latency-sensitive applications.
+	AzureManagedDiskPerformanceTierP30 AzureManagedDiskPerformanceTier = "P30"
+	// AzureManagedDiskPerformanceTierP4 - Enhanced IOPS for growing apps with predictable performance needs.
+	AzureManagedDiskPerformanceTierP4 AzureManagedDiskPerformanceTier = "P4"
+	// AzureManagedDiskPerformanceTierP40 - Enhanced performance for growing production workloads with consistent IOPS demands.
+	AzureManagedDiskPerformanceTierP40 AzureManagedDiskPerformanceTier = "P40"
+	// AzureManagedDiskPerformanceTierP50 - Optimized for enterprise-grade applications needing sustained high throughput.
+	AzureManagedDiskPerformanceTierP50 AzureManagedDiskPerformanceTier = "P50"
+	// AzureManagedDiskPerformanceTierP6 - Mid-tier SSD for steady workloads requiring reliable throughput and latency.
+	AzureManagedDiskPerformanceTierP6 AzureManagedDiskPerformanceTier = "P6"
+	// AzureManagedDiskPerformanceTierP60 - High-capacity tier for large databases and analytics workloads with elevated IOPS.
+	AzureManagedDiskPerformanceTierP60 AzureManagedDiskPerformanceTier = "P60"
+	// AzureManagedDiskPerformanceTierP70 - Designed for mission-critical systems requiring ultra-low latency and high concurrency.
+	AzureManagedDiskPerformanceTierP70 AzureManagedDiskPerformanceTier = "P70"
+	// AzureManagedDiskPerformanceTierP80 - Top-tier SSD for maximum IOPS and throughput, ideal for the most demanding workloads.
+	AzureManagedDiskPerformanceTierP80 AzureManagedDiskPerformanceTier = "P80"
 )
 
-// CreateMode - The mode to create a new server.
+// PossibleAzureManagedDiskPerformanceTierValues returns the possible values for the AzureManagedDiskPerformanceTier const type.
+func PossibleAzureManagedDiskPerformanceTierValues() []AzureManagedDiskPerformanceTier {
+	return []AzureManagedDiskPerformanceTier{
+		AzureManagedDiskPerformanceTierP1,
+		AzureManagedDiskPerformanceTierP10,
+		AzureManagedDiskPerformanceTierP15,
+		AzureManagedDiskPerformanceTierP2,
+		AzureManagedDiskPerformanceTierP20,
+		AzureManagedDiskPerformanceTierP3,
+		AzureManagedDiskPerformanceTierP30,
+		AzureManagedDiskPerformanceTierP4,
+		AzureManagedDiskPerformanceTierP40,
+		AzureManagedDiskPerformanceTierP50,
+		AzureManagedDiskPerformanceTierP6,
+		AzureManagedDiskPerformanceTierP60,
+		AzureManagedDiskPerformanceTierP70,
+		AzureManagedDiskPerformanceTierP80,
+	}
+}
+
+// BackupType - Type of backup.
+type BackupType string
+
+const (
+	// BackupTypeCustomerOnDemand - A full backup triggered by the customer. These backups are retained for a period of time as
+	// defined by the backup retention policy, and they can also be deleted by the customer.
+	BackupTypeCustomerOnDemand BackupType = "Customer On-Demand"
+	// BackupTypeFull - A full backup taken automatically by the service. These backups are retained for a period of time as defined
+	// by the backup retention policy, and they cannot be deleted by the customer.
+	BackupTypeFull BackupType = "Full"
+)
+
+// PossibleBackupTypeValues returns the possible values for the BackupType const type.
+func PossibleBackupTypeValues() []BackupType {
+	return []BackupType{
+		BackupTypeCustomerOnDemand,
+		BackupTypeFull,
+	}
+}
+
+// Cancel - Indicates if cancel must be triggered for the entire migration.
+type Cancel string
+
+const (
+	// CancelFalse - Cancel must not be triggered for the entire migration.
+	CancelFalse Cancel = "False"
+	// CancelTrue - Cancel must be triggered for the entire migration.
+	CancelTrue Cancel = "True"
+)
+
+// PossibleCancelValues returns the possible values for the Cancel const type.
+func PossibleCancelValues() []Cancel {
+	return []Cancel{
+		CancelFalse,
+		CancelTrue,
+	}
+}
+
+// CapabilityStatus - The status of the capability.
+type CapabilityStatus string
+
+const (
+	CapabilityStatusAvailable CapabilityStatus = "Available"
+	CapabilityStatusDefault   CapabilityStatus = "Default"
+	CapabilityStatusDisabled  CapabilityStatus = "Disabled"
+	CapabilityStatusVisible   CapabilityStatus = "Visible"
+)
+
+// PossibleCapabilityStatusValues returns the possible values for the CapabilityStatus const type.
+func PossibleCapabilityStatusValues() []CapabilityStatus {
+	return []CapabilityStatus{
+		CapabilityStatusAvailable,
+		CapabilityStatusDefault,
+		CapabilityStatusDisabled,
+		CapabilityStatusVisible,
+	}
+}
+
+// CheckNameAvailabilityReason - The reason why the given name is not available.
+type CheckNameAvailabilityReason string
+
+const (
+	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	CheckNameAvailabilityReasonInvalid       CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{
+		CheckNameAvailabilityReasonAlreadyExists,
+		CheckNameAvailabilityReasonInvalid,
+	}
+}
+
+// ConfigurationDataType - Data type of the configuration (also known as server parameter).
+type ConfigurationDataType string
+
+const (
+	// ConfigurationDataTypeBoolean - A boolean value.
+	ConfigurationDataTypeBoolean ConfigurationDataType = "Boolean"
+	// ConfigurationDataTypeEnumeration - An enumeration value.
+	ConfigurationDataTypeEnumeration ConfigurationDataType = "Enumeration"
+	// ConfigurationDataTypeInteger - An integer value.
+	ConfigurationDataTypeInteger ConfigurationDataType = "Integer"
+	// ConfigurationDataTypeNumeric - A numeric value.
+	ConfigurationDataTypeNumeric ConfigurationDataType = "Numeric"
+	// ConfigurationDataTypeSet - A set of values.
+	ConfigurationDataTypeSet ConfigurationDataType = "Set"
+	// ConfigurationDataTypeString - A string value.
+	ConfigurationDataTypeString ConfigurationDataType = "String"
+)
+
+// PossibleConfigurationDataTypeValues returns the possible values for the ConfigurationDataType const type.
+func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
+	return []ConfigurationDataType{
+		ConfigurationDataTypeBoolean,
+		ConfigurationDataTypeEnumeration,
+		ConfigurationDataTypeInteger,
+		ConfigurationDataTypeNumeric,
+		ConfigurationDataTypeSet,
+		ConfigurationDataTypeString,
+	}
+}
+
+// CreateMode - Creation mode of a new server.
 type CreateMode string
 
 const (
-	CreateModeDefault            CreateMode = "Default"
-	CreateModeGeoRestore         CreateMode = "GeoRestore"
+	// CreateModeCreate - Operation creates a new server.
+	CreateModeCreate CreateMode = "Create"
+	// CreateModeDefault - If the operation is triggered on a non-existing server, it's equivalent to 'Create'. If the operation
+	// is triggered on an existing server, it's equivalent to 'Update'.
+	CreateModeDefault CreateMode = "Default"
+	// CreateModeGeoRestore - Operation restores an existing backup of an existing server, on the paired region of the existing
+	// server. This operation creates a new server on the paired region of the existing server, and then restores on it the backup
+	// of an existing server at a specific point in time, in a different region. This operation is only supported on existing
+	// servers that were created with geographically redundant backups enabled.
+	CreateModeGeoRestore CreateMode = "GeoRestore"
+	// CreateModePointInTimeRestore - Operation restores an existing backup of an existing server. This operation creates a new
+	// server, and then restores on it the backup of an existing server at a specific point in time.
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
-	CreateModeReplica            CreateMode = "Replica"
+	// CreateModeReplica - Operation creates a replica of an existing server. This operation creates a new server, restores a
+	// base backup of the existing server (referred to as primary), and configures physical replication to asynchronously stream
+	// all changes which are recorded in the transaction log of the primary.
+	CreateModeReplica CreateMode = "Replica"
+	// CreateModeReviveDropped - Operation creates a new server, initialized with the backup of a server that was recently deleted.
+	CreateModeReviveDropped CreateMode = "ReviveDropped"
+	// CreateModeUpdate - Operation updates an existing server.
+	CreateModeUpdate CreateMode = "Update"
 )
 
 // PossibleCreateModeValues returns the possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{
+		CreateModeCreate,
 		CreateModeDefault,
 		CreateModeGeoRestore,
 		CreateModePointInTimeRestore,
 		CreateModeReplica,
+		CreateModeReviveDropped,
+		CreateModeUpdate,
 	}
 }
 
-// GeoRedundantBackup - Enable Geo-redundant or not for server backup.
-type GeoRedundantBackup string
+// CreateModeForPatch - Update mode of an existing server.
+type CreateModeForPatch string
 
 const (
-	GeoRedundantBackupDisabled GeoRedundantBackup = "Disabled"
-	GeoRedundantBackupEnabled  GeoRedundantBackup = "Enabled"
+	// CreateModeForPatchDefault - It's equivalent to 'Update'.
+	CreateModeForPatchDefault CreateModeForPatch = "Default"
+	// CreateModeForPatchUpdate - Operation updates an existing server.
+	CreateModeForPatchUpdate CreateModeForPatch = "Update"
 )
 
-// PossibleGeoRedundantBackupValues returns the possible values for the GeoRedundantBackup const type.
-func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
-	return []GeoRedundantBackup{
-		GeoRedundantBackupDisabled,
-		GeoRedundantBackupEnabled,
+// PossibleCreateModeForPatchValues returns the possible values for the CreateModeForPatch const type.
+func PossibleCreateModeForPatchValues() []CreateModeForPatch {
+	return []CreateModeForPatch{
+		CreateModeForPatchDefault,
+		CreateModeForPatchUpdate,
 	}
 }
 
-// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active
-// Directory principal for the resource.
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
+
+const (
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
+	}
+}
+
+// DataEncryptionType - Data encryption type used by a server.
+type DataEncryptionType string
+
+const (
+	// DataEncryptionTypeAzureKeyVault - Encryption using customer managed keys stored in Azure Key Vault for enhanced control
+	// and security.
+	DataEncryptionTypeAzureKeyVault DataEncryptionType = "AzureKeyVault"
+	// DataEncryptionTypeSystemManaged - Encryption managed by Azure using platform managed keys for simplicity and compliance.
+	DataEncryptionTypeSystemManaged DataEncryptionType = "SystemManaged"
+)
+
+// PossibleDataEncryptionTypeValues returns the possible values for the DataEncryptionType const type.
+func PossibleDataEncryptionTypeValues() []DataEncryptionType {
+	return []DataEncryptionType{
+		DataEncryptionTypeAzureKeyVault,
+		DataEncryptionTypeSystemManaged,
+	}
+}
+
+// EncryptionKeyStatus - Status of key used by a server configured with data encryption based on customer managed key, to
+// encrypt the primary storage associated to the server.
+type EncryptionKeyStatus string
+
+const (
+	// EncryptionKeyStatusInvalid - Key is invalid and cannot be used for encryption. Possible causes include key deletion, permission
+	// changes, key being disabled, key type not supported, or current date being outside of validity period associated to the
+	// key.
+	EncryptionKeyStatusInvalid EncryptionKeyStatus = "Invalid"
+	// EncryptionKeyStatusValid - Key is valid and can be used for encryption.
+	EncryptionKeyStatusValid EncryptionKeyStatus = "Valid"
+)
+
+// PossibleEncryptionKeyStatusValues returns the possible values for the EncryptionKeyStatus const type.
+func PossibleEncryptionKeyStatusValues() []EncryptionKeyStatus {
+	return []EncryptionKeyStatus{
+		EncryptionKeyStatusInvalid,
+		EncryptionKeyStatusValid,
+	}
+}
+
+// ExecutionStatus - Service-set extensible enum indicating the status of operation
+type ExecutionStatus string
+
+const (
+	// ExecutionStatusCancelled - The operation was cancelled.
+	ExecutionStatusCancelled ExecutionStatus = "Cancelled"
+	// ExecutionStatusFailed - The operation failed.
+	ExecutionStatusFailed ExecutionStatus = "Failed"
+	// ExecutionStatusRunning - The operation is currently running.
+	ExecutionStatusRunning ExecutionStatus = "Running"
+	// ExecutionStatusSucceeded - The operation succeeded.
+	ExecutionStatusSucceeded ExecutionStatus = "Succeeded"
+)
+
+// PossibleExecutionStatusValues returns the possible values for the ExecutionStatus const type.
+func PossibleExecutionStatusValues() []ExecutionStatus {
+	return []ExecutionStatus{
+		ExecutionStatusCancelled,
+		ExecutionStatusFailed,
+		ExecutionStatusRunning,
+		ExecutionStatusSucceeded,
+	}
+}
+
+// FailoverMode - Failover mode.
+type FailoverMode string
+
+const (
+	// FailoverModeForcedFailover - Kills the primary database process first, then triggers the failover. This is more aggressive
+	// and used when the primary is unresponsive or in an unhealthy state.
+	FailoverModeForcedFailover FailoverMode = "ForcedFailover"
+	// FailoverModeForcedSwitchover - Kills the primary database process and then triggers a switch over with role swapping.
+	FailoverModeForcedSwitchover FailoverMode = "ForcedSwitchover"
+	// FailoverModePlannedFailover - Triggers a failover from primary to standby without killing the primary database process
+	// first. This is a graceful failover that attempts to preserve data consistency.
+	FailoverModePlannedFailover FailoverMode = "PlannedFailover"
+	// FailoverModePlannedSwitchover - Similar to 'PlannedFailover' but prefers a switch over operation where roles are swapped
+	// between primary and standby.
+	FailoverModePlannedSwitchover FailoverMode = "PlannedSwitchover"
+)
+
+// PossibleFailoverModeValues returns the possible values for the FailoverMode const type.
+func PossibleFailoverModeValues() []FailoverMode {
+	return []FailoverMode{
+		FailoverModeForcedFailover,
+		FailoverModeForcedSwitchover,
+		FailoverModePlannedFailover,
+		FailoverModePlannedSwitchover,
+	}
+}
+
+// FastProvisioningSupport - Indicates if fast provisioning is supported. 'Enabled' means fast provisioning is supported.
+// 'Disabled' stands for fast provisioning is not supported. Will be deprecated in the future. Look to
+// Supported Features for 'FastProvisioning'.
+type FastProvisioningSupport string
+
+const (
+	// FastProvisioningSupportDisabled - Fast provisioning is not supported.
+	FastProvisioningSupportDisabled FastProvisioningSupport = "Disabled"
+	// FastProvisioningSupportEnabled - Fast provisioning is supported.
+	FastProvisioningSupportEnabled FastProvisioningSupport = "Enabled"
+)
+
+// PossibleFastProvisioningSupportValues returns the possible values for the FastProvisioningSupport const type.
+func PossibleFastProvisioningSupportValues() []FastProvisioningSupport {
+	return []FastProvisioningSupport{
+		FastProvisioningSupportDisabled,
+		FastProvisioningSupportEnabled,
+	}
+}
+
+// FeatureStatus - Status of the feature. Indicates if the feature is enabled or not.
+type FeatureStatus string
+
+const (
+	// FeatureStatusDisabled - Feature is disabled.
+	FeatureStatusDisabled FeatureStatus = "Disabled"
+	// FeatureStatusEnabled - Feature is enabled.
+	FeatureStatusEnabled FeatureStatus = "Enabled"
+)
+
+// PossibleFeatureStatusValues returns the possible values for the FeatureStatus const type.
+func PossibleFeatureStatusValues() []FeatureStatus {
+	return []FeatureStatus{
+		FeatureStatusDisabled,
+		FeatureStatusEnabled,
+	}
+}
+
+// GeographicallyRedundantBackup - Indicates if the server is configured to create geographically redundant backups.
+type GeographicallyRedundantBackup string
+
+const (
+	// GeographicallyRedundantBackupDisabled - Server is not configured to create geographically redundant backups.
+	GeographicallyRedundantBackupDisabled GeographicallyRedundantBackup = "Disabled"
+	// GeographicallyRedundantBackupEnabled - Server is configured to create geographically redundant backups.
+	GeographicallyRedundantBackupEnabled GeographicallyRedundantBackup = "Enabled"
+)
+
+// PossibleGeographicallyRedundantBackupValues returns the possible values for the GeographicallyRedundantBackup const type.
+func PossibleGeographicallyRedundantBackupValues() []GeographicallyRedundantBackup {
+	return []GeographicallyRedundantBackup{
+		GeographicallyRedundantBackupDisabled,
+		GeographicallyRedundantBackupEnabled,
+	}
+}
+
+// GeographicallyRedundantBackupSupport - Indicates if geographically redundant backups are supported in this location. 'Enabled'
+// means geographically redundant backups are supported. 'Disabled' stands for geographically redundant backup is
+// not supported. Will be deprecated in the future. Look to Supported Features for 'GeoBackup'.
+type GeographicallyRedundantBackupSupport string
+
+const (
+	// GeographicallyRedundantBackupSupportDisabled - Geographically redundant backups are not supported.
+	GeographicallyRedundantBackupSupportDisabled GeographicallyRedundantBackupSupport = "Disabled"
+	// GeographicallyRedundantBackupSupportEnabled - Geographically redundant backups are supported.
+	GeographicallyRedundantBackupSupportEnabled GeographicallyRedundantBackupSupport = "Enabled"
+)
+
+// PossibleGeographicallyRedundantBackupSupportValues returns the possible values for the GeographicallyRedundantBackupSupport const type.
+func PossibleGeographicallyRedundantBackupSupportValues() []GeographicallyRedundantBackupSupport {
+	return []GeographicallyRedundantBackupSupport{
+		GeographicallyRedundantBackupSupportDisabled,
+		GeographicallyRedundantBackupSupportEnabled,
+	}
+}
+
+// HighAvailabilityMode - Modes of high availability supported for this compute.
+type HighAvailabilityMode string
+
+const (
+	// HighAvailabilityModeSameZone - High availability is enabled for the server, with standby server in the same availability
+	// zone as the primary.
+	HighAvailabilityModeSameZone HighAvailabilityMode = "SameZone"
+	// HighAvailabilityModeZoneRedundant - High availability is enabled for the server, with standby server in a different availability
+	// zone than that of the primary.
+	HighAvailabilityModeZoneRedundant HighAvailabilityMode = "ZoneRedundant"
+)
+
+// PossibleHighAvailabilityModeValues returns the possible values for the HighAvailabilityMode const type.
+func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
+	return []HighAvailabilityMode{
+		HighAvailabilityModeSameZone,
+		HighAvailabilityModeZoneRedundant,
+	}
+}
+
+// HighAvailabilityState - Possible states of the standby server created when high availability is set to SameZone or ZoneRedundant.
+type HighAvailabilityState string
+
+const (
+	// HighAvailabilityStateCreatingStandby - Standby server is being created.
+	HighAvailabilityStateCreatingStandby HighAvailabilityState = "CreatingStandby"
+	// HighAvailabilityStateFailingOver - Failover operation to the standby server is in progress.
+	HighAvailabilityStateFailingOver HighAvailabilityState = "FailingOver"
+	// HighAvailabilityStateHealthy - Standby server is healthy and ready to take over in case of a failover.
+	HighAvailabilityStateHealthy HighAvailabilityState = "Healthy"
+	// HighAvailabilityStateNotEnabled - High availability is not enabled for the server.
+	HighAvailabilityStateNotEnabled HighAvailabilityState = "NotEnabled"
+	// HighAvailabilityStateRemovingStandby - Standby server is being removed.
+	HighAvailabilityStateRemovingStandby HighAvailabilityState = "RemovingStandby"
+	// HighAvailabilityStateReplicatingData - Data is being replicated to the standby server.
+	HighAvailabilityStateReplicatingData HighAvailabilityState = "ReplicatingData"
+)
+
+// PossibleHighAvailabilityStateValues returns the possible values for the HighAvailabilityState const type.
+func PossibleHighAvailabilityStateValues() []HighAvailabilityState {
+	return []HighAvailabilityState{
+		HighAvailabilityStateCreatingStandby,
+		HighAvailabilityStateFailingOver,
+		HighAvailabilityStateHealthy,
+		HighAvailabilityStateNotEnabled,
+		HighAvailabilityStateRemovingStandby,
+		HighAvailabilityStateReplicatingData,
+	}
+}
+
+// IdentityType - Types of identities associated with a server.
 type IdentityType string
 
 const (
+	// IdentityTypeNone - No managed identity is assigned to the server.
+	IdentityTypeNone IdentityType = "None"
+	// IdentityTypeSystemAssigned - Azure automatically creates and manages the identity associated to the lifecycle of the server.
 	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+	// IdentityTypeSystemAssignedUserAssigned - Both system-assigned and user-assigned identities are assigned to the server.
+	IdentityTypeSystemAssignedUserAssigned IdentityType = "SystemAssigned,UserAssigned"
+	// IdentityTypeUserAssigned - One or more managed identities provided by the user are assigned to the server.
+	IdentityTypeUserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
 	return []IdentityType{
+		IdentityTypeNone,
 		IdentityTypeSystemAssigned,
+		IdentityTypeSystemAssignedUserAssigned,
+		IdentityTypeUserAssigned,
 	}
 }
 
-// InfrastructureEncryption - Add a second layer of encryption for your data using new encryption algorithm which gives additional
-// data protection. Value is optional but if passed in, must be 'Disabled' or 'Enabled'.
-type InfrastructureEncryption string
+// LocationRestricted - Indicates if this location is restricted. 'Enabled' means location is restricted. 'Disabled' stands
+// for location is not restricted. Will be deprecated in the future. Look to Supported Features for
+// 'Restricted'.
+type LocationRestricted string
 
 const (
-	// InfrastructureEncryptionDisabled - Additional (2nd) layer of encryption for data at rest
-	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
-	// InfrastructureEncryptionEnabled - Default value for single layer of encryption for data at rest.
-	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
+	// LocationRestrictedDisabled - Location is not restricted.
+	LocationRestrictedDisabled LocationRestricted = "Disabled"
+	// LocationRestrictedEnabled - Location is restricted.
+	LocationRestrictedEnabled LocationRestricted = "Enabled"
 )
 
-// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
-func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
-	return []InfrastructureEncryption{
-		InfrastructureEncryptionDisabled,
-		InfrastructureEncryptionEnabled,
+// PossibleLocationRestrictedValues returns the possible values for the LocationRestricted const type.
+func PossibleLocationRestrictedValues() []LocationRestricted {
+	return []LocationRestricted{
+		LocationRestrictedDisabled,
+		LocationRestrictedEnabled,
 	}
 }
 
-// MinimalTLSVersionEnum - Enforce a minimal Tls version for the server.
-type MinimalTLSVersionEnum string
+// LogicalReplicationOnSourceServer - Indicates whether to setup logical replication on source server, if needed.
+type LogicalReplicationOnSourceServer string
 
 const (
-	MinimalTLSVersionEnumTLS10                  MinimalTLSVersionEnum = "TLS1_0"
-	MinimalTLSVersionEnumTLS11                  MinimalTLSVersionEnum = "TLS1_1"
-	MinimalTLSVersionEnumTLS12                  MinimalTLSVersionEnum = "TLS1_2"
-	MinimalTLSVersionEnumTLSEnforcementDisabled MinimalTLSVersionEnum = "TLSEnforcementDisabled"
+	// LogicalReplicationOnSourceServerFalse - Logical replication will not be set up on the source server.
+	LogicalReplicationOnSourceServerFalse LogicalReplicationOnSourceServer = "False"
+	// LogicalReplicationOnSourceServerTrue - Logical replication will be set up on the source server.
+	LogicalReplicationOnSourceServerTrue LogicalReplicationOnSourceServer = "True"
 )
 
-// PossibleMinimalTLSVersionEnumValues returns the possible values for the MinimalTLSVersionEnum const type.
-func PossibleMinimalTLSVersionEnumValues() []MinimalTLSVersionEnum {
-	return []MinimalTLSVersionEnum{
-		MinimalTLSVersionEnumTLS10,
-		MinimalTLSVersionEnumTLS11,
-		MinimalTLSVersionEnumTLS12,
-		MinimalTLSVersionEnumTLSEnforcementDisabled,
+// PossibleLogicalReplicationOnSourceServerValues returns the possible values for the LogicalReplicationOnSourceServer const type.
+func PossibleLogicalReplicationOnSourceServerValues() []LogicalReplicationOnSourceServer {
+	return []LogicalReplicationOnSourceServer{
+		LogicalReplicationOnSourceServerFalse,
+		LogicalReplicationOnSourceServerTrue,
 	}
 }
 
-// OperationOrigin - The intended executor of the operation.
+// MicrosoftEntraAuth - Indicates if the server supports Microsoft Entra authentication.
+type MicrosoftEntraAuth string
+
+const (
+	// MicrosoftEntraAuthDisabled - Server doesn't support Microsoft Entra authentication.
+	MicrosoftEntraAuthDisabled MicrosoftEntraAuth = "Disabled"
+	// MicrosoftEntraAuthEnabled - Server supports Microsoft Entra authentication.
+	MicrosoftEntraAuthEnabled MicrosoftEntraAuth = "Enabled"
+)
+
+// PossibleMicrosoftEntraAuthValues returns the possible values for the MicrosoftEntraAuth const type.
+func PossibleMicrosoftEntraAuthValues() []MicrosoftEntraAuth {
+	return []MicrosoftEntraAuth{
+		MicrosoftEntraAuthDisabled,
+		MicrosoftEntraAuthEnabled,
+	}
+}
+
+// MigrateRolesAndPermissions - Indicates if roles and permissions must be migrated.
+type MigrateRolesAndPermissions string
+
+const (
+	// MigrateRolesAndPermissionsFalse - Roles and permissions will not be migrated.
+	MigrateRolesAndPermissionsFalse MigrateRolesAndPermissions = "False"
+	// MigrateRolesAndPermissionsTrue - Roles and permissions will be migrated.
+	MigrateRolesAndPermissionsTrue MigrateRolesAndPermissions = "True"
+)
+
+// PossibleMigrateRolesAndPermissionsValues returns the possible values for the MigrateRolesAndPermissions const type.
+func PossibleMigrateRolesAndPermissionsValues() []MigrateRolesAndPermissions {
+	return []MigrateRolesAndPermissions{
+		MigrateRolesAndPermissionsFalse,
+		MigrateRolesAndPermissionsTrue,
+	}
+}
+
+// MigrationDatabaseState - Migration state of a database.
+type MigrationDatabaseState string
+
+const (
+	// MigrationDatabaseStateCanceled - Migration has been canceled for the database.
+	MigrationDatabaseStateCanceled MigrationDatabaseState = "Canceled"
+	// MigrationDatabaseStateCanceling - Migration is canceling for the database.
+	MigrationDatabaseStateCanceling MigrationDatabaseState = "Canceling"
+	// MigrationDatabaseStateFailed - Migration has failed for the database.
+	MigrationDatabaseStateFailed MigrationDatabaseState = "Failed"
+	// MigrationDatabaseStateInProgress - Migration is in progress for the database.
+	MigrationDatabaseStateInProgress MigrationDatabaseState = "InProgress"
+	// MigrationDatabaseStateSucceeded - Migration has succeeded for the database.
+	MigrationDatabaseStateSucceeded MigrationDatabaseState = "Succeeded"
+	// MigrationDatabaseStateWaitingForCutoverTrigger - Migration is waiting for cutover trigger for the database.
+	MigrationDatabaseStateWaitingForCutoverTrigger MigrationDatabaseState = "WaitingForCutoverTrigger"
+)
+
+// PossibleMigrationDatabaseStateValues returns the possible values for the MigrationDatabaseState const type.
+func PossibleMigrationDatabaseStateValues() []MigrationDatabaseState {
+	return []MigrationDatabaseState{
+		MigrationDatabaseStateCanceled,
+		MigrationDatabaseStateCanceling,
+		MigrationDatabaseStateFailed,
+		MigrationDatabaseStateInProgress,
+		MigrationDatabaseStateSucceeded,
+		MigrationDatabaseStateWaitingForCutoverTrigger,
+	}
+}
+
+// MigrationDetailsLevel - Level of details of a migration.
+type MigrationDetailsLevel string
+
+const (
+	// MigrationDetailsLevelDefault - Default level of details.
+	MigrationDetailsLevelDefault MigrationDetailsLevel = "Default"
+	// MigrationDetailsLevelFull - Full level of details.
+	MigrationDetailsLevelFull MigrationDetailsLevel = "Full"
+	// MigrationDetailsLevelSummary - Summary level of details.
+	MigrationDetailsLevelSummary MigrationDetailsLevel = "Summary"
+)
+
+// PossibleMigrationDetailsLevelValues returns the possible values for the MigrationDetailsLevel const type.
+func PossibleMigrationDetailsLevelValues() []MigrationDetailsLevel {
+	return []MigrationDetailsLevel{
+		MigrationDetailsLevelDefault,
+		MigrationDetailsLevelFull,
+		MigrationDetailsLevelSummary,
+	}
+}
+
+type MigrationListFilter string
+
+const (
+	// MigrationListFilterActive - Only active (in-progress) migrations.
+	MigrationListFilterActive MigrationListFilter = "Active"
+	// MigrationListFilterAll - All migrations.
+	MigrationListFilterAll MigrationListFilter = "All"
+)
+
+// PossibleMigrationListFilterValues returns the possible values for the MigrationListFilter const type.
+func PossibleMigrationListFilterValues() []MigrationListFilter {
+	return []MigrationListFilter{
+		MigrationListFilterActive,
+		MigrationListFilterAll,
+	}
+}
+
+// MigrationMode - Mode used to perform the migration: Online or Offline.
+type MigrationMode string
+
+const (
+	// MigrationModeOffline - Offline migration mode.
+	MigrationModeOffline MigrationMode = "Offline"
+	// MigrationModeOnline - Online migration mode.
+	MigrationModeOnline MigrationMode = "Online"
+)
+
+// PossibleMigrationModeValues returns the possible values for the MigrationMode const type.
+func PossibleMigrationModeValues() []MigrationMode {
+	return []MigrationMode{
+		MigrationModeOffline,
+		MigrationModeOnline,
+	}
+}
+
+// MigrationNameAvailabilityReason - Migration name availability reason.
+type MigrationNameAvailabilityReason string
+
+const (
+	// MigrationNameAvailabilityReasonAlreadyExists - Migration name already exists.
+	MigrationNameAvailabilityReasonAlreadyExists MigrationNameAvailabilityReason = "AlreadyExists"
+	// MigrationNameAvailabilityReasonInvalid - Migration name is invalid.
+	MigrationNameAvailabilityReasonInvalid MigrationNameAvailabilityReason = "Invalid"
+)
+
+// PossibleMigrationNameAvailabilityReasonValues returns the possible values for the MigrationNameAvailabilityReason const type.
+func PossibleMigrationNameAvailabilityReasonValues() []MigrationNameAvailabilityReason {
+	return []MigrationNameAvailabilityReason{
+		MigrationNameAvailabilityReasonAlreadyExists,
+		MigrationNameAvailabilityReasonInvalid,
+	}
+}
+
+// MigrationOption - Supported option for a migration
+type MigrationOption string
+
+const (
+	// MigrationOptionMigrate - Perform the migration.
+	MigrationOptionMigrate MigrationOption = "Migrate"
+	// MigrationOptionValidate - Validate the migration without performing it.
+	MigrationOptionValidate MigrationOption = "Validate"
+	// MigrationOptionValidateAndMigrate - Validate and perform the migration.
+	MigrationOptionValidateAndMigrate MigrationOption = "ValidateAndMigrate"
+)
+
+// PossibleMigrationOptionValues returns the possible values for the MigrationOption const type.
+func PossibleMigrationOptionValues() []MigrationOption {
+	return []MigrationOption{
+		MigrationOptionMigrate,
+		MigrationOptionValidate,
+		MigrationOptionValidateAndMigrate,
+	}
+}
+
+// MigrationState - State of migration.
+type MigrationState string
+
+const (
+	// MigrationStateCanceled - Migration has been canceled.
+	MigrationStateCanceled MigrationState = "Canceled"
+	// MigrationStateCleaningUp - Migration is cleaning up resources.
+	MigrationStateCleaningUp MigrationState = "CleaningUp"
+	// MigrationStateFailed - Migration has failed.
+	MigrationStateFailed MigrationState = "Failed"
+	// MigrationStateInProgress - Migration is in progress.
+	MigrationStateInProgress MigrationState = "InProgress"
+	// MigrationStateSucceeded - Migration has succeeded.
+	MigrationStateSucceeded MigrationState = "Succeeded"
+	// MigrationStateValidationFailed - Validation for migration has failed.
+	MigrationStateValidationFailed MigrationState = "ValidationFailed"
+	// MigrationStateWaitingForUserAction - Migration is waiting for user action.
+	MigrationStateWaitingForUserAction MigrationState = "WaitingForUserAction"
+)
+
+// PossibleMigrationStateValues returns the possible values for the MigrationState const type.
+func PossibleMigrationStateValues() []MigrationState {
+	return []MigrationState{
+		MigrationStateCanceled,
+		MigrationStateCleaningUp,
+		MigrationStateFailed,
+		MigrationStateInProgress,
+		MigrationStateSucceeded,
+		MigrationStateValidationFailed,
+		MigrationStateWaitingForUserAction,
+	}
+}
+
+// MigrationSubstate - Substate of migration.
+type MigrationSubstate string
+
+const (
+	// MigrationSubstateCancelingRequestedDBMigrations - Canceling requested database migrations.
+	MigrationSubstateCancelingRequestedDBMigrations MigrationSubstate = "CancelingRequestedDBMigrations"
+	// MigrationSubstateCompleted - Migration completed.
+	MigrationSubstateCompleted MigrationSubstate = "Completed"
+	// MigrationSubstateCompletingMigration - Completing migration.
+	MigrationSubstateCompletingMigration MigrationSubstate = "CompletingMigration"
+	// MigrationSubstateMigratingData - Migrating data.
+	MigrationSubstateMigratingData MigrationSubstate = "MigratingData"
+	// MigrationSubstatePerformingPreRequisiteSteps - Performing pre-requisite steps for migration.
+	MigrationSubstatePerformingPreRequisiteSteps MigrationSubstate = "PerformingPreRequisiteSteps"
+	// MigrationSubstateValidationInProgress - Validation in progress.
+	MigrationSubstateValidationInProgress MigrationSubstate = "ValidationInProgress"
+	// MigrationSubstateWaitingForCutoverTrigger - Waiting for cutover trigger.
+	MigrationSubstateWaitingForCutoverTrigger MigrationSubstate = "WaitingForCutoverTrigger"
+	// MigrationSubstateWaitingForDBsToMigrateSpecification - Waiting for databases to migrate specification.
+	MigrationSubstateWaitingForDBsToMigrateSpecification MigrationSubstate = "WaitingForDBsToMigrateSpecification"
+	// MigrationSubstateWaitingForDataMigrationScheduling - Waiting for data migration scheduling.
+	MigrationSubstateWaitingForDataMigrationScheduling MigrationSubstate = "WaitingForDataMigrationScheduling"
+	// MigrationSubstateWaitingForDataMigrationWindow - Waiting for data migration window.
+	MigrationSubstateWaitingForDataMigrationWindow MigrationSubstate = "WaitingForDataMigrationWindow"
+	// MigrationSubstateWaitingForLogicalReplicationSetupRequestOnSourceDB - Waiting for logical replication setup request on
+	// source database.
+	MigrationSubstateWaitingForLogicalReplicationSetupRequestOnSourceDB MigrationSubstate = "WaitingForLogicalReplicationSetupRequestOnSourceDB"
+	// MigrationSubstateWaitingForTargetDBOverwriteConfirmation - Waiting for target database overwrite confirmation.
+	MigrationSubstateWaitingForTargetDBOverwriteConfirmation MigrationSubstate = "WaitingForTargetDBOverwriteConfirmation"
+)
+
+// PossibleMigrationSubstateValues returns the possible values for the MigrationSubstate const type.
+func PossibleMigrationSubstateValues() []MigrationSubstate {
+	return []MigrationSubstate{
+		MigrationSubstateCancelingRequestedDBMigrations,
+		MigrationSubstateCompleted,
+		MigrationSubstateCompletingMigration,
+		MigrationSubstateMigratingData,
+		MigrationSubstatePerformingPreRequisiteSteps,
+		MigrationSubstateValidationInProgress,
+		MigrationSubstateWaitingForCutoverTrigger,
+		MigrationSubstateWaitingForDBsToMigrateSpecification,
+		MigrationSubstateWaitingForDataMigrationScheduling,
+		MigrationSubstateWaitingForDataMigrationWindow,
+		MigrationSubstateWaitingForLogicalReplicationSetupRequestOnSourceDB,
+		MigrationSubstateWaitingForTargetDBOverwriteConfirmation,
+	}
+}
+
+// OnlineStorageResizeSupport - Indicates if resizing the storage, without interrupting the operation of the database engine,
+// is supported in this location for the given subscription. 'Enabled' means resizing the storage without
+// interrupting the operation of the database engine is supported. 'Disabled' means resizing the storage without interrupting
+// the operation of the database engine is not supported. Will be deprecated in
+// the future. Look to Supported Features for 'OnlineResize'.
+type OnlineStorageResizeSupport string
+
+const (
+	// OnlineStorageResizeSupportDisabled - Resizing the storage without interrupting the operation of the database engine is
+	// not supported.
+	OnlineStorageResizeSupportDisabled OnlineStorageResizeSupport = "Disabled"
+	// OnlineStorageResizeSupportEnabled - Resizing the storage without interrupting the operation of the database engine is supported.
+	OnlineStorageResizeSupportEnabled OnlineStorageResizeSupport = "Enabled"
+)
+
+// PossibleOnlineStorageResizeSupportValues returns the possible values for the OnlineStorageResizeSupport const type.
+func PossibleOnlineStorageResizeSupportValues() []OnlineStorageResizeSupport {
+	return []OnlineStorageResizeSupport{
+		OnlineStorageResizeSupportDisabled,
+		OnlineStorageResizeSupportEnabled,
+	}
+}
+
+// OperationOrigin - Intended executor of the operation.
 type OperationOrigin string
 
 const (
+	// OperationOriginNotSpecified - The origin is not specified.
 	OperationOriginNotSpecified OperationOrigin = "NotSpecified"
-	OperationOriginSystem       OperationOrigin = "system"
-	OperationOriginUser         OperationOrigin = "user"
+	// OperationOriginSystem - The operation is initiated by the system.
+	OperationOriginSystem OperationOrigin = "system"
+	// OperationOriginUser - The operation is initiated by a user.
+	OperationOriginUser OperationOrigin = "user"
 )
 
 // PossibleOperationOriginValues returns the possible values for the OperationOrigin const type.
@@ -118,84 +808,285 @@ func PossibleOperationOriginValues() []OperationOrigin {
 	}
 }
 
-// PrivateEndpointProvisioningState - State of the private endpoint connection.
-type PrivateEndpointProvisioningState string
+// OverwriteDatabasesOnTargetServer - Indicates if databases on the target server can be overwritten when already present.
+// If set to 'False', when the migration workflow detects that the database already exists on the target server, it
+// will wait for a confirmation.
+type OverwriteDatabasesOnTargetServer string
 
 const (
-	PrivateEndpointProvisioningStateApproving PrivateEndpointProvisioningState = "Approving"
-	PrivateEndpointProvisioningStateDropping  PrivateEndpointProvisioningState = "Dropping"
-	PrivateEndpointProvisioningStateFailed    PrivateEndpointProvisioningState = "Failed"
-	PrivateEndpointProvisioningStateReady     PrivateEndpointProvisioningState = "Ready"
-	PrivateEndpointProvisioningStateRejecting PrivateEndpointProvisioningState = "Rejecting"
+	// OverwriteDatabasesOnTargetServerFalse - Databases on the target server cannot be overwritten when already present.
+	OverwriteDatabasesOnTargetServerFalse OverwriteDatabasesOnTargetServer = "False"
+	// OverwriteDatabasesOnTargetServerTrue - Databases on the target server can be overwritten when already present.
+	OverwriteDatabasesOnTargetServerTrue OverwriteDatabasesOnTargetServer = "True"
 )
 
-// PossiblePrivateEndpointProvisioningStateValues returns the possible values for the PrivateEndpointProvisioningState const type.
-func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
-	return []PrivateEndpointProvisioningState{
-		PrivateEndpointProvisioningStateApproving,
-		PrivateEndpointProvisioningStateDropping,
-		PrivateEndpointProvisioningStateFailed,
-		PrivateEndpointProvisioningStateReady,
-		PrivateEndpointProvisioningStateRejecting,
+// PossibleOverwriteDatabasesOnTargetServerValues returns the possible values for the OverwriteDatabasesOnTargetServer const type.
+func PossibleOverwriteDatabasesOnTargetServerValues() []OverwriteDatabasesOnTargetServer {
+	return []OverwriteDatabasesOnTargetServer{
+		OverwriteDatabasesOnTargetServerFalse,
+		OverwriteDatabasesOnTargetServerTrue,
 	}
 }
 
-// PrivateLinkServiceConnectionStateActionsRequire - The actions required for private link service connection.
-type PrivateLinkServiceConnectionStateActionsRequire string
+// PasswordBasedAuth - Indicates if the server supports password based authentication.
+type PasswordBasedAuth string
 
 const (
-	PrivateLinkServiceConnectionStateActionsRequireNone PrivateLinkServiceConnectionStateActionsRequire = "None"
+	// PasswordBasedAuthDisabled - Server doesn't support password based authentication.
+	PasswordBasedAuthDisabled PasswordBasedAuth = "Disabled"
+	// PasswordBasedAuthEnabled - Server supports password based authentication.
+	PasswordBasedAuthEnabled PasswordBasedAuth = "Enabled"
 )
 
-// PossiblePrivateLinkServiceConnectionStateActionsRequireValues returns the possible values for the PrivateLinkServiceConnectionStateActionsRequire const type.
-func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLinkServiceConnectionStateActionsRequire {
-	return []PrivateLinkServiceConnectionStateActionsRequire{
-		PrivateLinkServiceConnectionStateActionsRequireNone,
+// PossiblePasswordBasedAuthValues returns the possible values for the PasswordBasedAuth const type.
+func PossiblePasswordBasedAuthValues() []PasswordBasedAuth {
+	return []PasswordBasedAuth{
+		PasswordBasedAuthDisabled,
+		PasswordBasedAuthEnabled,
 	}
 }
 
-// PrivateLinkServiceConnectionStateStatus - The private link service connection status.
-type PrivateLinkServiceConnectionStateStatus string
+// PostgresMajorVersion - Major version of PostgreSQL database engine.
+type PostgresMajorVersion string
 
 const (
-	PrivateLinkServiceConnectionStateStatusApproved     PrivateLinkServiceConnectionStateStatus = "Approved"
-	PrivateLinkServiceConnectionStateStatusDisconnected PrivateLinkServiceConnectionStateStatus = "Disconnected"
-	PrivateLinkServiceConnectionStateStatusPending      PrivateLinkServiceConnectionStateStatus = "Pending"
-	PrivateLinkServiceConnectionStateStatusRejected     PrivateLinkServiceConnectionStateStatus = "Rejected"
+	// PostgresMajorVersionEighteen - PostgreSQL 18.
+	PostgresMajorVersionEighteen PostgresMajorVersion = "18"
+	// PostgresMajorVersionEleven - PostgreSQL 11.
+	PostgresMajorVersionEleven PostgresMajorVersion = "11"
+	// PostgresMajorVersionFifteen - PostgreSQL 15.
+	PostgresMajorVersionFifteen PostgresMajorVersion = "15"
+	// PostgresMajorVersionFourteen - PostgreSQL 14.
+	PostgresMajorVersionFourteen PostgresMajorVersion = "14"
+	// PostgresMajorVersionSeventeen - PostgreSQL 17.
+	PostgresMajorVersionSeventeen PostgresMajorVersion = "17"
+	// PostgresMajorVersionSixteen - PostgreSQL 16.
+	PostgresMajorVersionSixteen PostgresMajorVersion = "16"
+	// PostgresMajorVersionThirteen - PostgreSQL 13.
+	PostgresMajorVersionThirteen PostgresMajorVersion = "13"
+	// PostgresMajorVersionTwelve - PostgreSQL 12.
+	PostgresMajorVersionTwelve PostgresMajorVersion = "12"
 )
 
-// PossiblePrivateLinkServiceConnectionStateStatusValues returns the possible values for the PrivateLinkServiceConnectionStateStatus const type.
-func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServiceConnectionStateStatus {
-	return []PrivateLinkServiceConnectionStateStatus{
-		PrivateLinkServiceConnectionStateStatusApproved,
-		PrivateLinkServiceConnectionStateStatusDisconnected,
-		PrivateLinkServiceConnectionStateStatusPending,
-		PrivateLinkServiceConnectionStateStatusRejected,
+// PossiblePostgresMajorVersionValues returns the possible values for the PostgresMajorVersion const type.
+func PossiblePostgresMajorVersionValues() []PostgresMajorVersion {
+	return []PostgresMajorVersion{
+		PostgresMajorVersionEighteen,
+		PostgresMajorVersionEleven,
+		PostgresMajorVersionFifteen,
+		PostgresMajorVersionFourteen,
+		PostgresMajorVersionSeventeen,
+		PostgresMajorVersionSixteen,
+		PostgresMajorVersionThirteen,
+		PostgresMajorVersionTwelve,
 	}
 }
 
-// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed
-// in, must be 'Enabled' or 'Disabled'
-type PublicNetworkAccessEnum string
+// PrincipalType - Type of Microsoft Entra principal to which the server administrator is associated.
+type PrincipalType string
 
 const (
-	PublicNetworkAccessEnumDisabled PublicNetworkAccessEnum = "Disabled"
-	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = "Enabled"
+	// PrincipalTypeGroup - A Microsoft Entra group.
+	PrincipalTypeGroup PrincipalType = "Group"
+	// PrincipalTypeServicePrincipal - A Microsoft Entra service principal, typically representing an application or service identity
+	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
+	// PrincipalTypeUnknown - The principal type is not known or not specified.
+	PrincipalTypeUnknown PrincipalType = "Unknown"
+	// PrincipalTypeUser - A Microsoft Entra user.
+	PrincipalTypeUser PrincipalType = "User"
 )
 
-// PossiblePublicNetworkAccessEnumValues returns the possible values for the PublicNetworkAccessEnum const type.
-func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
-	return []PublicNetworkAccessEnum{
-		PublicNetworkAccessEnumDisabled,
-		PublicNetworkAccessEnumEnabled,
+// PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
+func PossiblePrincipalTypeValues() []PrincipalType {
+	return []PrincipalType{
+		PrincipalTypeGroup,
+		PrincipalTypeServicePrincipal,
+		PrincipalTypeUnknown,
+		PrincipalTypeUser,
 	}
 }
 
-// SKUTier - The tier of the particular SKU, e.g. Basic.
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// ReadReplicaPromoteMode - Type of operation to apply on the read replica. This property is write only. Standalone means
+// that the read replica will be promoted to a standalone server, and will become a completely independent
+// entity from the replication set. Switchover means that the read replica will roles with the primary server.
+type ReadReplicaPromoteMode string
+
+const (
+	// ReadReplicaPromoteModeStandalone - Read replica will become an independent server.
+	ReadReplicaPromoteModeStandalone ReadReplicaPromoteMode = "Standalone"
+	// ReadReplicaPromoteModeSwitchover - Read replica will swap roles with primary server.
+	ReadReplicaPromoteModeSwitchover ReadReplicaPromoteMode = "Switchover"
+)
+
+// PossibleReadReplicaPromoteModeValues returns the possible values for the ReadReplicaPromoteMode const type.
+func PossibleReadReplicaPromoteModeValues() []ReadReplicaPromoteMode {
+	return []ReadReplicaPromoteMode{
+		ReadReplicaPromoteModeStandalone,
+		ReadReplicaPromoteModeSwitchover,
+	}
+}
+
+// ReadReplicaPromoteOption - Data synchronization option to use when processing the operation specified in the promoteMode
+// property. This property is write only.
+type ReadReplicaPromoteOption string
+
+const (
+	// ReadReplicaPromoteOptionForced - The operation will not wait for data in the read replica to be synchronized with its source
+	// server, before it initiates the operation.
+	ReadReplicaPromoteOptionForced ReadReplicaPromoteOption = "Forced"
+	// ReadReplicaPromoteOptionPlanned - The operation will wait for data in the read replica to be fully synchronized with its
+	// source server, before it initiates the operation.
+	ReadReplicaPromoteOptionPlanned ReadReplicaPromoteOption = "Planned"
+)
+
+// PossibleReadReplicaPromoteOptionValues returns the possible values for the ReadReplicaPromoteOption const type.
+func PossibleReadReplicaPromoteOptionValues() []ReadReplicaPromoteOption {
+	return []ReadReplicaPromoteOption{
+		ReadReplicaPromoteOptionForced,
+		ReadReplicaPromoteOptionPlanned,
+	}
+}
+
+// RecommendationTypeEnum - Type for this recommendation.
+type RecommendationTypeEnum string
+
+const (
+	RecommendationTypeEnumAnalyzeTable RecommendationTypeEnum = "AnalyzeTable"
+	RecommendationTypeEnumCreateIndex  RecommendationTypeEnum = "CreateIndex"
+	RecommendationTypeEnumDropIndex    RecommendationTypeEnum = "DropIndex"
+	RecommendationTypeEnumReIndex      RecommendationTypeEnum = "ReIndex"
+)
+
+// PossibleRecommendationTypeEnumValues returns the possible values for the RecommendationTypeEnum const type.
+func PossibleRecommendationTypeEnumValues() []RecommendationTypeEnum {
+	return []RecommendationTypeEnum{
+		RecommendationTypeEnumAnalyzeTable,
+		RecommendationTypeEnumCreateIndex,
+		RecommendationTypeEnumDropIndex,
+		RecommendationTypeEnumReIndex,
+	}
+}
+
+type RecommendationTypeParameterEnum string
+
+const (
+	RecommendationTypeParameterEnumAnalyzeTable RecommendationTypeParameterEnum = "AnalyzeTable"
+	RecommendationTypeParameterEnumCreateIndex  RecommendationTypeParameterEnum = "CreateIndex"
+	RecommendationTypeParameterEnumDropIndex    RecommendationTypeParameterEnum = "DropIndex"
+	RecommendationTypeParameterEnumReIndex      RecommendationTypeParameterEnum = "ReIndex"
+)
+
+// PossibleRecommendationTypeParameterEnumValues returns the possible values for the RecommendationTypeParameterEnum const type.
+func PossibleRecommendationTypeParameterEnumValues() []RecommendationTypeParameterEnum {
+	return []RecommendationTypeParameterEnum{
+		RecommendationTypeParameterEnumAnalyzeTable,
+		RecommendationTypeParameterEnumCreateIndex,
+		RecommendationTypeParameterEnumDropIndex,
+		RecommendationTypeParameterEnumReIndex,
+	}
+}
+
+// ReplicationRole - Role of the server in a replication set.
+type ReplicationRole string
+
+const (
+	// ReplicationRoleAsyncReplica - Receives data asynchronously from a primary server within the same region.
+	ReplicationRoleAsyncReplica ReplicationRole = "AsyncReplica"
+	// ReplicationRoleGeoAsyncReplica - Receives data asynchronously from a primary server in a different region for geographical
+	// redundancy.
+	ReplicationRoleGeoAsyncReplica ReplicationRole = "GeoAsyncReplica"
+	// ReplicationRoleNone - No replication role assigned; the server operates independently.
+	ReplicationRoleNone ReplicationRole = "None"
+	// ReplicationRolePrimary - Acts as the source server for replication to one or more replicas.
+	ReplicationRolePrimary ReplicationRole = "Primary"
+)
+
+// PossibleReplicationRoleValues returns the possible values for the ReplicationRole const type.
+func PossibleReplicationRoleValues() []ReplicationRole {
+	return []ReplicationRole{
+		ReplicationRoleAsyncReplica,
+		ReplicationRoleGeoAsyncReplica,
+		ReplicationRoleNone,
+		ReplicationRolePrimary,
+	}
+}
+
+// ReplicationState - Indicates the replication state of a read replica. This property is returned only when the target server
+// is a read replica. Possible values are Active, Broken, Catchup, Provisioning, Reconfiguring,
+// and Updating
+type ReplicationState string
+
+const (
+	// ReplicationStateActive - Read replica is fully synchronized and actively replicating data from the primary server.
+	ReplicationStateActive ReplicationState = "Active"
+	// ReplicationStateBroken - Replication has failed or been interrupted.
+	ReplicationStateBroken ReplicationState = "Broken"
+	// ReplicationStateCatchup - Read replica is behind the primary server and is currently catching up with pending changes.
+	ReplicationStateCatchup ReplicationState = "Catchup"
+	// ReplicationStateProvisioning - Read replica is being created and is in process of getting initialized.
+	ReplicationStateProvisioning ReplicationState = "Provisioning"
+	// ReplicationStateReconfiguring - Read replica is being reconfigured, possibly due to changes in source or settings.
+	ReplicationStateReconfiguring ReplicationState = "Reconfiguring"
+	// ReplicationStateUpdating - Read replica is undergoing some changes it can be changing compute size of promoting it to primary
+	// server.
+	ReplicationStateUpdating ReplicationState = "Updating"
+)
+
+// PossibleReplicationStateValues returns the possible values for the ReplicationState const type.
+func PossibleReplicationStateValues() []ReplicationState {
+	return []ReplicationState{
+		ReplicationStateActive,
+		ReplicationStateBroken,
+		ReplicationStateCatchup,
+		ReplicationStateProvisioning,
+		ReplicationStateReconfiguring,
+		ReplicationStateUpdating,
+	}
+}
+
+// SKUTier - Tier of the compute assigned to a server.
 type SKUTier string
 
 const (
-	SKUTierBasic           SKUTier = "Basic"
+	SKUTierBurstable       SKUTier = "Burstable"
 	SKUTierGeneralPurpose  SKUTier = "GeneralPurpose"
 	SKUTierMemoryOptimized SKUTier = "MemoryOptimized"
 )
@@ -203,79 +1094,92 @@ const (
 // PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
-		SKUTierBasic,
+		SKUTierBurstable,
 		SKUTierGeneralPurpose,
 		SKUTierMemoryOptimized,
 	}
 }
 
-// SSLEnforcementEnum - Enable ssl enforcement or not when connect to server.
-type SSLEnforcementEnum string
+// SSLMode - SSL mode used by a migration. Default SSL mode for 'PostgreSQLSingleServer' is 'VerifyFull'. Default SSL mode
+// for other source types is 'Prefer'.
+type SSLMode string
 
 const (
-	SSLEnforcementEnumDisabled SSLEnforcementEnum = "Disabled"
-	SSLEnforcementEnumEnabled  SSLEnforcementEnum = "Enabled"
+	// SSLModePrefer - Prefer SSL connection. If the server does not support SSL, the connection will be established without SSL.
+	SSLModePrefer SSLMode = "Prefer"
+	// SSLModeRequire - Require SSL connection. If the server does not support SSL, the connection will fail.
+	SSLModeRequire SSLMode = "Require"
+	// SSLModeVerifyCA - Require SSL connection and verify the server certificate against the CA certificate.
+	SSLModeVerifyCA SSLMode = "VerifyCA"
+	// SSLModeVerifyFull - Require SSL connection, verify the server certificate against the CA certificate, and verify that the
+	// server hostname matches the certificate.
+	SSLModeVerifyFull SSLMode = "VerifyFull"
 )
 
-// PossibleSSLEnforcementEnumValues returns the possible values for the SSLEnforcementEnum const type.
-func PossibleSSLEnforcementEnumValues() []SSLEnforcementEnum {
-	return []SSLEnforcementEnum{
-		SSLEnforcementEnumDisabled,
-		SSLEnforcementEnumEnabled,
+// PossibleSSLModeValues returns the possible values for the SSLMode const type.
+func PossibleSSLModeValues() []SSLMode {
+	return []SSLMode{
+		SSLModePrefer,
+		SSLModeRequire,
+		SSLModeVerifyCA,
+		SSLModeVerifyFull,
 	}
 }
 
-type SecurityAlertPolicyName string
+// ServerPublicNetworkAccessState - Indicates if public network access is enabled or not. This is only supported for servers
+// that are not integrated into a virtual network which is owned and provided by customer when server is deployed.
+type ServerPublicNetworkAccessState string
 
 const (
-	SecurityAlertPolicyNameDefault SecurityAlertPolicyName = "Default"
+	// ServerPublicNetworkAccessStateDisabled - Public network access is disabled. This means the server cannot be accessed from
+	// the public internet, but only via private endpoints.
+	ServerPublicNetworkAccessStateDisabled ServerPublicNetworkAccessState = "Disabled"
+	// ServerPublicNetworkAccessStateEnabled - Public network access is enabled. This allows the server to be accessed from the
+	// public internet, provided the necessary firewall rule that allows incoming traffic originating from the connecting client
+	// is in place. This is compatible with the use of private endpoints to connect to this server.
+	ServerPublicNetworkAccessStateEnabled ServerPublicNetworkAccessState = "Enabled"
 )
 
-// PossibleSecurityAlertPolicyNameValues returns the possible values for the SecurityAlertPolicyName const type.
-func PossibleSecurityAlertPolicyNameValues() []SecurityAlertPolicyName {
-	return []SecurityAlertPolicyName{
-		SecurityAlertPolicyNameDefault,
+// PossibleServerPublicNetworkAccessStateValues returns the possible values for the ServerPublicNetworkAccessState const type.
+func PossibleServerPublicNetworkAccessStateValues() []ServerPublicNetworkAccessState {
+	return []ServerPublicNetworkAccessState{
+		ServerPublicNetworkAccessStateDisabled,
+		ServerPublicNetworkAccessStateEnabled,
 	}
 }
 
-// ServerKeyType - The key type like 'AzureKeyVault'.
-type ServerKeyType string
-
-const (
-	ServerKeyTypeAzureKeyVault ServerKeyType = "AzureKeyVault"
-)
-
-// PossibleServerKeyTypeValues returns the possible values for the ServerKeyType const type.
-func PossibleServerKeyTypeValues() []ServerKeyType {
-	return []ServerKeyType{
-		ServerKeyTypeAzureKeyVault,
-	}
-}
-
-// ServerSecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled.
-type ServerSecurityAlertPolicyState string
-
-const (
-	ServerSecurityAlertPolicyStateDisabled ServerSecurityAlertPolicyState = "Disabled"
-	ServerSecurityAlertPolicyStateEnabled  ServerSecurityAlertPolicyState = "Enabled"
-)
-
-// PossibleServerSecurityAlertPolicyStateValues returns the possible values for the ServerSecurityAlertPolicyState const type.
-func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
-	return []ServerSecurityAlertPolicyState{
-		ServerSecurityAlertPolicyStateDisabled,
-		ServerSecurityAlertPolicyStateEnabled,
-	}
-}
-
-// ServerState - A state of a server that is visible to user.
+// ServerState - Possible states of a server.
 type ServerState string
 
 const (
-	ServerStateDisabled     ServerState = "Disabled"
-	ServerStateDropping     ServerState = "Dropping"
+	// ServerStateDisabled - Server is disabled. Typical reasons include: the subscription on which the server is deployed is
+	// explicitly disabled or canceled by the administrator, the spending limit has been reached, or the bill is past due. May
+	// also happen when the server is being moved to another resource group or subscription.
+	ServerStateDisabled ServerState = "Disabled"
+	// ServerStateDropping - Server is being deleted.
+	ServerStateDropping ServerState = "Dropping"
+	// ServerStateInaccessible - Server isn't accessible, because the key provided to encrypt and decrypt the data is in invalid
+	// state.
 	ServerStateInaccessible ServerState = "Inaccessible"
-	ServerStateReady        ServerState = "Ready"
+	// ServerStateProvisioning - Server is in the process of being created.
+	ServerStateProvisioning ServerState = "Provisioning"
+	// ServerStateReady - Server is healthy and not undergoing any operations at the management or control plane level. This doesn't
+	// mean that the server is fully operational at the data plane level.
+	ServerStateReady ServerState = "Ready"
+	// ServerStateRestarting - PostgreSQL database engine is being restarted.
+	ServerStateRestarting ServerState = "Restarting"
+	// ServerStateStarting - PostgreSQL database engine is being restarted.
+	ServerStateStarting ServerState = "Starting"
+	// ServerStateStopped - Compute resources associated with the server are being stopped and deallocated.
+	ServerStateStopped ServerState = "Stopped"
+	// ServerStateStopping - Compute resources associated with the server are being stopped and deallocated. If the server has
+	// high availability enabled, the compute resources of the standby server are also stopped and deallocated.
+	ServerStateStopping ServerState = "Stopping"
+	// ServerStateUpdating - Server is undergoing some changes which may or may not impact the availability of the PostgreSQL
+	// database engine. For example, the compute resources of the server are being scaled up or down, which may cause temporary
+	// unavailability of the database engine. Or, for example, a firewall rule is being added or removed, which doesn't cause
+	// any unavailability of the database engine.
+	ServerStateUpdating ServerState = "Updating"
 )
 
 // PossibleServerStateValues returns the possible values for the ServerState const type.
@@ -284,68 +1188,328 @@ func PossibleServerStateValues() []ServerState {
 		ServerStateDisabled,
 		ServerStateDropping,
 		ServerStateInaccessible,
+		ServerStateProvisioning,
 		ServerStateReady,
+		ServerStateRestarting,
+		ServerStateStarting,
+		ServerStateStopped,
+		ServerStateStopping,
+		ServerStateUpdating,
 	}
 }
 
-// ServerVersion - The version of a server.
-type ServerVersion string
+// SourceType - Source server type used for the migration: ApsaraDBRDS, AWS, AWSAURORA, AWSEC2, AWSRDS, AzureVM, CrunchyPostgreSQL,
+// DigitalOceanDroplets, DigitalOceanPostgreSQL, EDB, EDBOracleServer, EDBPostgreSQL,
+// GCP, GCPAlloyDB, GCPCloudSQL, GCPCompute, HerokuPostgreSQL, HuaweiCompute, HuaweiRDS, OnPremises, PostgreSQLCosmosDB, PostgreSQLFlexibleServer,
+// PostgreSQLSingleServer, or Supabase_PostgreSQL
+type SourceType string
 
 const (
-	ServerVersionEleven ServerVersion = "11"
-	ServerVersionNine5  ServerVersion = "9.5"
-	ServerVersionNine6  ServerVersion = "9.6"
-	ServerVersionTen    ServerVersion = "10"
-	ServerVersionTen0   ServerVersion = "10.0"
-	ServerVersionTen2   ServerVersion = "10.2"
+	// SourceTypeAWS - Amazon Web Services PostgreSQL server.
+	SourceTypeAWS SourceType = "AWS"
+	// SourceTypeAWSAURORA - Amazon Aurora for PostgreSQL.
+	SourceTypeAWSAURORA SourceType = "AWS_AURORA"
+	// SourceTypeAWSEC2 - Amazon EC2 for PostgreSQL.
+	SourceTypeAWSEC2 SourceType = "AWS_EC2"
+	// SourceTypeAWSRDS - Amazon RDS for PostgreSQL.
+	SourceTypeAWSRDS SourceType = "AWS_RDS"
+	// SourceTypeApsaraDBRDS - ApsaraDB RDS for PostgreSQL
+	SourceTypeApsaraDBRDS SourceType = "ApsaraDB_RDS"
+	// SourceTypeAzureVM - Azure Virtual Machine PostgreSQL server.
+	SourceTypeAzureVM SourceType = "AzureVM"
+	// SourceTypeCrunchyPostgreSQL - Crunchy PostgreSQL
+	SourceTypeCrunchyPostgreSQL SourceType = "Crunchy_PostgreSQL"
+	// SourceTypeDigitalOceanDroplets - Digital Ocean Droplets for PostgreSQL
+	SourceTypeDigitalOceanDroplets SourceType = "Digital_Ocean_Droplets"
+	// SourceTypeDigitalOceanPostgreSQL - Digital Ocean PostgreSQL
+	SourceTypeDigitalOceanPostgreSQL SourceType = "Digital_Ocean_PostgreSQL"
+	// SourceTypeEDB - EnterpriseDB PostgreSQL server.
+	SourceTypeEDB SourceType = "EDB"
+	// SourceTypeEDBOracleServer - EnterpriseDB Oracle Server.
+	SourceTypeEDBOracleServer SourceType = "EDB_Oracle_Server"
+	// SourceTypeEDBPostgreSQL - EnterpriseDB PostgreSQL server.
+	SourceTypeEDBPostgreSQL SourceType = "EDB_PostgreSQL"
+	// SourceTypeGCP - Google Cloud Platform PostgreSQL server.
+	SourceTypeGCP SourceType = "GCP"
+	// SourceTypeGCPAlloyDB - Google Cloud AlloyDB for PostgreSQL.
+	SourceTypeGCPAlloyDB SourceType = "GCP_AlloyDB"
+	// SourceTypeGCPCloudSQL - Google Cloud SQL for PostgreSQL.
+	SourceTypeGCPCloudSQL SourceType = "GCP_CloudSQL"
+	// SourceTypeGCPCompute - Google Compute Engine for PostgreSQL.
+	SourceTypeGCPCompute SourceType = "GCP_Compute"
+	// SourceTypeHerokuPostgreSQL - Heroku PostgreSQL
+	SourceTypeHerokuPostgreSQL SourceType = "Heroku_PostgreSQL"
+	// SourceTypeHuaweiCompute - Huawei Compute for PostgreSQL
+	SourceTypeHuaweiCompute SourceType = "Huawei_Compute"
+	// SourceTypeHuaweiRDS - Huawei RDS for PostgreSQL
+	SourceTypeHuaweiRDS SourceType = "Huawei_RDS"
+	// SourceTypeOnPremises - On-premises PostgreSQL server.
+	SourceTypeOnPremises SourceType = "OnPremises"
+	// SourceTypePostgreSQLCosmosDB - .NET Cosmos DB for PostgreSQL
+	SourceTypePostgreSQLCosmosDB SourceType = "PostgreSQLCosmosDB"
+	// SourceTypePostgreSQLFlexibleServer - Azure Database for PostgreSQL flexible server.
+	SourceTypePostgreSQLFlexibleServer SourceType = "PostgreSQLFlexibleServer"
+	// SourceTypePostgreSQLSingleServer - Azure Database for PostgreSQL single server.
+	SourceTypePostgreSQLSingleServer SourceType = "PostgreSQLSingleServer"
+	// SourceTypeSupabasePostgreSQL - Supabase PostgreSQL
+	SourceTypeSupabasePostgreSQL SourceType = "Supabase_PostgreSQL"
 )
 
-// PossibleServerVersionValues returns the possible values for the ServerVersion const type.
-func PossibleServerVersionValues() []ServerVersion {
-	return []ServerVersion{
-		ServerVersionEleven,
-		ServerVersionNine5,
-		ServerVersionNine6,
-		ServerVersionTen,
-		ServerVersionTen0,
-		ServerVersionTen2,
+// PossibleSourceTypeValues returns the possible values for the SourceType const type.
+func PossibleSourceTypeValues() []SourceType {
+	return []SourceType{
+		SourceTypeAWS,
+		SourceTypeAWSAURORA,
+		SourceTypeAWSEC2,
+		SourceTypeAWSRDS,
+		SourceTypeApsaraDBRDS,
+		SourceTypeAzureVM,
+		SourceTypeCrunchyPostgreSQL,
+		SourceTypeDigitalOceanDroplets,
+		SourceTypeDigitalOceanPostgreSQL,
+		SourceTypeEDB,
+		SourceTypeEDBOracleServer,
+		SourceTypeEDBPostgreSQL,
+		SourceTypeGCP,
+		SourceTypeGCPAlloyDB,
+		SourceTypeGCPCloudSQL,
+		SourceTypeGCPCompute,
+		SourceTypeHerokuPostgreSQL,
+		SourceTypeHuaweiCompute,
+		SourceTypeHuaweiRDS,
+		SourceTypeOnPremises,
+		SourceTypePostgreSQLCosmosDB,
+		SourceTypePostgreSQLFlexibleServer,
+		SourceTypePostgreSQLSingleServer,
+		SourceTypeSupabasePostgreSQL,
 	}
 }
 
-// StorageAutogrow - Enable Storage Auto Grow.
-type StorageAutogrow string
+// StartDataMigration - Indicates if data migration must start right away.
+type StartDataMigration string
 
 const (
-	StorageAutogrowDisabled StorageAutogrow = "Disabled"
-	StorageAutogrowEnabled  StorageAutogrow = "Enabled"
+	// StartDataMigrationFalse - Data migration must not start right away.
+	StartDataMigrationFalse StartDataMigration = "False"
+	// StartDataMigrationTrue - Data migration must start right away.
+	StartDataMigrationTrue StartDataMigration = "True"
 )
 
-// PossibleStorageAutogrowValues returns the possible values for the StorageAutogrow const type.
-func PossibleStorageAutogrowValues() []StorageAutogrow {
-	return []StorageAutogrow{
-		StorageAutogrowDisabled,
-		StorageAutogrowEnabled,
+// PossibleStartDataMigrationValues returns the possible values for the StartDataMigration const type.
+func PossibleStartDataMigrationValues() []StartDataMigration {
+	return []StartDataMigration{
+		StartDataMigrationFalse,
+		StartDataMigrationTrue,
 	}
 }
 
-// VirtualNetworkRuleState - Virtual Network Rule State
-type VirtualNetworkRuleState string
+// StorageAutoGrow - Flag to enable or disable the automatic growth of storage size of a server when available space is nearing
+// zero and conditions allow for automatically growing storage size.
+type StorageAutoGrow string
 
 const (
-	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = "Deleting"
-	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = "InProgress"
-	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = "Initializing"
-	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = "Ready"
-	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = "Unknown"
+	// StorageAutoGrowDisabled - Server should not automatically grow storage size when available space is nearing zero.
+	StorageAutoGrowDisabled StorageAutoGrow = "Disabled"
+	// StorageAutoGrowEnabled - Server should automatically grow storage size when available space is nearing zero and conditions
+	// allow for automatically growing storage size.
+	StorageAutoGrowEnabled StorageAutoGrow = "Enabled"
 )
 
-// PossibleVirtualNetworkRuleStateValues returns the possible values for the VirtualNetworkRuleState const type.
-func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
-	return []VirtualNetworkRuleState{
-		VirtualNetworkRuleStateDeleting,
-		VirtualNetworkRuleStateInProgress,
-		VirtualNetworkRuleStateInitializing,
-		VirtualNetworkRuleStateReady,
-		VirtualNetworkRuleStateUnknown,
+// PossibleStorageAutoGrowValues returns the possible values for the StorageAutoGrow const type.
+func PossibleStorageAutoGrowValues() []StorageAutoGrow {
+	return []StorageAutoGrow{
+		StorageAutoGrowDisabled,
+		StorageAutoGrowEnabled,
+	}
+}
+
+// StorageAutoGrowthSupport - Indicates if storage autogrow is supported in this location. 'Enabled' means storage autogrow
+// is supported. 'Disabled' stands for storage autogrow is not supported. Will be deprecated in the future.
+// Look to Supported Features for 'StorageAutoGrowth'.
+type StorageAutoGrowthSupport string
+
+const (
+	// StorageAutoGrowthSupportDisabled - Storage autogrow is not supported.
+	StorageAutoGrowthSupportDisabled StorageAutoGrowthSupport = "Disabled"
+	// StorageAutoGrowthSupportEnabled - Storage autogrow is supported.
+	StorageAutoGrowthSupportEnabled StorageAutoGrowthSupport = "Enabled"
+)
+
+// PossibleStorageAutoGrowthSupportValues returns the possible values for the StorageAutoGrowthSupport const type.
+func PossibleStorageAutoGrowthSupportValues() []StorageAutoGrowthSupport {
+	return []StorageAutoGrowthSupport{
+		StorageAutoGrowthSupportDisabled,
+		StorageAutoGrowthSupportEnabled,
+	}
+}
+
+// StorageType - Type of storage assigned to a server. Allowed values are PremiumLRS, PremiumV2LRS, or UltraSSDLRS. If not
+// specified, it defaults to PremiumLRS.
+type StorageType string
+
+const (
+	// StorageTypePremiumLRS - Standard Solid State Disk (SSD) backed storage offering consistent performance for general purpose
+	// workloads.
+	StorageTypePremiumLRS StorageType = "Premium_LRS"
+	// StorageTypePremiumV2LRS - Next generation Solid State Disk (SSD) storage with improved scalability and performance for
+	// demanding enterprise workloads.
+	StorageTypePremiumV2LRS StorageType = "PremiumV2_LRS"
+	// StorageTypeUltraSSDLRS - High-end Solid State Disk (SSD) storage designed for extreme IOPS and latency-sensitive applications.
+	StorageTypeUltraSSDLRS StorageType = "UltraSSD_LRS"
+)
+
+// PossibleStorageTypeValues returns the possible values for the StorageType const type.
+func PossibleStorageTypeValues() []StorageType {
+	return []StorageType{
+		StorageTypePremiumLRS,
+		StorageTypePremiumV2LRS,
+		StorageTypeUltraSSDLRS,
+	}
+}
+
+type ThreatProtectionName string
+
+const (
+	// ThreatProtectionNameDefault - Default advanced threat protection settings.
+	ThreatProtectionNameDefault ThreatProtectionName = "Default"
+)
+
+// PossibleThreatProtectionNameValues returns the possible values for the ThreatProtectionName const type.
+func PossibleThreatProtectionNameValues() []ThreatProtectionName {
+	return []ThreatProtectionName{
+		ThreatProtectionNameDefault,
+	}
+}
+
+// ThreatProtectionState - Specifies the state of the advanced threat protection, whether it is enabled, disabled, or a state
+// has not been applied yet on the server.
+type ThreatProtectionState string
+
+const (
+	// ThreatProtectionStateDisabled - Advanced threat protection is disabled.
+	ThreatProtectionStateDisabled ThreatProtectionState = "Disabled"
+	// ThreatProtectionStateEnabled - Advanced threat protection is enabled.
+	ThreatProtectionStateEnabled ThreatProtectionState = "Enabled"
+)
+
+// PossibleThreatProtectionStateValues returns the possible values for the ThreatProtectionState const type.
+func PossibleThreatProtectionStateValues() []ThreatProtectionState {
+	return []ThreatProtectionState{
+		ThreatProtectionStateDisabled,
+		ThreatProtectionStateEnabled,
+	}
+}
+
+// TriggerCutover - Indicates if cutover must be triggered for the entire migration.
+type TriggerCutover string
+
+const (
+	// TriggerCutoverFalse - Cutover must not be triggered for the entire migration.
+	TriggerCutoverFalse TriggerCutover = "False"
+	// TriggerCutoverTrue - Cutover must be triggered for the entire migration.
+	TriggerCutoverTrue TriggerCutover = "True"
+)
+
+// PossibleTriggerCutoverValues returns the possible values for the TriggerCutover const type.
+func PossibleTriggerCutoverValues() []TriggerCutover {
+	return []TriggerCutover{
+		TriggerCutoverFalse,
+		TriggerCutoverTrue,
+	}
+}
+
+type TuningOptionParameterEnum string
+
+const (
+	TuningOptionParameterEnumIndex TuningOptionParameterEnum = "index"
+	TuningOptionParameterEnumTable TuningOptionParameterEnum = "table"
+)
+
+// PossibleTuningOptionParameterEnumValues returns the possible values for the TuningOptionParameterEnum const type.
+func PossibleTuningOptionParameterEnumValues() []TuningOptionParameterEnum {
+	return []TuningOptionParameterEnum{
+		TuningOptionParameterEnumIndex,
+		TuningOptionParameterEnumTable,
+	}
+}
+
+// ValidationState - Validation status for migration.
+type ValidationState string
+
+const (
+	// ValidationStateFailed - Validation has failed.
+	ValidationStateFailed ValidationState = "Failed"
+	// ValidationStateSucceeded - Validation has succeeded.
+	ValidationStateSucceeded ValidationState = "Succeeded"
+	// ValidationStateWarning - Validation has succeeded with warnings.
+	ValidationStateWarning ValidationState = "Warning"
+)
+
+// PossibleValidationStateValues returns the possible values for the ValidationState const type.
+func PossibleValidationStateValues() []ValidationState {
+	return []ValidationState{
+		ValidationStateFailed,
+		ValidationStateSucceeded,
+		ValidationStateWarning,
+	}
+}
+
+// VirtualEndpointType - Type of endpoint for the virtual endpoints.
+type VirtualEndpointType string
+
+const (
+	// VirtualEndpointTypeReadWrite - Read-write endpoint.
+	VirtualEndpointTypeReadWrite VirtualEndpointType = "ReadWrite"
+)
+
+// PossibleVirtualEndpointTypeValues returns the possible values for the VirtualEndpointType const type.
+func PossibleVirtualEndpointTypeValues() []VirtualEndpointType {
+	return []VirtualEndpointType{
+		VirtualEndpointTypeReadWrite,
+	}
+}
+
+// ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport - Indicates if high availability with zone redundancy
+// is supported in conjunction with geographically redundant backups in this location. 'Enabled' means high availability with
+// zone redundancy is
+// supported in conjunction with geographically redundant backups is supported. 'Disabled' stands for high availability with
+// zone redundancy is supported in conjunction with geographically redundant
+// backups is not supported. Will be deprecated in the future. Look to Supported Features for 'ZoneRedundantHaAndGeoBackup'.
+type ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport string
+
+const (
+	// ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportDisabled - High availability with zone redundancy is
+	// not supported in conjunction with geographically redundant backups.
+	ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportDisabled ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport = "Disabled"
+	// ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportEnabled - High availability with zone redundancy is
+	// supported in conjunction with geographically redundant backups.
+	ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportEnabled ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport = "Enabled"
+)
+
+// PossibleZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportValues returns the possible values for the ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport const type.
+func PossibleZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportValues() []ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport {
+	return []ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport{
+		ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportDisabled,
+		ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportEnabled,
+	}
+}
+
+// ZoneRedundantHighAvailabilitySupport - Indicates if high availability with zone redundancy is supported in this location.
+// 'Enabled' means high availability with zone redundancy is supported. 'Disabled' stands for high availability with
+// zone redundancy is not supported. Will be deprecated in the future. Look to Supported Features for 'ZoneRedundantHa'.
+type ZoneRedundantHighAvailabilitySupport string
+
+const (
+	// ZoneRedundantHighAvailabilitySupportDisabled - High availability with zone redundancy is not supported.
+	ZoneRedundantHighAvailabilitySupportDisabled ZoneRedundantHighAvailabilitySupport = "Disabled"
+	// ZoneRedundantHighAvailabilitySupportEnabled - High availability with zone redundancy is supported.
+	ZoneRedundantHighAvailabilitySupportEnabled ZoneRedundantHighAvailabilitySupport = "Enabled"
+)
+
+// PossibleZoneRedundantHighAvailabilitySupportValues returns the possible values for the ZoneRedundantHighAvailabilitySupport const type.
+func PossibleZoneRedundantHighAvailabilitySupportValues() []ZoneRedundantHighAvailabilitySupport {
+	return []ZoneRedundantHighAvailabilitySupport{
+		ZoneRedundantHighAvailabilitySupportDisabled,
+		ZoneRedundantHighAvailabilitySupportEnabled,
 	}
 }

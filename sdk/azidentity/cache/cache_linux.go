@@ -23,8 +23,15 @@ const (
 )
 
 var (
-	cacheDir = os.UserHomeDir
-	storage  = func(name string) (accessor.Accessor, error) {
+	cacheDir = func() (d string, err error) {
+		if d = os.Getenv("XDG_CACHE_HOME"); d == "" {
+			if d, err = os.UserHomeDir(); err == nil {
+				d = filepath.Join(d, ".cache")
+			}
+		}
+		return
+	}
+	storage = func(name string) (accessor.Accessor, error) {
 		return newKeyring(name)
 	}
 )

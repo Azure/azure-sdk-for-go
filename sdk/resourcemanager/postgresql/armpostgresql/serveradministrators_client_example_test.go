@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerAdminGet.json
@@ -59,10 +59,10 @@ func ExampleServerAdministratorsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewServerAdministratorsClient().BeginCreateOrUpdate(ctx, "testrg", "pgtestsvc4", armpostgresql.ServerAdministratorResource{
 		Properties: &armpostgresql.ServerAdministratorProperties{
-			AdministratorType: to.Ptr("ActiveDirectory"),
-			Login:             to.Ptr("bob@contoso.com"),
-			Sid:               to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
-			TenantID:          to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
+			AdministratorType:	to.Ptr("ActiveDirectory"),
+			Login:			to.Ptr("bob@contoso.com"),
+			Sid:			to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
+			TenantID:		to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
 		},
 	}, nil)
 	if err != nil {

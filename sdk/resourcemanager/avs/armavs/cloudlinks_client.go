@@ -42,7 +42,7 @@ func NewCloudLinksClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - cloudLinkName - Name of the cloud link.
@@ -70,7 +70,7 @@ func (client *CloudLinksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 func (client *CloudLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink CloudLink, options *CloudLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudLinksClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *CloudLinksClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +129,7 @@ func (client *CloudLinksClient) createOrUpdateCreateRequest(ctx context.Context,
 // BeginDelete - Delete a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - cloudLinkName - Name of the cloud link.
@@ -154,7 +154,7 @@ func (client *CloudLinksClient) BeginDelete(ctx context.Context, resourceGroupNa
 // Delete - Delete a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 func (client *CloudLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, options *CloudLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudLinksClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *CloudLinksClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *CloudLinksClient) deleteCreateRequest(ctx context.Context, resourc
 // Get - Get a CloudLink
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - cloudLinkName - Name of the cloud link.
@@ -259,7 +259,7 @@ func (client *CloudLinksClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *CloudLinksClient) getHandleResponse(resp *http.Response) (CloudLin
 
 // NewListPager - List CloudLink resources by PrivateCloud
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - CloudLinksClientListOptions contains the optional parameters for the CloudLinksClient.NewListPager method.
@@ -323,7 +323,7 @@ func (client *CloudLinksClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

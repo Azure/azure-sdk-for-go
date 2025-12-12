@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/PureStoragePolicies_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/PureStoragePolicies_CreateOrUpdate.json
 func ExamplePureStoragePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExamplePureStoragePoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/PureStoragePolicies_Delete.json
+// Generated from example definition: 2025-09-01/PureStoragePolicies_Delete.json
 func ExamplePureStoragePoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePureStoragePoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/PureStoragePolicies_Get.json
+// Generated from example definition: 2025-09-01/PureStoragePolicies_Get.json
 func ExamplePureStoragePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExamplePureStoragePoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/PureStoragePolicies_List.json
+// Generated from example definition: 2025-09-01/PureStoragePolicies_List.json
 func ExamplePureStoragePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

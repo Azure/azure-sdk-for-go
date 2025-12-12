@@ -232,7 +232,7 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 		_require.NotNil(pageListResp.Date)
 		_require.Equal(pageListResp.Date.IsZero(), false)
 		_require.NotNil(pageListResp.PageList)
-		pageRangeResp := pageListResp.PageList.PageRange
+		pageRangeResp := pageListResp.PageRange
 		_require.Len(pageRangeResp, 1)
 		rawStart, rawEnd := rawPageRange((pageRangeResp)[0])
 		_require.Equal(rawStart, offset)
@@ -608,7 +608,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 
-		pageRangeResp := pageListResp.PageList.PageRange
+		pageRangeResp := pageListResp.PageRange
 		_require.NotNil(pageRangeResp)
 		_require.Len(pageRangeResp, 1)
 		rawStart, rawEnd := rawPageRange((pageRangeResp)[0])
@@ -632,7 +632,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	for pager.More() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageRangeResp := pageListResp.PageList.PageRange
+		pageRangeResp := pageListResp.PageRange
 		_require.Len(pageRangeResp, 0)
 		if err != nil {
 			break

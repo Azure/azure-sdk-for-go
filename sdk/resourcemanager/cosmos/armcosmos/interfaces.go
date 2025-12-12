@@ -14,6 +14,36 @@ type BackupPolicyClassification interface {
 	GetBackupPolicy() *BackupPolicy
 }
 
+// BaseCopyJobPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetBaseCopyJobProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BaseCopyJobProperties, *BlobToCassandraRUCopyJobProperties, *CassandraRUToBlobCopyJobProperties, *CassandraRUToCassandraRUCopyJobProperties,
+// - *MongoRUToMongoRUCopyJobProperties, *MongoRUToMongoVCoreCopyJobProperties, *NoSQLRUToNoSQLRUCopyJobProperties
+type BaseCopyJobPropertiesClassification interface {
+	// GetBaseCopyJobProperties returns the BaseCopyJobProperties content of the underlying type.
+	GetBaseCopyJobProperties() *BaseCopyJobProperties
+}
+
+// BaseCosmosDataTransferDataSourceSinkClassification provides polymorphic access to related types.
+// Call the interface's GetBaseCosmosDataTransferDataSourceSink() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *MongoDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
+type BaseCosmosDataTransferDataSourceSinkClassification interface {
+	DataTransferDataSourceSinkClassification
+	// GetBaseCosmosDataTransferDataSourceSink returns the BaseCosmosDataTransferDataSourceSink content of the underlying type.
+	GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink
+}
+
+// DataTransferDataSourceSinkClassification provides polymorphic access to related types.
+// Call the interface's GetDataTransferDataSourceSink() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureBlobDataTransferDataSourceSink, *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *DataTransferDataSourceSink,
+// - *MongoDataTransferDataSourceSink, *MongoVCoreDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
+type DataTransferDataSourceSinkClassification interface {
+	// GetDataTransferDataSourceSink returns the DataTransferDataSourceSink content of the underlying type.
+	GetDataTransferDataSourceSink() *DataTransferDataSourceSink
+}
+
 // ServiceResourceCreateUpdatePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetServiceResourceCreateUpdateProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

@@ -25,7 +25,7 @@ type FleetspaceAccountClient struct {
 }
 
 // NewFleetspaceAccountClient creates a new instance of FleetspaceAccountClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFleetspaceAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetspaceAccountClient, error) {
@@ -43,7 +43,7 @@ func NewFleetspaceAccountClient(subscriptionID string, credential azcore.TokenCr
 // BeginCreate - Creates an Azure Cosmos DB fleetspace account under a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -72,7 +72,7 @@ func (client *FleetspaceAccountClient) BeginCreate(ctx context.Context, resource
 // Create - Creates an Azure Cosmos DB fleetspace account under a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 func (client *FleetspaceAccountClient) create(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, body FleetspaceAccountResource, options *FleetspaceAccountClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceAccountClient.BeginCreate"
@@ -122,7 +122,7 @@ func (client *FleetspaceAccountClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -134,7 +134,7 @@ func (client *FleetspaceAccountClient) createCreateRequest(ctx context.Context, 
 // BeginDelete - Removes an existing Azure Cosmos DB fleetspace account from a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -162,7 +162,7 @@ func (client *FleetspaceAccountClient) BeginDelete(ctx context.Context, resource
 // Delete - Removes an existing Azure Cosmos DB fleetspace account from a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 func (client *FleetspaceAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, options *FleetspaceAccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceAccountClient.BeginDelete"
@@ -212,7 +212,7 @@ func (client *FleetspaceAccountClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *FleetspaceAccountClient) deleteCreateRequest(ctx context.Context, 
 // Get - Retrieves the properties of an existing Azure Cosmos DB fleetspace account under a fleetspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -277,7 +277,7 @@ func (client *FleetspaceAccountClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -294,7 +294,7 @@ func (client *FleetspaceAccountClient) getHandleResponse(resp *http.Response) (F
 
 // NewListPager - Lists all the fleetspaces accounts under a fleetspace.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -347,7 +347,7 @@ func (client *FleetspaceAccountClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

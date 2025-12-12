@@ -83,6 +83,15 @@ type JSONWebKeySet struct {
 	Keys []*JSONWebKey
 }
 
+// LogSpecification - Specifications of the Log for Microsoft Azure Attestation
+type LogSpecification struct {
+	// Localized friendly display name of the log
+	DisplayName *string
+
+	// Name of the log
+	Name *string
+}
+
 // OperationList - List of supported operations.
 type OperationList struct {
 	// List of supported operations.
@@ -92,6 +101,12 @@ type OperationList struct {
 	SystemData *SystemData
 }
 
+// OperationProperties - Extra Operation properties
+type OperationProperties struct {
+	// Service specifications of the operation
+	ServiceSpecification *ServiceSpecification
+}
+
 // OperationsDefinition - Definition object with the name and properties of an operation.
 type OperationsDefinition struct {
 	// Display object with properties of the operation.
@@ -99,6 +114,9 @@ type OperationsDefinition struct {
 
 	// Name of the operation.
 	Name *string
+
+	// Properties of the operation
+	Properties *OperationProperties
 }
 
 // OperationsDisplayDefinition - Display object with properties of the operation.
@@ -153,6 +171,39 @@ type PrivateEndpointConnectionProperties struct {
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// Array of private link resources
+	Value []*PrivateLinkResource
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource Private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
 }
 
 // PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
@@ -230,12 +281,36 @@ type ServiceCreationSpecificParams struct {
 	// JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing certificate
 	// used for policy operations
 	PolicySigningCertificates *JSONWebKeySet
+
+	// Controls whether traffic from the public network is allowed to access the Attestation Provider APIs.
+	PublicNetworkAccess *PublicNetworkAccessType
+
+	// The setting that controls whether authentication is enabled or disabled for TPM Attestation REST APIs.
+	TpmAttestationAuthentication *TpmAttestationAuthenticationType
 }
 
 // ServicePatchParams - Parameters for patching an attestation provider
 type ServicePatchParams struct {
+	// Properties of the attestation provider
+	Properties *ServicePatchSpecificParams
+
 	// The tags that will be assigned to the attestation provider.
 	Tags map[string]*string
+}
+
+// ServicePatchSpecificParams - Client supplied parameters used to patch an existing attestation provider.
+type ServicePatchSpecificParams struct {
+	// Controls whether traffic from the public network is allowed to access the Attestation Provider APIs.
+	PublicNetworkAccess *PublicNetworkAccessType
+
+	// The setting that controls whether authentication is enabled or disabled for TPM Attestation REST APIs.
+	TpmAttestationAuthentication *TpmAttestationAuthenticationType
+}
+
+// ServiceSpecification - Service specification payload
+type ServiceSpecification struct {
+	// Specifications of the Log for Microsoft Azure Attestation
+	LogSpecifications []*LogSpecification
 }
 
 // StatusResult - Status of attestation service.
@@ -243,8 +318,14 @@ type StatusResult struct {
 	// Gets the uri of attestation service
 	AttestURI *string
 
+	// Controls whether traffic from the public network is allowed to access the Attestation Provider APIs.
+	PublicNetworkAccess *PublicNetworkAccessType
+
 	// Status of attestation service.
 	Status *AttestationServiceStatus
+
+	// The setting that controls whether authentication is enabled or disabled for TPM Attestation REST APIs.
+	TpmAttestationAuthentication *TpmAttestationAuthenticationType
 
 	// Trust model for the attestation provider.
 	TrustModel *string

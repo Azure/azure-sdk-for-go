@@ -16,9 +16,17 @@ import (
 
 // ServerFactory is a fake server for instances of the armattestation.ClientFactory type.
 type ServerFactory struct {
-	OperationsServer                 OperationsServer
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
-	ProvidersServer                  ProvidersServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
+
+	// ProvidersServer contains the fakes for client ProvidersClient
+	ProvidersServer ProvidersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,6 +45,7 @@ type ServerFactoryTransport struct {
 	trMu                               sync.Mutex
 	trOperationsServer                 *OperationsServerTransport
 	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
 	trProvidersServer                  *ProvidersServerTransport
 }
 
@@ -61,6 +70,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "ProvidersClient":
 		initServer(s, &s.trProvidersServer, func() *ProvidersServerTransport { return NewProvidersServerTransport(&s.srv.ProvidersServer) })
 		resp, err = s.trProvidersServer.Do(req)

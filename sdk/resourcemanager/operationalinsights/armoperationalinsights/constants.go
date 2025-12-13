@@ -506,6 +506,8 @@ const (
 	TablePlanEnumAnalytics TablePlanEnum = "Analytics"
 	// TablePlanEnumBasic - Logs that are adjusted to support high volume low value verbose logs.
 	TablePlanEnumBasic TablePlanEnum = "Basic"
+	// TablePlanEnumAuxiliary - Logs that are adjusted to support high volume low value verbose logs.
+	TablePlanEnumAuxiliary TablePlanEnum = "Auxiliary"
 )
 
 // PossibleTablePlanEnumValues returns the possible values for the TablePlanEnum const type.
@@ -513,6 +515,7 @@ func PossibleTablePlanEnumValues() []TablePlanEnum {
 	return []TablePlanEnum{
 		TablePlanEnumAnalytics,
 		TablePlanEnumBasic,
+		TablePlanEnumAuxiliary,
 	}
 }
 

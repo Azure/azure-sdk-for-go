@@ -1,0 +1,4 @@
+directory: specification/redisenterprise/RedisEnterprise.Management
+commit: c255beffc048c75168c5bd6d10c3124a837f395f
+repo: i-specs
+additionalDirectories: 

@@ -338,7 +338,7 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (c *Client) GetSASURL(permissions sas.ContainerPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if c.sharedKey() == nil {
-		return "", bloberror.MissingSharedKeyCredential
+		return "", bloberror.ErrMissingSharedKeyCredential
 	}
 	st := o.format()
 	urlParts, err := blob.ParseURL(c.URL())

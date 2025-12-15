@@ -2067,7 +2067,7 @@ func (f *FileRecordedTestsSuite) TestSASFileClientNoKey() {
 	expiry := time.Now().Add(time.Hour)
 
 	_, err = fileClient.GetSASURL(permissions, expiry, nil)
-	_require.Equal(err, fileerror.MissingSharedKeyCredential)
+	_require.Equal(err, fileerror.ErrMissingSharedKeyCredential)
 }
 
 func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {

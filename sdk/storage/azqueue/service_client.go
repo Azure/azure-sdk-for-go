@@ -195,7 +195,7 @@ func (s *ServiceClient) DeleteQueue(ctx context.Context, queueName string, optio
 // This validity can be checked with CanGetAccountSASToken().
 func (s *ServiceClient) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
-		return "", queueerror.MissingSharedKeyCredential
+		return "", queueerror.ErrMissingSharedKeyCredential
 	}
 	st := o.format()
 	qps, err := sas.AccountSignatureValues{

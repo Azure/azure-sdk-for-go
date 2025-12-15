@@ -445,7 +445,7 @@ func (s *ServiceRecordedTestsSuite) TestSASServiceClientNoKey() {
 
 	expiry := time.Now().Add(time.Hour)
 	_, err = serviceClient.GetSASURL(resources, permissions, expiry, nil)
-	_require.Equal(err, fileerror.MissingSharedKeyCredential)
+	_require.Equal(err, fileerror.ErrMissingSharedKeyCredential)
 }
 
 func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {

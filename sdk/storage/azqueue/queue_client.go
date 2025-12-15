@@ -233,7 +233,7 @@ func (q *QueueClient) ClearMessages(ctx context.Context, o *ClearMessagesOptions
 // This validity can be checked with CanGetAccountSASToken().
 func (q *QueueClient) GetSASURL(permissions sas.QueuePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if q.sharedKey() == nil {
-		return "", queueerror.MissingSharedKeyCredential
+		return "", queueerror.ErrMissingSharedKeyCredential
 	}
 
 	st := o.format()

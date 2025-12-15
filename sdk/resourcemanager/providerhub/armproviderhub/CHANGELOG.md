@@ -1,5 +1,157 @@
 # Release History
 
+## 3.0.0 (2025-12-15)
+### Breaking Changes
+
+- Type of `DefaultRolloutPropertiesSpecification.HighTraffic` has been changed from `*DefaultRolloutSpecificationHighTraffic` to `*TrafficRegionRolloutConfigurationProperties`
+- Type of `DefaultRolloutPropertiesSpecification.LowTraffic` has been changed from `*DefaultRolloutSpecificationLowTraffic` to `*TrafficRegionRolloutConfigurationProperties`
+- Type of `DefaultRolloutPropertiesSpecification.MediumTraffic` has been changed from `*DefaultRolloutSpecificationMediumTraffic` to `*TrafficRegionRolloutConfigurationProperties`
+- Type of `DefaultRolloutPropertiesSpecification.RestOfTheWorldGroupOne` has been changed from `*DefaultRolloutSpecificationRestOfTheWorldGroupOne` to `*TrafficRegionRolloutConfigurationProperties`
+- Type of `DefaultRolloutPropertiesSpecification.RestOfTheWorldGroupTwo` has been changed from `*DefaultRolloutSpecificationRestOfTheWorldGroupTwo` to `*TrafficRegionRolloutConfigurationProperties`
+- Type of `FanoutLinkedNotificationRule.DstsConfiguration` has been changed from `*FanoutLinkedNotificationRuleDstsConfiguration` to `*DstsConfigurationProperties`
+- Type of `FrontloadPayloadPropertiesOverrideEndpointLevelFields.DstsConfiguration` has been changed from `*ResourceTypeEndpointBaseDstsConfiguration` to `*DstsConfigurationProperties`
+- Type of `FrontloadPayloadPropertiesOverrideEndpointLevelFields.FeaturesRule` has been changed from `*ResourceTypeEndpointBaseFeaturesRule` to `*FeaturesPolicy`
+- Type of `LocalizedOperationDefinition.Display` has been changed from `*LocalizedOperationDefinitionDisplay` to `*LocalizedOperationDisplayDefinitionProperties`
+- Type of `ProviderRegistrationProperties.DstsConfiguration` has been changed from `*ResourceProviderManifestPropertiesDstsConfiguration` to `*DstsConfigurationProperties`
+- Type of `ProviderRegistrationProperties.FeaturesRule` has been changed from `*ResourceProviderManifestPropertiesFeaturesRule` to `*FeaturesRuleProperties`
+- Type of `ProviderRegistrationProperties.Management` has been changed from `*ResourceProviderManifestPropertiesManagement` to `*ResourceProviderManagementProperties`
+- Type of `ProviderRegistrationProperties.ProviderAuthentication` has been changed from `*ResourceProviderManifestPropertiesProviderAuthentication` to `*ResourceProviderAuthenticationProperties`
+- Type of `ProviderRegistrationProperties.RequestHeaderOptions` has been changed from `*ResourceProviderManifestPropertiesRequestHeaderOptions` to `*RequestHeaderOptionsProperties`
+- Type of `ProviderRegistrationProperties.SubscriptionLifecycleNotificationSpecifications` has been changed from `*ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` to `*SubscriptionLifecycleNotificationSpecificationsProperties`
+- Type of `ProviderRegistrationProperties.TemplateDeploymentOptions` has been changed from `*ResourceProviderManifestPropertiesTemplateDeploymentOptions` to `*TemplateDeploymentOptionsProperties`
+- Type of `ProviderRegistrationPropertiesProviderHubMetadata.ProviderAuthentication` has been changed from `*MetadataProviderAuthentication` to `*ResourceProviderAuthenticationProperties`
+- Type of `ResourceProviderEndpoint.FeaturesRule` has been changed from `*ResourceProviderEndpointFeaturesRule` to `*FeaturesRuleProperties`
+- Type of `ResourceProviderManifest.FeaturesRule` has been changed from `*ResourceProviderManifestFeaturesRule` to `*FeaturesRuleProperties`
+- Type of `ResourceProviderManifest.Management` has been changed from `*ResourceProviderManifestManagement` to `*ResourceProviderManagementProperties`
+- Type of `ResourceProviderManifest.ProviderAuthentication` has been changed from `*ResourceProviderManifestProviderAuthentication` to `*ResourceProviderAuthenticationProperties`
+- Type of `ResourceProviderManifest.RequestHeaderOptions` has been changed from `*ResourceProviderManifestRequestHeaderOptions` to `*RequestHeaderOptionsProperties`
+- Type of `ResourceType.FeaturesRule` has been changed from `*ResourceTypeFeaturesRule` to `*FeaturesRuleProperties`
+- Type of `ResourceType.RequestHeaderOptions` has been changed from `*ResourceTypeRequestHeaderOptions` to `*RequestHeaderOptionsProperties`
+- Type of `ResourceType.TemplateDeploymentPolicy` has been changed from `*ResourceTypeTemplateDeploymentPolicy` to `*TemplateDeploymentPolicyProperties`
+- Type of `ResourceTypeEndpoint.DstsConfiguration` has been changed from `*ResourceTypeEndpointDstsConfiguration` to `*DstsConfigurationProperties`
+- Type of `ResourceTypeEndpoint.FeaturesRule` has been changed from `*ResourceTypeEndpointFeaturesRule` to `*FeaturesRuleProperties`
+- Type of `ResourceTypeRegistrationProperties.DstsConfiguration` has been changed from `*ResourceTypeRegistrationPropertiesDstsConfiguration` to `*DstsConfigurationProperties`
+- Type of `ResourceTypeRegistrationProperties.FeaturesRule` has been changed from `*ResourceTypeRegistrationPropertiesFeaturesRule` to `*FeaturesRuleProperties`
+- Type of `ResourceTypeRegistrationProperties.Management` has been changed from `*ResourceTypeRegistrationPropertiesManagement` to `*ResourceProviderManagementProperties`
+- Type of `ResourceTypeRegistrationProperties.RequestHeaderOptions` has been changed from `*ResourceTypeRegistrationPropertiesRequestHeaderOptions` to `*RequestHeaderOptionsProperties`
+- Type of `ResourceTypeRegistrationProperties.SubscriptionLifecycleNotificationSpecifications` has been changed from `*ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` to `*SubscriptionLifecycleNotificationSpecificationsProperties`
+- Type of `ResourceTypeRegistrationProperties.TemplateDeploymentOptions` has been changed from `*ResourceTypeRegistrationPropertiesTemplateDeploymentOptions` to `*TemplateDeploymentOptionsProperties`
+- Type of `ResourceTypeRegistrationProperties.TemplateDeploymentPolicy` has been changed from `*ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy` to `*TemplateDeploymentPolicyProperties`
+- Function `*OperationsClient.NewListPager` has been removed
+- Struct `CanaryTrafficRegionRolloutConfiguration` has been removed
+- Struct `CheckNameAvailabilitySpecifications` has been removed
+- Struct `CustomRolloutSpecification` has been removed
+- Struct `CustomRolloutStatus` has been removed
+- Struct `DefaultRolloutSpecification` has been removed
+- Struct `DefaultRolloutSpecificationHighTraffic` has been removed
+- Struct `DefaultRolloutSpecificationLowTraffic` has been removed
+- Struct `DefaultRolloutSpecificationMediumTraffic` has been removed
+- Struct `DefaultRolloutSpecificationRestOfTheWorldGroupOne` has been removed
+- Struct `DefaultRolloutSpecificationRestOfTheWorldGroupTwo` has been removed
+- Struct `DefaultRolloutStatus` has been removed
+- Struct `DstsConfiguration` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExpeditedRolloutDefinition` has been removed
+- Struct `ExtensionOptions` has been removed
+- Struct `FanoutLinkedNotificationRuleDstsConfiguration` has been removed
+- Struct `FeaturesRule` has been removed
+- Struct `GroupConnectivityInformation` has been removed
+- Struct `IdentityManagement` has been removed
+- Struct `IdentityManagementProperties` has been removed
+- Struct `LocalizedOperationDefinitionDisplay` has been removed
+- Struct `LocalizedOperationDisplayDefinition` has been removed
+- Struct `LocalizedOperationDisplayDefinitionCs` has been removed
+- Struct `LocalizedOperationDisplayDefinitionDe` has been removed
+- Struct `LocalizedOperationDisplayDefinitionDefault` has been removed
+- Struct `LocalizedOperationDisplayDefinitionEn` has been removed
+- Struct `LocalizedOperationDisplayDefinitionEs` has been removed
+- Struct `LocalizedOperationDisplayDefinitionFr` has been removed
+- Struct `LocalizedOperationDisplayDefinitionHu` has been removed
+- Struct `LocalizedOperationDisplayDefinitionIt` has been removed
+- Struct `LocalizedOperationDisplayDefinitionJa` has been removed
+- Struct `LocalizedOperationDisplayDefinitionKo` has been removed
+- Struct `LocalizedOperationDisplayDefinitionNl` has been removed
+- Struct `LocalizedOperationDisplayDefinitionPl` has been removed
+- Struct `LocalizedOperationDisplayDefinitionPt` has been removed
+- Struct `LocalizedOperationDisplayDefinitionPtBR` has been removed
+- Struct `LocalizedOperationDisplayDefinitionRu` has been removed
+- Struct `LocalizedOperationDisplayDefinitionSv` has been removed
+- Struct `LocalizedOperationDisplayDefinitionZhHans` has been removed
+- Struct `LocalizedOperationDisplayDefinitionZhHant` has been removed
+- Struct `LoggingHiddenPropertyPath` has been removed
+- Struct `ManifestLevelPropertyBag` has been removed
+- Struct `Metadata` has been removed
+- Struct `MetadataProviderAuthentication` has been removed
+- Struct `OperationsContent` has been removed
+- Struct `OperationsContentProperties` has been removed
+- Struct `OperationsDisplayDefinition` has been removed
+- Struct `PrivateResourceProviderConfiguration` has been removed
+- Struct `ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ReRegisterSubscriptionMetadata` has been removed
+- Struct `RequestHeaderOptions` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceGraphConfiguration` has been removed
+- Struct `ResourceMovePolicy` has been removed
+- Struct `ResourceProviderAuthentication` has been removed
+- Struct `ResourceProviderEndpointFeaturesRule` has been removed
+- Struct `ResourceProviderManagement` has been removed
+- Struct `ResourceProviderManifestFeaturesRule` has been removed
+- Struct `ResourceProviderManifestManagement` has been removed
+- Struct `ResourceProviderManifestProperties` has been removed
+- Struct `ResourceProviderManifestPropertiesDstsConfiguration` has been removed
+- Struct `ResourceProviderManifestPropertiesFeaturesRule` has been removed
+- Struct `ResourceProviderManifestPropertiesManagement` has been removed
+- Struct `ResourceProviderManifestPropertiesProviderAuthentication` has been removed
+- Struct `ResourceProviderManifestPropertiesRequestHeaderOptions` has been removed
+- Struct `ResourceProviderManifestPropertiesTemplateDeploymentOptions` has been removed
+- Struct `ResourceProviderManifestProviderAuthentication` has been removed
+- Struct `ResourceProviderManifestRequestHeaderOptions` has been removed
+- Struct `ResourceTypeEndpointBase` has been removed
+- Struct `ResourceTypeEndpointBaseDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointBaseFeaturesRule` has been removed
+- Struct `ResourceTypeEndpointDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointFeaturesRule` has been removed
+- Struct `ResourceTypeExtensionOptions` has been removed
+- Struct `ResourceTypeFeaturesRule` has been removed
+- Struct `ResourceTypeRegistrationPropertiesDstsConfiguration` has been removed
+- Struct `ResourceTypeRegistrationPropertiesFeaturesRule` has been removed
+- Struct `ResourceTypeRegistrationPropertiesManagement` has been removed
+- Struct `ResourceTypeRegistrationPropertiesRequestHeaderOptions` has been removed
+- Struct `ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` has been removed
+- Struct `ResourceTypeRegistrationPropertiesTemplateDeploymentOptions` has been removed
+- Struct `ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy` has been removed
+- Struct `ResourceTypeRequestHeaderOptions` has been removed
+- Struct `ResourceTypeSKU` has been removed
+- Struct `ResourceTypeTemplateDeploymentPolicy` has been removed
+- Struct `RolloutStatusBase` has been removed
+- Struct `SKUCapacity` has been removed
+- Struct `SubscriptionLifecycleNotificationSpecifications` has been removed
+- Struct `TemplateDeploymentOptions` has been removed
+- Struct `TemplateDeploymentPolicy` has been removed
+- Struct `ThirdPartyProviderAuthorization` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `TrafficRegionRolloutConfiguration` has been removed
+- Struct `TrafficRegions` has been removed
+
+### Features Added
+
+- New struct `DstsConfigurationProperties`
+- New struct `FeaturesRuleProperties`
+- New struct `LocalizedOperationDisplayDefinitionProperties`
+- New struct `OperationsDisplayDefinitionProperties`
+- New struct `RequestHeaderOptionsProperties`
+- New struct `ResourceProviderAuthenticationProperties`
+- New struct `ResourceProviderManagementProperties`
+- New struct `SubscriptionLifecycleNotificationSpecificationsProperties`
+- New struct `TemplateDeploymentOptionsProperties`
+- New struct `TemplateDeploymentPolicyProperties`
+- New struct `TrafficRegionRolloutConfigurationProperties`
+- New field `RetryAfter` in struct `NewRegionFrontloadReleaseClientCreateOrUpdateResponse`
+
+
 ## 2.0.0 (2025-07-25)
 ### Breaking Changes
 

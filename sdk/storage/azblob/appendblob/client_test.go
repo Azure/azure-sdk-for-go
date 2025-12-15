@@ -3715,7 +3715,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserO
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountImmutable)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
 	cred, err := testcommon.GetGenericTokenCredential()

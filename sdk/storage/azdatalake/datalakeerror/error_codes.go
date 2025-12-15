@@ -177,6 +177,6 @@ var (
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
 	MissingSharedKeyCredential = bloberror.MissingSharedKeyCredential
 
-	// MissingParameters - Error is returned when at least one parameter should be set for any API.
-	MissingParameters = errors.New("at least one parameter should be set for SetAccessControl API")
+	// ErrMissingParameters - Error is returned when at least one parameter should be set for any API.
+	ErrMissingParameters = errors.New("at least one parameter should be set for SetAccessControl API")
 )

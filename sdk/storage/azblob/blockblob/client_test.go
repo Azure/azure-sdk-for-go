@@ -936,7 +936,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobWithCRC64() {
 	_, err = bbClient.Upload(context.Background(), rsc, &blockblob.UploadOptions{
 		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
 	})
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 	// TODO: UploadResponse does not return ContentCRC64
 	//	_require.Equal(resp.ContentCRC64, crc)
 }
@@ -2608,7 +2608,7 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithMD5() {
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
 		TransactionalContentMD5: contentMD5[:],
 	})
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
@@ -2638,7 +2638,7 @@ func (s *BlockBlobRecordedTestsSuite) TestCommitBlockListWithCRC64() {
 	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, &blockblob.CommitBlockListOptions{
 		TransactionalContentCRC64: crc,
 	})
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURLWithEncryptionScope() {
@@ -5764,13 +5764,13 @@ func (s *BlockBlobRecordedTestsSuite) TestUploadBufferWithCRC64OrMD5() {
 		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
 	})
 	_require.Error(err)
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 
 	_, err = bbClient.UploadBuffer(context.Background(), content, &blockblob.UploadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	})
 	_require.Error(err)
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestBlockGetAccountInfo() {
@@ -6123,7 +6123,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() 
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer tmp.Close()
+	defer func() { _ = tmp.Close() }()
 
 	n, err := bbClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: 4 * 1024 * 1024})
 	_require.NoError(err)

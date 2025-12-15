@@ -1793,7 +1793,7 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientNoKey() {
 	expiry := time.Now().Add(time.Hour)
 
 	_, err = shareClient.GetSASURL(permissions, expiry, nil)
-	_require.Equal(err, fileerror.MissingSharedKeyCredential)
+	_require.Equal(err, fileerror.ErrMissingSharedKeyCredential)
 }
 
 func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {

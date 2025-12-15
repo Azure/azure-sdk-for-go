@@ -3842,7 +3842,7 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer tmp.Close()
+	defer func() { _ = tmp.Close() }()
 
 	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: blockSize})
 	_require.NoError(err)

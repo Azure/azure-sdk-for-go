@@ -155,7 +155,7 @@ func performUploadStreamToBlockBlobTestWithChecksums(t *testing.T, _require *req
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
 		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value)})
 	_require.Error(err)
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 
 	md5Value := md5.Sum(blobData)
 	contentMD5 := md5Value[:]
@@ -163,7 +163,7 @@ func performUploadStreamToBlockBlobTestWithChecksums(t *testing.T, _require *req
 	_, err = client.UploadStream(ctx, containerName, blobName, blobContentReader,
 		&blockblob.UploadStreamOptions{BlockSize: int64(bufferSize), Concurrency: maxBuffers, TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5)})
 	_require.Error(err)
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 }
 
 func (s *AZBlobUnrecordedTestsSuite) TestUploadStreamToBlockBlobInChunksChecksums() {
@@ -322,7 +322,7 @@ func performUploadAndDownloadFileTestWithChecksums(t *testing.T, _require *requi
 			},
 		})
 	_require.Error(err)
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 
 	md5Value := md5.Sum(fileData)
 	contentMD5 := md5Value[:]
@@ -341,7 +341,7 @@ func performUploadAndDownloadFileTestWithChecksums(t *testing.T, _require *requi
 			},
 		})
 	_require.Error(err)
-	_require.Error(err, bloberror.UnsupportedChecksum)
+	_require.Error(err, bloberror.ErrUnsupportedChecksum)
 }
 
 func (s *AZBlobUnrecordedTestsSuite) TestUploadFileInChunksChecksum() {

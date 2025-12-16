@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesSubscriptionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesSubscriptionList.json
 func ExampleWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesCreate.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesDelete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesGet.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,10 +203,35 @@ func ExampleWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Workspace = armoperationalinsights.Workspace{
+	// 	Name: to.Ptr("oiautorest6685"),
+	// 	Type: to.Ptr("Microsoft.OperationalInsights/workspaces"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/workspaces/oiautorest6685"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Properties: &armoperationalinsights.WorkspaceProperties{
+	// 		CustomerID: to.Ptr("5b02755b-5bf4-430c-9487-45502a2a7e62"),
+	// 		Failover: &armoperationalinsights.WorkspaceFailoverProperties{
+	// 			LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-05T07:35:51.000Z"); return t}()),
+	// 			State: to.Ptr(armoperationalinsights.WorkspaceFailoverStateActive),
+	// 		},
+	// 		ProvisioningState: to.Ptr(armoperationalinsights.WorkspaceEntityStatusSucceeded),
+	// 		PublicNetworkAccessForIngestion: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
+	// 		PublicNetworkAccessForQuery: to.Ptr(armoperationalinsights.PublicNetworkAccessTypeEnabled),
+	// 		Replication: &armoperationalinsights.WorkspaceReplicationProperties{
+	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51.000Z"); return t}()),
+	// 			Enabled: to.Ptr(true),
+	// 			LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51.000Z"); return t}()),
+	// 			Location: to.Ptr("westus3"),
+	// 			ProvisioningState: to.Ptr(armoperationalinsights.WorkspaceReplicationStateSucceeded),
+	// 		},
+	// 		RetentionInDays: to.Ptr[int32](30),
+	// 		SKU: &armoperationalinsights.WorkspaceSKU{
+	// 			Name: to.Ptr(armoperationalinsights.WorkspaceSKUNameEnumPerGB2018),
+	// 		},
+	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesUpdate.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,4 +278,175 @@ func ExampleWorkspacesClient_Update() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesFailover.json
+func ExampleWorkspacesClient_BeginFailover() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginFailover(ctx, "oiautorest6685", "eastus", "oiautorest6685", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/WorkspacesFailback.json
+func ExampleWorkspacesClient_BeginFailback() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginFailback(ctx, "oiautorest6685", "oiautorest6685", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/NSPForWorkspaces_List.json
+func ExampleWorkspacesClient_NewListNSPPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkspacesClient().NewListNSPPager("exampleRG", "someWorkspace", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.NetworkSecurityPerimeterConfigurationListResult = armoperationalinsights.NetworkSecurityPerimeterConfigurationListResult{
+		// 	Value: []*armoperationalinsights.NetworkSecurityPerimeterConfiguration{
+		// 		{
+		// 			Name: to.Ptr("somePerimeterConfiguration"),
+		// 			Type: to.Ptr("Microsoft.OperationalInsights/workspaces/networkSecurityPerimeterConfigurations"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/exampleRG/providers/Microsoft.OperationalInsights/workspaces/someWorkspace/networkSecurityPerimeterConfigurations/somePerimeterConfiguration"),
+		// 			Properties: &armoperationalinsights.NetworkSecurityPerimeterConfigurationProperties{
+		// 				NetworkSecurityPerimeter: &armoperationalinsights.NetworkSecurityPerimeter{
+		// 					ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
+		// 					Location: to.Ptr("japaneast"),
+		// 				},
+		// 				Profile: &armoperationalinsights.NetworkSecurityProfile{
+		// 					Name: to.Ptr("profile1"),
+		// 					AccessRules: []*armoperationalinsights.AccessRule{
+		// 						{
+		// 							Name: to.Ptr("rule1"),
+		// 							Properties: &armoperationalinsights.AccessRuleProperties{
+		// 								AddressPrefixes: []*string{
+		// 									to.Ptr("148.0.0.0/8"),
+		// 									to.Ptr("152.4.6.0/24")},
+		// 									Direction: to.Ptr(armoperationalinsights.AccessRuleDirectionInbound),
+		// 								},
+		// 						}},
+		// 						AccessRulesVersion: to.Ptr[int32](0),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armoperationalinsights.NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded),
+		// 					ResourceAssociation: &armoperationalinsights.ResourceAssociation{
+		// 						Name: to.Ptr("assoc1"),
+		// 						AccessMode: to.Ptr(armoperationalinsights.ResourceAssociationAccessModeEnforced),
+		// 					},
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/NSPForWorkspaces_Get.json
+func ExampleWorkspacesClient_GetNSP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().GetNSP(ctx, "exampleRG", "someWorkspace", "somePerimeterConfiguration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.NetworkSecurityPerimeterConfiguration = armoperationalinsights.NetworkSecurityPerimeterConfiguration{
+	// 	Name: to.Ptr("somePerimeterConfiguration"),
+	// 	Type: to.Ptr("Microsoft.OperationalInsights/workspaces/networkSecurityPerimeterConfigurations"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/exampleRG/providers/Microsoft.OperationalInsights/workspaces/someWorkspace/networkSecurityPerimeterConfigurations/somePerimeterConfiguration"),
+	// 	Properties: &armoperationalinsights.NetworkSecurityPerimeterConfigurationProperties{
+	// 		NetworkSecurityPerimeter: &armoperationalinsights.NetworkSecurityPerimeter{
+	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/networkRG/providers/Microsoft.Network/networkSecurityPerimeters/perimeter1"),
+	// 			Location: to.Ptr("japaneast"),
+	// 		},
+	// 		Profile: &armoperationalinsights.NetworkSecurityProfile{
+	// 			Name: to.Ptr("profile1"),
+	// 			AccessRules: []*armoperationalinsights.AccessRule{
+	// 				{
+	// 					Name: to.Ptr("rule1"),
+	// 					Properties: &armoperationalinsights.AccessRuleProperties{
+	// 						AddressPrefixes: []*string{
+	// 							to.Ptr("148.0.0.0/8"),
+	// 							to.Ptr("152.4.6.0/24")},
+	// 							Direction: to.Ptr(armoperationalinsights.AccessRuleDirectionInbound),
+	// 						},
+	// 				}},
+	// 				AccessRulesVersion: to.Ptr[int32](0),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armoperationalinsights.NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded),
+	// 			ResourceAssociation: &armoperationalinsights.ResourceAssociation{
+	// 				Name: to.Ptr("assoc1"),
+	// 				AccessMode: to.Ptr(armoperationalinsights.ResourceAssociationAccessModeEnforced),
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/NSPForWorkspaces_Reconcile.json
+func ExampleWorkspacesClient_BeginReconcileNSP() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginReconcileNSP(ctx, "exampleRG", "someWorkspace", "somePerimeterConfiguration", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

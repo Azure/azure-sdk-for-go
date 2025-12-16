@@ -330,6 +330,49 @@ type StorageInsightConfigsClientListByWorkspaceResponse struct {
 	StorageInsightListResult
 }
 
+// SummaryLogsClientCreateOrUpdateResponse contains the response from method SummaryLogsClient.BeginCreateOrUpdate.
+type SummaryLogsClientCreateOrUpdateResponse struct {
+	// Workspace data summary rules definition.
+	SummaryLogs
+}
+
+// SummaryLogsClientDeleteResponse contains the response from method SummaryLogsClient.BeginDelete.
+type SummaryLogsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SummaryLogsClientGetResponse contains the response from method SummaryLogsClient.Get.
+type SummaryLogsClientGetResponse struct {
+	// Workspace data summary rules definition.
+	SummaryLogs
+}
+
+// SummaryLogsClientListByWorkspaceResponse contains the response from method SummaryLogsClient.NewListByWorkspacePager.
+type SummaryLogsClientListByWorkspaceResponse struct {
+	// The list Summary rule operation response.
+	SummaryLogsListResult
+}
+
+// SummaryLogsClientRetryBinResponse contains the response from method SummaryLogsClient.BeginRetryBin.
+type SummaryLogsClientRetryBinResponse struct {
+	// placeholder for future response values
+}
+
+// SummaryLogsClientStartResponse contains the response from method SummaryLogsClient.BeginStart.
+type SummaryLogsClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// SummaryLogsClientStopResponse contains the response from method SummaryLogsClient.Stop.
+type SummaryLogsClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// TablesClientCancelSearchResponse contains the response from method TablesClient.CancelSearch.
+type TablesClientCancelSearchResponse struct {
+	// placeholder for future response values
+}
+
 // TablesClientCreateOrUpdateResponse contains the response from method TablesClient.BeginCreateOrUpdate.
 type TablesClientCreateOrUpdateResponse struct {
 	// Workspace data table definition.
@@ -396,6 +439,22 @@ type WorkspacesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// WorkspacesClientFailbackResponse contains the response from method WorkspacesClient.BeginFailback.
+type WorkspacesClientFailbackResponse struct {
+	// placeholder for future response values
+}
+
+// WorkspacesClientFailoverResponse contains the response from method WorkspacesClient.BeginFailover.
+type WorkspacesClientFailoverResponse struct {
+	// placeholder for future response values
+}
+
+// WorkspacesClientGetNSPResponse contains the response from method WorkspacesClient.GetNSP.
+type WorkspacesClientGetNSPResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
+}
+
 // WorkspacesClientGetResponse contains the response from method WorkspacesClient.Get.
 type WorkspacesClientGetResponse struct {
 	// The top level Workspace resource container.
@@ -408,10 +467,21 @@ type WorkspacesClientListByResourceGroupResponse struct {
 	WorkspaceListResult
 }
 
+// WorkspacesClientListNSPResponse contains the response from method WorkspacesClient.NewListNSPPager.
+type WorkspacesClientListNSPResponse struct {
+	// Result of a list NSP (network security perimeter) configurations request.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
 // WorkspacesClientListResponse contains the response from method WorkspacesClient.NewListPager.
 type WorkspacesClientListResponse struct {
 	// The list workspaces operation response.
 	WorkspaceListResult
+}
+
+// WorkspacesClientReconcileNSPResponse contains the response from method WorkspacesClient.BeginReconcileNSP.
+type WorkspacesClientReconcileNSPResponse struct {
+	// placeholder for future response values
 }
 
 // WorkspacesClientUpdateResponse contains the response from method WorkspacesClient.Update.

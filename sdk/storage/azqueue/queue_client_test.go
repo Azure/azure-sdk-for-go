@@ -1437,7 +1437,7 @@ func (s *UnrecordedTestSuite) TestQueueUserDelegationSAS_WithSduoid() {
 		ExpiryTime:                  expiry,
 		Permissions:                 (&sas.QueuePermissions{Read: true, Add: true}).String(),
 		QueueName:                   queueName,
-		SignedDelegatedUserObjectId: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+		SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
 	}
 	qp, err := sv.SignWithUserDelegation(udc)
 	_require.NoError(err)

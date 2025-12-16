@@ -31,7 +31,7 @@ type QueueSignatureValues struct {
 	AuthorizedObjectID          string // saoid
 	UnauthorizedObjectID        string // suoid
 	CorrelationID               string // scid
-	SignedDelegatedUserObjectId string // sduoid
+	SignedDelegatedUserObjectID string // sduoid
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -126,7 +126,7 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
 		"",
-		v.SignedDelegatedUserObjectId,
+		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version},
@@ -149,7 +149,7 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 		authorizedObjectID:          v.AuthorizedObjectID,
 		unauthorizedObjectID:        v.UnauthorizedObjectID,
 		correlationID:               v.CorrelationID,
-		signedDelegatedUserObjectId: v.SignedDelegatedUserObjectId,
+		signedDelegatedUserObjectID: v.SignedDelegatedUserObjectID,
 	}
 
 	p.signedOID = *udk.SignedOid

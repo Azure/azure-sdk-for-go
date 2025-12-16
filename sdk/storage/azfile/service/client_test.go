@@ -626,7 +626,7 @@ func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserObje
 		ExpiryTime:                  expiry,
 		Permissions:                 (&sas.SharePermissions{Read: true, List: true}).String(),
 		ShareName:                   shareName,
-		SignedDelegatedUserObjectId: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+		SignedDelegatedUserObjectID: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
 	}
 	qp, err := sv.SignWithUserDelegation(udc)
 	_require.NoError(err)

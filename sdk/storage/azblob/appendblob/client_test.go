@@ -48,12 +48,13 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running appendblob Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &AppendBlobRecordedTestsSuite{})
 		suite.Run(t, &AppendBlobUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &AppendBlobRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &AppendBlobRecordedTestsSuite{})
 	}
 }
@@ -3715,7 +3716,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserO
 	_require := require.New(s.T())
 	testName := s.T().Name()
 
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountImmutable)
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
 	_require.Greater(len(accountName), 0)
 
 	cred, err := testcommon.GetGenericTokenCredential()
@@ -3756,13 +3757,13 @@ func (s *AppendBlobUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserO
 		ExpiryTime:                  time.Now().UTC().Add(15 * time.Minute),
 		Permissions:                 permissions.String(),
 		ContainerName:               containerName,
-		SignedDelegatedUserObjectId: expectedOid,
+		SignedDelegatedUserObjectID: expectedOid,
 	}.SignWithUserDelegation(udc)
 	_require.NoError(err)
 
 	// Round-trip check: SAS should contain sduoid=expectedOid
 	qp := blobParts.SAS
-	_require.Equal(expectedOid, qp.SignedDelegatedUserObjectId())
+	_require.Equal(expectedOid, qp.SignedDelegatedUserObjectID())
 
 	blobURLWithSAS := blobParts.String()
 	// Use the same AAD credential so the bearer token is presented along with the SAS

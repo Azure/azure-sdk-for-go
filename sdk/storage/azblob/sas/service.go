@@ -41,7 +41,7 @@ type BlobSignatureValues struct {
 	UnauthorizedObjectID        string // suoid
 	CorrelationID               string // scid
 	EncryptionScope             string `param:"ses"`
-	SignedDelegatedUserObjectId string // sduoid
+	SignedDelegatedUserObjectID string // sduoid
 }
 
 func getDirectoryDepth(path string) string {
@@ -212,7 +212,7 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
 		"",                            // Placeholder for SignedKeyDelegatedUserTenantId (future field)
-		v.SignedDelegatedUserObjectId, // Placeholder for SignedDelegatedUserObjectId (future field)
+		v.SignedDelegatedUserObjectID, // Placeholder for SignedDelegatedUserObjectID (future field)
 		v.IPRange.String(),
 		string(v.Protocol),
 		v.Version,
@@ -254,7 +254,7 @@ func (v BlobSignatureValues) SignWithUserDelegation(userDelegationCredential *Us
 		authorizedObjectID:          v.AuthorizedObjectID,
 		unauthorizedObjectID:        v.UnauthorizedObjectID,
 		correlationID:               v.CorrelationID,
-		signedDelegatedUserObjectId: v.SignedDelegatedUserObjectId,
+		signedDelegatedUserObjectID: v.SignedDelegatedUserObjectID,
 		// Calculated SAS signature
 		signature: signature,
 	}

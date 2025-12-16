@@ -137,7 +137,7 @@ type QueryParameters struct {
 	authorizedObjectID          string    `param:"saoid"`
 	unauthorizedObjectID        string    `param:"suoid"`
 	correlationID               string    `param:"scid"`
-	signedDelegatedUserObjectId string    `param:"sduoid"`
+	signedDelegatedUserObjectID string    `param:"sduoid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
@@ -350,8 +350,8 @@ func (p *QueryParameters) Encode() string {
 	if p.correlationID != "" {
 		v.Add("scid", p.correlationID)
 	}
-	if p.signedDelegatedUserObjectId != "" {
-		v.Add("sduoid", p.signedDelegatedUserObjectId)
+	if p.signedDelegatedUserObjectID != "" {
+		v.Add("sduoid", p.signedDelegatedUserObjectID)
 	}
 
 	return v.Encode()
@@ -423,7 +423,7 @@ func NewQueryParameters(values url.Values) QueryParameters {
 		case "scid":
 			p.correlationID = val
 		case "sduoid":
-			p.signedDelegatedUserObjectId = val
+			p.signedDelegatedUserObjectID = val
 		default:
 			continue // query param didn't get recognized
 		}

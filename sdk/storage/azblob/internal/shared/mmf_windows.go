@@ -35,8 +35,8 @@ func NewMMB(size int64) (Mmb, error) {
 		return nil, os.NewSyscallError("MapViewOfFile", err)
 	}
 
-	m := Mmb{}
 	h := (*reflect.SliceHeader)(unsafe.Pointer(&m))
+	h := (*reflect.SliceHeader)(unsafe.Pointer(&b))
 	h.Data = addr
 	h.Len = int(size)
 	h.Cap = h.Len

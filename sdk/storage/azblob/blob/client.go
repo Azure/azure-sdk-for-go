@@ -294,7 +294,7 @@ func (b *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if b.sharedKey() == nil {
-		return "", bloberror.ErrMissingSharedKeyCredential
+		return "", bloberror.MissingSharedKeyCredential
 	}
 
 	urlParts, err := ParseURL(b.URL())

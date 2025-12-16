@@ -355,7 +355,7 @@ func (f *Client) GetSymbolicLink(ctx context.Context, options *GetSymbolicLinkOp
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if f.sharedKey() == nil {
-		return "", fileerror.ErrMissingSharedKeyCredential
+		return "", fileerror.MissingSharedKeyCredential
 	}
 	st := o.format()
 

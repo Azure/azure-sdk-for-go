@@ -273,7 +273,7 @@ func (s *Client) GetStatistics(ctx context.Context, options *GetStatisticsOption
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (s *Client) GetSASURL(permissions sas.SharePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
-		return "", fileerror.ErrMissingSharedKeyCredential
+		return "", fileerror.MissingSharedKeyCredential
 	}
 	st := o.format()
 

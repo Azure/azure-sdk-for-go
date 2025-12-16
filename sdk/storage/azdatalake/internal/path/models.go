@@ -122,7 +122,7 @@ type SetAccessControlOptions struct {
 
 func FormatSetAccessControlOptions(o *SetAccessControlOptions) (*generated.PathClientSetAccessControlOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions, error) {
 	if o == nil {
-		return nil, nil, nil, datalakeerror.ErrMissingParameters
+		return nil, nil, nil, datalakeerror.MissingParameters
 	}
 	// call path formatter since we're hitting dfs in this operation
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)

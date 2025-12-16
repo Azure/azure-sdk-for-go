@@ -2067,7 +2067,7 @@ func (f *FileRecordedTestsSuite) TestSASFileClientNoKey() {
 	expiry := time.Now().Add(time.Hour)
 
 	_, err = fileClient.GetSASURL(permissions, expiry, nil)
-	_require.Equal(err, fileerror.ErrMissingSharedKeyCredential)
+	_require.Equal(err, fileerror.MissingSharedKeyCredential)
 }
 
 func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
@@ -5164,7 +5164,7 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer func() { _ = tmp.Close() }()
+	defer tmp.Close()
 
 	_, err = fileClient.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{ChunkSize: chunkSize})
 	_require.NoError(err)

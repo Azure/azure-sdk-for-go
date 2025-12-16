@@ -565,7 +565,7 @@ func (s *UnrecordedTestSuite) TestNoSharedKeyCredError() {
 
 	// GetSASURL fails (with MissingSharedKeyCredential) because service client is created without credentials
 	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &opts)
-	_require.Equal(err, queueerror.ErrMissingSharedKeyCredential)
+	_require.Equal(err, queueerror.MissingSharedKeyCredential)
 
 }
 

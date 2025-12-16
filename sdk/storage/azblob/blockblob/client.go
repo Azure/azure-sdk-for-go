@@ -273,7 +273,7 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 
 		// If user attempts to pass in their own checksum, errors out.
 		if options.TransactionalContentMD5 != nil || options.TransactionalContentCRC64 != nil {
-			return CommitBlockListResponse{}, bloberror.ErrUnsupportedChecksum
+			return CommitBlockListResponse{}, bloberror.UnsupportedChecksum
 		}
 
 		headers = options.HTTPHeaders
@@ -532,7 +532,7 @@ func (bb *Client) UploadBuffer(ctx context.Context, buffer []byte, o *UploadBuff
 
 	// If user attempts to pass in their own checksum, errors out.
 	if uploadOptions.TransactionalValidation != nil && reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func {
-		return UploadBufferResponse{}, bloberror.ErrUnsupportedChecksum
+		return UploadBufferResponse{}, bloberror.UnsupportedChecksum
 	}
 
 	return bb.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
@@ -551,7 +551,7 @@ func (bb *Client) UploadFile(ctx context.Context, file *os.File, o *UploadFileOp
 
 	// If user attempts to pass in their own checksum, errors out.
 	if uploadOptions.TransactionalValidation != nil && reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func {
-		return UploadFileResponse{}, bloberror.ErrUnsupportedChecksum
+		return UploadFileResponse{}, bloberror.UnsupportedChecksum
 	}
 
 	return bb.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
@@ -566,7 +566,7 @@ func (bb *Client) UploadStream(ctx context.Context, body io.Reader, o *UploadStr
 
 	// If user attempts to pass in their own checksum, errors out.
 	if o.TransactionalValidation != nil && reflect.TypeOf(o.TransactionalValidation).Kind() != reflect.Func {
-		return UploadStreamResponse{}, bloberror.ErrUnsupportedChecksum
+		return UploadStreamResponse{}, bloberror.UnsupportedChecksum
 	}
 
 	result, err := copyFromReader(ctx, body, bb, *o, shared.NewMMBPool)

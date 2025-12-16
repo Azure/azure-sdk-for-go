@@ -45,6 +45,27 @@ type AdditionalNetworkInterfaceConfiguration struct {
 	EnableAcceleratedNetworking *bool
 }
 
+// ApplicationFetchHealthRequest - Parameters for fetching the health of an application.
+type ApplicationFetchHealthRequest struct {
+	// Allows filtering of the deployed applications health state objects returned in the result of application health query based
+	// on their health state.
+	DeployedApplicationsHealthStateFilter *HealthFilter
+
+	// Allows filtering of the health events returned in the response based on health state.
+	EventsHealthStateFilter *HealthFilter
+
+	// Indicates whether the health statistics should be returned as part of the query result. False by default. The statistics
+	// show the number of children entities in health state Ok, Warning, and Error.
+	ExcludeHealthStatistics *bool
+
+	// Allows filtering of the services health state objects returned in the result of services health query based on their health
+	// state.
+	ServicesHealthStateFilter *HealthFilter
+
+	// Request timeout for the health query in seconds. The default value is 60 seconds.
+	Timeout *int64
+}
+
 // ApplicationHealthPolicy - Defines a health policy used to evaluate the health of an application or one of its children
 // entities.
 type ApplicationHealthPolicy struct {
@@ -225,8 +246,17 @@ type ApplicationTypeVersionsCleanupPolicy struct {
 
 // ApplicationUpdateParameters - Application update request.
 type ApplicationUpdateParameters struct {
+	// Application update parameters properties.
+	Properties *ApplicationUpdateParametersProperties
+
 	// Application update parameters
 	Tags map[string]*string
+}
+
+// ApplicationUpdateParametersProperties - Properties for application update request.
+type ApplicationUpdateParametersProperties struct {
+	// List of application parameters with overridden values from their default values specified in the application manifest.
+	Parameters map[string]*string
 }
 
 // ApplicationUpgradePolicy - Describes the policy for a monitored application upgrade.
@@ -1436,6 +1466,51 @@ type ResourceAzStatus struct {
 
 	// READ-ONLY; VM Size id.
 	ResourceType *string
+}
+
+// RestartDeployedCodePackageRequest - Parameters for restarting a deployed code package.
+type RestartDeployedCodePackageRequest struct {
+	// REQUIRED; The instance ID for currently running entry point. For a code package setup entry point (if specified) runs first
+	// and after it finishes main entry point is started. Each time entry point executable is run, its instance ID will change.
+	// If 0 is passed in as the code package instance ID, the API will restart the code package with whatever instance ID it is
+	// currently running. If an instance ID other than 0 is passed in, the API will restart the code package only if the current
+	// Instance ID matches the passed in instance ID. Note, passing in the exact instance ID (not 0) in the API is safer, because
+	// if ensures at most one restart of the code package.
+	CodePackageInstanceID *string
+
+	// REQUIRED; The name of the code package as specified in the service manifest.
+	CodePackageName *string
+
+	// REQUIRED; The name of the node where the code package needs to be restarted. Use '*' to restart on all nodes where the
+	// code package is running.
+	NodeName *string
+
+	// REQUIRED; The name of the service manifest as specified in the code package.
+	ServiceManifestName *string
+
+	// The activation id of a deployed service package. If ServicePackageActivationMode specified at the time of creating the
+	// service is 'SharedProcess' (or if it is not specified, in which case it defaults to 'SharedProcess'), then value of ServicePackageActivationId
+	// is always an empty string.
+	ServicePackageActivationID *string
+}
+
+// RestartReplicaRequest - Request to restart a replica.
+type RestartReplicaRequest struct {
+	// REQUIRED; The ID of the partition.
+	PartitionID *string
+
+	// REQUIRED; The IDs of the replicas to be restarted.
+	ReplicaIDs []*int64
+
+	// REQUIRED; The kind of restart to perform.
+	RestartKind *RestartKind
+
+	// If true, the restart operation will be forced. Use this option with care, as it may cause data loss.
+	ForceRestart *bool
+
+	// The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is
+	// willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+	Timeout *int64
 }
 
 // RollingUpgradeMonitoringPolicy - The policy used for monitoring the application upgrade

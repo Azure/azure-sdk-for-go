@@ -1,5 +1,38 @@
 # Release History
 
+## 0.4.2 (2025-12-08)
+
+### Bugs Fixed
+
+- Move logic of determining preview version after code generation to avoid incorrect version calculation.
+- Fix wrong override logic for stable/beta version determination.
+
+## 0.4.1 (2025-12-02)
+
+### Bugs Fixed
+
+- Fix the wrong constant value for beta release type.
+
+## 0.4.0 (2025-12-01)
+
+### Features Added
+
+- Add `changelog` command to generate and update changelog content for SDK packages based on code changes.
+- Add `version` command to calculate and update version numbers across all version-related files.
+- Add comprehensive helper utilities for package status determination, path resolution, and version management.
+- Support detecting parameter renaming as breaking change in changelog generation.
+
+### Breaking Changes
+
+- Split version calculation and changelog generation logic into separate packages (`changelog` and `version`).
+- Move constants and enums from `cmd/v2/common` to shared `utils` package for better reusability.
+- Refactor `GenerateForSingleRPNamespace` and `GenerateForSingleTypeSpec` to use status-based generator selection.
+- Remove template files for CHANGELOG.md and go.mod (now generated programmatically).
+
+### Other Changes
+
+- Upgrade Go version to 1.24.0 for dependency management.
+
 ## 0.3.1 (2025-11-13)
 
 ### Bugs Fixed

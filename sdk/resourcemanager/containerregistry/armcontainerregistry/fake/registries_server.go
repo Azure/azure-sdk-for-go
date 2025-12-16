@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -77,9 +77,9 @@ type RegistriesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	RegenerateCredential func(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters armcontainerregistry.RegenerateCredentialParameters, options *armcontainerregistry.RegistriesClientRegenerateCredentialOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientRegenerateCredentialResponse], errResp azfake.ErrorResponder)
 
-	// BeginScheduleRun is the fake for method RegistriesClient.BeginScheduleRun
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginScheduleRun func(ctx context.Context, resourceGroupName string, registryName string, runRequest armcontainerregistry.RunRequestClassification, options *armcontainerregistry.RegistriesClientBeginScheduleRunOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientScheduleRunResponse], errResp azfake.ErrorResponder)
+	// ScheduleRun is the fake for method RegistriesClient.ScheduleRun
+	// HTTP status codes to indicate success: http.StatusOK
+	ScheduleRun func(ctx context.Context, resourceGroupName string, registryName string, runRequest armcontainerregistry.RunRequestClassification, options *armcontainerregistry.RegistriesClientScheduleRunOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientScheduleRunResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method RegistriesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -99,7 +99,6 @@ func NewRegistriesServerTransport(srv *RegistriesServer) *RegistriesServerTransp
 		newListPager:                     newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]](),
 		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]](),
 		newListPrivateLinkResourcesPager: newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]](),
-		beginScheduleRun:                 newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientScheduleRunResponse]](),
 		beginUpdate:                      newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]](),
 	}
 }
@@ -115,7 +114,6 @@ type RegistriesServerTransport struct {
 	newListPager                     *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]]
 	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]]
 	newListPrivateLinkResourcesPager *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]]
-	beginScheduleRun                 *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientScheduleRunResponse]]
 	beginUpdate                      *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]]
 }
 
@@ -170,8 +168,8 @@ func (r *RegistriesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = r.dispatchListUsages(req)
 			case "RegistriesClient.RegenerateCredential":
 				res.resp, res.err = r.dispatchRegenerateCredential(req)
-			case "RegistriesClient.BeginScheduleRun":
-				res.resp, res.err = r.dispatchBeginScheduleRun(req)
+			case "RegistriesClient.ScheduleRun":
+				res.resp, res.err = r.dispatchScheduleRun(req)
 			case "RegistriesClient.BeginUpdate":
 				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
@@ -727,55 +725,44 @@ func (r *RegistriesServerTransport) dispatchRegenerateCredential(req *http.Reque
 	return resp, nil
 }
 
-func (r *RegistriesServerTransport) dispatchBeginScheduleRun(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginScheduleRun == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginScheduleRun not implemented")}
+func (r *RegistriesServerTransport) dispatchScheduleRun(req *http.Request) (*http.Response, error) {
+	if r.srv.ScheduleRun == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ScheduleRun not implemented")}
 	}
-	beginScheduleRun := r.beginScheduleRun.get(req)
-	if beginScheduleRun == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scheduleRun`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		raw, err := readRequestBody(req)
-		if err != nil {
-			return nil, err
-		}
-		body, err := unmarshalRunRequestClassification(raw)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginScheduleRun(req.Context(), resourceGroupNameParam, registryNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginScheduleRun = &respr
-		r.beginScheduleRun.add(req, beginScheduleRun)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerRegistry/registries/(?P<registryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scheduleRun`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginScheduleRun, req)
+	raw, err := readRequestBody(req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginScheduleRun.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	body, err := unmarshalRunRequestClassification(raw)
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginScheduleRun) {
-		r.beginScheduleRun.remove(req)
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-
+	registryNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("registryName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.ScheduleRun(req.Context(), resourceGroupNameParam, registryNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Run, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

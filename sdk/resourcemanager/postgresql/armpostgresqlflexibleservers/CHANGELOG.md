@@ -1,5 +1,342 @@
 # Release History
 
+## 5.0.0 (2025-11-24)
+### Breaking Changes
+
+- Function `*ConfigurationsClient.BeginPut` parameter(s) have been changed from `(context.Context, string, string, string, Configuration, *ConfigurationsClientBeginPutOptions)` to `(context.Context, string, string, string, ConfigurationForUpdate, *ConfigurationsClientBeginPutOptions)`
+- Function `NewMigrationsClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*MigrationsClient.Create` parameter(s) have been changed from `(context.Context, string, string, string, string, MigrationResource, *MigrationsClientCreateOptions)` to `(context.Context, string, string, string, Migration, *MigrationsClientCreateOptions)`
+- Function `*MigrationsClient.Get` parameter(s) have been changed from `(context.Context, string, string, string, string, *MigrationsClientGetOptions)` to `(context.Context, string, string, string, *MigrationsClientGetOptions)`
+- Function `*MigrationsClient.NewListByTargetServerPager` parameter(s) have been changed from `(string, string, string, *MigrationsClientListByTargetServerOptions)` to `(string, string, *MigrationsClientListByTargetServerOptions)`
+- Function `*MigrationsClient.Update` parameter(s) have been changed from `(context.Context, string, string, string, string, MigrationResourceForPatch, *MigrationsClientUpdateOptions)` to `(context.Context, string, string, string, MigrationResourceForPatch, *MigrationsClientUpdateOptions)`
+- Function `*ServerThreatProtectionSettingsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, ThreatProtectionName, ServerThreatProtectionSettingsModel, *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, ThreatProtectionName, AdvancedThreatProtectionSettingsModel, *ServerThreatProtectionSettingsClientBeginCreateOrUpdateOptions)`
+- Function `*ServersClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, ServerForUpdate, *ServersClientBeginUpdateOptions)` to `(context.Context, string, string, ServerForPatch, *ServersClientBeginUpdateOptions)`
+- Function `*VirtualEndpointsClient.BeginCreate` parameter(s) have been changed from `(context.Context, string, string, string, VirtualEndpointResource, *VirtualEndpointsClientBeginCreateOptions)` to `(context.Context, string, string, string, VirtualEndpoint, *VirtualEndpointsClientBeginCreateOptions)`
+- Type of `AuthConfig.ActiveDirectoryAuth` has been changed from `*ActiveDirectoryAuthEnum` to `*MicrosoftEntraAuth`
+- Type of `AuthConfig.PasswordAuth` has been changed from `*PasswordAuthEnum` to `*PasswordBasedAuth`
+- Type of `Backup.GeoRedundantBackup` has been changed from `*GeoRedundantBackupEnum` to `*GeographicallyRedundantBackup`
+- Type of `DataEncryption.GeoBackupEncryptionKeyStatus` has been changed from `*KeyStatusEnum` to `*EncryptionKeyStatus`
+- Type of `DataEncryption.PrimaryEncryptionKeyStatus` has been changed from `*KeyStatusEnum` to `*EncryptionKeyStatus`
+- Type of `DataEncryption.Type` has been changed from `*ArmServerKeyType` to `*DataEncryptionType`
+- Type of `HighAvailability.State` has been changed from `*ServerHAState` to `*HighAvailabilityState`
+- Type of `LtrPreBackupResponse.Properties` has been changed from `*LtrPreBackupResponseProperties` to `*BackupsLongTermRetentionResponseProperties`
+- Type of `LtrServerBackupOperationList.Value` has been changed from `[]*LtrServerBackupOperation` to `[]*BackupsLongTermRetentionOperation`
+- Type of `MigrationResourceForPatch.Properties` has been changed from `*MigrationResourcePropertiesForPatch` to `*MigrationPropertiesForPatch`
+- Type of `MigrationStatus.CurrentSubStateDetails` has been changed from `*MigrationSubStateDetails` to `*MigrationSubstateDetails`
+- Type of `Replica.PromoteOption` has been changed from `*ReplicationPromoteOption` to `*ReadReplicaPromoteOption`
+- Type of `ServerProperties.Version` has been changed from `*ServerVersion` to `*PostgresMajorVersion`
+- Type of `ServerSKUCapability.SupportedHaMode` has been changed from `[]*HaMode` to `[]*HighAvailabilityMode`
+- Type of `Storage.Tier` has been changed from `*AzureManagedDiskPerformanceTiers` to `*AzureManagedDiskPerformanceTier`
+- `HighAvailabilityModeDisabled` from enum `HighAvailabilityMode` has been removed
+- Enum `ActiveDirectoryAuthEnum` has been removed
+- Enum `ArmServerKeyType` has been removed
+- Enum `AzureManagedDiskPerformanceTiers` has been removed
+- Enum `CancelEnum` has been removed
+- Enum `CreateModeForUpdate` has been removed
+- Enum `FastProvisioningSupportedEnum` has been removed
+- Enum `GeoBackupSupportedEnum` has been removed
+- Enum `GeoRedundantBackupEnum` has been removed
+- Enum `HaMode` has been removed
+- Enum `KeyStatusEnum` has been removed
+- Enum `LogicalReplicationOnSourceDbEnum` has been removed
+- Enum `MigrateRolesEnum` has been removed
+- Enum `MigrationDbState` has been removed
+- Enum `MigrationSubState` has been removed
+- Enum `OnlineResizeSupportedEnum` has been removed
+- Enum `Origin` has been removed
+- Enum `OverwriteDbsInTargetEnum` has been removed
+- Enum `PasswordAuthEnum` has been removed
+- Enum `ReplicationPromoteOption` has been removed
+- Enum `RestrictedEnum` has been removed
+- Enum `ServerHAState` has been removed
+- Enum `ServerVersion` has been removed
+- Enum `StartDataMigrationEnum` has been removed
+- Enum `StorageAutoGrowthSupportedEnum` has been removed
+- Enum `TriggerCutoverEnum` has been removed
+- Enum `ZoneRedundantHaAndGeoBackupSupportedEnum` has been removed
+- Enum `ZoneRedundantHaSupportedEnum` has been removed
+- Function `NewAdministratorsClient` has been removed
+- Function `*AdministratorsClient.BeginCreate` has been removed
+- Function `*AdministratorsClient.BeginDelete` has been removed
+- Function `*AdministratorsClient.Get` has been removed
+- Function `*AdministratorsClient.NewListByServerPager` has been removed
+- Function `NewBackupsClient` has been removed
+- Function `*BackupsClient.BeginCreate` has been removed
+- Function `*BackupsClient.BeginDelete` has been removed
+- Function `*BackupsClient.Get` has been removed
+- Function `*BackupsClient.NewListByServerPager` has been removed
+- Function `NewCheckNameAvailabilityClient` has been removed
+- Function `*CheckNameAvailabilityClient.Execute` has been removed
+- Function `NewCheckNameAvailabilityWithLocationClient` has been removed
+- Function `*CheckNameAvailabilityWithLocationClient.Execute` has been removed
+- Function `*ClientFactory.NewAdministratorsClient` has been removed
+- Function `*ClientFactory.NewBackupsClient` has been removed
+- Function `*ClientFactory.NewCheckNameAvailabilityClient` has been removed
+- Function `*ClientFactory.NewCheckNameAvailabilityWithLocationClient` has been removed
+- Function `*ClientFactory.NewFlexibleServerClient` has been removed
+- Function `*ClientFactory.NewGetPrivateDNSZoneSuffixClient` has been removed
+- Function `*ClientFactory.NewLocationBasedCapabilitiesClient` has been removed
+- Function `*ClientFactory.NewLogFilesClient` has been removed
+- Function `*ClientFactory.NewLtrBackupOperationsClient` has been removed
+- Function `*ClientFactory.NewPostgreSQLServerManagementClient` has been removed
+- Function `*ClientFactory.NewPrivateEndpointConnectionClient` has been removed
+- Function `*ClientFactory.NewServerCapabilitiesClient` has been removed
+- Function `NewFlexibleServerClient` has been removed
+- Function `*FlexibleServerClient.BeginStartLtrBackup` has been removed
+- Function `*FlexibleServerClient.TriggerLtrPreBackup` has been removed
+- Function `NewGetPrivateDNSZoneSuffixClient` has been removed
+- Function `*GetPrivateDNSZoneSuffixClient.Execute` has been removed
+- Function `NewLocationBasedCapabilitiesClient` has been removed
+- Function `*LocationBasedCapabilitiesClient.NewExecutePager` has been removed
+- Function `NewLogFilesClient` has been removed
+- Function `*LogFilesClient.NewListByServerPager` has been removed
+- Function `NewLtrBackupOperationsClient` has been removed
+- Function `*LtrBackupOperationsClient.Get` has been removed
+- Function `*LtrBackupOperationsClient.NewListByServerPager` has been removed
+- Function `*MigrationsClient.Delete` has been removed
+- Function `NewPostgreSQLServerManagementClient` has been removed
+- Function `*PostgreSQLServerManagementClient.CheckMigrationNameAvailability` has been removed
+- Function `NewPrivateEndpointConnectionClient` has been removed
+- Function `*PrivateEndpointConnectionClient.BeginDelete` has been removed
+- Function `*PrivateEndpointConnectionClient.BeginUpdate` has been removed
+- Function `NewServerCapabilitiesClient` has been removed
+- Function `*ServerCapabilitiesClient.NewListPager` has been removed
+- Function `*ServerThreatProtectionSettingsClient.Get` has been removed
+- Function `*ServerThreatProtectionSettingsClient.NewListByServerPager` has been removed
+- Function `*ServersClient.BeginCreate` has been removed
+- Function `*ServersClient.NewListPager` has been removed
+- Function `*VirtualNetworkSubnetUsageClient.Execute` has been removed
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+- Struct `ActiveDirectoryAdministrator` has been removed
+- Struct `ActiveDirectoryAdministratorAdd` has been removed
+- Struct `AdministratorListResult` has been removed
+- Struct `AdministratorProperties` has been removed
+- Struct `AdministratorPropertiesForAdd` has been removed
+- Struct `CapabilitiesListResult` has been removed
+- Struct `ConfigurationListResult` has been removed
+- Struct `DatabaseListResult` has been removed
+- Struct `DbMigrationStatus` has been removed
+- Struct `FirewallRuleListResult` has been removed
+- Struct `FlexibleServerCapability` has been removed
+- Struct `FlexibleServerEditionCapability` has been removed
+- Struct `LogFile` has been removed
+- Struct `LogFileListResult` has been removed
+- Struct `LogFileProperties` has been removed
+- Struct `LtrBackupRequest` has been removed
+- Struct `LtrBackupResponse` has been removed
+- Struct `LtrPreBackupResponseProperties` has been removed
+- Struct `LtrServerBackupOperation` has been removed
+- Struct `MigrationNameAvailabilityResource` has been removed
+- Struct `MigrationResource` has been removed
+- Struct `MigrationResourceListResult` has been removed
+- Struct `MigrationResourceProperties` has been removed
+- Struct `MigrationResourcePropertiesForPatch` has been removed
+- Struct `MigrationSubStateDetails` has been removed
+- Struct `NameAvailability` has been removed
+- Struct `OperationListResult` has been removed
+- Struct `PrivateEndpointConnectionListResult` has been removed
+- Struct `PrivateLinkResourceListResult` has been removed
+- Struct `ServerBackup` has been removed
+- Struct `ServerBackupListResult` has been removed
+- Struct `ServerBackupProperties` has been removed
+- Struct `ServerForUpdate` has been removed
+- Struct `ServerListResult` has been removed
+- Struct `ServerPropertiesForUpdate` has been removed
+- Struct `ServerThreatProtectionListResult` has been removed
+- Struct `ServerThreatProtectionProperties` has been removed
+- Struct `ServerThreatProtectionSettingsModel` has been removed
+- Struct `VirtualEndpointResource` has been removed
+- Struct `VirtualEndpointsListResult` has been removed
+- Struct `VirtualNetworkSubnetUsageResult` has been removed
+- Field `ConfigurationListResult` of struct `ConfigurationsClientListByServerResponse` has been removed
+- Field `DatabaseListResult` of struct `DatabasesClientListByServerResponse` has been removed
+- Field `FirewallRuleListResult` of struct `FirewallRulesClientListByServerResponse` has been removed
+- Field `MigrationResource` of struct `MigrationsClientCreateResponse` has been removed
+- Field `MigrationResource` of struct `MigrationsClientGetResponse` has been removed
+- Field `MigrationResourceListResult` of struct `MigrationsClientListByTargetServerResponse` has been removed
+- Field `MigrationResource` of struct `MigrationsClientUpdateResponse` has been removed
+- Field `PrivateEndpointConnectionListResult` of struct `PrivateEndpointConnectionsClientListByServerResponse` has been removed
+- Field `PrivateLinkResourceListResult` of struct `PrivateLinkResourcesClientListByServerResponse` has been removed
+- Field `ServerListResult` of struct `ReplicasClientListByServerResponse` has been removed
+- Field `ServerThreatProtectionSettingsModel` of struct `ServerThreatProtectionSettingsClientCreateOrUpdateResponse` has been removed
+- Field `ServerListResult` of struct `ServersClientListByResourceGroupResponse` has been removed
+- Field `VirtualEndpointResource` of struct `VirtualEndpointsClientCreateResponse` has been removed
+- Field `VirtualEndpointResource` of struct `VirtualEndpointsClientGetResponse` has been removed
+- Field `VirtualEndpointsListResult` of struct `VirtualEndpointsClientListByServerResponse` has been removed
+- Field `VirtualEndpointResource` of struct `VirtualEndpointsClientUpdateResponse` has been removed
+
+### Features Added
+
+- New value `ConfigurationDataTypeSet`, `ConfigurationDataTypeString` added to enum type `ConfigurationDataType`
+- New value `ServerStateInaccessible`, `ServerStateProvisioning`, `ServerStateRestarting` added to enum type `ServerState`
+- New value `SourceTypeApsaraDBRDS`, `SourceTypeCrunchyPostgreSQL`, `SourceTypeDigitalOceanDroplets`, `SourceTypeDigitalOceanPostgreSQL`, `SourceTypeEDBOracleServer`, `SourceTypeEDBPostgreSQL`, `SourceTypeHerokuPostgreSQL`, `SourceTypeHuaweiCompute`, `SourceTypeHuaweiRDS`, `SourceTypePostgreSQLCosmosDB`, `SourceTypePostgreSQLFlexibleServer`, `SourceTypeSupabasePostgreSQL` added to enum type `SourceType`
+- New value `StorageTypeUltraSSDLRS` added to enum type `StorageType`
+- New enum type `AzureManagedDiskPerformanceTier` with values `AzureManagedDiskPerformanceTierP1`, `AzureManagedDiskPerformanceTierP10`, `AzureManagedDiskPerformanceTierP15`, `AzureManagedDiskPerformanceTierP2`, `AzureManagedDiskPerformanceTierP20`, `AzureManagedDiskPerformanceTierP3`, `AzureManagedDiskPerformanceTierP30`, `AzureManagedDiskPerformanceTierP4`, `AzureManagedDiskPerformanceTierP40`, `AzureManagedDiskPerformanceTierP50`, `AzureManagedDiskPerformanceTierP6`, `AzureManagedDiskPerformanceTierP60`, `AzureManagedDiskPerformanceTierP70`, `AzureManagedDiskPerformanceTierP80`
+- New enum type `BackupType` with values `BackupTypeCustomerOnDemand`, `BackupTypeFull`
+- New enum type `Cancel` with values `CancelFalse`, `CancelTrue`
+- New enum type `CreateModeForPatch` with values `CreateModeForPatchDefault`, `CreateModeForPatchUpdate`
+- New enum type `DataEncryptionType` with values `DataEncryptionTypeAzureKeyVault`, `DataEncryptionTypeSystemManaged`
+- New enum type `EncryptionKeyStatus` with values `EncryptionKeyStatusInvalid`, `EncryptionKeyStatusValid`
+- New enum type `FastProvisioningSupport` with values `FastProvisioningSupportDisabled`, `FastProvisioningSupportEnabled`
+- New enum type `FeatureStatus` with values `FeatureStatusDisabled`, `FeatureStatusEnabled`
+- New enum type `GeographicallyRedundantBackup` with values `GeographicallyRedundantBackupDisabled`, `GeographicallyRedundantBackupEnabled`
+- New enum type `GeographicallyRedundantBackupSupport` with values `GeographicallyRedundantBackupSupportDisabled`, `GeographicallyRedundantBackupSupportEnabled`
+- New enum type `HighAvailabilityState` with values `HighAvailabilityStateCreatingStandby`, `HighAvailabilityStateFailingOver`, `HighAvailabilityStateHealthy`, `HighAvailabilityStateNotEnabled`, `HighAvailabilityStateRemovingStandby`, `HighAvailabilityStateReplicatingData`
+- New enum type `LocationRestricted` with values `LocationRestrictedDisabled`, `LocationRestrictedEnabled`
+- New enum type `LogicalReplicationOnSourceServer` with values `LogicalReplicationOnSourceServerFalse`, `LogicalReplicationOnSourceServerTrue`
+- New enum type `MicrosoftEntraAuth` with values `MicrosoftEntraAuthDisabled`, `MicrosoftEntraAuthEnabled`
+- New enum type `MigrateRolesAndPermissions` with values `MigrateRolesAndPermissionsFalse`, `MigrateRolesAndPermissionsTrue`
+- New enum type `MigrationDatabaseState` with values `MigrationDatabaseStateCanceled`, `MigrationDatabaseStateCanceling`, `MigrationDatabaseStateFailed`, `MigrationDatabaseStateInProgress`, `MigrationDatabaseStateSucceeded`, `MigrationDatabaseStateWaitingForCutoverTrigger`
+- New enum type `MigrationSubstate` with values `MigrationSubstateCancelingRequestedDBMigrations`, `MigrationSubstateCompleted`, `MigrationSubstateCompletingMigration`, `MigrationSubstateMigratingData`, `MigrationSubstatePerformingPreRequisiteSteps`, `MigrationSubstateValidationInProgress`, `MigrationSubstateWaitingForCutoverTrigger`, `MigrationSubstateWaitingForDBsToMigrateSpecification`, `MigrationSubstateWaitingForDataMigrationScheduling`, `MigrationSubstateWaitingForDataMigrationWindow`, `MigrationSubstateWaitingForLogicalReplicationSetupRequestOnSourceDB`, `MigrationSubstateWaitingForTargetDBOverwriteConfirmation`
+- New enum type `OnlineStorageResizeSupport` with values `OnlineStorageResizeSupportDisabled`, `OnlineStorageResizeSupportEnabled`
+- New enum type `OverwriteDatabasesOnTargetServer` with values `OverwriteDatabasesOnTargetServerFalse`, `OverwriteDatabasesOnTargetServerTrue`
+- New enum type `PasswordBasedAuth` with values `PasswordBasedAuthDisabled`, `PasswordBasedAuthEnabled`
+- New enum type `PostgresMajorVersion` with values `PostgresMajorVersionEighteen`, `PostgresMajorVersionEleven`, `PostgresMajorVersionFifteen`, `PostgresMajorVersionFourteen`, `PostgresMajorVersionSeventeen`, `PostgresMajorVersionSixteen`, `PostgresMajorVersionThirteen`, `PostgresMajorVersionTwelve`
+- New enum type `ReadReplicaPromoteOption` with values `ReadReplicaPromoteOptionForced`, `ReadReplicaPromoteOptionPlanned`
+- New enum type `RecommendationTypeEnum` with values `RecommendationTypeEnumAnalyzeTable`, `RecommendationTypeEnumCreateIndex`, `RecommendationTypeEnumDropIndex`, `RecommendationTypeEnumReIndex`
+- New enum type `RecommendationTypeParameterEnum` with values `RecommendationTypeParameterEnumAnalyzeTable`, `RecommendationTypeParameterEnumCreateIndex`, `RecommendationTypeParameterEnumDropIndex`, `RecommendationTypeParameterEnumReIndex`
+- New enum type `StartDataMigration` with values `StartDataMigrationFalse`, `StartDataMigrationTrue`
+- New enum type `StorageAutoGrowthSupport` with values `StorageAutoGrowthSupportDisabled`, `StorageAutoGrowthSupportEnabled`
+- New enum type `TriggerCutover` with values `TriggerCutoverFalse`, `TriggerCutoverTrue`
+- New enum type `TuningOptionParameterEnum` with values `TuningOptionParameterEnumIndex`, `TuningOptionParameterEnumTable`
+- New enum type `ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupport` with values `ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportDisabled`, `ZoneRedundantHighAvailabilityAndGeographicallyRedundantBackupSupportEnabled`
+- New enum type `ZoneRedundantHighAvailabilitySupport` with values `ZoneRedundantHighAvailabilitySupportDisabled`, `ZoneRedundantHighAvailabilitySupportEnabled`
+- New function `NewAdministratorsMicrosoftEntraClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AdministratorsMicrosoftEntraClient, error)`
+- New function `*AdministratorsMicrosoftEntraClient.BeginCreateOrUpdate(context.Context, string, string, string, AdministratorMicrosoftEntraAdd, *AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions) (*runtime.Poller[AdministratorsMicrosoftEntraClientCreateOrUpdateResponse], error)`
+- New function `*AdministratorsMicrosoftEntraClient.BeginDelete(context.Context, string, string, string, *AdministratorsMicrosoftEntraClientBeginDeleteOptions) (*runtime.Poller[AdministratorsMicrosoftEntraClientDeleteResponse], error)`
+- New function `*AdministratorsMicrosoftEntraClient.Get(context.Context, string, string, string, *AdministratorsMicrosoftEntraClientGetOptions) (AdministratorsMicrosoftEntraClientGetResponse, error)`
+- New function `*AdministratorsMicrosoftEntraClient.NewListByServerPager(string, string, *AdministratorsMicrosoftEntraClientListByServerOptions) *runtime.Pager[AdministratorsMicrosoftEntraClientListByServerResponse]`
+- New function `NewAdvancedThreatProtectionSettingsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AdvancedThreatProtectionSettingsClient, error)`
+- New function `*AdvancedThreatProtectionSettingsClient.Get(context.Context, string, string, ThreatProtectionName, *AdvancedThreatProtectionSettingsClientGetOptions) (AdvancedThreatProtectionSettingsClientGetResponse, error)`
+- New function `*AdvancedThreatProtectionSettingsClient.NewListByServerPager(string, string, *AdvancedThreatProtectionSettingsClientListByServerOptions) *runtime.Pager[AdvancedThreatProtectionSettingsClientListByServerResponse]`
+- New function `NewBackupsAutomaticAndOnDemandClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsAutomaticAndOnDemandClient, error)`
+- New function `*BackupsAutomaticAndOnDemandClient.BeginCreate(context.Context, string, string, string, *BackupsAutomaticAndOnDemandClientBeginCreateOptions) (*runtime.Poller[BackupsAutomaticAndOnDemandClientCreateResponse], error)`
+- New function `*BackupsAutomaticAndOnDemandClient.BeginDelete(context.Context, string, string, string, *BackupsAutomaticAndOnDemandClientBeginDeleteOptions) (*runtime.Poller[BackupsAutomaticAndOnDemandClientDeleteResponse], error)`
+- New function `*BackupsAutomaticAndOnDemandClient.Get(context.Context, string, string, string, *BackupsAutomaticAndOnDemandClientGetOptions) (BackupsAutomaticAndOnDemandClientGetResponse, error)`
+- New function `*BackupsAutomaticAndOnDemandClient.NewListByServerPager(string, string, *BackupsAutomaticAndOnDemandClientListByServerOptions) *runtime.Pager[BackupsAutomaticAndOnDemandClientListByServerResponse]`
+- New function `NewBackupsLongTermRetentionClient(string, azcore.TokenCredential, *arm.ClientOptions) (*BackupsLongTermRetentionClient, error)`
+- New function `*BackupsLongTermRetentionClient.CheckPrerequisites(context.Context, string, string, LtrPreBackupRequest, *BackupsLongTermRetentionClientCheckPrerequisitesOptions) (BackupsLongTermRetentionClientCheckPrerequisitesResponse, error)`
+- New function `*BackupsLongTermRetentionClient.Get(context.Context, string, string, string, *BackupsLongTermRetentionClientGetOptions) (BackupsLongTermRetentionClientGetResponse, error)`
+- New function `*BackupsLongTermRetentionClient.NewListByServerPager(string, string, *BackupsLongTermRetentionClientListByServerOptions) *runtime.Pager[BackupsLongTermRetentionClientListByServerResponse]`
+- New function `*BackupsLongTermRetentionClient.BeginStart(context.Context, string, string, BackupsLongTermRetentionRequest, *BackupsLongTermRetentionClientBeginStartOptions) (*runtime.Poller[BackupsLongTermRetentionClientStartResponse], error)`
+- New function `NewCapabilitiesByLocationClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CapabilitiesByLocationClient, error)`
+- New function `*CapabilitiesByLocationClient.NewListPager(string, *CapabilitiesByLocationClientListOptions) *runtime.Pager[CapabilitiesByLocationClientListResponse]`
+- New function `NewCapabilitiesByServerClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CapabilitiesByServerClient, error)`
+- New function `*CapabilitiesByServerClient.NewListPager(string, string, *CapabilitiesByServerClientListOptions) *runtime.Pager[CapabilitiesByServerClientListResponse]`
+- New function `NewCapturedLogsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CapturedLogsClient, error)`
+- New function `*CapturedLogsClient.NewListByServerPager(string, string, *CapturedLogsClientListByServerOptions) *runtime.Pager[CapturedLogsClientListByServerResponse]`
+- New function `*ClientFactory.NewAdministratorsMicrosoftEntraClient() *AdministratorsMicrosoftEntraClient`
+- New function `*ClientFactory.NewAdvancedThreatProtectionSettingsClient() *AdvancedThreatProtectionSettingsClient`
+- New function `*ClientFactory.NewBackupsAutomaticAndOnDemandClient() *BackupsAutomaticAndOnDemandClient`
+- New function `*ClientFactory.NewBackupsLongTermRetentionClient() *BackupsLongTermRetentionClient`
+- New function `*ClientFactory.NewCapabilitiesByLocationClient() *CapabilitiesByLocationClient`
+- New function `*ClientFactory.NewCapabilitiesByServerClient() *CapabilitiesByServerClient`
+- New function `*ClientFactory.NewCapturedLogsClient() *CapturedLogsClient`
+- New function `*ClientFactory.NewNameAvailabilityClient() *NameAvailabilityClient`
+- New function `*ClientFactory.NewPrivateDNSZoneSuffixClient() *PrivateDNSZoneSuffixClient`
+- New function `*ClientFactory.NewQuotaUsagesClient() *QuotaUsagesClient`
+- New function `*ClientFactory.NewTuningOptionsClient() *TuningOptionsClient`
+- New function `*MigrationsClient.Cancel(context.Context, string, string, string, *MigrationsClientCancelOptions) (MigrationsClientCancelResponse, error)`
+- New function `*MigrationsClient.CheckNameAvailability(context.Context, string, string, MigrationNameAvailability, *MigrationsClientCheckNameAvailabilityOptions) (MigrationsClientCheckNameAvailabilityResponse, error)`
+- New function `NewPrivateDNSZoneSuffixClient(azcore.TokenCredential, *arm.ClientOptions) (*PrivateDNSZoneSuffixClient, error)`
+- New function `*PrivateDNSZoneSuffixClient.Get(context.Context, *PrivateDNSZoneSuffixClientGetOptions) (PrivateDNSZoneSuffixClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(context.Context, string, string, string, *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.BeginUpdate(context.Context, string, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error)`
+- New function `NewQuotaUsagesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*QuotaUsagesClient, error)`
+- New function `*QuotaUsagesClient.NewListPager(string, *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse]`
+- New function `*ServersClient.BeginCreateOrUpdate(context.Context, string, string, Server, *ServersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServersClientCreateOrUpdateResponse], error)`
+- New function `*ServersClient.NewListBySubscriptionPager(*ServersClientListBySubscriptionOptions) *runtime.Pager[ServersClientListBySubscriptionResponse]`
+- New function `NewTuningOptionsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*TuningOptionsClient, error)`
+- New function `*TuningOptionsClient.Get(context.Context, string, string, TuningOptionParameterEnum, *TuningOptionsClientGetOptions) (TuningOptionsClientGetResponse, error)`
+- New function `*TuningOptionsClient.NewListByServerPager(string, string, *TuningOptionsClientListByServerOptions) *runtime.Pager[TuningOptionsClientListByServerResponse]`
+- New function `*TuningOptionsClient.NewListRecommendationsPager(string, string, TuningOptionParameterEnum, *TuningOptionsClientListRecommendationsOptions) *runtime.Pager[TuningOptionsClientListRecommendationsResponse]`
+- New function `*VirtualNetworkSubnetUsageClient.List(context.Context, string, VirtualNetworkSubnetUsageParameter, *VirtualNetworkSubnetUsageClientListOptions) (VirtualNetworkSubnetUsageClientListResponse, error)`
+- New function `NewNameAvailabilityClient(string, azcore.TokenCredential, *arm.ClientOptions) (*NameAvailabilityClient, error)`
+- New function `*NameAvailabilityClient.CheckGlobally(context.Context, CheckNameAvailabilityRequest, *NameAvailabilityClientCheckGloballyOptions) (NameAvailabilityClientCheckGloballyResponse, error)`
+- New function `*NameAvailabilityClient.CheckWithLocation(context.Context, string, CheckNameAvailabilityRequest, *NameAvailabilityClientCheckWithLocationOptions) (NameAvailabilityClientCheckWithLocationResponse, error)`
+- New struct `AdminCredentialsForPatch`
+- New struct `AdministratorMicrosoftEntra`
+- New struct `AdministratorMicrosoftEntraAdd`
+- New struct `AdministratorMicrosoftEntraList`
+- New struct `AdministratorMicrosoftEntraProperties`
+- New struct `AdministratorMicrosoftEntraPropertiesForAdd`
+- New struct `AdvancedThreatProtectionSettingsList`
+- New struct `AdvancedThreatProtectionSettingsModel`
+- New struct `AdvancedThreatProtectionSettingsProperties`
+- New struct `AuthConfigForPatch`
+- New struct `BackupAutomaticAndOnDemand`
+- New struct `BackupAutomaticAndOnDemandList`
+- New struct `BackupAutomaticAndOnDemandProperties`
+- New struct `BackupForPatch`
+- New struct `BackupsLongTermRetentionOperation`
+- New struct `BackupsLongTermRetentionRequest`
+- New struct `BackupsLongTermRetentionResponse`
+- New struct `BackupsLongTermRetentionResponseProperties`
+- New struct `Capability`
+- New struct `CapabilityList`
+- New struct `CapturedLog`
+- New struct `CapturedLogList`
+- New struct `CapturedLogProperties`
+- New struct `Cluster`
+- New struct `ConfigurationList`
+- New struct `DatabaseList`
+- New struct `DatabaseMigrationState`
+- New struct `FirewallRuleList`
+- New struct `HighAvailabilityForPatch`
+- New struct `ImpactRecord`
+- New struct `MaintenanceWindowForPatch`
+- New struct `Migration`
+- New struct `MigrationList`
+- New struct `MigrationNameAvailability`
+- New struct `MigrationProperties`
+- New struct `MigrationPropertiesForPatch`
+- New struct `MigrationSecretParametersForPatch`
+- New struct `MigrationSubstateDetails`
+- New struct `NameAvailabilityModel`
+- New struct `NameProperty`
+- New struct `ObjectRecommendation`
+- New struct `ObjectRecommendationDetails`
+- New struct `ObjectRecommendationList`
+- New struct `ObjectRecommendationProperties`
+- New struct `ObjectRecommendationPropertiesAnalyzedWorkload`
+- New struct `ObjectRecommendationPropertiesImplementationDetails`
+- New struct `OperationList`
+- New struct `PrivateEndpointConnectionList`
+- New struct `PrivateLinkResourceList`
+- New struct `QuotaUsage`
+- New struct `QuotaUsageList`
+- New struct `SKUForPatch`
+- New struct `ServerEditionCapability`
+- New struct `ServerForPatch`
+- New struct `ServerList`
+- New struct `ServerPropertiesForPatch`
+- New struct `SupportedFeature`
+- New struct `TuningOptions`
+- New struct `TuningOptionsList`
+- New struct `VirtualEndpoint`
+- New struct `VirtualEndpointsList`
+- New struct `VirtualNetworkSubnetUsageModel`
+- New anonymous field `ConfigurationList` in struct `ConfigurationsClientListByServerResponse`
+- New anonymous field `DatabaseList` in struct `DatabasesClientListByServerResponse`
+- New anonymous field `FirewallRuleList` in struct `FirewallRulesClientListByServerResponse`
+- New anonymous field `Migration` in struct `MigrationsClientCreateResponse`
+- New anonymous field `Migration` in struct `MigrationsClientGetResponse`
+- New anonymous field `MigrationList` in struct `MigrationsClientListByTargetServerResponse`
+- New anonymous field `Migration` in struct `MigrationsClientUpdateResponse`
+- New anonymous field `PrivateEndpointConnectionList` in struct `PrivateEndpointConnectionsClientListByServerResponse`
+- New anonymous field `PrivateLinkResourceList` in struct `PrivateLinkResourcesClientListByServerResponse`
+- New anonymous field `ServerList` in struct `ReplicasClientListByServerResponse`
+- New field `Cluster` in struct `ServerProperties`
+- New field `SecurityProfile`, `SupportedFeatures` in struct `ServerSKUCapability`
+- New anonymous field `AdvancedThreatProtectionSettingsModel` in struct `ServerThreatProtectionSettingsClientCreateOrUpdateResponse`
+- New field `SupportedFeatures` in struct `ServerVersionCapability`
+- New anonymous field `ServerList` in struct `ServersClientListByResourceGroupResponse`
+- New anonymous field `VirtualEndpoint` in struct `VirtualEndpointsClientCreateResponse`
+- New anonymous field `VirtualEndpoint` in struct `VirtualEndpointsClientGetResponse`
+- New anonymous field `VirtualEndpointsList` in struct `VirtualEndpointsClientListByServerResponse`
+- New anonymous field `VirtualEndpoint` in struct `VirtualEndpointsClientUpdateResponse`
+
+
 ## 5.0.0-beta.1 (2025-05-23)
 ### Breaking Changes
 

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -548,7 +545,7 @@ func TestSnapshotArchive(t *testing.T) {
 	// Archive the snapshot
 	archiveSnapshot, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *archiveSnapshot.Status)
 
 	// Best effort snapshot cleanup
 	require.NoError(t, CleanupSnapshot(client, snapshotName))
@@ -571,12 +568,12 @@ func TestSnapshotRecover(t *testing.T) {
 	// Check that snapshot is archived
 	archivedSnapshot, err := client.GetSnapshot(context.Background(), *snapshot.Name, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusArchived, *archivedSnapshot.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusArchived, *archivedSnapshot.Status)
 
 	// Recover the snapshot
 	readySnapshot, err := client.RecoverSnapshot(context.Background(), *snapshot.Name, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusReady, *readySnapshot.Snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *readySnapshot.Status)
 
 	// Best effort snapshot cleanup
 	require.NoError(t, CleanupSnapshot(client, snapshotName))

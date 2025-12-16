@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -45,7 +42,9 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 	if v, ok := os.LookupEnv(azureTokenCredentials); ok {
 		require.NoError(t, os.Unsetenv(azureTokenCredentials))
-		defer os.Setenv(azureTokenCredentials, v)
+		defer func() {
+			_ = os.Setenv(azureTokenCredentials, v)
+		}()
 	}
 	// configure EnvironmentCredential and WorkloadIdentityCredential
 	// so those types appear in the chain instead of error reporters
@@ -367,7 +366,7 @@ func TestDefaultAzureCredential_WorkloadIdentity(t *testing.T) {
 		require.NoError(t, err)
 
 		// ...but ensure a timeout should it try the proxy anyway
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		_, err = cred.GetToken(ctx, testTRO)
 		require.NoError(t, err)

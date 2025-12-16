@@ -202,7 +202,7 @@ func ExampleLogsClient_QueryBatch() {
 
 	// `QueryBatch` can return results in any order, usually by time it takes each individual query to complete.
 	// Use the `CorrelationID` field to identify the correct response.
-	responses := res.BatchResponse.Responses
+	responses := res.Responses
 	fmt.Println("ID's of successful responses:")
 	for _, response := range responses {
 		if response.Body.Error == nil {

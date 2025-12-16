@@ -6,34 +6,102 @@ package azcosmos
 import (
 	"context"
 	"errors"
-	"runtime"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // executeReadManyWithEngine executes a query using the provided query engine.
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
-	// throw error that this is unsupported
-	return ReadManyItemsResponse{}, errors.New("ReadMany with query engine is not supported yet")
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+
+	// get the partition key ranges for the container
+	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(ctx, operationContext)
+	if err != nil {
+		// if we can't get the partition key ranges, return empty response
+		return ReadManyItemsResponse{}, err
+	}
+
+	// get the container properties
+	containerRsp, err := c.Read(ctx, nil)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	// create the item identities for the query engine with json string
+	newItemIdentities := make([]queryengine.ItemIdentity, len(items))
+	for i := range items {
+		pkStr, err := items[i].PartitionKey.toJsonString()
+		if err != nil {
+			return ReadManyItemsResponse{}, err
+		}
+		newItemIdentities[i] = queryengine.ItemIdentity{
+			PartitionKeyValue: pkStr,
+			ID:                items[i].ID,
+		}
+	}
+	var pkVersion uint8
+	pkDefinition := containerRsp.ContainerProperties.PartitionKeyDefinition
+	if pkDefinition.Version == 0 {
+		pkVersion = uint8(1)
+	} else {
+		pkVersion = uint8(pkDefinition.Version)
+	}
+
+	readManyPipeline, err := queryEngine.CreateReadManyPipeline(newItemIdentities, string(rawPartitionKeyRanges), string(pkDefinition.Kind), pkVersion, pkDefinition.Paths)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+	log.Writef(EventQueryEngine, "Created readMany pipeline")
+	// Initial run to get any requests.
+	log.Writef(EventQueryEngine, "Fetching more data from readMany pipeline")
+	result, err := readManyPipeline.Run()
+	if err != nil {
+		readManyPipeline.Close()
+		return ReadManyItemsResponse{}, err
+	}
+
+	concurrency := determineConcurrency(nil)
+	if readManyOptions != nil {
+		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
+	}
+	totalRequestCharge, err := runEngineRequests(ctx, c, path, readManyPipeline, operationContext, result.Requests, concurrency, func(req queryengine.QueryRequest) (string, []QueryParameter, bool) {
+		// ReadMany pipeline requests carry a Query (optional override). No parameters and we always page until continuation exhausted.
+		return req.Query, nil, true /* treat like drain for full pagination */
+	})
+	if err != nil {
+		readManyPipeline.Close()
+		return ReadManyItemsResponse{}, err
+	}
+
+	// Final run to gather merged items.
+	result, err = readManyPipeline.Run()
+	if err != nil {
+		readManyPipeline.Close()
+		return ReadManyItemsResponse{}, err
+	}
+
+	if readManyPipeline.IsComplete() {
+		log.Writef(EventQueryEngine, "ReadMany pipeline is complete")
+		readManyPipeline.Close()
+		return ReadManyItemsResponse{
+			Items:         result.Items,
+			RequestCharge: totalRequestCharge,
+		}, nil
+	} else {
+		readManyPipeline.Close()
+		return ReadManyItemsResponse{}, errors.New("illegal state readMany pipeline did not complete")
+	}
 }
 
 func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 
-	// if empty list of items, return empty list
-	if len(items) == 0 {
-		return ReadManyItemsResponse{}, nil
-	}
 	// Determine concurrency: use provided MaxConcurrency or number of CPU cores
-	var concurrency int
-	if readManyOptions != nil && readManyOptions.MaxConcurrency != nil && *readManyOptions.MaxConcurrency > 0 {
-		concurrency = int(*readManyOptions.MaxConcurrency)
-	} else {
-		concurrency = runtime.NumCPU()
-		if concurrency <= 0 {
-			concurrency = 1
-		}
+	concurrency := determineConcurrency(nil)
+	if readManyOptions != nil {
+		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
 	}
 
 	// Prepare result slots to preserve input order

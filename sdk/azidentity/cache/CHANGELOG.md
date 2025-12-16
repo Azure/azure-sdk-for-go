@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Linux caches are stored in $XDG_CACHE_HOME by default, falling back to $HOME/.cache
+
 ## 0.3.2 (2025-01-15)
 
 ### Other Changes

@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -18,10 +15,6 @@ import (
 )
 
 func TestImageGeneration_AzureOpenAI(t *testing.T) {
-	if recording.GetRecordMode() != recording.LiveMode {
-		t.Skipf("Ignoring poller-based test")
-	}
-
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.DallE.Endpoint)
 	// testImageGeneration(t, client, azureOpenAI.DallE.Model, azopenai.ImageGenerationResponseFormatURL, true)
 

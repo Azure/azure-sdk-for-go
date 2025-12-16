@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-12-16)
+## 0.2.0 (2025-12-16)
 ### Breaking Changes
 
 - Function `NewClient` has been removed

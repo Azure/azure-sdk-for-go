@@ -6,5 +6,5 @@ package armdeployments
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
-	moduleVersion = "v0.0.0"
+	moduleVersion = "v0.2.0"
 )

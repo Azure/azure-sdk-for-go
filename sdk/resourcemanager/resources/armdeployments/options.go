@@ -5,285 +5,6 @@
 
 package armdeployments
 
-// ClientBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtManagementGroupScope
-// method.
-type ClientBeginCreateOrUpdateAtManagementGroupScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtScope method.
-type ClientBeginCreateOrUpdateAtScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtSubscriptionScope
-// method.
-type ClientBeginCreateOrUpdateAtSubscriptionScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtTenantScope
-// method.
-type ClientBeginCreateOrUpdateAtTenantScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-type ClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginDeleteAtManagementGroupScopeOptions contains the optional parameters for the Client.BeginDeleteAtManagementGroupScope
-// method.
-type ClientBeginDeleteAtManagementGroupScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginDeleteAtScopeOptions contains the optional parameters for the Client.BeginDeleteAtScope method.
-type ClientBeginDeleteAtScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginDeleteAtSubscriptionScopeOptions contains the optional parameters for the Client.BeginDeleteAtSubscriptionScope
-// method.
-type ClientBeginDeleteAtSubscriptionScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginDeleteAtTenantScopeOptions contains the optional parameters for the Client.BeginDeleteAtTenantScope method.
-type ClientBeginDeleteAtTenantScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
-type ClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginValidateAtManagementGroupScopeOptions contains the optional parameters for the Client.BeginValidateAtManagementGroupScope
-// method.
-type ClientBeginValidateAtManagementGroupScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginValidateAtScopeOptions contains the optional parameters for the Client.BeginValidateAtScope method.
-type ClientBeginValidateAtScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginValidateAtSubscriptionScopeOptions contains the optional parameters for the Client.BeginValidateAtSubscriptionScope
-// method.
-type ClientBeginValidateAtSubscriptionScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginValidateAtTenantScopeOptions contains the optional parameters for the Client.BeginValidateAtTenantScope method.
-type ClientBeginValidateAtTenantScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginValidateOptions contains the optional parameters for the Client.BeginValidate method.
-type ClientBeginValidateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginWhatIfAtManagementGroupScopeOptions contains the optional parameters for the Client.BeginWhatIfAtManagementGroupScope
-// method.
-type ClientBeginWhatIfAtManagementGroupScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginWhatIfAtSubscriptionScopeOptions contains the optional parameters for the Client.BeginWhatIfAtSubscriptionScope
-// method.
-type ClientBeginWhatIfAtSubscriptionScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginWhatIfAtTenantScopeOptions contains the optional parameters for the Client.BeginWhatIfAtTenantScope method.
-type ClientBeginWhatIfAtTenantScopeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginWhatIfOptions contains the optional parameters for the Client.BeginWhatIf method.
-type ClientBeginWhatIfOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientCalculateTemplateHashOptions contains the optional parameters for the Client.CalculateTemplateHash method.
-type ClientCalculateTemplateHashOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCancelAtManagementGroupScopeOptions contains the optional parameters for the Client.CancelAtManagementGroupScope
-// method.
-type ClientCancelAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCancelAtScopeOptions contains the optional parameters for the Client.CancelAtScope method.
-type ClientCancelAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCancelAtSubscriptionScopeOptions contains the optional parameters for the Client.CancelAtSubscriptionScope method.
-type ClientCancelAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCancelAtTenantScopeOptions contains the optional parameters for the Client.CancelAtTenantScope method.
-type ClientCancelAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCancelOptions contains the optional parameters for the Client.Cancel method.
-type ClientCancelOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCheckExistenceAtManagementGroupScopeOptions contains the optional parameters for the Client.CheckExistenceAtManagementGroupScope
-// method.
-type ClientCheckExistenceAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCheckExistenceAtScopeOptions contains the optional parameters for the Client.CheckExistenceAtScope method.
-type ClientCheckExistenceAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCheckExistenceAtSubscriptionScopeOptions contains the optional parameters for the Client.CheckExistenceAtSubscriptionScope
-// method.
-type ClientCheckExistenceAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCheckExistenceAtTenantScopeOptions contains the optional parameters for the Client.CheckExistenceAtTenantScope method.
-type ClientCheckExistenceAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientCheckExistenceOptions contains the optional parameters for the Client.CheckExistence method.
-type ClientCheckExistenceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientExportTemplateAtManagementGroupScopeOptions contains the optional parameters for the Client.ExportTemplateAtManagementGroupScope
-// method.
-type ClientExportTemplateAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientExportTemplateAtScopeOptions contains the optional parameters for the Client.ExportTemplateAtScope method.
-type ClientExportTemplateAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientExportTemplateAtSubscriptionScopeOptions contains the optional parameters for the Client.ExportTemplateAtSubscriptionScope
-// method.
-type ClientExportTemplateAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientExportTemplateAtTenantScopeOptions contains the optional parameters for the Client.ExportTemplateAtTenantScope method.
-type ClientExportTemplateAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientExportTemplateOptions contains the optional parameters for the Client.ExportTemplate method.
-type ClientExportTemplateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientGetAtManagementGroupScopeOptions contains the optional parameters for the Client.GetAtManagementGroupScope method.
-type ClientGetAtManagementGroupScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientGetAtScopeOptions contains the optional parameters for the Client.GetAtScope method.
-type ClientGetAtScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientGetAtSubscriptionScopeOptions contains the optional parameters for the Client.GetAtSubscriptionScope method.
-type ClientGetAtSubscriptionScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientGetAtTenantScopeOptions contains the optional parameters for the Client.GetAtTenantScope method.
-type ClientGetAtTenantScopeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientGetOptions contains the optional parameters for the Client.Get method.
-type ClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ClientListAtManagementGroupScopeOptions contains the optional parameters for the Client.NewListAtManagementGroupScopePager
-// method.
-type ClientListAtManagementGroupScopeOptions struct {
-	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
-	Filter *string
-
-	// The number of results to get. If null is passed, returns all deployments.
-	Top *int32
-}
-
-// ClientListAtScopeOptions contains the optional parameters for the Client.NewListAtScopePager method.
-type ClientListAtScopeOptions struct {
-	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
-	Filter *string
-
-	// The number of results to get. If null is passed, returns all deployments.
-	Top *int32
-}
-
-// ClientListAtSubscriptionScopeOptions contains the optional parameters for the Client.NewListAtSubscriptionScopePager method.
-type ClientListAtSubscriptionScopeOptions struct {
-	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
-	Filter *string
-
-	// The number of results to get. If null is passed, returns all deployments.
-	Top *int32
-}
-
-// ClientListAtTenantScopeOptions contains the optional parameters for the Client.NewListAtTenantScopePager method.
-type ClientListAtTenantScopeOptions struct {
-	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
-	Filter *string
-
-	// The number of results to get. If null is passed, returns all deployments.
-	Top *int32
-}
-
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager method.
-type ClientListByResourceGroupOptions struct {
-	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
-	Filter *string
-
-	// The number of results to get. If null is passed, returns all deployments.
-	Top *int32
-}
-
 // DeploymentOperationsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentOperationsClient.GetAtManagementGroupScope
 // method.
 type DeploymentOperationsClientGetAtManagementGroupScopeOptions struct {
@@ -345,5 +66,303 @@ type DeploymentOperationsClientListAtTenantScopeOptions struct {
 // method.
 type DeploymentOperationsClientListOptions struct {
 	// The number of results to return.
+	Top *int32
+}
+
+// DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
+// method.
+type DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginCreateOrUpdateAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtScope
+// method.
+type DeploymentsClientBeginCreateOrUpdateAtScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope
+// method.
+type DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdateAtTenantScope
+// method.
+type DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+// method.
+type DeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginDeleteAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtManagementGroupScope
+// method.
+type DeploymentsClientBeginDeleteAtManagementGroupScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginDeleteAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtScope
+// method.
+type DeploymentsClientBeginDeleteAtScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginDeleteAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtSubscriptionScope
+// method.
+type DeploymentsClientBeginDeleteAtSubscriptionScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginDeleteAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginDeleteAtTenantScope
+// method.
+type DeploymentsClientBeginDeleteAtTenantScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
+type DeploymentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginValidateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtManagementGroupScope
+// method.
+type DeploymentsClientBeginValidateAtManagementGroupScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginValidateAtScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtScope
+// method.
+type DeploymentsClientBeginValidateAtScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginValidateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtSubscriptionScope
+// method.
+type DeploymentsClientBeginValidateAtSubscriptionScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginValidateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginValidateAtTenantScope
+// method.
+type DeploymentsClientBeginValidateAtTenantScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginValidateOptions contains the optional parameters for the DeploymentsClient.BeginValidate method.
+type DeploymentsClientBeginValidateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtManagementGroupScope
+// method.
+type DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtSubscriptionScope
+// method.
+type DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginWhatIfAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.BeginWhatIfAtTenantScope
+// method.
+type DeploymentsClientBeginWhatIfAtTenantScopeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientBeginWhatIfOptions contains the optional parameters for the DeploymentsClient.BeginWhatIf method.
+type DeploymentsClientBeginWhatIfOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DeploymentsClientCalculateTemplateHashOptions contains the optional parameters for the DeploymentsClient.CalculateTemplateHash
+// method.
+type DeploymentsClientCalculateTemplateHashOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCancelAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtManagementGroupScope
+// method.
+type DeploymentsClientCancelAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCancelAtScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtScope method.
+type DeploymentsClientCancelAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCancelAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtSubscriptionScope
+// method.
+type DeploymentsClientCancelAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCancelAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.CancelAtTenantScope
+// method.
+type DeploymentsClientCancelAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCancelOptions contains the optional parameters for the DeploymentsClient.Cancel method.
+type DeploymentsClientCancelOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCheckExistenceAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtManagementGroupScope
+// method.
+type DeploymentsClientCheckExistenceAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCheckExistenceAtScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtScope
+// method.
+type DeploymentsClientCheckExistenceAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCheckExistenceAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtSubscriptionScope
+// method.
+type DeploymentsClientCheckExistenceAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCheckExistenceAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.CheckExistenceAtTenantScope
+// method.
+type DeploymentsClientCheckExistenceAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientCheckExistenceOptions contains the optional parameters for the DeploymentsClient.CheckExistence method.
+type DeploymentsClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientExportTemplateAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtManagementGroupScope
+// method.
+type DeploymentsClientExportTemplateAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientExportTemplateAtScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtScope
+// method.
+type DeploymentsClientExportTemplateAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientExportTemplateAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtSubscriptionScope
+// method.
+type DeploymentsClientExportTemplateAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientExportTemplateAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.ExportTemplateAtTenantScope
+// method.
+type DeploymentsClientExportTemplateAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientExportTemplateOptions contains the optional parameters for the DeploymentsClient.ExportTemplate method.
+type DeploymentsClientExportTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientGetAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.GetAtManagementGroupScope
+// method.
+type DeploymentsClientGetAtManagementGroupScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientGetAtScopeOptions contains the optional parameters for the DeploymentsClient.GetAtScope method.
+type DeploymentsClientGetAtScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientGetAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.GetAtSubscriptionScope
+// method.
+type DeploymentsClientGetAtSubscriptionScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientGetAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.GetAtTenantScope method.
+type DeploymentsClientGetAtTenantScopeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
+type DeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeploymentsClientListAtManagementGroupScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtManagementGroupScopePager
+// method.
+type DeploymentsClientListAtManagementGroupScopeOptions struct {
+	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+	Filter *string
+
+	// The number of results to get. If null is passed, returns all deployments.
+	Top *int32
+}
+
+// DeploymentsClientListAtScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtScopePager method.
+type DeploymentsClientListAtScopeOptions struct {
+	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+	Filter *string
+
+	// The number of results to get. If null is passed, returns all deployments.
+	Top *int32
+}
+
+// DeploymentsClientListAtSubscriptionScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtSubscriptionScopePager
+// method.
+type DeploymentsClientListAtSubscriptionScopeOptions struct {
+	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+	Filter *string
+
+	// The number of results to get. If null is passed, returns all deployments.
+	Top *int32
+}
+
+// DeploymentsClientListAtTenantScopeOptions contains the optional parameters for the DeploymentsClient.NewListAtTenantScopePager
+// method.
+type DeploymentsClientListAtTenantScopeOptions struct {
+	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+	Filter *string
+
+	// The number of results to get. If null is passed, returns all deployments.
+	Top *int32
+}
+
+// DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.NewListByResourceGroupPager
+// method.
+type DeploymentsClientListByResourceGroupOptions struct {
+	// The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+	Filter *string
+
+	// The number of results to get. If null is passed, returns all deployments.
 	Top *int32
 }

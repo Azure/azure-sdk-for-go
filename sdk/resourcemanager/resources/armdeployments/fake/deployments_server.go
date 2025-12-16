@@ -20,365 +20,365 @@ import (
 	"strconv"
 )
 
-// Server is a fake server for instances of the armdeployments.Client type.
-type Server struct {
-	// CalculateTemplateHash is the fake for method Client.CalculateTemplateHash
+// DeploymentsServer is a fake server for instances of the armdeployments.DeploymentsClient type.
+type DeploymentsServer struct {
+	// CalculateTemplateHash is the fake for method DeploymentsClient.CalculateTemplateHash
 	// HTTP status codes to indicate success: http.StatusOK
-	CalculateTemplateHash func(ctx context.Context, templateParam any, options *armdeployments.ClientCalculateTemplateHashOptions) (resp azfake.Responder[armdeployments.ClientCalculateTemplateHashResponse], errResp azfake.ErrorResponder)
+	CalculateTemplateHash func(ctx context.Context, templateParam any, options *armdeployments.DeploymentsClientCalculateTemplateHashOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCalculateTemplateHashResponse], errResp azfake.ErrorResponder)
 
-	// Cancel is the fake for method Client.Cancel
+	// Cancel is the fake for method DeploymentsClient.Cancel
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Cancel func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.ClientCancelOptions) (resp azfake.Responder[armdeployments.ClientCancelResponse], errResp azfake.ErrorResponder)
+	Cancel func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientCancelOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCancelResponse], errResp azfake.ErrorResponder)
 
-	// CancelAtManagementGroupScope is the fake for method Client.CancelAtManagementGroupScope
+	// CancelAtManagementGroupScope is the fake for method DeploymentsClient.CancelAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.ClientCancelAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.ClientCancelAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	CancelAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientCancelAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCancelAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// CancelAtScope is the fake for method Client.CancelAtScope
+	// CancelAtScope is the fake for method DeploymentsClient.CancelAtScope
 	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.ClientCancelAtScopeOptions) (resp azfake.Responder[armdeployments.ClientCancelAtScopeResponse], errResp azfake.ErrorResponder)
+	CancelAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientCancelAtScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCancelAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// CancelAtSubscriptionScope is the fake for method Client.CancelAtSubscriptionScope
+	// CancelAtSubscriptionScope is the fake for method DeploymentsClient.CancelAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientCancelAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.ClientCancelAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	CancelAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientCancelAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCancelAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// CancelAtTenantScope is the fake for method Client.CancelAtTenantScope
+	// CancelAtTenantScope is the fake for method DeploymentsClient.CancelAtTenantScope
 	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientCancelAtTenantScopeOptions) (resp azfake.Responder[armdeployments.ClientCancelAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	CancelAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientCancelAtTenantScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCancelAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// CheckExistence is the fake for method Client.CheckExistence
+	// CheckExistence is the fake for method DeploymentsClient.CheckExistence
 	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistence func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.ClientCheckExistenceOptions) (resp azfake.Responder[armdeployments.ClientCheckExistenceResponse], errResp azfake.ErrorResponder)
+	CheckExistence func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientCheckExistenceOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCheckExistenceResponse], errResp azfake.ErrorResponder)
 
-	// CheckExistenceAtManagementGroupScope is the fake for method Client.CheckExistenceAtManagementGroupScope
+	// CheckExistenceAtManagementGroupScope is the fake for method DeploymentsClient.CheckExistenceAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistenceAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.ClientCheckExistenceAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.ClientCheckExistenceAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	CheckExistenceAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientCheckExistenceAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCheckExistenceAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// CheckExistenceAtScope is the fake for method Client.CheckExistenceAtScope
+	// CheckExistenceAtScope is the fake for method DeploymentsClient.CheckExistenceAtScope
 	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistenceAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.ClientCheckExistenceAtScopeOptions) (resp azfake.Responder[armdeployments.ClientCheckExistenceAtScopeResponse], errResp azfake.ErrorResponder)
+	CheckExistenceAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientCheckExistenceAtScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCheckExistenceAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// CheckExistenceAtSubscriptionScope is the fake for method Client.CheckExistenceAtSubscriptionScope
+	// CheckExistenceAtSubscriptionScope is the fake for method DeploymentsClient.CheckExistenceAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistenceAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientCheckExistenceAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.ClientCheckExistenceAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	CheckExistenceAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientCheckExistenceAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCheckExistenceAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// CheckExistenceAtTenantScope is the fake for method Client.CheckExistenceAtTenantScope
+	// CheckExistenceAtTenantScope is the fake for method DeploymentsClient.CheckExistenceAtTenantScope
 	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
-	CheckExistenceAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientCheckExistenceAtTenantScopeOptions) (resp azfake.Responder[armdeployments.ClientCheckExistenceAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	CheckExistenceAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientCheckExistenceAtTenantScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCheckExistenceAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateOrUpdate is the fake for method Client.BeginCreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method DeploymentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.ClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeployments.ClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateOrUpdateAtManagementGroupScope is the fake for method Client.BeginCreateOrUpdateAtManagementGroupScope
+	// BeginCreateOrUpdateAtManagementGroupScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.ClientBeginCreateOrUpdateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateOrUpdateAtScope is the fake for method Client.BeginCreateOrUpdateAtScope
+	// BeginCreateOrUpdateAtScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.ClientBeginCreateOrUpdateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtScopeResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateOrUpdateAtSubscriptionScope is the fake for method Client.BeginCreateOrUpdateAtSubscriptionScope
+	// BeginCreateOrUpdateAtSubscriptionScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.ClientBeginCreateOrUpdateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateOrUpdateAtTenantScope is the fake for method Client.BeginCreateOrUpdateAtTenantScope
+	// BeginCreateOrUpdateAtTenantScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtTenantScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.ClientBeginCreateOrUpdateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method Client.BeginDelete
+	// BeginDelete is the fake for method DeploymentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.ClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeployments.ClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// BeginDeleteAtManagementGroupScope is the fake for method Client.BeginDeleteAtManagementGroupScope
+	// BeginDeleteAtManagementGroupScope is the fake for method DeploymentsClient.BeginDeleteAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.ClientBeginDeleteAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientDeleteAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginDeleteAtScope is the fake for method Client.BeginDeleteAtScope
+	// BeginDeleteAtScope is the fake for method DeploymentsClient.BeginDeleteAtScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.ClientBeginDeleteAtScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientDeleteAtScopeResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginDeleteAtSubscriptionScope is the fake for method Client.BeginDeleteAtSubscriptionScope
+	// BeginDeleteAtSubscriptionScope is the fake for method DeploymentsClient.BeginDeleteAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientBeginDeleteAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientDeleteAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginDeleteAtTenantScope is the fake for method Client.BeginDeleteAtTenantScope
+	// BeginDeleteAtTenantScope is the fake for method DeploymentsClient.BeginDeleteAtTenantScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientBeginDeleteAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientDeleteAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// ExportTemplate is the fake for method Client.ExportTemplate
+	// ExportTemplate is the fake for method DeploymentsClient.ExportTemplate
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplate func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.ClientExportTemplateOptions) (resp azfake.Responder[armdeployments.ClientExportTemplateResponse], errResp azfake.ErrorResponder)
+	ExportTemplate func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientExportTemplateOptions) (resp azfake.Responder[armdeployments.DeploymentsClientExportTemplateResponse], errResp azfake.ErrorResponder)
 
-	// ExportTemplateAtManagementGroupScope is the fake for method Client.ExportTemplateAtManagementGroupScope
+	// ExportTemplateAtManagementGroupScope is the fake for method DeploymentsClient.ExportTemplateAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.ClientExportTemplateAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.ClientExportTemplateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientExportTemplateAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientExportTemplateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// ExportTemplateAtScope is the fake for method Client.ExportTemplateAtScope
+	// ExportTemplateAtScope is the fake for method DeploymentsClient.ExportTemplateAtScope
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.ClientExportTemplateAtScopeOptions) (resp azfake.Responder[armdeployments.ClientExportTemplateAtScopeResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientExportTemplateAtScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientExportTemplateAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// ExportTemplateAtSubscriptionScope is the fake for method Client.ExportTemplateAtSubscriptionScope
+	// ExportTemplateAtSubscriptionScope is the fake for method DeploymentsClient.ExportTemplateAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientExportTemplateAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.ClientExportTemplateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientExportTemplateAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientExportTemplateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// ExportTemplateAtTenantScope is the fake for method Client.ExportTemplateAtTenantScope
+	// ExportTemplateAtTenantScope is the fake for method DeploymentsClient.ExportTemplateAtTenantScope
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientExportTemplateAtTenantScopeOptions) (resp azfake.Responder[armdeployments.ClientExportTemplateAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientExportTemplateAtTenantScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientExportTemplateAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method Client.Get
+	// Get is the fake for method DeploymentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.ClientGetOptions) (resp azfake.Responder[armdeployments.ClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientGetOptions) (resp azfake.Responder[armdeployments.DeploymentsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// GetAtManagementGroupScope is the fake for method Client.GetAtManagementGroupScope
+	// GetAtManagementGroupScope is the fake for method DeploymentsClient.GetAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.ClientGetAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.ClientGetAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	GetAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientGetAtManagementGroupScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientGetAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// GetAtScope is the fake for method Client.GetAtScope
+	// GetAtScope is the fake for method DeploymentsClient.GetAtScope
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.ClientGetAtScopeOptions) (resp azfake.Responder[armdeployments.ClientGetAtScopeResponse], errResp azfake.ErrorResponder)
+	GetAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientGetAtScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientGetAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// GetAtSubscriptionScope is the fake for method Client.GetAtSubscriptionScope
+	// GetAtSubscriptionScope is the fake for method DeploymentsClient.GetAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientGetAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.ClientGetAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	GetAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientGetAtSubscriptionScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientGetAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// GetAtTenantScope is the fake for method Client.GetAtTenantScope
+	// GetAtTenantScope is the fake for method DeploymentsClient.GetAtTenantScope
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.ClientGetAtTenantScopeOptions) (resp azfake.Responder[armdeployments.ClientGetAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	GetAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientGetAtTenantScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientGetAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// NewListAtManagementGroupScopePager is the fake for method Client.NewListAtManagementGroupScopePager
+	// NewListAtManagementGroupScopePager is the fake for method DeploymentsClient.NewListAtManagementGroupScopePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtManagementGroupScopePager func(groupID string, options *armdeployments.ClientListAtManagementGroupScopeOptions) (resp azfake.PagerResponder[armdeployments.ClientListAtManagementGroupScopeResponse])
+	NewListAtManagementGroupScopePager func(groupID string, options *armdeployments.DeploymentsClientListAtManagementGroupScopeOptions) (resp azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse])
 
-	// NewListAtScopePager is the fake for method Client.NewListAtScopePager
+	// NewListAtScopePager is the fake for method DeploymentsClient.NewListAtScopePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtScopePager func(scope string, options *armdeployments.ClientListAtScopeOptions) (resp azfake.PagerResponder[armdeployments.ClientListAtScopeResponse])
+	NewListAtScopePager func(scope string, options *armdeployments.DeploymentsClientListAtScopeOptions) (resp azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse])
 
-	// NewListAtSubscriptionScopePager is the fake for method Client.NewListAtSubscriptionScopePager
+	// NewListAtSubscriptionScopePager is the fake for method DeploymentsClient.NewListAtSubscriptionScopePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtSubscriptionScopePager func(options *armdeployments.ClientListAtSubscriptionScopeOptions) (resp azfake.PagerResponder[armdeployments.ClientListAtSubscriptionScopeResponse])
+	NewListAtSubscriptionScopePager func(options *armdeployments.DeploymentsClientListAtSubscriptionScopeOptions) (resp azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse])
 
-	// NewListAtTenantScopePager is the fake for method Client.NewListAtTenantScopePager
+	// NewListAtTenantScopePager is the fake for method DeploymentsClient.NewListAtTenantScopePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtTenantScopePager func(options *armdeployments.ClientListAtTenantScopeOptions) (resp azfake.PagerResponder[armdeployments.ClientListAtTenantScopeResponse])
+	NewListAtTenantScopePager func(options *armdeployments.DeploymentsClientListAtTenantScopeOptions) (resp azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse])
 
-	// NewListByResourceGroupPager is the fake for method Client.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method DeploymentsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdeployments.ClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeployments.ClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armdeployments.DeploymentsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse])
 
-	// BeginValidate is the fake for method Client.BeginValidate
+	// BeginValidate is the fake for method DeploymentsClient.BeginValidate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.ClientBeginValidateOptions) (resp azfake.PollerResponder[armdeployments.ClientValidateResponse], errResp azfake.ErrorResponder)
+	BeginValidate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse], errResp azfake.ErrorResponder)
 
-	// BeginValidateAtManagementGroupScope is the fake for method Client.BeginValidateAtManagementGroupScope
+	// BeginValidateAtManagementGroupScope is the fake for method DeploymentsClient.BeginValidateAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.ClientBeginValidateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientValidateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	BeginValidateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginValidateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginValidateAtScope is the fake for method Client.BeginValidateAtScope
+	// BeginValidateAtScope is the fake for method DeploymentsClient.BeginValidateAtScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.ClientBeginValidateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientValidateAtScopeResponse], errResp azfake.ErrorResponder)
+	BeginValidateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginValidateAtSubscriptionScope is the fake for method Client.BeginValidateAtSubscriptionScope
+	// BeginValidateAtSubscriptionScope is the fake for method DeploymentsClient.BeginValidateAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.ClientBeginValidateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientValidateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	BeginValidateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginValidateAtTenantScope is the fake for method Client.BeginValidateAtTenantScope
+	// BeginValidateAtTenantScope is the fake for method DeploymentsClient.BeginValidateAtTenantScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.ClientBeginValidateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientValidateAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	BeginValidateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginValidateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginWhatIf is the fake for method Client.BeginWhatIf
+	// BeginWhatIf is the fake for method DeploymentsClient.BeginWhatIf
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIf func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.ClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeployments.ClientWhatIfResponse], errResp azfake.ErrorResponder)
+	BeginWhatIf func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfResponse], errResp azfake.ErrorResponder)
 
-	// BeginWhatIfAtManagementGroupScope is the fake for method Client.BeginWhatIfAtManagementGroupScope
+	// BeginWhatIfAtManagementGroupScope is the fake for method DeploymentsClient.BeginWhatIfAtManagementGroupScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIfAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.ClientBeginWhatIfAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientWhatIfAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+	BeginWhatIfAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginWhatIfAtSubscriptionScope is the fake for method Client.BeginWhatIfAtSubscriptionScope
+	// BeginWhatIfAtSubscriptionScope is the fake for method DeploymentsClient.BeginWhatIfAtSubscriptionScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIfAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.ClientBeginWhatIfAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientWhatIfAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+	BeginWhatIfAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
 
-	// BeginWhatIfAtTenantScope is the fake for method Client.BeginWhatIfAtTenantScope
+	// BeginWhatIfAtTenantScope is the fake for method DeploymentsClient.BeginWhatIfAtTenantScope
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIfAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.ClientBeginWhatIfAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.ClientWhatIfAtTenantScopeResponse], errResp azfake.ErrorResponder)
+	BeginWhatIfAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse], errResp azfake.ErrorResponder)
 }
 
-// NewServerTransport creates a new instance of ServerTransport with the provided implementation.
-// The returned ServerTransport instance is connected to an instance of armdeployments.Client via the
+// NewDeploymentsServerTransport creates a new instance of DeploymentsServerTransport with the provided implementation.
+// The returned DeploymentsServerTransport instance is connected to an instance of armdeployments.DeploymentsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewServerTransport(srv *Server) *ServerTransport {
-	return &ServerTransport{
+func NewDeploymentsServerTransport(srv *DeploymentsServer) *DeploymentsServerTransport {
+	return &DeploymentsServerTransport{
 		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateResponse]](),
-		beginCreateOrUpdateAtManagementGroupScope: newTracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtManagementGroupScopeResponse]](),
-		beginCreateOrUpdateAtScope:                newTracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtScopeResponse]](),
-		beginCreateOrUpdateAtSubscriptionScope:    newTracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtSubscriptionScopeResponse]](),
-		beginCreateOrUpdateAtTenantScope:          newTracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtTenantScopeResponse]](),
-		beginDelete:                               newTracker[azfake.PollerResponder[armdeployments.ClientDeleteResponse]](),
-		beginDeleteAtManagementGroupScope:         newTracker[azfake.PollerResponder[armdeployments.ClientDeleteAtManagementGroupScopeResponse]](),
-		beginDeleteAtScope:                        newTracker[azfake.PollerResponder[armdeployments.ClientDeleteAtScopeResponse]](),
-		beginDeleteAtSubscriptionScope:            newTracker[azfake.PollerResponder[armdeployments.ClientDeleteAtSubscriptionScopeResponse]](),
-		beginDeleteAtTenantScope:                  newTracker[azfake.PollerResponder[armdeployments.ClientDeleteAtTenantScopeResponse]](),
-		newListAtManagementGroupScopePager:        newTracker[azfake.PagerResponder[armdeployments.ClientListAtManagementGroupScopeResponse]](),
-		newListAtScopePager:                       newTracker[azfake.PagerResponder[armdeployments.ClientListAtScopeResponse]](),
-		newListAtSubscriptionScopePager:           newTracker[azfake.PagerResponder[armdeployments.ClientListAtSubscriptionScopeResponse]](),
-		newListAtTenantScopePager:                 newTracker[azfake.PagerResponder[armdeployments.ClientListAtTenantScopeResponse]](),
-		newListByResourceGroupPager:               newTracker[azfake.PagerResponder[armdeployments.ClientListByResourceGroupResponse]](),
-		beginValidate:                             newTracker[azfake.PollerResponder[armdeployments.ClientValidateResponse]](),
-		beginValidateAtManagementGroupScope:       newTracker[azfake.PollerResponder[armdeployments.ClientValidateAtManagementGroupScopeResponse]](),
-		beginValidateAtScope:                      newTracker[azfake.PollerResponder[armdeployments.ClientValidateAtScopeResponse]](),
-		beginValidateAtSubscriptionScope:          newTracker[azfake.PollerResponder[armdeployments.ClientValidateAtSubscriptionScopeResponse]](),
-		beginValidateAtTenantScope:                newTracker[azfake.PollerResponder[armdeployments.ClientValidateAtTenantScopeResponse]](),
-		beginWhatIf:                               newTracker[azfake.PollerResponder[armdeployments.ClientWhatIfResponse]](),
-		beginWhatIfAtManagementGroupScope:         newTracker[azfake.PollerResponder[armdeployments.ClientWhatIfAtManagementGroupScopeResponse]](),
-		beginWhatIfAtSubscriptionScope:            newTracker[azfake.PollerResponder[armdeployments.ClientWhatIfAtSubscriptionScopeResponse]](),
-		beginWhatIfAtTenantScope:                  newTracker[azfake.PollerResponder[armdeployments.ClientWhatIfAtTenantScopeResponse]](),
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateResponse]](),
+		beginCreateOrUpdateAtManagementGroupScope: newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]](),
+		beginCreateOrUpdateAtScope:                newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtScopeResponse]](),
+		beginCreateOrUpdateAtSubscriptionScope:    newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]](),
+		beginCreateOrUpdateAtTenantScope:          newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtTenantScopeResponse]](),
+		beginDelete:                               newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteResponse]](),
+		beginDeleteAtManagementGroupScope:         newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtManagementGroupScopeResponse]](),
+		beginDeleteAtScope:                        newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse]](),
+		beginDeleteAtSubscriptionScope:            newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse]](),
+		beginDeleteAtTenantScope:                  newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse]](),
+		newListAtManagementGroupScopePager:        newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse]](),
+		newListAtScopePager:                       newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse]](),
+		newListAtSubscriptionScopePager:           newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse]](),
+		newListAtTenantScopePager:                 newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse]](),
+		newListByResourceGroupPager:               newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse]](),
+		beginValidate:                             newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse]](),
+		beginValidateAtManagementGroupScope:       newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse]](),
+		beginValidateAtScope:                      newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse]](),
+		beginValidateAtSubscriptionScope:          newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtSubscriptionScopeResponse]](),
+		beginValidateAtTenantScope:                newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtTenantScopeResponse]](),
+		beginWhatIf:                               newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfResponse]](),
+		beginWhatIfAtManagementGroupScope:         newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse]](),
+		beginWhatIfAtSubscriptionScope:            newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse]](),
+		beginWhatIfAtTenantScope:                  newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse]](),
 	}
 }
 
-// ServerTransport connects instances of armdeployments.Client to instances of Server.
-// Don't use this type directly, use NewServerTransport instead.
-type ServerTransport struct {
-	srv                                       *Server
-	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateResponse]]
-	beginCreateOrUpdateAtManagementGroupScope *tracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtManagementGroupScopeResponse]]
-	beginCreateOrUpdateAtScope                *tracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtScopeResponse]]
-	beginCreateOrUpdateAtSubscriptionScope    *tracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtSubscriptionScopeResponse]]
-	beginCreateOrUpdateAtTenantScope          *tracker[azfake.PollerResponder[armdeployments.ClientCreateOrUpdateAtTenantScopeResponse]]
-	beginDelete                               *tracker[azfake.PollerResponder[armdeployments.ClientDeleteResponse]]
-	beginDeleteAtManagementGroupScope         *tracker[azfake.PollerResponder[armdeployments.ClientDeleteAtManagementGroupScopeResponse]]
-	beginDeleteAtScope                        *tracker[azfake.PollerResponder[armdeployments.ClientDeleteAtScopeResponse]]
-	beginDeleteAtSubscriptionScope            *tracker[azfake.PollerResponder[armdeployments.ClientDeleteAtSubscriptionScopeResponse]]
-	beginDeleteAtTenantScope                  *tracker[azfake.PollerResponder[armdeployments.ClientDeleteAtTenantScopeResponse]]
-	newListAtManagementGroupScopePager        *tracker[azfake.PagerResponder[armdeployments.ClientListAtManagementGroupScopeResponse]]
-	newListAtScopePager                       *tracker[azfake.PagerResponder[armdeployments.ClientListAtScopeResponse]]
-	newListAtSubscriptionScopePager           *tracker[azfake.PagerResponder[armdeployments.ClientListAtSubscriptionScopeResponse]]
-	newListAtTenantScopePager                 *tracker[azfake.PagerResponder[armdeployments.ClientListAtTenantScopeResponse]]
-	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armdeployments.ClientListByResourceGroupResponse]]
-	beginValidate                             *tracker[azfake.PollerResponder[armdeployments.ClientValidateResponse]]
-	beginValidateAtManagementGroupScope       *tracker[azfake.PollerResponder[armdeployments.ClientValidateAtManagementGroupScopeResponse]]
-	beginValidateAtScope                      *tracker[azfake.PollerResponder[armdeployments.ClientValidateAtScopeResponse]]
-	beginValidateAtSubscriptionScope          *tracker[azfake.PollerResponder[armdeployments.ClientValidateAtSubscriptionScopeResponse]]
-	beginValidateAtTenantScope                *tracker[azfake.PollerResponder[armdeployments.ClientValidateAtTenantScopeResponse]]
-	beginWhatIf                               *tracker[azfake.PollerResponder[armdeployments.ClientWhatIfResponse]]
-	beginWhatIfAtManagementGroupScope         *tracker[azfake.PollerResponder[armdeployments.ClientWhatIfAtManagementGroupScopeResponse]]
-	beginWhatIfAtSubscriptionScope            *tracker[azfake.PollerResponder[armdeployments.ClientWhatIfAtSubscriptionScopeResponse]]
-	beginWhatIfAtTenantScope                  *tracker[azfake.PollerResponder[armdeployments.ClientWhatIfAtTenantScopeResponse]]
+// DeploymentsServerTransport connects instances of armdeployments.DeploymentsClient to instances of DeploymentsServer.
+// Don't use this type directly, use NewDeploymentsServerTransport instead.
+type DeploymentsServerTransport struct {
+	srv                                       *DeploymentsServer
+	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateResponse]]
+	beginCreateOrUpdateAtManagementGroupScope *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse]]
+	beginCreateOrUpdateAtScope                *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtScopeResponse]]
+	beginCreateOrUpdateAtSubscriptionScope    *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse]]
+	beginCreateOrUpdateAtTenantScope          *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtTenantScopeResponse]]
+	beginDelete                               *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteResponse]]
+	beginDeleteAtManagementGroupScope         *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtManagementGroupScopeResponse]]
+	beginDeleteAtScope                        *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse]]
+	beginDeleteAtSubscriptionScope            *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse]]
+	beginDeleteAtTenantScope                  *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse]]
+	newListAtManagementGroupScopePager        *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse]]
+	newListAtScopePager                       *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse]]
+	newListAtSubscriptionScopePager           *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse]]
+	newListAtTenantScopePager                 *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse]]
+	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse]]
+	beginValidate                             *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse]]
+	beginValidateAtManagementGroupScope       *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse]]
+	beginValidateAtScope                      *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse]]
+	beginValidateAtSubscriptionScope          *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtSubscriptionScopeResponse]]
+	beginValidateAtTenantScope                *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtTenantScopeResponse]]
+	beginWhatIf                               *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfResponse]]
+	beginWhatIfAtManagementGroupScope         *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse]]
+	beginWhatIfAtSubscriptionScope            *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse]]
+	beginWhatIfAtTenantScope                  *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse]]
 }
 
-// Do implements the policy.Transporter interface for ServerTransport.
-func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DeploymentsServerTransport.
+func (d *DeploymentsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return s.dispatchToMethodFake(req, method)
+	return d.dispatchToMethodFake(req, method)
 }
 
-func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DeploymentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		if deploymentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = deploymentsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "Client.CalculateTemplateHash":
-				res.resp, res.err = s.dispatchCalculateTemplateHash(req)
-			case "Client.Cancel":
-				res.resp, res.err = s.dispatchCancel(req)
-			case "Client.CancelAtManagementGroupScope":
-				res.resp, res.err = s.dispatchCancelAtManagementGroupScope(req)
-			case "Client.CancelAtScope":
-				res.resp, res.err = s.dispatchCancelAtScope(req)
-			case "Client.CancelAtSubscriptionScope":
-				res.resp, res.err = s.dispatchCancelAtSubscriptionScope(req)
-			case "Client.CancelAtTenantScope":
-				res.resp, res.err = s.dispatchCancelAtTenantScope(req)
-			case "Client.CheckExistence":
-				res.resp, res.err = s.dispatchCheckExistence(req)
-			case "Client.CheckExistenceAtManagementGroupScope":
-				res.resp, res.err = s.dispatchCheckExistenceAtManagementGroupScope(req)
-			case "Client.CheckExistenceAtScope":
-				res.resp, res.err = s.dispatchCheckExistenceAtScope(req)
-			case "Client.CheckExistenceAtSubscriptionScope":
-				res.resp, res.err = s.dispatchCheckExistenceAtSubscriptionScope(req)
-			case "Client.CheckExistenceAtTenantScope":
-				res.resp, res.err = s.dispatchCheckExistenceAtTenantScope(req)
-			case "Client.BeginCreateOrUpdate":
-				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
-			case "Client.BeginCreateOrUpdateAtManagementGroupScope":
-				res.resp, res.err = s.dispatchBeginCreateOrUpdateAtManagementGroupScope(req)
-			case "Client.BeginCreateOrUpdateAtScope":
-				res.resp, res.err = s.dispatchBeginCreateOrUpdateAtScope(req)
-			case "Client.BeginCreateOrUpdateAtSubscriptionScope":
-				res.resp, res.err = s.dispatchBeginCreateOrUpdateAtSubscriptionScope(req)
-			case "Client.BeginCreateOrUpdateAtTenantScope":
-				res.resp, res.err = s.dispatchBeginCreateOrUpdateAtTenantScope(req)
-			case "Client.BeginDelete":
-				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "Client.BeginDeleteAtManagementGroupScope":
-				res.resp, res.err = s.dispatchBeginDeleteAtManagementGroupScope(req)
-			case "Client.BeginDeleteAtScope":
-				res.resp, res.err = s.dispatchBeginDeleteAtScope(req)
-			case "Client.BeginDeleteAtSubscriptionScope":
-				res.resp, res.err = s.dispatchBeginDeleteAtSubscriptionScope(req)
-			case "Client.BeginDeleteAtTenantScope":
-				res.resp, res.err = s.dispatchBeginDeleteAtTenantScope(req)
-			case "Client.ExportTemplate":
-				res.resp, res.err = s.dispatchExportTemplate(req)
-			case "Client.ExportTemplateAtManagementGroupScope":
-				res.resp, res.err = s.dispatchExportTemplateAtManagementGroupScope(req)
-			case "Client.ExportTemplateAtScope":
-				res.resp, res.err = s.dispatchExportTemplateAtScope(req)
-			case "Client.ExportTemplateAtSubscriptionScope":
-				res.resp, res.err = s.dispatchExportTemplateAtSubscriptionScope(req)
-			case "Client.ExportTemplateAtTenantScope":
-				res.resp, res.err = s.dispatchExportTemplateAtTenantScope(req)
-			case "Client.Get":
-				res.resp, res.err = s.dispatchGet(req)
-			case "Client.GetAtManagementGroupScope":
-				res.resp, res.err = s.dispatchGetAtManagementGroupScope(req)
-			case "Client.GetAtScope":
-				res.resp, res.err = s.dispatchGetAtScope(req)
-			case "Client.GetAtSubscriptionScope":
-				res.resp, res.err = s.dispatchGetAtSubscriptionScope(req)
-			case "Client.GetAtTenantScope":
-				res.resp, res.err = s.dispatchGetAtTenantScope(req)
-			case "Client.NewListAtManagementGroupScopePager":
-				res.resp, res.err = s.dispatchNewListAtManagementGroupScopePager(req)
-			case "Client.NewListAtScopePager":
-				res.resp, res.err = s.dispatchNewListAtScopePager(req)
-			case "Client.NewListAtSubscriptionScopePager":
-				res.resp, res.err = s.dispatchNewListAtSubscriptionScopePager(req)
-			case "Client.NewListAtTenantScopePager":
-				res.resp, res.err = s.dispatchNewListAtTenantScopePager(req)
-			case "Client.NewListByResourceGroupPager":
-				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
-			case "Client.BeginValidate":
-				res.resp, res.err = s.dispatchBeginValidate(req)
-			case "Client.BeginValidateAtManagementGroupScope":
-				res.resp, res.err = s.dispatchBeginValidateAtManagementGroupScope(req)
-			case "Client.BeginValidateAtScope":
-				res.resp, res.err = s.dispatchBeginValidateAtScope(req)
-			case "Client.BeginValidateAtSubscriptionScope":
-				res.resp, res.err = s.dispatchBeginValidateAtSubscriptionScope(req)
-			case "Client.BeginValidateAtTenantScope":
-				res.resp, res.err = s.dispatchBeginValidateAtTenantScope(req)
-			case "Client.BeginWhatIf":
-				res.resp, res.err = s.dispatchBeginWhatIf(req)
-			case "Client.BeginWhatIfAtManagementGroupScope":
-				res.resp, res.err = s.dispatchBeginWhatIfAtManagementGroupScope(req)
-			case "Client.BeginWhatIfAtSubscriptionScope":
-				res.resp, res.err = s.dispatchBeginWhatIfAtSubscriptionScope(req)
-			case "Client.BeginWhatIfAtTenantScope":
-				res.resp, res.err = s.dispatchBeginWhatIfAtTenantScope(req)
+			case "DeploymentsClient.CalculateTemplateHash":
+				res.resp, res.err = d.dispatchCalculateTemplateHash(req)
+			case "DeploymentsClient.Cancel":
+				res.resp, res.err = d.dispatchCancel(req)
+			case "DeploymentsClient.CancelAtManagementGroupScope":
+				res.resp, res.err = d.dispatchCancelAtManagementGroupScope(req)
+			case "DeploymentsClient.CancelAtScope":
+				res.resp, res.err = d.dispatchCancelAtScope(req)
+			case "DeploymentsClient.CancelAtSubscriptionScope":
+				res.resp, res.err = d.dispatchCancelAtSubscriptionScope(req)
+			case "DeploymentsClient.CancelAtTenantScope":
+				res.resp, res.err = d.dispatchCancelAtTenantScope(req)
+			case "DeploymentsClient.CheckExistence":
+				res.resp, res.err = d.dispatchCheckExistence(req)
+			case "DeploymentsClient.CheckExistenceAtManagementGroupScope":
+				res.resp, res.err = d.dispatchCheckExistenceAtManagementGroupScope(req)
+			case "DeploymentsClient.CheckExistenceAtScope":
+				res.resp, res.err = d.dispatchCheckExistenceAtScope(req)
+			case "DeploymentsClient.CheckExistenceAtSubscriptionScope":
+				res.resp, res.err = d.dispatchCheckExistenceAtSubscriptionScope(req)
+			case "DeploymentsClient.CheckExistenceAtTenantScope":
+				res.resp, res.err = d.dispatchCheckExistenceAtTenantScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdate":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtTenantScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtTenantScope(req)
+			case "DeploymentsClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DeploymentsClient.BeginDeleteAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginDeleteAtScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtScope(req)
+			case "DeploymentsClient.BeginDeleteAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginDeleteAtTenantScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtTenantScope(req)
+			case "DeploymentsClient.ExportTemplate":
+				res.resp, res.err = d.dispatchExportTemplate(req)
+			case "DeploymentsClient.ExportTemplateAtManagementGroupScope":
+				res.resp, res.err = d.dispatchExportTemplateAtManagementGroupScope(req)
+			case "DeploymentsClient.ExportTemplateAtScope":
+				res.resp, res.err = d.dispatchExportTemplateAtScope(req)
+			case "DeploymentsClient.ExportTemplateAtSubscriptionScope":
+				res.resp, res.err = d.dispatchExportTemplateAtSubscriptionScope(req)
+			case "DeploymentsClient.ExportTemplateAtTenantScope":
+				res.resp, res.err = d.dispatchExportTemplateAtTenantScope(req)
+			case "DeploymentsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DeploymentsClient.GetAtManagementGroupScope":
+				res.resp, res.err = d.dispatchGetAtManagementGroupScope(req)
+			case "DeploymentsClient.GetAtScope":
+				res.resp, res.err = d.dispatchGetAtScope(req)
+			case "DeploymentsClient.GetAtSubscriptionScope":
+				res.resp, res.err = d.dispatchGetAtSubscriptionScope(req)
+			case "DeploymentsClient.GetAtTenantScope":
+				res.resp, res.err = d.dispatchGetAtTenantScope(req)
+			case "DeploymentsClient.NewListAtManagementGroupScopePager":
+				res.resp, res.err = d.dispatchNewListAtManagementGroupScopePager(req)
+			case "DeploymentsClient.NewListAtScopePager":
+				res.resp, res.err = d.dispatchNewListAtScopePager(req)
+			case "DeploymentsClient.NewListAtSubscriptionScopePager":
+				res.resp, res.err = d.dispatchNewListAtSubscriptionScopePager(req)
+			case "DeploymentsClient.NewListAtTenantScopePager":
+				res.resp, res.err = d.dispatchNewListAtTenantScopePager(req)
+			case "DeploymentsClient.NewListByResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DeploymentsClient.BeginValidate":
+				res.resp, res.err = d.dispatchBeginValidate(req)
+			case "DeploymentsClient.BeginValidateAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginValidateAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginValidateAtScope":
+				res.resp, res.err = d.dispatchBeginValidateAtScope(req)
+			case "DeploymentsClient.BeginValidateAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginValidateAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginValidateAtTenantScope":
+				res.resp, res.err = d.dispatchBeginValidateAtTenantScope(req)
+			case "DeploymentsClient.BeginWhatIf":
+				res.resp, res.err = d.dispatchBeginWhatIf(req)
+			case "DeploymentsClient.BeginWhatIfAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginWhatIfAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginWhatIfAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginWhatIfAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginWhatIfAtTenantScope":
+				res.resp, res.err = d.dispatchBeginWhatIfAtTenantScope(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -398,15 +398,15 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	}
 }
 
-func (s *ServerTransport) dispatchCalculateTemplateHash(req *http.Request) (*http.Response, error) {
-	if s.srv.CalculateTemplateHash == nil {
+func (d *DeploymentsServerTransport) dispatchCalculateTemplateHash(req *http.Request) (*http.Response, error) {
+	if d.srv.CalculateTemplateHash == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CalculateTemplateHash not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[any](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CalculateTemplateHash(req.Context(), body, nil)
+	respr, errRespr := d.srv.CalculateTemplateHash(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -421,8 +421,8 @@ func (s *ServerTransport) dispatchCalculateTemplateHash(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if s.srv.Cancel == nil {
+func (d *DeploymentsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if d.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
@@ -439,7 +439,7 @@ func (s *ServerTransport) dispatchCancel(req *http.Request) (*http.Response, err
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Cancel(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.Cancel(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -454,8 +454,8 @@ func (s *ServerTransport) dispatchCancel(req *http.Request) (*http.Response, err
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCancelAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CancelAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchCancelAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtManagementGroupScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
@@ -472,7 +472,7 @@ func (s *ServerTransport) dispatchCancelAtManagementGroupScope(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CancelAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.CancelAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -487,8 +487,8 @@ func (s *ServerTransport) dispatchCancelAtManagementGroupScope(req *http.Request
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCancelAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CancelAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchCancelAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtScope not implemented")}
 	}
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
@@ -505,7 +505,7 @@ func (s *ServerTransport) dispatchCancelAtScope(req *http.Request) (*http.Respon
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CancelAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.CancelAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -520,8 +520,8 @@ func (s *ServerTransport) dispatchCancelAtScope(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCancelAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CancelAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchCancelAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtSubscriptionScope not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
@@ -534,7 +534,7 @@ func (s *ServerTransport) dispatchCancelAtSubscriptionScope(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CancelAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.CancelAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -549,8 +549,8 @@ func (s *ServerTransport) dispatchCancelAtSubscriptionScope(req *http.Request) (
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCancelAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CancelAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchCancelAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelAtTenantScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
@@ -563,7 +563,7 @@ func (s *ServerTransport) dispatchCancelAtTenantScope(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CancelAtTenantScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.CancelAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -578,8 +578,8 @@ func (s *ServerTransport) dispatchCancelAtTenantScope(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistence == nil {
+func (d *DeploymentsServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistence == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -596,7 +596,7 @@ func (s *ServerTransport) dispatchCheckExistence(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckExistence(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.CheckExistence(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -611,8 +611,8 @@ func (s *ServerTransport) dispatchCheckExistence(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCheckExistenceAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistenceAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtManagementGroupScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -629,7 +629,7 @@ func (s *ServerTransport) dispatchCheckExistenceAtManagementGroupScope(req *http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckExistenceAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.CheckExistenceAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -644,8 +644,8 @@ func (s *ServerTransport) dispatchCheckExistenceAtManagementGroupScope(req *http
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCheckExistenceAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistenceAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtScope not implemented")}
 	}
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -662,7 +662,7 @@ func (s *ServerTransport) dispatchCheckExistenceAtScope(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckExistenceAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.CheckExistenceAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -677,8 +677,8 @@ func (s *ServerTransport) dispatchCheckExistenceAtScope(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCheckExistenceAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistenceAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtSubscriptionScope not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -691,7 +691,7 @@ func (s *ServerTransport) dispatchCheckExistenceAtSubscriptionScope(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckExistenceAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.CheckExistenceAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -706,8 +706,8 @@ func (s *ServerTransport) dispatchCheckExistenceAtSubscriptionScope(req *http.Re
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchCheckExistenceAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckExistenceAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtTenantScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -720,7 +720,7 @@ func (s *ServerTransport) dispatchCheckExistenceAtTenantScope(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckExistenceAtTenantScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.CheckExistenceAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -735,11 +735,11 @@ func (s *ServerTransport) dispatchCheckExistenceAtTenantScope(req *http.Request)
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginCreateOrUpdate == nil {
+func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -759,12 +759,12 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreateOrUpdate = &respr
-		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
@@ -773,21 +773,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		s.beginCreateOrUpdate.remove(req)
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		s.beginCreateOrUpdate.remove(req)
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginCreateOrUpdateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginCreateOrUpdateAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdateAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtManagementGroupScope not implemented")}
 	}
-	beginCreateOrUpdateAtManagementGroupScope := s.beginCreateOrUpdateAtManagementGroupScope.get(req)
+	beginCreateOrUpdateAtManagementGroupScope := d.beginCreateOrUpdateAtManagementGroupScope.get(req)
 	if beginCreateOrUpdateAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -807,12 +807,12 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtManagementGroupScope(req 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreateOrUpdateAtManagementGroupScope = &respr
-		s.beginCreateOrUpdateAtManagementGroupScope.add(req, beginCreateOrUpdateAtManagementGroupScope)
+		d.beginCreateOrUpdateAtManagementGroupScope.add(req, beginCreateOrUpdateAtManagementGroupScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtManagementGroupScope, req)
@@ -821,21 +821,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtManagementGroupScope(req 
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		s.beginCreateOrUpdateAtManagementGroupScope.remove(req)
+		d.beginCreateOrUpdateAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdateAtManagementGroupScope) {
-		s.beginCreateOrUpdateAtManagementGroupScope.remove(req)
+		d.beginCreateOrUpdateAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginCreateOrUpdateAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdateAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtScope not implemented")}
 	}
-	beginCreateOrUpdateAtScope := s.beginCreateOrUpdateAtScope.get(req)
+	beginCreateOrUpdateAtScope := d.beginCreateOrUpdateAtScope.get(req)
 	if beginCreateOrUpdateAtScope == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -855,12 +855,12 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdateAtScope(req.Context(), scopeParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtScope(req.Context(), scopeParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreateOrUpdateAtScope = &respr
-		s.beginCreateOrUpdateAtScope.add(req, beginCreateOrUpdateAtScope)
+		d.beginCreateOrUpdateAtScope.add(req, beginCreateOrUpdateAtScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtScope, req)
@@ -869,21 +869,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtScope(req *http.Request) 
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		s.beginCreateOrUpdateAtScope.remove(req)
+		d.beginCreateOrUpdateAtScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdateAtScope) {
-		s.beginCreateOrUpdateAtScope.remove(req)
+		d.beginCreateOrUpdateAtScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginCreateOrUpdateAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdateAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtSubscriptionScope not implemented")}
 	}
-	beginCreateOrUpdateAtSubscriptionScope := s.beginCreateOrUpdateAtSubscriptionScope.get(req)
+	beginCreateOrUpdateAtSubscriptionScope := d.beginCreateOrUpdateAtSubscriptionScope.get(req)
 	if beginCreateOrUpdateAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -899,12 +899,12 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionScope(req *ht
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdateAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreateOrUpdateAtSubscriptionScope = &respr
-		s.beginCreateOrUpdateAtSubscriptionScope.add(req, beginCreateOrUpdateAtSubscriptionScope)
+		d.beginCreateOrUpdateAtSubscriptionScope.add(req, beginCreateOrUpdateAtSubscriptionScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtSubscriptionScope, req)
@@ -913,21 +913,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtSubscriptionScope(req *ht
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		s.beginCreateOrUpdateAtSubscriptionScope.remove(req)
+		d.beginCreateOrUpdateAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdateAtSubscriptionScope) {
-		s.beginCreateOrUpdateAtSubscriptionScope.remove(req)
+		d.beginCreateOrUpdateAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginCreateOrUpdateAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdateAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateAtTenantScope not implemented")}
 	}
-	beginCreateOrUpdateAtTenantScope := s.beginCreateOrUpdateAtTenantScope.get(req)
+	beginCreateOrUpdateAtTenantScope := d.beginCreateOrUpdateAtTenantScope.get(req)
 	if beginCreateOrUpdateAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -943,12 +943,12 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdateAtTenantScope(req.Context(), deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginCreateOrUpdateAtTenantScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreateOrUpdateAtTenantScope = &respr
-		s.beginCreateOrUpdateAtTenantScope.add(req, beginCreateOrUpdateAtTenantScope)
+		d.beginCreateOrUpdateAtTenantScope.add(req, beginCreateOrUpdateAtTenantScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreateOrUpdateAtTenantScope, req)
@@ -957,21 +957,21 @@ func (s *ServerTransport) dispatchBeginCreateOrUpdateAtTenantScope(req *http.Req
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		s.beginCreateOrUpdateAtTenantScope.remove(req)
+		d.beginCreateOrUpdateAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdateAtTenantScope) {
-		s.beginCreateOrUpdateAtTenantScope.remove(req)
+		d.beginCreateOrUpdateAtTenantScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginDelete == nil {
+func (d *DeploymentsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	beginDelete := s.beginDelete.get(req)
+	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -987,12 +987,12 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginDelete(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDelete = &respr
-		s.beginDelete.add(req, beginDelete)
+		d.beginDelete.add(req, beginDelete)
 	}
 
 	resp, err := server.PollerResponderNext(beginDelete, req)
@@ -1001,21 +1001,21 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginDelete.remove(req)
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
-		s.beginDelete.remove(req)
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginDeleteAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginDeleteAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginDeleteAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDeleteAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtManagementGroupScope not implemented")}
 	}
-	beginDeleteAtManagementGroupScope := s.beginDeleteAtManagementGroupScope.get(req)
+	beginDeleteAtManagementGroupScope := d.beginDeleteAtManagementGroupScope.get(req)
 	if beginDeleteAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -1031,12 +1031,12 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroupScope(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginDeleteAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+		respr, errRespr := d.srv.BeginDeleteAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDeleteAtManagementGroupScope = &respr
-		s.beginDeleteAtManagementGroupScope.add(req, beginDeleteAtManagementGroupScope)
+		d.beginDeleteAtManagementGroupScope.add(req, beginDeleteAtManagementGroupScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginDeleteAtManagementGroupScope, req)
@@ -1045,21 +1045,21 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroupScope(req *http.Re
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginDeleteAtManagementGroupScope.remove(req)
+		d.beginDeleteAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDeleteAtManagementGroupScope) {
-		s.beginDeleteAtManagementGroupScope.remove(req)
+		d.beginDeleteAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginDeleteAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDeleteAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtScope not implemented")}
 	}
-	beginDeleteAtScope := s.beginDeleteAtScope.get(req)
+	beginDeleteAtScope := d.beginDeleteAtScope.get(req)
 	if beginDeleteAtScope == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -1075,12 +1075,12 @@ func (s *ServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginDeleteAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+		respr, errRespr := d.srv.BeginDeleteAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDeleteAtScope = &respr
-		s.beginDeleteAtScope.add(req, beginDeleteAtScope)
+		d.beginDeleteAtScope.add(req, beginDeleteAtScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginDeleteAtScope, req)
@@ -1089,21 +1089,21 @@ func (s *ServerTransport) dispatchBeginDeleteAtScope(req *http.Request) (*http.R
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginDeleteAtScope.remove(req)
+		d.beginDeleteAtScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDeleteAtScope) {
-		s.beginDeleteAtScope.remove(req)
+		d.beginDeleteAtScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginDeleteAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginDeleteAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginDeleteAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDeleteAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtSubscriptionScope not implemented")}
 	}
-	beginDeleteAtSubscriptionScope := s.beginDeleteAtSubscriptionScope.get(req)
+	beginDeleteAtSubscriptionScope := d.beginDeleteAtSubscriptionScope.get(req)
 	if beginDeleteAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -1115,12 +1115,12 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscriptionScope(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginDeleteAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+		respr, errRespr := d.srv.BeginDeleteAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDeleteAtSubscriptionScope = &respr
-		s.beginDeleteAtSubscriptionScope.add(req, beginDeleteAtSubscriptionScope)
+		d.beginDeleteAtSubscriptionScope.add(req, beginDeleteAtSubscriptionScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginDeleteAtSubscriptionScope, req)
@@ -1129,21 +1129,21 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscriptionScope(req *http.Reque
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginDeleteAtSubscriptionScope.remove(req)
+		d.beginDeleteAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDeleteAtSubscriptionScope) {
-		s.beginDeleteAtSubscriptionScope.remove(req)
+		d.beginDeleteAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginDeleteAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginDeleteAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginDeleteAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDeleteAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteAtTenantScope not implemented")}
 	}
-	beginDeleteAtTenantScope := s.beginDeleteAtTenantScope.get(req)
+	beginDeleteAtTenantScope := d.beginDeleteAtTenantScope.get(req)
 	if beginDeleteAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -1155,12 +1155,12 @@ func (s *ServerTransport) dispatchBeginDeleteAtTenantScope(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginDeleteAtTenantScope(req.Context(), deploymentNameParam, nil)
+		respr, errRespr := d.srv.BeginDeleteAtTenantScope(req.Context(), deploymentNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDeleteAtTenantScope = &respr
-		s.beginDeleteAtTenantScope.add(req, beginDeleteAtTenantScope)
+		d.beginDeleteAtTenantScope.add(req, beginDeleteAtTenantScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginDeleteAtTenantScope, req)
@@ -1169,18 +1169,18 @@ func (s *ServerTransport) dispatchBeginDeleteAtTenantScope(req *http.Request) (*
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginDeleteAtTenantScope.remove(req)
+		d.beginDeleteAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDeleteAtTenantScope) {
-		s.beginDeleteAtTenantScope.remove(req)
+		d.beginDeleteAtTenantScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchExportTemplate(req *http.Request) (*http.Response, error) {
-	if s.srv.ExportTemplate == nil {
+func (d *DeploymentsServerTransport) dispatchExportTemplate(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplate not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
@@ -1197,7 +1197,7 @@ func (s *ServerTransport) dispatchExportTemplate(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.ExportTemplate(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.ExportTemplate(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1212,8 +1212,8 @@ func (s *ServerTransport) dispatchExportTemplate(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchExportTemplateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.ExportTemplateAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtManagementGroupScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
@@ -1230,7 +1230,7 @@ func (s *ServerTransport) dispatchExportTemplateAtManagementGroupScope(req *http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.ExportTemplateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.ExportTemplateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1245,8 +1245,8 @@ func (s *ServerTransport) dispatchExportTemplateAtManagementGroupScope(req *http
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchExportTemplateAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.ExportTemplateAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtScope not implemented")}
 	}
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
@@ -1263,7 +1263,7 @@ func (s *ServerTransport) dispatchExportTemplateAtScope(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.ExportTemplateAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.ExportTemplateAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1278,8 +1278,8 @@ func (s *ServerTransport) dispatchExportTemplateAtScope(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchExportTemplateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.ExportTemplateAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtSubscriptionScope not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
@@ -1292,7 +1292,7 @@ func (s *ServerTransport) dispatchExportTemplateAtSubscriptionScope(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.ExportTemplateAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.ExportTemplateAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1307,8 +1307,8 @@ func (s *ServerTransport) dispatchExportTemplateAtSubscriptionScope(req *http.Re
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchExportTemplateAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.ExportTemplateAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtTenantScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/exportTemplate`
@@ -1321,7 +1321,7 @@ func (s *ServerTransport) dispatchExportTemplateAtTenantScope(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.ExportTemplateAtTenantScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.ExportTemplateAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1336,8 +1336,8 @@ func (s *ServerTransport) dispatchExportTemplateAtTenantScope(req *http.Request)
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
+func (d *DeploymentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -1354,7 +1354,7 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1369,8 +1369,8 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGetAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.GetAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchGetAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroupScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -1387,7 +1387,7 @@ func (s *ServerTransport) dispatchGetAtManagementGroupScope(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.GetAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1402,8 +1402,8 @@ func (s *ServerTransport) dispatchGetAtManagementGroupScope(req *http.Request) (
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.GetAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtScope not implemented")}
 	}
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -1420,7 +1420,7 @@ func (s *ServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	respr, errRespr := d.srv.GetAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1435,8 +1435,8 @@ func (s *ServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGetAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.GetAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchGetAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtSubscriptionScope not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -1449,7 +1449,7 @@ func (s *ServerTransport) dispatchGetAtSubscriptionScope(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.GetAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1464,8 +1464,8 @@ func (s *ServerTransport) dispatchGetAtSubscriptionScope(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.GetAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAtTenantScope not implemented")}
 	}
 	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -1478,7 +1478,7 @@ func (s *ServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Res
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetAtTenantScope(req.Context(), deploymentNameParam, nil)
+	respr, errRespr := d.srv.GetAtTenantScope(req.Context(), deploymentNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -1493,11 +1493,11 @@ func (s *ServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListAtManagementGroupScopePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAtManagementGroupScopePager == nil {
+func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtManagementGroupScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtManagementGroupScopePager not implemented")}
 	}
-	newListAtManagementGroupScopePager := s.newListAtManagementGroupScopePager.get(req)
+	newListAtManagementGroupScopePager := d.newListAtManagementGroupScopePager.get(req)
 	if newListAtManagementGroupScopePager == nil {
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
@@ -1529,17 +1529,17 @@ func (s *ServerTransport) dispatchNewListAtManagementGroupScopePager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		var options *armdeployments.ClientListAtManagementGroupScopeOptions
+		var options *armdeployments.DeploymentsClientListAtManagementGroupScopeOptions
 		if filterParam != nil || topParam != nil {
-			options = &armdeployments.ClientListAtManagementGroupScopeOptions{
+			options = &armdeployments.DeploymentsClientListAtManagementGroupScopeOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := s.srv.NewListAtManagementGroupScopePager(groupIDParam, options)
+		resp := d.srv.NewListAtManagementGroupScopePager(groupIDParam, options)
 		newListAtManagementGroupScopePager = &resp
-		s.newListAtManagementGroupScopePager.add(req, newListAtManagementGroupScopePager)
-		server.PagerResponderInjectNextLinks(newListAtManagementGroupScopePager, req, func(page *armdeployments.ClientListAtManagementGroupScopeResponse, createLink func() string) {
+		d.newListAtManagementGroupScopePager.add(req, newListAtManagementGroupScopePager)
+		server.PagerResponderInjectNextLinks(newListAtManagementGroupScopePager, req, func(page *armdeployments.DeploymentsClientListAtManagementGroupScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -1548,20 +1548,20 @@ func (s *ServerTransport) dispatchNewListAtManagementGroupScopePager(req *http.R
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAtManagementGroupScopePager.remove(req)
+		d.newListAtManagementGroupScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListAtManagementGroupScopePager) {
-		s.newListAtManagementGroupScopePager.remove(req)
+		d.newListAtManagementGroupScopePager.remove(req)
 	}
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListAtScopePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAtScopePager == nil {
+func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtScopePager not implemented")}
 	}
-	newListAtScopePager := s.newListAtScopePager.get(req)
+	newListAtScopePager := d.newListAtScopePager.get(req)
 	if newListAtScopePager == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
@@ -1593,17 +1593,17 @@ func (s *ServerTransport) dispatchNewListAtScopePager(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		var options *armdeployments.ClientListAtScopeOptions
+		var options *armdeployments.DeploymentsClientListAtScopeOptions
 		if filterParam != nil || topParam != nil {
-			options = &armdeployments.ClientListAtScopeOptions{
+			options = &armdeployments.DeploymentsClientListAtScopeOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := s.srv.NewListAtScopePager(scopeParam, options)
+		resp := d.srv.NewListAtScopePager(scopeParam, options)
 		newListAtScopePager = &resp
-		s.newListAtScopePager.add(req, newListAtScopePager)
-		server.PagerResponderInjectNextLinks(newListAtScopePager, req, func(page *armdeployments.ClientListAtScopeResponse, createLink func() string) {
+		d.newListAtScopePager.add(req, newListAtScopePager)
+		server.PagerResponderInjectNextLinks(newListAtScopePager, req, func(page *armdeployments.DeploymentsClientListAtScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -1612,20 +1612,20 @@ func (s *ServerTransport) dispatchNewListAtScopePager(req *http.Request) (*http.
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAtScopePager.remove(req)
+		d.newListAtScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListAtScopePager) {
-		s.newListAtScopePager.remove(req)
+		d.newListAtScopePager.remove(req)
 	}
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAtSubscriptionScopePager == nil {
+func (d *DeploymentsServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtSubscriptionScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtSubscriptionScopePager not implemented")}
 	}
-	newListAtSubscriptionScopePager := s.newListAtSubscriptionScopePager.get(req)
+	newListAtSubscriptionScopePager := d.newListAtSubscriptionScopePager.get(req)
 	if newListAtSubscriptionScopePager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
@@ -1653,17 +1653,17 @@ func (s *ServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		var options *armdeployments.ClientListAtSubscriptionScopeOptions
+		var options *armdeployments.DeploymentsClientListAtSubscriptionScopeOptions
 		if filterParam != nil || topParam != nil {
-			options = &armdeployments.ClientListAtSubscriptionScopeOptions{
+			options = &armdeployments.DeploymentsClientListAtSubscriptionScopeOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := s.srv.NewListAtSubscriptionScopePager(options)
+		resp := d.srv.NewListAtSubscriptionScopePager(options)
 		newListAtSubscriptionScopePager = &resp
-		s.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
-		server.PagerResponderInjectNextLinks(newListAtSubscriptionScopePager, req, func(page *armdeployments.ClientListAtSubscriptionScopeResponse, createLink func() string) {
+		d.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
+		server.PagerResponderInjectNextLinks(newListAtSubscriptionScopePager, req, func(page *armdeployments.DeploymentsClientListAtSubscriptionScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -1672,20 +1672,20 @@ func (s *ServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Requ
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAtSubscriptionScopePager.remove(req)
+		d.newListAtSubscriptionScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListAtSubscriptionScopePager) {
-		s.newListAtSubscriptionScopePager.remove(req)
+		d.newListAtSubscriptionScopePager.remove(req)
 	}
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListAtTenantScopePager == nil {
+func (d *DeploymentsServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtTenantScopePager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListAtTenantScopePager not implemented")}
 	}
-	newListAtTenantScopePager := s.newListAtTenantScopePager.get(req)
+	newListAtTenantScopePager := d.newListAtTenantScopePager.get(req)
 	if newListAtTenantScopePager == nil {
 		qp := req.URL.Query()
 		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
@@ -1707,17 +1707,17 @@ func (s *ServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		var options *armdeployments.ClientListAtTenantScopeOptions
+		var options *armdeployments.DeploymentsClientListAtTenantScopeOptions
 		if filterParam != nil || topParam != nil {
-			options = &armdeployments.ClientListAtTenantScopeOptions{
+			options = &armdeployments.DeploymentsClientListAtTenantScopeOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := s.srv.NewListAtTenantScopePager(options)
+		resp := d.srv.NewListAtTenantScopePager(options)
 		newListAtTenantScopePager = &resp
-		s.newListAtTenantScopePager.add(req, newListAtTenantScopePager)
-		server.PagerResponderInjectNextLinks(newListAtTenantScopePager, req, func(page *armdeployments.ClientListAtTenantScopeResponse, createLink func() string) {
+		d.newListAtTenantScopePager.add(req, newListAtTenantScopePager)
+		server.PagerResponderInjectNextLinks(newListAtTenantScopePager, req, func(page *armdeployments.DeploymentsClientListAtTenantScopeResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -1726,20 +1726,20 @@ func (s *ServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListAtTenantScopePager.remove(req)
+		d.newListAtTenantScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListAtTenantScopePager) {
-		s.newListAtTenantScopePager.remove(req)
+		d.newListAtTenantScopePager.remove(req)
 	}
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByResourceGroupPager == nil {
+func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	newListByResourceGroupPager := s.newListByResourceGroupPager.get(req)
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/`
 		regex := regexp.MustCompile(regexStr)
@@ -1771,17 +1771,17 @@ func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		var options *armdeployments.ClientListByResourceGroupOptions
+		var options *armdeployments.DeploymentsClientListByResourceGroupOptions
 		if filterParam != nil || topParam != nil {
-			options = &armdeployments.ClientListByResourceGroupOptions{
+			options = &armdeployments.DeploymentsClientListByResourceGroupOptions{
 				Filter: filterParam,
 				Top:    topParam,
 			}
 		}
-		resp := s.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
-		s.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeployments.ClientListByResourceGroupResponse, createLink func() string) {
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeployments.DeploymentsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -1790,20 +1790,20 @@ func (s *ServerTransport) dispatchNewListByResourceGroupPager(req *http.Request)
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByResourceGroupPager.remove(req)
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		s.newListByResourceGroupPager.remove(req)
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidate == nil {
+func (d *DeploymentsServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginValidate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
 	}
-	beginValidate := s.beginValidate.get(req)
+	beginValidate := d.beginValidate.get(req)
 	if beginValidate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
@@ -1823,12 +1823,12 @@ func (s *ServerTransport) dispatchBeginValidate(req *http.Request) (*http.Respon
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginValidate(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginValidate(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginValidate = &respr
-		s.beginValidate.add(req, beginValidate)
+		d.beginValidate.add(req, beginValidate)
 	}
 
 	resp, err := server.PollerResponderNext(beginValidate, req)
@@ -1837,21 +1837,21 @@ func (s *ServerTransport) dispatchBeginValidate(req *http.Request) (*http.Respon
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
-		s.beginValidate.remove(req)
+		d.beginValidate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginValidate) {
-		s.beginValidate.remove(req)
+		d.beginValidate.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginValidateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginValidateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginValidateAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtManagementGroupScope not implemented")}
 	}
-	beginValidateAtManagementGroupScope := s.beginValidateAtManagementGroupScope.get(req)
+	beginValidateAtManagementGroupScope := d.beginValidateAtManagementGroupScope.get(req)
 	if beginValidateAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
@@ -1871,12 +1871,12 @@ func (s *ServerTransport) dispatchBeginValidateAtManagementGroupScope(req *http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginValidateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginValidateAtManagementGroupScope = &respr
-		s.beginValidateAtManagementGroupScope.add(req, beginValidateAtManagementGroupScope)
+		d.beginValidateAtManagementGroupScope.add(req, beginValidateAtManagementGroupScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginValidateAtManagementGroupScope, req)
@@ -1885,21 +1885,21 @@ func (s *ServerTransport) dispatchBeginValidateAtManagementGroupScope(req *http.
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
-		s.beginValidateAtManagementGroupScope.remove(req)
+		d.beginValidateAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginValidateAtManagementGroupScope) {
-		s.beginValidateAtManagementGroupScope.remove(req)
+		d.beginValidateAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginValidateAtScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateAtScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginValidateAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginValidateAtScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtScope not implemented")}
 	}
-	beginValidateAtScope := s.beginValidateAtScope.get(req)
+	beginValidateAtScope := d.beginValidateAtScope.get(req)
 	if beginValidateAtScope == nil {
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
@@ -1919,12 +1919,12 @@ func (s *ServerTransport) dispatchBeginValidateAtScope(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginValidateAtScope(req.Context(), scopeParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtScope(req.Context(), scopeParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginValidateAtScope = &respr
-		s.beginValidateAtScope.add(req, beginValidateAtScope)
+		d.beginValidateAtScope.add(req, beginValidateAtScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginValidateAtScope, req)
@@ -1933,21 +1933,21 @@ func (s *ServerTransport) dispatchBeginValidateAtScope(req *http.Request) (*http
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
-		s.beginValidateAtScope.remove(req)
+		d.beginValidateAtScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginValidateAtScope) {
-		s.beginValidateAtScope.remove(req)
+		d.beginValidateAtScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginValidateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginValidateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginValidateAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtSubscriptionScope not implemented")}
 	}
-	beginValidateAtSubscriptionScope := s.beginValidateAtSubscriptionScope.get(req)
+	beginValidateAtSubscriptionScope := d.beginValidateAtSubscriptionScope.get(req)
 	if beginValidateAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
@@ -1963,12 +1963,12 @@ func (s *ServerTransport) dispatchBeginValidateAtSubscriptionScope(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginValidateAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginValidateAtSubscriptionScope = &respr
-		s.beginValidateAtSubscriptionScope.add(req, beginValidateAtSubscriptionScope)
+		d.beginValidateAtSubscriptionScope.add(req, beginValidateAtSubscriptionScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginValidateAtSubscriptionScope, req)
@@ -1977,21 +1977,21 @@ func (s *ServerTransport) dispatchBeginValidateAtSubscriptionScope(req *http.Req
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
-		s.beginValidateAtSubscriptionScope.remove(req)
+		d.beginValidateAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginValidateAtSubscriptionScope) {
-		s.beginValidateAtSubscriptionScope.remove(req)
+		d.beginValidateAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginValidateAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginValidateAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginValidateAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginValidateAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidateAtTenantScope not implemented")}
 	}
-	beginValidateAtTenantScope := s.beginValidateAtTenantScope.get(req)
+	beginValidateAtTenantScope := d.beginValidateAtTenantScope.get(req)
 	if beginValidateAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
 		regex := regexp.MustCompile(regexStr)
@@ -2007,12 +2007,12 @@ func (s *ServerTransport) dispatchBeginValidateAtTenantScope(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginValidateAtTenantScope(req.Context(), deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginValidateAtTenantScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginValidateAtTenantScope = &respr
-		s.beginValidateAtTenantScope.add(req, beginValidateAtTenantScope)
+		d.beginValidateAtTenantScope.add(req, beginValidateAtTenantScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginValidateAtTenantScope, req)
@@ -2021,21 +2021,21 @@ func (s *ServerTransport) dispatchBeginValidateAtTenantScope(req *http.Request) 
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusBadRequest}, resp.StatusCode) {
-		s.beginValidateAtTenantScope.remove(req)
+		d.beginValidateAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusBadRequest", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginValidateAtTenantScope) {
-		s.beginValidateAtTenantScope.remove(req)
+		d.beginValidateAtTenantScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginWhatIf == nil {
+func (d *DeploymentsServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginWhatIf == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIf not implemented")}
 	}
-	beginWhatIf := s.beginWhatIf.get(req)
+	beginWhatIf := d.beginWhatIf.get(req)
 	if beginWhatIf == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
@@ -2055,12 +2055,12 @@ func (s *ServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginWhatIf(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginWhatIf(req.Context(), resourceGroupNameParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginWhatIf = &respr
-		s.beginWhatIf.add(req, beginWhatIf)
+		d.beginWhatIf.add(req, beginWhatIf)
 	}
 
 	resp, err := server.PollerResponderNext(beginWhatIf, req)
@@ -2069,21 +2069,21 @@ func (s *ServerTransport) dispatchBeginWhatIf(req *http.Request) (*http.Response
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginWhatIf.remove(req)
+		d.beginWhatIf.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginWhatIf) {
-		s.beginWhatIf.remove(req)
+		d.beginWhatIf.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginWhatIfAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginWhatIfAtManagementGroupScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginWhatIfAtManagementGroupScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIfAtManagementGroupScope not implemented")}
 	}
-	beginWhatIfAtManagementGroupScope := s.beginWhatIfAtManagementGroupScope.get(req)
+	beginWhatIfAtManagementGroupScope := d.beginWhatIfAtManagementGroupScope.get(req)
 	if beginWhatIfAtManagementGroupScope == nil {
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
@@ -2103,12 +2103,12 @@ func (s *ServerTransport) dispatchBeginWhatIfAtManagementGroupScope(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginWhatIfAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginWhatIfAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginWhatIfAtManagementGroupScope = &respr
-		s.beginWhatIfAtManagementGroupScope.add(req, beginWhatIfAtManagementGroupScope)
+		d.beginWhatIfAtManagementGroupScope.add(req, beginWhatIfAtManagementGroupScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginWhatIfAtManagementGroupScope, req)
@@ -2117,21 +2117,21 @@ func (s *ServerTransport) dispatchBeginWhatIfAtManagementGroupScope(req *http.Re
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginWhatIfAtManagementGroupScope.remove(req)
+		d.beginWhatIfAtManagementGroupScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginWhatIfAtManagementGroupScope) {
-		s.beginWhatIfAtManagementGroupScope.remove(req)
+		d.beginWhatIfAtManagementGroupScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginWhatIfAtSubscriptionScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginWhatIfAtSubscriptionScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIfAtSubscriptionScope not implemented")}
 	}
-	beginWhatIfAtSubscriptionScope := s.beginWhatIfAtSubscriptionScope.get(req)
+	beginWhatIfAtSubscriptionScope := d.beginWhatIfAtSubscriptionScope.get(req)
 	if beginWhatIfAtSubscriptionScope == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
@@ -2147,12 +2147,12 @@ func (s *ServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginWhatIfAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginWhatIfAtSubscriptionScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginWhatIfAtSubscriptionScope = &respr
-		s.beginWhatIfAtSubscriptionScope.add(req, beginWhatIfAtSubscriptionScope)
+		d.beginWhatIfAtSubscriptionScope.add(req, beginWhatIfAtSubscriptionScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginWhatIfAtSubscriptionScope, req)
@@ -2161,21 +2161,21 @@ func (s *ServerTransport) dispatchBeginWhatIfAtSubscriptionScope(req *http.Reque
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginWhatIfAtSubscriptionScope.remove(req)
+		d.beginWhatIfAtSubscriptionScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginWhatIfAtSubscriptionScope) {
-		s.beginWhatIfAtSubscriptionScope.remove(req)
+		d.beginWhatIfAtSubscriptionScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginWhatIfAtTenantScope == nil {
+func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginWhatIfAtTenantScope == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginWhatIfAtTenantScope not implemented")}
 	}
-	beginWhatIfAtTenantScope := s.beginWhatIfAtTenantScope.get(req)
+	beginWhatIfAtTenantScope := d.beginWhatIfAtTenantScope.get(req)
 	if beginWhatIfAtTenantScope == nil {
 		const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
@@ -2191,12 +2191,12 @@ func (s *ServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginWhatIfAtTenantScope(req.Context(), deploymentNameParam, body, nil)
+		respr, errRespr := d.srv.BeginWhatIfAtTenantScope(req.Context(), deploymentNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginWhatIfAtTenantScope = &respr
-		s.beginWhatIfAtTenantScope.add(req, beginWhatIfAtTenantScope)
+		d.beginWhatIfAtTenantScope.add(req, beginWhatIfAtTenantScope)
 	}
 
 	resp, err := server.PollerResponderNext(beginWhatIfAtTenantScope, req)
@@ -2205,18 +2205,18 @@ func (s *ServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.Request) (*
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginWhatIfAtTenantScope.remove(req)
+		d.beginWhatIfAtTenantScope.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginWhatIfAtTenantScope) {
-		s.beginWhatIfAtTenantScope.remove(req)
+		d.beginWhatIfAtTenantScope.remove(req)
 	}
 
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ServerTransport
-var serverTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to DeploymentsServerTransport
+var deploymentsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -5,11 +5,6 @@
 
 package armresources
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	moduleVersion = "v3.0.0"
-)
-
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
 type AliasPathAttributes string
 

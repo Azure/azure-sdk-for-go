@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a2bb0762eaad11e725516708483598e0c12cabb/specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/CreateResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0f15e4a452e77f4e63f5b679f55d6992f2f0e07/specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/CreateResourceGroup.json
 func ExampleResourceGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleResourceGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a2bb0762eaad11e725516708483598e0c12cabb/specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/ForceDeleteVMsAndVMSSInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0f15e4a452e77f4e63f5b679f55d6992f2f0e07/specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/ForceDeleteVMsAndVMSSInResourceGroup.json
 func ExampleResourceGroupsClient_BeginDelete_forceDeleteAllTheVirtualMachinesAndVirtualMachineScaleSetsInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleResourceGroupsClient_BeginDelete_forceDeleteAllTheVirtualMachinesAnd
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a2bb0762eaad11e725516708483598e0c12cabb/specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/ForceDeleteVMsInResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0f15e4a452e77f4e63f5b679f55d6992f2f0e07/specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/ForceDeleteVMsInResourceGroup.json
 func ExampleResourceGroupsClient_BeginDelete_forceDeleteAllTheVirtualMachinesInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleResourceGroupsClient_BeginDelete_forceDeleteAllTheVirtualMachinesInA
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a2bb0762eaad11e725516708483598e0c12cabb/specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/ExportResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0f15e4a452e77f4e63f5b679f55d6992f2f0e07/specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/ExportResourceGroup.json
 func ExampleResourceGroupsClient_BeginExportTemplate_exportAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleResourceGroupsClient_BeginExportTemplate_exportAResourceGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a2bb0762eaad11e725516708483598e0c12cabb/specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/ExportResourceGroupAsBicep.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0f15e4a452e77f4e63f5b679f55d6992f2f0e07/specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/ExportResourceGroupAsBicep.json
 func ExampleResourceGroupsClient_BeginExportTemplate_exportAResourceGroupAsBicep() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleResourceGroupsClient_BeginExportTemplate_exportAResourceGroupAsBicep
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4a2bb0762eaad11e725516708483598e0c12cabb/specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/ExportResourceGroupWithFiltering.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c0f15e4a452e77f4e63f5b679f55d6992f2f0e07/specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/ExportResourceGroupWithFiltering.json
 func ExampleResourceGroupsClient_BeginExportTemplate_exportAResourceGroupWithFiltering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

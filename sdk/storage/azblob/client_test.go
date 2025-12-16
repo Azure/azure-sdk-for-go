@@ -46,12 +46,13 @@ type AZBlobUnrecordedTestsSuite struct {
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running azblob Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &AZBlobRecordedTestsSuite{})
 		suite.Run(t, &AZBlobUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &AZBlobRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &AZBlobRecordedTestsSuite{})
 	}
 }

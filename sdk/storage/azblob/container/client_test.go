@@ -2761,9 +2761,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}
@@ -2800,9 +2801,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierPartialFail
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}
@@ -2894,9 +2896,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingTokenC
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}

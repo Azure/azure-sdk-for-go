@@ -623,8 +623,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Enabled, *enabled)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Days, *days)
 
 	disabled := false
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{Enabled: &disabled}})
@@ -635,8 +635,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicy() {
 
 	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, false)
-	_require.Nil(resp.StorageServiceProperties.DeleteRetentionPolicy.Days)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Enabled, false)
+	_require.Nil(resp.DeleteRetentionPolicy.Days)
 }
 
 func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
@@ -654,8 +654,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyEmpty() {
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Enabled, *enabled)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Days, *days)
 
 	// Empty retention policy causes an error, this is different from track 1.5
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{DeleteRetentionPolicy: &service.RetentionPolicy{}})
@@ -677,8 +677,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 
 	resp, err := svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Enabled, *enabled)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Days, *days)
 
 	_, err = svcClient.SetProperties(context.Background(), &service.SetPropertiesOptions{})
 	_require.NoError(err)
@@ -689,8 +689,8 @@ func (s *ServiceRecordedTestsSuite) TestAccountDeleteRetentionPolicyNil() {
 	// If an element of service properties is not passed, the service keeps the current settings.
 	resp, err = svcClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, *enabled)
-	_require.EqualValues(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, *days)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Enabled, *enabled)
+	_require.EqualValues(*resp.DeleteRetentionPolicy.Days, *days)
 
 	// Disable for other tests
 	enabled = to.Ptr(false)

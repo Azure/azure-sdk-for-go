@@ -16,11 +16,11 @@ import (
 
 // ServerFactory is a fake server for instances of the armdeployments.ClientFactory type.
 type ServerFactory struct {
-	// Server contains the fakes for client Client
-	Server Server
-
 	// DeploymentOperationsServer contains the fakes for client DeploymentOperationsClient
 	DeploymentOperationsServer DeploymentOperationsServer
+
+	// DeploymentsServer contains the fakes for client DeploymentsClient
+	DeploymentsServer DeploymentsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -37,8 +37,8 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                          *ServerFactory
 	trMu                         sync.Mutex
-	trServer                     *ServerTransport
 	trDeploymentOperationsServer *DeploymentOperationsServerTransport
+	trDeploymentsServer          *DeploymentsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -54,14 +54,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
-		resp, err = s.trServer.Do(req)
 	case "DeploymentOperationsClient":
 		initServer(s, &s.trDeploymentOperationsServer, func() *DeploymentOperationsServerTransport {
 			return NewDeploymentOperationsServerTransport(&s.srv.DeploymentOperationsServer)
 		})
 		resp, err = s.trDeploymentOperationsServer.Do(req)
+	case "DeploymentsClient":
+		initServer(s, &s.trDeploymentsServer, func() *DeploymentsServerTransport { return NewDeploymentsServerTransport(&s.srv.DeploymentsServer) })
+		resp, err = s.trDeploymentsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

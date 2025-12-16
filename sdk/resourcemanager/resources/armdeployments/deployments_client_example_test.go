@@ -15,8 +15,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentAtScope.json
-func ExampleClient_BeginCreateOrUpdateAtScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentAtScope.json
+func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -26,7 +26,7 @@ func ExampleClient_BeginCreateOrUpdateAtScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtScope(ctx, "providers/Microsoft.Management/managementGroups/my-management-group-id", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdateAtScope(ctx, "providers/Microsoft.Management/managementGroups/my-management-group-id", "my-deployment", armdeployments.Deployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -107,8 +107,8 @@ func ExampleClient_BeginCreateOrUpdateAtScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnScope.json
-func ExampleClient_BeginValidateAtScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnScope.json
+func ExampleDeploymentsClient_BeginValidateAtScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -118,7 +118,7 @@ func ExampleClient_BeginValidateAtScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginValidateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 			Parameters: map[string]*armdeployments.DeploymentParameter{},
@@ -191,8 +191,8 @@ func ExampleClient_BeginValidateAtScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentAtTenant.json
-func ExampleClient_BeginCreateOrUpdateAtTenantScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentAtTenant.json
+func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -202,7 +202,7 @@ func ExampleClient_BeginCreateOrUpdateAtTenantScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtTenantScope(ctx, "tenant-dep01", armdeployments.ScopedDeployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdateAtTenantScope(ctx, "tenant-dep01", armdeployments.ScopedDeployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -283,8 +283,8 @@ func ExampleClient_BeginCreateOrUpdateAtTenantScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnTenant.json
-func ExampleClient_BeginValidateAtTenantScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnTenant.json
+func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -294,7 +294,7 @@ func ExampleClient_BeginValidateAtTenantScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginValidateAtTenantScope(ctx, "my-deployment", armdeployments.ScopedDeployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtTenantScope(ctx, "my-deployment", armdeployments.ScopedDeployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -367,8 +367,8 @@ func ExampleClient_BeginValidateAtTenantScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnTenant.json
-func ExampleClient_BeginWhatIfAtTenantScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnTenant.json
+func ExampleDeploymentsClient_BeginWhatIfAtTenantScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -378,7 +378,7 @@ func ExampleClient_BeginWhatIfAtTenantScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginWhatIfAtTenantScope(ctx, "exampleDeploymentName", armdeployments.ScopedDeploymentWhatIf{
+	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIfAtTenantScope(ctx, "exampleDeploymentName", armdeployments.ScopedDeploymentWhatIf{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentWhatIfProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -416,8 +416,8 @@ func ExampleClient_BeginWhatIfAtTenantScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentAtManagementGroup.json
-func ExampleClient_BeginCreateOrUpdateAtManagementGroupScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentAtManagementGroup.json
+func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -427,7 +427,7 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtManagementGroupScope(ctx, "my-management-group-id", "my-deployment", armdeployments.ScopedDeployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdateAtManagementGroupScope(ctx, "my-management-group-id", "my-deployment", armdeployments.ScopedDeployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -500,8 +500,8 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnManagementGroup.json
-func ExampleClient_BeginValidateAtManagementGroupScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnManagementGroup.json
+func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -511,7 +511,7 @@ func ExampleClient_BeginValidateAtManagementGroupScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginValidateAtManagementGroupScope(ctx, "my-management-group-id", "my-deployment", armdeployments.ScopedDeployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtManagementGroupScope(ctx, "my-management-group-id", "my-deployment", armdeployments.ScopedDeployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -584,8 +584,8 @@ func ExampleClient_BeginValidateAtManagementGroupScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnManagementGroup.json
-func ExampleClient_BeginWhatIfAtManagementGroupScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnManagementGroup.json
+func ExampleDeploymentsClient_BeginWhatIfAtManagementGroupScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -595,7 +595,7 @@ func ExampleClient_BeginWhatIfAtManagementGroupScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginWhatIfAtManagementGroupScope(ctx, "myManagementGruop", "exampleDeploymentName", armdeployments.ScopedDeploymentWhatIf{
+	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIfAtManagementGroupScope(ctx, "myManagementGruop", "exampleDeploymentName", armdeployments.ScopedDeploymentWhatIf{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentWhatIfProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -679,8 +679,8 @@ func ExampleClient_BeginWhatIfAtManagementGroupScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentSubscriptionTemplateSpecsWithId.json
-func ExampleClient_BeginCreateOrUpdateAtSubscriptionScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentSubscriptionTemplateSpecsWithId.json
+func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -690,7 +690,7 @@ func ExampleClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtSubscriptionScope(ctx, "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdateAtSubscriptionScope(ctx, "my-deployment", armdeployments.Deployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -738,8 +738,8 @@ func ExampleClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnSubscription.json
-func ExampleClient_BeginValidateAtSubscriptionScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnSubscription.json
+func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -749,7 +749,7 @@ func ExampleClient_BeginValidateAtSubscriptionScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginValidateAtSubscriptionScope(ctx, "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidateAtSubscriptionScope(ctx, "my-deployment", armdeployments.Deployment{
 		Location: to.Ptr("eastus"),
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -822,8 +822,8 @@ func ExampleClient_BeginValidateAtSubscriptionScope() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnSubscription.json
-func ExampleClient_BeginWhatIfAtSubscriptionScope() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnSubscription.json
+func ExampleDeploymentsClient_BeginWhatIfAtSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -833,7 +833,7 @@ func ExampleClient_BeginWhatIfAtSubscriptionScope() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginWhatIfAtSubscriptionScope(ctx, "my-deployment", armdeployments.DeploymentWhatIf{
+	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIfAtSubscriptionScope(ctx, "my-deployment", armdeployments.DeploymentWhatIf{
 		Location: to.Ptr("westus"),
 		Properties: &armdeployments.DeploymentWhatIfProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
@@ -913,8 +913,8 @@ func ExampleClient_BeginWhatIfAtSubscriptionScope() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentResourceGroup.json
-func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentResourceGroup.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateWithAUriAndQueryString() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -924,7 +924,7 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateW
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 			Parameters: map[string]*armdeployments.DeploymentParameter{},
@@ -981,8 +981,8 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateW
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
-func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentResourceGroupTemplateSpecsWithId.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateSpecWithTheGivenResourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -992,7 +992,7 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 			Parameters: map[string]*armdeployments.DeploymentParameter{},
@@ -1048,8 +1048,8 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillDeployATemplateS
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
-func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherDeploymentOnFailure() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1059,7 +1059,7 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherD
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			Mode: to.Ptr(armdeployments.DeploymentModeComplete),
 			OnErrorDeployment: &armdeployments.OnErrorDeployment{
@@ -1149,8 +1149,8 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployAnotherD
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
-func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentWithOnErrorDeploymentLastSuccessful.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastSuccessfulDeploymentOnFailure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1160,7 +1160,7 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastS
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			Mode: to.Ptr(armdeployments.DeploymentModeComplete),
 			OnErrorDeployment: &armdeployments.OnErrorDeployment{
@@ -1249,8 +1249,8 @@ func ExampleClient_BeginCreateOrUpdate_createADeploymentThatWillRedeployTheLastS
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentWithExternalInputs.json
-func ExampleClient_BeginCreateOrUpdate_createDeploymentUsingExternalInputs() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PutDeploymentWithExternalInputs.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_createDeploymentUsingExternalInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1260,7 +1260,7 @@ func ExampleClient_BeginCreateOrUpdate_createDeploymentUsingExternalInputs() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			ExternalInputDefinitions: map[string]*armdeployments.DeploymentExternalInputDefinition{
 				"fooValue": {
@@ -1343,8 +1343,8 @@ func ExampleClient_BeginCreateOrUpdate_createDeploymentUsingExternalInputs() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnResourceGroup.json
-func ExampleClient_BeginValidate() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentValidateOnResourceGroup.json
+func ExampleDeploymentsClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1354,7 +1354,7 @@ func ExampleClient_BeginValidate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginValidate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
+	poller, err := clientFactory.NewDeploymentsClient().BeginValidate(ctx, "my-resource-group", "my-deployment", armdeployments.Deployment{
 		Properties: &armdeployments.DeploymentProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 			Parameters: map[string]*armdeployments.DeploymentParameter{},
@@ -1427,8 +1427,8 @@ func ExampleClient_BeginValidate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnResourceGroup.json
-func ExampleClient_BeginWhatIf() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/PostDeploymentWhatIfOnResourceGroup.json
+func ExampleDeploymentsClient_BeginWhatIf() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1438,7 +1438,7 @@ func ExampleClient_BeginWhatIf() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginWhatIf(ctx, "my-resource-group", "my-deployment", armdeployments.DeploymentWhatIf{
+	poller, err := clientFactory.NewDeploymentsClient().BeginWhatIf(ctx, "my-resource-group", "my-deployment", armdeployments.DeploymentWhatIf{
 		Properties: &armdeployments.DeploymentWhatIfProperties{
 			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 			Parameters: map[string]*armdeployments.DeploymentParameter{},
@@ -1506,8 +1506,8 @@ func ExampleClient_BeginWhatIf() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/edacc3b43f9603efa119eabb6013d952d1dbe7d6/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/CalculateTemplateHash.json
-func ExampleClient_CalculateTemplateHash() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/18609d68cf243ee3ce35d7c005ff3c7dd2cd9477/specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/CalculateTemplateHash.json
+func ExampleDeploymentsClient_CalculateTemplateHash() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1517,7 +1517,7 @@ func ExampleClient_CalculateTemplateHash() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().CalculateTemplateHash(ctx, map[string]any{
+	res, err := clientFactory.NewDeploymentsClient().CalculateTemplateHash(ctx, map[string]any{
 		"$schema":        "http://schemas.management.azure.com/deploymentTemplate?api-version=2014-04-01-preview",
 		"contentVersion": "1.0.0.0",
 		"outputs": map[string]any{

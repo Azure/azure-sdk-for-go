@@ -250,7 +250,7 @@ func (s *Client) NewListSharesPager(options *ListSharesOptions) *runtime.Pager[L
 // It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.AccountPermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
 	if s.sharedKey() == nil {
-		return "", fileerror.ErrMissingSharedKeyCredential
+		return "", fileerror.MissingSharedKeyCredential
 	}
 	st := o.format()
 	qps, err := sas.AccountSignatureValues{

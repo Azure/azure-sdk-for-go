@@ -94,6 +94,6 @@ const (
 )
 
 var (
-	// ErrMissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
-	ErrMissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
+	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
+	MissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
 )

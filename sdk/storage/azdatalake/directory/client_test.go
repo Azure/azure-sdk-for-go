@@ -1079,7 +1079,7 @@ func (s *RecordedTestSuite) TestDirSetAccessControlNil() {
 	_, err = dirClient.SetAccessControl(context.Background(), nil)
 	_require.Error(err)
 
-	_require.Equal(err, datalakeerror.ErrMissingParameters)
+	_require.Equal(err, datalakeerror.MissingParameters)
 }
 
 // TODO: write test that fails if you provide permissions and acls

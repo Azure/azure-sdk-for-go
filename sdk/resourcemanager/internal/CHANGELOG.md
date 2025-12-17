@@ -1,14 +1,9 @@
 # Release History
 
-## 3.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 3.1.1 (2025-12-17)
 
 ### Other Changes
+* Update dependencies: `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v3@3.0.0`
 
 ## 3.1.0 (2024-07-19)
 ### Other Changes

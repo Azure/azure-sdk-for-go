@@ -14,7 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v3"
 )
 
 // CreateResourceGroup will create a resource group with a random generated name: "go-sdk-test-xxx".
@@ -52,8 +53,8 @@ func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore
 
 // CreateDeployment will create a resource using arm template.
 // It will return the deployment result entity.
-func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, deployment *armresources.Deployment) (*armresources.DeploymentExtended, error) {
-	deployClient, err := armresources.NewDeploymentsClient(subscriptionId, cred, options)
+func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, deployment *armdeployments.Deployment) (*armdeployments.DeploymentExtended, error) {
+	deployClient, err := armdeployments.NewDeploymentsClient(subscriptionId, cred, options)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +63,7 @@ func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.To
 		resourceGroupName,
 		deploymentName,
 		*deployment,
-		&armresources.DeploymentsClientBeginCreateOrUpdateOptions{},
+		&armdeployments.DeploymentsClientBeginCreateOrUpdateOptions{},
 	)
 	if err != nil {
 		return nil, err

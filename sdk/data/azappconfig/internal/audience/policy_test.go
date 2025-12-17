@@ -70,7 +70,7 @@ func TestAudienceErrorHandlingPolicy_NonAudienceError(t *testing.T) {
 
 func TestAudienceErrorHandlingPolicy_AudienceErrorNotConfigured(t *testing.T) {
 	// Test that when audience is not configured, we get the "no audience" error message
-	audienceErr := errors.New("authentication failed: " + AadAudienceErrorCode + " invalid audience")
+	audienceErr := errors.New("authentication failed: " + aadAudienceErrorCode + " invalid audience")
 	transport := &mockErrorTransporter{err: audienceErr}
 
 	errPolicy := NewAudienceErrorHandlingPolicy(false)
@@ -92,7 +92,7 @@ func TestAudienceErrorHandlingPolicy_AudienceErrorNotConfigured(t *testing.T) {
 
 func TestAudienceErrorHandlingPolicy_AudienceErrorConfigured(t *testing.T) {
 	// Test that when audience is configured, we get the "wrong audience" error message
-	audienceErr := errors.New("authentication failed: " + AadAudienceErrorCode + " invalid audience")
+	audienceErr := errors.New("authentication failed: " + aadAudienceErrorCode + " invalid audience")
 	transport := &mockErrorTransporter{err: audienceErr}
 
 	errPolicy := NewAudienceErrorHandlingPolicy(true)
@@ -114,7 +114,7 @@ func TestAudienceErrorHandlingPolicy_AudienceErrorConfigured(t *testing.T) {
 
 func TestAudienceErrorHandlingPolicy_WrappedError(t *testing.T) {
 	// Test that wrapped errors containing the error code are also handled
-	innerErr := errors.New(AadAudienceErrorCode + ": invalid audience")
+	innerErr := errors.New(aadAudienceErrorCode + ": invalid audience")
 	wrappedErr := errors.New("wrapped: " + innerErr.Error())
 	transport := &mockErrorTransporter{err: wrappedErr}
 
@@ -132,5 +132,5 @@ func TestAudienceErrorHandlingPolicy_WrappedError(t *testing.T) {
 	require.Error(t, err)
 	require.Nil(t, resp)
 	require.True(t, strings.Contains(err.Error(), "No authentication token audience was provided") ||
-		strings.Contains(err.Error(), AadAudienceErrorCode))
+		strings.Contains(err.Error(), aadAudienceErrorCode))
 }

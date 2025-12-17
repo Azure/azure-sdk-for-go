@@ -4,7 +4,7 @@
 
 ### Other Changes
 
-- All things related to `*DeploymentOperationsClient` and `*DeploymentsClient` has been moved to package `sdk/resourcemanager/resources/armdeployments`
+- All things related to `*DeploymentOperationsClient` and `*DeploymentsClient` have been moved to package `sdk/resourcemanager/resources/armdeployments`
 
 ## 3.0.0 (2025-06-10)
 ### Breaking Changes

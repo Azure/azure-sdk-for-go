@@ -1,5 +1,11 @@
 # Release History
 
+## 3.0.1 (2025-12-17)
+
+### Other Changes
+
+- All things related to `*DeploymentOperationsClient` and `*DeploymentsClient` has been moved to package `sdk/resourcemanager/resources/armdeployments`
+
 ## 3.0.0 (2025-06-10)
 ### Breaking Changes
 

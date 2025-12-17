@@ -3,7 +3,7 @@
 ## 3.0.1 (2025-12-17)
 ### Other Changes
 
-- Fix the issue of mixed references in the updated version
+- Consolidate package version used in live test.
 
 ## 3.0.0 (2024-09-27)
 ### Breaking Changes

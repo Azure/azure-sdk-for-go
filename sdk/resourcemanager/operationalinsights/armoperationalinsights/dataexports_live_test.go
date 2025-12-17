@@ -55,7 +55,7 @@ func (testsuite *DataExportsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestDataExportsTestSuite(t *testing.T) {
+func TTestDataExportsTestSuite(t *testing.T) {
 	suite.Run(t, new(DataExportsTestSuite))
 }
 

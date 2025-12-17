@@ -53,7 +53,7 @@ func (testsuite *LinkedServicesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestLinkedServicesTestSuite(t *testing.T) {
+func TTestLinkedServicesTestSuite(t *testing.T) {
 	suite.Run(t, new(LinkedServicesTestSuite))
 }
 

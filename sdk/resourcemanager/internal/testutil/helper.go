@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources/v3"
 )
 
@@ -48,6 +49,30 @@ func DeleteResourceGroup(ctx context.Context, subscriptionId string, cred azcore
 		return nil, err
 	}
 	return rgClient.BeginDelete(ctx, resourceGroupName, nil)
+}
+
+// CreateDeployment will create a resource using arm template.
+// It will return the deployment result entity.
+func CreateDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, deployment *armdeployments.Deployment) (*armdeployments.DeploymentExtended, error) {
+	deployClient, err := armdeployments.NewDeploymentsClient(subscriptionId, cred, options)
+	if err != nil {
+		return nil, err
+	}
+	poller, err := deployClient.BeginCreateOrUpdate(
+		ctx,
+		resourceGroupName,
+		deploymentName,
+		*deployment,
+		&armdeployments.DeploymentsClientBeginCreateOrUpdateOptions{},
+	)
+	if err != nil {
+		return nil, err
+	}
+	res, err := PollForTest(ctx, poller)
+	if err != nil {
+		return nil, err
+	}
+	return &res.DeploymentExtended, nil
 }
 
 // PollForTest will poll result according to the recording mode:

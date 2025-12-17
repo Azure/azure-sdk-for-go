@@ -5164,7 +5164,7 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer tmp.Close()
+	defer func() { _ = tmp.Close() }()
 
 	_, err = fileClient.DownloadFile(context.Background(), tmp, &file.DownloadFileOptions{ChunkSize: chunkSize})
 	_require.NoError(err)

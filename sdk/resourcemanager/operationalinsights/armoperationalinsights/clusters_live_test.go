@@ -65,12 +65,12 @@ func (testsuite *ClustersTestSuite) TestCluster() {
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val1"),
 		},
-		Identity: &armoperationalinsights.Identity{
-			Type: to.Ptr(armoperationalinsights.IdentityTypeSystemAssigned),
+		Identity: &armoperationalinsights.ManagedServiceIdentity{
+			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+			Capacity: to.Ptr[int64](1000),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersListByResourceGroup.json
@@ -137,7 +137,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr[int64](100),
+			Capacity: to.Ptr(armoperationalinsights.Capacity(100)),
 		},
 	}, nil)
 	if err != nil {
@@ -282,9 +282,9 @@ func ExampleClustersClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "oiautorest6685", "oiautorest6685", armoperationalinsights.ClusterPatch{
-		Identity: &armoperationalinsights.ManagedServiceIdentity{
-			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armoperationalinsights.UserAssignedIdentity{
+		Identity: &armoperationalinsights.Identity{
+			Type: to.Ptr(armoperationalinsights.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armoperationalinsights.UserIdentityProperties{
 				"/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
@@ -298,7 +298,7 @@ func ExampleClustersClient_BeginUpdate() {
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr[int64](1000),
+			Capacity: to.Ptr(armoperationalinsights.Capacity(1000)),
 		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val1"),

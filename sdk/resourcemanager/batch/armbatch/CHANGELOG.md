@@ -1,5 +1,10 @@
 # Release History
 
+## 3.0.1 (2025-12-17)
+### Other Changes
+
+- Fix the issue of mixed references in the updated version
+
 ## 3.0.0 (2024-09-27)
 ### Breaking Changes
 

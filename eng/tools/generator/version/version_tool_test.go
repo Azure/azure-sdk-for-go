@@ -9,10 +9,16 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/changelog"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
+	"github.com/Masterminds/semver"
+	"github.com/go-git/go-git/v5"
+	"github.com/go-git/go-git/v5/config"
+	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v5/plumbing/storer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -230,4 +236,283 @@ func NewAnotherClient() *AnotherClient {
 		assert.Error(t, err)
 		assert.False(t, hasPreview)
 	})
+}
+
+func TestUpdateImportPaths(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-imports")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	// Create a mock SDK repository structure
+	sdkDir := filepath.Join(tempDir, "sdk")
+	err = os.MkdirAll(sdkDir, 0755)
+	require.NoError(t, err)
+
+	// Mock SDKRepository
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	t.Run("Update imports from v1 to v2", func(t *testing.T) {
+		packageDir := filepath.Join(sdkDir, "resourcemanager", "compute", "armcompute")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		// Create a Go file with v1 imports
+		goFile := filepath.Join(packageDir, "test.go")
+		goContent := `package armcompute
+
+import (
+	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/fake"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		// Create version from semver
+		version, err := semver.NewVersion("2.0.0")
+		require.NoError(t, err)
+
+		err = UpdateImportPaths(packageDir, version, mockRepo)
+		assert.NoError(t, err)
+
+		// Read the updated file
+		updatedContent, err := os.ReadFile(goFile)
+		require.NoError(t, err)
+
+		// Verify imports were updated to v2
+		assert.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v2")
+		assert.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v2/fake")
+		assert.NotContains(t, string(updatedContent), "\"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute\"")
+	})
+
+	t.Run("Update imports from v2 to v3", func(t *testing.T) {
+		packageDir := filepath.Join(sdkDir, "resourcemanager", "storage", "armstorage")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		// Create a Go file with v2 imports
+		goFile := filepath.Join(packageDir, "test.go")
+		goContent := `package armstorage
+
+import (
+	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v2/fake"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		// Create version from semver
+		version, err := semver.NewVersion("3.0.0")
+		require.NoError(t, err)
+
+		err = UpdateImportPaths(packageDir, version, mockRepo)
+		assert.NoError(t, err)
+
+		// Read the updated file
+		updatedContent, err := os.ReadFile(goFile)
+		require.NoError(t, err)
+
+		// Verify imports were updated to v3
+		assert.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3")
+		assert.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3/fake")
+		assert.NotContains(t, string(updatedContent), "/v2")
+	})
+
+	t.Run("No changes for v1 modules", func(t *testing.T) {
+		packageDir := filepath.Join(sdkDir, "data", "azcosmos")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		// Create a Go file with imports
+		goFile := filepath.Join(packageDir, "test.go")
+		originalContent := `package azcosmos
+
+import (
+	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+)
+`
+		err = os.WriteFile(goFile, []byte(originalContent), 0644)
+		require.NoError(t, err)
+
+		// Create v1 version
+		version, err := semver.NewVersion("1.5.0")
+		require.NoError(t, err)
+
+		err = UpdateImportPaths(packageDir, version, mockRepo)
+		assert.NoError(t, err)
+
+		// Read the file - should be unchanged
+		updatedContent, err := os.ReadFile(goFile)
+		require.NoError(t, err)
+
+		// Verify no changes for v1
+		assert.Equal(t, originalContent, string(updatedContent))
+	})
+
+	t.Run("Update multiple files in package", func(t *testing.T) {
+		packageDir := filepath.Join(sdkDir, "resourcemanager", "network", "armnetwork")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		// Create multiple Go files
+		clientFile := filepath.Join(packageDir, "client.go")
+		clientContent := `package armnetwork
+
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+)
+
+type Client struct {}
+`
+		err = os.WriteFile(clientFile, []byte(clientContent), 0644)
+		require.NoError(t, err)
+
+		modelsFile := filepath.Join(packageDir, "models.go")
+		modelsContent := `package armnetwork
+
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/fake"
+)
+
+type Model struct {}
+`
+		err = os.WriteFile(modelsFile, []byte(modelsContent), 0644)
+		require.NoError(t, err)
+
+		// Create version from semver
+		version, err := semver.NewVersion("4.0.0")
+		require.NoError(t, err)
+
+		err = UpdateImportPaths(packageDir, version, mockRepo)
+		assert.NoError(t, err)
+
+		// Verify both files were updated
+		updatedClient, err := os.ReadFile(clientFile)
+		require.NoError(t, err)
+		assert.Contains(t, string(updatedClient), "armnetwork/v4")
+
+		updatedModels, err := os.ReadFile(modelsFile)
+		require.NoError(t, err)
+		assert.Contains(t, string(updatedModels), "armnetwork/v4")
+		assert.Contains(t, string(updatedModels), "armnetwork/v4/fake")
+	})
+
+	t.Run("Handle subpackage imports correctly", func(t *testing.T) {
+		packageDir := filepath.Join(sdkDir, "messaging", "azservicebus")
+		subDir := filepath.Join(packageDir, "internal")
+		err = os.MkdirAll(subDir, 0755)
+		require.NoError(t, err)
+
+		// Create a Go file with subpackage imports
+		goFile := filepath.Join(packageDir, "test.go")
+		goContent := `package azservicebus
+
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		// Create version from semver
+		version, err := semver.NewVersion("2.0.0")
+		require.NoError(t, err)
+
+		err = UpdateImportPaths(packageDir, version, mockRepo)
+		assert.NoError(t, err)
+
+		// Read the updated file
+		updatedContent, err := os.ReadFile(goFile)
+		require.NoError(t, err)
+
+		// Verify both base and subpackage imports were updated
+		assert.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/v2")
+		assert.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/v2/internal")
+	})
+}
+
+// mockSDKRepo is a mock implementation of SDKRepository for testing
+type mockSDKRepo struct {
+	root string
+}
+
+func (m *mockSDKRepo) Root() string {
+	return m.root
+}
+
+func (m *mockSDKRepo) CreateReleaseBranch(releaseBranchName string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) AddReleaseCommit(rpName, namespaceName, specHash, version string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) Add(path string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) Commit(message string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) Checkout(opt *repo.CheckoutOptions) error {
+	return nil
+}
+
+func (m *mockSDKRepo) CheckoutTag(tag string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) CreateBranch(branch *repo.Branch) error {
+	return nil
+}
+
+func (m *mockSDKRepo) DeleteBranch(name string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) CherryPick(commit string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) Stash() error {
+	return nil
+}
+
+func (m *mockSDKRepo) StashPop() error {
+	return nil
+}
+
+func (m *mockSDKRepo) Head() (*plumbing.Reference, error) {
+	return nil, nil
+}
+
+func (m *mockSDKRepo) Tags() (storer.ReferenceIter, error) {
+	return nil, nil
+}
+
+func (m *mockSDKRepo) Remotes() ([]*git.Remote, error) {
+	return nil, nil
+}
+
+func (m *mockSDKRepo) DeleteRemote(name string) error {
+	return nil
+}
+
+func (m *mockSDKRepo) CreateRemote(c *config.RemoteConfig) (*git.Remote, error) {
+	return nil, nil
+}
+
+func (m *mockSDKRepo) Fetch(o *git.FetchOptions) error {
+	return nil
 }

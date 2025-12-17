@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.3 (2025-12-17)
+
+### Bugs Fixed
+
+- Add back `go.mod.tpl` for Swagger onboard case since it is a must for `go generate`.
+
 ## 0.4.2 (2025-12-08)
 
 ### Bugs Fixed

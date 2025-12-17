@@ -137,7 +137,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr(armoperationalinsights.Capacity(100)),
+			Capacity: to.Ptr[int64](100),
 		},
 	}, nil)
 	if err != nil {
@@ -282,9 +282,9 @@ func ExampleClustersClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "oiautorest6685", "oiautorest6685", armoperationalinsights.ClusterPatch{
-		Identity: &armoperationalinsights.Identity{
-			Type: to.Ptr(armoperationalinsights.IdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armoperationalinsights.UserIdentityProperties{
+		Identity: &armoperationalinsights.ManagedServiceIdentity{
+			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armoperationalinsights.UserAssignedIdentity{
 				"/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
@@ -298,7 +298,7 @@ func ExampleClustersClient_BeginUpdate() {
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr(armoperationalinsights.Capacity(1000)),
+			Capacity: to.Ptr[int64](1000),
 		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val1"),

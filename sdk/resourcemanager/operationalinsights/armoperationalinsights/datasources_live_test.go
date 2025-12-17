@@ -57,7 +57,7 @@ func (testsuite *DataSourcesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestDataSourcesTestSuite(t *testing.T) {
+func TestDataSourcesTestSuite(t *testing.T) {
 	suite.Run(t, new(DataSourcesTestSuite))
 }
 

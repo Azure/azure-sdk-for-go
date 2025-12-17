@@ -55,7 +55,7 @@ func (testsuite *LinkedStorageAccountsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestLinkedStorageAccountsTestSuite(t *testing.T) {
+func TestLinkedStorageAccountsTestSuite(t *testing.T) {
 	suite.Run(t, new(LinkedStorageAccountsTestSuite))
 }
 

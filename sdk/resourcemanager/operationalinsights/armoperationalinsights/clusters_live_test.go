@@ -49,7 +49,7 @@ func (testsuite *ClustersTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestClustersTestSuite(t *testing.T) {
+func TestClustersTestSuite(t *testing.T) {
 	suite.Run(t, new(ClustersTestSuite))
 }
 

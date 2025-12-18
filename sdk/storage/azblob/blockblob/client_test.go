@@ -50,12 +50,13 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running blockblob Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
 		suite.Run(t, &BlockBlobUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &BlockBlobRecordedTestsSuite{})
 	}
 }
@@ -532,7 +533,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
 	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
-	_require.Nil(blockList.BlockList.CommittedBlocks)
+	_require.Nil(blockList.CommittedBlocks)
 	_require.NotNil(blockList.UncommittedBlocks)
 	_require.Len(blockList.UncommittedBlocks, 2)
 
@@ -617,7 +618,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithRequestIntent()
 	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
-	_require.Nil(blockList.BlockList.CommittedBlocks)
+	_require.Nil(blockList.CommittedBlocks)
 }
 
 //
@@ -4441,15 +4442,15 @@ func (s *BlockBlobUnrecordedTestsSuite) TestFilterBlobsWithTags() {
 	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
 	_require.Len(lResp.Blobs[0].Tags.BlobTagSet, 2)
-	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
-	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[2])
+	_require.Equal(lResp.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[1])
+	_require.Equal(lResp.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[2])
 
 	// Test tags with spaces
 	where = "\"tag key\"='tag value'"
 	lResp, err = svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
-	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
+	_require.Len(lResp.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(lResp.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
 
 }
 

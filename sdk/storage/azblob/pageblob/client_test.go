@@ -2532,7 +2532,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNonContiguousRanges() 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageListResp := resp.PageList.PageRange
+		pageListResp := resp.PageRange
 		_require.NotNil(pageListResp)
 		_require.Len(pageListResp, 2)
 
@@ -4096,7 +4096,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageListResp := resp.PageList.PageRange
+		pageListResp := resp.PageRange
 		start, end := int64(0), int64(contentSize-1)
 		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)
@@ -4159,7 +4159,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageListResp := resp.PageList.PageRange
+		pageListResp := resp.PageRange
 		start, end := int64(0), int64(contentSize-1)
 		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)

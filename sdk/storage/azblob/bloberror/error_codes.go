@@ -151,9 +151,10 @@ const (
 	UnsupportedXMLNode                                Code = "UnsupportedXmlNode"
 )
 
-// nolint:ST1012 // Renaming these errors would be a breaking change, so suppressing linter warning.
 var (
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
+	//nolint:staticcheck // ST1012: Renaming errors would be a breaking change, so suppressing linter warning.
 	MissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
-	UnsupportedChecksum        = errors.New("for multi-part uploads, user generated checksums cannot be validated")
+	//nolint:staticcheck // ST1012: Renaming errors would be a breaking change, so suppressing linter warning.
+	UnsupportedChecksum = errors.New("for multi-part uploads, user generated checksums cannot be validated")
 )

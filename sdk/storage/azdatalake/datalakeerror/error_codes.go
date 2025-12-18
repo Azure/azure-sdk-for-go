@@ -170,7 +170,7 @@ const (
 	UnsupportedXMLNode                                StorageErrorCode = "UnsupportedXmlNode"
 )
 
-// nolint:ST1012 // Renaming these errors would be a breaking change, so suppressing linter warning.
+//nolint:staticcheck // ST1012: Renaming these errors would be a breaking change, so suppressing linter warning.
 var (
 	// BlobNotFound - Error is returned when resource is not found.
 

@@ -2483,8 +2483,8 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByBasicTags() {
 	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10)), Marker: to.Ptr("")}
 	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.NoError(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsBySpecialCharTags() {
@@ -2532,9 +2532,9 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsBySpecialCharTags() {
 	opts := container.FilterBlobsOptions{MaxResults: to.Ptr(int32(10))}
 	lResp, err := containerSasClient.FilterBlobs(context.Background(), where, &opts)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "go")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "written in golang")
+	_require.Len(lResp.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Key, "go")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Value, "written in golang")
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsByTagsNegative() {
@@ -2626,9 +2626,9 @@ func (s *ContainerUnrecordedTestsSuite) TestFilterBlobsOnContainer() {
 	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
 	lResp, err = containerClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 2)
-	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
-	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[1])
+	_require.Len(lResp.Blobs[0].Tags.BlobTagSet, 2)
+	_require.Equal(lResp.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[0])
+	_require.Equal(lResp.Blobs[0].Tags.BlobTagSet[1], blobTagsSet[1])
 }
 
 func (s *ContainerUnrecordedTestsSuite) TestSASContainerClientTags() {
@@ -3134,9 +3134,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServic
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}
@@ -3155,9 +3156,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingServic
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}
@@ -3259,9 +3261,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDe
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}
@@ -3280,9 +3283,10 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchSetTierUsingUserDe
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}

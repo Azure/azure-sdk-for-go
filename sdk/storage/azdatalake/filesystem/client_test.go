@@ -30,12 +30,13 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running datalake Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &RecordedTestSuite{})
 		suite.Run(t, &UnrecordedTestSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &RecordedTestSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &RecordedTestSuite{})
 	}
 }
@@ -1753,7 +1754,7 @@ func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPaths() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(3, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -1824,7 +1825,7 @@ func (s *UnrecordedTestSuite) TestFilesystemListDirectoryPathsWithPrefix() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(3, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -1862,7 +1863,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPaths() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(1, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -1959,7 +1960,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithPrefix() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		_require.Equal(4, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+		_require.Equal(4, len(resp.Segment.PathItems))
 		if err != nil {
 			break
 		}
@@ -2006,7 +2007,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 
 	resp, err := pager.NextPage(context.Background())
 	_require.NoError(err)
-	_require.Equal(3, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.Equal(3, len(resp.Segment.PathItems))
 	_require.NotNil(resp.NextMarker)
 
 	token := resp.NextMarker
@@ -2015,7 +2016,7 @@ func (s *RecordedTestSuite) TestFilesystemListDeletedPathsWithContinuation() {
 	})
 	resp, err = pager.NextPage(context.Background())
 	_require.NoError(err)
-	_require.Equal(1, len(resp.ListPathsHierarchySegmentResponse.Segment.PathItems))
+	_require.Equal(1, len(resp.Segment.PathItems))
 	_require.Equal("", *resp.NextMarker)
 }
 

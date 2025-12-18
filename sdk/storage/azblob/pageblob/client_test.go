@@ -39,12 +39,13 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running pageblob Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
-		suite.Run(t, &PageBlobRecordedTestsSuite{})
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &PageBlobUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
 		suite.Run(t, &PageBlobRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.PlaybackMode:
+		suite.Run(t, &PageBlobRecordedTestsSuite{})
+	case recording.RecordingMode:
 		suite.Run(t, &PageBlobRecordedTestsSuite{})
 	}
 }

@@ -37,12 +37,13 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running service Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &ServiceRecordedTestsSuite{})
 		suite.Run(t, &ServiceUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &ServiceRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &ServiceRecordedTestsSuite{})
 	}
 }
@@ -1277,7 +1278,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey()
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+			ctr += len(resp.Segment.BlobItems)
 		}
 		_require.Equal(ctr, 2)
 	}
@@ -1292,7 +1293,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingSharedKey()
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+			ctr += len(resp.Segment.BlobItems)
 		}
 		_require.Equal(ctr, 0)
 	}
@@ -1319,10 +1320,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-				if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			for _, blobItem := range resp.Segment.BlobItems {
+				switch *blobItem.Properties.AccessTier {
+				case container.AccessTierHot:
 					ctrHot++
-				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				case container.AccessTierCool:
 					ctrCool++
 				}
 			}
@@ -1341,10 +1343,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingSharedKey(
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-				if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			for _, blobItem := range resp.Segment.BlobItems {
+				switch *blobItem.Properties.AccessTier {
+				case container.AccessTierHot:
 					ctrHot++
-				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				case container.AccessTierCool:
 					ctrCool++
 				}
 			}
@@ -1387,7 +1390,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+			ctr += len(resp.Segment.BlobItems)
 		}
 		_require.Equal(ctr, 2)
 	}
@@ -1420,7 +1423,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeletePartialFailureUs
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+			ctr += len(resp.Segment.BlobItems)
 		}
 		_require.Equal(ctr, 0)
 	}
@@ -1453,10 +1456,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-				if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			for _, blobItem := range resp.Segment.BlobItems {
+				switch *blobItem.Properties.AccessTier {
+				case container.AccessTierHot:
 					ctrHot++
-				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				case container.AccessTierCool:
 					ctrCool++
 				}
 			}
@@ -1484,10 +1488,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierSuccessUsingTok
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-				if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			for _, blobItem := range resp.Segment.BlobItems {
+				switch *blobItem.Properties.AccessTier {
+				case container.AccessTierHot:
 					ctrHot++
-				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				case container.AccessTierCool:
 					ctrCool++
 				}
 			}
@@ -1527,7 +1532,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS(
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+			ctr += len(resp.Segment.BlobItems)
 		}
 		_require.Equal(ctr, 2)
 	}
@@ -1542,7 +1547,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingAccountSAS(
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+			ctr += len(resp.Segment.BlobItems)
 		}
 		_require.Equal(ctr, 0)
 	}
@@ -1578,10 +1583,11 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingAccountSAS
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
-				if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			for _, blobItem := range resp.Segment.BlobItems {
+				switch *blobItem.Properties.AccessTier {
+				case container.AccessTierHot:
 					ctrHot++
-				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				case container.AccessTierCool:
 					ctrCool++
 				}
 			}
@@ -1600,7 +1606,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingAccountSAS
 		for pager.More() {
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
-			for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+			for _, blobItem := range resp.Segment.BlobItems {
 				if *blobItem.Properties.AccessTier == container.AccessTierHot {
 					ctrHot++
 				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
@@ -1645,7 +1651,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteUsingServiceSAS(
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
-		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+		ctr += len(resp.Segment.BlobItems)
 	}
 	_require.Equal(ctr, 10)
 
@@ -1693,7 +1699,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingUserDelega
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
-		for _, blobItem := range resp.ListBlobsFlatSegmentResponse.Segment.BlobItems {
+		for _, blobItem := range resp.Segment.BlobItems {
 			if *blobItem.Properties.AccessTier == container.AccessTierHot {
 				ctrHot++
 			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
@@ -1736,7 +1742,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
-		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+		ctr += len(resp.Segment.BlobItems)
 	}
 	_require.Equal(ctr, 256)
 
@@ -1752,7 +1758,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteMoreThan256() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
-		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+		ctr += len(resp.Segment.BlobItems)
 	}
 	_require.Equal(ctr, 0)
 
@@ -1791,7 +1797,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
-		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+		ctr += len(resp.Segment.BlobItems)
 	}
 	_require.Equal(ctr, 1)
 
@@ -1806,7 +1812,7 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchDeleteForOneBlob() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
-		ctr += len(resp.ListBlobsFlatSegmentResponse.Segment.BlobItems)
+		ctr += len(resp.Segment.BlobItems)
 	}
 	_require.Equal(ctr, 0)
 

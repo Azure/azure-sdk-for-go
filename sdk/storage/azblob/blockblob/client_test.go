@@ -443,7 +443,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
 	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
 	_require.NotNil(blockList.BlockList)
-	_require.Nil(blockList.BlockList.CommittedBlocks)
+	_require.Nil(blockList.CommittedBlocks)
 	_require.NotNil(blockList.UncommittedBlocks)
 	_require.Len(blockList.UncommittedBlocks, 2)
 
@@ -2280,7 +2280,7 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlobIfNoneMatchFalse() {
 func validateBlobCommitted(_require *require.Assertions, bbClient *blockblob.Client) {
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 1)
+	_require.Len(resp.CommittedBlocks, 1)
 }
 
 func setupPutBlockListTest(t *testing.T, _require *require.Assertions, testName string) (*container.Client, *blockblob.Client, []string) {
@@ -2513,11 +2513,11 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobPutBlockListModifyBlob() {
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 2)
-	committed := resp.BlockList.CommittedBlocks
+	_require.Len(resp.CommittedBlocks, 2)
+	committed := resp.CommittedBlocks
 	_require.Equal(*(committed[0].Name), "0001")
 	_require.Equal(*(committed[1].Name), "0011")
-	_require.Nil(resp.BlockList.UncommittedBlocks)
+	_require.Nil(resp.UncommittedBlocks)
 }
 
 func (s *BlockBlobRecordedTestsSuite) TestSetTierOnBlobUpload() {
@@ -2573,9 +2573,9 @@ func (s *BlockBlobRecordedTestsSuite) TestBlobSetTierOnCommit() {
 		resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeCommitted, nil)
 		_require.NoError(err)
 		_require.NotNil(resp.BlockList)
-		_require.NotNil(resp.BlockList.CommittedBlocks)
-		_require.Nil(resp.BlockList.UncommittedBlocks)
-		_require.Len(resp.BlockList.CommittedBlocks, 1)
+		_require.NotNil(resp.CommittedBlocks)
+		_require.Nil(resp.UncommittedBlocks)
+		_require.Len(resp.CommittedBlocks, 1)
 
 		getResp, err := bbClient.GetProperties(context.Background(), nil)
 		_require.NoError(err)
@@ -5599,11 +5599,11 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBlobStage() {
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 1)
-	committed := resp.BlockList.CommittedBlocks
+	_require.Len(resp.CommittedBlocks, 1)
+	committed := resp.CommittedBlocks
 	_require.Equal(*(committed[0].Name), blockID)
 	_require.Equal(*(committed[0].Size), largeBlockSize)
-	_require.Nil(resp.BlockList.UncommittedBlocks)
+	_require.Nil(resp.UncommittedBlocks)
 }
 
 func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentBlockSize() {
@@ -5631,9 +5631,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockStreamUploadWithDifferentB
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 2)
+	_require.Len(resp.CommittedBlocks, 2)
 	_require.Equal(*resp.BlobContentLength, firstBlockSize+secondBlockSize)
-	committed := resp.BlockList.CommittedBlocks
+	committed := resp.CommittedBlocks
 	_require.Equal(*(committed[0].Size), firstBlockSize)
 	_require.Equal(*(committed[1].Size), secondBlockSize)
 }
@@ -5661,9 +5661,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallel()
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 2)
+	_require.Len(resp.CommittedBlocks, 2)
 	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
-	committed := resp.BlockList.CommittedBlocks
+	committed := resp.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
 }
@@ -5735,9 +5735,9 @@ func (s *BlockBlobUnrecordedTestsSuite) TestLargeBlockBufferedUploadInParallelWi
 
 	resp, err := bbClient.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
 	_require.NoError(err)
-	_require.Len(resp.BlockList.CommittedBlocks, 2)
+	_require.Len(resp.CommittedBlocks, 2)
 	_require.Equal(*resp.BlobContentLength, numberOfBlocks*largeBlockSize)
-	committed := resp.BlockList.CommittedBlocks
+	committed := resp.CommittedBlocks
 	_require.Equal(*(committed[0].Size), largeBlockSize)
 	_require.Equal(*(committed[1].Size), largeBlockSize)
 }*/

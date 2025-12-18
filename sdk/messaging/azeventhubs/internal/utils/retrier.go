@@ -23,13 +23,21 @@ type RetryFnArgs struct {
 	// If you have potentially expensive
 	LastErr error
 
-	resetAttempts bool
+	resetAttempts        bool
+	useLinkRecoveryDelay bool
 }
 
 // ResetAttempts resets all Retry() attempts, starting back
 // at iteration 0.
 func (rf *RetryFnArgs) ResetAttempts() {
 	rf.resetAttempts = true
+}
+
+// UseLinkRecoveryDelay signals that the next retry should use the
+// LinkRecoveryDelay instead of the normal exponential backoff delay.
+// This is typically called after a link recovery operation.
+func (rf *RetryFnArgs) UseLinkRecoveryDelay() {
+	rf.useLinkRecoveryDelay = true
 }
 
 // Retry runs a standard retry loop. It executes your passed in fn as the body of the loop.
@@ -43,11 +51,26 @@ func Retry(ctx context.Context, eventName log.Event, prefix func() string, o exp
 	setDefaults(&ro)
 
 	var err error
+	var useLinkRecoveryDelay bool
 
 	for i := int32(0); i <= ro.MaxRetries; i++ {
 		if i > 0 {
-			sleep := calcDelay(ro, i)
-			log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", prefix(), i, sleep)
+			var sleep time.Duration
+
+			// Check if we should use link recovery delay instead of exponential backoff
+			if useLinkRecoveryDelay && ro.LinkRecoveryDelay > 0 {
+				// User configured a specific link recovery delay
+				sleep = ro.LinkRecoveryDelay
+				log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s (link recovery delay)", prefix(), i, sleep)
+			} else if useLinkRecoveryDelay && ro.LinkRecoveryDelay < 0 {
+				// User configured no delay for link recovery
+				sleep = 0
+				log.Writef(eventName, "(%s) Retry attempt %d: no delay (link recovery)", prefix(), i)
+			} else {
+				// Default: use normal exponential backoff (includes LinkRecoveryDelay == 0)
+				sleep = calcDelay(ro, i)
+				log.Writef(eventName, "(%s) Retry attempt %d sleeping for %s", prefix(), i, sleep)
+			}
 
 			select {
 			case <-ctx.Done():
@@ -61,6 +84,9 @@ func Retry(ctx context.Context, eventName log.Event, prefix func() string, o exp
 			LastErr: err,
 		}
 		err = fn(ctx, &args)
+
+		// Capture the flag for the next iteration
+		useLinkRecoveryDelay = args.useLinkRecoveryDelay
 
 		if args.resetAttempts {
 			log.Writef(eventName, "(%s) Resetting retry attempts", prefix())

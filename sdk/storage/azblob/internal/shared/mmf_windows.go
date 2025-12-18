@@ -33,7 +33,7 @@ func NewMMB(size int64) (Mmb, error) {
 		return nil, os.NewSyscallError("MapViewOfFile", err)
 	}
 
-	//go:nocheckptr
+	//nolint:govet // unsafeptr: addr is a stable pointer from MapViewOfFile
 	m := unsafe.Slice((*byte)(unsafe.Pointer(addr)), int(size))
 	return m, nil
 }

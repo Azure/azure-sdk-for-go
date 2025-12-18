@@ -6122,7 +6122,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() 
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer tmp.Close()
+	defer func() { _ = tmp.Close() }()
 
 	n, err := bbClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: 4 * 1024 * 1024})
 	_require.NoError(err)

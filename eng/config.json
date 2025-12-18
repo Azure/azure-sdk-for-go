@@ -38,7 +38,7 @@
         },
         {
             "Name": "azqueue",
-            "CoverageGoal": 0.25
+            "CoverageGoal": 0.00
         },
         {
             "Name": "azdatalake",

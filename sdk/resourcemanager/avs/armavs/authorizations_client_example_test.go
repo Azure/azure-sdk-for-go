@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Authorizations_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/Authorizations_CreateOrUpdate.json
 func ExampleAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleAuthorizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Authorizations_Delete.json
+// Generated from example definition: 2025-09-01/Authorizations_Delete.json
 func ExampleAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleAuthorizationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Authorizations_Get.json
+// Generated from example definition: 2025-09-01/Authorizations_Get.json
 func ExampleAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleAuthorizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Authorizations_List.json
+// Generated from example definition: 2025-09-01/Authorizations_List.json
 func ExampleAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

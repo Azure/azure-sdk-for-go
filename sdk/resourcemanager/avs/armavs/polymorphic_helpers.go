@@ -56,6 +56,71 @@ func unmarshalHostPropertiesClassification(rawMsg json.RawMessage) (HostProperti
 	return b, nil
 }
 
+func unmarshalLicensePropertiesClassification(rawMsg json.RawMessage) (LicensePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b LicensePropertiesClassification
+	switch m["kind"] {
+	case string(LicenseKindVmwareFirewall):
+		b = &VmwareFirewallLicenseProperties{}
+	default:
+		b = &LicenseProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalMaintenanceManagementOperationClassification(rawMsg json.RawMessage) (MaintenanceManagementOperationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b MaintenanceManagementOperationClassification
+	switch m["kind"] {
+	case string(MaintenanceManagementOperationKindSchedule):
+		b = &ScheduleOperation{}
+	case string(MaintenanceManagementOperationKindReschedule):
+		b = &RescheduleOperation{}
+	case string(MaintenanceManagementOperationKindMaintenanceReadinessRefresh):
+		b = &MaintenanceReadinessRefreshOperation{}
+	default:
+		b = &MaintenanceManagementOperation{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalMaintenanceManagementOperationClassificationArray(rawMsg json.RawMessage) ([]MaintenanceManagementOperationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]MaintenanceManagementOperationClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalMaintenanceManagementOperationClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
 func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (PlacementPolicyPropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -77,6 +142,92 @@ func unmarshalPlacementPolicyPropertiesClassification(rawMsg json.RawMessage) (P
 		return nil, err
 	}
 	return b, nil
+}
+
+func unmarshalRescheduleOperationConstraintClassification(rawMsg json.RawMessage) (RescheduleOperationConstraintClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b RescheduleOperationConstraintClassification
+	switch m["kind"] {
+	case string(RescheduleOperationConstraintKindAvailableWindowForMaintenanceWhileRescheduleOperation):
+		b = &AvailableWindowForMaintenanceWhileRescheduleOperation{}
+	case string(RescheduleOperationConstraintKindBlockedWhileRescheduleOperation):
+		b = &BlockedWhileRescheduleOperation{}
+	default:
+		b = &RescheduleOperationConstraint{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalRescheduleOperationConstraintClassificationArray(rawMsg json.RawMessage) ([]RescheduleOperationConstraintClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]RescheduleOperationConstraintClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalRescheduleOperationConstraintClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
+
+func unmarshalScheduleOperationConstraintClassification(rawMsg json.RawMessage) (ScheduleOperationConstraintClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b ScheduleOperationConstraintClassification
+	switch m["kind"] {
+	case string(ScheduleOperationConstraintKindSchedulingWindow):
+		b = &SchedulingWindow{}
+	case string(ScheduleOperationConstraintKindAvailableWindowForMaintenanceWhileScheduleOperation):
+		b = &AvailableWindowForMaintenanceWhileScheduleOperation{}
+	case string(ScheduleOperationConstraintKindBlockedWhileScheduleOperation):
+		b = &BlockedWhileScheduleOperation{}
+	default:
+		b = &ScheduleOperationConstraint{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalScheduleOperationConstraintClassificationArray(rawMsg json.RawMessage) ([]ScheduleOperationConstraintClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]ScheduleOperationConstraintClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalScheduleOperationConstraintClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
 }
 
 func unmarshalScriptExecutionParameterClassification(rawMsg json.RawMessage) (ScriptExecutionParameterClassification, error) {
@@ -121,6 +272,27 @@ func unmarshalScriptExecutionParameterClassificationArray(rawMsg json.RawMessage
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalVcfLicenseClassification(rawMsg json.RawMessage) (VcfLicenseClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b VcfLicenseClassification
+	switch m["kind"] {
+	case string(VcfLicenseKindVcf5):
+		b = &Vcf5License{}
+	default:
+		b = &VcfLicense{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
 }
 
 func unmarshalWorkloadNetworkDhcpEntityClassification(rawMsg json.RawMessage) (WorkloadNetworkDhcpEntityClassification, error) {

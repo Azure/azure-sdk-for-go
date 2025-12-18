@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/ScriptExecutions_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/ScriptExecutions_CreateOrUpdate.json
 func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleScriptExecutionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ScriptExecutions_Delete.json
+// Generated from example definition: 2025-09-01/ScriptExecutions_Delete.json
 func ExampleScriptExecutionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleScriptExecutionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ScriptExecutions_Get.json
+// Generated from example definition: 2025-09-01/ScriptExecutions_Get.json
 func ExampleScriptExecutionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleScriptExecutionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ScriptExecutions_GetExecutionLogs.json
+// Generated from example definition: 2025-09-01/ScriptExecutions_GetExecutionLogs.json
 func ExampleScriptExecutionsClient_GetExecutionLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleScriptExecutionsClient_GetExecutionLogs() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ScriptExecutions_List.json
+// Generated from example definition: 2025-09-01/ScriptExecutions_List.json
 func ExampleScriptExecutionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

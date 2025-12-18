@@ -361,7 +361,7 @@ func Example_fileClient_DownloadStream() {
 
 	content1, err := io.ReadAll(resp.Body)
 	handleError(err)
-	fmt.Println(content1)
+	fmt.Println(string(content1))
 
 	_, err = srcFileClient.Delete(context.Background(), nil)
 	handleError(err)

@@ -25,6 +25,7 @@ type UserDelegationCredential = exported.UserDelegationCredential
 // KeyInfo contains KeyInfo struct.
 type KeyInfo = generated.KeyInfo
 
+// GetUserDelegationCredentialOptions contains optional parameters for GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct{}
 
 func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {

@@ -9,7 +9,6 @@ package file
 import (
 	"fmt"
 	"os"
-	"reflect"
 	"syscall"
 	"unsafe"
 )
@@ -34,12 +33,8 @@ func newMMB(size int64) (mmb, error) {
 	if err != nil {
 		return nil, os.NewSyscallError("MapViewOfFile", err)
 	}
-
-	m := mmb{}
-	h := (*reflect.SliceHeader)(unsafe.Pointer(&m))
-	h.Data = addr
-	h.Len = int(size)
-	h.Cap = h.Len
+	//go:nocheckptr
+	m := unsafe.Slice((*byte)(unsafe.Pointer(addr)), int(size))
 	return m, nil
 }
 

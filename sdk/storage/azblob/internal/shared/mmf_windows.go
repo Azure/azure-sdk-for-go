@@ -1,9 +1,9 @@
 //go:build go1.18
 
+package shared
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
-
-package shared
 
 import (
 	"fmt"
@@ -32,6 +32,7 @@ func NewMMB(size int64) (Mmb, error) {
 	if err != nil {
 		return nil, os.NewSyscallError("MapViewOfFile", err)
 	}
+
 	//go:nocheckptr
 	m := unsafe.Slice((*byte)(unsafe.Pointer(addr)), int(size))
 	return m, nil
@@ -43,8 +44,6 @@ func (m *Mmb) Delete() {
 	*m = Mmb{}
 	err := syscall.UnmapViewOfFile(addr)
 	if err != nil {
-		// if we get here, there is likely memory corruption.
-		// please open an issue https://github.com/Azure/azure-sdk-for-go/issues
 		panic(fmt.Sprintf("UnmapViewOfFile error: %v", err))
 	}
 }

@@ -1129,7 +1129,7 @@ func (s *ServiceRecordedTestsSuite) TestAccountFilterBlobs() {
 	filter := "\"key\"='value'"
 	resp, err := svcClient.FilterBlobs(context.Background(), filter, &service.FilterBlobsOptions{})
 	_require.NoError(err)
-	_require.Len(resp.FilterBlobSegment.Blobs, 0)
+	_require.Len(resp.Blobs, 0)
 }
 
 func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
@@ -1197,8 +1197,8 @@ func (s *ServiceUnrecordedTestsSuite) TestFilterBlobsTagsWithServiceSAS() {
 	where := "\"GO \"='.Net'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Len(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet, 1)
-	_require.Equal(lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
+	_require.Len(lResp.Blobs[0].Tags.BlobTagSet, 1)
+	_require.Equal(lResp.Blobs[0].Tags.BlobTagSet[0], blobTagsSet[2])
 
 	_, err = svcClient.DeleteContainer(context.Background(), containerName, nil)
 	_require.NoError(err)
@@ -1607,9 +1607,10 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingAccountSAS
 			resp, err := pager.NextPage(context.Background())
 			handleError(err)
 			for _, blobItem := range resp.Segment.BlobItems {
-				if *blobItem.Properties.AccessTier == container.AccessTierHot {
+				switch *blobItem.Properties.AccessTier {
+				case container.AccessTierHot:
 					ctrHot++
-				} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+				case container.AccessTierCool:
 					ctrCool++
 				}
 			}
@@ -1700,9 +1701,10 @@ func (s *ServiceUnrecordedTestsSuite) TestServiceBlobBatchSetTierUsingUserDelega
 		resp, err := pager.NextPage(context.Background())
 		handleError(err)
 		for _, blobItem := range resp.Segment.BlobItems {
-			if *blobItem.Properties.AccessTier == container.AccessTierHot {
+			switch *blobItem.Properties.AccessTier {
+			case container.AccessTierHot:
 				ctrHot++
-			} else if *blobItem.Properties.AccessTier == container.AccessTierCool {
+			case container.AccessTierCool:
 				ctrCool++
 			}
 		}

@@ -4251,8 +4251,8 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 	where := "\"azure\"='blob'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
 }
 
 func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
@@ -4291,8 +4291,8 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 	where := "\"GO \"='.Net'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")
 }
 
 func (s *PageBlobRecordedTestsSuite) TestCreatePageBlobReturnsVID() {

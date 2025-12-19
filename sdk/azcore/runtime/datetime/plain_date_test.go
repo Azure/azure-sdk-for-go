@@ -35,8 +35,8 @@ func TestPlainDate_TimeIgnored(t *testing.T) {
 	result1, _ := pd1.MarshalJSON()
 	result2, _ := pd2.MarshalJSON()
 
-	require.Equal(t, "2023-01-15", string(result1))
-	require.Equal(t, "2023-01-15", string(result2))
+	require.Equal(t, `"2023-01-15"`, string(result1))
+	require.Equal(t, `"2023-01-15"`, string(result2))
 	require.Equal(t, result1, result2)
 }
 
@@ -68,4 +68,9 @@ func TestPlainDate_UnmarshalJSON_PartialDate(t *testing.T) {
 	var pd PlainDate
 	err := pd.UnmarshalJSON([]byte("2023-01"))
 	require.Error(t, err)
+}
+
+func TestPlainDate_String(t *testing.T) {
+	plainDate := PlainDate(time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC))
+	require.Equal(t, "2023-01-15", plainDate.String())
 }

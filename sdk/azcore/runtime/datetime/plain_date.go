@@ -4,7 +4,6 @@
 package datetime
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -14,8 +13,8 @@ type Time interface {
 }
 
 const (
-	fullDateJSON = `"2006-01-02"`
-	jsonFormat   = `"%04d-%02d-%02d"`
+	plainDate     = "2006-01-02"
+	plainDateJSON = `"` + plainDate + `"`
 )
 
 // PlainDate represents a date value without time information in YYYY-MM-DD format.
@@ -24,12 +23,17 @@ type PlainDate time.Time
 
 // MarshalJSON marshals the PlainDate to a JSON byte slice.
 func (t PlainDate) MarshalJSON() ([]byte, error) {
-	return []byte(fmt.Sprintf(jsonFormat, time.Time(t).Year(), time.Time(t).Month(), time.Time(t).Day())), nil
+	return []byte(time.Time(t).Format(plainDateJSON)), nil
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into a PlainDate.
 func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
-	t, err := time.Parse(fullDateJSON, string(data))
+	t, err := time.Parse(plainDateJSON, string(data))
 	*d = (PlainDate)(t)
 	return err
+}
+
+// String returns the string representation of PlainDate.
+func (t PlainDate) String() string {
+	return time.Time(t).Format(plainDate)
 }

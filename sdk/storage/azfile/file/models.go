@@ -94,9 +94,9 @@ type CreateOptions struct {
 	ContentMD5            []byte
 }
 
-func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions, io.ReadSeekCloser) {
+func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil
 	}
 
 	var createOptions *generated.FileClientCreateOptions
@@ -125,6 +125,7 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			FilePermission:    permission,
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
+			Optionalbody:      o.OptionalBody,
 		}
 		// Refer the documentation for details - https://learn.microsoft.com/en-us/rest/api/storageservices/create-file#smb-only-request-headers
 		if permissionKey != nil {
@@ -144,7 +145,7 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			createOptions.ContentMD5 = o.ContentMD5
 		}
 	}
-	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions, o.OptionalBody
+	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -681,7 +682,9 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (strin
 	}
 
 	var leaseAccessConditions *LeaseAccessConditions
-	uploadRangeOptions := &generated.FileClientUploadRangeOptions{}
+	uploadRangeOptions := &generated.FileClientUploadRangeOptions{
+		Optionalbody: body,
+	}
 
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions

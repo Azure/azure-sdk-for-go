@@ -5,6 +5,8 @@
 
 package generated
 
+import "io"
+
 // CopyFileSMBInfo contains a group of parameters for the DirectoryClient.Rename method.
 type CopyFileSMBInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes
@@ -403,6 +405,9 @@ type FileClientCreateOptions struct {
 	// Optional, NFS only. Type of the file or directory.
 	NFSFileType *NFSFileType
 
+	// Initial data.
+	Optionalbody io.ReadSeekCloser
+
 	// Optional, NFS only. The owner of the file or directory.
 	Owner *string
 
@@ -732,6 +737,9 @@ type FileClientUploadRangeOptions struct {
 	// If the file last write time should be preserved or overwritten
 	FileLastWrittenMode *FileLastWrittenMode
 
+	// Initial data.
+	Optionalbody io.ReadSeekCloser
+
 	// Required if the request body is a structured message. Specifies the message schema version and properties.
 	StructuredBodyType *string
 
@@ -1023,6 +1031,9 @@ type ShareClientRestoreOptions struct {
 
 // ShareClientSetAccessPolicyOptions contains the optional parameters for the ShareClient.SetAccessPolicy method.
 type ShareClientSetAccessPolicyOptions struct {
+	// The ACL for the share.
+	ShareACL []*SignedIdentifier
+
 	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for File Service Operations.
 	// [https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations]
 	Timeout *int32

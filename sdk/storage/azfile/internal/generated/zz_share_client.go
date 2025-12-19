@@ -1458,12 +1458,11 @@ func (client *ShareClient) restoreHandleResponse(resp *http.Response) (ShareClie
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-02-06
-//   - shareACL - The ACL for the share.
 //   - options - ShareClientSetAccessPolicyOptions contains the optional parameters for the ShareClient.SetAccessPolicy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareACL []*SignedIdentifier, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetAccessPolicyResponse, error) {
+func (client *ShareClient) SetAccessPolicy(ctx context.Context, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (ShareClientSetAccessPolicyResponse, error) {
 	var err error
-	req, err := client.setAccessPolicyCreateRequest(ctx, shareACL, options, leaseAccessConditions)
+	req, err := client.setAccessPolicyCreateRequest(ctx, options, leaseAccessConditions)
 	if err != nil {
 		return ShareClientSetAccessPolicyResponse{}, err
 	}
@@ -1480,7 +1479,7 @@ func (client *ShareClient) SetAccessPolicy(ctx context.Context, shareACL []*Sign
 }
 
 // setAccessPolicyCreateRequest creates the SetAccessPolicy request.
-func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, shareACL []*SignedIdentifier, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, options *ShareClientSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1504,8 +1503,11 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
-	if err := runtime.MarshalAsXML(req, wrapper{ShareACL: &shareACL}); err != nil {
-		return nil, err
+	if options != nil && options.ShareACL != nil {
+		if err := runtime.MarshalAsXML(req, wrapper{ShareACL: &options.ShareACL}); err != nil {
+			return nil, err
+		}
+		return req, nil
 	}
 	return req, nil
 }

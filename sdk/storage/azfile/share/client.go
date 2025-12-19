@@ -224,12 +224,12 @@ func (s *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOp
 // SetAccessPolicy operation sets a stored access policy for use with shared access signatures.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-share-acl.
 func (s *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	opts, acl, leaseAccessConditions, err := options.format()
+	opts, leaseAccessConditions, err := options.format()
 	if err != nil {
 		return SetAccessPolicyResponse{}, err
 	}
 
-	resp, err := s.generated().SetAccessPolicy(ctx, acl, opts, leaseAccessConditions)
+	resp, err := s.generated().SetAccessPolicy(ctx, opts, leaseAccessConditions)
 	return resp, err
 }
 

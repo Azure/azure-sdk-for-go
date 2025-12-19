@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -377,13 +376,12 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 //
 // Generated from API version 2026-02-06
 //   - fileContentLength - Specifies the maximum size for the file, up to 4 TB.
-//   - optionalbody - Initial data.
 //   - options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) Create(ctx context.Context, fileContentLength int64, optionalbody io.ReadSeekCloser, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
+func (client *FileClient) Create(ctx context.Context, fileContentLength int64, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileClientCreateResponse, error) {
 	var err error
-	req, err := client.createCreateRequest(ctx, fileContentLength, optionalbody, options, shareFileHTTPHeaders, leaseAccessConditions)
+	req, err := client.createCreateRequest(ctx, fileContentLength, options, shareFileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileClientCreateResponse{}, err
 	}
@@ -400,7 +398,7 @@ func (client *FileClient) Create(ctx context.Context, fileContentLength int64, o
 }
 
 // createCreateRequest creates the Create request.
-func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, optionalbody io.ReadSeekCloser, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLength int64, options *FileClientCreateOptions, shareFileHTTPHeaders *ShareFileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -490,8 +488,11 @@ func (client *FileClient) createCreateRequest(ctx context.Context, fileContentLe
 		req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(*options.ContentLength, 10)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if err := req.SetBody(optionalbody, "application/octet-stream"); err != nil {
-		return nil, err
+	if options != nil && options.Optionalbody != nil {
+		if err := req.SetBody(options.Optionalbody, "application/octet-stream"); err != nil {
+			return nil, err
+		}
+		return req, nil
 	}
 	return req, nil
 }
@@ -2444,12 +2445,11 @@ func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClie
 //     to clear, up to maximum file size.
 //   - contentLength - Specifies the number of bytes being transmitted in the request body. When the x-ms-write header is set
 //     to clear, the value of this header must be set to zero.
-//   - optionalbody - Initial data.
 //   - options - FileClientUploadRangeOptions contains the optional parameters for the FileClient.UploadRange method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
-func (client *FileClient) UploadRange(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeResponse, error) {
+func (client *FileClient) UploadRange(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientUploadRangeResponse, error) {
 	var err error
-	req, err := client.uploadRangeCreateRequest(ctx, rangeParam, fileRangeWrite, contentLength, optionalbody, options, leaseAccessConditions)
+	req, err := client.uploadRangeCreateRequest(ctx, rangeParam, fileRangeWrite, contentLength, options, leaseAccessConditions)
 	if err != nil {
 		return FileClientUploadRangeResponse{}, err
 	}
@@ -2466,7 +2466,7 @@ func (client *FileClient) UploadRange(ctx context.Context, rangeParam string, fi
 }
 
 // uploadRangeCreateRequest creates the UploadRange request.
-func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, optionalbody io.ReadSeekCloser, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangeParam string, fileRangeWrite FileRangeWriteType, contentLength int64, options *FileClientUploadRangeOptions, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -2503,8 +2503,11 @@ func (client *FileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
-	if err := req.SetBody(optionalbody, "application/octet-stream"); err != nil {
-		return nil, err
+	if options != nil && options.Optionalbody != nil {
+		if err := req.SetBody(options.Optionalbody, "application/octet-stream"); err != nil {
+			return nil, err
+		}
+		return req, nil
 	}
 	return req, nil
 }

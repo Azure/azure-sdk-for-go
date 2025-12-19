@@ -147,8 +147,8 @@ func (f *Client) URL() string {
 // ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
-	fileCreateOptions, fileHTTPHeaders, leaseAccessConditions, body := options.format()
-	resp, err := f.generated().Create(ctx, fileContentLength, body, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	fileCreateOptions, fileHTTPHeaders, leaseAccessConditions := options.format()
+	resp, err := f.generated().Create(ctx, fileContentLength, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	return resp, err
 }
 
@@ -264,7 +264,7 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 		return UploadRangeResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, body, uploadRangeOptions, leaseAccessConditions)
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, uploadRangeOptions, leaseAccessConditions)
 	return resp, err
 }
 
@@ -278,7 +278,7 @@ func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options
 		return ClearRangeResponse{}, err
 	}
 
-	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, nil, leaseAccessConditions)
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, leaseAccessConditions)
 	return resp, err
 }
 

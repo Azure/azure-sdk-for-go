@@ -240,21 +240,23 @@ type SetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetAccessPolicyOptions) format() (*generated.ShareClientSetAccessPolicyOptions, []*SignedIdentifier, *LeaseAccessConditions, error) {
+func (o *SetAccessPolicyOptions) format() (*generated.ShareClientSetAccessPolicyOptions, *LeaseAccessConditions, error) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil
 	}
 
 	if o.ShareACL != nil {
 		for _, si := range o.ShareACL {
 			err := formatTime(si)
 			if err != nil {
-				return nil, nil, nil, err
+				return nil, nil, err
 			}
 		}
 	}
 
-	return nil, o.ShareACL, o.LeaseAccessConditions, nil
+	return &generated.ShareClientSetAccessPolicyOptions{
+		ShareACL: o.ShareACL,
+	}, o.LeaseAccessConditions, nil
 }
 
 func formatTime(si *SignedIdentifier) error {

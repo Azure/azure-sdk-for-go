@@ -1,8 +1,10 @@
 # Release History
 
-## 1.20.1-beta.1 (Unreleased)
+## 1.30.0 (Unreleased)
 
 ### Features Added
+* Added `runtime/datetime` package which provides specialized time type wrappers for serializing and deserializing
+time values in various formats used by Azure services.
 
 ### Breaking Changes
 

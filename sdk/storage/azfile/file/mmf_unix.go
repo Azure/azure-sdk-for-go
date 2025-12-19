@@ -1,9 +1,9 @@
 //go:build go1.18 && (linux || darwin || dragonfly || freebsd || openbsd || netbsd || solaris || aix)
 
-package file
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
+
+package file
 
 import (
 	"fmt"

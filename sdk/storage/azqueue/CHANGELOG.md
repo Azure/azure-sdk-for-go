@@ -3,6 +3,8 @@
 ### 2.0.0-beta.2 (Unreleased)
 
 #### Features Added
+* Added support for User Delegation SAS.
+* Added support for service version 2026-02-06.
 
 #### Breaking Changes
 

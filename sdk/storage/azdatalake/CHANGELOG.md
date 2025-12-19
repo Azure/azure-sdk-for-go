@@ -3,6 +3,7 @@
 ## 1.4.3-beta.1 (Unreleased)
 
 ### Features Added
+* Added support for service version 2026-02-06.
 
 ### Breaking Changes
 

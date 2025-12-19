@@ -16,19 +16,20 @@ func TestPlainTime(t *testing.T) {
 	result := pt.String()
 	require.Equal(t, "10:30:45Z", result)
 
-	// jsonBytes, err := pt.MarshalJSON()
-	// require.NoError(t, err)
-	// var dt2 PlainTime
-	// err = dt2.UnmarshalJSON(jsonBytes)
-	// require.NoError(t, err)
-	// require.Equal(t, originalTime, time.Time(dt2))
+	jsonBytes, err := pt.MarshalJSON()
+	require.NoError(t, err)
+	var pt2 PlainTime
+	err = pt2.UnmarshalJSON(jsonBytes)
+	require.NoError(t, err)
+	require.Equal(t, originalTime.Hour(), time.Time(pt2).Hour())
+	require.Equal(t, originalTime.Minute(), time.Time(pt2).Minute())
+	require.Equal(t, originalTime.Second(), time.Time(pt2).Second())
 
 	textBytes, err := pt.MarshalText()
 	require.NoError(t, err)
 	var pt3 PlainTime
 	err = pt3.UnmarshalText(textBytes)
 	require.NoError(t, err)
-
 	require.Equal(t, originalTime.Hour(), time.Time(pt3).Hour())
 	require.Equal(t, originalTime.Minute(), time.Time(pt3).Minute())
 	require.Equal(t, originalTime.Second(), time.Time(pt3).Second())

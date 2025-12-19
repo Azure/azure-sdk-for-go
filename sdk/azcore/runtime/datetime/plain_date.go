@@ -14,8 +14,8 @@ type Time interface {
 }
 
 const (
-	fullDateJSON = `2006-01-02`
-	jsonFormat   = `%04d-%02d-%02d`
+	fullDateJSON = `"2006-01-02"`
+	jsonFormat   = `"%04d-%02d-%02d"`
 )
 
 // PlainDate represents a date value without time information in YYYY-MM-DD format.

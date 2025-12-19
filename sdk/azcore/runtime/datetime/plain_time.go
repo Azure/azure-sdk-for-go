@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	utcTimeJSON = `"15:04:05.999999999"`
-	utcTime     = "15:04:05.999999999"
-	timeFormat  = "15:04:05.999999999Z07:00"
+	utcTimeJSON    = `"15:04:05.999999999"`
+	utcTime        = "15:04:05.999999999"
+	timeFormat     = "15:04:05.999999999Z07:00"
+	timeFormatJSON = `"15:04:05.999999999Z07:00"`
 )
 
 // PlainTime represents a time value without date information. It supports HH:MM:SS format
@@ -35,7 +36,7 @@ func (t PlainTime) MarshalText() ([]byte, error) {
 func (t *PlainTime) UnmarshalJSON(data []byte) error {
 	layout := utcTimeJSON
 	if tzOffsetRegex.Match(data) {
-		layout = timeFormat
+		layout = timeFormatJSON
 	}
 	return t.Parse(layout, string(data))
 }

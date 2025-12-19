@@ -16,7 +16,7 @@ func TestPlainDate(t *testing.T) {
 
 	jsonBytes, err := pd.MarshalJSON()
 	require.NoError(t, err)
-	require.Equal(t, "2023-01-15", string(jsonBytes))
+	require.Equal(t, `"2023-01-15"`, string(jsonBytes))
 
 	var pd2 PlainDate
 	err = pd2.UnmarshalJSON(jsonBytes)

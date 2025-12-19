@@ -52,7 +52,7 @@ func (t *RFC3339) UnmarshalJSON(data []byte) error {
 	} else {
 		layout = utcDateTimeJSONNoT
 	}
-	return t.Parse(layout, string(data))
+	return t.parse(layout, string(data))
 }
 
 // UnmarshalText decodes the textual representation of a RFC3339
@@ -72,11 +72,11 @@ func (t *RFC3339) UnmarshalText(data []byte) error {
 	} else {
 		layout = utcDateTimeNoT
 	}
-	return t.Parse(layout, string(data))
+	return t.parse(layout, string(data))
 }
 
 // Parse parses a timestamp string using the specified layout.
-func (t *RFC3339) Parse(layout, value string) error {
+func (t *RFC3339) parse(layout, value string) error {
 	p, err := time.Parse(layout, strings.ToUpper(value))
 	*t = RFC3339(p)
 	return err

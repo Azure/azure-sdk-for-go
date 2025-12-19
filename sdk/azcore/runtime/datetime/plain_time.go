@@ -4,7 +4,6 @@
 package datetime
 
 import (
-	"fmt"
 	"strings"
 	"time"
 )
@@ -22,14 +21,13 @@ type PlainTime time.Time
 
 // MarshalJSON marshals the PlainTime to a JSON byte slice.
 func (t PlainTime) MarshalJSON() ([]byte, error) {
-	s, _ := t.MarshalText()
-	return []byte(fmt.Sprintf("\"%s\"", s)), nil
+	return []byte(time.Time(t).Format(plainTimeJSON)), nil
 }
 
 // MarshalText returns a textual representation of PlainTime
 func (t PlainTime) MarshalText() ([]byte, error) {
 	tt := time.Time(t)
-	return []byte(tt.Format(plainTime)), nil
+	return []byte(tt.Format(plainTimeUTC)), nil
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into PlainTime.
@@ -38,7 +36,7 @@ func (t *PlainTime) UnmarshalJSON(data []byte) error {
 	if tzOffsetRegex.Match(data) {
 		layout = plainTimeJSON
 	}
-	return t.Parse(layout, string(data))
+	return t.parse(layout, string(data))
 }
 
 // UnmarshalText decodes the textual representation of PlainTime
@@ -50,11 +48,11 @@ func (t *PlainTime) UnmarshalText(data []byte) error {
 	if tzOffsetRegex.Match(data) {
 		layout = plainTime
 	}
-	return t.Parse(layout, string(data))
+	return t.parse(layout, string(data))
 }
 
 // Parse parses a time string using the specified layout
-func (t *PlainTime) Parse(layout, value string) error {
+func (t *PlainTime) parse(layout, value string) error {
 	p, err := time.Parse(layout, strings.ToUpper(value))
 	*t = PlainTime(p)
 	return err
@@ -63,5 +61,5 @@ func (t *PlainTime) Parse(layout, value string) error {
 // String returns the string of PlainTime
 func (t PlainTime) String() string {
 	tt := time.Time(t)
-	return tt.Format(plainTime)
+	return tt.Format(plainTimeUTC)
 }

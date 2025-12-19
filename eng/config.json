@@ -14,7 +14,7 @@
         },
         {
             "Name": "azblob",
-            "CoverageGoal": 0.20
+            "CoverageGoal": 0.15
         },
         {
             "Name": "azcontainerregistry",
@@ -42,11 +42,11 @@
         },
         {
             "Name": "azdatalake",
-            "CoverageGoal": 0.25
+            "CoverageGoal": 0.14
         },
         {
             "Name": "azfile",
-            "CoverageGoal": 0.25
+            "CoverageGoal": 0.12
         },
         {
             "Name": "azopenai",

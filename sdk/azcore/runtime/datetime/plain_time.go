@@ -51,7 +51,7 @@ func (t *PlainTime) UnmarshalText(data []byte) error {
 	return t.parse(layout, string(data))
 }
 
-// Parse parses a time string using the specified layout
+// parse parses a time string using the specified layout
 func (t *PlainTime) parse(layout, value string) error {
 	p, err := time.Parse(layout, strings.ToUpper(value))
 	*t = PlainTime(p)

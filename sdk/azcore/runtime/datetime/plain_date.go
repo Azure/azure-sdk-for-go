@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// Constraint is a type constraint that represents the supported time types in the datetime package
+// Constraints is a type constraint that represents the supported time types in the datetime package
 type Constraints interface {
 	PlainDate | PlainTime | RFC1123 | RFC3339 | Unix
 }

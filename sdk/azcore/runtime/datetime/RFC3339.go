@@ -75,7 +75,7 @@ func (t *RFC3339) UnmarshalText(data []byte) error {
 	return t.parse(layout, string(data))
 }
 
-// Parse parses a timestamp string using the specified layout.
+// parse parses a timestamp string using the specified layout.
 func (t *RFC3339) parse(layout, value string) error {
 	p, err := time.Parse(layout, strings.ToUpper(value))
 	*t = RFC3339(p)

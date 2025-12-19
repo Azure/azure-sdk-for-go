@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	dateTimeRFC1123JSON = `"` + time.RFC1123 + `"`
+	rfc1123JSON = `"` + time.RFC1123 + `"`
 )
 
 // RFC1123 represents a date and time value in RFC 1123 format as defined in
@@ -18,7 +18,7 @@ type RFC1123 time.Time
 
 // MarshalJSON marshals the RFC1123 timestamp to a JSON byte slice.
 func (t RFC1123) MarshalJSON() ([]byte, error) {
-	b := []byte(time.Time(t).Format(dateTimeRFC1123JSON))
+	b := []byte(time.Time(t).Format(rfc1123JSON))
 	return b, nil
 }
 
@@ -30,7 +30,7 @@ func (t RFC1123) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into an RFC1123 timestamp
 func (t *RFC1123) UnmarshalJSON(data []byte) error {
-	p, err := time.Parse(dateTimeRFC1123JSON, strings.ToUpper(string(data)))
+	p, err := time.Parse(rfc1123JSON, strings.ToUpper(string(data)))
 	*t = RFC1123(p)
 	return err
 }

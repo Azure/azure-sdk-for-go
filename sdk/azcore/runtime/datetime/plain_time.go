@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	utcTimeJSON    = `"15:04:05.999999999"`
-	utcTime        = "15:04:05.999999999"
-	timeFormat     = "15:04:05.999999999Z07:00"
-	timeFormatJSON = `"15:04:05.999999999Z07:00"`
+	plainTimeUTC     = "15:04:05.999999999"
+	plainTimeUTCJSON = `"` + plainTimeUTC + `"`
+	plainTime        = "15:04:05.999999999Z07:00"
+	plainTimeJSON    = `"` + plainTime + `"`
 )
 
 // PlainTime represents a time value without date information. It supports HH:MM:SS format
@@ -29,14 +29,14 @@ func (t PlainTime) MarshalJSON() ([]byte, error) {
 // MarshalText returns a textual representation of PlainTime
 func (t PlainTime) MarshalText() ([]byte, error) {
 	tt := time.Time(t)
-	return []byte(tt.Format(timeFormat)), nil
+	return []byte(tt.Format(plainTime)), nil
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into PlainTime.
 func (t *PlainTime) UnmarshalJSON(data []byte) error {
-	layout := utcTimeJSON
+	layout := plainTimeUTCJSON
 	if tzOffsetRegex.Match(data) {
-		layout = timeFormatJSON
+		layout = plainTimeJSON
 	}
 	return t.Parse(layout, string(data))
 }
@@ -46,9 +46,9 @@ func (t *PlainTime) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
 		return nil
 	}
-	layout := utcTime
+	layout := plainTimeUTC
 	if tzOffsetRegex.Match(data) {
-		layout = timeFormat
+		layout = plainTime
 	}
 	return t.Parse(layout, string(data))
 }
@@ -63,5 +63,5 @@ func (t *PlainTime) Parse(layout, value string) error {
 // String returns the string of PlainTime
 func (t PlainTime) String() string {
 	tt := time.Time(t)
-	return tt.Format(timeFormat)
+	return tt.Format(plainTime)
 }

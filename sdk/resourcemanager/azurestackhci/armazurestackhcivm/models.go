@@ -11,11 +11,11 @@ type AttestationStatus struct {
 	// The resource-specific properties for this resource.
 	Properties *AttestationStatusProperties
 
-	// READ-ONLY; Name of attestation status
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -98,9 +98,6 @@ type GalleryImage struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the gallery image
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -112,6 +109,9 @@ type GalleryImage struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -163,9 +163,6 @@ type GalleryImageProperties struct {
 
 	// Resource ID of the source virtual machine from whose OS disk the gallery image is created.
 	SourceVirtualMachineID *string
-
-	// The credentials used to login to the image repository that has access to the specified image
-	VMImageRepositoryCredentials *VMImageRepositoryCredentials
 
 	// Specifies information about the gallery image version that you want to create or update.
 	Version *GalleryImageVersion
@@ -248,11 +245,11 @@ type GuestAgent struct {
 	// The resource-specific properties for this resource.
 	Properties *GuestAgentProperties
 
-	// READ-ONLY; guestAgent name
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -347,11 +344,11 @@ type HybridIdentityMetadata struct {
 	// The resource-specific properties for this resource.
 	Properties *HybridIdentityMetadataProperties
 
-	// READ-ONLY; Name of the hybrididentitymetadata
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -448,9 +445,9 @@ type Identity struct {
 	TenantID *string
 }
 
-// ImageArmReference - The ARM ID for a Gallery Image.
+// ImageArmReference - The Azure Resource ID for a Gallery Image.
 type ImageArmReference struct {
-	// The ARM ID for an image resource used by the virtual machine instance.
+	// The Azure Resource ID for an image resource used by the virtual machine instance.
 	ID *string
 }
 
@@ -483,9 +480,6 @@ type LogicalNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the logical network
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -498,6 +492,9 @@ type LogicalNetwork struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The name of the resource
+	Name *string
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
@@ -505,9 +502,9 @@ type LogicalNetwork struct {
 	Type *string
 }
 
-// LogicalNetworkArmReference - The ARM ID for a Logical Network.
+// LogicalNetworkArmReference - The Azure Resource ID for a Logical Network.
 type LogicalNetworkArmReference struct {
-	// The ARM ID for a Logical Network.
+	// The Azure Resource ID for a Logical Network.
 	ID *string
 }
 
@@ -597,9 +594,6 @@ type MarketplaceGalleryImage struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the marketplace gallery image
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -611,6 +605,9 @@ type MarketplaceGalleryImage struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -699,9 +696,6 @@ type NetworkInterface struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the network interface
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -714,6 +708,9 @@ type NetworkInterface struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The name of the resource
+	Name *string
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
@@ -721,9 +718,9 @@ type NetworkInterface struct {
 	Type *string
 }
 
-// NetworkInterfaceArmReference - The ARM ID for a Network Interface.
+// NetworkInterfaceArmReference - The Azure Resource ID for a Network Interface.
 type NetworkInterfaceArmReference struct {
-	// The ARM ID for a Network Interface.
+	// The Azure Resource ID for a Network Interface.
 	ID *string
 }
 
@@ -810,9 +807,6 @@ type NetworkSecurityGroup struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the network security group
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -831,6 +825,9 @@ type NetworkSecurityGroup struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The name of the resource
+	Name *string
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
@@ -838,9 +835,9 @@ type NetworkSecurityGroup struct {
 	Type *string
 }
 
-// NetworkSecurityGroupArmReference - The ARM ID for a Network Security Group.
+// NetworkSecurityGroupArmReference - The Azure Resource ID for a Network Security Group.
 type NetworkSecurityGroupArmReference struct {
-	// The ARM ID for a Network Security Group.
+	// The Azure Resource ID for a Network Security Group.
 	ID *string
 }
 
@@ -986,9 +983,6 @@ type SSHPublicKey struct {
 
 // SecurityRule - Security Rule resource.
 type SecurityRule struct {
-	// READ-ONLY; Name of the security rule.
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -997,6 +991,9 @@ type SecurityRule struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1053,9 +1050,6 @@ type StorageContainer struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
-	// READ-ONLY; Name of the storage container
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -1067,6 +1061,9 @@ type StorageContainer struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1144,9 +1141,9 @@ type Subnet struct {
 	Properties *SubnetProperties
 }
 
-// SubnetIPConfigurationReference - The ARM ID for a Network Interface.
+// SubnetIPConfigurationReference - The Azure Resource ID for a Network Interface.
 type SubnetIPConfigurationReference struct {
-	// The ARM ID for a Network Interface.
+	// The Azure Resource ID for a Network Interface.
 	ID *string
 }
 
@@ -1215,22 +1212,10 @@ type VMDiskSecurityProfile struct {
 	SecurityEncryptionType *SecurityEncryptionType
 }
 
-// VMImageRepositoryCredentials - The credentials used to login to the image repository that has access to the specified image
-type VMImageRepositoryCredentials struct {
-	// REQUIRED; Password for accessing image repository
-	Password *string
-
-	// REQUIRED; Username for accessing image repository
-	Username *string
-}
-
 // VirtualHardDisk - The virtual hard disk resource definition.
 type VirtualHardDisk struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
-
-	// READ-ONLY; Name of the virtual hard disk
-	Name *string
 
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
@@ -1244,6 +1229,9 @@ type VirtualHardDisk struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
+	// READ-ONLY; The name of the resource
+	Name *string
+
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
@@ -1251,9 +1239,9 @@ type VirtualHardDisk struct {
 	Type *string
 }
 
-// VirtualHardDiskArmReference - The ARM ID for a Virtual Hard Disk.
+// VirtualHardDiskArmReference - The Azure Resource ID for a Virtual Hard Disk.
 type VirtualHardDiskArmReference struct {
-	// The ARM ID for a Virtual Hard Disk.
+	// The Azure Resource ID for a Virtual Hard Disk.
 	ID *string
 }
 
@@ -1333,7 +1321,7 @@ type VirtualHardDiskStatus struct {
 	// Descriptive error message
 	ErrorMessage *string
 
-	// ARM IDs of the VMs that are consuming the VHD.
+	// Azure Resource IDs of the VMs that are consuming the VHD.
 	ManagedBy []*string
 
 	// Provisioning status of the vhd
@@ -1366,7 +1354,7 @@ type VirtualHardDiskUploadResponse struct {
 	// The upload status of the virtual hard disk
 	UploadStatus *VirtualHardDiskUploadStatus
 
-	// The ARM ID for a Virtual Hard Disk.
+	// The Azure Resource ID for a Virtual Hard Disk.
 	VirtualHardDiskID *string
 }
 
@@ -1414,9 +1402,6 @@ type VirtualMachineConfigAgentInstanceView struct {
 
 // VirtualMachineInstance - The virtual machine instance resource definition.
 type VirtualMachineInstance struct {
-	// READ-ONLY; name of virtual machine
-	Name *string
-
 	// The extendedLocation of the resource.
 	ExtendedLocation *ExtendedLocation
 
@@ -1428,6 +1413,9 @@ type VirtualMachineInstance struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1661,7 +1649,7 @@ type VirtualMachineInstancePropertiesStorageProfile struct {
 
 // VirtualMachineInstancePropertiesStorageProfileOsDisk - VHD to attach as OS disk
 type VirtualMachineInstancePropertiesStorageProfileOsDisk struct {
-	// The ARM ID for a Virtual Hard Disk.
+	// The Azure Resource ID for a Virtual Hard Disk.
 	ID *string
 
 	// The managed disk parameters.

@@ -1,13 +1,10 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package azopenai
 
 import (
-	"github.com/openai/openai-go/option"
+	"github.com/openai/openai-go/v3/option"
 )
 
 // WithDataSources adds in Azure data sources to be used with the "Azure OpenAI On Your Data" feature.

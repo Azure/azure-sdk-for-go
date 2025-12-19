@@ -10,16 +10,15 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/stretchr/testify/require"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/require"
 )
 
 const proxyManualStartEnv = "PROXY_MANUAL_START"
 
 func TestRecordingHTTPClient_Do(t *testing.T) {
 	// Ignore manual start in pipeline tests, we always want to exercise install
-	os.Setenv(proxyManualStartEnv, "false")
+	require.NoError(t, os.Setenv(proxyManualStartEnv, "false"))
 
 	proxy, err := recording.StartTestProxy("", nil)
 	require.NoError(t, err)

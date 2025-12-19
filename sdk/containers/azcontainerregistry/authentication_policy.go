@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -118,7 +115,7 @@ func (p *authenticationPolicy) getAccessToken(req *policy.Request, service, scop
 		if err != nil {
 			return "", err
 		}
-		return *resp.ACRAccessToken.AccessToken, nil
+		return *resp.AccessToken, nil
 	}
 
 	// access with token
@@ -137,7 +134,7 @@ func (p *authenticationPolicy) getAccessToken(req *policy.Request, service, scop
 	if err != nil {
 		return "", err
 	}
-	return *resp.ACRAccessToken.AccessToken, nil
+	return *resp.AccessToken, nil
 }
 
 func findServiceAndScope(resp *http.Response) (string, string, error) {
@@ -205,11 +202,11 @@ func acquireRefreshToken(state acquiringResourceState) (newResource azcore.Acces
 	}
 
 	refreshToken := azcore.AccessToken{
-		Token: *refreshResp.ACRRefreshToken.RefreshToken,
+		Token: *refreshResp.RefreshToken,
 	}
 
 	// get refresh token expire time
-	refreshToken.ExpiresOn, err = getJWTExpireTime(*refreshResp.ACRRefreshToken.RefreshToken)
+	refreshToken.ExpiresOn, err = getJWTExpireTime(*refreshResp.RefreshToken)
 	if err != nil {
 		return azcore.AccessToken{}, time.Time{}, err
 	}

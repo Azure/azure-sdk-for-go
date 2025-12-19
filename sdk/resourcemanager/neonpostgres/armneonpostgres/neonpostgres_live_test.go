@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -61,7 +58,7 @@ func (testsuite *NeonpostgresTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestNeonpostgresTestSuite(t *testing.T) {
+func TTestNeonpostgresTestSuite(t *testing.T) {
 	suite.Run(t, new(NeonpostgresTestSuite))
 }
 

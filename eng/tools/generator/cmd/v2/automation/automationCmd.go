@@ -17,7 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/automation/pipeline"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/cmd/v2/common"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
+	internalutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -58,7 +59,7 @@ func execute(inputPath, outputPath string) error {
 	log.Printf("Using current directory as SDK root: %s", cwd)
 
 	ctx := automationContext{
-		sdkRoot:    utils.NormalizePath(cwd),
+		sdkRoot:    internalutils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
 	}
@@ -89,12 +90,12 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	}
 
 	errorBuilder := generateErrorBuilder{}
-	if input.RunMode == common.AutomationRunModeLocal || input.RunMode == common.AutomationRunModeRelease {
-		if input.SdkReleaseType != "" && input.SdkReleaseType != common.SDKReleaseTypeStable && input.SdkReleaseType != common.SDKReleaseTypePreview {
+	if input.RunMode == utils.AutomationRunModeLocal || input.RunMode == utils.AutomationRunModeRelease {
+		if input.SdkReleaseType != "" && input.SdkReleaseType != utils.SDKReleaseTypeStable && input.SdkReleaseType != utils.SDKReleaseTypeBeta {
 			return nil, fmt.Errorf("invalid SDK release type:%s, only support 'stable' or 'beta'", input.SdkReleaseType)
 		}
 		if input.SdkReleaseType != "" && input.ApiVersion != "" {
-			if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == common.SDKReleaseTypeStable {
+			if strings.HasSuffix(input.ApiVersion, "-preview") && input.SdkReleaseType == utils.SDKReleaseTypeStable {
 				return nil, fmt.Errorf("SDK release type is stable, but API version: %s is preview", input.ApiVersion)
 			}
 		}
@@ -202,14 +203,20 @@ func (ctx *automationContext) getRPMap(absReadmeGo string) (map[string][]common.
 func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult *common.GenerateResult) pipeline.PackageResult {
 	content := namespaceResult.ChangelogMD
 	breaking := namespaceResult.Changelog.HasBreakingChanges()
-	if namespaceResult.PullRequestLabels == string(common.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(common.BetaBreakingChangeLabel) {
+	if namespaceResult.PullRequestLabels == string(utils.FirstGABreakingChangeLabel) || namespaceResult.PullRequestLabels == string(utils.BetaBreakingChangeLabel) {
 		// If the PR is first beta or first GA, it is not necessary to report SDK breaking change in spec PR
 		breaking = false
 	}
 	breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
 	srcFolder := filepath.Join(generateCtx.SDKPath, namespaceResult.PackageRelativePath)
-	apiViewArtifact := filepath.Join(generateCtx.SDKPath, namespaceResult.PackageRelativePath+".gosource")
+	goSourceArtifact := namespaceResult.PackageRelativePath + ".gosource"
+	apiViewArtifact := filepath.Join(generateCtx.SDKPath, goSourceArtifact)
+	if namespaceResult.ModuleRelativePath != "" {
+		srcFolder = filepath.Join(generateCtx.SDKPath, namespaceResult.ModuleRelativePath)
+		goSourceArtifact = namespaceResult.ModuleRelativePath + ".gosource"
+		apiViewArtifact = filepath.Join(generateCtx.SDKPath, goSourceArtifact)
+	}
 	err := zipDirectory(srcFolder, apiViewArtifact)
 	if err != nil {
 		fmt.Println(err)
@@ -225,7 +232,7 @@ func processNamespaceResult(generateCtx common.GenerateContext, namespaceResult 
 			HasBreakingChange:   &breaking,
 			BreakingChangeItems: &breakingChangeItems,
 		},
-		APIViewArtifact: namespaceResult.PackageRelativePath + ".gosource",
+		APIViewArtifact: goSourceArtifact,
 		Language:        "Go",
 	}
 }
@@ -272,7 +279,7 @@ func zipDirectory(srcFolder, dstZip string) error {
 	}
 	w := zip.NewWriter(outFile)
 	srcFolder = strings.TrimSuffix(srcFolder, string(os.PathSeparator))
-	err = filepath.Walk(srcFolder, func(path string, info fs.FileInfo, err error) error {
+	if err = filepath.Walk(srcFolder, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -281,8 +288,7 @@ func zipDirectory(srcFolder, dstZip string) error {
 			return err
 		}
 		header.Method = zip.Deflate
-		header.Name, err = filepath.Rel(filepath.Dir(srcFolder), path)
-		if err != nil {
+		if header.Name, err = filepath.Rel(filepath.Dir(srcFolder), path); err != nil {
 			return err
 		}
 		if info.IsDir() {
@@ -299,21 +305,17 @@ func zipDirectory(srcFolder, dstZip string) error {
 		if err != nil {
 			return err
 		}
-		_, err = io.Copy(hw, f)
-		if err != nil {
+		if _, err = io.Copy(hw, f); err != nil {
 			return err
 		}
 		return nil
-	})
-	if err != nil {
+	}); err != nil {
 		return err
 	}
-	err = w.Close()
-	if err != nil {
+	if err = w.Close(); err != nil {
 		return err
 	}
-	err = outFile.Close()
-	if err != nil {
+	if err = outFile.Close(); err != nil {
 		return err
 	}
 	return nil

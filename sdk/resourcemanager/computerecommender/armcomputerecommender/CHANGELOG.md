@@ -1,5 +1,10 @@
 # Release History
 
+## 0.1.1 (2025-09-23)
+### Other Changes
+
+- Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armrecommender instead.
+
 ## 0.1.0 (2025-09-01)
 ### Other Changes
 

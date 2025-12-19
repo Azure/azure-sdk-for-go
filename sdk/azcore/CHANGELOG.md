@@ -1,10 +1,27 @@
 # Release History
 
-## 1.19.1-beta.1 (Unreleased)
+## 1.20.1-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.20.0 (2025-11-06)
+
+### Features Added
+
+* Added `runtime.FetcherForNextLinkOptions.HTTPVerb` to specify the HTTP verb when fetching the next page via next link. Defaults to `http.MethodGet`.
+
+### Bugs Fixed
+
+* Fixed potential panic when decoding base64 strings.
+* Fixed an issue in resource identifier parsing which prevented it from returning an error for malformed resource IDs.
+
+## 1.19.1 (2025-09-11)
 
 ### Bugs Fixed
 
@@ -13,6 +30,7 @@
 ### Other Changes
 
 * Improved error fall-back for improperly authored long-running operations.
+* Upgraded dependencies.
 
 ## 1.19.0 (2025-08-21)
 

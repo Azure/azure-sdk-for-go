@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -193,6 +190,15 @@ func TestTenantID(t *testing.T) {
 			name: credNameAzureCLI,
 			ctor: func(tenant string) (azcore.TokenCredential, error) {
 				return NewAzureCLICredential(&AzureCLICredentialOptions{
+					TenantID: tenant,
+				})
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameAzurePowerShell,
+			ctor: func(tenant string) (azcore.TokenCredential, error) {
+				return NewAzurePowerShellCredential(&AzurePowerShellCredentialOptions{
 					TenantID: tenant,
 				})
 			},
@@ -569,6 +575,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 func TestGetTokenRequiresScopes(t *testing.T) {
 	for _, ctor := range []func() (azcore.TokenCredential, error){
 		func() (azcore.TokenCredential, error) { return NewAzureCLICredential(nil) },
+		func() (azcore.TokenCredential, error) { return NewAzurePowerShellCredential(nil) },
 		func() (azcore.TokenCredential, error) { return NewAzureDeveloperCLICredential(nil) },
 		func() (azcore.TokenCredential, error) {
 			return NewClientAssertionCredential(
@@ -691,6 +698,25 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 					},
 				}
 				return NewAzureCLICredential(&o)
+			},
+			tenantOptional: true,
+		},
+		{
+			name: credNameAzurePowerShell,
+			ctor: func(_ azcore.ClientOptions, tc testCase, t *testing.T) (azcore.TokenCredential, error) {
+				o := AzurePowerShellCredentialOptions{
+					AdditionallyAllowedTenants: tc.allowed,
+					TenantID:                   tc.ctorTenant,
+					exec: func(ctx context.Context, credName string, commandLine string) ([]byte, error) {
+						splitCommand := strings.Split(commandLine, " ")
+						encodedScript := splitCommand[len(splitCommand)-1]
+						decodedScript, err := base64DecodeUTF16LE(encodedScript)
+						require.NoError(t, err)
+						require.Contains(t, decodedScript, fmt.Sprintf("$params['TenantId'] = '%s'", tc.expected))
+						return mockAzurePowerShellSuccess(ctx, credName, commandLine)
+					},
+				}
+				return NewAzurePowerShellCredential(&o)
 			},
 			tenantOptional: true,
 		},
@@ -1169,6 +1195,12 @@ func TestCLIArgumentValidation(t *testing.T) {
 		},
 		{
 			ctor: func() (azcore.TokenCredential, error) {
+				return NewAzurePowerShellCredential(nil)
+			},
+			name: credNameAzurePowerShell,
+		},
+		{
+			ctor: func() (azcore.TokenCredential, error) {
 				return NewAzureDeveloperCLICredential(nil)
 			},
 			name: credNameAzureDeveloperCLI,
@@ -1491,7 +1523,9 @@ func TestDoForClient(t *testing.T) {
 
 			resp, err := doForClient(client, req)
 			require.NoError(t, err)
-			defer resp.Body.Close()
+			defer func() {
+				_ = resp.Body.Close()
+			}()
 
 			require.Equal(t, http.StatusOK, resp.StatusCode)
 

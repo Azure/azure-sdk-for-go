@@ -5,11 +5,6 @@
 
 package armappservice
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice"
-	moduleVersion = "v5.0.0"
-)
-
 // AppServicePlanRestrictions - App Service plans this offer is restricted to.
 type AppServicePlanRestrictions string
 
@@ -1125,6 +1120,22 @@ func PossibleInsightStatusValues() []InsightStatus {
 	}
 }
 
+// InstallScriptType - Type of the install script.
+type InstallScriptType string
+
+const (
+	InstallScriptTypePlatformStorage InstallScriptType = "PlatformStorage"
+	InstallScriptTypeRemoteAzureBlob InstallScriptType = "RemoteAzureBlob"
+)
+
+// PossibleInstallScriptTypeValues returns the possible values for the InstallScriptType const type.
+func PossibleInstallScriptTypeValues() []InstallScriptType {
+	return []InstallScriptType{
+		InstallScriptTypePlatformStorage,
+		InstallScriptTypeRemoteAzureBlob,
+	}
+}
+
 // IssueType - Represents the type of the Detector
 type IssueType string
 
@@ -1351,7 +1362,6 @@ func PossibleManagedPipelineModeValues() []ManagedPipelineMode {
 	}
 }
 
-// ManagedServiceIdentityType - Type of managed service identity.
 type ManagedServiceIdentityType string
 
 const (
@@ -1616,6 +1626,30 @@ func PossibleRedundancyModeValues() []RedundancyMode {
 		RedundancyModeGeoRedundant,
 		RedundancyModeManual,
 		RedundancyModeNone,
+	}
+}
+
+// RegistryAdapterType - Type of the registry adapter.
+type RegistryAdapterType string
+
+const (
+	RegistryAdapterTypeBinary       RegistryAdapterType = "Binary"
+	RegistryAdapterTypeDWord        RegistryAdapterType = "DWord"
+	RegistryAdapterTypeExpandString RegistryAdapterType = "Expand_String"
+	RegistryAdapterTypeMultiString  RegistryAdapterType = "Multi_String"
+	RegistryAdapterTypeQWord        RegistryAdapterType = "QWord"
+	RegistryAdapterTypeString       RegistryAdapterType = "String"
+)
+
+// PossibleRegistryAdapterTypeValues returns the possible values for the RegistryAdapterType const type.
+func PossibleRegistryAdapterTypeValues() []RegistryAdapterType {
+	return []RegistryAdapterType{
+		RegistryAdapterTypeBinary,
+		RegistryAdapterTypeDWord,
+		RegistryAdapterTypeExpandString,
+		RegistryAdapterTypeMultiString,
+		RegistryAdapterTypeQWord,
+		RegistryAdapterTypeString,
 	}
 }
 
@@ -2033,6 +2067,24 @@ func PossibleStatusOptionsValues() []StatusOptions {
 		StatusOptionsCreating,
 		StatusOptionsPending,
 		StatusOptionsReady,
+	}
+}
+
+// StorageMountType - Type of the storage mount.
+type StorageMountType string
+
+const (
+	StorageMountTypeAzureFiles   StorageMountType = "AzureFiles"
+	StorageMountTypeFileShare    StorageMountType = "FileShare"
+	StorageMountTypeLocalStorage StorageMountType = "LocalStorage"
+)
+
+// PossibleStorageMountTypeValues returns the possible values for the StorageMountType const type.
+func PossibleStorageMountTypeValues() []StorageMountType {
+	return []StorageMountType{
+		StorageMountTypeAzureFiles,
+		StorageMountTypeFileShare,
+		StorageMountTypeLocalStorage,
 	}
 }
 

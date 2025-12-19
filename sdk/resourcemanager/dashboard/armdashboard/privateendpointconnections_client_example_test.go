@@ -6,12 +6,13 @@ package armdashboard_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dashboard/armdashboard/v2"
-	"log"
 )
 
-// Generated from example definition: 2024-11-01-preview/PrivateEndpointConnections_Approve.json
+// Generated from example definition: 2025-08-01/PrivateEndpointConnections_Approve.json
 func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +23,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", armdashboard.PrivateEndpointConnection{}, nil)
+	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginApprove(ctx, "myResourceGroup", "myWorkspace", "myConnection", armdashboard.PrivateEndpointConnection{}, &armdashboard.PrivateEndpointConnectionsClientBeginApproveOptions{})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -32,7 +33,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginApprove() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/PrivateEndpointConnections_Delete.json
+// Generated from example definition: 2025-08-01/PrivateEndpointConnections_Delete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +54,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-01-preview/PrivateEndpointConnections_Get.json
+// Generated from example definition: 2025-08-01/PrivateEndpointConnections_Get.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +95,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01-preview/PrivateEndpointConnections_List.json
+// Generated from example definition: 2025-08-01/PrivateEndpointConnections_List.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

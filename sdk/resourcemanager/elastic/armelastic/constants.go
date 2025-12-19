@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +14,25 @@
 
 package armelastic
 
+// ConfigurationType - Configuration type of the Elasticsearch project
+type ConfigurationType string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
-	moduleVersion = "v1.0.0"
+	ConfigurationTypeGeneralPurpose ConfigurationType = "GeneralPurpose"
+	ConfigurationTypeNotApplicable  ConfigurationType = "NotApplicable"
+	ConfigurationTypeTimeSeries     ConfigurationType = "TimeSeries"
+	ConfigurationTypeVector         ConfigurationType = "Vector"
 )
+
+// PossibleConfigurationTypeValues returns the possible values for the ConfigurationType const type.
+func PossibleConfigurationTypeValues() []ConfigurationType {
+	return []ConfigurationType{
+		ConfigurationTypeGeneralPurpose,
+		ConfigurationTypeNotApplicable,
+		ConfigurationTypeTimeSeries,
+		ConfigurationTypeVector,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -55,6 +67,22 @@ func PossibleElasticDeploymentStatusValues() []ElasticDeploymentStatus {
 	return []ElasticDeploymentStatus{
 		ElasticDeploymentStatusHealthy,
 		ElasticDeploymentStatusUnhealthy,
+	}
+}
+
+// HostingType - Hosting type of the monitor resource - either Hosted deployments or Serverless Projects.
+type HostingType string
+
+const (
+	HostingTypeHosted     HostingType = "Hosted"
+	HostingTypeServerless HostingType = "Serverless"
+)
+
+// PossibleHostingTypeValues returns the possible values for the HostingType const type.
+func PossibleHostingTypeValues() []HostingType {
+	return []HostingType{
+		HostingTypeHosted,
+		HostingTypeServerless,
 	}
 }
 
@@ -103,6 +131,28 @@ func PossibleMonitoringStatusValues() []MonitoringStatus {
 	}
 }
 
+// Operation - The operation for the patch on the resource.
+type Operation string
+
+const (
+	OperationActive         Operation = "Active"
+	OperationAddBegin       Operation = "AddBegin"
+	OperationAddComplete    Operation = "AddComplete"
+	OperationDeleteBegin    Operation = "DeleteBegin"
+	OperationDeleteComplete Operation = "DeleteComplete"
+)
+
+// PossibleOperationValues returns the possible values for the Operation const type.
+func PossibleOperationValues() []Operation {
+	return []Operation{
+		OperationActive,
+		OperationAddBegin,
+		OperationAddComplete,
+		OperationDeleteBegin,
+		OperationDeleteComplete,
+	}
+}
+
 // OperationName - Operation to be performed on the given vm resource id.
 type OperationName string
 
@@ -116,6 +166,26 @@ func PossibleOperationNameValues() []OperationName {
 	return []OperationName{
 		OperationNameAdd,
 		OperationNameDelete,
+	}
+}
+
+// ProjectType - Project type; ex: Elasticsearch / Observability / Security
+type ProjectType string
+
+const (
+	ProjectTypeElasticsearch ProjectType = "Elasticsearch"
+	ProjectTypeNotApplicable ProjectType = "NotApplicable"
+	ProjectTypeObservability ProjectType = "Observability"
+	ProjectTypeSecurity      ProjectType = "Security"
+)
+
+// PossibleProjectTypeValues returns the possible values for the ProjectType const type.
+func PossibleProjectTypeValues() []ProjectType {
+	return []ProjectType{
+		ProjectTypeElasticsearch,
+		ProjectTypeNotApplicable,
+		ProjectTypeObservability,
+		ProjectTypeSecurity,
 	}
 }
 
@@ -162,6 +232,26 @@ func PossibleSendingLogsValues() []SendingLogs {
 	return []SendingLogs{
 		SendingLogsFalse,
 		SendingLogsTrue,
+	}
+}
+
+// Status - The state of monitoring.
+type Status string
+
+const (
+	StatusActive     Status = "Active"
+	StatusDeleting   Status = "Deleting"
+	StatusFailed     Status = "Failed"
+	StatusInProgress Status = "InProgress"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusActive,
+		StatusDeleting,
+		StatusFailed,
+		StatusInProgress,
 	}
 }
 

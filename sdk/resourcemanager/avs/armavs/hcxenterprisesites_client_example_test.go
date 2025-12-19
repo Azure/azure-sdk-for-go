@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/HcxEnterpriseSites_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/HcxEnterpriseSites_CreateOrUpdate.json
 func ExampleHcxEnterpriseSitesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleHcxEnterpriseSitesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/HcxEnterpriseSites_Delete.json
+// Generated from example definition: 2025-09-01/HcxEnterpriseSites_Delete.json
 func ExampleHcxEnterpriseSitesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleHcxEnterpriseSitesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/HcxEnterpriseSites_Get.json
+// Generated from example definition: 2025-09-01/HcxEnterpriseSites_Get.json
 func ExampleHcxEnterpriseSitesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleHcxEnterpriseSitesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/HcxEnterpriseSites_List.json
+// Generated from example definition: 2025-09-01/HcxEnterpriseSites_List.json
 func ExampleHcxEnterpriseSitesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

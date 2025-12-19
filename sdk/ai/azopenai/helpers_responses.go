@@ -6,8 +6,8 @@ package azopenai
 import (
 	"encoding/json"
 
-	"github.com/openai/openai-go"
-	"github.com/openai/openai-go/packages/respjson"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/packages/respjson"
 )
 
 //

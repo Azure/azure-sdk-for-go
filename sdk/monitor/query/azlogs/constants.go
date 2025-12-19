@@ -54,8 +54,8 @@ const (
 	versionsV1 versions = "v1"
 )
 
-// possibleVersionsValues returns the possible values for the versions const type.
-func possibleVersionsValues() []versions {
+// possibleversionsValues returns the possible values for the versions const type.
+func possibleversionsValues() []versions {
 	return []versions{
 		versionsV1,
 	}

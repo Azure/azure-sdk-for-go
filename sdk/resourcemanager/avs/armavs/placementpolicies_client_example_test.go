@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/PlacementPolicies_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/PlacementPolicies_CreateOrUpdate.json
 func ExamplePlacementPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExamplePlacementPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/PlacementPolicies_Delete.json
+// Generated from example definition: 2025-09-01/PlacementPolicies_Delete.json
 func ExamplePlacementPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExamplePlacementPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/PlacementPolicies_Get.json
+// Generated from example definition: 2025-09-01/PlacementPolicies_Get.json
 func ExamplePlacementPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExamplePlacementPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/PlacementPolicies_List.json
+// Generated from example definition: 2025-09-01/PlacementPolicies_List.json
 func ExamplePlacementPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +218,7 @@ func ExamplePlacementPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/PlacementPolicies_Update.json
+// Generated from example definition: 2025-09-01/PlacementPolicies_Update.json
 func ExamplePlacementPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -26,7 +26,7 @@ type ApplicationsClient struct {
 // NewApplicationsClient creates a new instance of ApplicationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Create or update a Service Fabric managed application resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -69,7 +69,7 @@ func (client *ApplicationsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Create or update a Service Fabric managed application resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 func (client *ApplicationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationResource, options *ApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *ApplicationsClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Delete a Service Fabric managed application resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -154,7 +154,7 @@ func (client *ApplicationsClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete a Service Fabric managed application resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 func (client *ApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginDelete"
@@ -200,8 +200,95 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginFetchHealth - Get the status of the deployed application health. It will query the cluster to find the health of the
+// deployed application.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - applicationName - The name of the application resource.
+//   - parameters - The parameters for fetching the health of a deployed application.
+//   - options - ApplicationsClientBeginFetchHealthOptions contains the optional parameters for the ApplicationsClient.BeginFetchHealth
+//     method.
+func (client *ApplicationsClient) BeginFetchHealth(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationFetchHealthRequest, options *ApplicationsClientBeginFetchHealthOptions) (*runtime.Poller[ApplicationsClientFetchHealthResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.fetchHealth(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientFetchHealthResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientFetchHealthResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// FetchHealth - Get the status of the deployed application health. It will query the cluster to find the health of the deployed
+// application.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+func (client *ApplicationsClient) fetchHealth(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationFetchHealthRequest, options *ApplicationsClientBeginFetchHealthOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationsClient.BeginFetchHealth"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.fetchHealthCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// fetchHealthCreateRequest creates the FetchHealth request.
+func (client *ApplicationsClient) fetchHealthCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationFetchHealthRequest, _ *ApplicationsClientBeginFetchHealthOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/fetchHealth"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if applicationName == "" {
+		return nil, errors.New("parameter applicationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -209,7 +296,7 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 // cluster resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -260,7 +347,7 @@ func (client *ApplicationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +365,7 @@ func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (Applic
 // NewListPager - Gets all managed application resources created or in the process of being created in the Service Fabric
 // cluster resource.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.NewListPager method.
@@ -325,7 +412,7 @@ func (client *ApplicationsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,7 +431,7 @@ func (client *ApplicationsClient) listHandleResponse(resp *http.Response) (Appli
 // latest application upgrade.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -371,7 +458,7 @@ func (client *ApplicationsClient) BeginReadUpgrade(ctx context.Context, resource
 // application upgrade.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 func (client *ApplicationsClient) readUpgrade(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginReadUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginReadUpgrade"
@@ -417,8 +504,95 @@ func (client *ApplicationsClient) readUpgradeCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginRestartDeployedCodePackage - Restart a code package instance of a service replica or instance. This is a potentially
+// destabilizing operation that should be used with immense care.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - applicationName - The name of the application resource.
+//   - parameters - The parameters for restarting a deployed code package.
+//   - options - ApplicationsClientBeginRestartDeployedCodePackageOptions contains the optional parameters for the ApplicationsClient.BeginRestartDeployedCodePackage
+//     method.
+func (client *ApplicationsClient) BeginRestartDeployedCodePackage(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RestartDeployedCodePackageRequest, options *ApplicationsClientBeginRestartDeployedCodePackageOptions) (*runtime.Poller[ApplicationsClientRestartDeployedCodePackageResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restartDeployedCodePackage(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientRestartDeployedCodePackageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientRestartDeployedCodePackageResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RestartDeployedCodePackage - Restart a code package instance of a service replica or instance. This is a potentially destabilizing
+// operation that should be used with immense care.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+func (client *ApplicationsClient) restartDeployedCodePackage(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RestartDeployedCodePackageRequest, options *ApplicationsClientBeginRestartDeployedCodePackageOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationsClient.BeginRestartDeployedCodePackage"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartDeployedCodePackageCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// restartDeployedCodePackageCreateRequest creates the RestartDeployedCodePackage request.
+func (client *ApplicationsClient) restartDeployedCodePackageCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RestartDeployedCodePackageRequest, _ *ApplicationsClientBeginRestartDeployedCodePackageOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/restartDeployedCodePackage"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if applicationName == "" {
+		return nil, errors.New("parameter applicationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -426,7 +600,7 @@ func (client *ApplicationsClient) readUpgradeCreateRequest(ctx context.Context, 
 // from where it was paused.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -454,7 +628,7 @@ func (client *ApplicationsClient) BeginResumeUpgrade(ctx context.Context, resour
 // where it was paused.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 func (client *ApplicationsClient) resumeUpgrade(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeResumeApplicationUpgradeParameters, options *ApplicationsClientBeginResumeUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginResumeUpgrade"
@@ -500,7 +674,7 @@ func (client *ApplicationsClient) resumeUpgradeCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -513,7 +687,7 @@ func (client *ApplicationsClient) resumeUpgradeCreateRequest(ctx context.Context
 // the application to the previous version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -540,7 +714,7 @@ func (client *ApplicationsClient) BeginStartRollback(ctx context.Context, resour
 // application to the previous version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 func (client *ApplicationsClient) startRollback(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, options *ApplicationsClientBeginStartRollbackOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationsClient.BeginStartRollback"
@@ -586,44 +760,65 @@ func (client *ApplicationsClient) startRollbackCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
-// Update - Updates the tags of an application resource of a given managed cluster.
+// BeginUpdate - Updates an application resource of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
 //   - parameters - The application resource updated tags.
-//   - options - ApplicationsClientUpdateOptions contains the optional parameters for the ApplicationsClient.Update method.
-func (client *ApplicationsClient) Update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, options *ApplicationsClientUpdateOptions) (ApplicationsClientUpdateResponse, error) {
+//   - options - ApplicationsClientBeginUpdateOptions contains the optional parameters for the ApplicationsClient.BeginUpdate
+//     method.
+func (client *ApplicationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, options *ApplicationsClientBeginUpdateOptions) (*runtime.Poller[ApplicationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Update - Updates an application resource of a given managed cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+func (client *ApplicationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, options *ApplicationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ApplicationsClient.Update"
+	const operationName = "ApplicationsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
 	if err != nil {
-		return ApplicationsClientUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ApplicationsClientUpdateResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ApplicationsClientUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, _ *ApplicationsClientUpdateOptions) (*policy.Request, error) {
+func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters ApplicationUpdateParameters, _ *ApplicationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -646,7 +841,7 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -656,11 +851,87 @@ func (client *ApplicationsClient) updateCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// updateHandleResponse handles the Update response.
-func (client *ApplicationsClient) updateHandleResponse(resp *http.Response) (ApplicationsClientUpdateResponse, error) {
-	result := ApplicationsClientUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationResource); err != nil {
-		return ApplicationsClientUpdateResponse{}, err
+// BeginUpdateUpgrade - Send a request to update the current application upgrade.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - applicationName - The name of the application resource.
+//   - parameters - The parameters for updating an application upgrade.
+//   - options - ApplicationsClientBeginUpdateUpgradeOptions contains the optional parameters for the ApplicationsClient.BeginUpdateUpgrade
+//     method.
+func (client *ApplicationsClient) BeginUpdateUpgrade(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, options *ApplicationsClientBeginUpdateUpgradeOptions) (*runtime.Poller[ApplicationsClientUpdateUpgradeResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.updateUpgrade(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ApplicationsClientUpdateUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ApplicationsClientUpdateUpgradeResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
-	return result, nil
+}
+
+// UpdateUpgrade - Send a request to update the current application upgrade.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-10-01-preview
+func (client *ApplicationsClient) updateUpgrade(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, options *ApplicationsClientBeginUpdateUpgradeOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ApplicationsClient.BeginUpdateUpgrade"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateUpgradeCreateRequest(ctx, resourceGroupName, clusterName, applicationName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateUpgradeCreateRequest creates the UpdateUpgrade request.
+func (client *ApplicationsClient) updateUpgradeCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters RuntimeUpdateApplicationUpgradeParameters, _ *ApplicationsClientBeginUpdateUpgradeOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/updateUpgrade"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if applicationName == "" {
+		return nil, errors.New("parameter applicationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-10-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
 }

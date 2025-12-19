@@ -88,7 +88,9 @@ func (t *Client) submitTransactionInternal(ctx context.Context, transactionActio
 	if err != nil {
 		return TransactionResponse{}, err
 	}
-	writer.Close()
+	if err = writer.Close(); err != nil {
+		return TransactionResponse{}, err
+	}
 
 	err = req.SetBody(streaming.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
 	if err != nil {
@@ -179,7 +181,9 @@ func (t *Client) generateChangesetBody(ctx context.Context, changesetBoundary st
 		}
 	}
 
-	writer.Close()
+	if err = writer.Close(); err != nil {
+		return nil, err
+	}
 	return body, nil
 }
 
@@ -285,7 +289,7 @@ func (t *Client) generateEntitySubset(ctx context.Context, transactionAction *Tr
 	if err != nil {
 		return err
 	}
-	err = writeHeaders(req.Raw().Header, &operationWriter)
+	err = writeHeaders(req.Raw().Header, operationWriter)
 	if err != nil {
 		return err
 	}
@@ -300,7 +304,7 @@ func (t *Client) generateEntitySubset(ctx context.Context, transactionAction *Tr
 	return err
 }
 
-func writeHeaders(h http.Header, writer *io.Writer) error {
+func writeHeaders(h http.Header, writer io.Writer) error {
 	// This way it is guaranteed the headers will be written in a sorted order
 	var keys []string
 	for k := range h {
@@ -309,8 +313,7 @@ func writeHeaders(h http.Header, writer *io.Writer) error {
 	sort.Strings(keys)
 	var err error
 	for _, k := range keys {
-		_, err = (*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
-
+		_, err = fmt.Fprintf(writer, "%s: %s\r\n", k, h.Get(k))
 	}
 	return err
 }

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -21,9 +18,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
 
@@ -45,7 +42,9 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 	if v, ok := os.LookupEnv(azureTokenCredentials); ok {
 		require.NoError(t, os.Unsetenv(azureTokenCredentials))
-		defer os.Setenv(azureTokenCredentials, v)
+		defer func() {
+			_ = os.Setenv(azureTokenCredentials, v)
+		}()
 	}
 	// configure EnvironmentCredential and WorkloadIdentityCredential
 	// so those types appear in the chain instead of error reporters
@@ -64,6 +63,7 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 		&ManagedIdentityCredential{},
 		&AzureCLICredential{},
 		&AzureDeveloperCLICredential{},
+		&AzurePowerShellCredential{},
 	}
 	firstDevIndex := 3
 
@@ -107,6 +107,10 @@ func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 			require.NoError(t, err)
 			require.Equal(t, 1, len(actual.chain.sources))
 			require.Equal(t, "*azidentity."+c, fmt.Sprintf("%T", actual.chain.sources[0]))
+			if c == credNameManagedIdentity {
+				mic := actual.chain.sources[0].(*ManagedIdentityCredential)
+				require.False(t, mic.mic.probeIMDS, "probeIMDS should be false when ManagedIdentityCredential is selected")
+			}
 		})
 	}
 
@@ -137,6 +141,22 @@ func TestDefaultAzureCredential_CLICredentialOptions(t *testing.T) {
 	require.True(az.opts.inDefaultChain)
 	require.NotNil(azd, "%T should be in the default chain", azd)
 	require.True(azd.opts.inDefaultChain)
+}
+
+func TestDefaultAzureCredential_AzurePowerShellCredentialOptions(t *testing.T) {
+	require := require.New(t)
+	cred, err := NewDefaultAzureCredential(nil)
+	require.NoError(err)
+	var (
+		azurePowerShell *AzurePowerShellCredential
+	)
+	for _, s := range cred.chain.sources {
+		if azurePowerShell == nil {
+			azurePowerShell, _ = s.(*AzurePowerShellCredential)
+		}
+	}
+	require.NotNil(azurePowerShell, "%T should be in the default chain", azurePowerShell)
+	require.True(azurePowerShell.opts.inDefaultChain)
 }
 
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
@@ -298,7 +318,7 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestDefaultAzureCredential_Workload(t *testing.T) {
+func TestDefaultAzureCredential_WorkloadIdentity(t *testing.T) {
 	expectedAssertion := "service account token"
 	tempFile := filepath.Join(t.TempDir(), "service-account-token-file")
 	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
@@ -332,35 +352,24 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
-}
 
-func TestDefaultAzureCredential_IMDSLive(t *testing.T) {
-	if recording.GetRecordMode() != recording.PlaybackMode && !liveManagedIdentity.imds {
-		t.Skip("set IDENTITY_IMDS_AVAILABLE to run this test")
-	}
-	// unsetting environment variables to skip EnvironmentCredential and other managed identity sources
-	for _, k := range []string{azureTenantID, identityEndpoint, msiEndpoint} {
-		if v, set := os.LookupEnv(k); set {
-			require.NoError(t, os.Unsetenv(k))
-			defer os.Setenv(k, v)
-		}
-	}
-	co, stop := initRecording(t)
-	defer stop()
-	cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: co})
-	require.NoError(t, err)
-	testGetTokenSuccess(t, cred)
+	t.Run("disables identity binding mode", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, credNameWorkloadIdentity)
+		// these values should trigger validation errors if WorkloadIdentityCredential
+		// tries to configure identity binding mode...
+		t.Setenv(customtokenproxy.AzureKubernetesCAData, "not a valid cert")
+		t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "http://timeout.local&fail=yes#please")
 
-	t.Run("ClientID", func(t *testing.T) {
-		if recording.GetRecordMode() != recording.PlaybackMode && liveManagedIdentity.clientID == "" {
-			t.Skip("set IDENTITY_VM_USER_ASSIGNED_MI_CLIENT_ID to run this test")
-		}
-		t.Setenv(azureClientID, liveManagedIdentity.clientID)
-		co, stop := initRecording(t)
-		defer stop()
-		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{ClientOptions: co})
+		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+			ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},
+		})
 		require.NoError(t, err)
-		testGetTokenSuccess(t, cred)
+
+		// ...but ensure a timeout should it try the proxy anyway
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		_, err = cred.GetToken(ctx, testTRO)
+		require.NoError(t, err)
 	})
 }
 
@@ -382,7 +391,11 @@ func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 }
 
 func TestDefaultAzureCredential_IMDS(t *testing.T) {
-	t.Setenv(azureTokenCredentials, credNameManagedIdentity)
+	before := shellExec
+	defer func() { shellExec = before }()
+	shellExec = func(context.Context, string, string) ([]byte, error) {
+		return nil, NewCredentialUnavailableError("CLI credentials are disabled for this test")
+	}
 
 	t.Run("probe", func(t *testing.T) {
 		probed := false

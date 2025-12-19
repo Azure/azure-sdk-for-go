@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -13,17 +10,22 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
+	"encoding/pem"
 	"fmt"
 	"net/http"
+	"net/http/httptest"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
@@ -100,6 +102,7 @@ func TestWorkloadIdentityCredential_Recorded(t *testing.T) {
 				ClientID:                 liveSP.clientID,
 				ClientOptions:            co,
 				DisableInstanceDiscovery: b,
+				EnableAzureProxy:         true,
 				TenantID:                 liveSP.tenantID,
 				TokenFilePath:            f,
 			})
@@ -136,10 +139,11 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 		return nil
 	}}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientID:      fakeClientID,
-		ClientOptions: policy.ClientOptions{Transport: &sts},
-		TenantID:      fakeTenantID,
-		TokenFilePath: tempFile,
+		ClientID:         fakeClientID,
+		ClientOptions:    policy.ClientOptions{Transport: &sts},
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -167,10 +171,11 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 		return nil
 	}}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientID:      fakeClientID,
-		ClientOptions: policy.ClientOptions{Transport: &sts},
-		TenantID:      fakeTenantID,
-		TokenFilePath: tempFile,
+		ClientID:         fakeClientID,
+		ClientOptions:    policy.ClientOptions{Transport: &sts},
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -225,7 +230,8 @@ func TestWorkloadIdentityCredential_NoFile(t *testing.T) {
 		t.Setenv(k, v)
 	}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},
+		ClientOptions:    policy.ClientOptions{Transport: &mockSTS{}},
+		EnableAzureProxy: true,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -274,10 +280,11 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 		t.Setenv(k, v)
 	}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
-		ClientID:      clientID,
-		ClientOptions: policy.ClientOptions{Transport: &sts},
-		TenantID:      tenantID,
-		TokenFilePath: rightFile,
+		ClientID:         clientID,
+		ClientOptions:    policy.ClientOptions{Transport: &sts},
+		EnableAzureProxy: true,
+		TenantID:         tenantID,
+		TokenFilePath:    rightFile,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -289,4 +296,270 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 	if tk.Token != tokenValue {
 		t.Fatalf("unexpected token %q", tk.Token)
 	}
+}
+
+// startTestTokenEndpointWithCAData starts a TLS server with custom token handler.
+//
+// This token server serves instance discovery, OIDC discovery document and token endpoints.
+func startTestTokenEndpointWithCAData(t testing.TB, tokenHandler http.Handler) (*httptest.Server, string) {
+	t.Helper()
+
+	mux := http.NewServeMux()
+
+	testServer := httptest.NewTLSServer(mux)
+
+	openidDiscoveryDocumentHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		parts := strings.Split(r.URL.Path, "/")
+		if len(parts) < 3 {
+			http.Error(w, "invalid request", http.StatusBadRequest)
+			return
+		}
+		tenantID := parts[1]
+
+		doc := tenantMetadata(r.Host, tenantID) // request.Host should be used in server side
+		var m map[string]any
+		if err := json.Unmarshal(doc, &m); err != nil {
+			t.Fatalf("failed to unmarshal tenant metadata: %v", err)
+		}
+		m["token_endpoint"] = testServer.URL + "/token" // overriding the token endpoint to the proxied token endpoint
+
+		w.Header().Set("Content-Type", "application/json")
+		if err := json.NewEncoder(w).Encode(m); err != nil {
+			t.Fatalf("failed to encode tenant metadata: %v", err)
+		}
+	})
+	mux.Handle("/{tenantid}/v2.0/.well-known/openid-configuration", openidDiscoveryDocumentHandler)
+	mux.HandleFunc("/common/discovery/instance", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		host := r.Host // request.Host should be used in server side
+		if ae := r.URL.Query().Get("authorization_endpoint"); ae != "" {
+			u, err := url.Parse(ae)
+			if err != nil {
+				t.Fatalf("mockSTS failed to parse an authorization_endpoint query parameter: %v", err)
+			}
+			host = u.Host
+		}
+		_, _ = w.Write(instanceMetadata(host, "fake-tenant"))
+	})
+	mux.Handle("/token", tokenHandler)
+
+	serverCert := testServer.Certificate()
+	require.NotNil(t, serverCert)
+	ca := pem.EncodeToMemory(&pem.Block{
+		Type:  "CERTIFICATE",
+		Bytes: serverCert.Raw,
+	})
+	require.NotEmpty(t, ca)
+
+	return testServer, string(ca)
+}
+
+const testClientAssertion = "test-client-assertion-abc9412787413"
+
+// customTokenRequestPolicyFlowCheck validates the custom token request flow is
+// obeying the policy token flows without skipping headers.
+type customTokenRequestPolicyFlowCheck struct {
+	requiredHeaderKey   string
+	requiredHeaderValue string
+}
+
+func newCustomTokenRequestPolicyFlowCheck() *customTokenRequestPolicyFlowCheck {
+	return &customTokenRequestPolicyFlowCheck{
+		requiredHeaderKey:   "adhoc-injected-header",
+		requiredHeaderValue: "adhoc-injected-header-value",
+	}
+}
+
+func (c *customTokenRequestPolicyFlowCheck) Policy() policy.Policy {
+	return policyFunc(func(req *policy.Request) (*http.Response, error) {
+		req.Raw().Header.Set(c.requiredHeaderKey, c.requiredHeaderValue)
+
+		return req.Next()
+	})
+}
+
+func (c *customTokenRequestPolicyFlowCheck) Validate(t testing.TB, req *http.Request) {
+	t.Helper()
+	require.NotNil(t, req)
+	require.NotNil(t, req.Header)
+
+	// headers expecting from client even it's sending to custom token endpoint
+	require.Equal(t, c.requiredHeaderValue, req.Header.Get(c.requiredHeaderKey))
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T) {
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			policyFlowCheck.Validate(t, req)
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, "client_assertion")
+			require.Equal(t, req.PostForm.Get("client_assertion"), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			_, _ = w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.AzureKubernetesCAData, caData)
+
+	clientOptions := policy.ClientOptions{
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:         fakeClientID,
+		ClientOptions:    clientOptions,
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
+	})
+	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testing.T) {
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "invalid-token-endpoint")
+	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:         fakeClientID,
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    filepath.Join(t.TempDir(), "test-workload-token-file"),
+	})
+	require.Error(t, err)
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T) {
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			policyFlowCheck.Validate(t, req)
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, "client_assertion")
+			require.Equal(t, req.PostForm.Get("client_assertion"), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			_, _ = w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	d := t.TempDir()
+	caFile := filepath.Join(d, "test-ca-file")
+	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
+	t.Setenv(customtokenproxy.AzureKubernetesCAFile, caFile)
+
+	clientOptions := policy.ClientOptions{
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:         fakeClientID,
+		ClientOptions:    clientOptions,
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
+	})
+	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
+}
+
+func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
+	tempFile := filepath.Join(t.TempDir(), "test-workload-token-file")
+	if err := os.WriteFile(tempFile, []byte(testClientAssertion), os.ModePerm); err != nil {
+		t.Fatalf("failed to write token file: %v", err)
+	}
+	policyFlowCheck := newCustomTokenRequestPolicyFlowCheck()
+	sniName := "test-sni.example.com"
+
+	customTokenEndointServerCalledTimes := new(atomic.Int32)
+	customTokenEndointServer, caData := startTestTokenEndpointWithCAData(
+		t,
+		http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+			customTokenEndointServerCalledTimes.Add(1)
+
+			policyFlowCheck.Validate(t, req)
+
+			require.NotNil(t, req.TLS)
+			require.Equal(t, req.TLS.ServerName, sniName, "when SNI is set, request should set SNI")
+
+			require.NoError(t, req.ParseForm())
+			require.NotEmpty(t, req.PostForm)
+
+			require.Contains(t, req.PostForm, "client_assertion")
+			require.Equal(t, req.PostForm.Get("client_assertion"), testClientAssertion)
+
+			require.Contains(t, req.PostForm, "client_id")
+			require.Equal(t, req.PostForm.Get("client_id"), fakeClientID)
+
+			_, _ = w.Write(accessTokenRespSuccess)
+		}),
+	)
+
+	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, customTokenEndointServer.URL)
+	t.Setenv(customtokenproxy.AzureKubernetesSNIName, sniName)
+
+	d := t.TempDir()
+	caFile := filepath.Join(d, "test-ca-file")
+	require.NoError(t, os.WriteFile(caFile, []byte(caData), 0600))
+	t.Setenv(customtokenproxy.AzureKubernetesCAFile, caFile)
+
+	clientOptions := policy.ClientOptions{
+		PerCallPolicies: []policy.Policy{
+			policyFlowCheck.Policy(),
+		},
+	}
+	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
+		ClientID:         fakeClientID,
+		ClientOptions:    clientOptions,
+		EnableAzureProxy: true,
+		TenantID:         fakeTenantID,
+		TokenFilePath:    tempFile,
+	})
+	require.NoError(t, err)
+	require.Nil(t, clientOptions.Transport, "constructor shouldn't mutate caller's ClientOptions")
+
+	testGetTokenSuccess(t, cred)
+
+	require.Equal(t, int32(1), customTokenEndointServerCalledTimes.Load())
 }

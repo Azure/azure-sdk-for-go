@@ -62,7 +62,7 @@ func ExecuteGoGenerate(path string) error {
 		}
 	}
 
-	if cmdWaitErr != nil || stderrBuffer.Len() > 0 {
+	if stderrBuffer.Len() > 0 {
 		if stderrBuffer.Len() > 0 {
 			// filter go downloading log
 			// https://github.com/golang/go/blob/1f0c044d60211e435dc58844127544dd3ecb6a41/src/cmd/go/internal/modfetch/fetch.go#L201
@@ -123,7 +123,7 @@ func ExecuteGoimports(path string) error {
 }
 
 func ExecuteGitPush(path, remoteName, branchName string) (string, error) {
-	refName := fmt.Sprintf(branchName + ":" + branchName)
+	refName := branchName + ":" + branchName
 	cmd := exec.Command("git", "push", remoteName, refName)
 	cmd.Dir = path
 	msg, err := cmd.CombinedOutput()
@@ -187,20 +187,12 @@ func ExecuteGo(dir string, args ...string) error {
 	return nil
 }
 
-func ExecuteGoFmt(dir string, args ...string) error {
-	cmd := exec.Command("gofmt", args...)
-	cmd.Dir = dir
-	combinedOutput, err := cmd.CombinedOutput()
-	if err != nil {
-		return fmt.Errorf("failed to execute `gofmt %s` '%s': %+v", strings.Join(args, " "), string(combinedOutput), err)
-	}
-
-	return nil
-}
-
 // execute tsp-client command
 func ExecuteTspClient(path string, args ...string) error {
-	cmd := exec.Command("tsp-client", args...)
+	// Use pinned tsp-client from eng/common/tsp-client instead of global npx
+	tspClientDir := filepath.Join(path, "eng", "common", "tsp-client")
+	args = append([]string{"--prefix", tspClientDir, "exec", "--no", "--", "tsp-client"}, args...)
+	cmd := exec.Command("npm", args...)
 	cmd.Dir = path
 
 	stdoutPipe, err := cmd.StdoutPipe()

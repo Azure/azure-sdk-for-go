@@ -33,6 +33,9 @@ type AdvancedNetworking struct {
 	// Observability profile to enable advanced network metrics and flow logs with historical contexts.
 	Observability *AdvancedNetworkingObservability
 
+	// Profile to enable performance-enhancing features on clusters that use Azure CNI powered by Cilium.
+	Performance *AdvancedNetworkingPerformance
+
 	// Security profile to enable security features on cilium-based cluster.
 	Security *AdvancedNetworkingSecurity
 }
@@ -42,6 +45,16 @@ type AdvancedNetworking struct {
 type AdvancedNetworkingObservability struct {
 	// Indicates the enablement of Advanced Networking observability functionalities on clusters.
 	Enabled *bool
+}
+
+// AdvancedNetworkingPerformance - Profile to enable performance-enhancing features on clusters that use Azure CNI powered
+// by Cilium.
+type AdvancedNetworkingPerformance struct {
+	// Enable advanced network acceleration options. This allows users to configure acceleration using BPF host routing. This
+	// can be enabled only with Cilium dataplane. If not specified, the default value is
+	// None (no acceleration). The acceleration mode can be changed on a pre-existing cluster. See https://aka.ms/acnsperformance
+	// for a detailed explanation
+	AccelerationMode *AccelerationMode
 }
 
 // AdvancedNetworkingSecurity - Security profile to enable security features on cilium-based cluster.
@@ -122,6 +135,31 @@ type AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem struct {
 	KubernetesVersion *string
 }
 
+// AgentPoolBlueGreenUpgradeSettings - Settings for blue-green upgrade on an agentpool
+type AgentPoolBlueGreenUpgradeSettings struct {
+	// The soak duration after draining a batch of nodes, i.e., the amount of time (in minutes) to wait after draining a batch
+	// of nodes before moving on the next batch. If not specified, the default is 15
+	// minutes.
+	BatchSoakDurationInMinutes *int32
+
+	// The number or percentage of nodes to drain in batch during blue-green upgrade. Must be a non-zero number. This can either
+	// be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage
+	// is specified, it is the percentage of the total number of blue nodes of the initial upgrade operation. For percentages,
+	// fractional nodes are rounded up. If not specified, the default is 10%. For more
+	// information, including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
+	DrainBatchSize *string
+
+	// The drain timeout for a node, i.e., the amount of time (in minutes) to wait on eviction of pods and graceful termination
+	// per node. This eviction wait time honors waiting on pod disruption budgets. If
+	// this time is exceeded, the upgrade fails. If not specified, the default is 30 minutes.
+	DrainTimeoutInMinutes *int32
+
+	// The soak duration for a node pool, i.e., the amount of time (in minutes) to wait after all old nodes are drained before
+	// we remove the old nodes. If not specified, the default is 60 minutes. Only
+	// applicable for blue-green upgrade strategy.
+	FinalSoakDurationInMinutes *int32
+}
+
 // AgentPoolDeleteMachinesParameter - Specifies a list of machine names from the agent pool to be deleted.
 type AgentPoolDeleteMachinesParameter struct {
 	// REQUIRED; The agent pool machine names.
@@ -159,6 +197,18 @@ type AgentPoolNetworkProfile struct {
 	NodePublicIPTags []*IPTag
 }
 
+// AgentPoolRecentlyUsedVersion - A historical version that can be used for rollback operations.
+type AgentPoolRecentlyUsedVersion struct {
+	// The node image version available for rollback.
+	NodeImageVersion *string
+
+	// The Kubernetes version (major.minor.patch) available for rollback.
+	OrchestratorVersion *string
+
+	// The timestamp when this version was last used.
+	Timestamp *time.Time
+}
+
 // AgentPoolSecurityProfile - The security settings of an agent pool.
 type AgentPoolSecurityProfile struct {
 	// Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot. For more
@@ -179,7 +229,7 @@ type AgentPoolSecurityProfile struct {
 type AgentPoolStatus struct {
 	// READ-ONLY; The error detail information of the agent pool. Preserves the detailed info of failure. If there was no error,
 	// this field is omitted.
-	ProvisioningError *CloudErrorBody
+	ProvisioningError *ErrorDetail
 }
 
 // AgentPoolUpgradeProfile - The list of available upgrades for an agent pool.
@@ -213,6 +263,9 @@ type AgentPoolUpgradeProfileProperties struct {
 
 	// List of orchestrator types and versions available for upgrade.
 	Upgrades []*AgentPoolUpgradeProfilePropertiesUpgradesItem
+
+	// READ-ONLY; List of historical good versions for rollback operations.
+	RecentlyUsedVersions []*AgentPoolRecentlyUsedVersion
 }
 
 type AgentPoolUpgradeProfilePropertiesUpgradesItem struct {
@@ -226,7 +279,7 @@ type AgentPoolUpgradeProfilePropertiesUpgradesItem struct {
 	KubernetesVersion *string
 }
 
-// AgentPoolUpgradeSettings - Settings for upgrading an agentpool
+// AgentPoolUpgradeSettings - Settings for rolling upgrade on an agentpool
 type AgentPoolUpgradeSettings struct {
 	// The drain timeout for a node. The amount of time (in minutes) to wait on eviction of pods and graceful termination per
 	// node. This eviction wait time honors waiting on pod disruption budgets. If this
@@ -255,6 +308,15 @@ type AgentPoolUpgradeSettings struct {
 	// are rounded up. If not specified, the default is 0. For more information,
 	// including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
 	MaxUnavailable *string
+
+	// This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage
+	// of the total agent pool size at the time of the upgrade. For
+	// percentages, fractional nodes are rounded up. If node capacity constraints prevent full surging, AKS would attempt a slower
+	// upgrade with fewer surge nodes. The upgrade will proceed only if the
+	// available surge capacity meets or exceeds minSurge. If minSurge not specified, the default is 50% of the maxSurge, for
+	// example, if maxSurge = 10%, the default is 5%, if maxSurge = 10, the default is
+	// 5.
+	MinSurge *string
 
 	// The soak duration for a node. The amount of time (in minutes) to wait after draining a node and before reimaging it and
 	// moving on to next node. If not specified, the default is 0 minutes.
@@ -305,21 +367,6 @@ type AzureKeyVaultKms struct {
 	// Resource ID of key vault. When keyVaultNetworkAccess is Private, this field is required and must be a valid resource ID.
 	// When keyVaultNetworkAccess is Public, leave the field empty.
 	KeyVaultResourceID *string
-}
-
-// CloudErrorBody - An error response from the Container service.
-type CloudErrorBody struct {
-	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string
-
-	// A list of additional details about the error.
-	Details []*CloudErrorBody
-
-	// A message describing the error, intended to be suitable for display in a user interface.
-	Message *string
-
-	// The target of the particular error. For example, the name of the property in error.
-	Target *string
 }
 
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
@@ -546,6 +593,71 @@ type IPTag struct {
 	Tag *string
 }
 
+// IdentityBinding - The IdentityBinding resource.
+type IdentityBinding struct {
+	// The resource-specific properties for this resource.
+	Properties *IdentityBindingProperties
+
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IdentityBindingListResult - The response of a IdentityBinding list operation.
+type IdentityBindingListResult struct {
+	// REQUIRED; The IdentityBinding items on this page
+	Value []*IdentityBinding
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// IdentityBindingManagedIdentityProfile - Managed identity profile for the identity binding.
+type IdentityBindingManagedIdentityProfile struct {
+	// REQUIRED; The resource ID of the managed identity.
+	ResourceID *string
+
+	// READ-ONLY; The client ID of the managed identity.
+	ClientID *string
+
+	// READ-ONLY; The object ID of the managed identity.
+	ObjectID *string
+
+	// READ-ONLY; The tenant ID of the managed identity.
+	TenantID *string
+}
+
+// IdentityBindingOidcIssuerProfile - IdentityBinding OIDC issuer profile.
+type IdentityBindingOidcIssuerProfile struct {
+	// READ-ONLY; The OIDC issuer URL of the IdentityBinding.
+	OidcIssuerURL *string
+}
+
+// IdentityBindingProperties - IdentityBinding properties.
+type IdentityBindingProperties struct {
+	// REQUIRED; Managed identity profile for the identity binding.
+	ManagedIdentity *IdentityBindingManagedIdentityProfile
+
+	// READ-ONLY; The OIDC issuer URL of the IdentityBinding.
+	OidcIssuer *IdentityBindingOidcIssuerProfile
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *IdentityBindingProvisioningState
+}
+
 // IstioCertificateAuthority - Istio Service Mesh Certificate Authority (CA) configuration. For now, we only support plugin
 // certificates as described here https://aka.ms/asm-plugin-ca
 type IstioCertificateAuthority struct {
@@ -560,6 +672,9 @@ type IstioComponents struct {
 
 	// Istio ingress gateways.
 	IngressGateways []*IstioIngressGateway
+
+	// Mode of traffic redirection.
+	ProxyRedirectionMechanism *ProxyRedirectionMechanism
 }
 
 // IstioEgressGateway - Istio egress gateway configuration.
@@ -623,6 +738,113 @@ type IstioServiceMesh struct {
 	Revisions []*string
 }
 
+// JWTAuthenticator - Configuration for JWT authenticator in the managed cluster.
+type JWTAuthenticator struct {
+	// REQUIRED; The properties of JWTAuthenticator. For details on how to configure the properties of a JWT authenticator, please
+	// refer to the Kubernetes documentation:
+	// https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-authentication-configuration. Please note
+	// that not all fields available in the Kubernetes documentation are supported by
+	// AKS. For troubleshooting, please see https://aka.ms/aks-external-issuers-docs.
+	Properties *JWTAuthenticatorProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// JWTAuthenticatorClaimMappingExpression - The claim mapping expression for JWTAuthenticator.
+type JWTAuthenticatorClaimMappingExpression struct {
+	// REQUIRED; The CEL expression used to access token claims.
+	Expression *string
+}
+
+// JWTAuthenticatorClaimMappings - The claim mappings for JWTAuthenticator.
+type JWTAuthenticatorClaimMappings struct {
+	// REQUIRED; The expression to extract username attribute from the token claims.
+	Username *JWTAuthenticatorClaimMappingExpression
+
+	// The expression to extract extra attribute from the token claims. When not provided, no extra attributes are extracted from
+	// the token claims.
+	Extra []*JWTAuthenticatorExtraClaimMappingExpression
+
+	// The expression to extract groups attribute from the token claims. When not provided, no groups are extracted from the token
+	// claims.
+	Groups *JWTAuthenticatorClaimMappingExpression
+
+	// The expression to extract uid attribute from the token claims. When not provided, no uid is extracted from the token claims.
+	UID *JWTAuthenticatorClaimMappingExpression
+}
+
+// JWTAuthenticatorExtraClaimMappingExpression - The extra claim mapping expression for JWTAuthenticator.
+type JWTAuthenticatorExtraClaimMappingExpression struct {
+	// REQUIRED; The key of the extra attribute.
+	Key *string
+
+	// REQUIRED; The CEL expression used to extract the value of the extra attribute.
+	ValueExpression *string
+}
+
+// JWTAuthenticatorIssuer - The OIDC issuer details for JWTAuthenticator.
+type JWTAuthenticatorIssuer struct {
+	// REQUIRED; The set of acceptable audiences the JWT must be issued to. At least one is required. When multiple is set, AudienceMatchPolicy
+	// is used in API Server configuration.
+	Audiences []*string
+
+	// REQUIRED; The issuer URL. The URL must begin with the scheme https and cannot contain a query string or fragment. This
+	// must match the "iss" claim in the presented JWT, and the issuer returned from discovery.
+	URL *string
+}
+
+// JWTAuthenticatorListResult - The response from the List JWT authenticator operation.
+type JWTAuthenticatorListResult struct {
+	// REQUIRED; The list of JWT authenticators.
+	Value []*JWTAuthenticator
+
+	// READ-ONLY; The URL to get the next set of JWT authenticator results.
+	NextLink *string
+}
+
+// JWTAuthenticatorProperties - The properties of JWTAuthenticator. For details on how to configure the properties of a JWT
+// authenticator, please refer to the Kubernetes documentation:
+// https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-authentication-configuration. Please note
+// that not all fields available in the Kubernetes documentation are supported by
+// AKS. For troubleshooting, please see https://aka.ms/aks-external-issuers-docs.
+type JWTAuthenticatorProperties struct {
+	// REQUIRED; The mappings that define how user attributes are extracted from the token claims.
+	ClaimMappings *JWTAuthenticatorClaimMappings
+
+	// REQUIRED; The JWT OIDC issuer details.
+	Issuer *JWTAuthenticatorIssuer
+
+	// The rules that are applied to validate token claims to authenticate users. All the expressions must evaluate to true for
+	// validation to succeed.
+	ClaimValidationRules []*JWTAuthenticatorValidationRule
+
+	// The rules that are applied to the mapped user before completing authentication. All the expressions must evaluate to true
+	// for validation to succeed.
+	UserValidationRules []*JWTAuthenticatorValidationRule
+
+	// READ-ONLY; The current provisioning state of the JWT authenticator.
+	ProvisioningState *JWTAuthenticatorProvisioningState
+}
+
+// JWTAuthenticatorValidationRule - The validation rule for JWTAuthenticator.
+type JWTAuthenticatorValidationRule struct {
+	// REQUIRED; The CEL expression used to validate the claim or attribute.
+	Expression *string
+
+	// The validation error message.
+	Message *string
+}
+
 // KubeletConfig - Kubelet configurations of agent nodes. See AKS custom node configuration [https://docs.microsoft.com/azure/aks/custom-node-configuration]
 // for more details.
 type KubeletConfig struct {
@@ -675,6 +897,14 @@ type KubeletConfig struct {
 type KubernetesPatchVersion struct {
 	// Possible upgrade path for given patch version
 	Upgrades []*string
+}
+
+// KubernetesResourceObjectEncryptionProfile - Encryption at rest of Kubernetes resource objects using service-managed keys.
+// More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+type KubernetesResourceObjectEncryptionProfile struct {
+	// Whether to enable encryption at rest of Kubernetes resource objects using service-managed keys. More information on this
+	// can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption.
+	InfrastructureEncryption *InfrastructureEncryption
 }
 
 // KubernetesVersion - Kubernetes version profile for given major.minor release.
@@ -1052,7 +1282,7 @@ type MachineProperties struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; The version of node image.
@@ -1083,7 +1313,7 @@ type MachineStatus struct {
 
 	// READ-ONLY; The error details information of the machine. Preserves the detailed info of failure. If there was no error,
 	// this field is omitted.
-	ProvisioningError *CloudErrorBody
+	ProvisioningError *ErrorDetail
 
 	// READ-ONLY; Virtual machine state. Indicates the current state of the underlying virtual machine.
 	VMState *VMState
@@ -1183,7 +1413,7 @@ type ManagedCluster struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -1334,11 +1564,6 @@ type ManagedClusterAgentPoolProfile struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool
 
-	// Whether to enable Custom CA Trust feature. When set to true, AKS adds a label to the node indicating that the feature is
-	// enabled and deploys a daemonset along with host services to sync custom
-	// certificate authorities from user-provided list of base64 encoded certificates into node trust stores. Defaults to false.
-	EnableCustomCATrust *bool
-
 	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
 	// regions. For more information, see:
 	// https://docs.microsoft.com/azure/aks/enable-host-encryption
@@ -1410,6 +1635,12 @@ type ManagedClusterAgentPoolProfile struct {
 
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
+
+	// Settings to determine the node customization used to provision nodes in a pool.
+	NodeCustomizationProfile *NodeCustomizationProfile
+
+	// The version of node image
+	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
 	// and can be removed with a kubectl call. This field can be modified after node
@@ -1503,8 +1734,14 @@ type ManagedClusterAgentPoolProfile struct {
 	// The type of Agent Pool.
 	Type *AgentPoolType
 
-	// Settings for upgrading the agentpool
+	// Settings for upgrading the agentpool. Applies when upgrade strategy is set to Rolling.
 	UpgradeSettings *AgentPoolUpgradeSettings
+
+	// Settings for Blue-Green upgrade on the agentpool. Applies when upgrade strategy is set to BlueGreen.
+	UpgradeSettingsBlueGreen *AgentPoolBlueGreenUpgradeSettings
+
+	// Defines the upgrade strategy for the agent pool. The default is Rolling.
+	UpgradeStrategy *UpgradeStrategy
 
 	// The size of the agent pool VMs. VM size availability varies by region. If a node contains insufficient compute resources
 	// (memory, cpu, etc) pods might fail to run correctly. For more details on
@@ -1536,11 +1773,8 @@ type ManagedClusterAgentPoolProfile struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
-
-	// READ-ONLY; The version of node image
-	NodeImageVersion *string
 
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
@@ -1568,11 +1802,6 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Whether to enable auto-scaler
 	EnableAutoScaling *bool
 
-	// Whether to enable Custom CA Trust feature. When set to true, AKS adds a label to the node indicating that the feature is
-	// enabled and deploys a daemonset along with host services to sync custom
-	// certificate authorities from user-provided list of base64 encoded certificates into node trust stores. Defaults to false.
-	EnableCustomCATrust *bool
-
 	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
 	// regions. For more information, see:
 	// https://docs.microsoft.com/azure/aks/enable-host-encryption
@@ -1644,6 +1873,12 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
+
+	// Settings to determine the node customization used to provision nodes in a pool.
+	NodeCustomizationProfile *NodeCustomizationProfile
+
+	// The version of node image
+	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
 	// and can be removed with a kubectl call. This field can be modified after node
@@ -1737,8 +1972,14 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// The type of Agent Pool.
 	Type *AgentPoolType
 
-	// Settings for upgrading the agentpool
+	// Settings for upgrading the agentpool. Applies when upgrade strategy is set to Rolling.
 	UpgradeSettings *AgentPoolUpgradeSettings
+
+	// Settings for Blue-Green upgrade on the agentpool. Applies when upgrade strategy is set to BlueGreen.
+	UpgradeSettingsBlueGreen *AgentPoolBlueGreenUpgradeSettings
+
+	// Defines the upgrade strategy for the agent pool. The default is Rolling.
+	UpgradeStrategy *UpgradeStrategy
 
 	// The size of the agent pool VMs. VM size availability varies by region. If a node contains insufficient compute resources
 	// (memory, cpu, etc) pods might fail to run correctly. For more details on
@@ -1770,11 +2011,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
-
-	// READ-ONLY; The version of node image
-	NodeImageVersion *string
 
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
@@ -1941,6 +2179,12 @@ type ManagedClusterHTTPProxyConfig struct {
 	EffectiveNoProxy []*string
 }
 
+// ManagedClusterHostedSystemProfile - Settings for hosted system addons.
+type ManagedClusterHostedSystemProfile struct {
+	// Whether to enable hosted system addons for the cluster.
+	Enabled *bool
+}
+
 // ManagedClusterIdentity - Identity for the managed cluster.
 type ManagedClusterIdentity struct {
 	// The delegated identity resources assigned to this managed cluster. This can only be set by another Azure Resource Provider,
@@ -1963,10 +2207,40 @@ type ManagedClusterIdentity struct {
 	TenantID *string
 }
 
+type ManagedClusterIngressDefaultDomainProfile struct {
+	// Whether to enable Default Domain.
+	Enabled *bool
+
+	// READ-ONLY; The unique fully qualified domain name assigned to the cluster. This will not change even if disabled then reenabled.
+	DomainName *string
+}
+
 // ManagedClusterIngressProfile - Ingress profile for the container service cluster.
 type ManagedClusterIngressProfile struct {
+	// Settings for the managed Application Load Balancer installation
+	ApplicationLoadBalancer *ManagedClusterIngressProfileApplicationLoadBalancer
+
+	// Settings for the managed Gateway API installation
+	GatewayAPI *ManagedClusterIngressProfileGatewayConfiguration
+
 	// Web App Routing settings for the ingress profile.
 	WebAppRouting *ManagedClusterIngressProfileWebAppRouting
+}
+
+// ManagedClusterIngressProfileApplicationLoadBalancer - Application Load Balancer settings for the ingress profile.
+type ManagedClusterIngressProfileApplicationLoadBalancer struct {
+	// Whether to enable Application Load Balancer.
+	Enabled *bool
+
+	// READ-ONLY; Managed identity of the Application Load Balancer add-on. This is the identity that should be granted permissions
+	// to manage the associated Application Gateway for Containers resource.
+	Identity *UserAssignedIdentity
+}
+
+type ManagedClusterIngressProfileGatewayConfiguration struct {
+	// Configuration for the managed Gateway API installation. If not specified, the default is 'Disabled'. See https://aka.ms/k8s-gateway-api
+	// for more details.
+	Installation *ManagedGatewayType
 }
 
 type ManagedClusterIngressProfileNginx struct {
@@ -1980,6 +2254,11 @@ type ManagedClusterIngressProfileWebAppRouting struct {
 	// Public and private DNS zones can be in different resource groups, but all
 	// public DNS zones must be in the same resource group and all private DNS zones must be in the same resource group.
 	DNSZoneResourceIDs []*string
+
+	// Configuration for the Default Domain. This is a unique, autogenerated domain that comes with a signed TLS Certificate allowing
+	// for secure HTTPS. See the Default Domain documentation
+	// [https://aka.ms/aks/defaultdomain] for more instructions.
+	DefaultDomain *ManagedClusterIngressDefaultDomainProfile
 
 	// Whether to enable Web App Routing.
 	Enabled *bool
@@ -2282,6 +2561,9 @@ type ManagedClusterProperties struct {
 	// Configurations for provisioning the cluster with HTTP proxy servers.
 	HTTPProxyConfig *ManagedClusterHTTPProxyConfig
 
+	// Settings for hosted system addons. For more information, see https://aka.ms/aks/automatic/systemcomponents.
+	HostedSystemProfile *ManagedClusterHostedSystemProfile
+
 	// The user identity associated with the managed cluster. This identity will be used by the kubelet. Only one user assigned
 	// identity is allowed. The only accepted key is "kubeletidentity", with value of
 	// "resourceId": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}".
@@ -2523,6 +2805,9 @@ type ManagedClusterSecurityProfile struct {
 	// https://aka.ms/aks/image-integrity for how to use this feature via policy.
 	ImageIntegrity *ManagedClusterSecurityProfileImageIntegrity
 
+	// Encryption at rest of Kubernetes resource objects. More information on this can be found under https://aka.ms/aks/kubernetesResourceObjectEncryption
+	KubernetesResourceObjectEncryptionProfile *KubernetesResourceObjectEncryptionProfile
+
 	// Node Restriction [https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#noderestriction] settings
 	// for the security profile.
 	NodeRestriction *ManagedClusterSecurityProfileNodeRestriction
@@ -2679,7 +2964,7 @@ type ManagedClusterStaticEgressGatewayProfile struct {
 type ManagedClusterStatus struct {
 	// READ-ONLY; The error details information of the managed cluster. Preserves the detailed info of failure. If there was no
 	// error, this field is omitted.
-	ProvisioningError *CloudErrorBody
+	ProvisioningError *ErrorDetail
 }
 
 // ManagedClusterStorageProfile - Storage profile for the container service cluster.
@@ -2817,7 +3102,7 @@ type ManagedNamespace struct {
 
 	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
 	// is updated. Specify an if-match or if-none-match header with the eTag value for a
-	// subsequent request to enable optimistic concurrency per the normal etag convention.
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
 	// READ-ONLY; Resource ID.
@@ -2857,6 +3142,55 @@ type ManualScaleProfile struct {
 
 	// VM size that AKS will use when creating and scaling e.g. 'StandardE4sv3', 'StandardE16sv3' or 'StandardD16sv5'.
 	Size *string
+}
+
+// MeshMembership - Mesh membership of a managed cluster.
+type MeshMembership struct {
+	// The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another
+	// Azure resource. If this is present, complete mode deployment will not
+	// delete the resource if it is removed from the template since it is managed by another resource.
+	ManagedBy *string
+
+	// Mesh membership properties of a managed cluster.
+	Properties *MeshMembershipProperties
+
+	// READ-ONLY; Unique read-only string used to implement optimistic concurrency. The eTag value will change when the resource
+	// is updated. Specify an if-match or if-none-match header with the eTag value for a
+	// subsequent request to enable optimistic concurrency per the normal eTag convention.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MeshMembershipProperties - Mesh membership properties of a managed cluster.
+type MeshMembershipProperties struct {
+	// REQUIRED; The ARM resource id for the managed mesh member. This is of the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/applinks/{appLinkName}/appLinkMembers/{appLinkMemberName}'.
+	// Visit https://aka.ms/applink for more
+	// information.
+	ManagedMeshID *string
+
+	// READ-ONLY; The current provisioning state of the Mesh Membership.
+	ProvisioningState *MeshMembershipProvisioningState
+}
+
+// MeshMembershipsListResult - The result of a request to list mesh memberships in a managed cluster.
+type MeshMembershipsListResult struct {
+	// The list of mesh memberships.
+	Value []*MeshMembership
+
+	// READ-ONLY; The URL to get the next set of mesh membership results.
+	NextLink *string
 }
 
 // MeshRevision - Holds information on upgrades and compatibility for given major.minor mesh release.
@@ -2951,11 +3285,14 @@ type NamespaceProperties struct {
 	Annotations map[string]*string
 
 	// The default network policy enforced upon the namespace. Customers can have other Kubernetes network policy objects under
-	// the namespace. All the network policies will be enforced.
+	// the namespace. Network policies are additive; if a policy or policies apply to
+	// a given pod for a given direction, the connections allowed in that direction for the pod is the union of what all applicable
+	// policies allow.
 	DefaultNetworkPolicy *NetworkPolicies
 
 	// The default resource quota enforced upon the namespace. Customers can have other Kubernetes resource quota objects under
-	// the namespace. All the resource quotas will be enforced.
+	// the namespace. Resource quotas are additive; if multiple resource quotas are
+	// applied to a given namespace, then the effective limit will be one such that all quotas on the namespace can be satisfied.
 	DefaultResourceQuota *ResourceQuota
 
 	// Delete options of a namespace.
@@ -3089,7 +3426,7 @@ type NetworkProfileKubeProxyConfig struct {
 	// Holds configuration customizations for IPVS. May only be specified if 'mode' is set to 'IPVS'.
 	IpvsConfig *NetworkProfileKubeProxyConfigIpvsConfig
 
-	// Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+	// Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES')
 	Mode *Mode
 }
 
@@ -3107,6 +3444,13 @@ type NetworkProfileKubeProxyConfigIpvsConfig struct {
 
 	// The timeout value used for IPVS UDP packets in seconds. Must be a positive integer value.
 	UDPTimeoutSeconds *int32
+}
+
+// NodeCustomizationProfile - Settings to determine the node customization used to provision nodes in a pool.
+type NodeCustomizationProfile struct {
+	// The resource ID of the node customization resource to use. This can be a version. Omitting the version will use the latest
+	// version of the node customization.
+	NodeCustomizationID *string
 }
 
 // NodeImageVersion - node image version profile for given major.minor.patch release.

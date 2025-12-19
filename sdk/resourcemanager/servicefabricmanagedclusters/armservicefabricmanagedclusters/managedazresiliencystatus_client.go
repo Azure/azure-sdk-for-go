@@ -26,7 +26,7 @@ type ManagedAzResiliencyStatusClient struct {
 // NewManagedAzResiliencyStatusClient creates a new instance of ManagedAzResiliencyStatusClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedAzResiliencyStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedAzResiliencyStatusClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewManagedAzResiliencyStatusClient(subscriptionID string, credential azcore
 // Get - Action to get Az Resiliency Status of all the Base resources constituting Service Fabric Managed Clusters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedAzResiliencyStatusClientGetOptions contains the optional parameters for the ManagedAzResiliencyStatusClient.Get
@@ -89,7 +89,7 @@ func (client *ManagedAzResiliencyStatusClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

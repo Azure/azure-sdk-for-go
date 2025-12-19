@@ -11,11 +11,11 @@ type Addon struct {
 	// The resource-specific properties for this resource.
 	Properties AddonPropertiesClassification
 
-	// READ-ONLY; Name of the addon.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -162,6 +162,94 @@ type AvailabilityProperties struct {
 	Zone *int32
 }
 
+// AvailableWindowForMaintenanceWhileRescheduleOperation - Time window in which Customer can reschedule maintenance
+type AvailableWindowForMaintenanceWhileRescheduleOperation struct {
+	// REQUIRED; The kind of constraint
+	Kind *RescheduleOperationConstraintKind
+
+	// READ-ONLY; End date Time
+	EndsAt *time.Time
+
+	// READ-ONLY; Start date time
+	StartsAt *time.Time
+}
+
+// GetRescheduleOperationConstraint implements the RescheduleOperationConstraintClassification interface for type AvailableWindowForMaintenanceWhileRescheduleOperation.
+func (a *AvailableWindowForMaintenanceWhileRescheduleOperation) GetRescheduleOperationConstraint() *RescheduleOperationConstraint {
+	return &RescheduleOperationConstraint{
+		Kind: a.Kind,
+	}
+}
+
+// AvailableWindowForMaintenanceWhileScheduleOperation - Time window in which Customer can to schedule maintenance
+type AvailableWindowForMaintenanceWhileScheduleOperation struct {
+	// REQUIRED; The kind of constraint
+	Kind *ScheduleOperationConstraintKind
+
+	// READ-ONLY; End date Time
+	EndsAt *time.Time
+
+	// READ-ONLY; Start date time
+	StartsAt *time.Time
+}
+
+// GetScheduleOperationConstraint implements the ScheduleOperationConstraintClassification interface for type AvailableWindowForMaintenanceWhileScheduleOperation.
+func (a *AvailableWindowForMaintenanceWhileScheduleOperation) GetScheduleOperationConstraint() *ScheduleOperationConstraint {
+	return &ScheduleOperationConstraint{
+		Kind: a.Kind,
+	}
+}
+
+// BlockedDatesConstraintTimeRange - Blocked Time range Constraints for maintenance
+type BlockedDatesConstraintTimeRange struct {
+	// READ-ONLY; End date Time
+	EndsAt *time.Time
+
+	// READ-ONLY; Start date time
+	StartsAt *time.Time
+
+	// READ-ONLY; Reason category for blocking maintenance reschedule
+	Reason *string
+}
+
+// BlockedWhileRescheduleOperation - Time ranges blocked for rescheduling maintenance
+type BlockedWhileRescheduleOperation struct {
+	// REQUIRED; The kind of constraint
+	Kind *RescheduleOperationConstraintKind
+
+	// READ-ONLY; Category of blocked date
+	Category *BlockedDatesConstraintCategory
+
+	// READ-ONLY; Date ranges blocked for schedule
+	TimeRanges []*BlockedDatesConstraintTimeRange
+}
+
+// GetRescheduleOperationConstraint implements the RescheduleOperationConstraintClassification interface for type BlockedWhileRescheduleOperation.
+func (b *BlockedWhileRescheduleOperation) GetRescheduleOperationConstraint() *RescheduleOperationConstraint {
+	return &RescheduleOperationConstraint{
+		Kind: b.Kind,
+	}
+}
+
+// BlockedWhileScheduleOperation - Time ranges blocked for scheduling maintenance
+type BlockedWhileScheduleOperation struct {
+	// REQUIRED; The kind of constraint
+	Kind *ScheduleOperationConstraintKind
+
+	// READ-ONLY; Category of blocked date
+	Category *BlockedDatesConstraintCategory
+
+	// READ-ONLY; Date ranges blocked for schedule
+	TimeRanges []*BlockedDatesConstraintTimeRange
+}
+
+// GetScheduleOperationConstraint implements the ScheduleOperationConstraintClassification interface for type BlockedWhileScheduleOperation.
+func (b *BlockedWhileScheduleOperation) GetScheduleOperationConstraint() *ScheduleOperationConstraint {
+	return &ScheduleOperationConstraint{
+		Kind: b.Kind,
+	}
+}
+
 // Circuit - An ExpressRoute Circuit
 type Circuit struct {
 	// READ-ONLY; Identifier of the ExpressRoute Circuit (Microsoft Colo only)
@@ -182,11 +270,11 @@ type CloudLink struct {
 	// The resource-specific properties for this resource.
 	Properties *CloudLinkProperties
 
-	// READ-ONLY; Name of the cloud link.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -224,11 +312,11 @@ type Cluster struct {
 	// The resource-specific properties for this resource.
 	Properties *ClusterProperties
 
-	// READ-ONLY; Name of the cluster
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -302,11 +390,11 @@ type Datastore struct {
 	// The resource-specific properties for this resource.
 	Properties *DatastoreProperties
 
-	// READ-ONLY; Name of the datastore
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -423,11 +511,11 @@ type ExpressRouteAuthorization struct {
 	// The resource-specific properties for this resource.
 	Properties *ExpressRouteAuthorizationProperties
 
-	// READ-ONLY; Name of the ExpressRoute Circuit Authorization
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -502,11 +590,11 @@ type GlobalReachConnection struct {
 	// The resource-specific properties for this resource.
 	Properties *GlobalReachConnectionProperties
 
-	// READ-ONLY; Name of the global reach connection
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -554,11 +642,11 @@ type HcxEnterpriseSite struct {
 	// The resource-specific properties for this resource.
 	Properties *HcxEnterpriseSiteProperties
 
-	// READ-ONLY; Name of the HCX Enterprise Site
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -599,11 +687,11 @@ type Host struct {
 	// The availability zones.
 	Zones []*string
 
-	// READ-ONLY; The host identifier.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -683,16 +771,43 @@ type IdentitySource struct {
 	Username *string
 }
 
+// ImpactedMaintenanceResource - Details about a resource impacted by a failed check
+type ImpactedMaintenanceResource struct {
+	// READ-ONLY; A list of errors associated with the impacted resource
+	Errors []*ImpactedMaintenanceResourceError
+
+	// READ-ONLY; The ID of the impacted resource
+	ID *string
+}
+
+// ImpactedMaintenanceResourceError - Details about an error affecting a resource
+type ImpactedMaintenanceResourceError struct {
+	// READ-ONLY; Indicates whether action is required by the customer
+	ActionRequired *bool
+
+	// READ-ONLY; Additional details about the error
+	Details *string
+
+	// READ-ONLY; The error code
+	ErrorCode *string
+
+	// READ-ONLY; The name of the error
+	Name *string
+
+	// READ-ONLY; Steps to resolve the error
+	ResolutionSteps []*string
+}
+
 // IscsiPath - An iSCSI path resource
 type IscsiPath struct {
 	// The resource-specific properties for this resource.
 	Properties *IscsiPathProperties
 
-	// READ-ONLY; Name of the iSCSI path resource
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -717,6 +832,219 @@ type IscsiPathProperties struct {
 
 	// READ-ONLY; The state of the iSCSI path provisioning
 	ProvisioningState *IscsiPathProvisioningState
+}
+
+// Label - A key-value pair representing a label.
+type Label struct {
+	// REQUIRED; The key of the label.
+	Key *string
+
+	// REQUIRED; The value of the label.
+	Value *string
+}
+
+// License - A license resource
+type License struct {
+	// The resource-specific properties for this resource.
+	Properties LicensePropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// LicenseListResult - The response of a License list operation.
+type LicenseListResult struct {
+	// REQUIRED; The License items on this page
+	Value []*License
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// LicenseProperties - The properties of a license
+type LicenseProperties struct {
+	// REQUIRED; License kind
+	Kind *LicenseKind
+
+	// READ-ONLY; The state of the license provisioning
+	ProvisioningState *LicenseProvisioningState
+}
+
+// GetLicenseProperties implements the LicensePropertiesClassification interface for type LicenseProperties.
+func (l *LicenseProperties) GetLicenseProperties() *LicenseProperties { return l }
+
+// Maintenance - A cluster resource
+type Maintenance struct {
+	// The resource-specific properties for this resource.
+	Properties *MaintenanceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MaintenanceFailedCheck - Details about a failed maintenance check
+type MaintenanceFailedCheck struct {
+	// READ-ONLY; A list of resources impacted by the failed check
+	ImpactedResources []*ImpactedMaintenanceResource
+
+	// READ-ONLY; The name of the failed check
+	Name *string
+}
+
+// MaintenanceListResult - The response of a Maintenance list operation.
+type MaintenanceListResult struct {
+	// REQUIRED; The Maintenance items on this page
+	Value []*Maintenance
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MaintenanceManagementOperation - Defines operations that can be performed on maintenance
+type MaintenanceManagementOperation struct {
+	// READ-ONLY; The kind of operation
+	Kind *MaintenanceManagementOperationKind
+}
+
+// GetMaintenanceManagementOperation implements the MaintenanceManagementOperationClassification interface for type MaintenanceManagementOperation.
+func (m *MaintenanceManagementOperation) GetMaintenanceManagementOperation() *MaintenanceManagementOperation {
+	return m
+}
+
+// MaintenanceProperties - properties of a maintenance
+type MaintenanceProperties struct {
+	// READ-ONLY; Cluster ID for on which maintenance will be applied. Empty if maintenance is at private cloud level
+	ClusterID *int32
+
+	// READ-ONLY; type of maintenance
+	Component *MaintenanceType
+
+	// READ-ONLY; Display name for maintenance
+	DisplayName *string
+
+	// READ-ONLY; Estimated time maintenance will take in minutes
+	EstimatedDurationInMinutes *int64
+
+	// READ-ONLY; Impact on the resource during maintenance period
+	Impact *string
+
+	// READ-ONLY; Link to maintenance info
+	InfoLink *string
+
+	// READ-ONLY; Indicates whether the maintenance is ready to proceed
+	MaintenanceReadiness *MaintenanceReadiness
+
+	// READ-ONLY; Operations on maintenance
+	Operations []MaintenanceManagementOperationClassification
+
+	// READ-ONLY; The provisioning state
+	ProvisioningState *MaintenanceProvisioningState
+
+	// READ-ONLY; If maintenance is scheduled by Microsoft
+	ScheduledByMicrosoft *bool
+
+	// READ-ONLY; Scheduled maintenance start time
+	ScheduledStartTime *time.Time
+
+	// READ-ONLY; The state of the maintenance
+	State *MaintenanceState
+}
+
+// MaintenanceReadiness - Maintenance readiness details
+type MaintenanceReadiness struct {
+	// READ-ONLY; The current readiness status of maintenance
+	Status *MaintenanceReadinessStatus
+
+	// READ-ONLY; The type of maintenance readiness check
+	Type *MaintenanceCheckType
+
+	// READ-ONLY; A list of failed checks, if any
+	FailedChecks []*MaintenanceFailedCheck
+
+	// READ-ONLY; The timestamp of the last readiness update
+	LastUpdated *time.Time
+
+	// READ-ONLY; A summary message of the readiness check result
+	Message *string
+}
+
+// MaintenanceReadinessRefreshOperation - Refresh MaintenanceReadiness status
+type MaintenanceReadinessRefreshOperation struct {
+	// REQUIRED; The kind of operation
+	Kind *MaintenanceManagementOperationKind
+
+	// READ-ONLY; Reason disabling refresh for maintenanceReadiness
+	DisabledReason *string
+
+	// READ-ONLY; If maintenanceReadiness refresh is disabled
+	IsDisabled *bool
+
+	// READ-ONLY; Additional message about the operation
+	Message *string
+
+	// READ-ONLY; Indicates if the operation was refreshed by Microsoft
+	RefreshedByMicrosoft *bool
+
+	// READ-ONLY; Status of the operation
+	Status *MaintenanceReadinessRefreshOperationStatus
+}
+
+// GetMaintenanceManagementOperation implements the MaintenanceManagementOperationClassification interface for type MaintenanceReadinessRefreshOperation.
+func (m *MaintenanceReadinessRefreshOperation) GetMaintenanceManagementOperation() *MaintenanceManagementOperation {
+	return &MaintenanceManagementOperation{
+		Kind: m.Kind,
+	}
+}
+
+// MaintenanceReschedule - reschedule a maintenance
+type MaintenanceReschedule struct {
+	// rescheduling reason
+	Message *string
+
+	// reschedule time
+	RescheduleTime *time.Time
+}
+
+// MaintenanceSchedule - schedule a maintenance
+type MaintenanceSchedule struct {
+	// scheduling message
+	Message *string
+
+	// schedule time
+	ScheduleTime *time.Time
+}
+
+// MaintenanceState - state of the maintenance
+type MaintenanceState struct {
+	// Time when current state ended
+	EndedAt *time.Time
+
+	// Failure/Success info
+	Message *string
+
+	// Customer presentable maintenance state
+	Name *MaintenanceStateName
+
+	// Time when current state started
+	StartedAt *time.Time
 }
 
 // ManagementCluster - The properties of a management cluster
@@ -841,11 +1169,11 @@ type PlacementPolicy struct {
 	// The resource-specific properties for this resource.
 	Properties PlacementPolicyPropertiesClassification
 
-	// READ-ONLY; Name of the placement policy.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -906,9 +1234,6 @@ type PrivateCloud struct {
 	// REQUIRED; The SKU (Stock Keeping Unit) assigned to this resource.
 	SKU *SKU
 
-	// READ-ONLY; Name of the private cloud
-	Name *string
-
 	// The managed service identities assigned to this resource.
 	Identity *PrivateCloudIdentity
 
@@ -923,6 +1248,9 @@ type PrivateCloud struct {
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -996,6 +1324,9 @@ type PrivateCloudProperties struct {
 
 	// Optionally, set the vCenter admin password when the private cloud is created
 	VcenterPassword *string
+
+	// The private cloud license
+	VcfLicense VcfLicenseClassification
 
 	// Azure resource ID of the virtual network
 	VirtualNetworkID *string
@@ -1076,11 +1407,11 @@ type ProvisionedNetwork struct {
 	// The resource-specific properties for this resource.
 	Properties *ProvisionedNetworkProperties
 
-	// READ-ONLY; Name of the cloud link.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1115,11 +1446,11 @@ type PureStoragePolicy struct {
 	// The resource-specific properties for this resource.
 	Properties *PureStoragePolicyProperties
 
-	// READ-ONLY; Name of the storage policy.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1165,6 +1496,39 @@ type Quota struct {
 
 	// READ-ONLY; Host quota is active for current subscription
 	QuotaEnabled *QuotaEnabled
+}
+
+// RescheduleOperation - Constraints for rescheduling maintenance
+type RescheduleOperation struct {
+	// REQUIRED; The kind of operation
+	Kind *MaintenanceManagementOperationKind
+
+	// READ-ONLY; Constraints for rescheduling maintenance
+	Constraints []RescheduleOperationConstraintClassification
+
+	// READ-ONLY; Reason for reschedule disabled
+	DisabledReason *string
+
+	// READ-ONLY; If rescheduling is disabled
+	IsDisabled *bool
+}
+
+// GetMaintenanceManagementOperation implements the MaintenanceManagementOperationClassification interface for type RescheduleOperation.
+func (r *RescheduleOperation) GetMaintenanceManagementOperation() *MaintenanceManagementOperation {
+	return &MaintenanceManagementOperation{
+		Kind: r.Kind,
+	}
+}
+
+// RescheduleOperationConstraint - Defines constraints for reschedule operation on maintenance
+type RescheduleOperationConstraint struct {
+	// READ-ONLY; The kind of operation
+	Kind *RescheduleOperationConstraintKind
+}
+
+// GetRescheduleOperationConstraint implements the RescheduleOperationConstraintClassification interface for type RescheduleOperationConstraint.
+func (r *RescheduleOperationConstraint) GetRescheduleOperationConstraint() *RescheduleOperationConstraint {
+	return r
 }
 
 // ResourceSKU - A SKU for a resource.
@@ -1272,16 +1636,68 @@ type SKU struct {
 	Tier *SKUTier
 }
 
+// ScheduleOperation - Scheduling window constraint
+type ScheduleOperation struct {
+	// REQUIRED; The kind of operation
+	Kind *MaintenanceManagementOperationKind
+
+	// READ-ONLY; Constraints for scheduling maintenance
+	Constraints []ScheduleOperationConstraintClassification
+
+	// READ-ONLY; Reason for schedule disabled
+	DisabledReason *string
+
+	// READ-ONLY; If scheduling is disabled
+	IsDisabled *bool
+}
+
+// GetMaintenanceManagementOperation implements the MaintenanceManagementOperationClassification interface for type ScheduleOperation.
+func (s *ScheduleOperation) GetMaintenanceManagementOperation() *MaintenanceManagementOperation {
+	return &MaintenanceManagementOperation{
+		Kind: s.Kind,
+	}
+}
+
+// ScheduleOperationConstraint - Defines constraints for schedule operation on maintenance
+type ScheduleOperationConstraint struct {
+	// READ-ONLY; The kind of operation
+	Kind *ScheduleOperationConstraintKind
+}
+
+// GetScheduleOperationConstraint implements the ScheduleOperationConstraintClassification interface for type ScheduleOperationConstraint.
+func (s *ScheduleOperationConstraint) GetScheduleOperationConstraint() *ScheduleOperationConstraint {
+	return s
+}
+
+// SchedulingWindow - Time window in which Customer has option to schedule maintenance
+type SchedulingWindow struct {
+	// REQUIRED; The kind of constraint
+	Kind *ScheduleOperationConstraintKind
+
+	// READ-ONLY; End date Time
+	EndsAt *time.Time
+
+	// READ-ONLY; Start date time
+	StartsAt *time.Time
+}
+
+// GetScheduleOperationConstraint implements the ScheduleOperationConstraintClassification interface for type SchedulingWindow.
+func (s *SchedulingWindow) GetScheduleOperationConstraint() *ScheduleOperationConstraint {
+	return &ScheduleOperationConstraint{
+		Kind: s.Kind,
+	}
+}
+
 // ScriptCmdlet - A cmdlet available for script execution
 type ScriptCmdlet struct {
 	// The resource-specific properties for this resource.
 	Properties *ScriptCmdletProperties
 
-	// READ-ONLY; Name of the script cmdlet.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1322,11 +1738,11 @@ type ScriptExecution struct {
 	// The resource-specific properties for this resource.
 	Properties *ScriptExecutionProperties
 
-	// READ-ONLY; Name of the script cmdlet.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1411,11 +1827,11 @@ type ScriptPackage struct {
 	// The resource-specific properties for this resource.
 	Properties *ScriptPackageProperties
 
-	// READ-ONLY; Name of the script package.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1653,16 +2069,64 @@ func (v *VMPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementP
 	}
 }
 
+// Vcf5License - A VMware Cloud Foundation (VCF) 5.0 license
+type Vcf5License struct {
+	// REQUIRED; Number of cores included in the license
+	Cores *int32
+
+	// REQUIRED; UTC datetime when the license expires
+	EndDate *time.Time
+
+	// CONSTANT; License kind
+	// Field has constant value VcfLicenseKindVcf5, any specified value is ignored.
+	Kind *VcfLicenseKind
+
+	// The Broadcom contract number associated with the license.
+	BroadcomContractNumber *string
+
+	// The Broadcom site ID associated with the license.
+	BroadcomSiteID *string
+
+	// Additional labels passed through for license reporting.
+	Labels []*Label
+
+	// License key
+	LicenseKey *string
+
+	// READ-ONLY; The state of the license provisioning
+	ProvisioningState *LicenseProvisioningState
+}
+
+// GetVcfLicense implements the VcfLicenseClassification interface for type Vcf5License.
+func (v *Vcf5License) GetVcfLicense() *VcfLicense {
+	return &VcfLicense{
+		Kind:              v.Kind,
+		ProvisioningState: v.ProvisioningState,
+	}
+}
+
+// VcfLicense - A VMware Cloud Foundation license
+type VcfLicense struct {
+	// REQUIRED; License kind
+	Kind *VcfLicenseKind
+
+	// READ-ONLY; The state of the license provisioning
+	ProvisioningState *LicenseProvisioningState
+}
+
+// GetVcfLicense implements the VcfLicenseClassification interface for type VcfLicense.
+func (v *VcfLicense) GetVcfLicense() *VcfLicense { return v }
+
 // VirtualMachine - Virtual Machine
 type VirtualMachine struct {
 	// The resource-specific properties for this resource.
 	Properties *VirtualMachineProperties
 
-	// READ-ONLY; ID of the virtual machine.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1704,16 +2168,52 @@ type VirtualMachinesList struct {
 	NextLink *string
 }
 
+// VmwareFirewallLicenseProperties - The properties of a VMware Firewall license
+type VmwareFirewallLicenseProperties struct {
+	// REQUIRED; Number of cores included in the license, measured per hour
+	Cores *int32
+
+	// REQUIRED; UTC datetime when the license expires
+	EndDate *time.Time
+
+	// CONSTANT; License kind
+	// Field has constant value LicenseKindVmwareFirewall, any specified value is ignored.
+	Kind *LicenseKind
+
+	// The Broadcom contract number associated with the license.
+	BroadcomContractNumber *string
+
+	// The Broadcom site ID associated with the license.
+	BroadcomSiteID *string
+
+	// Additional labels passed through for license reporting.
+	Labels []*Label
+
+	// License key
+	LicenseKey *string
+
+	// READ-ONLY; The state of the license provisioning
+	ProvisioningState *LicenseProvisioningState
+}
+
+// GetLicenseProperties implements the LicensePropertiesClassification interface for type VmwareFirewallLicenseProperties.
+func (v *VmwareFirewallLicenseProperties) GetLicenseProperties() *LicenseProperties {
+	return &LicenseProperties{
+		Kind:              v.Kind,
+		ProvisioningState: v.ProvisioningState,
+	}
+}
+
 // WorkloadNetwork - Workload Network
 type WorkloadNetwork struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkProperties
 
-	// READ-ONLY; Name of the global reach connection
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1727,11 +2227,11 @@ type WorkloadNetworkDNSService struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkDNSServiceProperties
 
-	// READ-ONLY; ID of the DNS service.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1781,11 +2281,11 @@ type WorkloadNetworkDNSZone struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkDNSZoneProperties
 
-	// READ-ONLY; ID of the DNS zone.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1832,11 +2332,11 @@ type WorkloadNetworkDhcp struct {
 	// The resource-specific properties for this resource.
 	Properties WorkloadNetworkDhcpEntityClassification
 
-	// READ-ONLY; The ID of the DHCP configuration
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -1952,11 +2452,11 @@ type WorkloadNetworkGateway struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkGatewayProperties
 
-	// READ-ONLY; The ID of the NSX Gateway
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2000,11 +2500,11 @@ type WorkloadNetworkPortMirroring struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkPortMirroringProperties
 
-	// READ-ONLY; ID of the NSX port mirroring profile.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2057,11 +2557,11 @@ type WorkloadNetworkPublicIP struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkPublicIPProperties
 
-	// READ-ONLY; ID of the DNS zone.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2099,11 +2599,11 @@ type WorkloadNetworkSegment struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkSegmentProperties
 
-	// READ-ONLY; The ID of the NSX Segment
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2165,11 +2665,11 @@ type WorkloadNetworkVMGroup struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkVMGroupProperties
 
-	// READ-ONLY; ID of the VM group.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -2210,11 +2710,11 @@ type WorkloadNetworkVirtualMachine struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkloadNetworkVirtualMachineProperties
 
-	// READ-ONLY; ID of the virtual machine.
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData

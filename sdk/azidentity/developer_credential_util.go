@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -12,7 +9,6 @@ import (
 	"errors"
 	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 	"time"
 )
@@ -30,17 +26,9 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		ctx, cancel = context.WithTimeout(ctx, cliTimeout)
 		defer cancel()
 	}
-	var cmd *exec.Cmd
-	if runtime.GOOS == "windows" {
-		dir := os.Getenv("SYSTEMROOT")
-		if dir == "" {
-			return nil, newCredentialUnavailableError(credName, `environment variable "SYSTEMROOT" has no value`)
-		}
-		cmd = exec.CommandContext(ctx, "cmd.exe", "/c", command)
-		cmd.Dir = dir
-	} else {
-		cmd = exec.CommandContext(ctx, "/bin/sh", "-c", command)
-		cmd.Dir = "/bin"
+	cmd, err := buildCmd(ctx, credName, command)
+	if err != nil {
+		return nil, err
 	}
 	cmd.Env = os.Environ()
 	stderr := bytes.Buffer{}
@@ -57,7 +45,15 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		msg := stderr.String()
 		var exErr *exec.ExitError
 		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.Contains(msg, "' is not recognized") {
-			return nil, newCredentialUnavailableError(credName, "CLI executable not found on path")
+			return nil, newCredentialUnavailableError(credName, "executable not found on path")
+		}
+		if credName == credNameAzurePowerShell {
+			if strings.Contains(msg, "Connect-AzAccount") {
+				msg = `Please run "Connect-AzAccount" to set up an account`
+			}
+			if strings.Contains(msg, noAzAccountModule) {
+				msg = noAzAccountModule
+			}
 		}
 		if msg == "" {
 			msg = err.Error()
@@ -81,7 +77,7 @@ func unavailableIfInDAC(err error, inDefaultChain bool) error {
 // validScope is for credentials authenticating via external tools. The authority validates scopes for all other credentials.
 func validScope(scope string) bool {
 	for _, r := range scope {
-		if !(alphanumeric(r) || r == '.' || r == '-' || r == '_' || r == '/' || r == ':') {
+		if !alphanumeric(r) && r != '.' && r != '-' && r != '_' && r != '/' && r != ':' {
 			return false
 		}
 	}

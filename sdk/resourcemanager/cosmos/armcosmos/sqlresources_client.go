@@ -27,7 +27,7 @@ type SQLResourcesClient struct {
 // NewSQLResourcesClient creates a new instance of SQLResourcesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLResourcesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredent
 // such as the Azure Powershell (instead of directly).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -73,7 +73,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateClientEncryptionKey(ctx conte
 // as the Azure Powershell (instead of directly).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateClientEncryptionKey(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateClientEncryptionKey"
@@ -123,7 +123,7 @@ func (client *SQLResourcesClient) createUpdateClientEncryptionKeyCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateClientEncryptionKeyParameters); err != nil {
@@ -135,7 +135,7 @@ func (client *SQLResourcesClient) createUpdateClientEncryptionKeyCreateRequest(c
 // BeginCreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -163,7 +163,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLContainer(ctx context.Cont
 // CreateUpdateSQLContainer - Create or update an Azure Cosmos DB SQL container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLContainer"
@@ -213,7 +213,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLContainerParameters); err != nil {
@@ -225,7 +225,7 @@ func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx cont
 // BeginCreateUpdateSQLDatabase - Create or update an Azure Cosmos DB SQL database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -252,7 +252,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLDatabase(ctx context.Conte
 // CreateUpdateSQLDatabase - Create or update an Azure Cosmos DB SQL database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLDatabase"
@@ -298,7 +298,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLDatabaseParameters); err != nil {
@@ -310,7 +310,7 @@ func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx conte
 // BeginCreateUpdateSQLRoleAssignment - Creates or updates an Azure Cosmos DB SQL Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - roleAssignmentID - The GUID for the Role Assignment.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
@@ -337,7 +337,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleAssignment(ctx context
 // CreateUpdateSQLRoleAssignment - Creates or updates an Azure Cosmos DB SQL Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment"
@@ -383,7 +383,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLRoleAssignmentParameters); err != nil {
@@ -395,7 +395,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx
 // BeginCreateUpdateSQLRoleDefinition - Creates or updates an Azure Cosmos DB SQL Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - roleDefinitionID - The GUID for the Role Definition.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
@@ -422,7 +422,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLRoleDefinition(ctx context
 // CreateUpdateSQLRoleDefinition - Creates or updates an Azure Cosmos DB SQL Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition"
@@ -468,7 +468,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLRoleDefinitionParameters); err != nil {
@@ -480,7 +480,7 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx
 // BeginCreateUpdateSQLStoredProcedure - Create or update an Azure Cosmos DB SQL storedProcedure
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -509,7 +509,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLStoredProcedure(ctx contex
 // CreateUpdateSQLStoredProcedure - Create or update an Azure Cosmos DB SQL storedProcedure
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure"
@@ -563,7 +563,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLStoredProcedureParameters); err != nil {
@@ -575,7 +575,7 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ct
 // BeginCreateUpdateSQLTrigger - Create or update an Azure Cosmos DB SQL trigger
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -604,7 +604,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLTrigger(ctx context.Contex
 // CreateUpdateSQLTrigger - Create or update an Azure Cosmos DB SQL trigger
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLTrigger"
@@ -658,7 +658,7 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLTriggerParameters); err != nil {
@@ -670,7 +670,7 @@ func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx contex
 // BeginCreateUpdateSQLUserDefinedFunction - Create or update an Azure Cosmos DB SQL userDefinedFunction
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -699,7 +699,7 @@ func (client *SQLResourcesClient) BeginCreateUpdateSQLUserDefinedFunction(ctx co
 // CreateUpdateSQLUserDefinedFunction - Create or update an Azure Cosmos DB SQL userDefinedFunction
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction"
@@ -753,7 +753,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateSQLUserDefinedFunctionParameters); err != nil {
@@ -765,7 +765,7 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateReques
 // BeginDeleteSQLContainer - Deletes an existing Azure Cosmos DB SQL container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -792,7 +792,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLContainer(ctx context.Context, r
 // DeleteSQLContainer - Deletes an existing Azure Cosmos DB SQL container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLContainer"
@@ -842,7 +842,7 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -850,7 +850,7 @@ func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Co
 // BeginDeleteSQLDatabase - Deletes an existing Azure Cosmos DB SQL database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -876,7 +876,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLDatabase(ctx context.Context, re
 // DeleteSQLDatabase - Deletes an existing Azure Cosmos DB SQL database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLDatabase"
@@ -922,7 +922,7 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -930,7 +930,7 @@ func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Con
 // BeginDeleteSQLRoleAssignment - Deletes an existing Azure Cosmos DB SQL Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - roleAssignmentID - The GUID for the Role Assignment.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
@@ -956,7 +956,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLRoleAssignment(ctx context.Conte
 // DeleteSQLRoleAssignment - Deletes an existing Azure Cosmos DB SQL Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLRoleAssignment"
@@ -1002,7 +1002,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1011,7 +1011,7 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx conte
 // BeginDeleteSQLRoleDefinition - Deletes an existing Azure Cosmos DB SQL Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - roleDefinitionID - The GUID for the Role Definition.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
@@ -1037,7 +1037,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLRoleDefinition(ctx context.Conte
 // DeleteSQLRoleDefinition - Deletes an existing Azure Cosmos DB SQL Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLRoleDefinition"
@@ -1083,7 +1083,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1092,7 +1092,7 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx conte
 // BeginDeleteSQLStoredProcedure - Deletes an existing Azure Cosmos DB SQL storedProcedure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1120,7 +1120,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLStoredProcedure(ctx context.Cont
 // DeleteSQLStoredProcedure - Deletes an existing Azure Cosmos DB SQL storedProcedure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLStoredProcedure"
@@ -1174,7 +1174,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1182,7 +1182,7 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx cont
 // BeginDeleteSQLTrigger - Deletes an existing Azure Cosmos DB SQL trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1210,7 +1210,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLTrigger(ctx context.Context, res
 // DeleteSQLTrigger - Deletes an existing Azure Cosmos DB SQL trigger.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLTrigger"
@@ -1264,7 +1264,7 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1272,7 +1272,7 @@ func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Cont
 // BeginDeleteSQLUserDefinedFunction - Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1300,7 +1300,7 @@ func (client *SQLResourcesClient) BeginDeleteSQLUserDefinedFunction(ctx context.
 // DeleteSQLUserDefinedFunction - Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginDeleteSQLUserDefinedFunction"
@@ -1354,7 +1354,7 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -1362,7 +1362,7 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx 
 // GetClientEncryptionKey - Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1419,7 +1419,7 @@ func (client *SQLResourcesClient) getClientEncryptionKeyCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1437,7 +1437,7 @@ func (client *SQLResourcesClient) getClientEncryptionKeyHandleResponse(resp *htt
 // GetSQLContainer - Gets the SQL container under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1494,7 +1494,7 @@ func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1512,7 +1512,7 @@ func (client *SQLResourcesClient) getSQLContainerHandleResponse(resp *http.Respo
 // GetSQLContainerThroughput - Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1569,7 +1569,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1587,7 +1587,7 @@ func (client *SQLResourcesClient) getSQLContainerThroughputHandleResponse(resp *
 // GetSQLDatabase - Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1639,7 +1639,7 @@ func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1658,7 +1658,7 @@ func (client *SQLResourcesClient) getSQLDatabaseHandleResponse(resp *http.Respon
 // with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1710,7 +1710,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1728,7 +1728,7 @@ func (client *SQLResourcesClient) getSQLDatabaseThroughputHandleResponse(resp *h
 // GetSQLRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - roleAssignmentID - The GUID for the Role Assignment.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
@@ -1780,7 +1780,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1798,7 +1798,7 @@ func (client *SQLResourcesClient) getSQLRoleAssignmentHandleResponse(resp *http.
 // GetSQLRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - roleDefinitionID - The GUID for the Role Definition.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
@@ -1850,7 +1850,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1868,7 +1868,7 @@ func (client *SQLResourcesClient) getSQLRoleDefinitionHandleResponse(resp *http.
 // GetSQLStoredProcedure - Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1930,7 +1930,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1948,7 +1948,7 @@ func (client *SQLResourcesClient) getSQLStoredProcedureHandleResponse(resp *http
 // GetSQLTrigger - Gets the SQL trigger under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2010,7 +2010,7 @@ func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2028,7 +2028,7 @@ func (client *SQLResourcesClient) getSQLTriggerHandleResponse(resp *http.Respons
 // GetSQLUserDefinedFunction - Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2090,7 +2090,7 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2107,7 +2107,7 @@ func (client *SQLResourcesClient) getSQLUserDefinedFunctionHandleResponse(resp *
 
 // NewListClientEncryptionKeysPager - Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2161,7 +2161,7 @@ func (client *SQLResourcesClient) listClientEncryptionKeysCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2178,7 +2178,7 @@ func (client *SQLResourcesClient) listClientEncryptionKeysHandleResponse(resp *h
 
 // NewListSQLContainersPager - Lists the SQL container under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2232,7 +2232,7 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2249,7 +2249,7 @@ func (client *SQLResourcesClient) listSQLContainersHandleResponse(resp *http.Res
 
 // NewListSQLDatabasesPager - Lists the SQL databases under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - SQLResourcesClientListSQLDatabasesOptions contains the optional parameters for the SQLResourcesClient.NewListSQLDatabasesPager
@@ -2298,7 +2298,7 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2315,7 +2315,7 @@ func (client *SQLResourcesClient) listSQLDatabasesHandleResponse(resp *http.Resp
 
 // NewListSQLRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - SQLResourcesClientListSQLRoleAssignmentsOptions contains the optional parameters for the SQLResourcesClient.NewListSQLRoleAssignmentsPager
@@ -2364,7 +2364,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2381,7 +2381,7 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsHandleResponse(resp *htt
 
 // NewListSQLRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - SQLResourcesClientListSQLRoleDefinitionsOptions contains the optional parameters for the SQLResourcesClient.NewListSQLRoleDefinitionsPager
@@ -2430,7 +2430,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2447,7 +2447,7 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsHandleResponse(resp *htt
 
 // NewListSQLStoredProceduresPager - Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2506,7 +2506,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2523,7 +2523,7 @@ func (client *SQLResourcesClient) listSQLStoredProceduresHandleResponse(resp *ht
 
 // NewListSQLTriggersPager - Lists the SQL trigger under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2582,7 +2582,7 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2599,7 +2599,7 @@ func (client *SQLResourcesClient) listSQLTriggersHandleResponse(resp *http.Respo
 
 // NewListSQLUserDefinedFunctionsPager - Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2658,7 +2658,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2676,7 +2676,7 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsHandleResponse(resp
 // BeginMigrateSQLContainerToAutoscale - Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2703,7 +2703,7 @@ func (client *SQLResourcesClient) BeginMigrateSQLContainerToAutoscale(ctx contex
 // MigrateSQLContainerToAutoscale - Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginMigrateSQLContainerToAutoscale"
@@ -2753,7 +2753,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2762,7 +2762,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ct
 // BeginMigrateSQLContainerToManualThroughput - Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2789,7 +2789,7 @@ func (client *SQLResourcesClient) BeginMigrateSQLContainerToManualThroughput(ctx
 // MigrateSQLContainerToManualThroughput - Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput"
@@ -2839,7 +2839,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2848,7 +2848,7 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateReq
 // BeginMigrateSQLDatabaseToAutoscale - Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2874,7 +2874,7 @@ func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToAutoscale(ctx context
 // MigrateSQLDatabaseToAutoscale - Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale"
@@ -2920,7 +2920,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -2929,7 +2929,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx
 // BeginMigrateSQLDatabaseToManualThroughput - Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2955,7 +2955,7 @@ func (client *SQLResourcesClient) BeginMigrateSQLDatabaseToManualThroughput(ctx 
 // MigrateSQLDatabaseToManualThroughput - Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput"
@@ -3001,7 +3001,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -3010,7 +3010,7 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequ
 // BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a container resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -3039,7 +3039,7 @@ func (client *SQLResourcesClient) BeginRetrieveContinuousBackupInformation(ctx c
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a container resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginRetrieveContinuousBackupInformation"
@@ -3089,7 +3089,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, location); err != nil {
@@ -3101,7 +3101,7 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateReque
 // BeginUpdateSQLContainerThroughput - Update RUs per second of an Azure Cosmos DB SQL container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -3129,7 +3129,7 @@ func (client *SQLResourcesClient) BeginUpdateSQLContainerThroughput(ctx context.
 // UpdateSQLContainerThroughput - Update RUs per second of an Azure Cosmos DB SQL container
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginUpdateSQLContainerThroughput"
@@ -3179,7 +3179,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
@@ -3191,7 +3191,7 @@ func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx 
 // BeginUpdateSQLDatabaseThroughput - Update RUs per second of an Azure Cosmos DB SQL database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -3218,7 +3218,7 @@ func (client *SQLResourcesClient) BeginUpdateSQLDatabaseThroughput(ctx context.C
 // UpdateSQLDatabaseThroughput - Update RUs per second of an Azure Cosmos DB SQL database
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-15
+// Generated from API version 2025-10-15
 func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLResourcesClient.BeginUpdateSQLDatabaseThroughput"
@@ -3264,7 +3264,7 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-15")
+	reqQP.Set("api-version", "2025-10-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {

@@ -273,6 +273,17 @@ type JobsClientListByTargetResponse struct {
 	JobListResult
 }
 
+// SchemaReferencesClientCreateOrUpdateResponse contains the response from method SchemaReferencesClient.BeginCreateOrUpdate.
+type SchemaReferencesClientCreateOrUpdateResponse struct {
+	// Schema Reference Resource
+	SchemaReference
+}
+
+// SchemaReferencesClientDeleteResponse contains the response from method SchemaReferencesClient.BeginDelete.
+type SchemaReferencesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
 // SchemaReferencesClientGetResponse contains the response from method SchemaReferencesClient.Get.
 type SchemaReferencesClientGetResponse struct {
 	// Schema Reference Resource
@@ -283,6 +294,12 @@ type SchemaReferencesClientGetResponse struct {
 type SchemaReferencesClientListByResourceGroupResponse struct {
 	// The response of a SchemaReference list operation.
 	SchemaReferenceListResult
+}
+
+// SchemaReferencesClientUpdateResponse contains the response from method SchemaReferencesClient.Update.
+type SchemaReferencesClientUpdateResponse struct {
+	// Schema Reference Resource
+	SchemaReference
 }
 
 // SchemaVersionsClientCreateOrUpdateResponse contains the response from method SchemaVersionsClient.BeginCreateOrUpdate.

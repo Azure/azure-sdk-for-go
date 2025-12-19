@@ -42,8 +42,14 @@ type ServerFactory struct {
 	// IscsiPathsServer contains the fakes for client IscsiPathsClient
 	IscsiPathsServer IscsiPathsServer
 
+	// LicensesServer contains the fakes for client LicensesClient
+	LicensesServer LicensesServer
+
 	// LocationsServer contains the fakes for client LocationsClient
 	LocationsServer LocationsServer
+
+	// MaintenancesServer contains the fakes for client MaintenancesClient
+	MaintenancesServer MaintenancesServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
@@ -102,7 +108,9 @@ type ServerFactoryTransport struct {
 	trHcxEnterpriseSitesServer     *HcxEnterpriseSitesServerTransport
 	trHostsServer                  *HostsServerTransport
 	trIscsiPathsServer             *IscsiPathsServerTransport
+	trLicensesServer               *LicensesServerTransport
 	trLocationsServer              *LocationsServerTransport
+	trMaintenancesServer           *MaintenancesServerTransport
 	trOperationsServer             *OperationsServerTransport
 	trPlacementPoliciesServer      *PlacementPoliciesServerTransport
 	trPrivateCloudsServer          *PrivateCloudsServerTransport
@@ -162,9 +170,15 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "IscsiPathsClient":
 		initServer(s, &s.trIscsiPathsServer, func() *IscsiPathsServerTransport { return NewIscsiPathsServerTransport(&s.srv.IscsiPathsServer) })
 		resp, err = s.trIscsiPathsServer.Do(req)
+	case "LicensesClient":
+		initServer(s, &s.trLicensesServer, func() *LicensesServerTransport { return NewLicensesServerTransport(&s.srv.LicensesServer) })
+		resp, err = s.trLicensesServer.Do(req)
 	case "LocationsClient":
 		initServer(s, &s.trLocationsServer, func() *LocationsServerTransport { return NewLocationsServerTransport(&s.srv.LocationsServer) })
 		resp, err = s.trLocationsServer.Do(req)
+	case "MaintenancesClient":
+		initServer(s, &s.trMaintenancesServer, func() *MaintenancesServerTransport { return NewMaintenancesServerTransport(&s.srv.MaintenancesServer) })
+		resp, err = s.trMaintenancesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

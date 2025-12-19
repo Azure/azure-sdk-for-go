@@ -4,51 +4,32 @@
 package datetime
 
 import (
-	"encoding/json"
 	"fmt"
-	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
+
+// Time is a type constraint that represents the supported time types in the datetime package
+type Time interface {
+	PlainDate | PlainTime | RFC1123 | RFC3339 | Unix
+}
 
 const (
 	fullDateJSON = `2006-01-02`
 	jsonFormat   = `%04d-%02d-%02d`
 )
 
+// PlainDate represents a date value without time information in YYYY-MM-DD format.
+// It wraps time.Time and can be marshaled to and unmarshaled from JSON.
 type PlainDate time.Time
 
+// MarshalJSON marshals the PlainDate to a JSON byte slice.
 func (t PlainDate) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf(jsonFormat, time.Time(t).Year(), time.Time(t).Month(), time.Time(t).Day())), nil
 }
 
+// UnmarshalJSON unmarshals a JSON byte slice into a PlainDate.
 func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
 	t, err := time.Parse(fullDateJSON, string(data))
 	*d = (PlainDate)(t)
 	return err
-}
-
-func PopulatePlainDate(m map[string]any, k string, t *time.Time) {
-	if t == nil {
-		return
-	} else if azcore.IsNullValue(t) {
-		m[k] = nil
-		return
-	} else if reflect.ValueOf(t).IsNil() {
-		return
-	}
-	m[k] = (*PlainDate)(t)
-}
-
-func UnpopulatePlainDate(data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || string(data) == "null" {
-		return nil
-	}
-	var aux PlainDate
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
-	}
-	*t = (*time.Time)(&aux)
-	return nil
 }

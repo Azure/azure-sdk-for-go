@@ -4,70 +4,48 @@
 package datetime
 
 import (
-	"encoding/json"
-	"fmt"
-	"reflect"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 const (
-	DateTimeRFC1123JSON = `"` + time.RFC1123 + `"`
+	dateTimeRFC1123JSON = `"` + time.RFC1123 + `"`
 )
 
-type DateTimeRFC1123 time.Time
+// RFC1123 represents a date and time value in RFC 1123 format as defined in
+// https://tools.ietf.org/html/rfc1123.
+type RFC1123 time.Time
 
-func (t DateTimeRFC1123) MarshalJSON() ([]byte, error) {
-	b := []byte(time.Time(t).Format(DateTimeRFC1123JSON))
+// MarshalJSON marshals the RFC1123 timestamp to a JSON byte slice.
+func (t RFC1123) MarshalJSON() ([]byte, error) {
+	b := []byte(time.Time(t).Format(dateTimeRFC1123JSON))
 	return b, nil
 }
 
-func (t DateTimeRFC1123) MarshalText() ([]byte, error) {
+// MarshalText returns a textual representation of RFC1123
+func (t RFC1123) MarshalText() ([]byte, error) {
 	b := []byte(time.Time(t).Format(time.RFC1123))
 	return b, nil
 }
 
-func (t *DateTimeRFC1123) UnmarshalJSON(data []byte) error {
-	p, err := time.Parse(DateTimeRFC1123JSON, strings.ToUpper(string(data)))
-	*t = DateTimeRFC1123(p)
+// UnmarshalJSON unmarshals a JSON byte slice into an RFC1123 timestamp
+func (t *RFC1123) UnmarshalJSON(data []byte) error {
+	p, err := time.Parse(dateTimeRFC1123JSON, strings.ToUpper(string(data)))
+	*t = RFC1123(p)
 	return err
 }
 
-func (t *DateTimeRFC1123) UnmarshalText(data []byte) error {
+// UnmarshalText decodes the textual representation of RFC1123
+func (t *RFC1123) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
 		return nil
 	}
 	p, err := time.Parse(time.RFC1123, string(data))
-	*t = DateTimeRFC1123(p)
+	*t = RFC1123(p)
 	return err
 }
 
-func (t DateTimeRFC1123) String() string {
+// String returns the string of RFC1123
+func (t RFC1123) String() string {
 	return time.Time(t).Format(time.RFC1123)
-}
-
-func PopulateDateTimeRFC1123(m map[string]any, k string, t *time.Time) {
-	if t == nil {
-		return
-	} else if azcore.IsNullValue(t) {
-		m[k] = nil
-		return
-	} else if reflect.ValueOf(t).IsNil() {
-		return
-	}
-	m[k] = (*DateTimeRFC1123)(t)
-}
-
-func UnpopulateDateTimeRFC1123(data json.RawMessage, fn string, t **time.Time) error {
-	if data == nil || string(data) == "null" {
-		return nil
-	}
-	var aux DateTimeRFC1123
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
-	}
-	*t = (*time.Time)(&aux)
-	return nil
 }

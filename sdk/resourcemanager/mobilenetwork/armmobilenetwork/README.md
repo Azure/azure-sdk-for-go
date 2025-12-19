@@ -1,4 +1,5 @@
 # Azure Private 5G Core Module for Go
+> **DEPRECATED**: This module has reached end of life on 09/30/2025 and is no longer maintained.
 
 The `armmobilenetwork` module provides operations for working with Azure Private 5G Core.
 

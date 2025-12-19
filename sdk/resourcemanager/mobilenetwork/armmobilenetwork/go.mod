@@ -1,3 +1,4 @@
+// Deprecated: This module has reached end of life on 09/30/2025 and is no longer maintained.
 module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mobilenetwork/armmobilenetwork/v4
 
 go 1.24.0

@@ -1,5 +1,10 @@
 # Release History
 
+## 4.1.1 (2025-12-18)
+### Other Changes
+
+- This module has reached end of life on 09/30/2025 and is no longer maintained.
+
 ## 4.1.0 (2024-06-21)
 ### Features Added
 

@@ -4,7 +4,6 @@
 package datetime
 
 import (
-	"strings"
 	"time"
 )
 
@@ -30,7 +29,7 @@ func (t RFC1123) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into an RFC1123 timestamp
 func (t *RFC1123) UnmarshalJSON(data []byte) error {
-	p, err := time.Parse(rfc1123JSON, strings.ToUpper(string(data)))
+	p, err := time.Parse(rfc1123JSON, string(data))
 	*t = RFC1123(p)
 	return err
 }

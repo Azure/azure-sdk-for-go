@@ -4,6 +4,7 @@
 package datetime
 
 import (
+	"encoding/xml"
 	"testing"
 	"time"
 
@@ -29,4 +30,10 @@ func TestRFC3339(t *testing.T) {
 	err = dt3.UnmarshalText(textBytes)
 	require.NoError(t, err)
 	require.Equal(t, originalTime, time.Time(dt3))
+}
+
+func TestRFC3339_empty(t *testing.T) {
+	tt := RFC3339{}
+	require.NoError(t, xml.Unmarshal([]byte("<RFC3339/>"), &tt))
+	require.Zero(t, tt)
 }

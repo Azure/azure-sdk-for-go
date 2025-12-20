@@ -45,7 +45,6 @@ func TestRFC3339(t *testing.T) {
 	require.Equal(t, originalTime, time.Time(dt3))
 }
 
-<<<<<<< HEAD
 func TestRFC3339_WithSpace_JSON(t *testing.T) {
 	dst := timeInfoJSON{}
 	require.NoError(t, json.Unmarshal([]byte(`{"startTime":"2024-01-18 14:18:54Z"}`), &dst))
@@ -96,10 +95,10 @@ func TestEmptyAndNullTime(t *testing.T) {
 	require.Nil(t, dst.Expiry)
 	require.NoError(t, json.Unmarshal([]byte(`{"interval": null}`), &dst))
 	require.Nil(t, dst.Expiry)
-=======
+}
+
 func TestRFC3339_empty(t *testing.T) {
 	tt := RFC3339{}
 	require.NoError(t, xml.Unmarshal([]byte("<RFC3339/>"), &tt))
 	require.Zero(t, tt)
->>>>>>> refs/remotes/origin/grace-time-move
 }

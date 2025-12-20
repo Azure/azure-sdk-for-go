@@ -14,7 +14,7 @@ func TestPlainTime(t *testing.T) {
 	originalTime := time.Date(2023, time.June, 15, 10, 30, 45, 0, time.UTC)
 	pt := PlainTime(originalTime)
 	result := pt.String()
-	require.Equal(t, "10:30:45Z", result)
+	require.Equal(t, "10:30:45", result)
 
 	jsonBytes, err := pt.MarshalJSON()
 	require.NoError(t, err)

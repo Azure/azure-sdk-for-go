@@ -1,5 +1,11 @@
 # Release History
 
+## 8.2.0 (2025-12-25)
+### Features Added
+
+- New value `OSSKUUbuntu2404` added to enum type `OSSKU`
+
+
 ## 8.2.0-beta.1 (2025-11-21)
 ### Features Added
 

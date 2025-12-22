@@ -6,12 +6,6 @@
 * Added support for User Delegation SAS.
 * Added support for service version 2026-02-06.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.5.3 (2025-10-16)
 
 ### Other Changes

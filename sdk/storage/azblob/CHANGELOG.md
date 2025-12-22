@@ -7,9 +7,6 @@
 * Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
 * Added support for service version 2026-02-06.
 
-### Breaking Changes
-
-### Bugs Fixed
 
 ## 1.6.3 (2025-10-16)
 

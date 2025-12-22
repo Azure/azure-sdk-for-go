@@ -5,12 +5,6 @@
 ### Features Added
 * Added support for service version 2026-02-06.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.4.3 (2025-10-16)
 
 ### Other Changes

@@ -1,6 +1,6 @@
 # Release History
 
-## 8.3.0-beta.1 (2025-12-23)
+## 8.3.0-beta.1 (2025-12-26)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`

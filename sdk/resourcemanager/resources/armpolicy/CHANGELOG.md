@@ -1,5 +1,114 @@
 # Release History
 
+## 1.0.0 (2025-12-22)
+### Breaking Changes
+
+- Type of `AssignmentProperties.Parameters` has been changed from `map[string]*ParameterValuesValue` to `*ParameterValues`
+- Type of `DefinitionProperties.Parameters` has been changed from `map[string]*ParameterDefinitionsValue` to `*ParameterDefinitions`
+- Type of `DefinitionProperties.PolicyType` has been changed from `*PolicyType` to `*Type`
+- Type of `DefinitionReference.Parameters` has been changed from `map[string]*ParameterValuesValue` to `*ParameterValues`
+- Type of `DefinitionVersionProperties.Parameters` has been changed from `map[string]*ParameterDefinitionsValue` to `*ParameterDefinitions`
+- Type of `DefinitionVersionProperties.PolicyType` has been changed from `*PolicyType` to `*Type`
+- Type of `SetDefinitionProperties.Parameters` has been changed from `map[string]*ParameterDefinitionsValue` to `*ParameterDefinitions`
+- Type of `SetDefinitionProperties.PolicyType` has been changed from `*PolicyType` to `*Type`
+- Type of `SetDefinitionVersionProperties.Parameters` has been changed from `map[string]*ParameterDefinitionsValue` to `*ParameterDefinitions`
+- Type of `SetDefinitionVersionProperties.PolicyType` has been changed from `*PolicyType` to `*Type`
+- Enum `AliasPathAttributes` has been removed
+- Enum `AliasPathTokenType` has been removed
+- Enum `AliasPatternType` has been removed
+- Enum `AliasType` has been removed
+- Enum `AssignmentScopeValidation` has been removed
+- Enum `ExemptionCategory` has been removed
+- Enum `PolicyType` has been removed
+- Function `*AssignmentsClient.CreateByID` has been removed
+- Function `*AssignmentsClient.DeleteByID` has been removed
+- Function `*AssignmentsClient.GetByID` has been removed
+- Function `*AssignmentsClient.UpdateByID` has been removed
+- Function `*ClientFactory.NewDataPolicyManifestsClient` has been removed
+- Function `*ClientFactory.NewExemptionsClient` has been removed
+- Function `*ClientFactory.NewVariableValuesClient` has been removed
+- Function `*ClientFactory.NewVariablesClient` has been removed
+- Function `NewDataPolicyManifestsClient` has been removed
+- Function `*DataPolicyManifestsClient.GetByPolicyMode` has been removed
+- Function `*DataPolicyManifestsClient.NewListPager` has been removed
+- Function `NewExemptionsClient` has been removed
+- Function `*ExemptionsClient.CreateOrUpdate` has been removed
+- Function `*ExemptionsClient.Delete` has been removed
+- Function `*ExemptionsClient.Get` has been removed
+- Function `*ExemptionsClient.NewListForManagementGroupPager` has been removed
+- Function `*ExemptionsClient.NewListForResourceGroupPager` has been removed
+- Function `*ExemptionsClient.NewListForResourcePager` has been removed
+- Function `*ExemptionsClient.NewListPager` has been removed
+- Function `*ExemptionsClient.Update` has been removed
+- Function `NewVariableValuesClient` has been removed
+- Function `*VariableValuesClient.CreateOrUpdate` has been removed
+- Function `*VariableValuesClient.CreateOrUpdateAtManagementGroup` has been removed
+- Function `*VariableValuesClient.Delete` has been removed
+- Function `*VariableValuesClient.DeleteAtManagementGroup` has been removed
+- Function `*VariableValuesClient.Get` has been removed
+- Function `*VariableValuesClient.GetAtManagementGroup` has been removed
+- Function `*VariableValuesClient.NewListForManagementGroupPager` has been removed
+- Function `*VariableValuesClient.NewListPager` has been removed
+- Function `NewVariablesClient` has been removed
+- Function `*VariablesClient.CreateOrUpdate` has been removed
+- Function `*VariablesClient.CreateOrUpdateAtManagementGroup` has been removed
+- Function `*VariablesClient.Delete` has been removed
+- Function `*VariablesClient.DeleteAtManagementGroup` has been removed
+- Function `*VariablesClient.Get` has been removed
+- Function `*VariablesClient.GetAtManagementGroup` has been removed
+- Function `*VariablesClient.NewListForManagementGroupPager` has been removed
+- Function `*VariablesClient.NewListPager` has been removed
+- Struct `Alias` has been removed
+- Struct `AliasPath` has been removed
+- Struct `AliasPathMetadata` has been removed
+- Struct `AliasPattern` has been removed
+- Struct `DataEffect` has been removed
+- Struct `DataManifestCustomResourceFunctionDefinition` has been removed
+- Struct `DataManifestResourceFunctionsDefinition` has been removed
+- Struct `DataPolicyManifest` has been removed
+- Struct `DataPolicyManifestListResult` has been removed
+- Struct `DataPolicyManifestProperties` has been removed
+- Struct `Exemption` has been removed
+- Struct `ExemptionListResult` has been removed
+- Struct `ExemptionProperties` has been removed
+- Struct `ExemptionUpdate` has been removed
+- Struct `ExemptionUpdateProperties` has been removed
+- Struct `ResourceTypeAliases` has been removed
+- Struct `Variable` has been removed
+- Struct `VariableColumn` has been removed
+- Struct `VariableListResult` has been removed
+- Struct `VariableProperties` has been removed
+- Struct `VariableValue` has been removed
+- Struct `VariableValueColumnValue` has been removed
+- Struct `VariableValueListResult` has been removed
+- Struct `VariableValueProperties` has been removed
+
+### Features Added
+
+- New value `EnforcementModeEnroll` added to enum type `EnforcementMode`
+- New value `OverrideKindDefinitionVersion` added to enum type `OverrideKind`
+- New enum type `AssignmentType` with values `AssignmentTypeCustom`, `AssignmentTypeNotSpecified`, `AssignmentTypeSystem`, `AssignmentTypeSystemHidden`
+- New enum type `ExternalEndpointResult` with values `ExternalEndpointResultFailed`, `ExternalEndpointResultSucceeded`
+- New enum type `TokenResult` with values `TokenResultFailed`, `TokenResultSucceeded`
+- New enum type `Type` with values `TypeBuiltIn`, `TypeCustom`, `TypeNotSpecified`, `TypeStatic`
+- New function `*ClientFactory.NewTokensClient() *TokensClient`
+- New function `NewTokensClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TokensClient, error)`
+- New function `*TokensClient.Acquire(ctx context.Context, parameters TokenRequest, options *TokensClientAcquireOptions) (TokensClientAcquireResponse, error)`
+- New function `*TokensClient.AcquireAtManagementGroup(ctx context.Context, managementGroupName string, parameters TokenRequest, options *TokensClientAcquireAtManagementGroupOptions) (TokensClientAcquireAtManagementGroupResponse, error)`
+- New struct `ExternalEvaluationEndpointInvocationResult`
+- New struct `ExternalEvaluationEndpointSettings`
+- New struct `ExternalEvaluationEnforcementSettings`
+- New struct `LogInfo`
+- New struct `ParameterDefinitions`
+- New struct `ParameterValues`
+- New struct `TokenOperation`
+- New struct `TokenRequest`
+- New struct `TokenResponse`
+- New field `AssignmentType`, `InstanceID` in struct `AssignmentProperties`
+- New field `ExternalEvaluationEnforcementSettings` in struct `DefinitionProperties`
+- New field `ExternalEvaluationEnforcementSettings` in struct `DefinitionVersionProperties`
+
+
 ## 0.10.0 (2025-03-18)
 ### Features Added
 

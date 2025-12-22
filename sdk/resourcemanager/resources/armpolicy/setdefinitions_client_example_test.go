@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createOrUpdatePolicySetDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/createOrUpdatePolicySetDefinition.json
 func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefiniti
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createOrUpdatePolicySetDefinitionWithGroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/createOrUpdatePolicySetDefinitionWithGroups.json
 func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefinitionWithGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefiniti
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/deletePolicySetDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/deletePolicySetDefinition.json
 func ExampleSetDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleSetDefinitionsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicySetDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/getPolicySetDefinition.json
 func ExampleSetDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleSetDefinitionsClient_Get() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getBuiltInPolicySetDefinition.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/getBuiltInPolicySetDefinition.json
 func ExampleSetDefinitionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +436,7 @@ func ExampleSetDefinitionsClient_GetBuiltIn() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicySetDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/listPolicySetDefinitions.json
 func ExampleSetDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -580,7 +580,7 @@ func ExampleSetDefinitionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listBuiltInPolicySetDefinitions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/listBuiltInPolicySetDefinitions.json
 func ExampleSetDefinitionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -681,7 +681,7 @@ func ExampleSetDefinitionsClient_NewListBuiltInPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createOrUpdatePolicySetDefinitionAtManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/createOrUpdatePolicySetDefinitionAtManagementGroup.json
 func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateAPolicySetDefinitionAtManagementGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -773,7 +773,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
 func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateAPolicySetDefinitionWithGroupsAtManagementGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -899,7 +899,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/deletePolicySetDefinitionAtManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/deletePolicySetDefinitionAtManagementGroup.json
 func ExampleSetDefinitionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +916,7 @@ func ExampleSetDefinitionsClient_DeleteAtManagementGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/getPolicySetDefinitionAtManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/getPolicySetDefinitionAtManagementGroup.json
 func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -979,7 +979,7 @@ func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/219b2e3ef270f18149774eb2793b48baacde982f/specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/listPolicySetDefinitionsByManagementGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/455d20a5e76d8184f7cff960501a57e1f88986b7/specification/resources/resource-manager/Microsoft.Authorization/policy/stable/2025-03-01/examples/listPolicySetDefinitionsByManagementGroup.json
 func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

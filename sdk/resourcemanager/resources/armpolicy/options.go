@@ -27,9 +27,7 @@ type AssignmentsClientDeleteOptions struct {
 
 // AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
 type AssignmentsClientGetByIDOptions struct {
-	// Comma-separated list of additional properties to be included in the response. Supported values are 'LatestDefinitionVersion,
-	// EffectiveDefinitionVersion'.
-	Expand *string
+	// placeholder for future optional parameters
 }
 
 // AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
@@ -126,20 +124,6 @@ type AssignmentsClientUpdateByIDOptions struct {
 // AssignmentsClientUpdateOptions contains the optional parameters for the AssignmentsClient.Update method.
 type AssignmentsClientUpdateOptions struct {
 	// placeholder for future optional parameters
-}
-
-// DataPolicyManifestsClientGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifestsClient.GetByPolicyMode
-// method.
-type DataPolicyManifestsClientGetByPolicyModeOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DataPolicyManifestsClientListOptions contains the optional parameters for the DataPolicyManifestsClient.NewListPager method.
-type DataPolicyManifestsClientListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: "namespace eq '{value}'". If $filter is not provided,
-	// no filtering is performed. If $filter=namespace eq '{value}' is provided, the
-	// returned list only includes all data policy manifests that have a namespace matching the provided value.
-	Filter *string
 }
 
 // DefinitionVersionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the DefinitionVersionsClient.CreateOrUpdateAtManagementGroup
@@ -301,93 +285,6 @@ type DefinitionsClientListOptions struct {
 
 	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
 	Top *int32
-}
-
-// ExemptionsClientCreateOrUpdateOptions contains the optional parameters for the ExemptionsClient.CreateOrUpdate method.
-type ExemptionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExemptionsClientDeleteOptions contains the optional parameters for the ExemptionsClient.Delete method.
-type ExemptionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExemptionsClientGetOptions contains the optional parameters for the ExemptionsClient.Get method.
-type ExemptionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ExemptionsClientListForManagementGroupOptions contains the optional parameters for the ExemptionsClient.NewListForManagementGroupPager
-// method.
-type ExemptionsClientListForManagementGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
-	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
-	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
-	// those that apply directly or apply from containing scopes. If
-	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
-	// everything in the unfiltered list except those applied to sub scopes contained
-	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
-	// at the given scope. If $filter=excludeExpired() is provided, the returned list
-	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy
-	// exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// ExemptionsClientListForResourceGroupOptions contains the optional parameters for the ExemptionsClient.NewListForResourceGroupPager
-// method.
-type ExemptionsClientListForResourceGroupOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
-	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
-	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
-	// those that apply directly or apply from containing scopes. If
-	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
-	// everything in the unfiltered list except those applied to sub scopes contained
-	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
-	// at the given scope. If $filter=excludeExpired() is provided, the returned list
-	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy
-	// exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// ExemptionsClientListForResourceOptions contains the optional parameters for the ExemptionsClient.NewListForResourcePager
-// method.
-type ExemptionsClientListForResourceOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
-	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
-	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
-	// those that apply directly or apply from containing scopes. If
-	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
-	// everything in the unfiltered list except those applied to sub scopes contained
-	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
-	// at the given scope. If $filter=excludeExpired() is provided, the returned list
-	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy
-	// exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// ExemptionsClientListOptions contains the optional parameters for the ExemptionsClient.NewListPager method.
-type ExemptionsClientListOptions struct {
-	// The filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()', 'excludeExpired()' or
-	// 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
-	// performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with the scope, including
-	// those that apply directly or apply from containing scopes. If
-	// $filter=atScope() is provided, the returned list only includes all policy exemptions that apply to the scope, which is
-	// everything in the unfiltered list except those applied to sub scopes contained
-	// within the given scope. If $filter=atExactScope() is provided, the returned list only includes all policy exemptions that
-	// at the given scope. If $filter=excludeExpired() is provided, the returned list
-	// only includes all policy exemptions that either haven't expired or didn't set expiration date. If $filter=policyAssignmentId
-	// eq '{value}' is provided. the returned list only includes all policy
-	// exemptions that are associated with the give policyAssignmentId.
-	Filter *string
-}
-
-// ExemptionsClientUpdateOptions contains the optional parameters for the ExemptionsClient.Update method.
-type ExemptionsClientUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // SetDefinitionVersionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the SetDefinitionVersionsClient.CreateOrUpdateAtManagementGroup
@@ -591,91 +488,13 @@ type SetDefinitionsClientListOptions struct {
 	Top *int32
 }
 
-// VariableValuesClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the VariableValuesClient.CreateOrUpdateAtManagementGroup
+// TokensClientAcquireAtManagementGroupOptions contains the optional parameters for the TokensClient.AcquireAtManagementGroup
 // method.
-type VariableValuesClientCreateOrUpdateAtManagementGroupOptions struct {
+type TokensClientAcquireAtManagementGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VariableValuesClientCreateOrUpdateOptions contains the optional parameters for the VariableValuesClient.CreateOrUpdate
-// method.
-type VariableValuesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientDeleteAtManagementGroupOptions contains the optional parameters for the VariableValuesClient.DeleteAtManagementGroup
-// method.
-type VariableValuesClientDeleteAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientDeleteOptions contains the optional parameters for the VariableValuesClient.Delete method.
-type VariableValuesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientGetAtManagementGroupOptions contains the optional parameters for the VariableValuesClient.GetAtManagementGroup
-// method.
-type VariableValuesClientGetAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientGetOptions contains the optional parameters for the VariableValuesClient.Get method.
-type VariableValuesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientListForManagementGroupOptions contains the optional parameters for the VariableValuesClient.NewListForManagementGroupPager
-// method.
-type VariableValuesClientListForManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariableValuesClientListOptions contains the optional parameters for the VariableValuesClient.NewListPager method.
-type VariableValuesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the VariablesClient.CreateOrUpdateAtManagementGroup
-// method.
-type VariablesClientCreateOrUpdateAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientCreateOrUpdateOptions contains the optional parameters for the VariablesClient.CreateOrUpdate method.
-type VariablesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientDeleteAtManagementGroupOptions contains the optional parameters for the VariablesClient.DeleteAtManagementGroup
-// method.
-type VariablesClientDeleteAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientDeleteOptions contains the optional parameters for the VariablesClient.Delete method.
-type VariablesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientGetAtManagementGroupOptions contains the optional parameters for the VariablesClient.GetAtManagementGroup
-// method.
-type VariablesClientGetAtManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientGetOptions contains the optional parameters for the VariablesClient.Get method.
-type VariablesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientListForManagementGroupOptions contains the optional parameters for the VariablesClient.NewListForManagementGroupPager
-// method.
-type VariablesClientListForManagementGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// VariablesClientListOptions contains the optional parameters for the VariablesClient.NewListPager method.
-type VariablesClientListOptions struct {
+// TokensClientAcquireOptions contains the optional parameters for the TokensClient.Acquire method.
+type TokensClientAcquireOptions struct {
 	// placeholder for future optional parameters
 }

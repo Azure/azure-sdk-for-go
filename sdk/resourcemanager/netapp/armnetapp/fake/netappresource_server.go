@@ -17,85 +17,85 @@ import (
 	"regexp"
 )
 
-// ResourceServer is a fake server for instances of the armnetapp.ResourceClient type.
-type ResourceServer struct {
-	// CheckFilePathAvailability is the fake for method ResourceClient.CheckFilePathAvailability
+// NetAppResourceServer is a fake server for instances of the armnetapp.NetAppResourceClient type.
+type NetAppResourceServer struct {
+	// CheckFilePathAvailability is the fake for method NetAppResourceClient.CheckFilePathAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckFilePathAvailability func(ctx context.Context, location string, body armnetapp.FilePathAvailabilityRequest, options *armnetapp.ResourceClientCheckFilePathAvailabilityOptions) (resp azfake.Responder[armnetapp.ResourceClientCheckFilePathAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckFilePathAvailability func(ctx context.Context, location string, body armnetapp.FilePathAvailabilityRequest, options *armnetapp.NetAppResourceClientCheckFilePathAvailabilityOptions) (resp azfake.Responder[armnetapp.NetAppResourceClientCheckFilePathAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// CheckNameAvailability is the fake for method ResourceClient.CheckNameAvailability
+	// CheckNameAvailability is the fake for method NetAppResourceClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, location string, body armnetapp.ResourceNameAvailabilityRequest, options *armnetapp.ResourceClientCheckNameAvailabilityOptions) (resp azfake.Responder[armnetapp.ResourceClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, location string, body armnetapp.ResourceNameAvailabilityRequest, options *armnetapp.NetAppResourceClientCheckNameAvailabilityOptions) (resp azfake.Responder[armnetapp.NetAppResourceClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// CheckQuotaAvailability is the fake for method ResourceClient.CheckQuotaAvailability
+	// CheckQuotaAvailability is the fake for method NetAppResourceClient.CheckQuotaAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckQuotaAvailability func(ctx context.Context, location string, body armnetapp.QuotaAvailabilityRequest, options *armnetapp.ResourceClientCheckQuotaAvailabilityOptions) (resp azfake.Responder[armnetapp.ResourceClientCheckQuotaAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckQuotaAvailability func(ctx context.Context, location string, body armnetapp.QuotaAvailabilityRequest, options *armnetapp.NetAppResourceClientCheckQuotaAvailabilityOptions) (resp azfake.Responder[armnetapp.NetAppResourceClientCheckQuotaAvailabilityResponse], errResp azfake.ErrorResponder)
 
-	// QueryNetworkSiblingSet is the fake for method ResourceClient.QueryNetworkSiblingSet
+	// QueryNetworkSiblingSet is the fake for method NetAppResourceClient.QueryNetworkSiblingSet
 	// HTTP status codes to indicate success: http.StatusOK
-	QueryNetworkSiblingSet func(ctx context.Context, location string, body armnetapp.QueryNetworkSiblingSetRequest, options *armnetapp.ResourceClientQueryNetworkSiblingSetOptions) (resp azfake.Responder[armnetapp.ResourceClientQueryNetworkSiblingSetResponse], errResp azfake.ErrorResponder)
+	QueryNetworkSiblingSet func(ctx context.Context, location string, body armnetapp.QueryNetworkSiblingSetRequest, options *armnetapp.NetAppResourceClientQueryNetworkSiblingSetOptions) (resp azfake.Responder[armnetapp.NetAppResourceClientQueryNetworkSiblingSetResponse], errResp azfake.ErrorResponder)
 
-	// QueryRegionInfo is the fake for method ResourceClient.QueryRegionInfo
+	// QueryRegionInfo is the fake for method NetAppResourceClient.QueryRegionInfo
 	// HTTP status codes to indicate success: http.StatusOK
-	QueryRegionInfo func(ctx context.Context, location string, options *armnetapp.ResourceClientQueryRegionInfoOptions) (resp azfake.Responder[armnetapp.ResourceClientQueryRegionInfoResponse], errResp azfake.ErrorResponder)
+	QueryRegionInfo func(ctx context.Context, location string, options *armnetapp.NetAppResourceClientQueryRegionInfoOptions) (resp azfake.Responder[armnetapp.NetAppResourceClientQueryRegionInfoResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdateNetworkSiblingSet is the fake for method ResourceClient.BeginUpdateNetworkSiblingSet
+	// BeginUpdateNetworkSiblingSet is the fake for method NetAppResourceClient.BeginUpdateNetworkSiblingSet
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateNetworkSiblingSet func(ctx context.Context, location string, body armnetapp.UpdateNetworkSiblingSetRequest, options *armnetapp.ResourceClientBeginUpdateNetworkSiblingSetOptions) (resp azfake.PollerResponder[armnetapp.ResourceClientUpdateNetworkSiblingSetResponse], errResp azfake.ErrorResponder)
+	BeginUpdateNetworkSiblingSet func(ctx context.Context, location string, body armnetapp.UpdateNetworkSiblingSetRequest, options *armnetapp.NetAppResourceClientBeginUpdateNetworkSiblingSetOptions) (resp azfake.PollerResponder[armnetapp.NetAppResourceClientUpdateNetworkSiblingSetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewResourceServerTransport creates a new instance of ResourceServerTransport with the provided implementation.
-// The returned ResourceServerTransport instance is connected to an instance of armnetapp.ResourceClient via the
+// NewNetAppResourceServerTransport creates a new instance of NetAppResourceServerTransport with the provided implementation.
+// The returned NetAppResourceServerTransport instance is connected to an instance of armnetapp.NetAppResourceClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewResourceServerTransport(srv *ResourceServer) *ResourceServerTransport {
-	return &ResourceServerTransport{
+func NewNetAppResourceServerTransport(srv *NetAppResourceServer) *NetAppResourceServerTransport {
+	return &NetAppResourceServerTransport{
 		srv:                          srv,
-		beginUpdateNetworkSiblingSet: newTracker[azfake.PollerResponder[armnetapp.ResourceClientUpdateNetworkSiblingSetResponse]](),
+		beginUpdateNetworkSiblingSet: newTracker[azfake.PollerResponder[armnetapp.NetAppResourceClientUpdateNetworkSiblingSetResponse]](),
 	}
 }
 
-// ResourceServerTransport connects instances of armnetapp.ResourceClient to instances of ResourceServer.
-// Don't use this type directly, use NewResourceServerTransport instead.
-type ResourceServerTransport struct {
-	srv                          *ResourceServer
-	beginUpdateNetworkSiblingSet *tracker[azfake.PollerResponder[armnetapp.ResourceClientUpdateNetworkSiblingSetResponse]]
+// NetAppResourceServerTransport connects instances of armnetapp.NetAppResourceClient to instances of NetAppResourceServer.
+// Don't use this type directly, use NewNetAppResourceServerTransport instead.
+type NetAppResourceServerTransport struct {
+	srv                          *NetAppResourceServer
+	beginUpdateNetworkSiblingSet *tracker[azfake.PollerResponder[armnetapp.NetAppResourceClientUpdateNetworkSiblingSetResponse]]
 }
 
-// Do implements the policy.Transporter interface for ResourceServerTransport.
-func (r *ResourceServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for NetAppResourceServerTransport.
+func (n *NetAppResourceServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return r.dispatchToMethodFake(req, method)
+	return n.dispatchToMethodFake(req, method)
 }
 
-func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (n *NetAppResourceServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if resourceServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = resourceServerTransportInterceptor.Do(req)
+		if netAppResourceServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = netAppResourceServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceClient.CheckFilePathAvailability":
-				res.resp, res.err = r.dispatchCheckFilePathAvailability(req)
-			case "ResourceClient.CheckNameAvailability":
-				res.resp, res.err = r.dispatchCheckNameAvailability(req)
-			case "ResourceClient.CheckQuotaAvailability":
-				res.resp, res.err = r.dispatchCheckQuotaAvailability(req)
-			case "ResourceClient.QueryNetworkSiblingSet":
-				res.resp, res.err = r.dispatchQueryNetworkSiblingSet(req)
-			case "ResourceClient.QueryRegionInfo":
-				res.resp, res.err = r.dispatchQueryRegionInfo(req)
-			case "ResourceClient.BeginUpdateNetworkSiblingSet":
-				res.resp, res.err = r.dispatchBeginUpdateNetworkSiblingSet(req)
+			case "NetAppResourceClient.CheckFilePathAvailability":
+				res.resp, res.err = n.dispatchCheckFilePathAvailability(req)
+			case "NetAppResourceClient.CheckNameAvailability":
+				res.resp, res.err = n.dispatchCheckNameAvailability(req)
+			case "NetAppResourceClient.CheckQuotaAvailability":
+				res.resp, res.err = n.dispatchCheckQuotaAvailability(req)
+			case "NetAppResourceClient.QueryNetworkSiblingSet":
+				res.resp, res.err = n.dispatchQueryNetworkSiblingSet(req)
+			case "NetAppResourceClient.QueryRegionInfo":
+				res.resp, res.err = n.dispatchQueryRegionInfo(req)
+			case "NetAppResourceClient.BeginUpdateNetworkSiblingSet":
+				res.resp, res.err = n.dispatchBeginUpdateNetworkSiblingSet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -115,8 +115,8 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (r *ResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckFilePathAvailability == nil {
+func (n *NetAppResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Request) (*http.Response, error) {
+	if n.srv.CheckFilePathAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckFilePathAvailability not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkFilePathAvailability`
@@ -133,7 +133,7 @@ func (r *ResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CheckFilePathAvailability(req.Context(), locationParam, body, nil)
+	respr, errRespr := n.srv.CheckFilePathAvailability(req.Context(), locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -148,8 +148,8 @@ func (r *ResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Re
 	return resp, nil
 }
 
-func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckNameAvailability == nil {
+func (n *NetAppResourceServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if n.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
@@ -166,7 +166,7 @@ func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
+	respr, errRespr := n.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -181,8 +181,8 @@ func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Reques
 	return resp, nil
 }
 
-func (r *ResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckQuotaAvailability == nil {
+func (n *NetAppResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Request) (*http.Response, error) {
+	if n.srv.CheckQuotaAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckQuotaAvailability not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkQuotaAvailability`
@@ -199,7 +199,7 @@ func (r *ResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CheckQuotaAvailability(req.Context(), locationParam, body, nil)
+	respr, errRespr := n.srv.CheckQuotaAvailability(req.Context(), locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -214,8 +214,8 @@ func (r *ResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Reque
 	return resp, nil
 }
 
-func (r *ResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Request) (*http.Response, error) {
-	if r.srv.QueryNetworkSiblingSet == nil {
+func (n *NetAppResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Request) (*http.Response, error) {
+	if n.srv.QueryNetworkSiblingSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryNetworkSiblingSet not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryNetworkSiblingSet`
@@ -232,7 +232,7 @@ func (r *ResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.QueryNetworkSiblingSet(req.Context(), locationParam, body, nil)
+	respr, errRespr := n.srv.QueryNetworkSiblingSet(req.Context(), locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -247,8 +247,8 @@ func (r *ResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Reque
 	return resp, nil
 }
 
-func (r *ResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*http.Response, error) {
-	if r.srv.QueryRegionInfo == nil {
+func (n *NetAppResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*http.Response, error) {
+	if n.srv.QueryRegionInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryRegionInfo not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfo`
@@ -261,7 +261,7 @@ func (r *ResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.QueryRegionInfo(req.Context(), locationParam, nil)
+	respr, errRespr := n.srv.QueryRegionInfo(req.Context(), locationParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -276,11 +276,11 @@ func (r *ResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*h
 	return resp, nil
 }
 
-func (r *ResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdateNetworkSiblingSet == nil {
+func (n *NetAppResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdateNetworkSiblingSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateNetworkSiblingSet not implemented")}
 	}
-	beginUpdateNetworkSiblingSet := r.beginUpdateNetworkSiblingSet.get(req)
+	beginUpdateNetworkSiblingSet := n.beginUpdateNetworkSiblingSet.get(req)
 	if beginUpdateNetworkSiblingSet == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateNetworkSiblingSet`
 		regex := regexp.MustCompile(regexStr)
@@ -296,12 +296,12 @@ func (r *ResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := r.srv.BeginUpdateNetworkSiblingSet(req.Context(), locationParam, body, nil)
+		respr, errRespr := n.srv.BeginUpdateNetworkSiblingSet(req.Context(), locationParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginUpdateNetworkSiblingSet = &respr
-		r.beginUpdateNetworkSiblingSet.add(req, beginUpdateNetworkSiblingSet)
+		n.beginUpdateNetworkSiblingSet.add(req, beginUpdateNetworkSiblingSet)
 	}
 
 	resp, err := server.PollerResponderNext(beginUpdateNetworkSiblingSet, req)
@@ -310,18 +310,18 @@ func (r *ResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		r.beginUpdateNetworkSiblingSet.remove(req)
+		n.beginUpdateNetworkSiblingSet.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUpdateNetworkSiblingSet) {
-		r.beginUpdateNetworkSiblingSet.remove(req)
+		n.beginUpdateNetworkSiblingSet.remove(req)
 	}
 
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ResourceServerTransport
-var resourceServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to NetAppResourceServerTransport
+var netAppResourceServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

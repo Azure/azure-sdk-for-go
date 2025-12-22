@@ -39,7 +39,7 @@ func ExampleElasticSnapshotsClient_BeginCreateOrUpdate() {
 	// 		Name: to.Ptr("account1/pool1/volume1/snapshot1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticCapacityPools/elasticVolumes/elasticSnapshots"),
 	// 		Properties: &armnetapp.ElasticSnapshotProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
@@ -90,7 +90,7 @@ func ExampleElasticSnapshotsClient_Get() {
 	// 		Name: to.Ptr("account1/pool1/volume1/snapshot1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticCapacityPools/elasticVolumes/elasticSnapshots"),
 	// 		Properties: &armnetapp.ElasticSnapshotProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
@@ -126,7 +126,7 @@ func ExampleElasticSnapshotsClient_NewListByElasticVolumePager() {
 		// 				Name: to.Ptr("account1/pool1/volume1/snapshot1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticCapacityPools/elasticVolumes/elasticSnapshots"),
 		// 				Properties: &armnetapp.ElasticSnapshotProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 				},
 		// 			},
 		// 		},

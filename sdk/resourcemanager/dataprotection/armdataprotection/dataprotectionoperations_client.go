@@ -13,21 +13,21 @@ import (
 	"net/http"
 )
 
-// OperationsClient contains the methods for the Operations group.
-// Don't use this type directly, use NewOperationsClient() instead.
-type OperationsClient struct {
+// DataProtectionOperationsClient contains the methods for the DataProtectionOperations group.
+// Don't use this type directly, use NewDataProtectionOperationsClient() instead.
+type DataProtectionOperationsClient struct {
 	internal *arm.Client
 }
 
-// NewOperationsClient creates a new instance of OperationsClient with the specified values.
+// NewDataProtectionOperationsClient creates a new instance of DataProtectionOperationsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+func NewDataProtectionOperationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DataProtectionOperationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &OperationsClient{
+	client := &DataProtectionOperationsClient{
 		internal: cl,
 	}
 	return client, nil
@@ -36,14 +36,15 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 // NewListPager - List the operations for the provider
 //
 // Generated from API version 2025-07-01
-//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
-		More: func(page OperationsClientListResponse) bool {
+//   - options - DataProtectionOperationsClientListOptions contains the optional parameters for the DataProtectionOperationsClient.NewListPager
+//     method.
+func (client *DataProtectionOperationsClient) NewListPager(options *DataProtectionOperationsClientListOptions) *runtime.Pager[DataProtectionOperationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DataProtectionOperationsClientListResponse]{
+		More: func(page DataProtectionOperationsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *OperationsClientListResponse) (OperationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *DataProtectionOperationsClientListResponse) (DataProtectionOperationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DataProtectionOperationsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -52,7 +53,7 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 				return client.listCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return OperationsClientListResponse{}, err
+				return DataProtectionOperationsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -61,7 +62,7 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *OperationsClientListOptions) (*policy.Request, error) {
+func (client *DataProtectionOperationsClient) listCreateRequest(ctx context.Context, _ *DataProtectionOperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DataProtection/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -75,10 +76,10 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
-	result := OperationsClientListResponse{}
+func (client *DataProtectionOperationsClient) listHandleResponse(resp *http.Response) (DataProtectionOperationsClientListResponse, error) {
+	result := DataProtectionOperationsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
-		return OperationsClientListResponse{}, err
+		return DataProtectionOperationsClientListResponse{}, err
 	}
 	return result, nil
 }

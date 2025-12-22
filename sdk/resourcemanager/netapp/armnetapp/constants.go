@@ -1189,6 +1189,42 @@ func PossibleMultiAdStatusValues() []MultiAdStatus {
 	}
 }
 
+// NetappProvisioningState - Gets the status of the VolumeQuotaRule at the time the operation was called.
+type NetappProvisioningState string
+
+const (
+	// NetappProvisioningStateAccepted - Resource has been Accepted
+	NetappProvisioningStateAccepted NetappProvisioningState = "Accepted"
+	// NetappProvisioningStateCreating - Resource is being Created
+	NetappProvisioningStateCreating NetappProvisioningState = "Creating"
+	// NetappProvisioningStateDeleting - Resource is being Deleted
+	NetappProvisioningStateDeleting NetappProvisioningState = "Deleting"
+	// NetappProvisioningStateFailed - Resource has Failed
+	NetappProvisioningStateFailed NetappProvisioningState = "Failed"
+	// NetappProvisioningStateMoving - Resource is being Moved
+	NetappProvisioningStateMoving NetappProvisioningState = "Moving"
+	// NetappProvisioningStatePatching - Resource is being Patched
+	NetappProvisioningStatePatching NetappProvisioningState = "Patching"
+	// NetappProvisioningStateSucceeded - Resource has Succeeded
+	NetappProvisioningStateSucceeded NetappProvisioningState = "Succeeded"
+	// NetappProvisioningStateUpdating - Resource is updating
+	NetappProvisioningStateUpdating NetappProvisioningState = "Updating"
+)
+
+// PossibleNetappProvisioningStateValues returns the possible values for the NetappProvisioningState const type.
+func PossibleNetappProvisioningStateValues() []NetappProvisioningState {
+	return []NetappProvisioningState{
+		NetappProvisioningStateAccepted,
+		NetappProvisioningStateCreating,
+		NetappProvisioningStateDeleting,
+		NetappProvisioningStateFailed,
+		NetappProvisioningStateMoving,
+		NetappProvisioningStatePatching,
+		NetappProvisioningStateSucceeded,
+		NetappProvisioningStateUpdating,
+	}
+}
+
 // NetworkFeatures - Network features available to the volume, or current state of update.
 type NetworkFeatures string
 
@@ -1269,42 +1305,6 @@ func PossibleProtocolTypesValues() []ProtocolTypes {
 		ProtocolTypesNFSv3,
 		ProtocolTypesNFSv4,
 		ProtocolTypesSMB,
-	}
-}
-
-// ProvisioningState - Gets the status of the VolumeQuotaRule at the time the operation was called.
-type ProvisioningState string
-
-const (
-	// ProvisioningStateAccepted - Resource has been Accepted
-	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateCreating - Resource is being Created
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting - Resource is being Deleted
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Resource has Failed
-	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateMoving - Resource is being Moved
-	ProvisioningStateMoving ProvisioningState = "Moving"
-	// ProvisioningStatePatching - Resource is being Patched
-	ProvisioningStatePatching ProvisioningState = "Patching"
-	// ProvisioningStateSucceeded - Resource has Succeeded
-	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	// ProvisioningStateUpdating - Resource is updating
-	ProvisioningStateUpdating ProvisioningState = "Updating"
-)
-
-// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{
-		ProvisioningStateAccepted,
-		ProvisioningStateCreating,
-		ProvisioningStateDeleting,
-		ProvisioningStateFailed,
-		ProvisioningStateMoving,
-		ProvisioningStatePatching,
-		ProvisioningStateSucceeded,
-		ProvisioningStateUpdating,
 	}
 }
 

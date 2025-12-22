@@ -71,11 +71,18 @@ func (c *ClientFactory) NewBackupVaultsClient() *BackupVaultsClient {
 	}
 }
 
-// NewClient creates a new instance of Client.
-func (c *ClientFactory) NewClient() *Client {
-	return &Client{
+// NewDataProtectionClient creates a new instance of DataProtectionClient.
+func (c *ClientFactory) NewDataProtectionClient() *DataProtectionClient {
+	return &DataProtectionClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
+	}
+}
+
+// NewDataProtectionOperationsClient creates a new instance of DataProtectionOperationsClient.
+func (c *ClientFactory) NewDataProtectionOperationsClient() *DataProtectionOperationsClient {
+	return &DataProtectionOperationsClient{
+		internal: c.internal,
 	}
 }
 
@@ -172,13 +179,6 @@ func (c *ClientFactory) NewOperationStatusResourceGroupContextClient() *Operatio
 	return &OperationStatusResourceGroupContextClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
-	}
-}
-
-// NewOperationsClient creates a new instance of OperationsClient.
-func (c *ClientFactory) NewOperationsClient() *OperationsClient {
-	return &OperationsClient{
-		internal: c.internal,
 	}
 }
 

@@ -19,101 +19,101 @@ import (
 	"strconv"
 )
 
-// PoliciesServer is a fake server for instances of the armdnsresolver.PoliciesClient type.
-type PoliciesServer struct {
-	// BeginCreateOrUpdate is the fake for method PoliciesClient.BeginCreateOrUpdate
+// DNSResolverPoliciesServer is a fake server for instances of the armdnsresolver.DNSResolverPoliciesClient type.
+type DNSResolverPoliciesServer struct {
+	// BeginCreateOrUpdate is the fake for method DNSResolverPoliciesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters armdnsresolver.Policy, options *armdnsresolver.PoliciesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.PoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters armdnsresolver.DNSResolverPolicy, options *armdnsresolver.DNSResolverPoliciesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method PoliciesClient.BeginDelete
+	// BeginDelete is the fake for method DNSResolverPoliciesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *armdnsresolver.PoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.PoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *armdnsresolver.DNSResolverPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method PoliciesClient.Get
+	// Get is the fake for method DNSResolverPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *armdnsresolver.PoliciesClientGetOptions) (resp azfake.Responder[armdnsresolver.PoliciesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *armdnsresolver.DNSResolverPoliciesClientGetOptions) (resp azfake.Responder[armdnsresolver.DNSResolverPoliciesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method PoliciesClient.NewListPager
+	// NewListPager is the fake for method DNSResolverPoliciesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdnsresolver.PoliciesClientListOptions) (resp azfake.PagerResponder[armdnsresolver.PoliciesClientListResponse])
+	NewListPager func(options *armdnsresolver.DNSResolverPoliciesClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListResponse])
 
-	// NewListByResourceGroupPager is the fake for method PoliciesClient.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method DNSResolverPoliciesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdnsresolver.PoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdnsresolver.PoliciesClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armdnsresolver.DNSResolverPoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListByResourceGroupResponse])
 
-	// NewListByVirtualNetworkPager is the fake for method PoliciesClient.NewListByVirtualNetworkPager
+	// NewListByVirtualNetworkPager is the fake for method DNSResolverPoliciesClient.NewListByVirtualNetworkPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVirtualNetworkPager func(resourceGroupName string, virtualNetworkName string, options *armdnsresolver.PoliciesClientListByVirtualNetworkOptions) (resp azfake.PagerResponder[armdnsresolver.PoliciesClientListByVirtualNetworkResponse])
+	NewListByVirtualNetworkPager func(resourceGroupName string, virtualNetworkName string, options *armdnsresolver.DNSResolverPoliciesClientListByVirtualNetworkOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListByVirtualNetworkResponse])
 
-	// BeginUpdate is the fake for method PoliciesClient.BeginUpdate
+	// BeginUpdate is the fake for method DNSResolverPoliciesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters armdnsresolver.PolicyPatch, options *armdnsresolver.PoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.PoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters armdnsresolver.DNSResolverPolicyPatch, options *armdnsresolver.DNSResolverPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewPoliciesServerTransport creates a new instance of PoliciesServerTransport with the provided implementation.
-// The returned PoliciesServerTransport instance is connected to an instance of armdnsresolver.PoliciesClient via the
+// NewDNSResolverPoliciesServerTransport creates a new instance of DNSResolverPoliciesServerTransport with the provided implementation.
+// The returned DNSResolverPoliciesServerTransport instance is connected to an instance of armdnsresolver.DNSResolverPoliciesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewPoliciesServerTransport(srv *PoliciesServer) *PoliciesServerTransport {
-	return &PoliciesServerTransport{
+func NewDNSResolverPoliciesServerTransport(srv *DNSResolverPoliciesServer) *DNSResolverPoliciesServerTransport {
+	return &DNSResolverPoliciesServerTransport{
 		srv:                          srv,
-		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armdnsresolver.PoliciesClientCreateOrUpdateResponse]](),
-		beginDelete:                  newTracker[azfake.PollerResponder[armdnsresolver.PoliciesClientDeleteResponse]](),
-		newListPager:                 newTracker[azfake.PagerResponder[armdnsresolver.PoliciesClientListResponse]](),
-		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armdnsresolver.PoliciesClientListByResourceGroupResponse]](),
-		newListByVirtualNetworkPager: newTracker[azfake.PagerResponder[armdnsresolver.PoliciesClientListByVirtualNetworkResponse]](),
-		beginUpdate:                  newTracker[azfake.PollerResponder[armdnsresolver.PoliciesClientUpdateResponse]](),
+		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientCreateOrUpdateResponse]](),
+		beginDelete:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientDeleteResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListResponse]](),
+		newListByResourceGroupPager:  newTracker[azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListByResourceGroupResponse]](),
+		newListByVirtualNetworkPager: newTracker[azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListByVirtualNetworkResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientUpdateResponse]](),
 	}
 }
 
-// PoliciesServerTransport connects instances of armdnsresolver.PoliciesClient to instances of PoliciesServer.
-// Don't use this type directly, use NewPoliciesServerTransport instead.
-type PoliciesServerTransport struct {
-	srv                          *PoliciesServer
-	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armdnsresolver.PoliciesClientCreateOrUpdateResponse]]
-	beginDelete                  *tracker[azfake.PollerResponder[armdnsresolver.PoliciesClientDeleteResponse]]
-	newListPager                 *tracker[azfake.PagerResponder[armdnsresolver.PoliciesClientListResponse]]
-	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armdnsresolver.PoliciesClientListByResourceGroupResponse]]
-	newListByVirtualNetworkPager *tracker[azfake.PagerResponder[armdnsresolver.PoliciesClientListByVirtualNetworkResponse]]
-	beginUpdate                  *tracker[azfake.PollerResponder[armdnsresolver.PoliciesClientUpdateResponse]]
+// DNSResolverPoliciesServerTransport connects instances of armdnsresolver.DNSResolverPoliciesClient to instances of DNSResolverPoliciesServer.
+// Don't use this type directly, use NewDNSResolverPoliciesServerTransport instead.
+type DNSResolverPoliciesServerTransport struct {
+	srv                          *DNSResolverPoliciesServer
+	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientCreateOrUpdateResponse]]
+	beginDelete                  *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientDeleteResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListResponse]]
+	newListByResourceGroupPager  *tracker[azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListByResourceGroupResponse]]
+	newListByVirtualNetworkPager *tracker[azfake.PagerResponder[armdnsresolver.DNSResolverPoliciesClientListByVirtualNetworkResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverPoliciesClientUpdateResponse]]
 }
 
-// Do implements the policy.Transporter interface for PoliciesServerTransport.
-func (p *PoliciesServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DNSResolverPoliciesServerTransport.
+func (d *DNSResolverPoliciesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return p.dispatchToMethodFake(req, method)
+	return d.dispatchToMethodFake(req, method)
 }
 
-func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DNSResolverPoliciesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if policiesServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = policiesServerTransportInterceptor.Do(req)
+		if dnsResolverPoliciesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dnsResolverPoliciesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "PoliciesClient.BeginCreateOrUpdate":
-				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
-			case "PoliciesClient.BeginDelete":
-				res.resp, res.err = p.dispatchBeginDelete(req)
-			case "PoliciesClient.Get":
-				res.resp, res.err = p.dispatchGet(req)
-			case "PoliciesClient.NewListPager":
-				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PoliciesClient.NewListByResourceGroupPager":
-				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
-			case "PoliciesClient.NewListByVirtualNetworkPager":
-				res.resp, res.err = p.dispatchNewListByVirtualNetworkPager(req)
-			case "PoliciesClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
+			case "DNSResolverPoliciesClient.BeginCreateOrUpdate":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
+			case "DNSResolverPoliciesClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DNSResolverPoliciesClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DNSResolverPoliciesClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
+			case "DNSResolverPoliciesClient.NewListByResourceGroupPager":
+				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
+			case "DNSResolverPoliciesClient.NewListByVirtualNetworkPager":
+				res.resp, res.err = d.dispatchNewListByVirtualNetworkPager(req)
+			case "DNSResolverPoliciesClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -133,11 +133,11 @@ func (p *PoliciesServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginCreateOrUpdate == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
+	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -145,7 +145,7 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.Policy](req)
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSResolverPolicy](req)
 		if err != nil {
 			return nil, err
 		}
@@ -159,19 +159,19 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
 		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "if-none-match"))
-		var options *armdnsresolver.PoliciesClientBeginCreateOrUpdateOptions
+		var options *armdnsresolver.DNSResolverPoliciesClientBeginCreateOrUpdateOptions
 		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armdnsresolver.PoliciesClientBeginCreateOrUpdateOptions{
+			options = &armdnsresolver.DNSResolverPoliciesClientBeginCreateOrUpdateOptions{
 				IfMatch:     ifMatchParam,
 				IfNoneMatch: ifNoneMatchParam,
 			}
 		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, body, options)
+		respr, errRespr := d.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginCreateOrUpdate = &respr
-		p.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+		d.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
 	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
@@ -180,21 +180,21 @@ func (p *PoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		p.beginCreateOrUpdate.remove(req)
+		d.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		p.beginCreateOrUpdate.remove(req)
+		d.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginDelete == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	beginDelete := p.beginDelete.get(req)
+	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -211,18 +211,18 @@ func (p *PoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 			return nil, err
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.PoliciesClientBeginDeleteOptions
+		var options *armdnsresolver.DNSResolverPoliciesClientBeginDeleteOptions
 		if ifMatchParam != nil {
-			options = &armdnsresolver.PoliciesClientBeginDeleteOptions{
+			options = &armdnsresolver.DNSResolverPoliciesClientBeginDeleteOptions{
 				IfMatch: ifMatchParam,
 			}
 		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, options)
+		respr, errRespr := d.srv.BeginDelete(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginDelete = &respr
-		p.beginDelete.add(req, beginDelete)
+		d.beginDelete.add(req, beginDelete)
 	}
 
 	resp, err := server.PollerResponderNext(beginDelete, req)
@@ -231,18 +231,18 @@ func (p *PoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		p.beginDelete.remove(req)
+		d.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDelete) {
-		p.beginDelete.remove(req)
+		d.beginDelete.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -259,7 +259,7 @@ func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, nil)
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -267,18 +267,18 @@ func (p *PoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Policy, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSResolverPolicy, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListPager := p.newListPager.get(req)
+	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies`
 		regex := regexp.MustCompile(regexStr)
@@ -301,16 +301,16 @@ func (p *PoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		var options *armdnsresolver.PoliciesClientListOptions
+		var options *armdnsresolver.DNSResolverPoliciesClientListOptions
 		if topParam != nil {
-			options = &armdnsresolver.PoliciesClientListOptions{
+			options = &armdnsresolver.DNSResolverPoliciesClientListOptions{
 				Top: topParam,
 			}
 		}
-		resp := p.srv.NewListPager(options)
+		resp := d.srv.NewListPager(options)
 		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.PoliciesClientListResponse, createLink func() string) {
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DNSResolverPoliciesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -319,20 +319,20 @@ func (p *PoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
+		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies`
 		regex := regexp.MustCompile(regexStr)
@@ -359,16 +359,16 @@ func (p *PoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		var options *armdnsresolver.PoliciesClientListByResourceGroupOptions
+		var options *armdnsresolver.DNSResolverPoliciesClientListByResourceGroupOptions
 		if topParam != nil {
-			options = &armdnsresolver.PoliciesClientListByResourceGroupOptions{
+			options = &armdnsresolver.DNSResolverPoliciesClientListByResourceGroupOptions{
 				Top: topParam,
 			}
 		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdnsresolver.PoliciesClientListByResourceGroupResponse, createLink func() string) {
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdnsresolver.DNSResolverPoliciesClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -377,20 +377,20 @@ func (p *PoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
+		d.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
+		d.newListByResourceGroupPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchNewListByVirtualNetworkPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByVirtualNetworkPager == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchNewListByVirtualNetworkPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByVirtualNetworkPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByVirtualNetworkPager not implemented")}
 	}
-	newListByVirtualNetworkPager := p.newListByVirtualNetworkPager.get(req)
+	newListByVirtualNetworkPager := d.newListByVirtualNetworkPager.get(req)
 	if newListByVirtualNetworkPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworks/(?P<virtualNetworkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listDnsResolverPolicies`
 		regex := regexp.MustCompile(regexStr)
@@ -406,10 +406,10 @@ func (p *PoliciesServerTransport) dispatchNewListByVirtualNetworkPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListByVirtualNetworkPager(resourceGroupNameParam, virtualNetworkNameParam, nil)
+		resp := d.srv.NewListByVirtualNetworkPager(resourceGroupNameParam, virtualNetworkNameParam, nil)
 		newListByVirtualNetworkPager = &resp
-		p.newListByVirtualNetworkPager.add(req, newListByVirtualNetworkPager)
-		server.PagerResponderInjectNextLinks(newListByVirtualNetworkPager, req, func(page *armdnsresolver.PoliciesClientListByVirtualNetworkResponse, createLink func() string) {
+		d.newListByVirtualNetworkPager.add(req, newListByVirtualNetworkPager)
+		server.PagerResponderInjectNextLinks(newListByVirtualNetworkPager, req, func(page *armdnsresolver.DNSResolverPoliciesClientListByVirtualNetworkResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -418,20 +418,20 @@ func (p *PoliciesServerTransport) dispatchNewListByVirtualNetworkPager(req *http
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByVirtualNetworkPager.remove(req)
+		d.newListByVirtualNetworkPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListByVirtualNetworkPager) {
-		p.newListByVirtualNetworkPager.remove(req)
+		d.newListByVirtualNetworkPager.remove(req)
 	}
 	return resp, nil
 }
 
-func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if p.srv.BeginUpdate == nil {
+func (d *DNSResolverPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
-	beginUpdate := p.beginUpdate.get(req)
+	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/dnsResolverPolicies/(?P<dnsResolverPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
@@ -439,7 +439,7 @@ func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.PolicyPatch](req)
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSResolverPolicyPatch](req)
 		if err != nil {
 			return nil, err
 		}
@@ -452,18 +452,18 @@ func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 			return nil, err
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.PoliciesClientBeginUpdateOptions
+		var options *armdnsresolver.DNSResolverPoliciesClientBeginUpdateOptions
 		if ifMatchParam != nil {
-			options = &armdnsresolver.PoliciesClientBeginUpdateOptions{
+			options = &armdnsresolver.DNSResolverPoliciesClientBeginUpdateOptions{
 				IfMatch: ifMatchParam,
 			}
 		}
-		respr, errRespr := p.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, body, options)
+		respr, errRespr := d.srv.BeginUpdate(req.Context(), resourceGroupNameParam, dnsResolverPolicyNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
 		beginUpdate = &respr
-		p.beginUpdate.add(req, beginUpdate)
+		d.beginUpdate.add(req, beginUpdate)
 	}
 
 	resp, err := server.PollerResponderNext(beginUpdate, req)
@@ -472,18 +472,18 @@ func (p *PoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 	}
 
 	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		p.beginUpdate.remove(req)
+		d.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUpdate) {
-		p.beginUpdate.remove(req)
+		d.beginUpdate.remove(req)
 	}
 
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to PoliciesServerTransport
-var policiesServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to DNSResolverPoliciesServerTransport
+var dnsResolverPoliciesServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

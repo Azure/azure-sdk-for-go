@@ -17,23 +17,23 @@ import (
 	"strings"
 )
 
-// PolicyVirtualNetworkLinksClient contains the methods for the PolicyVirtualNetworkLinks group.
-// Don't use this type directly, use NewPolicyVirtualNetworkLinksClient() instead.
-type PolicyVirtualNetworkLinksClient struct {
+// DNSResolverPolicyVirtualNetworkLinksClient contains the methods for the DNSResolverPolicyVirtualNetworkLinks group.
+// Don't use this type directly, use NewDNSResolverPolicyVirtualNetworkLinksClient() instead.
+type DNSResolverPolicyVirtualNetworkLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPolicyVirtualNetworkLinksClient creates a new instance of PolicyVirtualNetworkLinksClient with the specified values.
+// NewDNSResolverPolicyVirtualNetworkLinksClient creates a new instance of DNSResolverPolicyVirtualNetworkLinksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewPolicyVirtualNetworkLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyVirtualNetworkLinksClient, error) {
+func NewDNSResolverPolicyVirtualNetworkLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DNSResolverPolicyVirtualNetworkLinksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PolicyVirtualNetworkLinksClient{
+	client := &DNSResolverPolicyVirtualNetworkLinksClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -49,20 +49,20 @@ func NewPolicyVirtualNetworkLinksClient(subscriptionID string, credential azcore
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
 //     policy.
 //   - parameters - Parameters supplied to the CreateOrUpdate operation.
-//   - options - PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.BeginCreateOrUpdate
-//     method.
-func (client *PolicyVirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLink, options *PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*runtime.Poller[PolicyVirtualNetworkLinksClientCreateOrUpdateResponse], error) {
+//   - options - DNSResolverPolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the
+//     DNSResolverPolicyVirtualNetworkLinksClient.BeginCreateOrUpdate method.
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters DNSResolverPolicyVirtualNetworkLink, options *DNSResolverPolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*runtime.Poller[DNSResolverPolicyVirtualNetworkLinksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PolicyVirtualNetworkLinksClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSResolverPolicyVirtualNetworkLinksClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PolicyVirtualNetworkLinksClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSResolverPolicyVirtualNetworkLinksClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -72,9 +72,9 @@ func (client *PolicyVirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.C
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *PolicyVirtualNetworkLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLink, options *PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters DNSResolverPolicyVirtualNetworkLink, options *DNSResolverPolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PolicyVirtualNetworkLinksClient.BeginCreateOrUpdate"
+	const operationName = "DNSResolverPolicyVirtualNetworkLinksClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -94,7 +94,7 @@ func (client *PolicyVirtualNetworkLinksClient) createOrUpdate(ctx context.Contex
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PolicyVirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLink, options *PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters DNSResolverPolicyVirtualNetworkLink, options *DNSResolverPolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,20 +141,20 @@ func (client *PolicyVirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx c
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
 //     policy.
-//   - options - PolicyVirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.BeginDelete
+//   - options - DNSResolverPolicyVirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.BeginDelete
 //     method.
-func (client *PolicyVirtualNetworkLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *PolicyVirtualNetworkLinksClientBeginDeleteOptions) (*runtime.Poller[PolicyVirtualNetworkLinksClientDeleteResponse], error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *DNSResolverPolicyVirtualNetworkLinksClientBeginDeleteOptions) (*runtime.Poller[DNSResolverPolicyVirtualNetworkLinksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PolicyVirtualNetworkLinksClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSResolverPolicyVirtualNetworkLinksClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PolicyVirtualNetworkLinksClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSResolverPolicyVirtualNetworkLinksClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -164,9 +164,9 @@ func (client *PolicyVirtualNetworkLinksClient) BeginDelete(ctx context.Context, 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *PolicyVirtualNetworkLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *PolicyVirtualNetworkLinksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *DNSResolverPolicyVirtualNetworkLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PolicyVirtualNetworkLinksClient.BeginDelete"
+	const operationName = "DNSResolverPolicyVirtualNetworkLinksClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -186,7 +186,7 @@ func (client *PolicyVirtualNetworkLinksClient) deleteOperation(ctx context.Conte
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PolicyVirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *PolicyVirtualNetworkLinksClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *DNSResolverPolicyVirtualNetworkLinksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -225,32 +225,32 @@ func (client *PolicyVirtualNetworkLinksClient) deleteCreateRequest(ctx context.C
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
 //     policy.
-//   - options - PolicyVirtualNetworkLinksClientGetOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.Get
+//   - options - DNSResolverPolicyVirtualNetworkLinksClientGetOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.Get
 //     method.
-func (client *PolicyVirtualNetworkLinksClient) Get(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *PolicyVirtualNetworkLinksClientGetOptions) (PolicyVirtualNetworkLinksClientGetResponse, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) Get(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *DNSResolverPolicyVirtualNetworkLinksClientGetOptions) (DNSResolverPolicyVirtualNetworkLinksClientGetResponse, error) {
 	var err error
-	const operationName = "PolicyVirtualNetworkLinksClient.Get"
+	const operationName = "DNSResolverPolicyVirtualNetworkLinksClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, options)
 	if err != nil {
-		return PolicyVirtualNetworkLinksClientGetResponse{}, err
+		return DNSResolverPolicyVirtualNetworkLinksClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PolicyVirtualNetworkLinksClientGetResponse{}, err
+		return DNSResolverPolicyVirtualNetworkLinksClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PolicyVirtualNetworkLinksClientGetResponse{}, err
+		return DNSResolverPolicyVirtualNetworkLinksClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *PolicyVirtualNetworkLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, _ *PolicyVirtualNetworkLinksClientGetOptions) (*policy.Request, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) getCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, _ *DNSResolverPolicyVirtualNetworkLinksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -280,10 +280,10 @@ func (client *PolicyVirtualNetworkLinksClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *PolicyVirtualNetworkLinksClient) getHandleResponse(resp *http.Response) (PolicyVirtualNetworkLinksClientGetResponse, error) {
-	result := PolicyVirtualNetworkLinksClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyVirtualNetworkLink); err != nil {
-		return PolicyVirtualNetworkLinksClientGetResponse{}, err
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) getHandleResponse(resp *http.Response) (DNSResolverPolicyVirtualNetworkLinksClientGetResponse, error) {
+	result := DNSResolverPolicyVirtualNetworkLinksClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverPolicyVirtualNetworkLink); err != nil {
+		return DNSResolverPolicyVirtualNetworkLinksClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -293,15 +293,15 @@ func (client *PolicyVirtualNetworkLinksClient) getHandleResponse(resp *http.Resp
 // Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
-//   - options - PolicyVirtualNetworkLinksClientListOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.NewListPager
+//   - options - DNSResolverPolicyVirtualNetworkLinksClientListOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.NewListPager
 //     method.
-func (client *PolicyVirtualNetworkLinksClient) NewListPager(resourceGroupName string, dnsResolverPolicyName string, options *PolicyVirtualNetworkLinksClientListOptions) *runtime.Pager[PolicyVirtualNetworkLinksClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PolicyVirtualNetworkLinksClientListResponse]{
-		More: func(page PolicyVirtualNetworkLinksClientListResponse) bool {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) NewListPager(resourceGroupName string, dnsResolverPolicyName string, options *DNSResolverPolicyVirtualNetworkLinksClientListOptions) *runtime.Pager[DNSResolverPolicyVirtualNetworkLinksClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DNSResolverPolicyVirtualNetworkLinksClientListResponse]{
+		More: func(page DNSResolverPolicyVirtualNetworkLinksClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PolicyVirtualNetworkLinksClientListResponse) (PolicyVirtualNetworkLinksClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PolicyVirtualNetworkLinksClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *DNSResolverPolicyVirtualNetworkLinksClientListResponse) (DNSResolverPolicyVirtualNetworkLinksClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DNSResolverPolicyVirtualNetworkLinksClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -310,7 +310,7 @@ func (client *PolicyVirtualNetworkLinksClient) NewListPager(resourceGroupName st
 				return client.listCreateRequest(ctx, resourceGroupName, dnsResolverPolicyName, options)
 			}, nil)
 			if err != nil {
-				return PolicyVirtualNetworkLinksClientListResponse{}, err
+				return DNSResolverPolicyVirtualNetworkLinksClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -319,7 +319,7 @@ func (client *PolicyVirtualNetworkLinksClient) NewListPager(resourceGroupName st
 }
 
 // listCreateRequest creates the List request.
-func (client *PolicyVirtualNetworkLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *PolicyVirtualNetworkLinksClientListOptions) (*policy.Request, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) listCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *DNSResolverPolicyVirtualNetworkLinksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -348,10 +348,10 @@ func (client *PolicyVirtualNetworkLinksClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *PolicyVirtualNetworkLinksClient) listHandleResponse(resp *http.Response) (PolicyVirtualNetworkLinksClientListResponse, error) {
-	result := PolicyVirtualNetworkLinksClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyVirtualNetworkLinkListResult); err != nil {
-		return PolicyVirtualNetworkLinksClientListResponse{}, err
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) listHandleResponse(resp *http.Response) (DNSResolverPolicyVirtualNetworkLinksClientListResponse, error) {
+	result := DNSResolverPolicyVirtualNetworkLinksClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverPolicyVirtualNetworkLinkListResult); err != nil {
+		return DNSResolverPolicyVirtualNetworkLinksClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -365,20 +365,20 @@ func (client *PolicyVirtualNetworkLinksClient) listHandleResponse(resp *http.Res
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
 //     policy.
 //   - parameters - Parameters supplied to the Update operation.
-//   - options - PolicyVirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.BeginUpdate
+//   - options - DNSResolverPolicyVirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.BeginUpdate
 //     method.
-func (client *PolicyVirtualNetworkLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLinkPatch, options *PolicyVirtualNetworkLinksClientBeginUpdateOptions) (*runtime.Poller[PolicyVirtualNetworkLinksClientUpdateResponse], error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters DNSResolverPolicyVirtualNetworkLinkPatch, options *DNSResolverPolicyVirtualNetworkLinksClientBeginUpdateOptions) (*runtime.Poller[DNSResolverPolicyVirtualNetworkLinksClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dnsResolverPolicyName, dnsResolverPolicyVirtualNetworkLinkName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PolicyVirtualNetworkLinksClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSResolverPolicyVirtualNetworkLinksClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PolicyVirtualNetworkLinksClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSResolverPolicyVirtualNetworkLinksClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -388,9 +388,9 @@ func (client *PolicyVirtualNetworkLinksClient) BeginUpdate(ctx context.Context, 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *PolicyVirtualNetworkLinksClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLinkPatch, options *PolicyVirtualNetworkLinksClientBeginUpdateOptions) (*http.Response, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters DNSResolverPolicyVirtualNetworkLinkPatch, options *DNSResolverPolicyVirtualNetworkLinksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PolicyVirtualNetworkLinksClient.BeginUpdate"
+	const operationName = "DNSResolverPolicyVirtualNetworkLinksClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -410,7 +410,7 @@ func (client *PolicyVirtualNetworkLinksClient) update(ctx context.Context, resou
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PolicyVirtualNetworkLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLinkPatch, options *PolicyVirtualNetworkLinksClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DNSResolverPolicyVirtualNetworkLinksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters DNSResolverPolicyVirtualNetworkLinkPatch, options *DNSResolverPolicyVirtualNetworkLinksClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}/virtualNetworkLinks/{dnsResolverPolicyVirtualNetworkLinkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

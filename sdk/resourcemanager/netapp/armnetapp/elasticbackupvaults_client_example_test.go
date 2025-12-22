@@ -43,7 +43,7 @@ func ExampleElasticBackupVaultsClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.ElasticBackupVaultProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
@@ -98,7 +98,7 @@ func ExampleElasticBackupVaultsClient_Get() {
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticBackupVaultProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
@@ -138,7 +138,7 @@ func ExampleElasticBackupVaultsClient_NewListByElasticAccountPager() {
 		// 					"Tag1": to.Ptr("Value1"),
 		// 				},
 		// 				Properties: &armnetapp.ElasticBackupVaultProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 				},
 		// 			},
 		// 		},
@@ -183,7 +183,7 @@ func ExampleElasticBackupVaultsClient_BeginUpdate() {
 	// 			"Tag1": to.Ptr("Value1"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticBackupVaultProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }

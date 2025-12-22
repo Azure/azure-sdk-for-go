@@ -6,10 +6,9 @@ package armnewrelicobservability_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability"
+	"log"
 )
 
 // Generated from example definition: 2025-05-01-preview/MonitoredSubscriptions_CreateOrUpdate.json

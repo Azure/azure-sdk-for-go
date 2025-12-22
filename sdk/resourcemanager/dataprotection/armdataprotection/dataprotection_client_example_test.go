@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-07-01/CheckfeatureSupport.json
-func ExampleClient_CheckFeatureSupport() {
+func ExampleDataProtectionClient_CheckFeatureSupport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleClient_CheckFeatureSupport() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().CheckFeatureSupport(ctx, "WestUS", &armdataprotection.FeatureValidationRequest{
+	res, err := clientFactory.NewDataProtectionClient().CheckFeatureSupport(ctx, "WestUS", &armdataprotection.FeatureValidationRequest{
 		FeatureType: to.Ptr(armdataprotection.FeatureTypeDataSourceType),
 		ObjectType:  to.Ptr("FeatureValidationRequest"),
 	}, nil)
@@ -33,7 +33,7 @@ func ExampleClient_CheckFeatureSupport() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ClientCheckFeatureSupportResponse{
+	// res = armdataprotection.DataProtectionClientCheckFeatureSupportResponse{
 	// 	FeatureValidationResponse: &armdataprotection.FeatureValidationResponse{
 	// 		FeatureType: to.Ptr(armdataprotection.FeatureTypeDataSourceType),
 	// 		Features: []*armdataprotection.SupportedFeature{

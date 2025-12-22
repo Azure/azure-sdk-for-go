@@ -176,6 +176,46 @@ func (c *ClientFactory) NewElasticVolumesClient() *ElasticVolumesClient {
 	}
 }
 
+// NewNetAppResourceClient creates a new instance of NetAppResourceClient.
+func (c *ClientFactory) NewNetAppResourceClient() *NetAppResourceClient {
+	return &NetAppResourceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNetAppResourceQuotaLimitsAccountClient creates a new instance of NetAppResourceQuotaLimitsAccountClient.
+func (c *ClientFactory) NewNetAppResourceQuotaLimitsAccountClient() *NetAppResourceQuotaLimitsAccountClient {
+	return &NetAppResourceQuotaLimitsAccountClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNetAppResourceQuotaLimitsClient creates a new instance of NetAppResourceQuotaLimitsClient.
+func (c *ClientFactory) NewNetAppResourceQuotaLimitsClient() *NetAppResourceQuotaLimitsClient {
+	return &NetAppResourceQuotaLimitsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNetAppResourceRegionInfosClient creates a new instance of NetAppResourceRegionInfosClient.
+func (c *ClientFactory) NewNetAppResourceRegionInfosClient() *NetAppResourceRegionInfosClient {
+	return &NetAppResourceRegionInfosClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNetAppResourceUsagesClient creates a new instance of NetAppResourceUsagesClient.
+func (c *ClientFactory) NewNetAppResourceUsagesClient() *NetAppResourceUsagesClient {
+	return &NetAppResourceUsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -194,46 +234,6 @@ func (c *ClientFactory) NewPoolsClient() *PoolsClient {
 // NewRansomwareReportsClient creates a new instance of RansomwareReportsClient.
 func (c *ClientFactory) NewRansomwareReportsClient() *RansomwareReportsClient {
 	return &RansomwareReportsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewResourceClient creates a new instance of ResourceClient.
-func (c *ClientFactory) NewResourceClient() *ResourceClient {
-	return &ResourceClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewResourceQuotaLimitsAccountClient creates a new instance of ResourceQuotaLimitsAccountClient.
-func (c *ClientFactory) NewResourceQuotaLimitsAccountClient() *ResourceQuotaLimitsAccountClient {
-	return &ResourceQuotaLimitsAccountClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewResourceQuotaLimitsClient creates a new instance of ResourceQuotaLimitsClient.
-func (c *ClientFactory) NewResourceQuotaLimitsClient() *ResourceQuotaLimitsClient {
-	return &ResourceQuotaLimitsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewResourceRegionInfosClient creates a new instance of ResourceRegionInfosClient.
-func (c *ClientFactory) NewResourceRegionInfosClient() *ResourceRegionInfosClient {
-	return &ResourceRegionInfosClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewResourceUsagesClient creates a new instance of ResourceUsagesClient.
-func (c *ClientFactory) NewResourceUsagesClient() *ResourceUsagesClient {
-	return &ResourceUsagesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -16,23 +16,23 @@ import (
 	"strings"
 )
 
-// ResourceClient contains the methods for the Resource group.
-// Don't use this type directly, use NewResourceClient() instead.
-type ResourceClient struct {
+// NetAppResourceClient contains the methods for the NetAppResource group.
+// Don't use this type directly, use NewNetAppResourceClient() instead.
+type NetAppResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceClient creates a new instance of ResourceClient with the specified values.
+// NewNetAppResourceClient creates a new instance of NetAppResourceClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
+func NewNetAppResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetAppResourceClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceClient{
+	client := &NetAppResourceClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -47,32 +47,32 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
 //   - body - The request body
-//   - options - ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
+//   - options - NetAppResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the NetAppResourceClient.CheckFilePathAvailability
 //     method.
-func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, location string, body FilePathAvailabilityRequest, options *ResourceClientCheckFilePathAvailabilityOptions) (ResourceClientCheckFilePathAvailabilityResponse, error) {
+func (client *NetAppResourceClient) CheckFilePathAvailability(ctx context.Context, location string, body FilePathAvailabilityRequest, options *NetAppResourceClientCheckFilePathAvailabilityOptions) (NetAppResourceClientCheckFilePathAvailabilityResponse, error) {
 	var err error
-	const operationName = "ResourceClient.CheckFilePathAvailability"
+	const operationName = "NetAppResourceClient.CheckFilePathAvailability"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.checkFilePathAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
-		return ResourceClientCheckFilePathAvailabilityResponse{}, err
+		return NetAppResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceClientCheckFilePathAvailabilityResponse{}, err
+		return NetAppResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckFilePathAvailabilityResponse{}, err
+		return NetAppResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
 	resp, err := client.checkFilePathAvailabilityHandleResponse(httpResp)
 	return resp, err
 }
 
 // checkFilePathAvailabilityCreateRequest creates the CheckFilePathAvailability request.
-func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context.Context, location string, body FilePathAvailabilityRequest, _ *ResourceClientCheckFilePathAvailabilityOptions) (*policy.Request, error) {
+func (client *NetAppResourceClient) checkFilePathAvailabilityCreateRequest(ctx context.Context, location string, body FilePathAvailabilityRequest, _ *NetAppResourceClientCheckFilePathAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkFilePathAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,10 +98,10 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 }
 
 // checkFilePathAvailabilityHandleResponse handles the CheckFilePathAvailability response.
-func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckFilePathAvailabilityResponse, error) {
-	result := ResourceClientCheckFilePathAvailabilityResponse{}
+func (client *NetAppResourceClient) checkFilePathAvailabilityHandleResponse(resp *http.Response) (NetAppResourceClientCheckFilePathAvailabilityResponse, error) {
+	result := NetAppResourceClientCheckFilePathAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
-		return ResourceClientCheckFilePathAvailabilityResponse{}, err
+		return NetAppResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
 	return result, nil
 }
@@ -114,32 +114,32 @@ func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
 //   - body - The request body
-//   - options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
+//   - options - NetAppResourceClientCheckNameAvailabilityOptions contains the optional parameters for the NetAppResourceClient.CheckNameAvailability
 //     method.
-func (client *ResourceClient) CheckNameAvailability(ctx context.Context, location string, body ResourceNameAvailabilityRequest, options *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error) {
+func (client *NetAppResourceClient) CheckNameAvailability(ctx context.Context, location string, body ResourceNameAvailabilityRequest, options *NetAppResourceClientCheckNameAvailabilityOptions) (NetAppResourceClientCheckNameAvailabilityResponse, error) {
 	var err error
-	const operationName = "ResourceClient.CheckNameAvailability"
+	const operationName = "NetAppResourceClient.CheckNameAvailability"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
-		return ResourceClientCheckNameAvailabilityResponse{}, err
+		return NetAppResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceClientCheckNameAvailabilityResponse{}, err
+		return NetAppResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckNameAvailabilityResponse{}, err
+		return NetAppResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
 	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, body ResourceNameAvailabilityRequest, _ *ResourceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *NetAppResourceClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, body ResourceNameAvailabilityRequest, _ *NetAppResourceClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -165,10 +165,10 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckNameAvailabilityResponse, error) {
-	result := ResourceClientCheckNameAvailabilityResponse{}
+func (client *NetAppResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NetAppResourceClientCheckNameAvailabilityResponse, error) {
+	result := NetAppResourceClientCheckNameAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
-		return ResourceClientCheckNameAvailabilityResponse{}, err
+		return NetAppResourceClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
@@ -181,32 +181,32 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
 //   - body - The request body
-//   - options - ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
+//   - options - NetAppResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the NetAppResourceClient.CheckQuotaAvailability
 //     method.
-func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, location string, body QuotaAvailabilityRequest, options *ResourceClientCheckQuotaAvailabilityOptions) (ResourceClientCheckQuotaAvailabilityResponse, error) {
+func (client *NetAppResourceClient) CheckQuotaAvailability(ctx context.Context, location string, body QuotaAvailabilityRequest, options *NetAppResourceClientCheckQuotaAvailabilityOptions) (NetAppResourceClientCheckQuotaAvailabilityResponse, error) {
 	var err error
-	const operationName = "ResourceClient.CheckQuotaAvailability"
+	const operationName = "NetAppResourceClient.CheckQuotaAvailability"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.checkQuotaAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
-		return ResourceClientCheckQuotaAvailabilityResponse{}, err
+		return NetAppResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceClientCheckQuotaAvailabilityResponse{}, err
+		return NetAppResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckQuotaAvailabilityResponse{}, err
+		return NetAppResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
 	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp)
 	return resp, err
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
-func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, body QuotaAvailabilityRequest, _ *ResourceClientCheckQuotaAvailabilityOptions) (*policy.Request, error) {
+func (client *NetAppResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Context, location string, body QuotaAvailabilityRequest, _ *NetAppResourceClientCheckQuotaAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/checkQuotaAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -232,10 +232,10 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkQuotaAvailabilityHandleResponse handles the CheckQuotaAvailability response.
-func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckQuotaAvailabilityResponse, error) {
-	result := ResourceClientCheckQuotaAvailabilityResponse{}
+func (client *NetAppResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (NetAppResourceClientCheckQuotaAvailabilityResponse, error) {
+	result := NetAppResourceClientCheckQuotaAvailabilityResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResponse); err != nil {
-		return ResourceClientCheckQuotaAvailabilityResponse{}, err
+		return NetAppResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
 	return result, nil
 }
@@ -248,32 +248,32 @@ func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Re
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
 //   - body - The request body
-//   - options - ResourceClientQueryNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.QueryNetworkSiblingSet
+//   - options - NetAppResourceClientQueryNetworkSiblingSetOptions contains the optional parameters for the NetAppResourceClient.QueryNetworkSiblingSet
 //     method.
-func (client *ResourceClient) QueryNetworkSiblingSet(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, options *ResourceClientQueryNetworkSiblingSetOptions) (ResourceClientQueryNetworkSiblingSetResponse, error) {
+func (client *NetAppResourceClient) QueryNetworkSiblingSet(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, options *NetAppResourceClientQueryNetworkSiblingSetOptions) (NetAppResourceClientQueryNetworkSiblingSetResponse, error) {
 	var err error
-	const operationName = "ResourceClient.QueryNetworkSiblingSet"
+	const operationName = "NetAppResourceClient.QueryNetworkSiblingSet"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.queryNetworkSiblingSetCreateRequest(ctx, location, body, options)
 	if err != nil {
-		return ResourceClientQueryNetworkSiblingSetResponse{}, err
+		return NetAppResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceClientQueryNetworkSiblingSetResponse{}, err
+		return NetAppResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceClientQueryNetworkSiblingSetResponse{}, err
+		return NetAppResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
 	resp, err := client.queryNetworkSiblingSetHandleResponse(httpResp)
 	return resp, err
 }
 
 // queryNetworkSiblingSetCreateRequest creates the QueryNetworkSiblingSet request.
-func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, _ *ResourceClientQueryNetworkSiblingSetOptions) (*policy.Request, error) {
+func (client *NetAppResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Context, location string, body QueryNetworkSiblingSetRequest, _ *NetAppResourceClientQueryNetworkSiblingSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/queryNetworkSiblingSet"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -299,10 +299,10 @@ func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Co
 }
 
 // queryNetworkSiblingSetHandleResponse handles the QueryNetworkSiblingSet response.
-func (client *ResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Response) (ResourceClientQueryNetworkSiblingSetResponse, error) {
-	result := ResourceClientQueryNetworkSiblingSetResponse{}
+func (client *NetAppResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Response) (NetAppResourceClientQueryNetworkSiblingSetResponse, error) {
+	result := NetAppResourceClientQueryNetworkSiblingSetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSiblingSet); err != nil {
-		return ResourceClientQueryNetworkSiblingSetResponse{}, err
+		return NetAppResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
 	return result, nil
 }
@@ -314,32 +314,32 @@ func (client *ResourceClient) queryNetworkSiblingSetHandleResponse(resp *http.Re
 //
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
-//   - options - ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo
+//   - options - NetAppResourceClientQueryRegionInfoOptions contains the optional parameters for the NetAppResourceClient.QueryRegionInfo
 //     method.
-func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location string, options *ResourceClientQueryRegionInfoOptions) (ResourceClientQueryRegionInfoResponse, error) {
+func (client *NetAppResourceClient) QueryRegionInfo(ctx context.Context, location string, options *NetAppResourceClientQueryRegionInfoOptions) (NetAppResourceClientQueryRegionInfoResponse, error) {
 	var err error
-	const operationName = "ResourceClient.QueryRegionInfo"
+	const operationName = "NetAppResourceClient.QueryRegionInfo"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.queryRegionInfoCreateRequest(ctx, location, options)
 	if err != nil {
-		return ResourceClientQueryRegionInfoResponse{}, err
+		return NetAppResourceClientQueryRegionInfoResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceClientQueryRegionInfoResponse{}, err
+		return NetAppResourceClientQueryRegionInfoResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceClientQueryRegionInfoResponse{}, err
+		return NetAppResourceClientQueryRegionInfoResponse{}, err
 	}
 	resp, err := client.queryRegionInfoHandleResponse(httpResp)
 	return resp, err
 }
 
 // queryRegionInfoCreateRequest creates the QueryRegionInfo request.
-func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, location string, _ *ResourceClientQueryRegionInfoOptions) (*policy.Request, error) {
+func (client *NetAppResourceClient) queryRegionInfoCreateRequest(ctx context.Context, location string, _ *NetAppResourceClientQueryRegionInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -361,10 +361,10 @@ func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, 
 }
 
 // queryRegionInfoHandleResponse handles the QueryRegionInfo response.
-func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response) (ResourceClientQueryRegionInfoResponse, error) {
-	result := ResourceClientQueryRegionInfoResponse{}
+func (client *NetAppResourceClient) queryRegionInfoHandleResponse(resp *http.Response) (NetAppResourceClientQueryRegionInfoResponse, error) {
+	result := NetAppResourceClientQueryRegionInfoResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfo); err != nil {
-		return ResourceClientQueryRegionInfoResponse{}, err
+		return NetAppResourceClientQueryRegionInfoResponse{}, err
 	}
 	return result, nil
 }
@@ -377,20 +377,20 @@ func (client *ResourceClient) queryRegionInfoHandleResponse(resp *http.Response)
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
 //   - body - The request body
-//   - options - ResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.BeginUpdateNetworkSiblingSet
+//   - options - NetAppResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the NetAppResourceClient.BeginUpdateNetworkSiblingSet
 //     method.
-func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*runtime.Poller[ResourceClientUpdateNetworkSiblingSetResponse], error) {
+func (client *NetAppResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *NetAppResourceClientBeginUpdateNetworkSiblingSetOptions) (*runtime.Poller[NetAppResourceClientUpdateNetworkSiblingSetResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updateNetworkSiblingSet(ctx, location, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NetAppResourceClientUpdateNetworkSiblingSetResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateNetworkSiblingSetResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NetAppResourceClientUpdateNetworkSiblingSetResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -402,9 +402,9 @@ func (client *ResourceClient) BeginUpdateNetworkSiblingSet(ctx context.Context, 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01-preview
-func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*http.Response, error) {
+func (client *NetAppResourceClient) updateNetworkSiblingSet(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, options *NetAppResourceClientBeginUpdateNetworkSiblingSetOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ResourceClient.BeginUpdateNetworkSiblingSet"
+	const operationName = "NetAppResourceClient.BeginUpdateNetworkSiblingSet"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -424,7 +424,7 @@ func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, locat
 }
 
 // updateNetworkSiblingSetCreateRequest creates the UpdateNetworkSiblingSet request.
-func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, _ *ResourceClientBeginUpdateNetworkSiblingSetOptions) (*policy.Request, error) {
+func (client *NetAppResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.Context, location string, body UpdateNetworkSiblingSetRequest, _ *NetAppResourceClientBeginUpdateNetworkSiblingSetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

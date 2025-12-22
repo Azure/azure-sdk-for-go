@@ -66,6 +66,184 @@ type DNSForwardingRulesetsClientListOptions struct {
 	Top *int32
 }
 
+// DNSResolverDomainListsClientBeginBulkOptions contains the optional parameters for the DNSResolverDomainListsClient.BeginBulk
+// method.
+type DNSResolverDomainListsClientBeginBulkOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverDomainListsClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolverDomainListsClient.BeginCreateOrUpdate
+// method.
+type DNSResolverDomainListsClientBeginCreateOrUpdateOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverDomainListsClientBeginDeleteOptions contains the optional parameters for the DNSResolverDomainListsClient.BeginDelete
+// method.
+type DNSResolverDomainListsClientBeginDeleteOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverDomainListsClientBeginUpdateOptions contains the optional parameters for the DNSResolverDomainListsClient.BeginUpdate
+// method.
+type DNSResolverDomainListsClientBeginUpdateOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverDomainListsClientGetOptions contains the optional parameters for the DNSResolverDomainListsClient.Get method.
+type DNSResolverDomainListsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DNSResolverDomainListsClientListByResourceGroupOptions contains the optional parameters for the DNSResolverDomainListsClient.NewListByResourceGroupPager
+// method.
+type DNSResolverDomainListsClientListByResourceGroupOptions struct {
+	// The maximum number of results to return. If not specified, returns up to 100 results.
+	Top *int32
+}
+
+// DNSResolverDomainListsClientListOptions contains the optional parameters for the DNSResolverDomainListsClient.NewListPager
+// method.
+type DNSResolverDomainListsClientListOptions struct {
+	// The maximum number of results to return. If not specified, returns up to 100 results.
+	Top *int32
+}
+
+// DNSResolverPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolverPoliciesClient.BeginCreateOrUpdate
+// method.
+type DNSResolverPoliciesClientBeginCreateOrUpdateOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverPoliciesClientBeginDeleteOptions contains the optional parameters for the DNSResolverPoliciesClient.BeginDelete
+// method.
+type DNSResolverPoliciesClientBeginDeleteOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverPoliciesClientBeginUpdateOptions contains the optional parameters for the DNSResolverPoliciesClient.BeginUpdate
+// method.
+type DNSResolverPoliciesClientBeginUpdateOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverPoliciesClientGetOptions contains the optional parameters for the DNSResolverPoliciesClient.Get method.
+type DNSResolverPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DNSResolverPoliciesClientListByResourceGroupOptions contains the optional parameters for the DNSResolverPoliciesClient.NewListByResourceGroupPager
+// method.
+type DNSResolverPoliciesClientListByResourceGroupOptions struct {
+	// The maximum number of results to return. If not specified, returns up to 100 results.
+	Top *int32
+}
+
+// DNSResolverPoliciesClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolverPoliciesClient.NewListByVirtualNetworkPager
+// method.
+type DNSResolverPoliciesClientListByVirtualNetworkOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DNSResolverPoliciesClientListOptions contains the optional parameters for the DNSResolverPoliciesClient.NewListPager method.
+type DNSResolverPoliciesClientListOptions struct {
+	// The maximum number of results to return. If not specified, returns up to 100 results.
+	Top *int32
+}
+
+// DNSResolverPolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.BeginCreateOrUpdate
+// method.
+type DNSResolverPolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverPolicyVirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.BeginDelete
+// method.
+type DNSResolverPolicyVirtualNetworkLinksClientBeginDeleteOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverPolicyVirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.BeginUpdate
+// method.
+type DNSResolverPolicyVirtualNetworkLinksClientBeginUpdateOptions struct {
+	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
+	// accidentally overwriting any concurrent changes.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DNSResolverPolicyVirtualNetworkLinksClientGetOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.Get
+// method.
+type DNSResolverPolicyVirtualNetworkLinksClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DNSResolverPolicyVirtualNetworkLinksClientListOptions contains the optional parameters for the DNSResolverPolicyVirtualNetworkLinksClient.NewListPager
+// method.
+type DNSResolverPolicyVirtualNetworkLinksClientListOptions struct {
+	// The maximum number of results to return. If not specified, returns up to 100 results.
+	Top *int32
+}
+
 // DNSResolversClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolversClient.BeginCreateOrUpdate
 // method.
 type DNSResolversClientBeginCreateOrUpdateOptions struct {
@@ -166,71 +344,6 @@ type DNSSecurityRulesClientGetOptions struct {
 
 // DNSSecurityRulesClientListOptions contains the optional parameters for the DNSSecurityRulesClient.NewListPager method.
 type DNSSecurityRulesClientListOptions struct {
-	// The maximum number of results to return. If not specified, returns up to 100 results.
-	Top *int32
-}
-
-// DomainListsClientBeginBulkOptions contains the optional parameters for the DomainListsClient.BeginBulk method.
-type DomainListsClientBeginBulkOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DomainListsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainListsClient.BeginCreateOrUpdate
-// method.
-type DomainListsClientBeginCreateOrUpdateOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DomainListsClientBeginDeleteOptions contains the optional parameters for the DomainListsClient.BeginDelete method.
-type DomainListsClientBeginDeleteOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DomainListsClientBeginUpdateOptions contains the optional parameters for the DomainListsClient.BeginUpdate method.
-type DomainListsClientBeginUpdateOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// DomainListsClientGetOptions contains the optional parameters for the DomainListsClient.Get method.
-type DomainListsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DomainListsClientListByResourceGroupOptions contains the optional parameters for the DomainListsClient.NewListByResourceGroupPager
-// method.
-type DomainListsClientListByResourceGroupOptions struct {
-	// The maximum number of results to return. If not specified, returns up to 100 results.
-	Top *int32
-}
-
-// DomainListsClientListOptions contains the optional parameters for the DomainListsClient.NewListPager method.
-type DomainListsClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
 }
@@ -359,112 +472,6 @@ type OutboundEndpointsClientGetOptions struct {
 
 // OutboundEndpointsClientListOptions contains the optional parameters for the OutboundEndpointsClient.NewListPager method.
 type OutboundEndpointsClientListOptions struct {
-	// The maximum number of results to return. If not specified, returns up to 100 results.
-	Top *int32
-}
-
-// PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate method.
-type PoliciesClientBeginCreateOrUpdateOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
-type PoliciesClientBeginDeleteOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
-type PoliciesClientBeginUpdateOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
-type PoliciesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PoliciesClientListByResourceGroupOptions contains the optional parameters for the PoliciesClient.NewListByResourceGroupPager
-// method.
-type PoliciesClientListByResourceGroupOptions struct {
-	// The maximum number of results to return. If not specified, returns up to 100 results.
-	Top *int32
-}
-
-// PoliciesClientListByVirtualNetworkOptions contains the optional parameters for the PoliciesClient.NewListByVirtualNetworkPager
-// method.
-type PoliciesClientListByVirtualNetworkOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PoliciesClientListOptions contains the optional parameters for the PoliciesClient.NewListPager method.
-type PoliciesClientListOptions struct {
-	// The maximum number of results to return. If not specified, returns up to 100 results.
-	Top *int32
-}
-
-// PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.BeginCreateOrUpdate
-// method.
-type PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Set to '*' to allow a new resource to be created, but to prevent updating an existing resource. Other values will be ignored.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PolicyVirtualNetworkLinksClientBeginDeleteOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.BeginDelete
-// method.
-type PolicyVirtualNetworkLinksClientBeginDeleteOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PolicyVirtualNetworkLinksClientBeginUpdateOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.BeginUpdate
-// method.
-type PolicyVirtualNetworkLinksClientBeginUpdateOptions struct {
-	// ETag of the resource. Omit this value to always overwrite the current resource. Specify the last-seen ETag value to prevent
-	// accidentally overwriting any concurrent changes.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PolicyVirtualNetworkLinksClientGetOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.Get
-// method.
-type PolicyVirtualNetworkLinksClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PolicyVirtualNetworkLinksClientListOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.NewListPager
-// method.
-type PolicyVirtualNetworkLinksClientListOptions struct {
 	// The maximum number of results to return. If not specified, returns up to 100 results.
 	Top *int32
 }

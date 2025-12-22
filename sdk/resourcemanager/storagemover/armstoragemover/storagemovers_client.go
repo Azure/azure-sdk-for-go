@@ -300,7 +300,7 @@ func (client *StorageMoversClient) listCreateRequest(ctx context.Context, resour
 // listHandleResponse handles the List response.
 func (client *StorageMoversClient) listHandleResponse(resp *http.Response) (StorageMoversClientListResponse, error) {
 	result := StorageMoversClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageMoverList); err != nil {
 		return StorageMoversClientListResponse{}, err
 	}
 	return result, nil
@@ -355,7 +355,7 @@ func (client *StorageMoversClient) listBySubscriptionCreateRequest(ctx context.C
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *StorageMoversClient) listBySubscriptionHandleResponse(resp *http.Response) (StorageMoversClientListBySubscriptionResponse, error) {
 	result := StorageMoversClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageMoverList); err != nil {
 		return StorageMoversClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
@@ -368,7 +368,7 @@ func (client *StorageMoversClient) listBySubscriptionHandleResponse(resp *http.R
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - StorageMoversClientUpdateOptions contains the optional parameters for the StorageMoversClient.Update method.
-func (client *StorageMoversClient) Update(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover UpdateParameters, options *StorageMoversClientUpdateOptions) (StorageMoversClientUpdateResponse, error) {
+func (client *StorageMoversClient) Update(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover StorageMoverUpdateParameters, options *StorageMoversClientUpdateOptions) (StorageMoversClientUpdateResponse, error) {
 	var err error
 	const operationName = "StorageMoversClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -391,7 +391,7 @@ func (client *StorageMoversClient) Update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client *StorageMoversClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover UpdateParameters, _ *StorageMoversClientUpdateOptions) (*policy.Request, error) {
+func (client *StorageMoversClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover StorageMoverUpdateParameters, _ *StorageMoversClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

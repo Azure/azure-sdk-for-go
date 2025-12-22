@@ -212,8 +212,15 @@ type BackupVaultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
-type ClientCheckFeatureSupportOptions struct {
+// DataProtectionClientCheckFeatureSupportOptions contains the optional parameters for the DataProtectionClient.CheckFeatureSupport
+// method.
+type DataProtectionClientCheckFeatureSupportOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DataProtectionOperationsClientListOptions contains the optional parameters for the DataProtectionOperationsClient.NewListPager
+// method.
+type DataProtectionOperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -327,11 +334,6 @@ type OperationStatusClientGetOptions struct {
 // OperationStatusResourceGroupContextClientGetOptions contains the optional parameters for the OperationStatusResourceGroupContextClient.Get
 // method.
 type OperationStatusResourceGroupContextClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
-type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -18,61 +18,61 @@ import (
 	"regexp"
 )
 
-// ResourceQuotaLimitsServer is a fake server for instances of the armnetapp.ResourceQuotaLimitsClient type.
-type ResourceQuotaLimitsServer struct {
-	// Get is the fake for method ResourceQuotaLimitsClient.Get
+// NetAppResourceQuotaLimitsServer is a fake server for instances of the armnetapp.NetAppResourceQuotaLimitsClient type.
+type NetAppResourceQuotaLimitsServer struct {
+	// Get is the fake for method NetAppResourceQuotaLimitsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, quotaLimitName string, options *armnetapp.ResourceQuotaLimitsClientGetOptions) (resp azfake.Responder[armnetapp.ResourceQuotaLimitsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, quotaLimitName string, options *armnetapp.NetAppResourceQuotaLimitsClientGetOptions) (resp azfake.Responder[armnetapp.NetAppResourceQuotaLimitsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ResourceQuotaLimitsClient.NewListPager
+	// NewListPager is the fake for method NetAppResourceQuotaLimitsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armnetapp.ResourceQuotaLimitsClientListOptions) (resp azfake.PagerResponder[armnetapp.ResourceQuotaLimitsClientListResponse])
+	NewListPager func(location string, options *armnetapp.NetAppResourceQuotaLimitsClientListOptions) (resp azfake.PagerResponder[armnetapp.NetAppResourceQuotaLimitsClientListResponse])
 }
 
-// NewResourceQuotaLimitsServerTransport creates a new instance of ResourceQuotaLimitsServerTransport with the provided implementation.
-// The returned ResourceQuotaLimitsServerTransport instance is connected to an instance of armnetapp.ResourceQuotaLimitsClient via the
+// NewNetAppResourceQuotaLimitsServerTransport creates a new instance of NetAppResourceQuotaLimitsServerTransport with the provided implementation.
+// The returned NetAppResourceQuotaLimitsServerTransport instance is connected to an instance of armnetapp.NetAppResourceQuotaLimitsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewResourceQuotaLimitsServerTransport(srv *ResourceQuotaLimitsServer) *ResourceQuotaLimitsServerTransport {
-	return &ResourceQuotaLimitsServerTransport{
+func NewNetAppResourceQuotaLimitsServerTransport(srv *NetAppResourceQuotaLimitsServer) *NetAppResourceQuotaLimitsServerTransport {
+	return &NetAppResourceQuotaLimitsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armnetapp.ResourceQuotaLimitsClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetapp.NetAppResourceQuotaLimitsClientListResponse]](),
 	}
 }
 
-// ResourceQuotaLimitsServerTransport connects instances of armnetapp.ResourceQuotaLimitsClient to instances of ResourceQuotaLimitsServer.
-// Don't use this type directly, use NewResourceQuotaLimitsServerTransport instead.
-type ResourceQuotaLimitsServerTransport struct {
-	srv          *ResourceQuotaLimitsServer
-	newListPager *tracker[azfake.PagerResponder[armnetapp.ResourceQuotaLimitsClientListResponse]]
+// NetAppResourceQuotaLimitsServerTransport connects instances of armnetapp.NetAppResourceQuotaLimitsClient to instances of NetAppResourceQuotaLimitsServer.
+// Don't use this type directly, use NewNetAppResourceQuotaLimitsServerTransport instead.
+type NetAppResourceQuotaLimitsServerTransport struct {
+	srv          *NetAppResourceQuotaLimitsServer
+	newListPager *tracker[azfake.PagerResponder[armnetapp.NetAppResourceQuotaLimitsClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for ResourceQuotaLimitsServerTransport.
-func (r *ResourceQuotaLimitsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for NetAppResourceQuotaLimitsServerTransport.
+func (n *NetAppResourceQuotaLimitsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return r.dispatchToMethodFake(req, method)
+	return n.dispatchToMethodFake(req, method)
 }
 
-func (r *ResourceQuotaLimitsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (n *NetAppResourceQuotaLimitsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if resourceQuotaLimitsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = resourceQuotaLimitsServerTransportInterceptor.Do(req)
+		if netAppResourceQuotaLimitsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = netAppResourceQuotaLimitsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceQuotaLimitsClient.Get":
-				res.resp, res.err = r.dispatchGet(req)
-			case "ResourceQuotaLimitsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
+			case "NetAppResourceQuotaLimitsClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetAppResourceQuotaLimitsClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -92,8 +92,8 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
-func (r *ResourceQuotaLimitsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
+func (n *NetAppResourceQuotaLimitsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaLimits/(?P<quotaLimitName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -110,7 +110,7 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchGet(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), locationParam, quotaLimitNameParam, nil)
+	respr, errRespr := n.srv.Get(req.Context(), locationParam, quotaLimitNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -125,11 +125,11 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (r *ResourceQuotaLimitsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
+func (n *NetAppResourceQuotaLimitsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListPager := r.newListPager.get(req)
+	newListPager := n.newListPager.get(req)
 	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotaLimits`
 		regex := regexp.MustCompile(regexStr)
@@ -141,10 +141,10 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchNewListPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListPager(locationParam, nil)
+		resp := n.srv.NewListPager(locationParam, nil)
 		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.ResourceQuotaLimitsClientListResponse, createLink func() string) {
+		n.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.NetAppResourceQuotaLimitsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -153,17 +153,17 @@ func (r *ResourceQuotaLimitsServerTransport) dispatchNewListPager(req *http.Requ
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
+		n.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
+		n.newListPager.remove(req)
 	}
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ResourceQuotaLimitsServerTransport
-var resourceQuotaLimitsServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to NetAppResourceQuotaLimitsServerTransport
+var netAppResourceQuotaLimitsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

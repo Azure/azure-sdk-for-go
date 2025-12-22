@@ -75,7 +75,7 @@ func ExampleElasticVolumesClient_BeginCreateOrUpdate() {
 	// 		Properties: &armnetapp.ElasticVolumeProperties{
 	// 			FilePath: to.Ptr("my-unique-file-path"),
 	// 			Size: to.Ptr[int64](107374182400),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			DataProtection: &armnetapp.ElasticVolumeDataProtectionProperties{
 	// 				Snapshot: &armnetapp.ElasticVolumeSnapshotProperties{
 	// 					SnapshotPolicyResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticSnapshotPolicies/policy1"),
@@ -162,7 +162,7 @@ func ExampleElasticVolumesClient_Get() {
 	// 		Properties: &armnetapp.ElasticVolumeProperties{
 	// 			FilePath: to.Ptr("my-unique-file-path"),
 	// 			Size: to.Ptr[int64](107374182400),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			ExportPolicy: &armnetapp.ElasticExportPolicy{
 	// 				Rules: []*armnetapp.ElasticExportPolicyRule{
 	// 					{
@@ -246,7 +246,7 @@ func ExampleElasticVolumesClient_NewListByElasticPoolPager() {
 		// 							IPAddress: to.Ptr("10.1.0.9"),
 		// 						},
 		// 					},
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					AvailabilityStatus: to.Ptr(armnetapp.ElasticResourceAvailabilityStatusOnline),
 		// 				},
 		// 			},
@@ -280,7 +280,7 @@ func ExampleElasticVolumesClient_NewListByElasticPoolPager() {
 		// 							IPAddress: to.Ptr("10.1.0.9"),
 		// 						},
 		// 					},
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					AvailabilityStatus: to.Ptr(armnetapp.ElasticResourceAvailabilityStatusOnline),
 		// 				},
 		// 			},
@@ -345,7 +345,7 @@ func ExampleElasticVolumesClient_BeginRevert() {
 	// 					IPAddress: to.Ptr("10.1.0.9"),
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			AvailabilityStatus: to.Ptr(armnetapp.ElasticResourceAvailabilityStatusOnline),
 	// 		},
 	// 	},
@@ -433,7 +433,7 @@ func ExampleElasticVolumesClient_BeginUpdate() {
 	// 				},
 	// 			},
 	// 			AvailabilityStatus: to.Ptr(armnetapp.ElasticResourceAvailabilityStatusOnline),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }

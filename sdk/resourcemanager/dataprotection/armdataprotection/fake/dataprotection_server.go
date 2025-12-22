@@ -17,51 +17,51 @@ import (
 	"regexp"
 )
 
-// Server is a fake server for instances of the armdataprotection.Client type.
-type Server struct {
-	// CheckFeatureSupport is the fake for method Client.CheckFeatureSupport
+// DataProtectionServer is a fake server for instances of the armdataprotection.DataProtectionClient type.
+type DataProtectionServer struct {
+	// CheckFeatureSupport is the fake for method DataProtectionClient.CheckFeatureSupport
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckFeatureSupport func(ctx context.Context, location string, parameters armdataprotection.FeatureValidationRequestBaseClassification, options *armdataprotection.ClientCheckFeatureSupportOptions) (resp azfake.Responder[armdataprotection.ClientCheckFeatureSupportResponse], errResp azfake.ErrorResponder)
+	CheckFeatureSupport func(ctx context.Context, location string, parameters armdataprotection.FeatureValidationRequestBaseClassification, options *armdataprotection.DataProtectionClientCheckFeatureSupportOptions) (resp azfake.Responder[armdataprotection.DataProtectionClientCheckFeatureSupportResponse], errResp azfake.ErrorResponder)
 }
 
-// NewServerTransport creates a new instance of ServerTransport with the provided implementation.
-// The returned ServerTransport instance is connected to an instance of armdataprotection.Client via the
+// NewDataProtectionServerTransport creates a new instance of DataProtectionServerTransport with the provided implementation.
+// The returned DataProtectionServerTransport instance is connected to an instance of armdataprotection.DataProtectionClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewServerTransport(srv *Server) *ServerTransport {
-	return &ServerTransport{srv: srv}
+func NewDataProtectionServerTransport(srv *DataProtectionServer) *DataProtectionServerTransport {
+	return &DataProtectionServerTransport{srv: srv}
 }
 
-// ServerTransport connects instances of armdataprotection.Client to instances of Server.
-// Don't use this type directly, use NewServerTransport instead.
-type ServerTransport struct {
-	srv *Server
+// DataProtectionServerTransport connects instances of armdataprotection.DataProtectionClient to instances of DataProtectionServer.
+// Don't use this type directly, use NewDataProtectionServerTransport instead.
+type DataProtectionServerTransport struct {
+	srv *DataProtectionServer
 }
 
-// Do implements the policy.Transporter interface for ServerTransport.
-func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DataProtectionServerTransport.
+func (d *DataProtectionServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return s.dispatchToMethodFake(req, method)
+	return d.dispatchToMethodFake(req, method)
 }
 
-func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DataProtectionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if serverTransportInterceptor != nil {
-			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		if dataProtectionServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dataProtectionServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "Client.CheckFeatureSupport":
-				res.resp, res.err = s.dispatchCheckFeatureSupport(req)
+			case "DataProtectionClient.CheckFeatureSupport":
+				res.resp, res.err = d.dispatchCheckFeatureSupport(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -81,8 +81,8 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	}
 }
 
-func (s *ServerTransport) dispatchCheckFeatureSupport(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckFeatureSupport == nil {
+func (d *DataProtectionServerTransport) dispatchCheckFeatureSupport(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckFeatureSupport == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckFeatureSupport not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataProtection/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkFeatureSupport`
@@ -103,7 +103,7 @@ func (s *ServerTransport) dispatchCheckFeatureSupport(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CheckFeatureSupport(req.Context(), locationParam, body, nil)
+	respr, errRespr := d.srv.CheckFeatureSupport(req.Context(), locationParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -118,8 +118,8 @@ func (s *ServerTransport) dispatchCheckFeatureSupport(req *http.Request) (*http.
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ServerTransport
-var serverTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to DataProtectionServerTransport
+var dataProtectionServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

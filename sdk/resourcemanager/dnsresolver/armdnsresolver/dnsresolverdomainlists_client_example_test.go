@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_BulkDownload.json
-func ExampleDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
+func ExampleDNSResolverDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,8 +23,8 @@ func ExampleDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDomainListsClient().BeginBulk(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainListBulk{
-		Properties: &armdnsresolver.DomainListBulkProperties{
+	poller, err := clientFactory.NewDNSResolverDomainListsClient().BeginBulk(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DNSResolverDomainListBulk{
+		Properties: &armdnsresolver.DNSResolverDomainListBulkProperties{
 			Action:     to.Ptr(armdnsresolver.ActionDownload),
 			StorageURL: to.Ptr("https://sampleStorageAccount.blob.core.windows.net/sample-container/sampleBlob.txt?sv=2022-11-02&sr=b&sig=39Up9jzHkxhUIhFEjEh9594DJxe7w6cIRCgOV6ICGS0%3A377&sp=rcw"),
 		},
@@ -39,14 +39,14 @@ func ExampleDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientBulkResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientBulkResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			Domains: []*string{
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
@@ -66,7 +66,7 @@ func ExampleDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_BulkUpload.json
-func ExampleDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
+func ExampleDNSResolverDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -76,8 +76,8 @@ func ExampleDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDomainListsClient().BeginBulk(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainListBulk{
-		Properties: &armdnsresolver.DomainListBulkProperties{
+	poller, err := clientFactory.NewDNSResolverDomainListsClient().BeginBulk(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DNSResolverDomainListBulk{
+		Properties: &armdnsresolver.DNSResolverDomainListBulkProperties{
 			Action:     to.Ptr(armdnsresolver.ActionUpload),
 			StorageURL: to.Ptr("https://sampleStorageAccount.blob.core.windows.net/sample-container/sampleBlob.txt?sv=2022-11-02&sr=b&sig=39Up9jzHkxhUIhFEjEh9594DJxe7w6cIRCgOV6ICGS0%3A377&sp=rcw"),
 		},
@@ -92,14 +92,14 @@ func ExampleDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientBulkResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientBulkResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			Domains: []*string{
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
@@ -119,7 +119,7 @@ func ExampleDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_BulkDomains_Put.json
-func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWithBulkNumberOfDomains() {
+func ExampleDNSResolverDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWithBulkNumberOfDomains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -129,9 +129,9 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDomainListsClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainList{
+	poller, err := clientFactory.NewDNSResolverDomainListsClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DNSResolverDomainList{
 		Location:   to.Ptr("westus2"),
-		Properties: &armdnsresolver.DomainListProperties{},
+		Properties: &armdnsresolver.DNSResolverDomainListProperties{},
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -146,14 +146,14 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientCreateOrUpdateResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientCreateOrUpdateResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList/bulk"),
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
@@ -172,7 +172,7 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_Put.json
-func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWithLessThan1000Domains() {
+func ExampleDNSResolverDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWithLessThan1000Domains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -182,9 +182,9 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDomainListsClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainList{
+	poller, err := clientFactory.NewDNSResolverDomainListsClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DNSResolverDomainList{
 		Location: to.Ptr("westus2"),
-		Properties: &armdnsresolver.DomainListProperties{
+		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 			Domains: []*string{
 				to.Ptr("contoso.com"),
 			},
@@ -203,14 +203,14 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientCreateOrUpdateResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientCreateOrUpdateResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			Domains: []*string{
 	// 				to.Ptr("contoso.com"),
 	// 			},
@@ -231,7 +231,7 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_Delete.json
-func ExampleDomainListsClient_BeginDelete() {
+func ExampleDNSResolverDomainListsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -241,7 +241,7 @@ func ExampleDomainListsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDomainListsClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
+	poller, err := clientFactory.NewDNSResolverDomainListsClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -252,7 +252,7 @@ func ExampleDomainListsClient_BeginDelete() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_BulkDomains_Get.json
-func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithBulkNumberOfDomains() {
+func ExampleDNSResolverDomainListsClient_Get_retrieveDnsResolverDomainListWithBulkNumberOfDomains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -262,21 +262,21 @@ func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithBulkNumberOfD
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDomainListsClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
+	res, err := clientFactory.NewDNSResolverDomainListsClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientGetResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientGetResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList/bulk"),
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
@@ -295,7 +295,7 @@ func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithBulkNumberOfD
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_Get.json
-func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithLessThan1000Domains() {
+func ExampleDNSResolverDomainListsClient_Get_retrieveDnsResolverDomainListWithLessThan1000Domains() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -305,21 +305,21 @@ func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithLessThan1000D
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDomainListsClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
+	res, err := clientFactory.NewDNSResolverDomainListsClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientGetResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientGetResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			Domains: []*string{
 	// 				to.Ptr("contoso.com"),
 	// 			},
@@ -340,7 +340,7 @@ func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithLessThan1000D
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_ListBySubscription.json
-func ExampleDomainListsClient_NewListPager() {
+func ExampleDNSResolverDomainListsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -350,7 +350,7 @@ func ExampleDomainListsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDomainListsClient().NewListPager(nil)
+	pager := clientFactory.NewDNSResolverDomainListsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -361,17 +361,17 @@ func ExampleDomainListsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdnsresolver.DomainListsClientListResponse{
-		// 	DomainListListResult: armdnsresolver.DomainListListResult{
+		// page = armdnsresolver.DNSResolverDomainListsClientListResponse{
+		// 	DNSResolverDomainListListResult: armdnsresolver.DNSResolverDomainListListResult{
 		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/providers/Microsoft.Network/dnsResolverDomainLists?$skipToken=skipToken&api-version=2025-10-01-preview"),
-		// 		Value: []*armdnsresolver.DomainList{
+		// 		Value: []*armdnsresolver.DNSResolverDomainList{
 		// 			{
 		// 				Name: to.Ptr("sampleDnsResolverDomainList1"),
 		// 				Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList1"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.DomainListProperties{
+		// 				Properties: &armdnsresolver.DNSResolverDomainListProperties{
 		// 					Domains: []*string{
 		// 						to.Ptr("contoso.com"),
 		// 					},
@@ -394,7 +394,7 @@ func ExampleDomainListsClient_NewListPager() {
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList2"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.DomainListProperties{
+		// 				Properties: &armdnsresolver.DNSResolverDomainListProperties{
 		// 					DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList2/bulk"),
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
@@ -416,7 +416,7 @@ func ExampleDomainListsClient_NewListPager() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_ListByResourceGroup.json
-func ExampleDomainListsClient_NewListByResourceGroupPager() {
+func ExampleDNSResolverDomainListsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -426,7 +426,7 @@ func ExampleDomainListsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDomainListsClient().NewListByResourceGroupPager("sampleResourceGroup", nil)
+	pager := clientFactory.NewDNSResolverDomainListsClient().NewListByResourceGroupPager("sampleResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -437,17 +437,17 @@ func ExampleDomainListsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdnsresolver.DomainListsClientListByResourceGroupResponse{
-		// 	DomainListListResult: armdnsresolver.DomainListListResult{
+		// page = armdnsresolver.DNSResolverDomainListsClientListByResourceGroupResponse{
+		// 	DNSResolverDomainListListResult: armdnsresolver.DNSResolverDomainListListResult{
 		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists?$skipToken=skipToken&api-version=2025-10-01-preview"),
-		// 		Value: []*armdnsresolver.DomainList{
+		// 		Value: []*armdnsresolver.DNSResolverDomainList{
 		// 			{
 		// 				Name: to.Ptr("sampleDnsResolverDomainList1"),
 		// 				Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList1"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.DomainListProperties{
+		// 				Properties: &armdnsresolver.DNSResolverDomainListProperties{
 		// 					Domains: []*string{
 		// 						to.Ptr("contoso.com"),
 		// 					},
@@ -470,7 +470,7 @@ func ExampleDomainListsClient_NewListByResourceGroupPager() {
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList2"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.DomainListProperties{
+		// 				Properties: &armdnsresolver.DNSResolverDomainListProperties{
 		// 					DomainsURL: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList2/bulk"),
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
@@ -492,7 +492,7 @@ func ExampleDomainListsClient_NewListByResourceGroupPager() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverDomainList_Patch.json
-func ExampleDomainListsClient_BeginUpdate() {
+func ExampleDNSResolverDomainListsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -502,8 +502,8 @@ func ExampleDomainListsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDomainListsClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DomainListPatch{
-		Properties: &armdnsresolver.DomainListPatchProperties{
+	poller, err := clientFactory.NewDNSResolverDomainListsClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverDomainList", armdnsresolver.DNSResolverDomainListPatch{
+		Properties: &armdnsresolver.DNSResolverDomainListPatchProperties{
 			Domains: []*string{
 				to.Ptr("contoso.com"),
 			},
@@ -522,14 +522,14 @@ func ExampleDomainListsClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.DomainListsClientUpdateResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// res = armdnsresolver.DNSResolverDomainListsClientUpdateResponse{
+	// 	DNSResolverDomainList: &armdnsresolver.DNSResolverDomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverDomainLists/sampleDnsResolverDomainList"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.DomainListProperties{
+	// 		Properties: &armdnsresolver.DNSResolverDomainListProperties{
 	// 			Domains: []*string{
 	// 				to.Ptr("contoso.com"),
 	// 			},

@@ -19,6 +19,7 @@ import (
 )
 
 const timeFormat = time.RFC3339Nano
+const serviceName = "AzureAppConfiguration" // need to double check
 
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
@@ -60,7 +61,7 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 
 	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(options.Cloud.Services != nil)},
+		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(options.Cloud.Services != nil && options.Cloud.Services[serviceName].Audience != "")},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.AppConfig",
 		},

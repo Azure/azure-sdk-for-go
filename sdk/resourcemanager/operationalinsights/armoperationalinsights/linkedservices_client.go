@@ -27,7 +27,7 @@ type LinkedServicesClient struct {
 // NewLinkedServicesClient creates a new instance of LinkedServicesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServicesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Create or update a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - linkedServiceName - Name of the linkedServices resource
@@ -70,7 +70,7 @@ func (client *LinkedServicesClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Create or update a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 func (client *LinkedServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkedServicesClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *LinkedServicesClient) createOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, options *LinkedServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, parameters LinkedService, _ *LinkedServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,7 +116,7 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,7 +128,7 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 // BeginDelete - Deletes a linked service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - linkedServiceName - Name of the linked service.
@@ -154,7 +154,7 @@ func (client *LinkedServicesClient) BeginDelete(ctx context.Context, resourceGro
 // Delete - Deletes a linked service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 func (client *LinkedServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LinkedServicesClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *LinkedServicesClient) deleteOperation(ctx context.Context, resourc
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, _ *LinkedServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -200,7 +200,7 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets a linked service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - linkedServiceName - Name of the linked service.
@@ -237,7 +237,7 @@ func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, linkedServiceName string, _ *LinkedServicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices/{linkedServiceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -260,7 +260,7 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 
 // NewListByWorkspacePager - Gets the linked services instances in a workspace.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - LinkedServicesClientListByWorkspaceOptions contains the optional parameters for the LinkedServicesClient.NewListByWorkspacePager
@@ -307,7 +307,7 @@ func (client *LinkedServicesClient) NewListByWorkspacePager(resourceGroupName st
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedServicesClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *LinkedServicesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedServices"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -326,7 +326,7 @@ func (client *LinkedServicesClient) listByWorkspaceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

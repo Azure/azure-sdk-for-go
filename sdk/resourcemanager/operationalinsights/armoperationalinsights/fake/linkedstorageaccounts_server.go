@@ -62,27 +62,46 @@ func (l *LinkedStorageAccountsServerTransport) Do(req *http.Request) (*http.Resp
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return l.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "LinkedStorageAccountsClient.CreateOrUpdate":
-		resp, err = l.dispatchCreateOrUpdate(req)
-	case "LinkedStorageAccountsClient.Delete":
-		resp, err = l.dispatchDelete(req)
-	case "LinkedStorageAccountsClient.Get":
-		resp, err = l.dispatchGet(req)
-	case "LinkedStorageAccountsClient.NewListByWorkspacePager":
-		resp, err = l.dispatchNewListByWorkspacePager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (l *LinkedStorageAccountsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if linkedStorageAccountsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = linkedStorageAccountsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "LinkedStorageAccountsClient.CreateOrUpdate":
+				res.resp, res.err = l.dispatchCreateOrUpdate(req)
+			case "LinkedStorageAccountsClient.Delete":
+				res.resp, res.err = l.dispatchDelete(req)
+			case "LinkedStorageAccountsClient.Get":
+				res.resp, res.err = l.dispatchGet(req)
+			case "LinkedStorageAccountsClient.NewListByWorkspacePager":
+				res.resp, res.err = l.dispatchNewListByWorkspacePager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (l *LinkedStorageAccountsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -92,7 +111,7 @@ func (l *LinkedStorageAccountsServerTransport) dispatchCreateOrUpdate(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedStorageAccounts/(?P<dataSourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armoperationalinsights.LinkedStorageAccountsResource](req)
@@ -139,7 +158,7 @@ func (l *LinkedStorageAccountsServerTransport) dispatchDelete(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedStorageAccounts/(?P<dataSourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -182,7 +201,7 @@ func (l *LinkedStorageAccountsServerTransport) dispatchGet(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedStorageAccounts/(?P<dataSourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -227,7 +246,7 @@ func (l *LinkedStorageAccountsServerTransport) dispatchNewListByWorkspacePager(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/linkedStorageAccounts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -254,4 +273,10 @@ func (l *LinkedStorageAccountsServerTransport) dispatchNewListByWorkspacePager(r
 		l.newListByWorkspacePager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to LinkedStorageAccountsServerTransport
+var linkedStorageAccountsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

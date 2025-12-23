@@ -27,7 +27,7 @@ type StorageInsightConfigsClient struct {
 // NewStorageInsightConfigsClient creates a new instance of StorageInsightConfigsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageInsightConfigsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.Tok
 // CreateOrUpdate - Create or update a storage insight.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - storageInsightName - Name of the storageInsightsConfigs resource
@@ -73,7 +73,7 @@ func (client *StorageInsightConfigsClient) CreateOrUpdate(ctx context.Context, r
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, parameters StorageInsight, options *StorageInsightConfigsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, parameters StorageInsight, _ *StorageInsightConfigsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -96,7 +96,7 @@ func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -117,7 +117,7 @@ func (client *StorageInsightConfigsClient) createOrUpdateHandleResponse(resp *ht
 // Delete - Deletes a storageInsightsConfigs resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - storageInsightName - Name of the storageInsightsConfigs resource
@@ -145,7 +145,7 @@ func (client *StorageInsightConfigsClient) Delete(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, options *StorageInsightConfigsClientDeleteOptions) (*policy.Request, error) {
+func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, _ *StorageInsightConfigsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -168,7 +168,7 @@ func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -176,7 +176,7 @@ func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Conte
 // Get - Gets a storage insight instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - storageInsightName - Name of the storageInsightsConfigs resource
@@ -205,7 +205,7 @@ func (client *StorageInsightConfigsClient) Get(ctx context.Context, resourceGrou
 }
 
 // getCreateRequest creates the Get request.
-func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, options *StorageInsightConfigsClientGetOptions) (*policy.Request, error) {
+func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, _ *StorageInsightConfigsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs/{storageInsightName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -228,7 +228,7 @@ func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +245,7 @@ func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response
 
 // NewListByWorkspacePager - Lists the storage insight instances within a workspace
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.NewListByWorkspacePager
@@ -274,7 +274,7 @@ func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroup
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *StorageInsightConfigsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/storageInsightConfigs"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -293,7 +293,7 @@ func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

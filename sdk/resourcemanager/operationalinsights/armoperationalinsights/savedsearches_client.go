@@ -27,7 +27,7 @@ type SavedSearchesClient struct {
 // NewSavedSearchesClient creates a new instance of SavedSearchesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSavedSearchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SavedSearchesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSavedSearchesClient(subscriptionID string, credential azcore.TokenCreden
 // CreateOrUpdate - Creates or updates a saved search for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - savedSearchID - The id of the saved search.
@@ -73,7 +73,7 @@ func (client *SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SavedSearchesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, parameters SavedSearch, options *SavedSearchesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SavedSearchesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, parameters SavedSearch, _ *SavedSearchesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +96,7 @@ func (client *SavedSearchesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -117,7 +117,7 @@ func (client *SavedSearchesClient) createOrUpdateHandleResponse(resp *http.Respo
 // Delete - Deletes the specified saved search in a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - savedSearchID - The id of the saved search.
@@ -144,7 +144,7 @@ func (client *SavedSearchesClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SavedSearchesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, options *SavedSearchesClientDeleteOptions) (*policy.Request, error) {
+func (client *SavedSearchesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, _ *SavedSearchesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -167,7 +167,7 @@ func (client *SavedSearchesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -175,7 +175,7 @@ func (client *SavedSearchesClient) deleteCreateRequest(ctx context.Context, reso
 // Get - Gets the specified saved search for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - savedSearchID - The id of the saved search.
@@ -203,7 +203,7 @@ func (client *SavedSearchesClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // getCreateRequest creates the Get request.
-func (client *SavedSearchesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, options *SavedSearchesClientGetOptions) (*policy.Request, error) {
+func (client *SavedSearchesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, savedSearchID string, _ *SavedSearchesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +226,7 @@ func (client *SavedSearchesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,7 +244,7 @@ func (client *SavedSearchesClient) getHandleResponse(resp *http.Response) (Saved
 // ListByWorkspace - Gets the saved searches for a given Log Analytics Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - SavedSearchesClientListByWorkspaceOptions contains the optional parameters for the SavedSearchesClient.ListByWorkspace
@@ -272,7 +272,7 @@ func (client *SavedSearchesClient) ListByWorkspace(ctx context.Context, resource
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *SavedSearchesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SavedSearchesClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *SavedSearchesClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SavedSearchesClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -291,7 +291,7 @@ func (client *SavedSearchesClient) listByWorkspaceCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

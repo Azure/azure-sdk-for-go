@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/QueryPackQueriesList.json
 func ExampleQueriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,10 +49,10 @@ func ExampleQueriesClient_NewListPager() {
 		// 			SystemData: &armoperationalinsights.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 			},
 		// 			Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 				Description: to.Ptr("Thie query takes 10 entries of heartbeat"),
@@ -71,10 +71,10 @@ func ExampleQueriesClient_NewListPager() {
 		// 			SystemData: &armoperationalinsights.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 			},
 		// 			Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 				Description: to.Ptr("Thie query takes 10 entries of heartbeat"),
@@ -93,10 +93,10 @@ func ExampleQueriesClient_NewListPager() {
 		// 			SystemData: &armoperationalinsights.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 			},
 		// 			Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 				Description: to.Ptr("Thie query takes 10 entries of heartbeat"),
@@ -115,10 +115,10 @@ func ExampleQueriesClient_NewListPager() {
 		// 			SystemData: &armoperationalinsights.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 			},
 		// 			Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 				Description: to.Ptr("Thie query takes 10 entries of heartbeat"),
@@ -134,7 +134,7 @@ func ExampleQueriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesSearch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/QueryPackQueriesSearch.json
 func ExampleQueriesClient_NewSearchPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,10 +178,10 @@ func ExampleQueriesClient_NewSearchPager() {
 		// 			SystemData: &armoperationalinsights.SystemData{
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 				LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 			},
 		// 			Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 				Description: to.Ptr("Thie query takes 10 entries of heartbeat 0"),
@@ -210,10 +210,10 @@ func ExampleQueriesClient_NewSearchPager() {
 		// 						SystemData: &armoperationalinsights.SystemData{
 		// 							CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 							CreatedBy: to.Ptr("string"),
-		// 							CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 							CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 							LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 							LastModifiedBy: to.Ptr("string"),
-		// 							LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 							LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 						},
 		// 						Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 							Description: to.Ptr("Thie query takes 10 entries of heartbeat 1"),
@@ -242,10 +242,10 @@ func ExampleQueriesClient_NewSearchPager() {
 		// 									SystemData: &armoperationalinsights.SystemData{
 		// 										CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 		// 										CreatedBy: to.Ptr("string"),
-		// 										CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 										CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 										LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 		// 										LastModifiedBy: to.Ptr("string"),
-		// 										LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+		// 										LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 		// 									},
 		// 									Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 		// 										Description: to.Ptr("Thie query takes 10 entries of heartbeat 2"),
@@ -272,7 +272,7 @@ func ExampleQueriesClient_NewSearchPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/QueryPackQueriesGet.json
 func ExampleQueriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,10 +297,10 @@ func ExampleQueriesClient_Get() {
 	// 	SystemData: &armoperationalinsights.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+	// 		CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+	// 		LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 	// 	},
 	// 	Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 	// 		Description: to.Ptr("Thie query fetcges the recent exceptions from the last 24 hours"),
@@ -313,7 +313,7 @@ func ExampleQueriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesPut.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/QueryPackQueriesPut.json
 func ExampleQueriesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,10 +354,10 @@ func ExampleQueriesClient_Put() {
 	// 	SystemData: &armoperationalinsights.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+	// 		CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+	// 		LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 	// 	},
 	// 	Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 	// 		Description: to.Ptr("my description"),
@@ -381,7 +381,7 @@ func ExampleQueriesClient_Put() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/QueryPackQueriesUpdate.json
 func ExampleQueriesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,10 +422,10 @@ func ExampleQueriesClient_Update() {
 	// 	SystemData: &armoperationalinsights.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T01:01:01.107Z"); return t}()),
 	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+	// 		CreatedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-04T02:03:01.197Z"); return t}()),
 	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armoperationalinsights.IdentityTypeApplication),
+	// 		LastModifiedByType: to.Ptr(armoperationalinsights.CreatedByTypeApplication),
 	// 	},
 	// 	Properties: &armoperationalinsights.LogAnalyticsQueryPackQueryProperties{
 	// 		Description: to.Ptr("my description"),
@@ -449,7 +449,7 @@ func ExampleQueriesClient_Update() {
 	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/QueryPackQueriesDelete.json
 func ExampleQueriesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

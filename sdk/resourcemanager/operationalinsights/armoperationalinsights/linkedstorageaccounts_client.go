@@ -27,7 +27,7 @@ type LinkedStorageAccountsClient struct {
 // NewLinkedStorageAccountsClient creates a new instance of LinkedStorageAccountsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLinkedStorageAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedStorageAccountsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewLinkedStorageAccountsClient(subscriptionID string, credential azcore.Tok
 // data source type.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - dataSourceType - Linked storage accounts type.
@@ -74,7 +74,7 @@ func (client *LinkedStorageAccountsClient) CreateOrUpdate(ctx context.Context, r
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, parameters LinkedStorageAccountsResource, options *LinkedStorageAccountsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, parameters LinkedStorageAccountsResource, _ *LinkedStorageAccountsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -97,7 +97,7 @@ func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -118,7 +118,7 @@ func (client *LinkedStorageAccountsClient) createOrUpdateHandleResponse(resp *ht
 // Delete - Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - dataSourceType - Linked storage accounts type.
@@ -146,7 +146,7 @@ func (client *LinkedStorageAccountsClient) Delete(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, options *LinkedStorageAccountsClientDeleteOptions) (*policy.Request, error) {
+func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, _ *LinkedStorageAccountsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -169,7 +169,7 @@ func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -177,7 +177,7 @@ func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Conte
 // Get - Gets all linked storage account of a specific data source type associated with the specified workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - dataSourceType - Linked storage accounts type.
@@ -206,7 +206,7 @@ func (client *LinkedStorageAccountsClient) Get(ctx context.Context, resourceGrou
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, options *LinkedStorageAccountsClientGetOptions) (*policy.Request, error) {
+func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, _ *LinkedStorageAccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -229,7 +229,7 @@ func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response
 // NewListByWorkspacePager - Gets all linked storage accounts associated with the specified workspace, storage accounts will
 // be sorted by their data source type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - LinkedStorageAccountsClientListByWorkspaceOptions contains the optional parameters for the LinkedStorageAccountsClient.NewListByWorkspacePager
@@ -277,7 +277,7 @@ func (client *LinkedStorageAccountsClient) NewListByWorkspacePager(resourceGroup
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedStorageAccountsClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *LinkedStorageAccountsClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -296,7 +296,7 @@ func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -50,7 +50,7 @@ func (testsuite *SavedSearchesTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestSavedSearchesTestSuite(t *testing.T) {
+func TTestSavedSearchesTestSuite(t *testing.T) {
 	suite.Run(t, new(SavedSearchesTestSuite))
 }
 

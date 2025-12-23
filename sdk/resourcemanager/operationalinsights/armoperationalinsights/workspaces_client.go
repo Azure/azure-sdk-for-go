@@ -28,7 +28,7 @@ type WorkspacesClient struct {
 // NewWorkspacesClient creates a new instance of WorkspacesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspacesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create or update a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - parameters - The parameters required to create or update a workspace.
@@ -70,7 +70,7 @@ func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // CreateOrUpdate - Create or update a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginCreateOrUpdate"
@@ -93,7 +93,7 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, parameters Workspace, _ *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -112,7 +112,7 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,7 +126,7 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 // another workspace. To remove the workspace completely and release the name, use the force flag.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
@@ -152,7 +152,7 @@ func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 // another workspace. To remove the workspace completely and release the name, use the force flag.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginDelete"
@@ -194,7 +194,7 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -203,10 +203,177 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
+// BeginFailback - Deactivates failover for the specified workspace.
+// The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be checked
+// using the operationId returned in the response.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - WorkspacesClientBeginFailbackOptions contains the optional parameters for the WorkspacesClient.BeginFailback
+//     method.
+func (client *WorkspacesClient) BeginFailback(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginFailbackOptions) (*runtime.Poller[WorkspacesClientFailbackResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failback(ctx, resourceGroupName, workspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientFailbackResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientFailbackResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Failback - Deactivates failover for the specified workspace.
+// The failback operation is asynchronous and can take up to 30 minutes to complete. The status of the operation can be checked
+// using the operationId returned in the response.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+func (client *WorkspacesClient) failback(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginFailbackOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginFailback"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.failbackCreateRequest(ctx, resourceGroupName, workspaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// failbackCreateRequest creates the Failback request.
+func (client *WorkspacesClient) failbackCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientBeginFailbackOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/failback"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginFailover - Activates failover for the specified workspace.
+// The specified replication location must match the location of the enabled replication for this workspace. The failover
+// operation is asynchronous and can take up to 30 minutes to complete. The status
+// of the operation can be checked using the operationId returned in the response.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The name of the Azure region.
+//   - workspaceName - The name of the workspace.
+//   - options - WorkspacesClientBeginFailoverOptions contains the optional parameters for the WorkspacesClient.BeginFailover
+//     method.
+func (client *WorkspacesClient) BeginFailover(ctx context.Context, resourceGroupName string, location string, workspaceName string, options *WorkspacesClientBeginFailoverOptions) (*runtime.Poller[WorkspacesClientFailoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.failover(ctx, resourceGroupName, location, workspaceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientFailoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Failover - Activates failover for the specified workspace.
+// The specified replication location must match the location of the enabled replication for this workspace. The failover
+// operation is asynchronous and can take up to 30 minutes to complete. The status
+// of the operation can be checked using the operationId returned in the response.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+func (client *WorkspacesClient) failover(ctx context.Context, resourceGroupName string, location string, workspaceName string, options *WorkspacesClientBeginFailoverOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginFailover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.failoverCreateRequest(ctx, resourceGroupName, location, workspaceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// failoverCreateRequest creates the Failover request.
+func (client *WorkspacesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, location string, workspaceName string, _ *WorkspacesClientBeginFailoverOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/locations/{location}/workspaces/{workspaceName}/failover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Gets a workspace instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
@@ -233,7 +400,7 @@ func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientGetOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -252,7 +419,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,9 +434,78 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 	return result, nil
 }
 
+// GetNSP - Gets a network security perimeter configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - WorkspacesClientGetNSPOptions contains the optional parameters for the WorkspacesClient.GetNSP method.
+func (client *WorkspacesClient) GetNSP(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, options *WorkspacesClientGetNSPOptions) (WorkspacesClientGetNSPResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.GetNSP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getNSPCreateRequest(ctx, resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return WorkspacesClientGetNSPResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientGetNSPResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return WorkspacesClientGetNSPResponse{}, err
+	}
+	resp, err := client.getNSPHandleResponse(httpResp)
+	return resp, err
+}
+
+// getNSPCreateRequest creates the GetNSP request.
+func (client *WorkspacesClient) getNSPCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, _ *WorkspacesClientGetNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getNSPHandleResponse handles the GetNSP response.
+func (client *WorkspacesClient) getNSPHandleResponse(resp *http.Response) (WorkspacesClientGetNSPResponse, error) {
+	result := WorkspacesClientGetNSPResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
+		return WorkspacesClientGetNSPResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListPager - Gets the workspaces in a subscription.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 //   - options - WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.NewListPager method.
 func (client *WorkspacesClient) NewListPager(options *WorkspacesClientListOptions) *runtime.Pager[WorkspacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListResponse]{
@@ -296,7 +532,7 @@ func (client *WorkspacesClient) NewListPager(options *WorkspacesClientListOption
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspacesClient) listCreateRequest(ctx context.Context, options *WorkspacesClientListOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listCreateRequest(ctx context.Context, _ *WorkspacesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/workspaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -307,7 +543,7 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +560,7 @@ func (client *WorkspacesClient) listHandleResponse(resp *http.Response) (Workspa
 
 // NewListByResourceGroupPager - Gets workspaces in a resource group.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 //     method.
@@ -353,7 +589,7 @@ func (client *WorkspacesClient) NewListByResourceGroupPager(resourceGroupName st
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WorkspacesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *WorkspacesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -368,7 +604,7 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -383,10 +619,156 @@ func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Res
 	return result, nil
 }
 
+// NewListNSPPager - Gets a list of NSP configurations for specified workspace.
+//
+// Generated from API version 2025-07-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - WorkspacesClientListNSPOptions contains the optional parameters for the WorkspacesClient.NewListNSPPager method.
+func (client *WorkspacesClient) NewListNSPPager(resourceGroupName string, workspaceName string, options *WorkspacesClientListNSPOptions) *runtime.Pager[WorkspacesClientListNSPResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkspacesClientListNSPResponse]{
+		More: func(page WorkspacesClientListNSPResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *WorkspacesClientListNSPResponse) (WorkspacesClientListNSPResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkspacesClient.NewListNSPPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listNSPCreateRequest(ctx, resourceGroupName, workspaceName, options)
+			}, nil)
+			if err != nil {
+				return WorkspacesClientListNSPResponse{}, err
+			}
+			return client.listNSPHandleResponse(resp)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listNSPCreateRequest creates the ListNSP request.
+func (client *WorkspacesClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *WorkspacesClientListNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listNSPHandleResponse handles the ListNSP response.
+func (client *WorkspacesClient) listNSPHandleResponse(resp *http.Response) (WorkspacesClientListNSPResponse, error) {
+	result := WorkspacesClientListNSPResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
+		return WorkspacesClientListNSPResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginReconcileNSP - Reconcile network security perimeter configuration for Workspace resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - WorkspacesClientBeginReconcileNSPOptions contains the optional parameters for the WorkspacesClient.BeginReconcileNSP
+//     method.
+func (client *WorkspacesClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, options *WorkspacesClientBeginReconcileNSPOptions) (*runtime.Poller[WorkspacesClientReconcileNSPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcileNSP(ctx, resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientReconcileNSPResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ReconcileNSP - Reconcile network security perimeter configuration for Workspace resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01
+func (client *WorkspacesClient) reconcileNSP(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, options *WorkspacesClientBeginReconcileNSPOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginReconcileNSP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// reconcileNSPCreateRequest creates the ReconcileNSP request.
+func (client *WorkspacesClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, _ *WorkspacesClientBeginReconcileNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Update - Updates a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-12-01-preview
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - parameters - The parameters required to patch a workspace.
@@ -414,7 +796,7 @@ func (client *WorkspacesClient) Update(ctx context.Context, resourceGroupName st
 }
 
 // updateCreateRequest creates the Update request.
-func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspacePatch, options *WorkspacesClientUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, parameters WorkspacePatch, _ *WorkspacesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -433,7 +815,7 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -27,7 +27,7 @@ type AvailableServiceTiersClient struct {
 // NewAvailableServiceTiersClient creates a new instance of AvailableServiceTiersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailableServiceTiersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableServiceTiersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAvailableServiceTiersClient(subscriptionID string, credential azcore.Tok
 // ListByWorkspace - Gets the available service tiers for the workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - AvailableServiceTiersClientListByWorkspaceOptions contains the optional parameters for the AvailableServiceTiersClient.ListByWorkspace
@@ -71,7 +71,7 @@ func (client *AvailableServiceTiersClient) ListByWorkspace(ctx context.Context, 
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AvailableServiceTiersClientListByWorkspaceOptions) (*policy.Request, error) {
+func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *AvailableServiceTiersClientListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/availableServiceTiers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,7 +90,7 @@ func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

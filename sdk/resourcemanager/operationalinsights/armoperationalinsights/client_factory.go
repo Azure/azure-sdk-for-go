@@ -176,6 +176,14 @@ func (c *ClientFactory) NewStorageInsightConfigsClient() *StorageInsightConfigsC
 	}
 }
 
+// NewSummaryLogsClient creates a new instance of SummaryLogsClient.
+func (c *ClientFactory) NewSummaryLogsClient() *SummaryLogsClient {
+	return &SummaryLogsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewTablesClient creates a new instance of TablesClient.
 func (c *ClientFactory) NewTablesClient() *TablesClient {
 	return &TablesClient{

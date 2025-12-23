@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,12 +40,12 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// page.ClusterListResult = armoperationalinsights.ClusterListResult{
 		// 	Value: []*armoperationalinsights.Cluster{
 		// 		{
-		// 			Name: to.Ptr("TestResourceLock"),
+		// 			Name: to.Ptr("mycluster"),
 		// 			Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-		// 			ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/clusters/testresourcelock"),
+		// 			ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/mycluster"),
 		// 			Location: to.Ptr("eastus"),
-		// 			Identity: &armoperationalinsights.Identity{
-		// 				Type: to.Ptr(armoperationalinsights.IdentityTypeSystemAssigned),
+		// 			Identity: &armoperationalinsights.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
 		// 				PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
 		// 				TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 		// 			},
@@ -60,14 +60,14 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 			},
 		// 			SKU: &armoperationalinsights.ClusterSKU{
 		// 				Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-		// 				Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+		// 				Capacity: to.Ptr[int64](1000),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersSubscriptionList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersSubscriptionList.json
 func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,12 +92,12 @@ func ExampleClustersClient_NewListPager() {
 		// page.ClusterListResult = armoperationalinsights.ClusterListResult{
 		// 	Value: []*armoperationalinsights.Cluster{
 		// 		{
-		// 			Name: to.Ptr("TestResourceLock"),
+		// 			Name: to.Ptr("mycluster"),
 		// 			Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-		// 			ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/clusters/testresourcelock"),
+		// 			ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/mycluster"),
 		// 			Location: to.Ptr("eastus"),
-		// 			Identity: &armoperationalinsights.Identity{
-		// 				Type: to.Ptr(armoperationalinsights.IdentityTypeSystemAssigned),
+		// 			Identity: &armoperationalinsights.ManagedServiceIdentity{
+		// 				Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
 		// 				PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
 		// 				TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 		// 			},
@@ -112,14 +112,14 @@ func ExampleClustersClient_NewListPager() {
 		// 			},
 		// 			SKU: &armoperationalinsights.ClusterSKU{
 		// 				Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-		// 				Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+		// 				Capacity: to.Ptr[int64](1000),
 		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersCreate.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,13 +131,13 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClustersClient().BeginCreateOrUpdate(ctx, "oiautorest6685", "oiautorest6685", armoperationalinsights.Cluster{
-		Location: to.Ptr("australiasoutheast"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val1"),
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+			Capacity: to.Ptr[int64](100),
 		},
 	}, nil)
 	if err != nil {
@@ -151,41 +151,32 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Cluster = armoperationalinsights.Cluster{
-	// 	Name: to.Ptr("oiautorest6685"),
+	// 	Name: to.Ptr("TestResourceLock"),
 	// 	Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-	// 	ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/oiautorest6685"),
-	// 	Location: to.Ptr("australiasoutheast"),
-	// 	Identity: &armoperationalinsights.Identity{
-	// 		Type: to.Ptr(armoperationalinsights.IdentityTypeSystemAssigned),
+	// 	ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/oiautorest6685"),
+	// 	Location: to.Ptr("eastus"),
+	// 	Identity: &armoperationalinsights.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
 	// 		PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
 	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 	},
 	// 	Properties: &armoperationalinsights.ClusterProperties{
-	// 		AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
-	// 		},
 	// 		BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
-	// 		CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
-	// 			LastSKUUpdate: to.Ptr("Thu, 01 Jan 1970 00:00:00 GMT"),
-	// 			MinCapacity: to.Ptr[int64](500),
-	// 		},
 	// 		ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 		CreatedDate: to.Ptr("Mon, 13 Jan 2020 14:40:33 GMT"),
-	// 		KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
-	// 			KeyName: to.Ptr("aztest2170cert"),
-	// 			KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
-	// 			KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
-	// 		},
-	// 		LastModifiedDate: to.Ptr("Sun, 04 Jan 2020 17:10:56 GMT"),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
+	// 		IsAvailabilityZonesEnabled: to.Ptr(true),
+	// 		IsDoubleEncryptionEnabled: to.Ptr(true),
+	// 		LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
 	// 	},
 	// 	SKU: &armoperationalinsights.ClusterSKU{
 	// 		Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-	// 		Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+	// 		Capacity: to.Ptr[int64](100),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersDelete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +197,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersGet.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,52 +218,59 @@ func ExampleClustersClient_Get() {
 	// res.Cluster = armoperationalinsights.Cluster{
 	// 	Name: to.Ptr("TestResourceLock"),
 	// 	Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
-	// 	ID: to.Ptr("/subscriptions/594038b5-1093-476e-a366-482775671c11/resourcegroups/calbot-rg/providers/microsoft.operationalinsights/clusters/testresourcelock"),
+	// 	ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/oiautorest6685"),
 	// 	Location: to.Ptr("eastus"),
-	// 	Identity: &armoperationalinsights.Identity{
-	// 		Type: to.Ptr(armoperationalinsights.IdentityTypeSystemAssigned),
+	// 	Identity: &armoperationalinsights.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeSystemAssigned),
 	// 		PrincipalID: to.Ptr("356d057d-cba5-44dd-8a30-b2e547bc416b"),
 	// 		TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 	},
 	// 	Properties: &armoperationalinsights.ClusterProperties{
 	// 		AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
 	// 			{
-	// 				AssociateDate: to.Ptr("Tue, 07 Jul 2020 07:35:51 GMT"),
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
+	// 				AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T23:40:33.000Z"); return t}()),
+	// 				ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
 	// 				WorkspaceID: to.Ptr("942bdefd-e6c9-411c-ac69-70ffad564363"),
 	// 				WorkspaceName: to.Ptr("testWs1"),
 	// 			},
 	// 			{
-	// 				AssociateDate: to.Ptr("Mon, 13 Jan 2020 16:03:39 GMT"),
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
+	// 				AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T23:40:33.000Z"); return t}()),
+	// 				ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
 	// 				WorkspaceID: to.Ptr("c7edb8f8-67f7-41f2-bddb-aecf22507e3f"),
 	// 				WorkspaceName: to.Ptr("testWs2"),
 	// 		}},
 	// 		BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
 	// 		CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
-	// 			LastSKUUpdate: to.Ptr("Thu, 01 Jan 1970 00:00:00 GMT"),
-	// 			MinCapacity: to.Ptr[int64](500),
+	// 			LastSKUUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
+	// 			MinCapacity: to.Ptr[int64](100),
 	// 		},
 	// 		ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 		CreatedDate: to.Ptr("Mon, 13 Jan 2020 14:40:33 GMT"),
-	// 		IsAvailabilityZonesEnabled: to.Ptr(false),
-	// 		IsDoubleEncryptionEnabled: to.Ptr(false),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
+	// 		IsAvailabilityZonesEnabled: to.Ptr(true),
+	// 		IsDoubleEncryptionEnabled: to.Ptr(true),
 	// 		KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
 	// 			KeyName: to.Ptr("aztest2170cert"),
 	// 			KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
 	// 			KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
 	// 		},
-	// 		LastModifiedDate: to.Ptr("Sun, 04 Jan 2020 17:10:56 GMT"),
+	// 		LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
+	// 		Replication: &armoperationalinsights.ClusterReplicationProperties{
+	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
+	// 			Enabled: to.Ptr(true),
+	// 			LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33.000Z"); return t}()),
+	// 			Location: to.Ptr("westus3"),
+	// 			ProvisioningState: to.Ptr(armoperationalinsights.ClusterReplicationStateSucceeded),
+	// 		},
 	// 	},
 	// 	SKU: &armoperationalinsights.ClusterSKU{
 	// 		Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-	// 		Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+	// 		Capacity: to.Ptr[int64](1000),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4ce13e8353a25125a41bc01705c0a7794dac32a7/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/f0a5127d4e8b1ea6007b0bf9570904d9df860b97/specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-07-01/examples/ClustersUpdate.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,10 +282,10 @@ func ExampleClustersClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "oiautorest6685", "oiautorest6685", armoperationalinsights.ClusterPatch{
-		Identity: &armoperationalinsights.Identity{
-			Type: to.Ptr(armoperationalinsights.IdentityTypeUserAssigned),
-			UserAssignedIdentities: map[string]*armoperationalinsights.UserIdentityProperties{
-				"/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+		Identity: &armoperationalinsights.ManagedServiceIdentity{
+			Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armoperationalinsights.UserAssignedIdentity{
+				"/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
 			},
 		},
 		Properties: &armoperationalinsights.ClusterPatchProperties{
@@ -295,12 +293,12 @@ func ExampleClustersClient_BeginUpdate() {
 				KeyName:     to.Ptr("aztest2170cert"),
 				KeyRsaSize:  to.Ptr[int32](1024),
 				KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
-				KeyVersion:  to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
+				KeyVersion:  to.Ptr(""),
 			},
 		},
 		SKU: &armoperationalinsights.ClusterSKU{
 			Name:     to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-			Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+			Capacity: to.Ptr[int64](1000),
 		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("val1"),
@@ -317,15 +315,18 @@ func ExampleClustersClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.Cluster = armoperationalinsights.Cluster{
+	// 	Name: to.Ptr("oiautorest6685"),
+	// 	Type: to.Ptr("Microsoft.OperationalInsights/clusters"),
+	// 	ID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/microsoft.operationalinsights/clusters/oiautorest6685"),
 	// 	Location: to.Ptr("australiasoutheast"),
 	// 	Tags: map[string]*string{
 	// 		"tag1": to.Ptr("val1"),
 	// 	},
-	// 	Identity: &armoperationalinsights.Identity{
-	// 		Type: to.Ptr(armoperationalinsights.IdentityTypeUserAssigned),
+	// 	Identity: &armoperationalinsights.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armoperationalinsights.ManagedServiceIdentityTypeUserAssigned),
 	// 		TenantID: to.Ptr("72f999bf-acf1-41af-91ab-2d7cd011db47"),
-	// 		UserAssignedIdentities: map[string]*armoperationalinsights.UserIdentityProperties{
-	// 			"/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armoperationalinsights.UserIdentityProperties{
+	// 		UserAssignedIdentities: map[string]*armoperationalinsights.UserAssignedIdentity{
+	// 			"/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armoperationalinsights.UserAssignedIdentity{
 	// 				ClientID: to.Ptr("eb3a943d-6b12-48a6-b585-ac2316e15ab2"),
 	// 				PrincipalID: to.Ptr("b31776d4-ee80-4860-9433-ec0101be1891"),
 	// 			},
@@ -334,35 +335,35 @@ func ExampleClustersClient_BeginUpdate() {
 	// 	Properties: &armoperationalinsights.ClusterProperties{
 	// 		AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
 	// 			{
-	// 				AssociateDate: to.Ptr("Tue, 07 Jul 2020 07:35:51 GMT"),
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
+	// 				AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-05T07:35:51.000Z"); return t}()),
+	// 				ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
 	// 				WorkspaceID: to.Ptr("942bdefd-e6c9-411c-ac69-70ffad564363"),
 	// 				WorkspaceName: to.Ptr("testWs1"),
 	// 			},
 	// 			{
-	// 				AssociateDate: to.Ptr("Mon, 13 Jan 2020 16:03:39 GMT"),
-	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
+	// 				AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-05T07:35:51.000Z"); return t}()),
+	// 				ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
 	// 				WorkspaceID: to.Ptr("c7edb8f8-67f7-41f2-bddb-aecf22507e3f"),
 	// 				WorkspaceName: to.Ptr("testWs2"),
 	// 		}},
 	// 		BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
 	// 		CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
-	// 			LastSKUUpdate: to.Ptr("Thu, 01 Jan 1970 00:00:00 GMT"),
-	// 			MinCapacity: to.Ptr[int64](500),
+	// 			LastSKUUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51.000Z"); return t}()),
+	// 			MinCapacity: to.Ptr[int64](100),
 	// 		},
 	// 		ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 		CreatedDate: to.Ptr("Mon, 13 Jan 2020 14:40:33 GMT"),
+	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51.000Z"); return t}()),
 	// 		KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
 	// 			KeyName: to.Ptr("aztest2170cert"),
 	// 			KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
 	// 			KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
 	// 		},
-	// 		LastModifiedDate: to.Ptr("Sun, 04 Jan 2020 17:10:56 GMT"),
+	// 		LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51.000Z"); return t}()),
 	// 		ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
 	// 	},
 	// 	SKU: &armoperationalinsights.ClusterSKU{
 	// 		Name: to.Ptr(armoperationalinsights.ClusterSKUNameEnumCapacityReservation),
-	// 		Capacity: to.Ptr(armoperationalinsights.CapacityTenHundred),
+	// 		Capacity: to.Ptr[int64](1000),
 	// 	},
 	// }
 }

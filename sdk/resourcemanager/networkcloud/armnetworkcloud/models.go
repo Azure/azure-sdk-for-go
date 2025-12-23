@@ -1196,7 +1196,7 @@ type ClusterPatchProperties struct {
 	// The customer-provided location information to identify where the cluster resides.
 	ClusterLocation *string
 
-	// Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster during
+	// Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster during
 	// Arc Appliance installation.
 	ClusterServicePrincipal *ServicePrincipalInformation
 
@@ -1249,7 +1249,7 @@ type ClusterProperties struct {
 	// The customer-provided location information to identify where the cluster resides.
 	ClusterLocation *string
 
-	// Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster during
+	// Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster during
 	// Arc Appliance installation.
 	ClusterServicePrincipal *ServicePrincipalInformation
 
@@ -2326,18 +2326,18 @@ type NetworkAttachment struct {
 	// attachment) for a single machine may be specified as True.
 	DefaultGateway *DefaultGateway
 
-	// The IPv4 address of the virtual machine.
-	// This field is used only if the attached network has IPAllocationType of IPV4 or DualStack.
-	// If IPAllocationMethod is: Static - this field must contain a user specified IPv4 address from within the subnet specified
-	// in the attached network. Dynamic - this field is read-only, but will be
-	// populated with an address from within the subnet specified in the attached network. Disabled - this field will be empty.
+	// The IPv4 address of the virtual machine. This field is used only if the attached network has IPAllocationType of IPV4 or
+	// DualStack. If IPAllocationMethod is: Static - this field must contain a user
+	// specified IPv4 address from within the subnet specified in the attached network. Dynamic - this field is read-only, but
+	// will be populated with an address from within the subnet specified in the
+	// attached network. Disabled - this field will be empty.
 	IPv4Address *string
 
-	// The IPv6 address of the virtual machine.
-	// This field is used only if the attached network has IPAllocationType of IPV6 or DualStack.
-	// If IPAllocationMethod is: Static - this field must contain an IPv6 address range from within the range specified in the
-	// attached network. Dynamic - this field is read-only, but will be populated with
-	// an range from within the subnet specified in the attached network. Disabled - this field will be empty.
+	// The IPv6 address of the virtual machine. This field is used only if the attached network has IPAllocationType of IPV6 or
+	// DualStack. If IPAllocationMethod is: Static - this field must contain an IPv6
+	// address range from within the range specified in the attached network. Dynamic - this field is read-only, but will be populated
+	// with an range from within the subnet specified in the attached network.
+	// Disabled - this field will be empty.
 	IPv6Address *string
 
 	// The associated network's interface name. If specified, the network attachment name has a maximum length of 15 characters
@@ -3310,8 +3310,8 @@ type VirtualMachineProperties struct {
 	// The list of network attachments to the virtual machine.
 	NetworkAttachments []*NetworkAttachment
 
-	// Deprecated: The Base64 encoded cloud-init network data. The networkDataContent property will be used in preference to this
-	// property.
+	// Field Deprecated: The Base64 encoded cloud-init network data. The networkDataContent property will be used in preference
+	// to this property.
 	NetworkData *string
 
 	// The Base64 encoded cloud-init network data.
@@ -3324,7 +3324,8 @@ type VirtualMachineProperties struct {
 	// for the adminUsername.
 	SSHPublicKeys []*SSHPublicKey
 
-	// Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be used in preference to this property.
+	// Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be used in preference to this
+	// property.
 	UserData *string
 
 	// The Base64 encoded cloud-init user data.

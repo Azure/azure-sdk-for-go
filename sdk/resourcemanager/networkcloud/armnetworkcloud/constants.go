@@ -844,10 +844,11 @@ func PossibleClusterUpdateStrategyTypeValues() []ClusterUpdateStrategyType {
 type CommandOutputType string
 
 const (
-	CommandOutputTypeBareMetalMachineRunCommand      CommandOutputType = "BareMetalMachineRunCommand"
-	CommandOutputTypeBareMetalMachineRunDataExtracts CommandOutputType = "BareMetalMachineRunDataExtracts"
-	CommandOutputTypeBareMetalMachineRunReadCommands CommandOutputType = "BareMetalMachineRunReadCommands"
-	CommandOutputTypeStorageRunReadCommands          CommandOutputType = "StorageRunReadCommands"
+	CommandOutputTypeBareMetalMachineRunCommand                CommandOutputType = "BareMetalMachineRunCommand"
+	CommandOutputTypeBareMetalMachineRunDataExtracts           CommandOutputType = "BareMetalMachineRunDataExtracts"
+	CommandOutputTypeBareMetalMachineRunDataExtractsRestricted CommandOutputType = "BareMetalMachineRunDataExtractsRestricted"
+	CommandOutputTypeBareMetalMachineRunReadCommands           CommandOutputType = "BareMetalMachineRunReadCommands"
+	CommandOutputTypeStorageRunReadCommands                    CommandOutputType = "StorageRunReadCommands"
 )
 
 // PossibleCommandOutputTypeValues returns the possible values for the CommandOutputType const type.
@@ -855,6 +856,7 @@ func PossibleCommandOutputTypeValues() []CommandOutputType {
 	return []CommandOutputType{
 		CommandOutputTypeBareMetalMachineRunCommand,
 		CommandOutputTypeBareMetalMachineRunDataExtracts,
+		CommandOutputTypeBareMetalMachineRunDataExtractsRestricted,
 		CommandOutputTypeBareMetalMachineRunReadCommands,
 		CommandOutputTypeStorageRunReadCommands,
 	}

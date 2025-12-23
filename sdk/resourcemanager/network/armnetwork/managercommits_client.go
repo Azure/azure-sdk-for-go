@@ -28,7 +28,7 @@ type ManagerCommitsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagerCommitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagerCommitsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewManagerCommitsClient(subscriptionID string, credential azcore.TokenCrede
 // BeginPost - Post a Network Manager Commit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group.
 //   - networkManagerName - The name of the network manager.
 //   - parameters - Parameters supplied to specify which Managed Network commit is.
@@ -71,7 +71,7 @@ func (client *ManagerCommitsClient) BeginPost(ctx context.Context, resourceGroup
 // Post - Post a Network Manager Commit.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 func (client *ManagerCommitsClient) post(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerCommit, options *ManagerCommitsClientBeginPostOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagerCommitsClient.BeginPost"
@@ -113,7 +113,7 @@ func (client *ManagerCommitsClient) postCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

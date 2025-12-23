@@ -1,5 +1,37 @@
 # Release History
 
+## 8.0.0 (2025-12-25)
+### Breaking Changes
+
+- `ApplicationGatewayWafRuleSensitivityTypesNone` from enum `ApplicationGatewayWafRuleSensitivityTypes` has been removed
+- `SensitivityTypeNone` from enum `SensitivityType` has been removed
+
+### Features Added
+
+- New enum type `ApplicationGatewayClientAuthVerificationModes` with values `ApplicationGatewayClientAuthVerificationModesPassthrough`, `ApplicationGatewayClientAuthVerificationModesStrict`
+- New enum type `ApplicationGatewayUnAuthorizedRequestAction` with values `ApplicationGatewayUnAuthorizedRequestActionAllow`, `ApplicationGatewayUnAuthorizedRequestActionDeny`
+- New enum type `DdosDetectionMode` with values `DdosDetectionModeTrafficThreshold`
+- New enum type `DdosTrafficType` with values `DdosTrafficTypeTCP`, `DdosTrafficTypeTCPSyn`, `DdosTrafficTypeUDP`
+- New enum type `IsRollback` with values `IsRollbackFalse`, `IsRollbackTrue`
+- New enum type `PrivateEndpointIPVersionType` with values `PrivateEndpointIPVersionTypeDualStack`, `PrivateEndpointIPVersionTypeIPv4`, `PrivateEndpointIPVersionTypeIPv6`
+- New function `*PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP(context.Context, string, string, DisassociateCloudServicePublicIPRequest, *PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions) (*runtime.Poller[PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse], error)`
+- New function `*PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress(context.Context, string, string, ReserveCloudServicePublicIPAddressRequest, *PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions) (*runtime.Poller[PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse], error)`
+- New struct `ApplicationGatewayEntraJWTValidationConfig`
+- New struct `ApplicationGatewayEntraJWTValidationConfigPropertiesFormat`
+- New struct `DdosDetectionRule`
+- New struct `DdosDetectionRulePropertiesFormat`
+- New struct `DisassociateCloudServicePublicIPRequest`
+- New struct `ReserveCloudServicePublicIPAddressRequest`
+- New struct `TrafficDetectionRule`
+- New field `VerifyClientAuthMode` in struct `ApplicationGatewayClientAuthConfiguration`
+- New field `EntraJWTValidationConfigs` in struct `ApplicationGatewayPropertiesFormat`
+- New field `EntraJWTValidationConfig` in struct `ApplicationGatewayRequestRoutingRulePropertiesFormat`
+- New field `DetectionRules`, `FrontEndIPConfiguration` in struct `DdosCustomPolicyPropertiesFormat`
+- New field `RecordTypes` in struct `FlowLogProperties`
+- New field `RecordTypes` in struct `FlowLogPropertiesFormat`
+- New field `IPVersionType` in struct `PrivateEndpointProperties`
+
+
 ## 7.2.0 (2025-11-20)
 ### Features Added
 

@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/DdosCustomPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/DdosCustomPolicyDelete.json
 func ExampleDdosCustomPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleDdosCustomPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/DdosCustomPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/DdosCustomPolicyGet.json
 func ExampleDdosCustomPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,13 +60,28 @@ func ExampleDdosCustomPoliciesClient_Get() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy"),
 	// 	Location: to.Ptr("westus"),
 	// 	Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
+	// 		DetectionRules: []*armnetwork.DdosDetectionRule{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosDetectionRules/detectionRuleTcp"),
+	// 				Name: to.Ptr("detectionRuleTcp"),
+	// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosDetectionRules"),
+	// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 				Properties: &armnetwork.DdosDetectionRulePropertiesFormat{
+	// 					DetectionMode: to.Ptr(armnetwork.DdosDetectionModeTrafficThreshold),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
+	// 						PacketsPerSecond: to.Ptr[int32](1000000),
+	// 						TrafficType: to.Ptr(armnetwork.DdosTrafficTypeTCP),
+	// 					},
+	// 				},
+	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/DdosCustomPolicyCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/DdosCustomPolicyCreate.json
 func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,6 +94,19 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewDdosCustomPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ddos-custom-policy", armnetwork.DdosCustomPolicy{
 		Location: to.Ptr("centraluseuap"),
+		Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
+			DetectionRules: []*armnetwork.DdosDetectionRule{
+				{
+					Name: to.Ptr("detectionRuleTcp"),
+					Properties: &armnetwork.DdosDetectionRulePropertiesFormat{
+						DetectionMode: to.Ptr(armnetwork.DdosDetectionModeTrafficThreshold),
+						TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
+							PacketsPerSecond: to.Ptr[int32](1000000),
+							TrafficType:      to.Ptr(armnetwork.DdosTrafficTypeTCP),
+						},
+					},
+				}},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -96,13 +124,28 @@ func ExampleDdosCustomPoliciesClient_BeginCreateOrUpdate() {
 	// 	ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy"),
 	// 	Location: to.Ptr("centraluseuap"),
 	// 	Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
+	// 		DetectionRules: []*armnetwork.DdosDetectionRule{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosDetectionRules/detectionRuleTcp"),
+	// 				Name: to.Ptr("detectionRuleTcp"),
+	// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosDetectionRules"),
+	// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 				Properties: &armnetwork.DdosDetectionRulePropertiesFormat{
+	// 					DetectionMode: to.Ptr(armnetwork.DdosDetectionModeTrafficThreshold),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
+	// 						PacketsPerSecond: to.Ptr[int32](1000000),
+	// 						TrafficType: to.Ptr(armnetwork.DdosTrafficTypeTCP),
+	// 					},
+	// 				},
+	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/DdosCustomPolicyUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b24c97bfc136b01dd46a1c8ddcecd0bb5a1ab152/specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/DdosCustomPolicyUpdateTags.json
 func ExampleDdosCustomPoliciesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,6 +178,21 @@ func ExampleDdosCustomPoliciesClient_UpdateTags() {
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
 	// 	Properties: &armnetwork.DdosCustomPolicyPropertiesFormat{
+	// 		DetectionRules: []*armnetwork.DdosDetectionRule{
+	// 			{
+	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/ddosCustomPolicies/test-ddos-custom-policy/ddosDetectionRules/detectionRuleTcp"),
+	// 				Name: to.Ptr("detectionRuleTcp"),
+	// 				Type: to.Ptr("Microsoft.Network/ddosCustomPolicies/ddosDetectionRules"),
+	// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-00000000\""),
+	// 				Properties: &armnetwork.DdosDetectionRulePropertiesFormat{
+	// 					DetectionMode: to.Ptr(armnetwork.DdosDetectionModeTrafficThreshold),
+	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
+	// 					TrafficDetectionRule: &armnetwork.TrafficDetectionRule{
+	// 						PacketsPerSecond: to.Ptr[int32](1000000),
+	// 						TrafficType: to.Ptr(armnetwork.DdosTrafficTypeTCP),
+	// 					},
+	// 				},
+	// 		}},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},

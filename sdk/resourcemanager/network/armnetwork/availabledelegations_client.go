@@ -28,7 +28,7 @@ type AvailableDelegationsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailableDelegationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailableDelegationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAvailableDelegationsClient(subscriptionID string, credential azcore.Toke
 
 // NewListPager - Gets all of the available subnet delegations for this subscription in this region.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-03-01
 //   - location - The location of the subnet.
 //   - options - AvailableDelegationsClientListOptions contains the optional parameters for the AvailableDelegationsClient.NewListPager
 //     method.
@@ -86,7 +86,7 @@ func (client *AvailableDelegationsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

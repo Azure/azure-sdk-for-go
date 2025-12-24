@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2025-12-24)
+## 2.0.1 (2025-12-24)
 ### Breaking Changes
 
 - Struct `AzureEntityResource` has been removed

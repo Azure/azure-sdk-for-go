@@ -47,7 +47,7 @@ type DNSResolversServer struct {
 
 	// BeginUpdate is the fake for method DNSResolversClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters armdnsresolver.Patch, options *armdnsresolver.DNSResolversClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters armdnsresolver.DNSResolverPatch, options *armdnsresolver.DNSResolversClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolversClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDNSResolversServerTransport creates a new instance of DNSResolversServerTransport with the provided implementation.
@@ -460,7 +460,7 @@ func (d *DNSResolversServerTransport) dispatchBeginUpdate(req *http.Request) (*h
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.Patch](req)
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSResolverPatch](req)
 		if err != nil {
 			return nil, err
 		}

@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2025-09-01-preview/NetAppResourceQuotaLimits_Get.json
-func ExampleResourceQuotaLimitsClient_Get() {
+func ExampleNetAppResourceQuotaLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,14 +22,14 @@ func ExampleResourceQuotaLimitsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceQuotaLimitsClient().Get(ctx, "eastus", "totalCoolAccessVolumesPerSubscription", nil)
+	res, err := clientFactory.NewNetAppResourceQuotaLimitsClient().Get(ctx, "eastus", "totalCoolAccessVolumesPerSubscription", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceQuotaLimitsClientGetResponse{
+	// res = armnetapp.NetAppResourceQuotaLimitsClientGetResponse{
 	// 	SubscriptionQuotaItem: &armnetapp.SubscriptionQuotaItem{
 	// 		Name: to.Ptr("eastus/totalCoolAccessVolumesPerSubscription"),
 	// 		Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
@@ -43,7 +43,7 @@ func ExampleResourceQuotaLimitsClient_Get() {
 }
 
 // Generated from example definition: 2025-09-01-preview/NetAppResourceQuotaLimits_List.json
-func ExampleResourceQuotaLimitsClient_NewListPager() {
+func ExampleNetAppResourceQuotaLimitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewResourceQuotaLimitsClient().NewListPager("eastus", nil)
+	pager := clientFactory.NewNetAppResourceQuotaLimitsClient().NewListPager("eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,7 +64,7 @@ func ExampleResourceQuotaLimitsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.ResourceQuotaLimitsClientListResponse{
+		// page = armnetapp.NetAppResourceQuotaLimitsClientListResponse{
 		// 	SubscriptionQuotaItemList: armnetapp.SubscriptionQuotaItemList{
 		// 		Value: []*armnetapp.SubscriptionQuotaItem{
 		// 			{

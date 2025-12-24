@@ -101,7 +101,7 @@ func ExampleElasticSnapshotPoliciesClient_BeginCreateOrUpdate() {
 	// 				Hour: to.Ptr[int32](14),
 	// 				Minute: to.Ptr[int32](15),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
@@ -181,7 +181,7 @@ func ExampleElasticSnapshotPoliciesClient_Get() {
 	// 				Hour: to.Ptr[int32](14),
 	// 				Minute: to.Ptr[int32](15),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
@@ -246,7 +246,7 @@ func ExampleElasticSnapshotPoliciesClient_NewListByElasticAccountPager() {
 		// 						Hour: to.Ptr[int32](14),
 		// 						Minute: to.Ptr[int32](15),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 				},
 		// 			},
 		// 		},
@@ -288,7 +288,7 @@ func ExampleElasticSnapshotPoliciesClient_NewListElasticVolumesPager() {
 		// 				Properties: &armnetapp.ElasticVolumeProperties{
 		// 					FilePath: to.Ptr("my-unique-file-path"),
 		// 					Size: to.Ptr[int64](107374182400),
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					ExportPolicy: &armnetapp.ElasticExportPolicy{
 		// 						Rules: []*armnetapp.ElasticExportPolicyRule{
 		// 							{
@@ -407,7 +407,7 @@ func ExampleElasticSnapshotPoliciesClient_BeginUpdate() {
 	// 				Hour: to.Ptr[int32](14),
 	// 				Minute: to.Ptr[int32](15),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }

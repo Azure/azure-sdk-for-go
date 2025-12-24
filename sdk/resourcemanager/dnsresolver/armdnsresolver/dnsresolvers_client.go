@@ -320,7 +320,7 @@ func (client *DNSResolversClient) listCreateRequest(ctx context.Context, options
 // listHandleResponse handles the List response.
 func (client *DNSResolversClient) listHandleResponse(resp *http.Response) (DNSResolversClientListResponse, error) {
 	result := DNSResolversClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverListResult); err != nil {
 		return DNSResolversClientListResponse{}, err
 	}
 	return result, nil
@@ -383,7 +383,7 @@ func (client *DNSResolversClient) listByResourceGroupCreateRequest(ctx context.C
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
 func (client *DNSResolversClient) listByResourceGroupHandleResponse(resp *http.Response) (DNSResolversClientListByResourceGroupResponse, error) {
 	result := DNSResolversClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverListResult); err != nil {
 		return DNSResolversClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
@@ -466,7 +466,7 @@ func (client *DNSResolversClient) listByVirtualNetworkHandleResponse(resp *http.
 //   - parameters - Parameters supplied to the Update operation.
 //   - options - DNSResolversClientBeginUpdateOptions contains the optional parameters for the DNSResolversClient.BeginUpdate
 //     method.
-func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*runtime.Poller[DNSResolversClientUpdateResponse], error) {
+func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolverPatch, options *DNSResolversClientBeginUpdateOptions) (*runtime.Poller[DNSResolversClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dnsResolverName, parameters, options)
 		if err != nil {
@@ -487,7 +487,7 @@ func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *DNSResolversClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*http.Response, error) {
+func (client *DNSResolversClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolverPatch, options *DNSResolversClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSResolversClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -509,7 +509,7 @@ func (client *DNSResolversClient) update(ctx context.Context, resourceGroupName 
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DNSResolversClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DNSResolversClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolverPatch, options *DNSResolversClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolvers/{dnsResolverName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

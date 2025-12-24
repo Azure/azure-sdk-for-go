@@ -16,23 +16,23 @@ import (
 	"strings"
 )
 
-// ResourceRegionInfosClient contains the methods for the ResourceRegionInfos group.
-// Don't use this type directly, use NewResourceRegionInfosClient() instead.
-type ResourceRegionInfosClient struct {
+// NetAppResourceRegionInfosClient contains the methods for the NetAppResourceRegionInfos group.
+// Don't use this type directly, use NewNetAppResourceRegionInfosClient() instead.
+type NetAppResourceRegionInfosClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceRegionInfosClient creates a new instance of ResourceRegionInfosClient with the specified values.
+// NewNetAppResourceRegionInfosClient creates a new instance of NetAppResourceRegionInfosClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewResourceRegionInfosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceRegionInfosClient, error) {
+func NewNetAppResourceRegionInfosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetAppResourceRegionInfosClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceRegionInfosClient{
+	client := &NetAppResourceRegionInfosClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -44,31 +44,32 @@ func NewResourceRegionInfosClient(subscriptionID string, credential azcore.Token
 //
 // Generated from API version 2025-09-01-preview
 //   - location - The name of the Azure region.
-//   - options - ResourceRegionInfosClientGetOptions contains the optional parameters for the ResourceRegionInfosClient.Get method.
-func (client *ResourceRegionInfosClient) Get(ctx context.Context, location string, options *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error) {
+//   - options - NetAppResourceRegionInfosClientGetOptions contains the optional parameters for the NetAppResourceRegionInfosClient.Get
+//     method.
+func (client *NetAppResourceRegionInfosClient) Get(ctx context.Context, location string, options *NetAppResourceRegionInfosClientGetOptions) (NetAppResourceRegionInfosClientGetResponse, error) {
 	var err error
-	const operationName = "ResourceRegionInfosClient.Get"
+	const operationName = "NetAppResourceRegionInfosClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, options)
 	if err != nil {
-		return ResourceRegionInfosClientGetResponse{}, err
+		return NetAppResourceRegionInfosClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceRegionInfosClientGetResponse{}, err
+		return NetAppResourceRegionInfosClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceRegionInfosClientGetResponse{}, err
+		return NetAppResourceRegionInfosClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, location string, _ *ResourceRegionInfosClientGetOptions) (*policy.Request, error) {
+func (client *NetAppResourceRegionInfosClient) getCreateRequest(ctx context.Context, location string, _ *NetAppResourceRegionInfosClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfos/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,10 +91,10 @@ func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceRegionInfosClient) getHandleResponse(resp *http.Response) (ResourceRegionInfosClientGetResponse, error) {
-	result := ResourceRegionInfosClientGetResponse{}
+func (client *NetAppResourceRegionInfosClient) getHandleResponse(resp *http.Response) (NetAppResourceRegionInfosClientGetResponse, error) {
+	result := NetAppResourceRegionInfosClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfoResource); err != nil {
-		return ResourceRegionInfosClientGetResponse{}, err
+		return NetAppResourceRegionInfosClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -102,15 +103,15 @@ func (client *ResourceRegionInfosClient) getHandleResponse(resp *http.Response) 
 //
 // Generated from API version 2025-09-01-preview
 //   - location - The name of the Azure region.
-//   - options - ResourceRegionInfosClientListOptions contains the optional parameters for the ResourceRegionInfosClient.NewListPager
+//   - options - NetAppResourceRegionInfosClientListOptions contains the optional parameters for the NetAppResourceRegionInfosClient.NewListPager
 //     method.
-func (client *ResourceRegionInfosClient) NewListPager(location string, options *ResourceRegionInfosClientListOptions) *runtime.Pager[ResourceRegionInfosClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceRegionInfosClientListResponse]{
-		More: func(page ResourceRegionInfosClientListResponse) bool {
+func (client *NetAppResourceRegionInfosClient) NewListPager(location string, options *NetAppResourceRegionInfosClientListOptions) *runtime.Pager[NetAppResourceRegionInfosClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetAppResourceRegionInfosClientListResponse]{
+		More: func(page NetAppResourceRegionInfosClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ResourceRegionInfosClientListResponse) (ResourceRegionInfosClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceRegionInfosClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *NetAppResourceRegionInfosClientListResponse) (NetAppResourceRegionInfosClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetAppResourceRegionInfosClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -119,7 +120,7 @@ func (client *ResourceRegionInfosClient) NewListPager(location string, options *
 				return client.listCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return ResourceRegionInfosClientListResponse{}, err
+				return NetAppResourceRegionInfosClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -128,7 +129,7 @@ func (client *ResourceRegionInfosClient) NewListPager(location string, options *
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceRegionInfosClient) listCreateRequest(ctx context.Context, location string, _ *ResourceRegionInfosClientListOptions) (*policy.Request, error) {
+func (client *NetAppResourceRegionInfosClient) listCreateRequest(ctx context.Context, location string, _ *NetAppResourceRegionInfosClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfos"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -150,10 +151,10 @@ func (client *ResourceRegionInfosClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceRegionInfosClient) listHandleResponse(resp *http.Response) (ResourceRegionInfosClientListResponse, error) {
-	result := ResourceRegionInfosClientListResponse{}
+func (client *NetAppResourceRegionInfosClient) listHandleResponse(resp *http.Response) (NetAppResourceRegionInfosClientListResponse, error) {
+	result := NetAppResourceRegionInfosClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionInfosList); err != nil {
-		return ResourceRegionInfosClientListResponse{}, err
+		return NetAppResourceRegionInfosClientListResponse{}, err
 	}
 	return result, nil
 }

@@ -12,7 +12,7 @@ type AccountsClientChangeKeyVaultResponse struct {
 // AccountsClientCreateOrUpdateResponse contains the response from method AccountsClient.BeginCreateOrUpdate.
 type AccountsClientCreateOrUpdateResponse struct {
 	// NetApp account resource
-	Account
+	NetAppAccount
 }
 
 // AccountsClientDeleteResponse contains the response from method AccountsClient.BeginDelete.
@@ -29,19 +29,19 @@ type AccountsClientGetChangeKeyVaultInformationResponse struct {
 // AccountsClientGetResponse contains the response from method AccountsClient.Get.
 type AccountsClientGetResponse struct {
 	// NetApp account resource
-	Account
+	NetAppAccount
 }
 
 // AccountsClientListBySubscriptionResponse contains the response from method AccountsClient.NewListBySubscriptionPager.
 type AccountsClientListBySubscriptionResponse struct {
 	// List of NetApp account resources
-	AccountList
+	NetAppAccountList
 }
 
 // AccountsClientListResponse contains the response from method AccountsClient.NewListPager.
 type AccountsClientListResponse struct {
 	// List of NetApp account resources
-	AccountList
+	NetAppAccountList
 }
 
 // AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.BeginRenewCredentials.
@@ -57,7 +57,7 @@ type AccountsClientTransitionToCmkResponse struct {
 // AccountsClientUpdateResponse contains the response from method AccountsClient.BeginUpdate.
 type AccountsClientUpdateResponse struct {
 	// NetApp account resource
-	Account
+	NetAppAccount
 }
 
 // ActiveDirectoryConfigsClientCreateOrUpdateResponse contains the response from method ActiveDirectoryConfigsClient.BeginCreateOrUpdate.
@@ -540,6 +540,90 @@ type ElasticVolumesClientUpdateResponse struct {
 	ElasticVolume
 }
 
+// NetAppResourceClientCheckFilePathAvailabilityResponse contains the response from method NetAppResourceClient.CheckFilePathAvailability.
+type NetAppResourceClientCheckFilePathAvailabilityResponse struct {
+	// Information regarding availability of a resource.
+	CheckAvailabilityResponse
+}
+
+// NetAppResourceClientCheckNameAvailabilityResponse contains the response from method NetAppResourceClient.CheckNameAvailability.
+type NetAppResourceClientCheckNameAvailabilityResponse struct {
+	// Information regarding availability of a resource.
+	CheckAvailabilityResponse
+}
+
+// NetAppResourceClientCheckQuotaAvailabilityResponse contains the response from method NetAppResourceClient.CheckQuotaAvailability.
+type NetAppResourceClientCheckQuotaAvailabilityResponse struct {
+	// Information regarding availability of a resource.
+	CheckAvailabilityResponse
+}
+
+// NetAppResourceClientQueryNetworkSiblingSetResponse contains the response from method NetAppResourceClient.QueryNetworkSiblingSet.
+type NetAppResourceClientQueryNetworkSiblingSetResponse struct {
+	// Describes the contents of a network sibling set.
+	NetworkSiblingSet
+}
+
+// NetAppResourceClientQueryRegionInfoResponse contains the response from method NetAppResourceClient.QueryRegionInfo.
+type NetAppResourceClientQueryRegionInfoResponse struct {
+	// Provides region specific information.
+	RegionInfo
+}
+
+// NetAppResourceClientUpdateNetworkSiblingSetResponse contains the response from method NetAppResourceClient.BeginUpdateNetworkSiblingSet.
+type NetAppResourceClientUpdateNetworkSiblingSetResponse struct {
+	// Describes the contents of a network sibling set.
+	NetworkSiblingSet
+}
+
+// NetAppResourceQuotaLimitsAccountClientGetResponse contains the response from method NetAppResourceQuotaLimitsAccountClient.Get.
+type NetAppResourceQuotaLimitsAccountClientGetResponse struct {
+	// Information regarding Quota Item.
+	SubscriptionQuotaItem
+}
+
+// NetAppResourceQuotaLimitsAccountClientListResponse contains the response from method NetAppResourceQuotaLimitsAccountClient.NewListPager.
+type NetAppResourceQuotaLimitsAccountClientListResponse struct {
+	// List of Quota Items
+	SubscriptionQuotaItemList
+}
+
+// NetAppResourceQuotaLimitsClientGetResponse contains the response from method NetAppResourceQuotaLimitsClient.Get.
+type NetAppResourceQuotaLimitsClientGetResponse struct {
+	// Information regarding Quota Item.
+	SubscriptionQuotaItem
+}
+
+// NetAppResourceQuotaLimitsClientListResponse contains the response from method NetAppResourceQuotaLimitsClient.NewListPager.
+type NetAppResourceQuotaLimitsClientListResponse struct {
+	// List of Quota Items
+	SubscriptionQuotaItemList
+}
+
+// NetAppResourceRegionInfosClientGetResponse contains the response from method NetAppResourceRegionInfosClient.Get.
+type NetAppResourceRegionInfosClientGetResponse struct {
+	// Information regarding regionInfo Item.
+	RegionInfoResource
+}
+
+// NetAppResourceRegionInfosClientListResponse contains the response from method NetAppResourceRegionInfosClient.NewListPager.
+type NetAppResourceRegionInfosClientListResponse struct {
+	// List of regionInfo resources
+	RegionInfosList
+}
+
+// NetAppResourceUsagesClientGetResponse contains the response from method NetAppResourceUsagesClient.Get.
+type NetAppResourceUsagesClientGetResponse struct {
+	// Usages entity model
+	UsageResult
+}
+
+// NetAppResourceUsagesClientListResponse contains the response from method NetAppResourceUsagesClient.NewListPager.
+type NetAppResourceUsagesClientListResponse struct {
+	// Usages result
+	UsagesListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -595,90 +679,6 @@ type RansomwareReportsClientGetResponse struct {
 type RansomwareReportsClientListResponse struct {
 	// List of Advanced Ransomware Protection (ARP) reports
 	RansomwareReportsList
-}
-
-// ResourceClientCheckFilePathAvailabilityResponse contains the response from method ResourceClient.CheckFilePathAvailability.
-type ResourceClientCheckFilePathAvailabilityResponse struct {
-	// Information regarding availability of a resource.
-	CheckAvailabilityResponse
-}
-
-// ResourceClientCheckNameAvailabilityResponse contains the response from method ResourceClient.CheckNameAvailability.
-type ResourceClientCheckNameAvailabilityResponse struct {
-	// Information regarding availability of a resource.
-	CheckAvailabilityResponse
-}
-
-// ResourceClientCheckQuotaAvailabilityResponse contains the response from method ResourceClient.CheckQuotaAvailability.
-type ResourceClientCheckQuotaAvailabilityResponse struct {
-	// Information regarding availability of a resource.
-	CheckAvailabilityResponse
-}
-
-// ResourceClientQueryNetworkSiblingSetResponse contains the response from method ResourceClient.QueryNetworkSiblingSet.
-type ResourceClientQueryNetworkSiblingSetResponse struct {
-	// Describes the contents of a network sibling set.
-	NetworkSiblingSet
-}
-
-// ResourceClientQueryRegionInfoResponse contains the response from method ResourceClient.QueryRegionInfo.
-type ResourceClientQueryRegionInfoResponse struct {
-	// Provides region specific information.
-	RegionInfo
-}
-
-// ResourceClientUpdateNetworkSiblingSetResponse contains the response from method ResourceClient.BeginUpdateNetworkSiblingSet.
-type ResourceClientUpdateNetworkSiblingSetResponse struct {
-	// Describes the contents of a network sibling set.
-	NetworkSiblingSet
-}
-
-// ResourceQuotaLimitsAccountClientGetResponse contains the response from method ResourceQuotaLimitsAccountClient.Get.
-type ResourceQuotaLimitsAccountClientGetResponse struct {
-	// Information regarding Quota Item.
-	SubscriptionQuotaItem
-}
-
-// ResourceQuotaLimitsAccountClientListResponse contains the response from method ResourceQuotaLimitsAccountClient.NewListPager.
-type ResourceQuotaLimitsAccountClientListResponse struct {
-	// List of Quota Items
-	SubscriptionQuotaItemList
-}
-
-// ResourceQuotaLimitsClientGetResponse contains the response from method ResourceQuotaLimitsClient.Get.
-type ResourceQuotaLimitsClientGetResponse struct {
-	// Information regarding Quota Item.
-	SubscriptionQuotaItem
-}
-
-// ResourceQuotaLimitsClientListResponse contains the response from method ResourceQuotaLimitsClient.NewListPager.
-type ResourceQuotaLimitsClientListResponse struct {
-	// List of Quota Items
-	SubscriptionQuotaItemList
-}
-
-// ResourceRegionInfosClientGetResponse contains the response from method ResourceRegionInfosClient.Get.
-type ResourceRegionInfosClientGetResponse struct {
-	// Information regarding regionInfo Item.
-	RegionInfoResource
-}
-
-// ResourceRegionInfosClientListResponse contains the response from method ResourceRegionInfosClient.NewListPager.
-type ResourceRegionInfosClientListResponse struct {
-	// List of regionInfo resources
-	RegionInfosList
-}
-
-// ResourceUsagesClientGetResponse contains the response from method ResourceUsagesClient.Get.
-type ResourceUsagesClientGetResponse struct {
-	// Usages entity model
-	UsageResult
-}
-
-// ResourceUsagesClientListResponse contains the response from method ResourceUsagesClient.NewListPager.
-type ResourceUsagesClientListResponse struct {
-	// Usages result
-	UsagesListResult
 }
 
 // SnapshotPoliciesClientCreateResponse contains the response from method SnapshotPoliciesClient.Create.

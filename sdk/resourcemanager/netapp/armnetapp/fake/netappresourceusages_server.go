@@ -18,61 +18,61 @@ import (
 	"regexp"
 )
 
-// ResourceUsagesServer is a fake server for instances of the armnetapp.ResourceUsagesClient type.
-type ResourceUsagesServer struct {
-	// Get is the fake for method ResourceUsagesClient.Get
+// NetAppResourceUsagesServer is a fake server for instances of the armnetapp.NetAppResourceUsagesClient type.
+type NetAppResourceUsagesServer struct {
+	// Get is the fake for method NetAppResourceUsagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, usageType string, options *armnetapp.ResourceUsagesClientGetOptions) (resp azfake.Responder[armnetapp.ResourceUsagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, usageType string, options *armnetapp.NetAppResourceUsagesClientGetOptions) (resp azfake.Responder[armnetapp.NetAppResourceUsagesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ResourceUsagesClient.NewListPager
+	// NewListPager is the fake for method NetAppResourceUsagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armnetapp.ResourceUsagesClientListOptions) (resp azfake.PagerResponder[armnetapp.ResourceUsagesClientListResponse])
+	NewListPager func(location string, options *armnetapp.NetAppResourceUsagesClientListOptions) (resp azfake.PagerResponder[armnetapp.NetAppResourceUsagesClientListResponse])
 }
 
-// NewResourceUsagesServerTransport creates a new instance of ResourceUsagesServerTransport with the provided implementation.
-// The returned ResourceUsagesServerTransport instance is connected to an instance of armnetapp.ResourceUsagesClient via the
+// NewNetAppResourceUsagesServerTransport creates a new instance of NetAppResourceUsagesServerTransport with the provided implementation.
+// The returned NetAppResourceUsagesServerTransport instance is connected to an instance of armnetapp.NetAppResourceUsagesClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewResourceUsagesServerTransport(srv *ResourceUsagesServer) *ResourceUsagesServerTransport {
-	return &ResourceUsagesServerTransport{
+func NewNetAppResourceUsagesServerTransport(srv *NetAppResourceUsagesServer) *NetAppResourceUsagesServerTransport {
+	return &NetAppResourceUsagesServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armnetapp.ResourceUsagesClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetapp.NetAppResourceUsagesClientListResponse]](),
 	}
 }
 
-// ResourceUsagesServerTransport connects instances of armnetapp.ResourceUsagesClient to instances of ResourceUsagesServer.
-// Don't use this type directly, use NewResourceUsagesServerTransport instead.
-type ResourceUsagesServerTransport struct {
-	srv          *ResourceUsagesServer
-	newListPager *tracker[azfake.PagerResponder[armnetapp.ResourceUsagesClientListResponse]]
+// NetAppResourceUsagesServerTransport connects instances of armnetapp.NetAppResourceUsagesClient to instances of NetAppResourceUsagesServer.
+// Don't use this type directly, use NewNetAppResourceUsagesServerTransport instead.
+type NetAppResourceUsagesServerTransport struct {
+	srv          *NetAppResourceUsagesServer
+	newListPager *tracker[azfake.PagerResponder[armnetapp.NetAppResourceUsagesClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for ResourceUsagesServerTransport.
-func (r *ResourceUsagesServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for NetAppResourceUsagesServerTransport.
+func (n *NetAppResourceUsagesServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return r.dispatchToMethodFake(req, method)
+	return n.dispatchToMethodFake(req, method)
 }
 
-func (r *ResourceUsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (n *NetAppResourceUsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if resourceUsagesServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = resourceUsagesServerTransportInterceptor.Do(req)
+		if netAppResourceUsagesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = netAppResourceUsagesServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceUsagesClient.Get":
-				res.resp, res.err = r.dispatchGet(req)
-			case "ResourceUsagesClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
+			case "NetAppResourceUsagesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetAppResourceUsagesClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -92,8 +92,8 @@ func (r *ResourceUsagesServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
-func (r *ResourceUsagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
+func (n *NetAppResourceUsagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages/(?P<usageType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
@@ -110,7 +110,7 @@ func (r *ResourceUsagesServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), locationParam, usageTypeParam, nil)
+	respr, errRespr := n.srv.Get(req.Context(), locationParam, usageTypeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -125,11 +125,11 @@ func (r *ResourceUsagesServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (r *ResourceUsagesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
+func (n *NetAppResourceUsagesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListPager := r.newListPager.get(req)
+	newListPager := n.newListPager.get(req)
 	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
@@ -141,10 +141,10 @@ func (r *ResourceUsagesServerTransport) dispatchNewListPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListPager(locationParam, nil)
+		resp := n.srv.NewListPager(locationParam, nil)
 		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.ResourceUsagesClientListResponse, createLink func() string) {
+		n.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.NetAppResourceUsagesClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -153,17 +153,17 @@ func (r *ResourceUsagesServerTransport) dispatchNewListPager(req *http.Request) 
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
+		n.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
+		n.newListPager.remove(req)
 	}
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ResourceUsagesServerTransport
-var resourceUsagesServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to NetAppResourceUsagesServerTransport
+var netAppResourceUsagesServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

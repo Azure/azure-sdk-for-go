@@ -69,6 +69,21 @@ type ServerFactory struct {
 	// ElasticVolumesServer contains the fakes for client ElasticVolumesClient
 	ElasticVolumesServer ElasticVolumesServer
 
+	// NetAppResourceServer contains the fakes for client NetAppResourceClient
+	NetAppResourceServer NetAppResourceServer
+
+	// NetAppResourceQuotaLimitsAccountServer contains the fakes for client NetAppResourceQuotaLimitsAccountClient
+	NetAppResourceQuotaLimitsAccountServer NetAppResourceQuotaLimitsAccountServer
+
+	// NetAppResourceQuotaLimitsServer contains the fakes for client NetAppResourceQuotaLimitsClient
+	NetAppResourceQuotaLimitsServer NetAppResourceQuotaLimitsServer
+
+	// NetAppResourceRegionInfosServer contains the fakes for client NetAppResourceRegionInfosClient
+	NetAppResourceRegionInfosServer NetAppResourceRegionInfosServer
+
+	// NetAppResourceUsagesServer contains the fakes for client NetAppResourceUsagesClient
+	NetAppResourceUsagesServer NetAppResourceUsagesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -77,21 +92,6 @@ type ServerFactory struct {
 
 	// RansomwareReportsServer contains the fakes for client RansomwareReportsClient
 	RansomwareReportsServer RansomwareReportsServer
-
-	// ResourceServer contains the fakes for client ResourceClient
-	ResourceServer ResourceServer
-
-	// ResourceQuotaLimitsAccountServer contains the fakes for client ResourceQuotaLimitsAccountClient
-	ResourceQuotaLimitsAccountServer ResourceQuotaLimitsAccountServer
-
-	// ResourceQuotaLimitsServer contains the fakes for client ResourceQuotaLimitsClient
-	ResourceQuotaLimitsServer ResourceQuotaLimitsServer
-
-	// ResourceRegionInfosServer contains the fakes for client ResourceRegionInfosClient
-	ResourceRegionInfosServer ResourceRegionInfosServer
-
-	// ResourceUsagesServer contains the fakes for client ResourceUsagesClient
-	ResourceUsagesServer ResourceUsagesServer
 
 	// SnapshotPoliciesServer contains the fakes for client SnapshotPoliciesClient
 	SnapshotPoliciesServer SnapshotPoliciesServer
@@ -124,40 +124,40 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armnetapp.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trAccountsServer                   *AccountsServerTransport
-	trActiveDirectoryConfigsServer     *ActiveDirectoryConfigsServerTransport
-	trBackupPoliciesServer             *BackupPoliciesServerTransport
-	trBackupVaultsServer               *BackupVaultsServerTransport
-	trBackupsServer                    *BackupsServerTransport
-	trBackupsUnderAccountServer        *BackupsUnderAccountServerTransport
-	trBackupsUnderBackupVaultServer    *BackupsUnderBackupVaultServerTransport
-	trBackupsUnderVolumeServer         *BackupsUnderVolumeServerTransport
-	trBucketsServer                    *BucketsServerTransport
-	trCachesServer                     *CachesServerTransport
-	trElasticAccountsServer            *ElasticAccountsServerTransport
-	trElasticBackupPoliciesServer      *ElasticBackupPoliciesServerTransport
-	trElasticBackupVaultsServer        *ElasticBackupVaultsServerTransport
-	trElasticBackupsServer             *ElasticBackupsServerTransport
-	trElasticCapacityPoolsServer       *ElasticCapacityPoolsServerTransport
-	trElasticSnapshotPoliciesServer    *ElasticSnapshotPoliciesServerTransport
-	trElasticSnapshotsServer           *ElasticSnapshotsServerTransport
-	trElasticVolumesServer             *ElasticVolumesServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trPoolsServer                      *PoolsServerTransport
-	trRansomwareReportsServer          *RansomwareReportsServerTransport
-	trResourceServer                   *ResourceServerTransport
-	trResourceQuotaLimitsAccountServer *ResourceQuotaLimitsAccountServerTransport
-	trResourceQuotaLimitsServer        *ResourceQuotaLimitsServerTransport
-	trResourceRegionInfosServer        *ResourceRegionInfosServerTransport
-	trResourceUsagesServer             *ResourceUsagesServerTransport
-	trSnapshotPoliciesServer           *SnapshotPoliciesServerTransport
-	trSnapshotsServer                  *SnapshotsServerTransport
-	trSubvolumesServer                 *SubvolumesServerTransport
-	trVolumeGroupsServer               *VolumeGroupsServerTransport
-	trVolumeQuotaRulesServer           *VolumeQuotaRulesServerTransport
-	trVolumesServer                    *VolumesServerTransport
+	srv                                      *ServerFactory
+	trMu                                     sync.Mutex
+	trAccountsServer                         *AccountsServerTransport
+	trActiveDirectoryConfigsServer           *ActiveDirectoryConfigsServerTransport
+	trBackupPoliciesServer                   *BackupPoliciesServerTransport
+	trBackupVaultsServer                     *BackupVaultsServerTransport
+	trBackupsServer                          *BackupsServerTransport
+	trBackupsUnderAccountServer              *BackupsUnderAccountServerTransport
+	trBackupsUnderBackupVaultServer          *BackupsUnderBackupVaultServerTransport
+	trBackupsUnderVolumeServer               *BackupsUnderVolumeServerTransport
+	trBucketsServer                          *BucketsServerTransport
+	trCachesServer                           *CachesServerTransport
+	trElasticAccountsServer                  *ElasticAccountsServerTransport
+	trElasticBackupPoliciesServer            *ElasticBackupPoliciesServerTransport
+	trElasticBackupVaultsServer              *ElasticBackupVaultsServerTransport
+	trElasticBackupsServer                   *ElasticBackupsServerTransport
+	trElasticCapacityPoolsServer             *ElasticCapacityPoolsServerTransport
+	trElasticSnapshotPoliciesServer          *ElasticSnapshotPoliciesServerTransport
+	trElasticSnapshotsServer                 *ElasticSnapshotsServerTransport
+	trElasticVolumesServer                   *ElasticVolumesServerTransport
+	trNetAppResourceServer                   *NetAppResourceServerTransport
+	trNetAppResourceQuotaLimitsAccountServer *NetAppResourceQuotaLimitsAccountServerTransport
+	trNetAppResourceQuotaLimitsServer        *NetAppResourceQuotaLimitsServerTransport
+	trNetAppResourceRegionInfosServer        *NetAppResourceRegionInfosServerTransport
+	trNetAppResourceUsagesServer             *NetAppResourceUsagesServerTransport
+	trOperationsServer                       *OperationsServerTransport
+	trPoolsServer                            *PoolsServerTransport
+	trRansomwareReportsServer                *RansomwareReportsServerTransport
+	trSnapshotPoliciesServer                 *SnapshotPoliciesServerTransport
+	trSnapshotsServer                        *SnapshotsServerTransport
+	trSubvolumesServer                       *SubvolumesServerTransport
+	trVolumeGroupsServer                     *VolumeGroupsServerTransport
+	trVolumeQuotaRulesServer                 *VolumeQuotaRulesServerTransport
+	trVolumesServer                          *VolumesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -253,6 +253,31 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewElasticVolumesServerTransport(&s.srv.ElasticVolumesServer)
 		})
 		resp, err = s.trElasticVolumesServer.Do(req)
+	case "NetAppResourceClient":
+		initServer(s, &s.trNetAppResourceServer, func() *NetAppResourceServerTransport {
+			return NewNetAppResourceServerTransport(&s.srv.NetAppResourceServer)
+		})
+		resp, err = s.trNetAppResourceServer.Do(req)
+	case "NetAppResourceQuotaLimitsAccountClient":
+		initServer(s, &s.trNetAppResourceQuotaLimitsAccountServer, func() *NetAppResourceQuotaLimitsAccountServerTransport {
+			return NewNetAppResourceQuotaLimitsAccountServerTransport(&s.srv.NetAppResourceQuotaLimitsAccountServer)
+		})
+		resp, err = s.trNetAppResourceQuotaLimitsAccountServer.Do(req)
+	case "NetAppResourceQuotaLimitsClient":
+		initServer(s, &s.trNetAppResourceQuotaLimitsServer, func() *NetAppResourceQuotaLimitsServerTransport {
+			return NewNetAppResourceQuotaLimitsServerTransport(&s.srv.NetAppResourceQuotaLimitsServer)
+		})
+		resp, err = s.trNetAppResourceQuotaLimitsServer.Do(req)
+	case "NetAppResourceRegionInfosClient":
+		initServer(s, &s.trNetAppResourceRegionInfosServer, func() *NetAppResourceRegionInfosServerTransport {
+			return NewNetAppResourceRegionInfosServerTransport(&s.srv.NetAppResourceRegionInfosServer)
+		})
+		resp, err = s.trNetAppResourceRegionInfosServer.Do(req)
+	case "NetAppResourceUsagesClient":
+		initServer(s, &s.trNetAppResourceUsagesServer, func() *NetAppResourceUsagesServerTransport {
+			return NewNetAppResourceUsagesServerTransport(&s.srv.NetAppResourceUsagesServer)
+		})
+		resp, err = s.trNetAppResourceUsagesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -264,29 +289,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRansomwareReportsServerTransport(&s.srv.RansomwareReportsServer)
 		})
 		resp, err = s.trRansomwareReportsServer.Do(req)
-	case "ResourceClient":
-		initServer(s, &s.trResourceServer, func() *ResourceServerTransport { return NewResourceServerTransport(&s.srv.ResourceServer) })
-		resp, err = s.trResourceServer.Do(req)
-	case "ResourceQuotaLimitsAccountClient":
-		initServer(s, &s.trResourceQuotaLimitsAccountServer, func() *ResourceQuotaLimitsAccountServerTransport {
-			return NewResourceQuotaLimitsAccountServerTransport(&s.srv.ResourceQuotaLimitsAccountServer)
-		})
-		resp, err = s.trResourceQuotaLimitsAccountServer.Do(req)
-	case "ResourceQuotaLimitsClient":
-		initServer(s, &s.trResourceQuotaLimitsServer, func() *ResourceQuotaLimitsServerTransport {
-			return NewResourceQuotaLimitsServerTransport(&s.srv.ResourceQuotaLimitsServer)
-		})
-		resp, err = s.trResourceQuotaLimitsServer.Do(req)
-	case "ResourceRegionInfosClient":
-		initServer(s, &s.trResourceRegionInfosServer, func() *ResourceRegionInfosServerTransport {
-			return NewResourceRegionInfosServerTransport(&s.srv.ResourceRegionInfosServer)
-		})
-		resp, err = s.trResourceRegionInfosServer.Do(req)
-	case "ResourceUsagesClient":
-		initServer(s, &s.trResourceUsagesServer, func() *ResourceUsagesServerTransport {
-			return NewResourceUsagesServerTransport(&s.srv.ResourceUsagesServer)
-		})
-		resp, err = s.trResourceUsagesServer.Do(req)
 	case "SnapshotPoliciesClient":
 		initServer(s, &s.trSnapshotPoliciesServer, func() *SnapshotPoliciesServerTransport {
 			return NewSnapshotPoliciesServerTransport(&s.srv.SnapshotPoliciesServer)

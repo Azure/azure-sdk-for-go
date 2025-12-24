@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2025-09-01-preview/Usages_Get.json
-func ExampleResourceUsagesClient_Get() {
+func ExampleNetAppResourceUsagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,14 +22,14 @@ func ExampleResourceUsagesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceUsagesClient().Get(ctx, "eastus", "totalTibsPerSubscription", nil)
+	res, err := clientFactory.NewNetAppResourceUsagesClient().Get(ctx, "eastus", "totalTibsPerSubscription", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceUsagesClientGetResponse{
+	// res = armnetapp.NetAppResourceUsagesClientGetResponse{
 	// 	UsageResult: &armnetapp.UsageResult{
 	// 		Name: &armnetapp.UsageName{
 	// 			LocalizedValue: to.Ptr("Total TiBs per subscription"),
@@ -46,7 +46,7 @@ func ExampleResourceUsagesClient_Get() {
 }
 
 // Generated from example definition: 2025-09-01-preview/Usages_List.json
-func ExampleResourceUsagesClient_NewListPager() {
+func ExampleNetAppResourceUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -56,7 +56,7 @@ func ExampleResourceUsagesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewResourceUsagesClient().NewListPager("eastus", nil)
+	pager := clientFactory.NewNetAppResourceUsagesClient().NewListPager("eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -67,7 +67,7 @@ func ExampleResourceUsagesClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.ResourceUsagesClientListResponse{
+		// page = armnetapp.NetAppResourceUsagesClientListResponse{
 		// 	UsagesListResult: armnetapp.UsagesListResult{
 		// 		Value: []*armnetapp.UsageResult{
 		// 			{

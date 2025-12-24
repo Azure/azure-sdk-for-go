@@ -63,7 +63,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate() {
 	// 				},
 	// 			},
 	// 			Permissions: to.Ptr(armnetapp.BucketPermissionsReadOnly),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
 	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
@@ -158,7 +158,7 @@ func ExampleBucketsClient_Get() {
 	// 				},
 	// 			},
 	// 			Permissions: to.Ptr(armnetapp.BucketPermissionsReadOnly),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
 	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
@@ -209,7 +209,7 @@ func ExampleBucketsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					Permissions: to.Ptr(armnetapp.BucketPermissionsReadOnly),
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					Server: &armnetapp.BucketServerProperties{
 		// 						CertificateCommonName: to.Ptr("www.example.com"),
 		// 						CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
@@ -269,7 +269,7 @@ func ExampleBucketsClient_BeginUpdate() {
 	// 				},
 	// 			},
 	// 			Permissions: to.Ptr(armnetapp.BucketPermissionsReadWrite),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
 	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),

@@ -25,7 +25,7 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewDNSResolversClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.DNSResolver{
 		Location: to.Ptr("westus2"),
-		Properties: &armdnsresolver.Properties{
+		Properties: &armdnsresolver.DNSResolverProperties{
 			VirtualNetwork: &armdnsresolver.SubResource{
 				ID: to.Ptr("/subscriptions/cbb1387e-4b03-44f2-ad41-58d4677b9873/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 			},
@@ -51,7 +51,7 @@ func ExampleDNSResolversClient_BeginCreateOrUpdate() {
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.Properties{
+	// 		Properties: &armdnsresolver.DNSResolverProperties{
 	// 			DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
@@ -123,7 +123,7 @@ func ExampleDNSResolversClient_Get() {
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.Properties{
+	// 		Properties: &armdnsresolver.DNSResolverProperties{
 	// 			DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("a7e1a32c-498c-401c-a805-5bc3518257b8"),
@@ -167,7 +167,7 @@ func ExampleDNSResolversClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armdnsresolver.DNSResolversClientListResponse{
-		// 	ListResult: armdnsresolver.ListResult{
+		// 	DNSResolverListResult: armdnsresolver.DNSResolverListResult{
 		// 		NextLink: to.Ptr("https://management.azure.com/api/mresolver/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/providers/Microsoft.Network/dnsResolvers?$skipToken=skipToken&api-version=2025-10-01-preview"),
 		// 		Value: []*armdnsresolver.DNSResolver{
 		// 			{
@@ -176,7 +176,7 @@ func ExampleDNSResolversClient_NewListPager() {
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver1"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.Properties{
+		// 				Properties: &armdnsresolver.DNSResolverProperties{
 		// 					DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					ResourceGUID: to.Ptr("ad9c8da4-3bb2-4821-a878-c2cb07b01fb6"),
@@ -200,7 +200,7 @@ func ExampleDNSResolversClient_NewListPager() {
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver2"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.Properties{
+		// 				Properties: &armdnsresolver.DNSResolverProperties{
 		// 					DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
@@ -247,7 +247,7 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armdnsresolver.DNSResolversClientListByResourceGroupResponse{
-		// 	ListResult: armdnsresolver.ListResult{
+		// 	DNSResolverListResult: armdnsresolver.DNSResolverListResult{
 		// 		NextLink: to.Ptr("https://management.azure.com/api/mresolver/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers?$skipToken=skipToken&api-version=2025-10-01-preview"),
 		// 		Value: []*armdnsresolver.DNSResolver{
 		// 			{
@@ -256,7 +256,7 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver1"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.Properties{
+		// 				Properties: &armdnsresolver.DNSResolverProperties{
 		// 					DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					ResourceGUID: to.Ptr("ad9c8da4-3bb2-4821-a878-c2cb07b01fb6"),
@@ -280,7 +280,7 @@ func ExampleDNSResolversClient_NewListByResourceGroupPager() {
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver2"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.Properties{
+		// 				Properties: &armdnsresolver.DNSResolverProperties{
 		// 					DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
@@ -349,7 +349,7 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDNSResolversClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.Patch{
+	poller, err := clientFactory.NewDNSResolversClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolver", armdnsresolver.DNSResolverPatch{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -371,7 +371,7 @@ func ExampleDNSResolversClient_BeginUpdate() {
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolvers/sampleDnsResolver"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.Properties{
+	// 		Properties: &armdnsresolver.DNSResolverProperties{
 	// 			DNSResolverState: to.Ptr(armdnsresolver.DNSResolverStateConnected),
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),

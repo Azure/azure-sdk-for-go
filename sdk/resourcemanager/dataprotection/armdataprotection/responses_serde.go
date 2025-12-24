@@ -4,12 +4,12 @@
 
 package armdataprotection
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ClientCheckFeatureSupportResponse.
-func (c *ClientCheckFeatureSupportResponse) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DataProtectionClientCheckFeatureSupportResponse.
+func (d *DataProtectionClientCheckFeatureSupportResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalFeatureValidationResponseBaseClassification(data)
 	if err != nil {
 		return err
 	}
-	c.FeatureValidationResponseBaseClassification = res
+	d.FeatureValidationResponseBaseClassification = res
 	return nil
 }

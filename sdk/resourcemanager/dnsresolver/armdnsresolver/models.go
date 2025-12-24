@@ -75,7 +75,7 @@ type DNSResolver struct {
 	Location *string
 
 	// REQUIRED; Properties of the DNS resolver.
-	Properties *Properties
+	Properties *DNSResolverProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -97,6 +97,234 @@ type DNSResolver struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// DNSResolverDomainList - Describes a DNS resolver domain list.
+type DNSResolverDomainList struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of the DNS resolver domain list.
+	Properties *DNSResolverDomainListProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DNSResolverDomainListBulk - Describes a DNS resolver domain list for bulk UPLOAD or DOWNLOAD operations.
+type DNSResolverDomainListBulk struct {
+	// REQUIRED; Properties of the DNS resolver domain list upload or download request.
+	Properties *DNSResolverDomainListBulkProperties
+}
+
+// DNSResolverDomainListBulkProperties - Describes DNS resolver domain list properties for bulk UPLOAD or DOWNLOAD operations.
+type DNSResolverDomainListBulkProperties struct {
+	// REQUIRED; The action to take in the request, Upload or Download.
+	Action *Action
+
+	// REQUIRED; The storage account blob file URL to be used in the bulk upload or download request of DNS resolver domain list.
+	StorageURL *string
+}
+
+// DNSResolverDomainListListResult - The response of a DnsResolverDomainList list operation.
+type DNSResolverDomainListListResult struct {
+	// REQUIRED; The DnsResolverDomainList items on this page
+	Value []*DNSResolverDomainList
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DNSResolverDomainListPatch - Describes a DNS resolver domain list for PATCH operation.
+type DNSResolverDomainListPatch struct {
+	// Updatable properties of the DNS resolver domain list.
+	Properties *DNSResolverDomainListPatchProperties
+
+	// Tags for DNS resolver domain list.
+	Tags map[string]*string
+}
+
+// DNSResolverDomainListPatchProperties - Represents the updatable properties of a DNS resolver domain list.
+type DNSResolverDomainListPatchProperties struct {
+	// The domains in the domain list.
+	Domains []*string
+}
+
+// DNSResolverDomainListProperties - Represents the properties of a DNS resolver domain list.
+type DNSResolverDomainListProperties struct {
+	// The domains in the domain list. Will be null if user is using large domain list.
+	Domains []*string
+
+	// READ-ONLY; The URL for bulk upload or download for domain lists containing larger set of domains. This will be populated
+	// if domains is empty or null.
+	DomainsURL *string
+
+	// READ-ONLY; The current provisioning state of the DNS resolver domain list. This is a read-only property and any attempt
+	// to set this value will be ignored.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resourceGuid property of the DNS resolver domain list resource.
+	ResourceGUID *string
+}
+
+// DNSResolverListResult - The response of a DnsResolver list operation.
+type DNSResolverListResult struct {
+	// REQUIRED; The DnsResolver items on this page
+	Value []*DNSResolver
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DNSResolverPatch - Describes a DNS resolver for PATCH operation.
+type DNSResolverPatch struct {
+	// Tags for DNS Resolver.
+	Tags map[string]*string
+}
+
+// DNSResolverPolicy - Describes a DNS resolver policy.
+type DNSResolverPolicy struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of the DNS resolver policy.
+	Properties *DNSResolverPolicyProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DNSResolverPolicyListResult - The response of a DnsResolverPolicy list operation.
+type DNSResolverPolicyListResult struct {
+	// REQUIRED; The DnsResolverPolicy items on this page
+	Value []*DNSResolverPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DNSResolverPolicyPatch - Describes a DNS resolver policy for PATCH operation.
+type DNSResolverPolicyPatch struct {
+	// Tags for DNS resolver policy.
+	Tags map[string]*string
+}
+
+// DNSResolverPolicyProperties - Represents the properties of a DNS resolver policy.
+type DNSResolverPolicyProperties struct {
+	// READ-ONLY; The current provisioning state of the DNS resolver policy. This is a read-only property and any attempt to set
+	// this value will be ignored.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resourceGuid property of the DNS resolver policy resource.
+	ResourceGUID *string
+}
+
+// DNSResolverPolicyVirtualNetworkLink - Describes a DNS resolver policy virtual network link.
+type DNSResolverPolicyVirtualNetworkLink struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Properties of the DNS resolver policy virtual network link.
+	Properties *DNSResolverPolicyVirtualNetworkLinkProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DNSResolverPolicyVirtualNetworkLinkListResult - The response of a DnsResolverPolicyVirtualNetworkLink list operation.
+type DNSResolverPolicyVirtualNetworkLinkListResult struct {
+	// REQUIRED; The DnsResolverPolicyVirtualNetworkLink items on this page
+	Value []*DNSResolverPolicyVirtualNetworkLink
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DNSResolverPolicyVirtualNetworkLinkPatch - Describes a DNS resolver policy virtual network link for PATCH operation.
+type DNSResolverPolicyVirtualNetworkLinkPatch struct {
+	// Tags for the DNS resolver policy virtual network link.
+	Tags map[string]*string
+}
+
+// DNSResolverPolicyVirtualNetworkLinkProperties - Represents the properties of a DNS resolver policy virtual network link.
+type DNSResolverPolicyVirtualNetworkLinkProperties struct {
+	// REQUIRED; The reference to the virtual network. This cannot be changed after creation.
+	VirtualNetwork *SubResource
+
+	// READ-ONLY; The current provisioning state of the DNS resolver policy virtual network link. This is a read-only property
+	// and any attempt to set this value will be ignored.
+	ProvisioningState *ProvisioningState
+}
+
+// DNSResolverProperties - Represents the properties of a DNS resolver.
+type DNSResolverProperties struct {
+	// REQUIRED; The reference to the virtual network. This cannot be changed after creation.
+	VirtualNetwork *SubResource
+
+	// READ-ONLY; The current status of the DNS resolver. This is a read-only property and any attempt to set this value will
+	// be ignored.
+	DNSResolverState *DNSResolverState
+
+	// READ-ONLY; The current provisioning state of the DNS resolver. This is a read-only property and any attempt to set this
+	// value will be ignored.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The resourceGuid property of the DNS resolver resource.
+	ResourceGUID *string
 }
 
 // DNSSecurityRule - Describes a DNS security rule.
@@ -191,92 +419,6 @@ type DNSSecurityRuleProperties struct {
 	// READ-ONLY; The current provisioning state of the DNS security rule. This is a read-only property and any attempt to set
 	// this value will be ignored.
 	ProvisioningState *ProvisioningState
-}
-
-// DomainList - Describes a DNS resolver domain list.
-type DomainList struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Properties of the DNS resolver domain list.
-	Properties *DomainListProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
-	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
-	// fields.")
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// DomainListBulk - Describes a DNS resolver domain list for bulk UPLOAD or DOWNLOAD operations.
-type DomainListBulk struct {
-	// REQUIRED; Properties of the DNS resolver domain list upload or download request.
-	Properties *DomainListBulkProperties
-}
-
-// DomainListBulkProperties - Describes DNS resolver domain list properties for bulk UPLOAD or DOWNLOAD operations.
-type DomainListBulkProperties struct {
-	// REQUIRED; The action to take in the request, Upload or Download.
-	Action *Action
-
-	// REQUIRED; The storage account blob file URL to be used in the bulk upload or download request of DNS resolver domain list.
-	StorageURL *string
-}
-
-// DomainListListResult - The response of a DnsResolverDomainList list operation.
-type DomainListListResult struct {
-	// REQUIRED; The DnsResolverDomainList items on this page
-	Value []*DomainList
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// DomainListPatch - Describes a DNS resolver domain list for PATCH operation.
-type DomainListPatch struct {
-	// Updatable properties of the DNS resolver domain list.
-	Properties *DomainListPatchProperties
-
-	// Tags for DNS resolver domain list.
-	Tags map[string]*string
-}
-
-// DomainListPatchProperties - Represents the updatable properties of a DNS resolver domain list.
-type DomainListPatchProperties struct {
-	// The domains in the domain list.
-	Domains []*string
-}
-
-// DomainListProperties - Represents the properties of a DNS resolver domain list.
-type DomainListProperties struct {
-	// The domains in the domain list. Will be null if user is using large domain list.
-	Domains []*string
-
-	// READ-ONLY; The URL for bulk upload or download for domain lists containing larger set of domains. This will be populated
-	// if domains is empty or null.
-	DomainsURL *string
-
-	// READ-ONLY; The current provisioning state of the DNS resolver domain list. This is a read-only property and any attempt
-	// to set this value will be ignored.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The resourceGuid property of the DNS resolver domain list resource.
-	ResourceGUID *string
 }
 
 // ForwardingRule - Describes a forwarding rule within a DNS forwarding ruleset.
@@ -419,15 +561,6 @@ type InboundEndpointProperties struct {
 	ResourceGUID *string
 }
 
-// ListResult - The response of a DnsResolver list operation.
-type ListResult struct {
-	// REQUIRED; The DnsResolver items on this page
-	Value []*DNSResolver
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // OutboundEndpoint - Describes an outbound endpoint for a DNS resolver.
 type OutboundEndpoint struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -483,139 +616,6 @@ type OutboundEndpointProperties struct {
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The resourceGuid property of the outbound endpoint resource.
-	ResourceGUID *string
-}
-
-// Patch - Describes a DNS resolver for PATCH operation.
-type Patch struct {
-	// Tags for DNS Resolver.
-	Tags map[string]*string
-}
-
-// Policy - Describes a DNS resolver policy.
-type Policy struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Properties of the DNS resolver policy.
-	Properties *PolicyProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
-	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
-	// fields.")
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PolicyListResult - The response of a DnsResolverPolicy list operation.
-type PolicyListResult struct {
-	// REQUIRED; The DnsResolverPolicy items on this page
-	Value []*Policy
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PolicyPatch - Describes a DNS resolver policy for PATCH operation.
-type PolicyPatch struct {
-	// Tags for DNS resolver policy.
-	Tags map[string]*string
-}
-
-// PolicyProperties - Represents the properties of a DNS resolver policy.
-type PolicyProperties struct {
-	// READ-ONLY; The current provisioning state of the DNS resolver policy. This is a read-only property and any attempt to set
-	// this value will be ignored.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The resourceGuid property of the DNS resolver policy resource.
-	ResourceGUID *string
-}
-
-// PolicyVirtualNetworkLink - Describes a DNS resolver policy virtual network link.
-type PolicyVirtualNetworkLink struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; Properties of the DNS resolver policy virtual network link.
-	Properties *PolicyVirtualNetworkLinkProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
-	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
-	// fields.")
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PolicyVirtualNetworkLinkListResult - The response of a DnsResolverPolicyVirtualNetworkLink list operation.
-type PolicyVirtualNetworkLinkListResult struct {
-	// REQUIRED; The DnsResolverPolicyVirtualNetworkLink items on this page
-	Value []*PolicyVirtualNetworkLink
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PolicyVirtualNetworkLinkPatch - Describes a DNS resolver policy virtual network link for PATCH operation.
-type PolicyVirtualNetworkLinkPatch struct {
-	// Tags for the DNS resolver policy virtual network link.
-	Tags map[string]*string
-}
-
-// PolicyVirtualNetworkLinkProperties - Represents the properties of a DNS resolver policy virtual network link.
-type PolicyVirtualNetworkLinkProperties struct {
-	// REQUIRED; The reference to the virtual network. This cannot be changed after creation.
-	VirtualNetwork *SubResource
-
-	// READ-ONLY; The current provisioning state of the DNS resolver policy virtual network link. This is a read-only property
-	// and any attempt to set this value will be ignored.
-	ProvisioningState *ProvisioningState
-}
-
-// Properties - Represents the properties of a DNS resolver.
-type Properties struct {
-	// REQUIRED; The reference to the virtual network. This cannot be changed after creation.
-	VirtualNetwork *SubResource
-
-	// READ-ONLY; The current status of the DNS resolver. This is a read-only property and any attempt to set this value will
-	// be ignored.
-	DNSResolverState *DNSResolverState
-
-	// READ-ONLY; The current provisioning state of the DNS resolver. This is a read-only property and any attempt to set this
-	// value will be ignored.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The resourceGuid property of the DNS resolver resource.
 	ResourceGUID *string
 }
 

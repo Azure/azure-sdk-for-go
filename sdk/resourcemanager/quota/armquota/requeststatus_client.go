@@ -25,7 +25,7 @@ type RequestStatusClient struct {
 
 // NewRequestStatusClient creates a new instance of RequestStatusClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RequestStatusClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -72,6 +72,9 @@ func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id stri
 		return nil, errors.New("parameter id cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -125,6 +128,9 @@ func (client *RequestStatusClient) NewListPager(scope string, options *RequestSt
 // listCreateRequest creates the List request.
 func (client *RequestStatusClient) listCreateRequest(ctx context.Context, scope string, options *RequestStatusClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotaRequests"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

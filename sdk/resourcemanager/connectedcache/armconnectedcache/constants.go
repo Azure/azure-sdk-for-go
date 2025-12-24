@@ -127,27 +127,6 @@ func PossibleCustomerTransitStateValues() []CustomerTransitState {
 	}
 }
 
-// CycleType - Update Cycle type
-type CycleType string
-
-const (
-	// CycleTypeFast - customer selection of fast / auto update to install mcc on their physical vm
-	CycleTypeFast CycleType = "Fast"
-	// CycleTypePreview - customer selection of preview update install mcc on their physical vm
-	CycleTypePreview CycleType = "Preview"
-	// CycleTypeSlow - customer selection of slow update to install mcc on their physical vm
-	CycleTypeSlow CycleType = "Slow"
-)
-
-// PossibleCycleTypeValues returns the possible values for the CycleType const type.
-func PossibleCycleTypeValues() []CycleType {
-	return []CycleType{
-		CycleTypeFast,
-		CycleTypePreview,
-		CycleTypeSlow,
-	}
-}
-
 // Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 // value is "user,system"
 type Origin string

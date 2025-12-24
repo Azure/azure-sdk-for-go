@@ -648,6 +648,8 @@ const (
 	TablePlanEnumAuxiliary TablePlanEnum = "Auxiliary"
 	// TablePlanEnumBasic - Medium-touch logs needed for troubleshooting and incident response.
 	TablePlanEnumBasic TablePlanEnum = "Basic"
+	// TablePlanEnumAuxiliary - Logs that are adjusted to support high volume low value verbose logs.
+	TablePlanEnumAuxiliary TablePlanEnum = "Auxiliary"
 )
 
 // PossibleTablePlanEnumValues returns the possible values for the TablePlanEnum const type.
@@ -656,6 +658,7 @@ func PossibleTablePlanEnumValues() []TablePlanEnum {
 		TablePlanEnumAnalytics,
 		TablePlanEnumAuxiliary,
 		TablePlanEnumBasic,
+		TablePlanEnumAuxiliary,
 	}
 }
 

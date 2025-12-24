@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCustomers_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,6 @@ func ExampleEnterpriseMccCustomersClient_BeginCreateOrUpdate() {
 	// 				VerifySignupCode: to.Ptr(true),
 	// 			},
 	// 			AdditionalCustomerProperties: &armconnectedcache.AdditionalCustomerProperties{
-	// 				PeeringDbLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.773Z"); return t}()),
 	// 				CustomerPropertiesOverviewCacheEfficiency: to.Ptr[float32](20),
 	// 				CustomerPropertiesOverviewAverageEgressMbps: to.Ptr[float32](8),
 	// 				CustomerPropertiesOverviewAverageMissMbps: to.Ptr[float32](19),
@@ -159,7 +158,7 @@ func ExampleEnterpriseMccCustomersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCustomers_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_Delete_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,7 +179,7 @@ func ExampleEnterpriseMccCustomersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCustomers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_Get_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +221,6 @@ func ExampleEnterpriseMccCustomersClient_Get() {
 	// 				VerifySignupCode: to.Ptr(true),
 	// 			},
 	// 			AdditionalCustomerProperties: &armconnectedcache.AdditionalCustomerProperties{
-	// 				PeeringDbLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.773Z"); return t}()),
 	// 				CustomerPropertiesOverviewCacheEfficiency: to.Ptr[float32](20),
 	// 				CustomerPropertiesOverviewAverageEgressMbps: to.Ptr[float32](8),
 	// 				CustomerPropertiesOverviewAverageMissMbps: to.Ptr[float32](19),
@@ -284,7 +282,7 @@ func ExampleEnterpriseMccCustomersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCustomers_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +330,6 @@ func ExampleEnterpriseMccCustomersClient_NewListByResourceGroupPager() {
 		// 						VerifySignupCode: to.Ptr(true),
 		// 					},
 		// 					AdditionalCustomerProperties: &armconnectedcache.AdditionalCustomerProperties{
-		// 						PeeringDbLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.773Z"); return t}()),
 		// 						CustomerPropertiesOverviewCacheEfficiency: to.Ptr[float32](20),
 		// 						CustomerPropertiesOverviewAverageEgressMbps: to.Ptr[float32](8),
 		// 						CustomerPropertiesOverviewAverageMissMbps: to.Ptr[float32](19),
@@ -398,7 +395,7 @@ func ExampleEnterpriseMccCustomersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +443,6 @@ func ExampleEnterpriseMccCustomersClient_NewListBySubscriptionPager() {
 		// 						VerifySignupCode: to.Ptr(true),
 		// 					},
 		// 					AdditionalCustomerProperties: &armconnectedcache.AdditionalCustomerProperties{
-		// 						PeeringDbLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.773Z"); return t}()),
 		// 						CustomerPropertiesOverviewCacheEfficiency: to.Ptr[float32](20),
 		// 						CustomerPropertiesOverviewAverageEgressMbps: to.Ptr[float32](8),
 		// 						CustomerPropertiesOverviewAverageMissMbps: to.Ptr[float32](19),
@@ -512,7 +508,7 @@ func ExampleEnterpriseMccCustomersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2023-05-01-preview/EnterpriseMccCustomers_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_Update_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,7 +558,6 @@ func ExampleEnterpriseMccCustomersClient_Update() {
 	// 				VerifySignupCode: to.Ptr(true),
 	// 			},
 	// 			AdditionalCustomerProperties: &armconnectedcache.AdditionalCustomerProperties{
-	// 				PeeringDbLastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T00:54:04.773Z"); return t}()),
 	// 				CustomerPropertiesOverviewCacheEfficiency: to.Ptr[float32](20),
 	// 				CustomerPropertiesOverviewAverageEgressMbps: to.Ptr[float32](8),
 	// 				CustomerPropertiesOverviewAverageMissMbps: to.Ptr[float32](19),

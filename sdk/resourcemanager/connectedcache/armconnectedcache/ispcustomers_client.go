@@ -42,7 +42,7 @@ func NewIspCustomersClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - This api creates an ispCustomer with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *IspCustomersClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - This api creates an ispCustomer with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 func (client *IspCustomersClient) createOrUpdate(ctx context.Context, resourceGroupName string, customerResourceName string, resource IspCustomerResource, options *IspCustomersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IspCustomersClient.BeginCreateOrUpdate"
@@ -110,7 +110,7 @@ func (client *IspCustomersClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *IspCustomersClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - This api deletes an existing ispCustomer resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - options - IspCustomersClientBeginDeleteOptions contains the optional parameters for the IspCustomersClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *IspCustomersClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - This api deletes an existing ispCustomer resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 func (client *IspCustomersClient) deleteOperation(ctx context.Context, resourceGroupName string, customerResourceName string, options *IspCustomersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IspCustomersClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *IspCustomersClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *IspCustomersClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets the ispCustomer resource information using this get call
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - options - IspCustomersClientGetOptions contains the optional parameters for the IspCustomersClient.Get method.
@@ -244,7 +244,7 @@ func (client *IspCustomersClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *IspCustomersClient) getHandleResponse(resp *http.Response) (IspCus
 // NewListByResourceGroupPager - This api gets the information about all ispCustomer resources under the given subscription
 // and resource group
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IspCustomersClientListByResourceGroupOptions contains the optional parameters for the IspCustomersClient.NewListByResourceGroupPager
 //     method.
@@ -305,7 +305,7 @@ func (client *IspCustomersClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +322,7 @@ func (client *IspCustomersClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - This api gets information about all ispCustomer resources under the given subscription
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - options - IspCustomersClientListBySubscriptionOptions contains the optional parameters for the IspCustomersClient.NewListBySubscriptionPager
 //     method.
 func (client *IspCustomersClient) NewListBySubscriptionPager(options *IspCustomersClientListBySubscriptionOptions) *runtime.Pager[IspCustomersClientListBySubscriptionResponse] {
@@ -360,7 +360,7 @@ func (client *IspCustomersClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +378,7 @@ func (client *IspCustomersClient) listBySubscriptionHandleResponse(resp *http.Re
 // Update - This api updates an existing ispCustomer resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - properties - The resource properties to be updated.
@@ -425,7 +425,7 @@ func (client *IspCustomersClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

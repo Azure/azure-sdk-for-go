@@ -30,6 +30,68 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	return b, nil
 }
 
+func unmarshalBaseCopyJobPropertiesClassification(rawMsg json.RawMessage) (BaseCopyJobPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b BaseCopyJobPropertiesClassification
+	switch m["jobType"] {
+	case string(CopyJobTypeAzureBlobStorageToCassandraRU):
+		b = &BlobToCassandraRUCopyJobProperties{}
+	case string(CopyJobTypeCassandraRUToAzureBlobStorage):
+		b = &CassandraRUToBlobCopyJobProperties{}
+	case string(CopyJobTypeCassandraRUToCassandraRU):
+		b = &CassandraRUToCassandraRUCopyJobProperties{}
+	case string(CopyJobTypeMongoRUToMongoRU):
+		b = &MongoRUToMongoRUCopyJobProperties{}
+	case string(CopyJobTypeMongoRUToMongoVCore):
+		b = &MongoRUToMongoVCoreCopyJobProperties{}
+	case string(CopyJobTypeNoSQLRUToNoSQLRU):
+		b = &NoSQLRUToNoSQLRUCopyJobProperties{}
+	default:
+		b = &BaseCopyJobProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (DataTransferDataSourceSinkClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DataTransferDataSourceSinkClassification
+	switch m["component"] {
+	case "BaseCosmosDataTransferDataSourceSink":
+		b = &BaseCosmosDataTransferDataSourceSink{}
+	case string(DataTransferComponentAzureBlobStorage):
+		b = &AzureBlobDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBCassandra):
+		b = &CassandraDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBMongo):
+		b = &MongoDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBMongoVCore):
+		b = &MongoVCoreDataTransferDataSourceSink{}
+	case string(DataTransferComponentCosmosDBSQL):
+		b = &SQLDataTransferDataSourceSink{}
+	default:
+		b = &DataTransferDataSourceSink{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalServiceResourceCreateUpdatePropertiesClassification(rawMsg json.RawMessage) (ServiceResourceCreateUpdatePropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

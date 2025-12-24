@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -184,6 +181,7 @@ func validateSAS(t *testing.T, sas string, parameters QueryParameters) {
 	require.Equal(t, parameters.ContentType(), sasCompMap["rsct"])
 	require.Equal(t, parameters.SignedOID(), sasCompMap["skoid"])
 	require.Equal(t, parameters.SignedTID(), sasCompMap["sktid"])
+	require.Equal(t, parameters.SignedDelegatedUserObjectID(), sasCompMap["sduoid"])
 
 	if _, ok := sasCompMap["skt"]; ok {
 		signedStart, _, err := parseTime(sasCompMap["skt"])

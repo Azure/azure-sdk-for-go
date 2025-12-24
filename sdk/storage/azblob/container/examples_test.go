@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -266,7 +263,7 @@ func Example_container_ClientListBlobsHierarchy() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, blob := range resp.ListBlobsHierarchySegmentResponse.Segment.BlobItems {
+		for _, blob := range resp.Segment.BlobItems {
 			fmt.Println(*blob.Name)
 		}
 	}

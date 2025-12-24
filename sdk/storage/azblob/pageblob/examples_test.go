@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -70,7 +67,7 @@ func Example_pageblob_Client() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		for _, pr := range resp.PageList.PageRange {
+		for _, pr := range resp.PageRange {
 			fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 		}
 	}

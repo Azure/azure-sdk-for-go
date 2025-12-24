@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -95,6 +92,14 @@ type PermissionFormat = generated.FilePermissionFormat
 const (
 	FilePermissionFormatBinary PermissionFormat = generated.FilePermissionFormatBinary
 	FilePermissionFormatSddl   PermissionFormat = generated.FilePermissionFormatSddl
+)
+
+// PropertySemantics has two values - New and Restore, SMB only
+type PropertySemantics = generated.FilePropertySemantics
+
+const (
+	FilePropertySemanticsNew     PropertySemantics = "New"
+	FilePropertySemanticsRestore PropertySemantics = "Restore"
 )
 
 // PossibleFilePermissionFormatValues returns the possible values for the FilePermissionFormat const type.

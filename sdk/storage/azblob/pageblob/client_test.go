@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -40,12 +37,13 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running pageblob Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
-		suite.Run(t, &PageBlobRecordedTestsSuite{})
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &PageBlobUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
 		suite.Run(t, &PageBlobRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.PlaybackMode:
+		suite.Run(t, &PageBlobRecordedTestsSuite{})
+	case recording.RecordingMode:
 		suite.Run(t, &PageBlobRecordedTestsSuite{})
 	}
 }
@@ -232,7 +230,7 @@ func (s *PageBlobRecordedTestsSuite) TestPutGetPages() {
 		_require.NotNil(pageListResp.Date)
 		_require.Equal(pageListResp.Date.IsZero(), false)
 		_require.NotNil(pageListResp.PageList)
-		pageRangeResp := pageListResp.PageList.PageRange
+		pageRangeResp := pageListResp.PageRange
 		_require.Len(pageRangeResp, 1)
 		rawStart, rawEnd := rawPageRange((pageRangeResp)[0])
 		_require.Equal(rawStart, offset)
@@ -608,7 +606,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
 
-		pageRangeResp := pageListResp.PageList.PageRange
+		pageRangeResp := pageListResp.PageRange
 		_require.NotNil(pageRangeResp)
 		_require.Len(pageRangeResp, 1)
 		rawStart, rawEnd := rawPageRange((pageRangeResp)[0])
@@ -632,7 +630,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestClearDiffPages() {
 	for pager.More() {
 		pageListResp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageRangeResp := pageListResp.PageList.PageRange
+		pageRangeResp := pageListResp.PageRange
 		_require.Len(pageRangeResp, 0)
 		if err != nil {
 			break
@@ -2533,7 +2531,7 @@ func (s *PageBlobRecordedTestsSuite) TestBlobGetPageRangesNonContiguousRanges() 
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageListResp := resp.PageList.PageRange
+		pageListResp := resp.PageRange
 		_require.NotNil(pageListResp)
 		_require.Len(pageListResp, 2)
 
@@ -4097,7 +4095,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPK() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageListResp := resp.PageList.PageRange
+		pageListResp := resp.PageRange
 		start, end := int64(0), int64(contentSize-1)
 		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)
@@ -4160,7 +4158,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlockWithCPKScope() {
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())
 		_require.NoError(err)
-		pageListResp := resp.PageList.PageRange
+		pageListResp := resp.PageRange
 		start, end := int64(0), int64(contentSize-1)
 		rawStart, rawEnd := rawPageRange(pageListResp[0])
 		_require.Equal(rawStart, start)
@@ -4251,8 +4249,8 @@ func (s *PageBlobUnrecordedTestsSuite) TestCreatePageBlobWithTags() {
 	where := "\"azure\"='blob'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Key, "azure")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Value, "blob")
 }
 
 func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
@@ -4291,8 +4289,8 @@ func (s *PageBlobUnrecordedTestsSuite) TestPageBlobSetBlobTagForSnapshot() {
 	where := "\"GO \"='.Net'"
 	lResp, err := svcClient.FilterBlobs(context.Background(), where, nil)
 	_require.NoError(err)
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
-	_require.Equal(*lResp.FilterBlobSegment.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Key, "GO ")
+	_require.Equal(*lResp.Blobs[0].Tags.BlobTagSet[0].Value, ".Net")
 }
 
 func (s *PageBlobRecordedTestsSuite) TestCreatePageBlobReturnsVID() {

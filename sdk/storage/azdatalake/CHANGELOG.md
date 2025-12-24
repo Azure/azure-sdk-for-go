@@ -3,12 +3,7 @@
 ## 1.4.4-beta.1 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added support for service version 2026-02-06.
 
 ## 1.4.3 (2025-10-16)
 

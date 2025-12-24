@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -87,7 +84,7 @@ func Example_blockblob_Client() {
 	// For the blob, show each block (ID and size) that is a committed part of it.
 	getBlock, err := blockBlobClient.GetBlockList(context.TODO(), blockblob.BlockListTypeAll, nil)
 	handleError(err)
-	for _, block := range getBlock.BlockList.CommittedBlocks {
+	for _, block := range getBlock.CommittedBlocks {
 		fmt.Printf("Block ID=%d, Size=%d\n", blockIDBase64ToInt(*block.Name), block.Size)
 	}
 

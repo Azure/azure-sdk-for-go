@@ -1,5 +1,12 @@
 # Release History
 
+## 1.6.3-beta.1 (Unreleased)
+
+### Features Added
+* Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs. 
+* Added support for conditional headers on `BlobClientBase.getTags()` and `BlobClientBase.setTags()` APIs.
+* Added support for service version 2026-02-06.
+
 ## 1.6.3 (2025-10-16)
 
 ### Other Changes

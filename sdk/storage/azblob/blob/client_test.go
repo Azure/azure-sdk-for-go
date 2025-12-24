@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -45,12 +42,13 @@ import (
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running blob Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &BlobRecordedTestsSuite{})
 		suite.Run(t, &BlobUnrecordedTestsSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &BlobRecordedTestsSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &BlobRecordedTestsSuite{})
 	}
 }
@@ -351,7 +349,7 @@ func (s *BlobUnrecordedTestsSuite) TestUploadDownloadBlockBlob() {
 		// download to a temp file and verify contents
 		tmp, err := os.CreateTemp("", "")
 		_require.NoError(err)
-		defer tmp.Close()
+		defer func() { _ = tmp.Close() }()
 
 		f := blob.DownloadFileOptions{BlockSize: 2 * MiB}
 		n, err := srcBlob.DownloadFile(context.Background(), tmp, &f)
@@ -3842,7 +3840,7 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	// download to a temp file and verify contents
 	tmp, err := os.CreateTemp("", "")
 	_require.NoError(err)
-	defer tmp.Close()
+	defer func() { _ = tmp.Close() }()
 
 	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: blockSize})
 	_require.NoError(err)
@@ -3857,4 +3855,75 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	_require.NoError(err)
 
 	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
+}
+
+func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blobName, containerClient)
+
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader([]byte("hello world"))), nil)
+	_require.NoError(err)
+
+	props, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	etag := props.ETag
+	lastModified := props.LastModified
+
+	tags := map[string]string{"env": "test"}
+
+	// Case 1: IfMatch = correct ETag (should succeed)
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfMatch: etag,
+		},
+	})
+	_require.NoError(err)
+
+	// Case 2: IfNoneMatch = current ETag (should fail with 412)
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfNoneMatch: etag,
+		},
+	})
+	_require.Error(err)
+
+	// Case 3: IfModifiedSince = past time
+	past := lastModified.Add(-1 * time.Hour)
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfModifiedSince: &past,
+		},
+	})
+	_require.NoError(err)
+
+	// Case 4: IfUnmodifiedSince = past time
+	_, err = bbClient.SetTags(context.Background(), tags, &blob.SetTagsOptions{
+		BlobModifiedAccessConditions: &blob.BlobModifiedAccessConditions{
+			IfUnmodifiedSince: &past,
+		},
+	})
+	_require.Error(err)
+
+	getResp, err := bbClient.GetTags(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(getResp.BlobTagSet)
+
+	found := false
+	for _, tag := range getResp.BlobTagSet {
+		if tag.Key != nil && *tag.Key == "env" && tag.Value != nil && *tag.Value == "test" {
+			found = true
+			break
+		}
+	}
+	_require.True(found, "Tag not found")
 }

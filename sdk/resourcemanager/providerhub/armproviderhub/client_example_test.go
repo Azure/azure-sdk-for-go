@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7611bb6c9bad11244f4351eecfc50b2c46a86fde/specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/GenerateManifest.json
@@ -163,8 +163,8 @@ func ExampleClient_CheckinManifest() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewClient().CheckinManifest(ctx, "Microsoft.Contoso", armproviderhub.CheckinManifestParams{
-		BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
-		Environment:                 to.Ptr("Prod"),
+		BaselineArmManifestLocation:	to.Ptr("EastUS2EUAP"),
+		Environment:			to.Ptr("Prod"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

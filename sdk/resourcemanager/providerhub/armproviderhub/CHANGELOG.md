@@ -1,5 +1,60 @@
 # Release History
 
+## 3.0.0 (2025-12-29)
+### Breaking Changes
+
+- Function `*OperationsClient.NewListPager` has been removed
+- Struct `CanaryTrafficRegionRolloutConfiguration` has been removed
+- Struct `CheckNameAvailabilitySpecifications` has been removed
+- Struct `CustomRolloutSpecification` has been removed
+- Struct `CustomRolloutStatus` has been removed
+- Struct `DefaultRolloutSpecification` has been removed
+- Struct `DefaultRolloutStatus` has been removed
+- Struct `DstsConfiguration` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExpeditedRolloutDefinition` has been removed
+- Struct `ExtensionOptions` has been removed
+- Struct `FeaturesRule` has been removed
+- Struct `GroupConnectivityInformation` has been removed
+- Struct `IdentityManagement` has been removed
+- Struct `IdentityManagementProperties` has been removed
+- Struct `LocalizedOperationDisplayDefinition` has been removed
+- Struct `LoggingHiddenPropertyPath` has been removed
+- Struct `ManifestLevelPropertyBag` has been removed
+- Struct `Metadata` has been removed
+- Struct `OperationsContent` has been removed
+- Struct `OperationsContentProperties` has been removed
+- Struct `OperationsDisplayDefinition` has been removed
+- Struct `PrivateResourceProviderConfiguration` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `ReRegisterSubscriptionMetadata` has been removed
+- Struct `RequestHeaderOptions` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceGraphConfiguration` has been removed
+- Struct `ResourceMovePolicy` has been removed
+- Struct `ResourceProviderAuthentication` has been removed
+- Struct `ResourceProviderManagement` has been removed
+- Struct `ResourceProviderManifestProperties` has been removed
+- Struct `ResourceTypeEndpointBase` has been removed
+- Struct `ResourceTypeExtensionOptions` has been removed
+- Struct `ResourceTypeSKU` has been removed
+- Struct `RolloutStatusBase` has been removed
+- Struct `SKUCapacity` has been removed
+- Struct `SubscriptionLifecycleNotificationSpecifications` has been removed
+- Struct `TemplateDeploymentOptions` has been removed
+- Struct `TemplateDeploymentPolicy` has been removed
+- Struct `ThirdPartyProviderAuthorization` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `TrafficRegionRolloutConfiguration` has been removed
+- Struct `TrafficRegions` has been removed
+
+### Features Added
+
+- New field `RetryAfter` in struct `NewRegionFrontloadReleaseClientCreateOrUpdateResponse`
+
+
 ## 2.0.0 (2025-07-25)
 ### Breaking Changes
 

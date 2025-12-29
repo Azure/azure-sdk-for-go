@@ -1,0 +1,4 @@
+directory: specification/resources/resource-manager/Microsoft.Authorization/policy
+commit: c131197f8ee69a3486ffaf6c3d640e116c5c9bda
+repo: i-specs
+additionalDirectories: 

@@ -1,5 +1,194 @@
 # Release History
 
+## 3.0.0 (2025-12-29)
+### Breaking Changes
+
+- Function `NewOperationsClient` parameter(s) have been changed from `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)` to `(credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Type of `CustomRolloutProperties.Specification` has been changed from `*CustomRolloutPropertiesSpecification` to `*CustomRolloutSpecification`
+- Type of `CustomRolloutProperties.Status` has been changed from `*CustomRolloutPropertiesStatus` to `*CustomRolloutStatus`
+- Type of `CustomRolloutSpecification.Canary` has been changed from `*CustomRolloutSpecificationCanary` to `*TrafficRegions`
+- Type of `CustomRolloutSpecification.ProviderRegistration` has been changed from `*CustomRolloutSpecificationProviderRegistration` to `*ProviderRegistration`
+- Type of `CustomRolloutStatus.ManifestCheckinStatus` has been changed from `*CustomRolloutStatusManifestCheckinStatus` to `*CheckinManifestInfo`
+- Type of `DefaultRolloutProperties.Specification` has been changed from `*DefaultRolloutPropertiesSpecification` to `*DefaultRolloutSpecification`
+- Type of `DefaultRolloutProperties.Status` has been changed from `*DefaultRolloutPropertiesStatus` to `*DefaultRolloutStatus`
+- Type of `DefaultRolloutSpecification.Canary` has been changed from `*DefaultRolloutSpecificationCanary` to `*CanaryTrafficRegionRolloutConfiguration`
+- Type of `DefaultRolloutSpecification.ExpeditedRollout` has been changed from `*DefaultRolloutSpecificationExpeditedRollout` to `*ExpeditedRolloutDefinition`
+- Type of `DefaultRolloutSpecification.HighTraffic` has been changed from `*DefaultRolloutSpecificationHighTraffic` to `*TrafficRegionRolloutConfiguration`
+- Type of `DefaultRolloutSpecification.LowTraffic` has been changed from `*DefaultRolloutSpecificationLowTraffic` to `*TrafficRegionRolloutConfiguration`
+- Type of `DefaultRolloutSpecification.MediumTraffic` has been changed from `*DefaultRolloutSpecificationMediumTraffic` to `*TrafficRegionRolloutConfiguration`
+- Type of `DefaultRolloutSpecification.ProviderRegistration` has been changed from `*DefaultRolloutSpecificationProviderRegistration` to `*ProviderRegistration`
+- Type of `DefaultRolloutSpecification.RestOfTheWorldGroupOne` has been changed from `*DefaultRolloutSpecificationRestOfTheWorldGroupOne` to `*TrafficRegionRolloutConfiguration`
+- Type of `DefaultRolloutSpecification.RestOfTheWorldGroupTwo` has been changed from `*DefaultRolloutSpecificationRestOfTheWorldGroupTwo` to `*TrafficRegionRolloutConfiguration`
+- Type of `DefaultRolloutStatus.ManifestCheckinStatus` has been changed from `*DefaultRolloutStatusManifestCheckinStatus` to `*CheckinManifestInfo`
+- Type of `FanoutLinkedNotificationRule.DstsConfiguration` has been changed from `*FanoutLinkedNotificationRuleDstsConfiguration` to `*DstsConfiguration`
+- Type of `FrontloadPayloadProperties.OverrideEndpointLevelFields` has been changed from `*FrontloadPayloadPropertiesOverrideEndpointLevelFields` to `*ResourceTypeEndpointBase`
+- Type of `FrontloadPayloadProperties.OverrideManifestLevelFields` has been changed from `*FrontloadPayloadPropertiesOverrideManifestLevelFields` to `*ManifestLevelPropertyBag`
+- Type of `LocalizedOperationDefinition.Display` has been changed from `*LocalizedOperationDefinitionDisplay` to `*LocalizedOperationDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Cs` has been changed from `*LocalizedOperationDisplayDefinitionCs` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.De` has been changed from `*LocalizedOperationDisplayDefinitionDe` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Default` has been changed from `*LocalizedOperationDisplayDefinitionDefault` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.En` has been changed from `*LocalizedOperationDisplayDefinitionEn` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Es` has been changed from `*LocalizedOperationDisplayDefinitionEs` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Fr` has been changed from `*LocalizedOperationDisplayDefinitionFr` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Hu` has been changed from `*LocalizedOperationDisplayDefinitionHu` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.It` has been changed from `*LocalizedOperationDisplayDefinitionIt` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Ja` has been changed from `*LocalizedOperationDisplayDefinitionJa` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Ko` has been changed from `*LocalizedOperationDisplayDefinitionKo` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Nl` has been changed from `*LocalizedOperationDisplayDefinitionNl` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Pl` has been changed from `*LocalizedOperationDisplayDefinitionPl` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.PtBR` has been changed from `*LocalizedOperationDisplayDefinitionPtBR` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Ru` has been changed from `*LocalizedOperationDisplayDefinitionRu` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.Sv` has been changed from `*LocalizedOperationDisplayDefinitionSv` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.ZhHans` has been changed from `*LocalizedOperationDisplayDefinitionZhHans` to `*OperationsDisplayDefinition`
+- Type of `LocalizedOperationDisplayDefinition.ZhHant` has been changed from `*LocalizedOperationDisplayDefinitionZhHant` to `*OperationsDisplayDefinition`
+- Type of `LoggingRule.HiddenPropertyPaths` has been changed from `*LoggingRuleHiddenPropertyPaths` to `*LoggingHiddenPropertyPath`
+- Type of `Metadata.ProviderAuthentication` has been changed from `*MetadataProviderAuthentication` to `*ResourceProviderAuthentication`
+- Type of `Metadata.ThirdPartyProviderAuthorization` has been changed from `*MetadataThirdPartyProviderAuthorization` to `*ThirdPartyProviderAuthorization`
+- Type of `OperationsDefinition.Display` has been changed from `*OperationsDefinitionDisplay` to `*OperationsDisplayDefinition`
+- Type of `OperationsPutContent.Properties` has been changed from `*OperationsPutContentProperties` to `*OperationsContentProperties`
+- Type of `ProviderRegistrationProperties.DstsConfiguration` has been changed from `*ResourceProviderManifestPropertiesDstsConfiguration` to `*DstsConfiguration`
+- Type of `ProviderRegistrationProperties.FeaturesRule` has been changed from `*ResourceProviderManifestPropertiesFeaturesRule` to `*FeaturesRule`
+- Type of `ProviderRegistrationProperties.Management` has been changed from `*ResourceProviderManifestPropertiesManagement` to `*ResourceProviderManagement`
+- Type of `ProviderRegistrationProperties.PrivateResourceProviderConfiguration` has been changed from `*ProviderRegistrationPropertiesPrivateResourceProviderConfiguration` to `*PrivateResourceProviderConfiguration`
+- Type of `ProviderRegistrationProperties.ProviderAuthentication` has been changed from `*ResourceProviderManifestPropertiesProviderAuthentication` to `*ResourceProviderAuthentication`
+- Type of `ProviderRegistrationProperties.ProviderHubMetadata` has been changed from `*ProviderRegistrationPropertiesProviderHubMetadata` to `*Metadata`
+- Type of `ProviderRegistrationProperties.RequestHeaderOptions` has been changed from `*ResourceProviderManifestPropertiesRequestHeaderOptions` to `*RequestHeaderOptions`
+- Type of `ProviderRegistrationProperties.SubscriptionLifecycleNotificationSpecifications` has been changed from `*ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` to `*SubscriptionLifecycleNotificationSpecifications`
+- Type of `ProviderRegistrationProperties.TemplateDeploymentOptions` has been changed from `*ResourceProviderManifestPropertiesTemplateDeploymentOptions` to `*TemplateDeploymentOptions`
+- Type of `ResourceProviderEndpoint.FeaturesRule` has been changed from `*ResourceProviderEndpointFeaturesRule` to `*FeaturesRule`
+- Type of `ResourceProviderManifest.FeaturesRule` has been changed from `*ResourceProviderManifestFeaturesRule` to `*FeaturesRule`
+- Type of `ResourceProviderManifest.Management` has been changed from `*ResourceProviderManifestManagement` to `*ResourceProviderManagement`
+- Type of `ResourceProviderManifest.ProviderAuthentication` has been changed from `*ResourceProviderManifestProviderAuthentication` to `*ResourceProviderAuthentication`
+- Type of `ResourceProviderManifest.ReRegisterSubscriptionMetadata` has been changed from `*ResourceProviderManifestReRegisterSubscriptionMetadata` to `*ReRegisterSubscriptionMetadata`
+- Type of `ResourceProviderManifest.RequestHeaderOptions` has been changed from `*ResourceProviderManifestRequestHeaderOptions` to `*RequestHeaderOptions`
+- Type of `ResourceType.FeaturesRule` has been changed from `*ResourceTypeFeaturesRule` to `*FeaturesRule`
+- Type of `ResourceType.IdentityManagement` has been changed from `*ResourceTypeIdentityManagement` to `*IdentityManagement`
+- Type of `ResourceType.RequestHeaderOptions` has been changed from `*ResourceTypeRequestHeaderOptions` to `*RequestHeaderOptions`
+- Type of `ResourceType.TemplateDeploymentPolicy` has been changed from `*ResourceTypeTemplateDeploymentPolicy` to `*TemplateDeploymentPolicy`
+- Type of `ResourceTypeEndpoint.DstsConfiguration` has been changed from `*ResourceTypeEndpointDstsConfiguration` to `*DstsConfiguration`
+- Type of `ResourceTypeEndpoint.FeaturesRule` has been changed from `*ResourceTypeEndpointFeaturesRule` to `*FeaturesRule`
+- Type of `ResourceTypeEndpointBase.DstsConfiguration` has been changed from `*ResourceTypeEndpointBaseDstsConfiguration` to `*DstsConfiguration`
+- Type of `ResourceTypeEndpointBase.FeaturesRule` has been changed from `*ResourceTypeEndpointBaseFeaturesRule` to `*FeaturesPolicy`
+- Type of `ResourceTypeExtensionOptions.ResourceCreationBegin` has been changed from `*ResourceTypeExtensionOptionsResourceCreationBegin` to `*ExtensionOptions`
+- Type of `ResourceTypeRegistrationProperties.CheckNameAvailabilitySpecifications` has been changed from `*ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications` to `*CheckNameAvailabilitySpecifications`
+- Type of `ResourceTypeRegistrationProperties.DstsConfiguration` has been changed from `*ResourceTypeRegistrationPropertiesDstsConfiguration` to `*DstsConfiguration`
+- Type of `ResourceTypeRegistrationProperties.ExtensionOptions` has been changed from `*ResourceTypeRegistrationPropertiesExtensionOptions` to `*ResourceTypeExtensionOptions`
+- Type of `ResourceTypeRegistrationProperties.FeaturesRule` has been changed from `*ResourceTypeRegistrationPropertiesFeaturesRule` to `*FeaturesRule`
+- Type of `ResourceTypeRegistrationProperties.IdentityManagement` has been changed from `*ResourceTypeRegistrationPropertiesIdentityManagement` to `*IdentityManagementProperties`
+- Type of `ResourceTypeRegistrationProperties.Management` has been changed from `*ResourceTypeRegistrationPropertiesManagement` to `*ResourceProviderManagement`
+- Type of `ResourceTypeRegistrationProperties.RequestHeaderOptions` has been changed from `*ResourceTypeRegistrationPropertiesRequestHeaderOptions` to `*RequestHeaderOptions`
+- Type of `ResourceTypeRegistrationProperties.ResourceGraphConfiguration` has been changed from `*ResourceTypeRegistrationPropertiesResourceGraphConfiguration` to `*ResourceGraphConfiguration`
+- Type of `ResourceTypeRegistrationProperties.ResourceMovePolicy` has been changed from `*ResourceTypeRegistrationPropertiesResourceMovePolicy` to `*ResourceMovePolicy`
+- Type of `ResourceTypeRegistrationProperties.SubscriptionLifecycleNotificationSpecifications` has been changed from `*ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` to `*SubscriptionLifecycleNotificationSpecifications`
+- Type of `ResourceTypeRegistrationProperties.TemplateDeploymentOptions` has been changed from `*ResourceTypeRegistrationPropertiesTemplateDeploymentOptions` to `*TemplateDeploymentOptions`
+- Type of `ResourceTypeRegistrationProperties.TemplateDeploymentPolicy` has been changed from `*ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy` to `*TemplateDeploymentPolicy`
+- Type of `SKUResource.Properties` has been changed from `*SKUResourceProperties` to `*ResourceTypeSKU`
+- Type of `SKUSetting.Capacity` has been changed from `*SKUSettingCapacity` to `*SKUCapacity`
+- Function `*OperationsClient.CreateOrUpdate` has been removed
+- Function `*OperationsClient.Delete` has been removed
+- Function `*OperationsClient.ListByProviderRegistration` has been removed
+- Struct `CustomRolloutPropertiesSpecification` has been removed
+- Struct `CustomRolloutPropertiesStatus` has been removed
+- Struct `CustomRolloutSpecificationCanary` has been removed
+- Struct `CustomRolloutSpecificationProviderRegistration` has been removed
+- Struct `CustomRolloutStatusManifestCheckinStatus` has been removed
+- Struct `DefaultRolloutPropertiesSpecification` has been removed
+- Struct `DefaultRolloutPropertiesStatus` has been removed
+- Struct `DefaultRolloutSpecificationCanary` has been removed
+- Struct `DefaultRolloutSpecificationExpeditedRollout` has been removed
+- Struct `DefaultRolloutSpecificationHighTraffic` has been removed
+- Struct `DefaultRolloutSpecificationLowTraffic` has been removed
+- Struct `DefaultRolloutSpecificationMediumTraffic` has been removed
+- Struct `DefaultRolloutSpecificationProviderRegistration` has been removed
+- Struct `DefaultRolloutSpecificationRestOfTheWorldGroupOne` has been removed
+- Struct `DefaultRolloutSpecificationRestOfTheWorldGroupTwo` has been removed
+- Struct `DefaultRolloutStatusManifestCheckinStatus` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `FanoutLinkedNotificationRuleDstsConfiguration` has been removed
+- Struct `FrontloadPayloadPropertiesOverrideEndpointLevelFields` has been removed
+- Struct `FrontloadPayloadPropertiesOverrideManifestLevelFields` has been removed
+- Struct `GroupConnectivityInformation` has been removed
+- Struct `LocalizedOperationDefinitionDisplay` has been removed
+- Struct `LocalizedOperationDisplayDefinitionCs` has been removed
+- Struct `LocalizedOperationDisplayDefinitionDe` has been removed
+- Struct `LocalizedOperationDisplayDefinitionDefault` has been removed
+- Struct `LocalizedOperationDisplayDefinitionEn` has been removed
+- Struct `LocalizedOperationDisplayDefinitionEs` has been removed
+- Struct `LocalizedOperationDisplayDefinitionFr` has been removed
+- Struct `LocalizedOperationDisplayDefinitionHu` has been removed
+- Struct `LocalizedOperationDisplayDefinitionIt` has been removed
+- Struct `LocalizedOperationDisplayDefinitionJa` has been removed
+- Struct `LocalizedOperationDisplayDefinitionKo` has been removed
+- Struct `LocalizedOperationDisplayDefinitionNl` has been removed
+- Struct `LocalizedOperationDisplayDefinitionPl` has been removed
+- Struct `LocalizedOperationDisplayDefinitionPt` has been removed
+- Struct `LocalizedOperationDisplayDefinitionPtBR` has been removed
+- Struct `LocalizedOperationDisplayDefinitionRu` has been removed
+- Struct `LocalizedOperationDisplayDefinitionSv` has been removed
+- Struct `LocalizedOperationDisplayDefinitionZhHans` has been removed
+- Struct `LocalizedOperationDisplayDefinitionZhHant` has been removed
+- Struct `LoggingRuleHiddenPropertyPaths` has been removed
+- Struct `MetadataProviderAuthentication` has been removed
+- Struct `MetadataThirdPartyProviderAuthorization` has been removed
+- Struct `OperationsContent` has been removed
+- Struct `OperationsDefinitionDisplay` has been removed
+- Struct `OperationsPutContentProperties` has been removed
+- Struct `ProviderRegistrationPropertiesPrivateResourceProviderConfiguration` has been removed
+- Struct `ProviderRegistrationPropertiesProviderHubMetadata` has been removed
+- Struct `ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceProviderEndpointFeaturesRule` has been removed
+- Struct `ResourceProviderManifestFeaturesRule` has been removed
+- Struct `ResourceProviderManifestManagement` has been removed
+- Struct `ResourceProviderManifestProperties` has been removed
+- Struct `ResourceProviderManifestPropertiesDstsConfiguration` has been removed
+- Struct `ResourceProviderManifestPropertiesFeaturesRule` has been removed
+- Struct `ResourceProviderManifestPropertiesManagement` has been removed
+- Struct `ResourceProviderManifestPropertiesProviderAuthentication` has been removed
+- Struct `ResourceProviderManifestPropertiesRequestHeaderOptions` has been removed
+- Struct `ResourceProviderManifestPropertiesTemplateDeploymentOptions` has been removed
+- Struct `ResourceProviderManifestProviderAuthentication` has been removed
+- Struct `ResourceProviderManifestReRegisterSubscriptionMetadata` has been removed
+- Struct `ResourceProviderManifestRequestHeaderOptions` has been removed
+- Struct `ResourceTypeEndpointBaseDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointBaseFeaturesRule` has been removed
+- Struct `ResourceTypeEndpointDstsConfiguration` has been removed
+- Struct `ResourceTypeEndpointFeaturesRule` has been removed
+- Struct `ResourceTypeExtensionOptionsResourceCreationBegin` has been removed
+- Struct `ResourceTypeFeaturesRule` has been removed
+- Struct `ResourceTypeIdentityManagement` has been removed
+- Struct `ResourceTypeRegistrationPropertiesCheckNameAvailabilitySpecifications` has been removed
+- Struct `ResourceTypeRegistrationPropertiesDstsConfiguration` has been removed
+- Struct `ResourceTypeRegistrationPropertiesExtensionOptions` has been removed
+- Struct `ResourceTypeRegistrationPropertiesFeaturesRule` has been removed
+- Struct `ResourceTypeRegistrationPropertiesIdentityManagement` has been removed
+- Struct `ResourceTypeRegistrationPropertiesManagement` has been removed
+- Struct `ResourceTypeRegistrationPropertiesRequestHeaderOptions` has been removed
+- Struct `ResourceTypeRegistrationPropertiesResourceGraphConfiguration` has been removed
+- Struct `ResourceTypeRegistrationPropertiesResourceMovePolicy` has been removed
+- Struct `ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications` has been removed
+- Struct `ResourceTypeRegistrationPropertiesTemplateDeploymentOptions` has been removed
+- Struct `ResourceTypeRegistrationPropertiesTemplateDeploymentPolicy` has been removed
+- Struct `ResourceTypeRequestHeaderOptions` has been removed
+- Struct `ResourceTypeTemplateDeploymentPolicy` has been removed
+- Struct `RolloutStatusBase` has been removed
+- Struct `SKUResourceProperties` has been removed
+- Struct `SKUSettingCapacity` has been removed
+- Struct `TrackedResource` has been removed
+- Field `Pt` of struct `LocalizedOperationDisplayDefinition` has been removed
+
+### Features Added
+
+- New function `*Client.CreateOrUpdate(ctx context.Context, providerNamespace string, operationsPutContent OperationsPutContent, options *ClientCreateOrUpdateOptions) (ClientCreateOrUpdateResponse, error)`
+- New function `*Client.Delete(ctx context.Context, providerNamespace string, options *ClientDeleteOptions) (ClientDeleteResponse, error)`
+- New function `*Client.ListByProviderRegistration(ctx context.Context, providerNamespace string, options *ClientListByProviderRegistrationOptions) (ClientListByProviderRegistrationResponse, error)`
+- New field `PtPT` in struct `LocalizedOperationDisplayDefinition`
+- New field `RetryAfter` in struct `NewRegionFrontloadReleaseClientCreateOrUpdateResponse`
+
+
 ## 2.0.0 (2025-07-25)
 ### Breaking Changes
 

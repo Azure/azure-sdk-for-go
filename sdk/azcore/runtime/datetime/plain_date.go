@@ -7,10 +7,12 @@ import (
 	"time"
 )
 
-// Constraints is a type constraint that represents the supported time types in the datetime package
+// Constraints is a type constraint that represents the supported time types in the datetime package.
 type Constraints interface {
 	PlainDate | PlainTime | RFC1123 | RFC3339 | Unix
 }
+
+const jsonNull = "null"
 
 const (
 	plainDate     = "2006-01-02"
@@ -26,10 +28,29 @@ func (t PlainDate) MarshalJSON() ([]byte, error) {
 	return []byte(time.Time(t).Format(plainDateJSON)), nil
 }
 
+// MarshalText returns a textual representation of PlainDate.
+func (t PlainDate) MarshalText() ([]byte, error) {
+	tt := time.Time(t)
+	return []byte(tt.Format(plainDate)), nil
+}
+
 // UnmarshalJSON unmarshals a JSON byte slice into a PlainDate.
 func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
+	if string(data) == jsonNull {
+		return nil
+	}
 	t, err := time.Parse(plainDateJSON, string(data))
 	*d = (PlainDate)(t)
+	return err
+}
+
+// UnmarshalText decodes the textual representation of PlainDate.
+func (t *PlainDate) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
+	p, err := time.Parse(plainDate, string(data))
+	*t = PlainDate(p)
 	return err
 }
 

@@ -21,7 +21,7 @@ func (t PlainTime) MarshalJSON() ([]byte, error) {
 	return []byte(time.Time(t).Format(timeOnlyJSON)), nil
 }
 
-// MarshalText returns a textual representation of PlainTime
+// MarshalText returns a textual representation of PlainTime.
 func (t PlainTime) MarshalText() ([]byte, error) {
 	tt := time.Time(t)
 	return []byte(tt.Format(time.TimeOnly)), nil
@@ -29,10 +29,13 @@ func (t PlainTime) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into PlainTime.
 func (t *PlainTime) UnmarshalJSON(data []byte) error {
+	if string(data) == jsonNull {
+		return nil
+	}
 	return t.parse(timeOnlyJSON, string(data))
 }
 
-// UnmarshalText decodes the textual representation of PlainTime
+// UnmarshalText decodes the textual representation of PlainTime.
 func (t *PlainTime) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
 		return nil
@@ -47,7 +50,7 @@ func (t *PlainTime) parse(layout, value string) error {
 	return err
 }
 
-// String returns the string of PlainTime
+// String returns the string of PlainTime.
 func (t PlainTime) String() string {
 	tt := time.Time(t)
 	return tt.Format(time.TimeOnly)

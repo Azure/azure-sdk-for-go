@@ -17,8 +17,29 @@ func (t Unix) MarshalJSON() ([]byte, error) {
 	return json.Marshal(time.Time(t).Unix())
 }
 
+// MarshalText returns a textual representation of Unix.
+func (t Unix) MarshalText() ([]byte, error) {
+	return []byte(t.String()), nil
+}
+
 // UnmarshalJSON unmarshals a JSON byte slice into a Unix timestamp.
 func (t *Unix) UnmarshalJSON(data []byte) error {
+	if string(data) == jsonNull {
+		return nil
+	}
+	return t.parse(data)
+}
+
+// UnmarshalText decodes the textual representation of Unix.
+func (t *Unix) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
+	return t.parse(data)
+}
+
+// parses a Unix timestamp from a byte slice.
+func (t *Unix) parse(data []byte) error {
 	var seconds int64
 	if err := json.Unmarshal(data, &seconds); err != nil {
 		return err
@@ -27,7 +48,7 @@ func (t *Unix) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// String returns the string of Unix
+// String returns the string of Unix.
 func (t Unix) String() string {
 	return fmt.Sprintf("%d", time.Time(t).Unix())
 }

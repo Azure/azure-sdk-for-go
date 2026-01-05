@@ -32,7 +32,7 @@ func (t RFC3339) MarshalJSON() ([]byte, error) {
 	return tt.MarshalJSON()
 }
 
-// MarshalText returns a textual representation of the RFC3339
+// MarshalText returns a textual representation of the RFC3339.
 func (t RFC3339) MarshalText() ([]byte, error) {
 	tt := time.Time(t)
 	return tt.MarshalText()
@@ -40,6 +40,9 @@ func (t RFC3339) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into an RFC3339 time.
 func (t *RFC3339) UnmarshalJSON(data []byte) error {
+	if string(data) == jsonNull {
+		return nil
+	}
 	tzOffset := tzOffsetRegex.Match(data)
 	hasT := strings.Contains(string(data), "T") || strings.Contains(string(data), "t")
 	var layout string
@@ -55,7 +58,7 @@ func (t *RFC3339) UnmarshalJSON(data []byte) error {
 	return t.parse(layout, string(data))
 }
 
-// UnmarshalText decodes the textual representation of a RFC3339
+// UnmarshalText decodes the textual representation of a RFC3339.
 func (t *RFC3339) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
 		return nil
@@ -82,7 +85,7 @@ func (t *RFC3339) parse(layout, value string) error {
 	return err
 }
 
-// String returns the string of the RFC3339
+// String returns the string of the RFC3339.
 func (t RFC3339) String() string {
 	return time.Time(t).Format(time.RFC3339Nano)
 }

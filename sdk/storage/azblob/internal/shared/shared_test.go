@@ -202,3 +202,11 @@ func TestSerializeBlobTagsToStrPtr(t *testing.T) {
 	}
 	require.Len(t, tags, 0)
 }
+
+func TestIsIPEndpointStyle(t *testing.T) {
+	require.False(t, IsIPEndpointStyle(""))
+	require.False(t, IsIPEndpointStyle(":0"))
+
+	require.True(t, IsIPEndpointStyle("127.0.0.1"))
+	require.True(t, IsIPEndpointStyle("127.0.0.1:80"))
+}

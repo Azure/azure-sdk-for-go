@@ -925,14 +925,14 @@ type RuleDefinition struct {
 	// The start time (UTC) when Summary rule execution starts.
 	BinStartTime *time.Time
 
+	// The destination table used for the Summary rule results.
+	DestinationTable *string
+
 	// Summary rule query.
 	Query *string
 
 	// The time cursor used in Summary rules bins processing, e.g. TimeGenerated.
 	TimeSelector *TimeSelectorEnum
-
-	// READ-ONLY; The destination table used for the Summary rule results.
-	DestinationTable *string
 }
 
 // SavedSearch - Value object for saved search results.

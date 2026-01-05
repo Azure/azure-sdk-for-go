@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-09-01-preview/CheckFilePathAvailability.json
-func ExampleResourceClient_CheckFilePathAvailability() {
+func ExampleNetAppResourceClient_CheckFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceClient().CheckFilePathAvailability(ctx, "eastus", armnetapp.FilePathAvailabilityRequest{
+	res, err := clientFactory.NewNetAppResourceClient().CheckFilePathAvailability(ctx, "eastus", armnetapp.FilePathAvailabilityRequest{
 		Name:     to.Ptr("my-exact-filepth"),
 		SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	}, nil)
@@ -33,7 +33,7 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceClientCheckFilePathAvailabilityResponse{
+	// res = armnetapp.NetAppResourceClientCheckFilePathAvailabilityResponse{
 	// 	CheckAvailabilityResponse: &armnetapp.CheckAvailabilityResponse{
 	// 		IsAvailable: to.Ptr(true),
 	// 	},
@@ -41,7 +41,7 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 }
 
 // Generated from example definition: 2025-09-01-preview/CheckNameAvailability.json
-func ExampleResourceClient_CheckNameAvailability() {
+func ExampleNetAppResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -51,7 +51,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceClient().CheckNameAvailability(ctx, "eastus", armnetapp.ResourceNameAvailabilityRequest{
+	res, err := clientFactory.NewNetAppResourceClient().CheckNameAvailability(ctx, "eastus", armnetapp.ResourceNameAvailabilityRequest{
 		Name:          to.Ptr("accName"),
 		Type:          to.Ptr(armnetapp.CheckNameResourceTypesMicrosoftNetAppNetAppAccounts),
 		ResourceGroup: to.Ptr("myRG"),
@@ -62,7 +62,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceClientCheckNameAvailabilityResponse{
+	// res = armnetapp.NetAppResourceClientCheckNameAvailabilityResponse{
 	// 	CheckAvailabilityResponse: &armnetapp.CheckAvailabilityResponse{
 	// 		IsAvailable: to.Ptr(true),
 	// 	},
@@ -70,7 +70,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 }
 
 // Generated from example definition: 2025-09-01-preview/CheckQuotaAvailability.json
-func ExampleResourceClient_CheckQuotaAvailability() {
+func ExampleNetAppResourceClient_CheckQuotaAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -80,7 +80,7 @@ func ExampleResourceClient_CheckQuotaAvailability() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceClient().CheckQuotaAvailability(ctx, "eastus", armnetapp.QuotaAvailabilityRequest{
+	res, err := clientFactory.NewNetAppResourceClient().CheckQuotaAvailability(ctx, "eastus", armnetapp.QuotaAvailabilityRequest{
 		Name:          to.Ptr("resource1"),
 		Type:          to.Ptr(armnetapp.CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts),
 		ResourceGroup: to.Ptr("myRG"),
@@ -91,7 +91,7 @@ func ExampleResourceClient_CheckQuotaAvailability() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceClientCheckQuotaAvailabilityResponse{
+	// res = armnetapp.NetAppResourceClientCheckQuotaAvailabilityResponse{
 	// 	CheckAvailabilityResponse: &armnetapp.CheckAvailabilityResponse{
 	// 		IsAvailable: to.Ptr(true),
 	// 	},
@@ -99,7 +99,7 @@ func ExampleResourceClient_CheckQuotaAvailability() {
 }
 
 // Generated from example definition: 2025-09-01-preview/NetworkSiblingSet_Query.json
-func ExampleResourceClient_QueryNetworkSiblingSet() {
+func ExampleNetAppResourceClient_QueryNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -109,7 +109,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceClient().QueryNetworkSiblingSet(ctx, "eastus", armnetapp.QueryNetworkSiblingSetRequest{
+	res, err := clientFactory.NewNetAppResourceClient().QueryNetworkSiblingSet(ctx, "eastus", armnetapp.QueryNetworkSiblingSetRequest{
 		NetworkSiblingSetID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 		SubnetID:            to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/testSubnet"),
 	}, nil)
@@ -119,7 +119,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceClientQueryNetworkSiblingSetResponse{
+	// res = armnetapp.NetAppResourceClientQueryNetworkSiblingSetResponse{
 	// 	NetworkSiblingSet: &armnetapp.NetworkSiblingSet{
 	// 		NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 		NetworkSiblingSetID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
@@ -152,7 +152,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 }
 
 // Generated from example definition: 2025-09-01-preview/RegionInfo.json
-func ExampleResourceClient_QueryRegionInfo() {
+func ExampleNetAppResourceClient_QueryRegionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -162,14 +162,14 @@ func ExampleResourceClient_QueryRegionInfo() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceClient().QueryRegionInfo(ctx, "eastus", nil)
+	res, err := clientFactory.NewNetAppResourceClient().QueryRegionInfo(ctx, "eastus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceClientQueryRegionInfoResponse{
+	// res = armnetapp.NetAppResourceClientQueryRegionInfoResponse{
 	// 	RegionInfo: &armnetapp.RegionInfo{
 	// 		AvailabilityZoneMappings: []*armnetapp.RegionInfoAvailabilityZoneMappingsItem{
 	// 			{
@@ -183,7 +183,7 @@ func ExampleResourceClient_QueryRegionInfo() {
 }
 
 // Generated from example definition: 2025-09-01-preview/NetworkSiblingSet_Update.json
-func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
+func ExampleNetAppResourceClient_BeginUpdateNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -193,7 +193,7 @@ func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewResourceClient().BeginUpdateNetworkSiblingSet(ctx, "eastus", armnetapp.UpdateNetworkSiblingSetRequest{
+	poller, err := clientFactory.NewNetAppResourceClient().BeginUpdateNetworkSiblingSet(ctx, "eastus", armnetapp.UpdateNetworkSiblingSetRequest{
 		NetworkFeatures:          to.Ptr(armnetapp.NetworkFeaturesStandard),
 		NetworkSiblingSetID:      to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 		NetworkSiblingSetStateID: to.Ptr("12345_44420.8001578125"),
@@ -209,7 +209,7 @@ func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceClientUpdateNetworkSiblingSetResponse{
+	// res = armnetapp.NetAppResourceClientUpdateNetworkSiblingSetResponse{
 	// 	NetworkSiblingSet: &armnetapp.NetworkSiblingSet{
 	// 		NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 		NetworkSiblingSetID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),

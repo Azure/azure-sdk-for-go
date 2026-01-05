@@ -16,23 +16,23 @@ import (
 	"strings"
 )
 
-// Client contains the methods for the service.
-// Don't use this type directly, use NewClient() instead.
-type Client struct {
+// DataProtectionClient contains the methods for the DataProtection group.
+// Don't use this type directly, use NewDataProtectionClient() instead.
+type DataProtectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewClient creates a new instance of Client with the specified values.
+// NewDataProtectionClient creates a new instance of DataProtectionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
+func NewDataProtectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataProtectionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &Client{
+	client := &DataProtectionClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -47,31 +47,32 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // Generated from API version 2025-07-01
 //   - location - The location name.
 //   - parameters - The request body
-//   - options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
-func (client *Client) CheckFeatureSupport(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, options *ClientCheckFeatureSupportOptions) (ClientCheckFeatureSupportResponse, error) {
+//   - options - DataProtectionClientCheckFeatureSupportOptions contains the optional parameters for the DataProtectionClient.CheckFeatureSupport
+//     method.
+func (client *DataProtectionClient) CheckFeatureSupport(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, options *DataProtectionClientCheckFeatureSupportOptions) (DataProtectionClientCheckFeatureSupportResponse, error) {
 	var err error
-	const operationName = "Client.CheckFeatureSupport"
+	const operationName = "DataProtectionClient.CheckFeatureSupport"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.checkFeatureSupportCreateRequest(ctx, location, parameters, options)
 	if err != nil {
-		return ClientCheckFeatureSupportResponse{}, err
+		return DataProtectionClientCheckFeatureSupportResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ClientCheckFeatureSupportResponse{}, err
+		return DataProtectionClientCheckFeatureSupportResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ClientCheckFeatureSupportResponse{}, err
+		return DataProtectionClientCheckFeatureSupportResponse{}, err
 	}
 	resp, err := client.checkFeatureSupportHandleResponse(httpResp)
 	return resp, err
 }
 
 // checkFeatureSupportCreateRequest creates the CheckFeatureSupport request.
-func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, _ *ClientCheckFeatureSupportOptions) (*policy.Request, error) {
+func (client *DataProtectionClient) checkFeatureSupportCreateRequest(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, _ *DataProtectionClientCheckFeatureSupportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/checkFeatureSupport"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,10 +98,10 @@ func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, loca
 }
 
 // checkFeatureSupportHandleResponse handles the CheckFeatureSupport response.
-func (client *Client) checkFeatureSupportHandleResponse(resp *http.Response) (ClientCheckFeatureSupportResponse, error) {
-	result := ClientCheckFeatureSupportResponse{}
+func (client *DataProtectionClient) checkFeatureSupportHandleResponse(resp *http.Response) (DataProtectionClientCheckFeatureSupportResponse, error) {
+	result := DataProtectionClientCheckFeatureSupportResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
-		return ClientCheckFeatureSupportResponse{}, err
+		return DataProtectionClientCheckFeatureSupportResponse{}, err
 	}
 	return result, nil
 }

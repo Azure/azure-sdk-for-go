@@ -19,66 +19,66 @@ import (
 	"strconv"
 )
 
-// DomainListsServer is a fake server for instances of the armdnsresolver.DomainListsClient type.
-type DomainListsServer struct {
-	// BeginBulk is the fake for method DomainListsClient.BeginBulk
+// DNSResolverDomainListsServer is a fake server for instances of the armdnsresolver.DNSResolverDomainListsClient type.
+type DNSResolverDomainListsServer struct {
+	// BeginBulk is the fake for method DNSResolverDomainListsClient.BeginBulk
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginBulk func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DomainListBulk, options *armdnsresolver.DomainListsClientBeginBulkOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientBulkResponse], errResp azfake.ErrorResponder)
+	BeginBulk func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DNSResolverDomainListBulk, options *armdnsresolver.DNSResolverDomainListsClientBeginBulkOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientBulkResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateOrUpdate is the fake for method DomainListsClient.BeginCreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method DNSResolverDomainListsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DomainList, options *armdnsresolver.DomainListsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DNSResolverDomainList, options *armdnsresolver.DNSResolverDomainListsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method DomainListsClient.BeginDelete
+	// BeginDelete is the fake for method DNSResolverDomainListsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *armdnsresolver.DomainListsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *armdnsresolver.DNSResolverDomainListsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DomainListsClient.Get
+	// Get is the fake for method DNSResolverDomainListsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *armdnsresolver.DomainListsClientGetOptions) (resp azfake.Responder[armdnsresolver.DomainListsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *armdnsresolver.DNSResolverDomainListsClientGetOptions) (resp azfake.Responder[armdnsresolver.DNSResolverDomainListsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DomainListsClient.NewListPager
+	// NewListPager is the fake for method DNSResolverDomainListsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armdnsresolver.DomainListsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse])
+	NewListPager func(options *armdnsresolver.DNSResolverDomainListsClientListOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolverDomainListsClientListResponse])
 
-	// NewListByResourceGroupPager is the fake for method DomainListsClient.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method DNSResolverDomainListsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armdnsresolver.DomainListsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armdnsresolver.DNSResolverDomainListsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdnsresolver.DNSResolverDomainListsClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method DomainListsClient.BeginUpdate
+	// BeginUpdate is the fake for method DNSResolverDomainListsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DomainListPatch, options *armdnsresolver.DomainListsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters armdnsresolver.DNSResolverDomainListPatch, options *armdnsresolver.DNSResolverDomainListsClientBeginUpdateOptions) (resp azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
-// NewDomainListsServerTransport creates a new instance of DomainListsServerTransport with the provided implementation.
-// The returned DomainListsServerTransport instance is connected to an instance of armdnsresolver.DomainListsClient via the
+// NewDNSResolverDomainListsServerTransport creates a new instance of DNSResolverDomainListsServerTransport with the provided implementation.
+// The returned DNSResolverDomainListsServerTransport instance is connected to an instance of armdnsresolver.DNSResolverDomainListsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewDomainListsServerTransport(srv *DomainListsServer) *DomainListsServerTransport {
-	return &DomainListsServerTransport{
+func NewDNSResolverDomainListsServerTransport(srv *DNSResolverDomainListsServer) *DNSResolverDomainListsServerTransport {
+	return &DNSResolverDomainListsServerTransport{
 		srv:                         srv,
-		beginBulk:                   newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientBulkResponse]](),
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse]](),
+		beginBulk:                   newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientBulkResponse]](),
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armdnsresolver.DNSResolverDomainListsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armdnsresolver.DNSResolverDomainListsClientListByResourceGroupResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientUpdateResponse]](),
 	}
 }
 
-// DomainListsServerTransport connects instances of armdnsresolver.DomainListsClient to instances of DomainListsServer.
-// Don't use this type directly, use NewDomainListsServerTransport instead.
-type DomainListsServerTransport struct {
-	srv                         *DomainListsServer
-	beginBulk                   *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientBulkResponse]]
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdnsresolver.DomainListsClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armdnsresolver.DomainListsClientUpdateResponse]]
+// DNSResolverDomainListsServerTransport connects instances of armdnsresolver.DNSResolverDomainListsClient to instances of DNSResolverDomainListsServer.
+// Don't use this type directly, use NewDNSResolverDomainListsServerTransport instead.
+type DNSResolverDomainListsServerTransport struct {
+	srv                         *DNSResolverDomainListsServer
+	beginBulk                   *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientBulkResponse]]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armdnsresolver.DNSResolverDomainListsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armdnsresolver.DNSResolverDomainListsClientListByResourceGroupResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armdnsresolver.DNSResolverDomainListsClientUpdateResponse]]
 }
 
-// Do implements the policy.Transporter interface for DomainListsServerTransport.
-func (d *DomainListsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DNSResolverDomainListsServerTransport.
+func (d *DNSResolverDomainListsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -88,31 +88,31 @@ func (d *DomainListsServerTransport) Do(req *http.Request) (*http.Response, erro
 	return d.dispatchToMethodFake(req, method)
 }
 
-func (d *DomainListsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if domainListsServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = domainListsServerTransportInterceptor.Do(req)
+		if dnsResolverDomainListsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = dnsResolverDomainListsServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "DomainListsClient.BeginBulk":
+			case "DNSResolverDomainListsClient.BeginBulk":
 				res.resp, res.err = d.dispatchBeginBulk(req)
-			case "DomainListsClient.BeginCreateOrUpdate":
+			case "DNSResolverDomainListsClient.BeginCreateOrUpdate":
 				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
-			case "DomainListsClient.BeginDelete":
+			case "DNSResolverDomainListsClient.BeginDelete":
 				res.resp, res.err = d.dispatchBeginDelete(req)
-			case "DomainListsClient.Get":
+			case "DNSResolverDomainListsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DomainListsClient.NewListPager":
+			case "DNSResolverDomainListsClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DomainListsClient.NewListByResourceGroupPager":
+			case "DNSResolverDomainListsClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
-			case "DomainListsClient.BeginUpdate":
+			case "DNSResolverDomainListsClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -133,7 +133,7 @@ func (d *DomainListsServerTransport) dispatchToMethodFake(req *http.Request, met
 	}
 }
 
-func (d *DomainListsServerTransport) dispatchBeginBulk(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchBeginBulk(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginBulk == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginBulk not implemented")}
 	}
@@ -145,7 +145,7 @@ func (d *DomainListsServerTransport) dispatchBeginBulk(req *http.Request) (*http
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DomainListBulk](req)
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSResolverDomainListBulk](req)
 		if err != nil {
 			return nil, err
 		}
@@ -159,9 +159,9 @@ func (d *DomainListsServerTransport) dispatchBeginBulk(req *http.Request) (*http
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
 		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "if-none-match"))
-		var options *armdnsresolver.DomainListsClientBeginBulkOptions
+		var options *armdnsresolver.DNSResolverDomainListsClientBeginBulkOptions
 		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armdnsresolver.DomainListsClientBeginBulkOptions{
+			options = &armdnsresolver.DNSResolverDomainListsClientBeginBulkOptions{
 				IfMatch:     ifMatchParam,
 				IfNoneMatch: ifNoneMatchParam,
 			}
@@ -190,7 +190,7 @@ func (d *DomainListsServerTransport) dispatchBeginBulk(req *http.Request) (*http
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
@@ -202,7 +202,7 @@ func (d *DomainListsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DomainList](req)
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSResolverDomainList](req)
 		if err != nil {
 			return nil, err
 		}
@@ -216,9 +216,9 @@ func (d *DomainListsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
 		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "if-none-match"))
-		var options *armdnsresolver.DomainListsClientBeginCreateOrUpdateOptions
+		var options *armdnsresolver.DNSResolverDomainListsClientBeginCreateOrUpdateOptions
 		if ifMatchParam != nil || ifNoneMatchParam != nil {
-			options = &armdnsresolver.DomainListsClientBeginCreateOrUpdateOptions{
+			options = &armdnsresolver.DNSResolverDomainListsClientBeginCreateOrUpdateOptions{
 				IfMatch:     ifMatchParam,
 				IfNoneMatch: ifNoneMatchParam,
 			}
@@ -247,7 +247,7 @@ func (d *DomainListsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -268,9 +268,9 @@ func (d *DomainListsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 			return nil, err
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.DomainListsClientBeginDeleteOptions
+		var options *armdnsresolver.DNSResolverDomainListsClientBeginDeleteOptions
 		if ifMatchParam != nil {
-			options = &armdnsresolver.DomainListsClientBeginDeleteOptions{
+			options = &armdnsresolver.DNSResolverDomainListsClientBeginDeleteOptions{
 				IfMatch: ifMatchParam,
 			}
 		}
@@ -298,7 +298,7 @@ func (d *DomainListsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -324,14 +324,14 @@ func (d *DomainListsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DomainList, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DNSResolverDomainList, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -358,16 +358,16 @@ func (d *DomainListsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		if err != nil {
 			return nil, err
 		}
-		var options *armdnsresolver.DomainListsClientListOptions
+		var options *armdnsresolver.DNSResolverDomainListsClientListOptions
 		if topParam != nil {
-			options = &armdnsresolver.DomainListsClientListOptions{
+			options = &armdnsresolver.DNSResolverDomainListsClientListOptions{
 				Top: topParam,
 			}
 		}
 		resp := d.srv.NewListPager(options)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DomainListsClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdnsresolver.DNSResolverDomainListsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -385,7 +385,7 @@ func (d *DomainListsServerTransport) dispatchNewListPager(req *http.Request) (*h
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
@@ -416,16 +416,16 @@ func (d *DomainListsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		var options *armdnsresolver.DomainListsClientListByResourceGroupOptions
+		var options *armdnsresolver.DNSResolverDomainListsClientListByResourceGroupOptions
 		if topParam != nil {
-			options = &armdnsresolver.DomainListsClientListByResourceGroupOptions{
+			options = &armdnsresolver.DNSResolverDomainListsClientListByResourceGroupOptions{
 				Top: topParam,
 			}
 		}
 		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
 		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdnsresolver.DomainListsClientListByResourceGroupResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdnsresolver.DNSResolverDomainListsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -443,7 +443,7 @@ func (d *DomainListsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	return resp, nil
 }
 
-func (d *DomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+func (d *DNSResolverDomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
@@ -455,7 +455,7 @@ func (d *DomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DomainListPatch](req)
+		body, err := server.UnmarshalRequestAsJSON[armdnsresolver.DNSResolverDomainListPatch](req)
 		if err != nil {
 			return nil, err
 		}
@@ -468,9 +468,9 @@ func (d *DomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 			return nil, err
 		}
 		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
-		var options *armdnsresolver.DomainListsClientBeginUpdateOptions
+		var options *armdnsresolver.DNSResolverDomainListsClientBeginUpdateOptions
 		if ifMatchParam != nil {
-			options = &armdnsresolver.DomainListsClientBeginUpdateOptions{
+			options = &armdnsresolver.DNSResolverDomainListsClientBeginUpdateOptions{
 				IfMatch: ifMatchParam,
 			}
 		}
@@ -498,8 +498,8 @@ func (d *DomainListsServerTransport) dispatchBeginUpdate(req *http.Request) (*ht
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to DomainListsServerTransport
-var domainListsServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to DNSResolverDomainListsServerTransport
+var dnsResolverDomainListsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -25,7 +25,7 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewStorageMoversClient().CreateOrUpdate(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.StorageMover{
 		Location: to.Ptr("eastus2"),
-		Properties: &armstoragemover.Properties{
+		Properties: &armstoragemover.StorageMoverProperties{
 			Description: to.Ptr("Example Storage Mover Description"),
 		},
 		Tags: map[string]*string{
@@ -45,7 +45,7 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName"),
 	// 		Location: to.Ptr("eastus2"),
-	// 		Properties: &armstoragemover.Properties{
+	// 		Properties: &armstoragemover.StorageMoverProperties{
 	// 			Description: to.Ptr("Example Storage Mover Description"),
 	// 		},
 	// 		SystemData: &armstoragemover.SystemData{
@@ -114,7 +114,7 @@ func ExampleStorageMoversClient_Get() {
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName"),
 	// 		Location: to.Ptr("eastus2"),
-	// 		Properties: &armstoragemover.Properties{
+	// 		Properties: &armstoragemover.StorageMoverProperties{
 	// 			Description: to.Ptr("Example Storage Mover Description"),
 	// 		},
 	// 		SystemData: &armstoragemover.SystemData{
@@ -156,7 +156,7 @@ func ExampleStorageMoversClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armstoragemover.StorageMoversClientListResponse{
-		// 	List: armstoragemover.List{
+		// 	StorageMoverList: armstoragemover.StorageMoverList{
 		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.StorageMover/storageMovers?$skiptoken=fake-continue-token"),
 		// 		Value: []*armstoragemover.StorageMover{
 		// 			{
@@ -164,7 +164,7 @@ func ExampleStorageMoversClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName1"),
 		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
+		// 				Properties: &armstoragemover.StorageMoverProperties{
 		// 					Description: to.Ptr("Example Storage Mover 1 Description"),
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
@@ -185,7 +185,7 @@ func ExampleStorageMoversClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName2"),
 		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
+		// 				Properties: &armstoragemover.StorageMoverProperties{
 		// 					Description: to.Ptr("Example Storage Mover 2 Description"),
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
@@ -206,7 +206,7 @@ func ExampleStorageMoversClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName3"),
 		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
+		// 				Properties: &armstoragemover.StorageMoverProperties{
 		// 					Description: to.Ptr("Example Storage Mover 3 Description"),
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
@@ -251,7 +251,7 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armstoragemover.StorageMoversClientListBySubscriptionResponse{
-		// 	List: armstoragemover.List{
+		// 	StorageMoverList: armstoragemover.StorageMoverList{
 		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.StorageMover/storageMovers?$skiptoken=fake-continue-token"),
 		// 		Value: []*armstoragemover.StorageMover{
 		// 			{
@@ -259,7 +259,7 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName1"),
 		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
+		// 				Properties: &armstoragemover.StorageMoverProperties{
 		// 					Description: to.Ptr("Example Storage Mover 1 Description"),
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
@@ -280,7 +280,7 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg2/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName2"),
 		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
+		// 				Properties: &armstoragemover.StorageMoverProperties{
 		// 					Description: to.Ptr("Example Storage Mover 2 Description"),
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
@@ -301,7 +301,7 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 		// 				Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 		// 				ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverResourceName3"),
 		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armstoragemover.Properties{
+		// 				Properties: &armstoragemover.StorageMoverProperties{
 		// 					Description: to.Ptr("Example Storage Mover 3 Description"),
 		// 				},
 		// 				SystemData: &armstoragemover.SystemData{
@@ -334,8 +334,8 @@ func ExampleStorageMoversClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewStorageMoversClient().Update(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.UpdateParameters{
-		Properties: &armstoragemover.UpdateProperties{
+	res, err := clientFactory.NewStorageMoversClient().Update(ctx, "examples-rg", "examples-storageMoverName", armstoragemover.StorageMoverUpdateParameters{
+		Properties: &armstoragemover.StorageMoverUpdateProperties{
 			Description: to.Ptr("Updated Storage Mover Description"),
 		},
 	}, nil)
@@ -351,7 +351,7 @@ func ExampleStorageMoversClient_Update() {
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName"),
 	// 		Location: to.Ptr("eastus2"),
-	// 		Properties: &armstoragemover.Properties{
+	// 		Properties: &armstoragemover.StorageMoverProperties{
 	// 			Description: to.Ptr("Updated Storage Mover Description"),
 	// 		},
 	// 		SystemData: &armstoragemover.SystemData{

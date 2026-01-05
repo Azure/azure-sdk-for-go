@@ -616,15 +616,6 @@ type JobRunResourceID struct {
 	JobRunResourceID *string
 }
 
-// List of Storage Movers.
-type List struct {
-	// READ-ONLY; The StorageMover items on this page
-	Value []*StorageMover
-
-	// The link to the next page of items
-	NextLink *string
-}
-
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
@@ -788,15 +779,6 @@ type ProjectUpdateProperties struct {
 	Description *string
 }
 
-// Properties - The resource specific properties for the Storage Mover resource.
-type Properties struct {
-	// A description for the Storage Mover.
-	Description *string
-
-	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState
-}
-
 // SmbMountEndpointProperties - The properties of SMB share endpoint.
 type SmbMountEndpointProperties struct {
 	// CONSTANT; The Endpoint resource type.
@@ -882,7 +864,7 @@ type StorageMover struct {
 	Location *string
 
 	// The resource specific properties for the Storage Mover resource.
-	Properties *Properties
+	Properties *StorageMoverProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -898,6 +880,39 @@ type StorageMover struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// StorageMoverList - List of Storage Movers.
+type StorageMoverList struct {
+	// READ-ONLY; The StorageMover items on this page
+	Value []*StorageMover
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// StorageMoverProperties - The resource specific properties for the Storage Mover resource.
+type StorageMoverProperties struct {
+	// A description for the Storage Mover.
+	Description *string
+
+	// READ-ONLY; The provisioning state of this resource.
+	ProvisioningState *ProvisioningState
+}
+
+// StorageMoverUpdateParameters - The Storage Mover resource.
+type StorageMoverUpdateParameters struct {
+	// The resource specific properties for the Storage Mover resource.
+	Properties *StorageMoverUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// StorageMoverUpdateProperties - The resource specific properties for the Storage Mover resource.
+type StorageMoverUpdateProperties struct {
+	// A description for the Storage Mover.
+	Description *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -950,21 +965,6 @@ type Time struct {
 
 	// The minute element of the time. Allowed values are 0 and 30. If not specified, its value defaults to 0.
 	Minute *Minute
-}
-
-// UpdateParameters - The Storage Mover resource.
-type UpdateParameters struct {
-	// The resource specific properties for the Storage Mover resource.
-	Properties *UpdateProperties
-
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// UpdateProperties - The resource specific properties for the Storage Mover resource.
-type UpdateProperties struct {
-	// A description for the Storage Mover.
-	Description *string
 }
 
 // UploadLimitSchedule - The WAN-link upload limit schedule. Overlapping recurrences are not allowed.

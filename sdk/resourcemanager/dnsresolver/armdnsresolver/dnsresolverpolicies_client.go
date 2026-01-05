@@ -17,23 +17,23 @@ import (
 	"strings"
 )
 
-// PoliciesClient contains the methods for the Policies group.
-// Don't use this type directly, use NewPoliciesClient() instead.
-type PoliciesClient struct {
+// DNSResolverPoliciesClient contains the methods for the DNSResolverPolicies group.
+// Don't use this type directly, use NewDNSResolverPoliciesClient() instead.
+type DNSResolverPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewPoliciesClient creates a new instance of PoliciesClient with the specified values.
+// NewDNSResolverPoliciesClient creates a new instance of DNSResolverPoliciesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PoliciesClient, error) {
+func NewDNSResolverPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DNSResolverPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &PoliciesClient{
+	client := &DNSResolverPoliciesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -47,20 +47,20 @@ func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential,
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - parameters - Parameters supplied to the CreateOrUpdate operation.
-//   - options - PoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.BeginCreateOrUpdate
+//   - options - DNSResolverPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the DNSResolverPoliciesClient.BeginCreateOrUpdate
 //     method.
-func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters Policy, options *PoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PoliciesClientCreateOrUpdateResponse], error) {
+func (client *DNSResolverPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters DNSResolverPolicy, options *DNSResolverPoliciesClientBeginCreateOrUpdateOptions) (*runtime.Poller[DNSResolverPoliciesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, dnsResolverPolicyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSResolverPoliciesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSResolverPoliciesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -70,9 +70,9 @@ func (client *PoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters Policy, options *PoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *DNSResolverPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters DNSResolverPolicy, options *DNSResolverPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PoliciesClient.BeginCreateOrUpdate"
+	const operationName = "DNSResolverPoliciesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -92,7 +92,7 @@ func (client *PoliciesClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters Policy, options *PoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters DNSResolverPolicy, options *DNSResolverPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,19 +133,20 @@ func (client *PoliciesClient) createOrUpdateCreateRequest(ctx context.Context, r
 // Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
-//   - options - PoliciesClientBeginDeleteOptions contains the optional parameters for the PoliciesClient.BeginDelete method.
-func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *PoliciesClientBeginDeleteOptions) (*runtime.Poller[PoliciesClientDeleteResponse], error) {
+//   - options - DNSResolverPoliciesClientBeginDeleteOptions contains the optional parameters for the DNSResolverPoliciesClient.BeginDelete
+//     method.
+func (client *DNSResolverPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *DNSResolverPoliciesClientBeginDeleteOptions) (*runtime.Poller[DNSResolverPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, dnsResolverPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSResolverPoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSResolverPoliciesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -155,9 +156,9 @@ func (client *PoliciesClient) BeginDelete(ctx context.Context, resourceGroupName
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *PoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DNSResolverPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *DNSResolverPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PoliciesClient.BeginDelete"
+	const operationName = "DNSResolverPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -177,7 +178,7 @@ func (client *PoliciesClient) deleteOperation(ctx context.Context, resourceGroup
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *PoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *DNSResolverPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -210,31 +211,31 @@ func (client *PoliciesClient) deleteCreateRequest(ctx context.Context, resourceG
 // Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
-//   - options - PoliciesClientGetOptions contains the optional parameters for the PoliciesClient.Get method.
-func (client *PoliciesClient) Get(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *PoliciesClientGetOptions) (PoliciesClientGetResponse, error) {
+//   - options - DNSResolverPoliciesClientGetOptions contains the optional parameters for the DNSResolverPoliciesClient.Get method.
+func (client *DNSResolverPoliciesClient) Get(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, options *DNSResolverPoliciesClientGetOptions) (DNSResolverPoliciesClientGetResponse, error) {
 	var err error
-	const operationName = "PoliciesClient.Get"
+	const operationName = "DNSResolverPoliciesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, dnsResolverPolicyName, options)
 	if err != nil {
-		return PoliciesClientGetResponse{}, err
+		return DNSResolverPoliciesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PoliciesClientGetResponse{}, err
+		return DNSResolverPoliciesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetResponse{}, err
+		return DNSResolverPoliciesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, _ *PoliciesClientGetOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, _ *DNSResolverPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -260,10 +261,10 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesClientGetResponse, error) {
-	result := PoliciesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Policy); err != nil {
-		return PoliciesClientGetResponse{}, err
+func (client *DNSResolverPoliciesClient) getHandleResponse(resp *http.Response) (DNSResolverPoliciesClientGetResponse, error) {
+	result := DNSResolverPoliciesClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverPolicy); err != nil {
+		return DNSResolverPoliciesClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -271,14 +272,15 @@ func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesCl
 // NewListPager - Lists DNS resolver policies in all resource groups of a subscription.
 //
 // Generated from API version 2025-10-01-preview
-//   - options - PoliciesClientListOptions contains the optional parameters for the PoliciesClient.NewListPager method.
-func (client *PoliciesClient) NewListPager(options *PoliciesClientListOptions) *runtime.Pager[PoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PoliciesClientListResponse]{
-		More: func(page PoliciesClientListResponse) bool {
+//   - options - DNSResolverPoliciesClientListOptions contains the optional parameters for the DNSResolverPoliciesClient.NewListPager
+//     method.
+func (client *DNSResolverPoliciesClient) NewListPager(options *DNSResolverPoliciesClientListOptions) *runtime.Pager[DNSResolverPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DNSResolverPoliciesClientListResponse]{
+		More: func(page DNSResolverPoliciesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PoliciesClientListResponse) (PoliciesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PoliciesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *DNSResolverPoliciesClientListResponse) (DNSResolverPoliciesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DNSResolverPoliciesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -287,7 +289,7 @@ func (client *PoliciesClient) NewListPager(options *PoliciesClientListOptions) *
 				return client.listCreateRequest(ctx, options)
 			}, nil)
 			if err != nil {
-				return PoliciesClientListResponse{}, err
+				return DNSResolverPoliciesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -296,7 +298,7 @@ func (client *PoliciesClient) NewListPager(options *PoliciesClientListOptions) *
 }
 
 // listCreateRequest creates the List request.
-func (client *PoliciesClient) listCreateRequest(ctx context.Context, options *PoliciesClientListOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) listCreateRequest(ctx context.Context, options *DNSResolverPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnsResolverPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -317,10 +319,10 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, options *Po
 }
 
 // listHandleResponse handles the List response.
-func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesClientListResponse, error) {
-	result := PoliciesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyListResult); err != nil {
-		return PoliciesClientListResponse{}, err
+func (client *DNSResolverPoliciesClient) listHandleResponse(resp *http.Response) (DNSResolverPoliciesClientListResponse, error) {
+	result := DNSResolverPoliciesClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverPolicyListResult); err != nil {
+		return DNSResolverPoliciesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -329,15 +331,15 @@ func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesC
 //
 // Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - PoliciesClientListByResourceGroupOptions contains the optional parameters for the PoliciesClient.NewListByResourceGroupPager
+//   - options - DNSResolverPoliciesClientListByResourceGroupOptions contains the optional parameters for the DNSResolverPoliciesClient.NewListByResourceGroupPager
 //     method.
-func (client *PoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *PoliciesClientListByResourceGroupOptions) *runtime.Pager[PoliciesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PoliciesClientListByResourceGroupResponse]{
-		More: func(page PoliciesClientListByResourceGroupResponse) bool {
+func (client *DNSResolverPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *DNSResolverPoliciesClientListByResourceGroupOptions) *runtime.Pager[DNSResolverPoliciesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DNSResolverPoliciesClientListByResourceGroupResponse]{
+		More: func(page DNSResolverPoliciesClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PoliciesClientListByResourceGroupResponse) (PoliciesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PoliciesClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *DNSResolverPoliciesClientListByResourceGroupResponse) (DNSResolverPoliciesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DNSResolverPoliciesClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -346,7 +348,7 @@ func (client *PoliciesClient) NewListByResourceGroupPager(resourceGroupName stri
 				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 			}, nil)
 			if err != nil {
-				return PoliciesClientListByResourceGroupResponse{}, err
+				return DNSResolverPoliciesClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp)
 		},
@@ -355,7 +357,7 @@ func (client *PoliciesClient) NewListByResourceGroupPager(resourceGroupName stri
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DNSResolverPoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -380,10 +382,10 @@ func (client *PoliciesClient) listByResourceGroupCreateRequest(ctx context.Conte
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (PoliciesClientListByResourceGroupResponse, error) {
-	result := PoliciesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyListResult); err != nil {
-		return PoliciesClientListByResourceGroupResponse{}, err
+func (client *DNSResolverPoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (DNSResolverPoliciesClientListByResourceGroupResponse, error) {
+	result := DNSResolverPoliciesClientListByResourceGroupResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DNSResolverPolicyListResult); err != nil {
+		return DNSResolverPoliciesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -393,15 +395,15 @@ func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Respo
 // Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualNetworkName - The name of the VirtualNetwork
-//   - options - PoliciesClientListByVirtualNetworkOptions contains the optional parameters for the PoliciesClient.NewListByVirtualNetworkPager
+//   - options - DNSResolverPoliciesClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolverPoliciesClient.NewListByVirtualNetworkPager
 //     method.
-func (client *PoliciesClient) NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *PoliciesClientListByVirtualNetworkOptions) *runtime.Pager[PoliciesClientListByVirtualNetworkResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PoliciesClientListByVirtualNetworkResponse]{
-		More: func(page PoliciesClientListByVirtualNetworkResponse) bool {
+func (client *DNSResolverPoliciesClient) NewListByVirtualNetworkPager(resourceGroupName string, virtualNetworkName string, options *DNSResolverPoliciesClientListByVirtualNetworkOptions) *runtime.Pager[DNSResolverPoliciesClientListByVirtualNetworkResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DNSResolverPoliciesClientListByVirtualNetworkResponse]{
+		More: func(page DNSResolverPoliciesClientListByVirtualNetworkResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *PoliciesClientListByVirtualNetworkResponse) (PoliciesClientListByVirtualNetworkResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PoliciesClient.NewListByVirtualNetworkPager")
+		Fetcher: func(ctx context.Context, page *DNSResolverPoliciesClientListByVirtualNetworkResponse) (DNSResolverPoliciesClientListByVirtualNetworkResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DNSResolverPoliciesClient.NewListByVirtualNetworkPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -410,7 +412,7 @@ func (client *PoliciesClient) NewListByVirtualNetworkPager(resourceGroupName str
 				return client.listByVirtualNetworkCreateRequest(ctx, resourceGroupName, virtualNetworkName, options)
 			}, nil)
 			if err != nil {
-				return PoliciesClientListByVirtualNetworkResponse{}, err
+				return DNSResolverPoliciesClientListByVirtualNetworkResponse{}, err
 			}
 			return client.listByVirtualNetworkHandleResponse(resp)
 		},
@@ -419,7 +421,7 @@ func (client *PoliciesClient) NewListByVirtualNetworkPager(resourceGroupName str
 }
 
 // listByVirtualNetworkCreateRequest creates the ListByVirtualNetwork request.
-func (client *PoliciesClient) listByVirtualNetworkCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, _ *PoliciesClientListByVirtualNetworkOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) listByVirtualNetworkCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkName string, _ *DNSResolverPoliciesClientListByVirtualNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/listDnsResolverPolicies"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -445,10 +447,10 @@ func (client *PoliciesClient) listByVirtualNetworkCreateRequest(ctx context.Cont
 }
 
 // listByVirtualNetworkHandleResponse handles the ListByVirtualNetwork response.
-func (client *PoliciesClient) listByVirtualNetworkHandleResponse(resp *http.Response) (PoliciesClientListByVirtualNetworkResponse, error) {
-	result := PoliciesClientListByVirtualNetworkResponse{}
+func (client *DNSResolverPoliciesClient) listByVirtualNetworkHandleResponse(resp *http.Response) (DNSResolverPoliciesClientListByVirtualNetworkResponse, error) {
+	result := DNSResolverPoliciesClientListByVirtualNetworkResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubResourceListResult); err != nil {
-		return PoliciesClientListByVirtualNetworkResponse{}, err
+		return DNSResolverPoliciesClientListByVirtualNetworkResponse{}, err
 	}
 	return result, nil
 }
@@ -460,19 +462,20 @@ func (client *PoliciesClient) listByVirtualNetworkHandleResponse(resp *http.Resp
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - parameters - Parameters supplied to the Update operation.
-//   - options - PoliciesClientBeginUpdateOptions contains the optional parameters for the PoliciesClient.BeginUpdate method.
-func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters PolicyPatch, options *PoliciesClientBeginUpdateOptions) (*runtime.Poller[PoliciesClientUpdateResponse], error) {
+//   - options - DNSResolverPoliciesClientBeginUpdateOptions contains the optional parameters for the DNSResolverPoliciesClient.BeginUpdate
+//     method.
+func (client *DNSResolverPoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters DNSResolverPolicyPatch, options *DNSResolverPoliciesClientBeginUpdateOptions) (*runtime.Poller[DNSResolverPoliciesClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, dnsResolverPolicyName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PoliciesClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DNSResolverPoliciesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PoliciesClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DNSResolverPoliciesClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -482,9 +485,9 @@ func (client *PoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-10-01-preview
-func (client *PoliciesClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters PolicyPatch, options *PoliciesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *DNSResolverPoliciesClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters DNSResolverPolicyPatch, options *DNSResolverPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "PoliciesClient.BeginUpdate"
+	const operationName = "DNSResolverPoliciesClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -504,7 +507,7 @@ func (client *PoliciesClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters PolicyPatch, options *PoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *DNSResolverPoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, parameters DNSResolverPolicyPatch, options *DNSResolverPoliciesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsResolverPolicies/{dnsResolverPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

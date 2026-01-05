@@ -575,6 +575,90 @@ type ElasticVolumesClientListByElasticPoolOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NetAppResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the NetAppResourceClient.BeginUpdateNetworkSiblingSet
+// method.
+type NetAppResourceClientBeginUpdateNetworkSiblingSetOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetAppResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the NetAppResourceClient.CheckFilePathAvailability
+// method.
+type NetAppResourceClientCheckFilePathAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceClientCheckNameAvailabilityOptions contains the optional parameters for the NetAppResourceClient.CheckNameAvailability
+// method.
+type NetAppResourceClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the NetAppResourceClient.CheckQuotaAvailability
+// method.
+type NetAppResourceClientCheckQuotaAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceClientQueryNetworkSiblingSetOptions contains the optional parameters for the NetAppResourceClient.QueryNetworkSiblingSet
+// method.
+type NetAppResourceClientQueryNetworkSiblingSetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceClientQueryRegionInfoOptions contains the optional parameters for the NetAppResourceClient.QueryRegionInfo
+// method.
+type NetAppResourceClientQueryRegionInfoOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceQuotaLimitsAccountClientGetOptions contains the optional parameters for the NetAppResourceQuotaLimitsAccountClient.Get
+// method.
+type NetAppResourceQuotaLimitsAccountClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceQuotaLimitsAccountClientListOptions contains the optional parameters for the NetAppResourceQuotaLimitsAccountClient.NewListPager
+// method.
+type NetAppResourceQuotaLimitsAccountClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceQuotaLimitsClientGetOptions contains the optional parameters for the NetAppResourceQuotaLimitsClient.Get
+// method.
+type NetAppResourceQuotaLimitsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceQuotaLimitsClientListOptions contains the optional parameters for the NetAppResourceQuotaLimitsClient.NewListPager
+// method.
+type NetAppResourceQuotaLimitsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceRegionInfosClientGetOptions contains the optional parameters for the NetAppResourceRegionInfosClient.Get
+// method.
+type NetAppResourceRegionInfosClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceRegionInfosClientListOptions contains the optional parameters for the NetAppResourceRegionInfosClient.NewListPager
+// method.
+type NetAppResourceRegionInfosClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceUsagesClientGetOptions contains the optional parameters for the NetAppResourceUsagesClient.Get method.
+type NetAppResourceUsagesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetAppResourceUsagesClientListOptions contains the optional parameters for the NetAppResourceUsagesClient.NewListPager
+// method.
+type NetAppResourceUsagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -622,84 +706,6 @@ type RansomwareReportsClientGetOptions struct {
 
 // RansomwareReportsClientListOptions contains the optional parameters for the RansomwareReportsClient.NewListPager method.
 type RansomwareReportsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceClientBeginUpdateNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.BeginUpdateNetworkSiblingSet
-// method.
-type ResourceClientBeginUpdateNetworkSiblingSetOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
-// method.
-type ResourceClientCheckFilePathAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
-// method.
-type ResourceClientCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
-// method.
-type ResourceClientCheckQuotaAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceClientQueryNetworkSiblingSetOptions contains the optional parameters for the ResourceClient.QueryNetworkSiblingSet
-// method.
-type ResourceClientQueryNetworkSiblingSetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo method.
-type ResourceClientQueryRegionInfoOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceQuotaLimitsAccountClientGetOptions contains the optional parameters for the ResourceQuotaLimitsAccountClient.Get
-// method.
-type ResourceQuotaLimitsAccountClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceQuotaLimitsAccountClientListOptions contains the optional parameters for the ResourceQuotaLimitsAccountClient.NewListPager
-// method.
-type ResourceQuotaLimitsAccountClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
-type ResourceQuotaLimitsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager method.
-type ResourceQuotaLimitsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceRegionInfosClientGetOptions contains the optional parameters for the ResourceRegionInfosClient.Get method.
-type ResourceRegionInfosClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceRegionInfosClientListOptions contains the optional parameters for the ResourceRegionInfosClient.NewListPager method.
-type ResourceRegionInfosClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceUsagesClientGetOptions contains the optional parameters for the ResourceUsagesClient.Get method.
-type ResourceUsagesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ResourceUsagesClientListOptions contains the optional parameters for the ResourceUsagesClient.NewListPager method.
-type ResourceUsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

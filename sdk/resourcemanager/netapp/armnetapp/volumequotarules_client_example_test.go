@@ -48,7 +48,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 			QuotaTarget: to.Ptr("1821"),
 	// 			QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -108,7 +108,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 			QuotaTarget: to.Ptr("1821"),
 	// 			QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -148,7 +148,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 		// 				ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 		// 				Location: to.Ptr("westus"),
 		// 				Properties: &armnetapp.VolumeQuotaRulesProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					QuotaSizeInKiBs: to.Ptr[int64](100005),
 		// 					QuotaTarget: to.Ptr("1821"),
 		// 					QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
@@ -193,7 +193,7 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.VolumeQuotaRulesProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStatePatching),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStatePatching),
 	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 			QuotaTarget: to.Ptr("1821"),
 	// 			QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),

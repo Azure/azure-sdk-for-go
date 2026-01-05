@@ -43,7 +43,7 @@ func ExampleElasticCapacityPoolsClient_BeginChangeZone() {
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticCapacityPools"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.ElasticCapacityPoolProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			ServiceLevel: to.Ptr(armnetapp.ElasticServiceLevelZoneRedundant),
 	// 			Size: to.Ptr[int64](4398046511104),
 	// 			TotalThroughputMibps: to.Ptr[float64](281.474),
@@ -129,7 +129,7 @@ func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsC
 	// 			to.Ptr("3"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticCapacityPoolProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			ServiceLevel: to.Ptr(armnetapp.ElasticServiceLevelZoneRedundant),
 	// 			Size: to.Ptr[int64](4398046511104),
 	// 			TotalThroughputMibps: to.Ptr[float64](281.474),
@@ -193,7 +193,7 @@ func ExampleElasticCapacityPoolsClient_BeginCreateOrUpdate_elasticCapacityPoolsC
 	// 			to.Ptr("3"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticCapacityPoolProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			ServiceLevel: to.Ptr(armnetapp.ElasticServiceLevelZoneRedundant),
 	// 			Size: to.Ptr[int64](4398046511104),
 	// 			TotalThroughputMibps: to.Ptr[float64](281.474),
@@ -261,7 +261,7 @@ func ExampleElasticCapacityPoolsClient_Get() {
 	// 			to.Ptr("3"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticCapacityPoolProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			ServiceLevel: to.Ptr(armnetapp.ElasticServiceLevelZoneRedundant),
 	// 			Size: to.Ptr[int64](4398046511104),
 	// 			TotalThroughputMibps: to.Ptr[float64](281.474),
@@ -314,7 +314,7 @@ func ExampleElasticCapacityPoolsClient_NewListByElasticAccountPager() {
 		// 					to.Ptr("3"),
 		// 				},
 		// 				Properties: &armnetapp.ElasticCapacityPoolProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					ServiceLevel: to.Ptr(armnetapp.ElasticServiceLevelZoneRedundant),
 		// 					Size: to.Ptr[int64](4398046511104),
 		// 					TotalThroughputMibps: to.Ptr[float64](281.474),
@@ -373,7 +373,7 @@ func ExampleElasticCapacityPoolsClient_BeginUpdate() {
 	// 			to.Ptr("3"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticCapacityPoolProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			ServiceLevel: to.Ptr(armnetapp.ElasticServiceLevelZoneRedundant),
 	// 			Size: to.Ptr[int64](4398046511104),
 	// 			TotalThroughputMibps: to.Ptr[float64](281.474),

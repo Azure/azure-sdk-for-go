@@ -18,14 +18,20 @@ type ServerFactory struct {
 	// DNSForwardingRulesetsServer contains the fakes for client DNSForwardingRulesetsClient
 	DNSForwardingRulesetsServer DNSForwardingRulesetsServer
 
+	// DNSResolverDomainListsServer contains the fakes for client DNSResolverDomainListsClient
+	DNSResolverDomainListsServer DNSResolverDomainListsServer
+
+	// DNSResolverPoliciesServer contains the fakes for client DNSResolverPoliciesClient
+	DNSResolverPoliciesServer DNSResolverPoliciesServer
+
+	// DNSResolverPolicyVirtualNetworkLinksServer contains the fakes for client DNSResolverPolicyVirtualNetworkLinksClient
+	DNSResolverPolicyVirtualNetworkLinksServer DNSResolverPolicyVirtualNetworkLinksServer
+
 	// DNSResolversServer contains the fakes for client DNSResolversClient
 	DNSResolversServer DNSResolversServer
 
 	// DNSSecurityRulesServer contains the fakes for client DNSSecurityRulesClient
 	DNSSecurityRulesServer DNSSecurityRulesServer
-
-	// DomainListsServer contains the fakes for client DomainListsClient
-	DomainListsServer DomainListsServer
 
 	// ForwardingRulesServer contains the fakes for client ForwardingRulesClient
 	ForwardingRulesServer ForwardingRulesServer
@@ -35,12 +41,6 @@ type ServerFactory struct {
 
 	// OutboundEndpointsServer contains the fakes for client OutboundEndpointsClient
 	OutboundEndpointsServer OutboundEndpointsServer
-
-	// PoliciesServer contains the fakes for client PoliciesClient
-	PoliciesServer PoliciesServer
-
-	// PolicyVirtualNetworkLinksServer contains the fakes for client PolicyVirtualNetworkLinksClient
-	PolicyVirtualNetworkLinksServer PolicyVirtualNetworkLinksServer
 
 	// VirtualNetworkLinksServer contains the fakes for client VirtualNetworkLinksClient
 	VirtualNetworkLinksServer VirtualNetworkLinksServer
@@ -58,18 +58,18 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdnsresolver.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                               *ServerFactory
-	trMu                              sync.Mutex
-	trDNSForwardingRulesetsServer     *DNSForwardingRulesetsServerTransport
-	trDNSResolversServer              *DNSResolversServerTransport
-	trDNSSecurityRulesServer          *DNSSecurityRulesServerTransport
-	trDomainListsServer               *DomainListsServerTransport
-	trForwardingRulesServer           *ForwardingRulesServerTransport
-	trInboundEndpointsServer          *InboundEndpointsServerTransport
-	trOutboundEndpointsServer         *OutboundEndpointsServerTransport
-	trPoliciesServer                  *PoliciesServerTransport
-	trPolicyVirtualNetworkLinksServer *PolicyVirtualNetworkLinksServerTransport
-	trVirtualNetworkLinksServer       *VirtualNetworkLinksServerTransport
+	srv                                          *ServerFactory
+	trMu                                         sync.Mutex
+	trDNSForwardingRulesetsServer                *DNSForwardingRulesetsServerTransport
+	trDNSResolverDomainListsServer               *DNSResolverDomainListsServerTransport
+	trDNSResolverPoliciesServer                  *DNSResolverPoliciesServerTransport
+	trDNSResolverPolicyVirtualNetworkLinksServer *DNSResolverPolicyVirtualNetworkLinksServerTransport
+	trDNSResolversServer                         *DNSResolversServerTransport
+	trDNSSecurityRulesServer                     *DNSSecurityRulesServerTransport
+	trForwardingRulesServer                      *ForwardingRulesServerTransport
+	trInboundEndpointsServer                     *InboundEndpointsServerTransport
+	trOutboundEndpointsServer                    *OutboundEndpointsServerTransport
+	trVirtualNetworkLinksServer                  *VirtualNetworkLinksServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -90,6 +90,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDNSForwardingRulesetsServerTransport(&s.srv.DNSForwardingRulesetsServer)
 		})
 		resp, err = s.trDNSForwardingRulesetsServer.Do(req)
+	case "DNSResolverDomainListsClient":
+		initServer(s, &s.trDNSResolverDomainListsServer, func() *DNSResolverDomainListsServerTransport {
+			return NewDNSResolverDomainListsServerTransport(&s.srv.DNSResolverDomainListsServer)
+		})
+		resp, err = s.trDNSResolverDomainListsServer.Do(req)
+	case "DNSResolverPoliciesClient":
+		initServer(s, &s.trDNSResolverPoliciesServer, func() *DNSResolverPoliciesServerTransport {
+			return NewDNSResolverPoliciesServerTransport(&s.srv.DNSResolverPoliciesServer)
+		})
+		resp, err = s.trDNSResolverPoliciesServer.Do(req)
+	case "DNSResolverPolicyVirtualNetworkLinksClient":
+		initServer(s, &s.trDNSResolverPolicyVirtualNetworkLinksServer, func() *DNSResolverPolicyVirtualNetworkLinksServerTransport {
+			return NewDNSResolverPolicyVirtualNetworkLinksServerTransport(&s.srv.DNSResolverPolicyVirtualNetworkLinksServer)
+		})
+		resp, err = s.trDNSResolverPolicyVirtualNetworkLinksServer.Do(req)
 	case "DNSResolversClient":
 		initServer(s, &s.trDNSResolversServer, func() *DNSResolversServerTransport { return NewDNSResolversServerTransport(&s.srv.DNSResolversServer) })
 		resp, err = s.trDNSResolversServer.Do(req)
@@ -98,9 +113,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDNSSecurityRulesServerTransport(&s.srv.DNSSecurityRulesServer)
 		})
 		resp, err = s.trDNSSecurityRulesServer.Do(req)
-	case "DomainListsClient":
-		initServer(s, &s.trDomainListsServer, func() *DomainListsServerTransport { return NewDomainListsServerTransport(&s.srv.DomainListsServer) })
-		resp, err = s.trDomainListsServer.Do(req)
 	case "ForwardingRulesClient":
 		initServer(s, &s.trForwardingRulesServer, func() *ForwardingRulesServerTransport {
 			return NewForwardingRulesServerTransport(&s.srv.ForwardingRulesServer)
@@ -116,14 +128,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewOutboundEndpointsServerTransport(&s.srv.OutboundEndpointsServer)
 		})
 		resp, err = s.trOutboundEndpointsServer.Do(req)
-	case "PoliciesClient":
-		initServer(s, &s.trPoliciesServer, func() *PoliciesServerTransport { return NewPoliciesServerTransport(&s.srv.PoliciesServer) })
-		resp, err = s.trPoliciesServer.Do(req)
-	case "PolicyVirtualNetworkLinksClient":
-		initServer(s, &s.trPolicyVirtualNetworkLinksServer, func() *PolicyVirtualNetworkLinksServerTransport {
-			return NewPolicyVirtualNetworkLinksServerTransport(&s.srv.PolicyVirtualNetworkLinksServer)
-		})
-		resp, err = s.trPolicyVirtualNetworkLinksServer.Do(req)
 	case "VirtualNetworkLinksClient":
 		initServer(s, &s.trVirtualNetworkLinksServer, func() *VirtualNetworkLinksServerTransport {
 			return NewVirtualNetworkLinksServerTransport(&s.srv.VirtualNetworkLinksServer)

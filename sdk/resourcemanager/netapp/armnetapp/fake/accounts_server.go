@@ -27,7 +27,7 @@ type AccountsServer struct {
 
 	// BeginCreateOrUpdate is the fake for method AccountsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, body armnetapp.Account, options *armnetapp.AccountsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, body armnetapp.NetAppAccount, options *armnetapp.AccountsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method AccountsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -59,7 +59,7 @@ type AccountsServer struct {
 
 	// BeginUpdate is the fake for method AccountsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, body armnetapp.AccountPatch, options *armnetapp.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, body armnetapp.NetAppAccountPatch, options *armnetapp.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAccountsServerTransport creates a new instance of AccountsServerTransport with the provided implementation.
@@ -223,7 +223,7 @@ func (a *AccountsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.Account](req)
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.NetAppAccount](req)
 		if err != nil {
 			return nil, err
 		}
@@ -329,7 +329,7 @@ func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Account, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetAppAccount, req)
 	if err != nil {
 		return nil, err
 	}
@@ -560,7 +560,7 @@ func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armnetapp.AccountPatch](req)
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.NetAppAccountPatch](req)
 		if err != nil {
 			return nil, err
 		}

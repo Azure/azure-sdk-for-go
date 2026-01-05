@@ -16,23 +16,23 @@ import (
 	"strings"
 )
 
-// ResourceQuotaLimitsClient contains the methods for the ResourceQuotaLimits group.
-// Don't use this type directly, use NewResourceQuotaLimitsClient() instead.
-type ResourceQuotaLimitsClient struct {
+// NetAppResourceQuotaLimitsClient contains the methods for the NetAppResourceQuotaLimits group.
+// Don't use this type directly, use NewNetAppResourceQuotaLimitsClient() instead.
+type NetAppResourceQuotaLimitsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceQuotaLimitsClient creates a new instance of ResourceQuotaLimitsClient with the specified values.
+// NewNetAppResourceQuotaLimitsClient creates a new instance of NetAppResourceQuotaLimitsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceQuotaLimitsClient, error) {
+func NewNetAppResourceQuotaLimitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetAppResourceQuotaLimitsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceQuotaLimitsClient{
+	client := &NetAppResourceQuotaLimitsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -45,31 +45,32 @@ func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.Token
 // Generated from API version 2025-09-01-preview
 //   - location - The name of the Azure region.
 //   - quotaLimitName - The name of the Quota Limit
-//   - options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
-func (client *ResourceQuotaLimitsClient) Get(ctx context.Context, location string, quotaLimitName string, options *ResourceQuotaLimitsClientGetOptions) (ResourceQuotaLimitsClientGetResponse, error) {
+//   - options - NetAppResourceQuotaLimitsClientGetOptions contains the optional parameters for the NetAppResourceQuotaLimitsClient.Get
+//     method.
+func (client *NetAppResourceQuotaLimitsClient) Get(ctx context.Context, location string, quotaLimitName string, options *NetAppResourceQuotaLimitsClientGetOptions) (NetAppResourceQuotaLimitsClientGetResponse, error) {
 	var err error
-	const operationName = "ResourceQuotaLimitsClient.Get"
+	const operationName = "NetAppResourceQuotaLimitsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, quotaLimitName, options)
 	if err != nil {
-		return ResourceQuotaLimitsClientGetResponse{}, err
+		return NetAppResourceQuotaLimitsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceQuotaLimitsClientGetResponse{}, err
+		return NetAppResourceQuotaLimitsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceQuotaLimitsClientGetResponse{}, err
+		return NetAppResourceQuotaLimitsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, location string, quotaLimitName string, _ *ResourceQuotaLimitsClientGetOptions) (*policy.Request, error) {
+func (client *NetAppResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, location string, quotaLimitName string, _ *NetAppResourceQuotaLimitsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/quotaLimits/{quotaLimitName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,10 +96,10 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) (ResourceQuotaLimitsClientGetResponse, error) {
-	result := ResourceQuotaLimitsClientGetResponse{}
+func (client *NetAppResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) (NetAppResourceQuotaLimitsClientGetResponse, error) {
+	result := NetAppResourceQuotaLimitsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItem); err != nil {
-		return ResourceQuotaLimitsClientGetResponse{}, err
+		return NetAppResourceQuotaLimitsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -107,15 +108,15 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 //
 // Generated from API version 2025-09-01-preview
 //   - location - The name of the Azure region.
-//   - options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager
+//   - options - NetAppResourceQuotaLimitsClientListOptions contains the optional parameters for the NetAppResourceQuotaLimitsClient.NewListPager
 //     method.
-func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceQuotaLimitsClientListResponse]{
-		More: func(page ResourceQuotaLimitsClientListResponse) bool {
+func (client *NetAppResourceQuotaLimitsClient) NewListPager(location string, options *NetAppResourceQuotaLimitsClientListOptions) *runtime.Pager[NetAppResourceQuotaLimitsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetAppResourceQuotaLimitsClientListResponse]{
+		More: func(page NetAppResourceQuotaLimitsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ResourceQuotaLimitsClientListResponse) (ResourceQuotaLimitsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceQuotaLimitsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *NetAppResourceQuotaLimitsClientListResponse) (NetAppResourceQuotaLimitsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetAppResourceQuotaLimitsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -124,7 +125,7 @@ func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *
 				return client.listCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return ResourceQuotaLimitsClientListResponse{}, err
+				return NetAppResourceQuotaLimitsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -133,7 +134,7 @@ func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, location string, _ *ResourceQuotaLimitsClientListOptions) (*policy.Request, error) {
+func (client *NetAppResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, location string, _ *NetAppResourceQuotaLimitsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/quotaLimits"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -155,10 +156,10 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceQuotaLimitsClient) listHandleResponse(resp *http.Response) (ResourceQuotaLimitsClientListResponse, error) {
-	result := ResourceQuotaLimitsClientListResponse{}
+func (client *NetAppResourceQuotaLimitsClient) listHandleResponse(resp *http.Response) (NetAppResourceQuotaLimitsClientListResponse, error) {
+	result := NetAppResourceQuotaLimitsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaItemList); err != nil {
-		return ResourceQuotaLimitsClientListResponse{}, err
+		return NetAppResourceQuotaLimitsClientListResponse{}, err
 	}
 	return result, nil
 }

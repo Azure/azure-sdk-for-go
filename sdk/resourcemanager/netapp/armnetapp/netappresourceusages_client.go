@@ -16,23 +16,23 @@ import (
 	"strings"
 )
 
-// ResourceUsagesClient contains the methods for the ResourceUsages group.
-// Don't use this type directly, use NewResourceUsagesClient() instead.
-type ResourceUsagesClient struct {
+// NetAppResourceUsagesClient contains the methods for the NetAppResourceUsages group.
+// Don't use this type directly, use NewNetAppResourceUsagesClient() instead.
+type NetAppResourceUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewResourceUsagesClient creates a new instance of ResourceUsagesClient with the specified values.
+// NewNetAppResourceUsagesClient creates a new instance of NetAppResourceUsagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewResourceUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceUsagesClient, error) {
+func NewNetAppResourceUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetAppResourceUsagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ResourceUsagesClient{
+	client := &NetAppResourceUsagesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -47,31 +47,32 @@ func NewResourceUsagesClient(subscriptionID string, credential azcore.TokenCrede
 // Generated from API version 2025-09-01-preview
 //   - location - The name of the Azure region.
 //   - usageType - The type of usage
-//   - options - ResourceUsagesClientGetOptions contains the optional parameters for the ResourceUsagesClient.Get method.
-func (client *ResourceUsagesClient) Get(ctx context.Context, location string, usageType string, options *ResourceUsagesClientGetOptions) (ResourceUsagesClientGetResponse, error) {
+//   - options - NetAppResourceUsagesClientGetOptions contains the optional parameters for the NetAppResourceUsagesClient.Get
+//     method.
+func (client *NetAppResourceUsagesClient) Get(ctx context.Context, location string, usageType string, options *NetAppResourceUsagesClientGetOptions) (NetAppResourceUsagesClientGetResponse, error) {
 	var err error
-	const operationName = "ResourceUsagesClient.Get"
+	const operationName = "NetAppResourceUsagesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, usageType, options)
 	if err != nil {
-		return ResourceUsagesClientGetResponse{}, err
+		return NetAppResourceUsagesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ResourceUsagesClientGetResponse{}, err
+		return NetAppResourceUsagesClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ResourceUsagesClientGetResponse{}, err
+		return NetAppResourceUsagesClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ResourceUsagesClient) getCreateRequest(ctx context.Context, location string, usageType string, _ *ResourceUsagesClientGetOptions) (*policy.Request, error) {
+func (client *NetAppResourceUsagesClient) getCreateRequest(ctx context.Context, location string, usageType string, _ *NetAppResourceUsagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/usages/{usageType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,10 +98,10 @@ func (client *ResourceUsagesClient) getCreateRequest(ctx context.Context, locati
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceUsagesClient) getHandleResponse(resp *http.Response) (ResourceUsagesClientGetResponse, error) {
-	result := ResourceUsagesClientGetResponse{}
+func (client *NetAppResourceUsagesClient) getHandleResponse(resp *http.Response) (NetAppResourceUsagesClientGetResponse, error) {
+	result := NetAppResourceUsagesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageResult); err != nil {
-		return ResourceUsagesClientGetResponse{}, err
+		return NetAppResourceUsagesClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -111,14 +112,15 @@ func (client *ResourceUsagesClient) getHandleResponse(resp *http.Response) (Reso
 //
 // Generated from API version 2025-09-01-preview
 //   - location - The location name.
-//   - options - ResourceUsagesClientListOptions contains the optional parameters for the ResourceUsagesClient.NewListPager method.
-func (client *ResourceUsagesClient) NewListPager(location string, options *ResourceUsagesClientListOptions) *runtime.Pager[ResourceUsagesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ResourceUsagesClientListResponse]{
-		More: func(page ResourceUsagesClientListResponse) bool {
+//   - options - NetAppResourceUsagesClientListOptions contains the optional parameters for the NetAppResourceUsagesClient.NewListPager
+//     method.
+func (client *NetAppResourceUsagesClient) NewListPager(location string, options *NetAppResourceUsagesClientListOptions) *runtime.Pager[NetAppResourceUsagesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetAppResourceUsagesClientListResponse]{
+		More: func(page NetAppResourceUsagesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ResourceUsagesClientListResponse) (ResourceUsagesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ResourceUsagesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *NetAppResourceUsagesClientListResponse) (NetAppResourceUsagesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetAppResourceUsagesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -127,7 +129,7 @@ func (client *ResourceUsagesClient) NewListPager(location string, options *Resou
 				return client.listCreateRequest(ctx, location, options)
 			}, nil)
 			if err != nil {
-				return ResourceUsagesClientListResponse{}, err
+				return NetAppResourceUsagesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -136,7 +138,7 @@ func (client *ResourceUsagesClient) NewListPager(location string, options *Resou
 }
 
 // listCreateRequest creates the List request.
-func (client *ResourceUsagesClient) listCreateRequest(ctx context.Context, location string, _ *ResourceUsagesClientListOptions) (*policy.Request, error) {
+func (client *NetAppResourceUsagesClient) listCreateRequest(ctx context.Context, location string, _ *NetAppResourceUsagesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/usages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -158,10 +160,10 @@ func (client *ResourceUsagesClient) listCreateRequest(ctx context.Context, locat
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceUsagesClient) listHandleResponse(resp *http.Response) (ResourceUsagesClientListResponse, error) {
-	result := ResourceUsagesClientListResponse{}
+func (client *NetAppResourceUsagesClient) listHandleResponse(resp *http.Response) (NetAppResourceUsagesClientListResponse, error) {
+	result := NetAppResourceUsagesClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
-		return ResourceUsagesClientListResponse{}, err
+		return NetAppResourceUsagesClientListResponse{}, err
 	}
 	return result, nil
 }

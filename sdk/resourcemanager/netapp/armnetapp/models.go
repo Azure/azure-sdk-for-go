@@ -6,39 +6,6 @@ package armnetapp
 
 import "time"
 
-// Account - NetApp account resource
-type Account struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentity
-
-	// NetApp Account properties
-	Properties *AccountProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
-	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
-	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
-	// fields.")
-	Etag *string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // AccountEncryption - Encryption settings
 type AccountEncryption struct {
 	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
@@ -49,39 +16,6 @@ type AccountEncryption struct {
 
 	// Properties provided by KeVault. Applicable if keySource is 'Microsoft.KeyVault'.
 	KeyVaultProperties *KeyVaultProperties
-}
-
-// AccountList - List of NetApp account resources
-type AccountList struct {
-	// REQUIRED; The NetAppAccount items on this page
-	Value []*Account
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// AccountPatch - NetApp account patch resource
-type AccountPatch struct {
-	// The identity used for the resource.
-	Identity *ManagedServiceIdentity
-
-	// Resource location
-	Location *string
-
-	// NetApp Account properties
-	Properties *AccountProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
 }
 
 // AccountProperties - NetApp account properties
@@ -263,7 +197,7 @@ type ActiveDirectoryConfigProperties struct {
 	ActiveDirectoryStatus *ActiveDirectoryStatus
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // ActiveDirectoryConfigUpdate - The type used for update operations of the ActiveDirectoryConfig.
@@ -679,7 +613,7 @@ type BucketPatchProperties struct {
 	Server *BucketServerPatchProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // BucketProperties - Bucket resource properties
@@ -701,7 +635,7 @@ type BucketProperties struct {
 	Server *BucketServerProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 
 	// READ-ONLY; The bucket credentials status. There states:
 	// "NoCredentialsSet": Access and Secret key pair have not been generated.
@@ -1138,7 +1072,7 @@ type ElasticAccountProperties struct {
 	Encryption *ElasticEncryption
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // ElasticAccountUpdate - The type used for update operations of the ElasticAccount.
@@ -1243,7 +1177,7 @@ type ElasticBackupPolicyProperties struct {
 	AssignedVolumesCount *int32
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // ElasticBackupPolicyUpdate - The type used for update operations of the ElasticBackupPolicy.
@@ -1302,7 +1236,7 @@ type ElasticBackupProperties struct {
 	FailureReason *string
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 
 	// READ-ONLY; Size of backup in bytes
 	Size *int64
@@ -1356,7 +1290,7 @@ type ElasticBackupVaultListResult struct {
 // ElasticBackupVaultProperties - Elastic Backup Vault properties
 type ElasticBackupVaultProperties struct {
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // ElasticBackupVaultUpdate - The type used for update operations of the ElasticBackupVault.
@@ -1435,7 +1369,7 @@ type ElasticCapacityPoolProperties struct {
 	CurrentZone *string
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 
 	// READ-ONLY; Total throughput of the pool in MiB/s
 	TotalThroughputMibps *float64
@@ -1683,7 +1617,7 @@ type ElasticSnapshotPolicyProperties struct {
 	WeeklySchedule *ElasticSnapshotPolicyWeeklySchedule
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // ElasticSnapshotPolicyUpdate - The type used for update operations of the ElasticSnapshotPolicy.
@@ -1740,7 +1674,7 @@ type ElasticSnapshotPolicyWeeklySchedule struct {
 // ElasticSnapshotProperties - Elastic Snapshot properties
 type ElasticSnapshotProperties struct {
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // ElasticVolume - NetApp Elastic Volume resource
@@ -1855,7 +1789,7 @@ type ElasticVolumeProperties struct {
 	MountTargets []*ElasticMountTargetProperties
 
 	// READ-ONLY; Azure lifecycle management.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 
 	// READ-ONLY; The current state of the restoration process.
 	RestorationState *ElasticVolumeRestorationState
@@ -2229,6 +2163,72 @@ type MountTargetProperties struct {
 
 	// READ-ONLY; UUID v4 used to identify the MountTarget
 	MountTargetID *string
+}
+
+// NetAppAccount - NetApp account resource
+type NetAppAccount struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// NetApp Account properties
+	Properties *AccountProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetAppAccountList - List of NetApp account resources
+type NetAppAccountList struct {
+	// REQUIRED; The NetAppAccount items on this page
+	Value []*NetAppAccount
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NetAppAccountPatch - NetApp account patch resource
+type NetAppAccountPatch struct {
+	// The identity used for the resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource location
+	Location *string
+
+	// NetApp Account properties
+	Properties *AccountProperties
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
 }
 
 // NetworkSiblingSet - Describes the contents of a network sibling set.
@@ -3769,7 +3769,7 @@ type VolumeQuotaRulesProperties struct {
 	QuotaType *Type
 
 	// READ-ONLY; Gets the status of the VolumeQuotaRule at the time the operation was called.
-	ProvisioningState *ProvisioningState
+	ProvisioningState *NetappProvisioningState
 }
 
 // VolumeRelocationProperties - Volume relocation properties

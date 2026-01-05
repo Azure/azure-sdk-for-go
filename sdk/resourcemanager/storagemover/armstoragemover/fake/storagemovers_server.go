@@ -42,7 +42,7 @@ type StorageMoversServer struct {
 
 	// Update is the fake for method StorageMoversClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover armstoragemover.UpdateParameters, options *armstoragemover.StorageMoversClientUpdateOptions) (resp azfake.Responder[armstoragemover.StorageMoversClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover armstoragemover.StorageMoverUpdateParameters, options *armstoragemover.StorageMoversClientUpdateOptions) (resp azfake.Responder[armstoragemover.StorageMoversClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewStorageMoversServerTransport creates a new instance of StorageMoversServerTransport with the provided implementation.
@@ -314,7 +314,7 @@ func (s *StorageMoversServerTransport) dispatchUpdate(req *http.Request) (*http.
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armstoragemover.UpdateParameters](req)
+	body, err := server.UnmarshalRequestAsJSON[armstoragemover.StorageMoverUpdateParameters](req)
 	if err != nil {
 		return nil, err
 	}

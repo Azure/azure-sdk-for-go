@@ -170,13 +170,13 @@ type StorageMoversClientGetResponse struct {
 // StorageMoversClientListBySubscriptionResponse contains the response from method StorageMoversClient.NewListBySubscriptionPager.
 type StorageMoversClientListBySubscriptionResponse struct {
 	// List of Storage Movers.
-	List
+	StorageMoverList
 }
 
 // StorageMoversClientListResponse contains the response from method StorageMoversClient.NewListPager.
 type StorageMoversClientListResponse struct {
 	// List of Storage Movers.
-	List
+	StorageMoverList
 }
 
 // StorageMoversClientUpdateResponse contains the response from method StorageMoversClient.Update.

@@ -40,6 +40,30 @@ func (c *ClientFactory) NewDNSForwardingRulesetsClient() *DNSForwardingRulesetsC
 	}
 }
 
+// NewDNSResolverDomainListsClient creates a new instance of DNSResolverDomainListsClient.
+func (c *ClientFactory) NewDNSResolverDomainListsClient() *DNSResolverDomainListsClient {
+	return &DNSResolverDomainListsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDNSResolverPoliciesClient creates a new instance of DNSResolverPoliciesClient.
+func (c *ClientFactory) NewDNSResolverPoliciesClient() *DNSResolverPoliciesClient {
+	return &DNSResolverPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDNSResolverPolicyVirtualNetworkLinksClient creates a new instance of DNSResolverPolicyVirtualNetworkLinksClient.
+func (c *ClientFactory) NewDNSResolverPolicyVirtualNetworkLinksClient() *DNSResolverPolicyVirtualNetworkLinksClient {
+	return &DNSResolverPolicyVirtualNetworkLinksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDNSResolversClient creates a new instance of DNSResolversClient.
 func (c *ClientFactory) NewDNSResolversClient() *DNSResolversClient {
 	return &DNSResolversClient{
@@ -51,14 +75,6 @@ func (c *ClientFactory) NewDNSResolversClient() *DNSResolversClient {
 // NewDNSSecurityRulesClient creates a new instance of DNSSecurityRulesClient.
 func (c *ClientFactory) NewDNSSecurityRulesClient() *DNSSecurityRulesClient {
 	return &DNSSecurityRulesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDomainListsClient creates a new instance of DomainListsClient.
-func (c *ClientFactory) NewDomainListsClient() *DomainListsClient {
-	return &DomainListsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -83,22 +99,6 @@ func (c *ClientFactory) NewInboundEndpointsClient() *InboundEndpointsClient {
 // NewOutboundEndpointsClient creates a new instance of OutboundEndpointsClient.
 func (c *ClientFactory) NewOutboundEndpointsClient() *OutboundEndpointsClient {
 	return &OutboundEndpointsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewPoliciesClient creates a new instance of PoliciesClient.
-func (c *ClientFactory) NewPoliciesClient() *PoliciesClient {
-	return &PoliciesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewPolicyVirtualNetworkLinksClient creates a new instance of PolicyVirtualNetworkLinksClient.
-func (c *ClientFactory) NewPolicyVirtualNetworkLinksClient() *PolicyVirtualNetworkLinksClient {
-	return &PolicyVirtualNetworkLinksClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

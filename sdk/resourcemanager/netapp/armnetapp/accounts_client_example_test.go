@@ -55,7 +55,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginCreateOrUpdate(ctx, "myRG", "account1", armnetapp.Account{
+	poller, err := clientFactory.NewAccountsClient().BeginCreateOrUpdate(ctx, "myRG", "account1", armnetapp.NetAppAccount{
 		Location:   to.Ptr("eastus"),
 		Properties: &armnetapp.AccountProperties{},
 	}, nil)
@@ -70,7 +70,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armnetapp.Account{
+	// 	NetAppAccount: &armnetapp.NetAppAccount{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -93,7 +93,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginCreateOrUpdate(ctx, "myRG", "account1", armnetapp.Account{
+	poller, err := clientFactory.NewAccountsClient().BeginCreateOrUpdate(ctx, "myRG", "account1", armnetapp.NetAppAccount{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetapp.AccountProperties{
 			ActiveDirectories: []*armnetapp.ActiveDirectory{
@@ -123,7 +123,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armnetapp.Account{
+	// 	NetAppAccount: &armnetapp.NetAppAccount{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -189,7 +189,7 @@ func ExampleAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientGetResponse{
-	// 	Account: &armnetapp.Account{
+	// 	NetAppAccount: &armnetapp.NetAppAccount{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -278,8 +278,8 @@ func ExampleAccountsClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armnetapp.AccountsClientListResponse{
-		// 	AccountList: armnetapp.AccountList{
-		// 		Value: []*armnetapp.Account{
+		// 	NetAppAccountList: armnetapp.NetAppAccountList{
+		// 		Value: []*armnetapp.NetAppAccount{
 		// 			{
 		// 				Name: to.Ptr("account1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
@@ -318,8 +318,8 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armnetapp.AccountsClientListBySubscriptionResponse{
-		// 	AccountList: armnetapp.AccountList{
-		// 		Value: []*armnetapp.Account{
+		// 	NetAppAccountList: armnetapp.NetAppAccountList{
+		// 		Value: []*armnetapp.NetAppAccount{
 		// 			{
 		// 				Name: to.Ptr("account1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
@@ -397,7 +397,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myRG", "account1", armnetapp.AccountPatch{
+	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "myRG", "account1", armnetapp.NetAppAccountPatch{
 		Tags: map[string]*string{
 			"Tag1": to.Ptr("Value1"),
 		},
@@ -413,7 +413,7 @@ func ExampleAccountsClient_BeginUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientUpdateResponse{
-	// 	Account: &armnetapp.Account{
+	// 	NetAppAccount: &armnetapp.NetAppAccount{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),

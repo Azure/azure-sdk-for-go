@@ -53,7 +53,7 @@ func ExampleElasticBackupPoliciesClient_BeginCreateOrUpdate() {
 	// 			WeeklyBackupsToKeep: to.Ptr[int32](10),
 	// 			MonthlyBackupsToKeep: to.Ptr[int32](10),
 	// 			PolicyState: to.Ptr(armnetapp.ElasticBackupPolicyStateEnabled),
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateCreating),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateCreating),
 	// 		},
 	// 	},
 	// }
@@ -195,7 +195,7 @@ func ExampleElasticBackupPoliciesClient_BeginUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupPolicies"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.ElasticBackupPolicyProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			DailyBackupsToKeep: to.Ptr[int32](5),
 	// 			WeeklyBackupsToKeep: to.Ptr[int32](10),
 	// 			MonthlyBackupsToKeep: to.Ptr[int32](10),

@@ -54,8 +54,8 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 		},
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armchaos.ExperimentProperties{
-			Selectors: []armchaos.TargetSelectorClassification{
-				&armchaos.TargetListSelector{
+			Selectors: []armchaos.ChaosTargetSelectorClassification{
+				&armchaos.ChaosTargetListSelector{
 					Type: to.Ptr(armchaos.SelectorTypeList),
 					ID:   to.Ptr("selector1"),
 					Targets: []*armchaos.TargetReference{
@@ -66,13 +66,13 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 					},
 				},
 			},
-			Steps: []*armchaos.ExperimentStep{
+			Steps: []*armchaos.ChaosExperimentStep{
 				{
 					Name: to.Ptr("step1"),
-					Branches: []*armchaos.ExperimentBranch{
+					Branches: []*armchaos.ChaosExperimentBranch{
 						{
 							Name: to.Ptr("branch1"),
-							Actions: []armchaos.ExperimentActionClassification{
+							Actions: []armchaos.ChaosExperimentActionClassification{
 								&armchaos.ContinuousAction{
 									Name:     to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 									Type:     to.Ptr(armchaos.ExperimentActionTypeContinuous),
@@ -119,8 +119,8 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armchaos.ExperimentProperties{
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-	// 			Selectors: []armchaos.TargetSelectorClassification{
-	// 				&armchaos.TargetListSelector{
+	// 			Selectors: []armchaos.ChaosTargetSelectorClassification{
+	// 				&armchaos.ChaosTargetListSelector{
 	// 					Type: to.Ptr(armchaos.SelectorTypeList),
 	// 					ID: to.Ptr("selector1"),
 	// 					Targets: []*armchaos.TargetReference{
@@ -131,13 +131,13 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			Steps: []*armchaos.ExperimentStep{
+	// 			Steps: []*armchaos.ChaosExperimentStep{
 	// 				{
 	// 					Name: to.Ptr("step1"),
-	// 					Branches: []*armchaos.ExperimentBranch{
+	// 					Branches: []*armchaos.ChaosExperimentBranch{
 	// 						{
 	// 							Name: to.Ptr("branch1"),
-	// 							Actions: []armchaos.ExperimentActionClassification{
+	// 							Actions: []armchaos.ChaosExperimentActionClassification{
 	// 								&armchaos.ContinuousAction{
 	// 									Name: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 									Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
@@ -292,8 +292,8 @@ func ExampleExperimentsClient_Get() {
 	// 		},
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armchaos.ExperimentProperties{
-	// 			Selectors: []armchaos.TargetSelectorClassification{
-	// 				&armchaos.TargetListSelector{
+	// 			Selectors: []armchaos.ChaosTargetSelectorClassification{
+	// 				&armchaos.ChaosTargetListSelector{
 	// 					Type: to.Ptr(armchaos.SelectorTypeList),
 	// 					ID: to.Ptr("selector1"),
 	// 					Targets: []*armchaos.TargetReference{
@@ -304,13 +304,13 @@ func ExampleExperimentsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			Steps: []*armchaos.ExperimentStep{
+	// 			Steps: []*armchaos.ChaosExperimentStep{
 	// 				{
 	// 					Name: to.Ptr("step1"),
-	// 					Branches: []*armchaos.ExperimentBranch{
+	// 					Branches: []*armchaos.ChaosExperimentBranch{
 	// 						{
 	// 							Name: to.Ptr("branch1"),
-	// 							Actions: []armchaos.ExperimentActionClassification{
+	// 							Actions: []armchaos.ChaosExperimentActionClassification{
 	// 								&armchaos.ContinuousAction{
 	// 									Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 	// 									Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
@@ -410,8 +410,8 @@ func ExampleExperimentsClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("centraluseuap"),
 		// 				Properties: &armchaos.ExperimentProperties{
-		// 					Selectors: []armchaos.TargetSelectorClassification{
-		// 						&armchaos.TargetListSelector{
+		// 					Selectors: []armchaos.ChaosTargetSelectorClassification{
+		// 						&armchaos.ChaosTargetListSelector{
 		// 							Type: to.Ptr(armchaos.SelectorTypeList),
 		// 							ID: to.Ptr("selector1"),
 		// 							Targets: []*armchaos.TargetReference{
@@ -422,13 +422,13 @@ func ExampleExperimentsClient_NewListPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					Steps: []*armchaos.ExperimentStep{
+		// 					Steps: []*armchaos.ChaosExperimentStep{
 		// 						{
 		// 							Name: to.Ptr("step1"),
-		// 							Branches: []*armchaos.ExperimentBranch{
+		// 							Branches: []*armchaos.ChaosExperimentBranch{
 		// 								{
 		// 									Name: to.Ptr("branch1"),
-		// 									Actions: []armchaos.ExperimentActionClassification{
+		// 									Actions: []armchaos.ChaosExperimentActionClassification{
 		// 										&armchaos.ContinuousAction{
 		// 											Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 		// 											Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
@@ -499,8 +499,8 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 				},
 		// 				Location: to.Ptr("centraluseuap"),
 		// 				Properties: &armchaos.ExperimentProperties{
-		// 					Selectors: []armchaos.TargetSelectorClassification{
-		// 						&armchaos.TargetListSelector{
+		// 					Selectors: []armchaos.ChaosTargetSelectorClassification{
+		// 						&armchaos.ChaosTargetListSelector{
 		// 							Type: to.Ptr(armchaos.SelectorTypeList),
 		// 							ID: to.Ptr("selector1"),
 		// 							Targets: []*armchaos.TargetReference{
@@ -511,13 +511,13 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					Steps: []*armchaos.ExperimentStep{
+		// 					Steps: []*armchaos.ChaosExperimentStep{
 		// 						{
 		// 							Name: to.Ptr("step1"),
-		// 							Branches: []*armchaos.ExperimentBranch{
+		// 							Branches: []*armchaos.ChaosExperimentBranch{
 		// 								{
 		// 									Name: to.Ptr("branch1"),
-		// 									Actions: []armchaos.ExperimentActionClassification{
+		// 									Actions: []armchaos.ChaosExperimentActionClassification{
 		// 										&armchaos.ContinuousAction{
 		// 											Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 		// 											Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),
@@ -673,8 +673,8 @@ func ExampleExperimentsClient_BeginUpdate() {
 	// 		},
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armchaos.ExperimentProperties{
-	// 			Selectors: []armchaos.TargetSelectorClassification{
-	// 				&armchaos.TargetListSelector{
+	// 			Selectors: []armchaos.ChaosTargetSelectorClassification{
+	// 				&armchaos.ChaosTargetListSelector{
 	// 					Type: to.Ptr(armchaos.SelectorTypeList),
 	// 					ID: to.Ptr("selector1"),
 	// 					Targets: []*armchaos.TargetReference{
@@ -685,13 +685,13 @@ func ExampleExperimentsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			Steps: []*armchaos.ExperimentStep{
+	// 			Steps: []*armchaos.ChaosExperimentStep{
 	// 				{
 	// 					Name: to.Ptr("step1"),
-	// 					Branches: []*armchaos.ExperimentBranch{
+	// 					Branches: []*armchaos.ChaosExperimentBranch{
 	// 						{
 	// 							Name: to.Ptr("branch1"),
-	// 							Actions: []armchaos.ExperimentActionClassification{
+	// 							Actions: []armchaos.ChaosExperimentActionClassification{
 	// 								&armchaos.ContinuousAction{
 	// 									Name: to.Ptr("urn:csci:provider:providername:Shutdown/1.0"),
 	// 									Type: to.Ptr(armchaos.ExperimentActionTypeContinuous),

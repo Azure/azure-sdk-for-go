@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2025-09-01-preview/RegionInfos_Get.json
-func ExampleResourceRegionInfosClient_Get() {
+func ExampleNetAppResourceRegionInfosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,14 +22,14 @@ func ExampleResourceRegionInfosClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewResourceRegionInfosClient().Get(ctx, "eastus", nil)
+	res, err := clientFactory.NewNetAppResourceRegionInfosClient().Get(ctx, "eastus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ResourceRegionInfosClientGetResponse{
+	// res = armnetapp.NetAppResourceRegionInfosClientGetResponse{
 	// 	RegionInfoResource: &armnetapp.RegionInfoResource{
 	// 		Name: to.Ptr("eastus/default"),
 	// 		Type: to.Ptr("Microsoft.NetApp/locations/regionInfos"),
@@ -56,7 +56,7 @@ func ExampleResourceRegionInfosClient_Get() {
 }
 
 // Generated from example definition: 2025-09-01-preview/RegionInfos_List.json
-func ExampleResourceRegionInfosClient_NewListPager() {
+func ExampleNetAppResourceRegionInfosClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -66,7 +66,7 @@ func ExampleResourceRegionInfosClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewResourceRegionInfosClient().NewListPager("eastus", nil)
+	pager := clientFactory.NewNetAppResourceRegionInfosClient().NewListPager("eastus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -77,7 +77,7 @@ func ExampleResourceRegionInfosClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.ResourceRegionInfosClientListResponse{
+		// page = armnetapp.NetAppResourceRegionInfosClientListResponse{
 		// 	RegionInfosList: armnetapp.RegionInfosList{
 		// 		Value: []*armnetapp.RegionInfoResource{
 		// 			{

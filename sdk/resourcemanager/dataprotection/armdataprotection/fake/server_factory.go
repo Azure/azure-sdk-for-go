@@ -30,8 +30,11 @@ type ServerFactory struct {
 	// BackupVaultsServer contains the fakes for client BackupVaultsClient
 	BackupVaultsServer BackupVaultsServer
 
-	// Server contains the fakes for client Client
-	Server Server
+	// DataProtectionServer contains the fakes for client DataProtectionClient
+	DataProtectionServer DataProtectionServer
+
+	// DataProtectionOperationsServer contains the fakes for client DataProtectionOperationsClient
+	DataProtectionOperationsServer DataProtectionOperationsServer
 
 	// DeletedBackupInstancesServer contains the fakes for client DeletedBackupInstancesClient
 	DeletedBackupInstancesServer DeletedBackupInstancesServer
@@ -69,9 +72,6 @@ type ServerFactory struct {
 	// OperationStatusResourceGroupContextServer contains the fakes for client OperationStatusResourceGroupContextClient
 	OperationStatusResourceGroupContextServer OperationStatusResourceGroupContextServer
 
-	// OperationsServer contains the fakes for client OperationsClient
-	OperationsServer OperationsServer
-
 	// RecoveryPointsServer contains the fakes for client RecoveryPointsClient
 	RecoveryPointsServer RecoveryPointsServer
 
@@ -101,7 +101,8 @@ type ServerFactoryTransport struct {
 	trBackupPoliciesServer                      *BackupPoliciesServerTransport
 	trBackupVaultOperationResultsServer         *BackupVaultOperationResultsServerTransport
 	trBackupVaultsServer                        *BackupVaultsServerTransport
-	trServer                                    *ServerTransport
+	trDataProtectionServer                      *DataProtectionServerTransport
+	trDataProtectionOperationsServer            *DataProtectionOperationsServerTransport
 	trDeletedBackupInstancesServer              *DeletedBackupInstancesServerTransport
 	trDppResourceGuardProxyServer               *DppResourceGuardProxyServerTransport
 	trExportJobsServer                          *ExportJobsServerTransport
@@ -114,7 +115,6 @@ type ServerFactoryTransport struct {
 	trOperationStatusBackupVaultContextServer   *OperationStatusBackupVaultContextServerTransport
 	trOperationStatusServer                     *OperationStatusServerTransport
 	trOperationStatusResourceGroupContextServer *OperationStatusResourceGroupContextServerTransport
-	trOperationsServer                          *OperationsServerTransport
 	trRecoveryPointsServer                      *RecoveryPointsServerTransport
 	trResourceGuardsServer                      *ResourceGuardsServerTransport
 	trRestorableTimeRangesServer                *RestorableTimeRangesServerTransport
@@ -156,9 +156,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "BackupVaultsClient":
 		initServer(s, &s.trBackupVaultsServer, func() *BackupVaultsServerTransport { return NewBackupVaultsServerTransport(&s.srv.BackupVaultsServer) })
 		resp, err = s.trBackupVaultsServer.Do(req)
-	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
-		resp, err = s.trServer.Do(req)
+	case "DataProtectionClient":
+		initServer(s, &s.trDataProtectionServer, func() *DataProtectionServerTransport {
+			return NewDataProtectionServerTransport(&s.srv.DataProtectionServer)
+		})
+		resp, err = s.trDataProtectionServer.Do(req)
+	case "DataProtectionOperationsClient":
+		initServer(s, &s.trDataProtectionOperationsServer, func() *DataProtectionOperationsServerTransport {
+			return NewDataProtectionOperationsServerTransport(&s.srv.DataProtectionOperationsServer)
+		})
+		resp, err = s.trDataProtectionOperationsServer.Do(req)
 	case "DeletedBackupInstancesClient":
 		initServer(s, &s.trDeletedBackupInstancesServer, func() *DeletedBackupInstancesServerTransport {
 			return NewDeletedBackupInstancesServerTransport(&s.srv.DeletedBackupInstancesServer)
@@ -215,9 +222,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewOperationStatusResourceGroupContextServerTransport(&s.srv.OperationStatusResourceGroupContextServer)
 		})
 		resp, err = s.trOperationStatusResourceGroupContextServer.Do(req)
-	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
-		resp, err = s.trOperationsServer.Do(req)
 	case "RecoveryPointsClient":
 		initServer(s, &s.trRecoveryPointsServer, func() *RecoveryPointsServerTransport {
 			return NewRecoveryPointsServerTransport(&s.srv.RecoveryPointsServer)

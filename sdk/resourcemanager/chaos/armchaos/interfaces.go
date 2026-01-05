@@ -4,29 +4,29 @@
 
 package armchaos
 
-// ExperimentActionClassification provides polymorphic access to related types.
-// Call the interface's GetExperimentAction() method to access the common type.
+// ChaosExperimentActionClassification provides polymorphic access to related types.
+// Call the interface's GetChaosExperimentAction() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *ContinuousAction, *DelayAction, *DiscreteAction, *ExperimentAction
-type ExperimentActionClassification interface {
-	// GetExperimentAction returns the ExperimentAction content of the underlying type.
-	GetExperimentAction() *ExperimentAction
+// - *ChaosExperimentAction, *ContinuousAction, *DelayAction, *DiscreteAction
+type ChaosExperimentActionClassification interface {
+	// GetChaosExperimentAction returns the ChaosExperimentAction content of the underlying type.
+	GetChaosExperimentAction() *ChaosExperimentAction
 }
 
-// TargetFilterClassification provides polymorphic access to related types.
-// Call the interface's GetTargetFilter() method to access the common type.
+// ChaosTargetFilterClassification provides polymorphic access to related types.
+// Call the interface's GetChaosTargetFilter() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *TargetFilter, *TargetSimpleFilter
-type TargetFilterClassification interface {
-	// GetTargetFilter returns the TargetFilter content of the underlying type.
-	GetTargetFilter() *TargetFilter
+// - *ChaosTargetFilter, *ChaosTargetSimpleFilter
+type ChaosTargetFilterClassification interface {
+	// GetChaosTargetFilter returns the ChaosTargetFilter content of the underlying type.
+	GetChaosTargetFilter() *ChaosTargetFilter
 }
 
-// TargetSelectorClassification provides polymorphic access to related types.
-// Call the interface's GetTargetSelector() method to access the common type.
+// ChaosTargetSelectorClassification provides polymorphic access to related types.
+// Call the interface's GetChaosTargetSelector() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *TargetListSelector, *TargetQuerySelector, *TargetSelector
-type TargetSelectorClassification interface {
-	// GetTargetSelector returns the TargetSelector content of the underlying type.
-	GetTargetSelector() *TargetSelector
+// - *ChaosTargetListSelector, *ChaosTargetQuerySelector, *ChaosTargetSelector
+type ChaosTargetSelectorClassification interface {
+	// GetChaosTargetSelector returns the ChaosTargetSelector content of the underlying type.
+	GetChaosTargetSelector() *ChaosTargetSelector
 }

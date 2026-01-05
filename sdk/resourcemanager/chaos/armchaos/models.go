@@ -156,6 +156,136 @@ type CapabilityTypePropertiesRuntimeProperties struct {
 	Kind *string
 }
 
+// ChaosExperimentAction - Model that represents the base action model. 9 total per experiment.
+type ChaosExperimentAction struct {
+	// REQUIRED; String that represents a Capability URN.
+	Name *string
+
+	// REQUIRED; Chaos experiment action discriminator type
+	Type *ExperimentActionType
+}
+
+// GetChaosExperimentAction implements the ChaosExperimentActionClassification interface for type ChaosExperimentAction.
+func (c *ChaosExperimentAction) GetChaosExperimentAction() *ChaosExperimentAction { return c }
+
+// ChaosExperimentBranch - Model that represents a branch in the step. 9 total per experiment.
+type ChaosExperimentBranch struct {
+	// REQUIRED; List of actions.
+	Actions []ChaosExperimentActionClassification
+
+	// REQUIRED; String of the branch name.
+	Name *string
+}
+
+// ChaosExperimentStep - Model that represents a step in the Experiment resource.
+type ChaosExperimentStep struct {
+	// REQUIRED; List of branches.
+	Branches []*ChaosExperimentBranch
+
+	// REQUIRED; String of the step name.
+	Name *string
+}
+
+// ChaosTargetFilter - Model that represents available filter types that can be applied to a targets list.
+type ChaosTargetFilter struct {
+	// REQUIRED; Chaos target filter discriminator type
+	Type *FilterType
+}
+
+// GetChaosTargetFilter implements the ChaosTargetFilterClassification interface for type ChaosTargetFilter.
+func (c *ChaosTargetFilter) GetChaosTargetFilter() *ChaosTargetFilter { return c }
+
+// ChaosTargetListSelector - Model that represents a list selector.
+type ChaosTargetListSelector struct {
+	// REQUIRED; String of the selector ID.
+	ID *string
+
+	// REQUIRED; List of Target references.
+	Targets []*TargetReference
+
+	// CONSTANT; Enum of the selector type.
+	// Field has constant value SelectorTypeList, any specified value is ignored.
+	Type *SelectorType
+
+	// Model that represents available filter types that can be applied to a targets list.
+	Filter ChaosTargetFilterClassification
+}
+
+// GetChaosTargetSelector implements the ChaosTargetSelectorClassification interface for type ChaosTargetListSelector.
+func (c *ChaosTargetListSelector) GetChaosTargetSelector() *ChaosTargetSelector {
+	return &ChaosTargetSelector{
+		Filter: c.Filter,
+		ID:     c.ID,
+		Type:   c.Type,
+	}
+}
+
+// ChaosTargetQuerySelector - Model that represents a query selector.
+type ChaosTargetQuerySelector struct {
+	// REQUIRED; String of the selector ID.
+	ID *string
+
+	// REQUIRED; Azure Resource Graph (ARG) Query Language query for target resources.
+	QueryString *string
+
+	// REQUIRED; Subscription id list to scope resource query.
+	SubscriptionIDs []*string
+
+	// CONSTANT; Enum of the selector type.
+	// Field has constant value SelectorTypeQuery, any specified value is ignored.
+	Type *SelectorType
+
+	// Model that represents available filter types that can be applied to a targets list.
+	Filter ChaosTargetFilterClassification
+}
+
+// GetChaosTargetSelector implements the ChaosTargetSelectorClassification interface for type ChaosTargetQuerySelector.
+func (c *ChaosTargetQuerySelector) GetChaosTargetSelector() *ChaosTargetSelector {
+	return &ChaosTargetSelector{
+		Filter: c.Filter,
+		ID:     c.ID,
+		Type:   c.Type,
+	}
+}
+
+// ChaosTargetSelector - Model that represents a selector in the Experiment resource.
+type ChaosTargetSelector struct {
+	// REQUIRED; String of the selector ID.
+	ID *string
+
+	// REQUIRED; Chaos target selector discriminator type
+	Type *SelectorType
+
+	// Model that represents available filter types that can be applied to a targets list.
+	Filter ChaosTargetFilterClassification
+}
+
+// GetChaosTargetSelector implements the ChaosTargetSelectorClassification interface for type ChaosTargetSelector.
+func (c *ChaosTargetSelector) GetChaosTargetSelector() *ChaosTargetSelector { return c }
+
+// ChaosTargetSimpleFilter - Model that represents a simple target filter.
+type ChaosTargetSimpleFilter struct {
+	// CONSTANT; Enum that discriminates between filter types. Currently only `Simple` type is supported.
+	// Field has constant value FilterTypeSimple, any specified value is ignored.
+	Type *FilterType
+
+	// Model that represents the Simple filter parameters.
+	Parameters *ChaosTargetSimpleFilterParameters
+}
+
+// GetChaosTargetFilter implements the ChaosTargetFilterClassification interface for type ChaosTargetSimpleFilter.
+func (c *ChaosTargetSimpleFilter) GetChaosTargetFilter() *ChaosTargetFilter {
+	return &ChaosTargetFilter{
+		Type: c.Type,
+	}
+}
+
+// ChaosTargetSimpleFilterParameters - Model that represents the Simple filter parameters.
+type ChaosTargetSimpleFilterParameters struct {
+	// List of Azure availability zones to filter targets by.
+	Zones []*string
+}
+
 // ContinuousAction - Model that represents a continuous action.
 type ContinuousAction struct {
 	// REQUIRED; ISO8601 formatted string that represents a duration.
@@ -175,9 +305,9 @@ type ContinuousAction struct {
 	Type *ExperimentActionType
 }
 
-// GetExperimentAction implements the ExperimentActionClassification interface for type ContinuousAction.
-func (c *ContinuousAction) GetExperimentAction() *ExperimentAction {
-	return &ExperimentAction{
+// GetChaosExperimentAction implements the ChaosExperimentActionClassification interface for type ContinuousAction.
+func (c *ContinuousAction) GetChaosExperimentAction() *ChaosExperimentAction {
+	return &ChaosExperimentAction{
 		Name: c.Name,
 		Type: c.Type,
 	}
@@ -196,9 +326,9 @@ type DelayAction struct {
 	Type *ExperimentActionType
 }
 
-// GetExperimentAction implements the ExperimentActionClassification interface for type DelayAction.
-func (d *DelayAction) GetExperimentAction() *ExperimentAction {
-	return &ExperimentAction{
+// GetChaosExperimentAction implements the ChaosExperimentActionClassification interface for type DelayAction.
+func (d *DelayAction) GetChaosExperimentAction() *ChaosExperimentAction {
+	return &ChaosExperimentAction{
 		Name: d.Name,
 		Type: d.Type,
 	}
@@ -220,9 +350,9 @@ type DiscreteAction struct {
 	Type *ExperimentActionType
 }
 
-// GetExperimentAction implements the ExperimentActionClassification interface for type DiscreteAction.
-func (d *DiscreteAction) GetExperimentAction() *ExperimentAction {
-	return &ExperimentAction{
+// GetChaosExperimentAction implements the ChaosExperimentActionClassification interface for type DiscreteAction.
+func (d *DiscreteAction) GetChaosExperimentAction() *ChaosExperimentAction {
+	return &ChaosExperimentAction{
 		Name: d.Name,
 		Type: d.Type,
 	}
@@ -280,27 +410,6 @@ type Experiment struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
-}
-
-// ExperimentAction - Model that represents the base action model. 9 total per experiment.
-type ExperimentAction struct {
-	// REQUIRED; String that represents a Capability URN.
-	Name *string
-
-	// REQUIRED; Chaos experiment action discriminator type
-	Type *ExperimentActionType
-}
-
-// GetExperimentAction implements the ExperimentActionClassification interface for type ExperimentAction.
-func (e *ExperimentAction) GetExperimentAction() *ExperimentAction { return e }
-
-// ExperimentBranch - Model that represents a branch in the step. 9 total per experiment.
-type ExperimentBranch struct {
-	// REQUIRED; List of actions.
-	Actions []ExperimentActionClassification
-
-	// REQUIRED; String of the branch name.
-	Name *string
 }
 
 // ExperimentExecution - Model that represents the execution of a Experiment.
@@ -424,22 +533,13 @@ type ExperimentListResult struct {
 // ExperimentProperties - Model that represents the Experiment properties model.
 type ExperimentProperties struct {
 	// REQUIRED; List of selectors.
-	Selectors []TargetSelectorClassification
+	Selectors []ChaosTargetSelectorClassification
 
 	// REQUIRED; List of steps.
-	Steps []*ExperimentStep
+	Steps []*ChaosExperimentStep
 
 	// READ-ONLY; Most recent provisioning state for the given experiment resource.
 	ProvisioningState *ProvisioningState
-}
-
-// ExperimentStep - Model that represents a step in the Experiment resource.
-type ExperimentStep struct {
-	// REQUIRED; List of branches.
-	Branches []*ExperimentBranch
-
-	// REQUIRED; String of the step name.
-	Name *string
 }
 
 // ExperimentUpdate - Describes an experiment update.
@@ -614,15 +714,6 @@ type Target struct {
 	Type *string
 }
 
-// TargetFilter - Model that represents available filter types that can be applied to a targets list.
-type TargetFilter struct {
-	// REQUIRED; Chaos target filter discriminator type
-	Type *FilterType
-}
-
-// GetTargetFilter implements the TargetFilterClassification interface for type TargetFilter.
-func (t *TargetFilter) GetTargetFilter() *TargetFilter { return t }
-
 // TargetListResult - Model that represents a list of Target resources and a link for pagination.
 type TargetListResult struct {
 	// REQUIRED; The Target items on this page
@@ -632,59 +723,6 @@ type TargetListResult struct {
 	NextLink *string
 }
 
-// TargetListSelector - Model that represents a list selector.
-type TargetListSelector struct {
-	// REQUIRED; String of the selector ID.
-	ID *string
-
-	// REQUIRED; List of Target references.
-	Targets []*TargetReference
-
-	// CONSTANT; Enum of the selector type.
-	// Field has constant value SelectorTypeList, any specified value is ignored.
-	Type *SelectorType
-
-	// Model that represents available filter types that can be applied to a targets list.
-	Filter TargetFilterClassification
-}
-
-// GetTargetSelector implements the TargetSelectorClassification interface for type TargetListSelector.
-func (t *TargetListSelector) GetTargetSelector() *TargetSelector {
-	return &TargetSelector{
-		Filter: t.Filter,
-		ID:     t.ID,
-		Type:   t.Type,
-	}
-}
-
-// TargetQuerySelector - Model that represents a query selector.
-type TargetQuerySelector struct {
-	// REQUIRED; String of the selector ID.
-	ID *string
-
-	// REQUIRED; Azure Resource Graph (ARG) Query Language query for target resources.
-	QueryString *string
-
-	// REQUIRED; Subscription id list to scope resource query.
-	SubscriptionIDs []*string
-
-	// CONSTANT; Enum of the selector type.
-	// Field has constant value SelectorTypeQuery, any specified value is ignored.
-	Type *SelectorType
-
-	// Model that represents available filter types that can be applied to a targets list.
-	Filter TargetFilterClassification
-}
-
-// GetTargetSelector implements the TargetSelectorClassification interface for type TargetQuerySelector.
-func (t *TargetQuerySelector) GetTargetSelector() *TargetSelector {
-	return &TargetSelector{
-		Filter: t.Filter,
-		ID:     t.ID,
-		Type:   t.Type,
-	}
-}
-
 // TargetReference - Model that represents a reference to a Target in the selector.
 type TargetReference struct {
 	// REQUIRED; String of the resource ID of a Target resource.
@@ -692,44 +730,6 @@ type TargetReference struct {
 
 	// REQUIRED; Enum of the Target reference type.
 	Type *TargetReferenceType
-}
-
-// TargetSelector - Model that represents a selector in the Experiment resource.
-type TargetSelector struct {
-	// REQUIRED; String of the selector ID.
-	ID *string
-
-	// REQUIRED; Chaos target selector discriminator type
-	Type *SelectorType
-
-	// Model that represents available filter types that can be applied to a targets list.
-	Filter TargetFilterClassification
-}
-
-// GetTargetSelector implements the TargetSelectorClassification interface for type TargetSelector.
-func (t *TargetSelector) GetTargetSelector() *TargetSelector { return t }
-
-// TargetSimpleFilter - Model that represents a simple target filter.
-type TargetSimpleFilter struct {
-	// CONSTANT; Enum that discriminates between filter types. Currently only `Simple` type is supported.
-	// Field has constant value FilterTypeSimple, any specified value is ignored.
-	Type *FilterType
-
-	// Model that represents the Simple filter parameters.
-	Parameters *TargetSimpleFilterParameters
-}
-
-// GetTargetFilter implements the TargetFilterClassification interface for type TargetSimpleFilter.
-func (t *TargetSimpleFilter) GetTargetFilter() *TargetFilter {
-	return &TargetFilter{
-		Type: t.Type,
-	}
-}
-
-// TargetSimpleFilterParameters - Model that represents the Simple filter parameters.
-type TargetSimpleFilterParameters struct {
-	// List of Azure availability zones to filter targets by.
-	Zones []*string
 }
 
 // TargetType - Model that represents a Target Type resource.

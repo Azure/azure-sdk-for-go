@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicyVirtualNetworkLink_Put.json
-func ExamplePolicyVirtualNetworkLinksClient_BeginCreateOrUpdate() {
+func ExampleDNSResolverPolicyVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,9 +23,9 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPolicyVirtualNetworkLinksClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", armdnsresolver.PolicyVirtualNetworkLink{
+	poller, err := clientFactory.NewDNSResolverPolicyVirtualNetworkLinksClient().BeginCreateOrUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", armdnsresolver.DNSResolverPolicyVirtualNetworkLink{
 		Location: to.Ptr("westus2"),
-		Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
+		Properties: &armdnsresolver.DNSResolverPolicyVirtualNetworkLinkProperties{
 			VirtualNetwork: &armdnsresolver.SubResource{
 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
 			},
@@ -44,14 +44,14 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.PolicyVirtualNetworkLinksClientCreateOrUpdateResponse{
-	// 	PolicyVirtualNetworkLink: &armdnsresolver.PolicyVirtualNetworkLink{
+	// res = armdnsresolver.DNSResolverPolicyVirtualNetworkLinksClientCreateOrUpdateResponse{
+	// 	DNSResolverPolicyVirtualNetworkLink: &armdnsresolver.DNSResolverPolicyVirtualNetworkLink{
 	// 		Name: to.Ptr("sampleVirtualNetworkLink"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicy/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
+	// 		Properties: &armdnsresolver.DNSResolverPolicyVirtualNetworkLinkProperties{
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			VirtualNetwork: &armdnsresolver.SubResource{
 	// 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
@@ -71,7 +71,7 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicyVirtualNetworkLink_Delete.json
-func ExamplePolicyVirtualNetworkLinksClient_BeginDelete() {
+func ExampleDNSResolverPolicyVirtualNetworkLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -81,7 +81,7 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPolicyVirtualNetworkLinksClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", nil)
+	poller, err := clientFactory.NewDNSResolverPolicyVirtualNetworkLinksClient().BeginDelete(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -92,7 +92,7 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginDelete() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicyVirtualNetworkLink_Get.json
-func ExamplePolicyVirtualNetworkLinksClient_Get() {
+func ExampleDNSResolverPolicyVirtualNetworkLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -102,21 +102,21 @@ func ExamplePolicyVirtualNetworkLinksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPolicyVirtualNetworkLinksClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", nil)
+	res, err := clientFactory.NewDNSResolverPolicyVirtualNetworkLinksClient().Get(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.PolicyVirtualNetworkLinksClientGetResponse{
-	// 	PolicyVirtualNetworkLink: &armdnsresolver.PolicyVirtualNetworkLink{
+	// res = armdnsresolver.DNSResolverPolicyVirtualNetworkLinksClientGetResponse{
+	// 	DNSResolverPolicyVirtualNetworkLink: &armdnsresolver.DNSResolverPolicyVirtualNetworkLink{
 	// 		Name: to.Ptr("sampleVirtualNetworkLink"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
+	// 		Properties: &armdnsresolver.DNSResolverPolicyVirtualNetworkLinkProperties{
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			VirtualNetwork: &armdnsresolver.SubResource{
 	// 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
@@ -136,7 +136,7 @@ func ExamplePolicyVirtualNetworkLinksClient_Get() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicyVirtualNetworkLink_List.json
-func ExamplePolicyVirtualNetworkLinksClient_NewListPager() {
+func ExampleDNSResolverPolicyVirtualNetworkLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -146,7 +146,7 @@ func ExamplePolicyVirtualNetworkLinksClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPolicyVirtualNetworkLinksClient().NewListPager("sampleResourceGroup", "sampleDnsResolverPolicy", nil)
+	pager := clientFactory.NewDNSResolverPolicyVirtualNetworkLinksClient().NewListPager("sampleResourceGroup", "sampleDnsResolverPolicy", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -157,16 +157,16 @@ func ExamplePolicyVirtualNetworkLinksClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdnsresolver.PolicyVirtualNetworkLinksClientListResponse{
-		// 	PolicyVirtualNetworkLinkListResult: armdnsresolver.PolicyVirtualNetworkLinkListResult{
-		// 		Value: []*armdnsresolver.PolicyVirtualNetworkLink{
+		// page = armdnsresolver.DNSResolverPolicyVirtualNetworkLinksClientListResponse{
+		// 	DNSResolverPolicyVirtualNetworkLinkListResult: armdnsresolver.DNSResolverPolicyVirtualNetworkLinkListResult{
+		// 		Value: []*armdnsresolver.DNSResolverPolicyVirtualNetworkLink{
 		// 			{
 		// 				Name: to.Ptr("sampleVirtualNetworkLink"),
 		// 				Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
 		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
+		// 				Properties: &armdnsresolver.DNSResolverPolicyVirtualNetworkLinkProperties{
 		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 		// 					VirtualNetwork: &armdnsresolver.SubResource{
 		// 						ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),
@@ -189,7 +189,7 @@ func ExamplePolicyVirtualNetworkLinksClient_NewListPager() {
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicyVirtualNetworkLink_Patch.json
-func ExamplePolicyVirtualNetworkLinksClient_BeginUpdate() {
+func ExampleDNSResolverPolicyVirtualNetworkLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -199,7 +199,7 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPolicyVirtualNetworkLinksClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", armdnsresolver.PolicyVirtualNetworkLinkPatch{
+	poller, err := clientFactory.NewDNSResolverPolicyVirtualNetworkLinksClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", "sampleVirtualNetworkLink", armdnsresolver.DNSResolverPolicyVirtualNetworkLinkPatch{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -214,14 +214,14 @@ func ExamplePolicyVirtualNetworkLinksClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.PolicyVirtualNetworkLinksClientUpdateResponse{
-	// 	PolicyVirtualNetworkLink: &armdnsresolver.PolicyVirtualNetworkLink{
+	// res = armdnsresolver.DNSResolverPolicyVirtualNetworkLinksClientUpdateResponse{
+	// 	DNSResolverPolicyVirtualNetworkLink: &armdnsresolver.DNSResolverPolicyVirtualNetworkLink{
 	// 		Name: to.Ptr("sampleVirtualNetworkLink"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverPolicies/virtualNetworkLinks"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy/virtualNetworkLinks/sampleVirtualNetworkLink"),
 	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.PolicyVirtualNetworkLinkProperties{
+	// 		Properties: &armdnsresolver.DNSResolverPolicyVirtualNetworkLinkProperties{
 	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
 	// 			VirtualNetwork: &armdnsresolver.SubResource{
 	// 				ID: to.Ptr("/subscriptions/0403cfa9-9659-4f33-9f30-1f191c51d111/resourceGroups/sampleVnetResourceGroupName/providers/Microsoft.Network/virtualNetworks/sampleVirtualNetwork"),

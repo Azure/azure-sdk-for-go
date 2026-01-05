@@ -183,10 +183,16 @@ type BackupVaultsClientUpdateResponse struct {
 	BackupVaultResource
 }
 
-// ClientCheckFeatureSupportResponse contains the response from method Client.CheckFeatureSupport.
-type ClientCheckFeatureSupportResponse struct {
+// DataProtectionClientCheckFeatureSupportResponse contains the response from method DataProtectionClient.CheckFeatureSupport.
+type DataProtectionClientCheckFeatureSupportResponse struct {
 	// Base class for Backup Feature support
 	FeatureValidationResponseBaseClassification
+}
+
+// DataProtectionOperationsClientListResponse contains the response from method DataProtectionOperationsClient.NewListPager.
+type DataProtectionOperationsClientListResponse struct {
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }
 
 // DeletedBackupInstancesClientGetResponse contains the response from method DeletedBackupInstancesClient.Get.
@@ -301,12 +307,6 @@ type OperationStatusClientGetResponse struct {
 type OperationStatusResourceGroupContextClientGetResponse struct {
 	// Operation Resource
 	OperationResource
-}
-
-// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
-type OperationsClientListResponse struct {
-	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
-	OperationListResult
 }
 
 // RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.

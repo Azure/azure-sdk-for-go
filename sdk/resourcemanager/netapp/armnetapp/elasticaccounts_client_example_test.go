@@ -50,7 +50,7 @@ func ExampleElasticAccountsClient_BeginCreateOrUpdate() {
 	// 			"ac-tag1": to.Ptr("account1"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticAccountProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			Encryption: &armnetapp.ElasticEncryption{
 	// 				KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
 	// 				KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{
@@ -118,7 +118,7 @@ func ExampleElasticAccountsClient_Get() {
 	// 			"ac-tag1": to.Ptr("account1"),
 	// 		},
 	// 		Properties: &armnetapp.ElasticAccountProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			Encryption: &armnetapp.ElasticEncryption{
 	// 				KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
 	// 				KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{
@@ -171,7 +171,7 @@ func ExampleElasticAccountsClient_NewListByResourceGroupPager() {
 		// 					"ac-tag1": to.Ptr("account1"),
 		// 				},
 		// 				Properties: &armnetapp.ElasticAccountProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					Encryption: &armnetapp.ElasticEncryption{
 		// 						KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
 		// 						KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{
@@ -227,7 +227,7 @@ func ExampleElasticAccountsClient_NewListBySubscriptionPager() {
 		// 					"ac-tag1": to.Ptr("account1"),
 		// 				},
 		// 				Properties: &armnetapp.ElasticAccountProperties{
-		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+		// 					ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 		// 					Encryption: &armnetapp.ElasticEncryption{
 		// 						KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
 		// 						KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{
@@ -282,7 +282,7 @@ func ExampleElasticAccountsClient_BeginUpdate() {
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.ElasticAccountProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			ProvisioningState: to.Ptr(armnetapp.NetappProvisioningStateSucceeded),
 	// 			Encryption: &armnetapp.ElasticEncryption{
 	// 				KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
 	// 				KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{

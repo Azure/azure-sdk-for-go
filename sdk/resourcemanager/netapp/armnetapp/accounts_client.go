@@ -132,7 +132,7 @@ func (client *AccountsClient) changeKeyVaultCreateRequest(ctx context.Context, r
 //   - body - NetApp Account object supplied in the body of the operation.
 //   - options - AccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the AccountsClient.BeginCreateOrUpdate
 //     method.
-func (client *AccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body Account, options *AccountsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccountsClientCreateOrUpdateResponse], error) {
+func (client *AccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body NetAppAccount, options *AccountsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AccountsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, body, options)
 		if err != nil {
@@ -153,7 +153,7 @@ func (client *AccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01-preview
-func (client *AccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body Account, options *AccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *AccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body NetAppAccount, options *AccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +175,7 @@ func (client *AccountsClient) createOrUpdate(ctx context.Context, resourceGroupN
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body Account, _ *AccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body NetAppAccount, _ *AccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -336,7 +336,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 // getHandleResponse handles the Get response.
 func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsClientGetResponse, error) {
 	result := AccountsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetAppAccount); err != nil {
 		return AccountsClientGetResponse{}, err
 	}
 	return result, nil
@@ -476,7 +476,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, resourceGro
 // listHandleResponse handles the List response.
 func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsClientListResponse, error) {
 	result := AccountsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetAppAccountList); err != nil {
 		return AccountsClientListResponse{}, err
 	}
 	return result, nil
@@ -531,7 +531,7 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
 func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (AccountsClientListBySubscriptionResponse, error) {
 	result := AccountsClientListBySubscriptionResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccountList); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetAppAccountList); err != nil {
 		return AccountsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
@@ -706,7 +706,7 @@ func (client *AccountsClient) transitionToCmkCreateRequest(ctx context.Context, 
 //   - accountName - The name of the NetApp account
 //   - body - NetApp Account object supplied in the body of the operation.
 //   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
-func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
+func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, body NetAppAccountPatch, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, body, options)
 		if err != nil {
@@ -727,7 +727,7 @@ func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01-preview
-func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, body NetAppAccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -749,7 +749,7 @@ func (client *AccountsClient) update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body NetAppAccountPatch, _ *AccountsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

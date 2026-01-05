@@ -18,61 +18,61 @@ import (
 	"regexp"
 )
 
-// ResourceRegionInfosServer is a fake server for instances of the armnetapp.ResourceRegionInfosClient type.
-type ResourceRegionInfosServer struct {
-	// Get is the fake for method ResourceRegionInfosClient.Get
+// NetAppResourceRegionInfosServer is a fake server for instances of the armnetapp.NetAppResourceRegionInfosClient type.
+type NetAppResourceRegionInfosServer struct {
+	// Get is the fake for method NetAppResourceRegionInfosClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, options *armnetapp.ResourceRegionInfosClientGetOptions) (resp azfake.Responder[armnetapp.ResourceRegionInfosClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, location string, options *armnetapp.NetAppResourceRegionInfosClientGetOptions) (resp azfake.Responder[armnetapp.NetAppResourceRegionInfosClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ResourceRegionInfosClient.NewListPager
+	// NewListPager is the fake for method NetAppResourceRegionInfosClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armnetapp.ResourceRegionInfosClientListOptions) (resp azfake.PagerResponder[armnetapp.ResourceRegionInfosClientListResponse])
+	NewListPager func(location string, options *armnetapp.NetAppResourceRegionInfosClientListOptions) (resp azfake.PagerResponder[armnetapp.NetAppResourceRegionInfosClientListResponse])
 }
 
-// NewResourceRegionInfosServerTransport creates a new instance of ResourceRegionInfosServerTransport with the provided implementation.
-// The returned ResourceRegionInfosServerTransport instance is connected to an instance of armnetapp.ResourceRegionInfosClient via the
+// NewNetAppResourceRegionInfosServerTransport creates a new instance of NetAppResourceRegionInfosServerTransport with the provided implementation.
+// The returned NetAppResourceRegionInfosServerTransport instance is connected to an instance of armnetapp.NetAppResourceRegionInfosClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewResourceRegionInfosServerTransport(srv *ResourceRegionInfosServer) *ResourceRegionInfosServerTransport {
-	return &ResourceRegionInfosServerTransport{
+func NewNetAppResourceRegionInfosServerTransport(srv *NetAppResourceRegionInfosServer) *NetAppResourceRegionInfosServerTransport {
+	return &NetAppResourceRegionInfosServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armnetapp.ResourceRegionInfosClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armnetapp.NetAppResourceRegionInfosClientListResponse]](),
 	}
 }
 
-// ResourceRegionInfosServerTransport connects instances of armnetapp.ResourceRegionInfosClient to instances of ResourceRegionInfosServer.
-// Don't use this type directly, use NewResourceRegionInfosServerTransport instead.
-type ResourceRegionInfosServerTransport struct {
-	srv          *ResourceRegionInfosServer
-	newListPager *tracker[azfake.PagerResponder[armnetapp.ResourceRegionInfosClientListResponse]]
+// NetAppResourceRegionInfosServerTransport connects instances of armnetapp.NetAppResourceRegionInfosClient to instances of NetAppResourceRegionInfosServer.
+// Don't use this type directly, use NewNetAppResourceRegionInfosServerTransport instead.
+type NetAppResourceRegionInfosServerTransport struct {
+	srv          *NetAppResourceRegionInfosServer
+	newListPager *tracker[azfake.PagerResponder[armnetapp.NetAppResourceRegionInfosClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for ResourceRegionInfosServerTransport.
-func (r *ResourceRegionInfosServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for NetAppResourceRegionInfosServerTransport.
+func (n *NetAppResourceRegionInfosServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return r.dispatchToMethodFake(req, method)
+	return n.dispatchToMethodFake(req, method)
 }
 
-func (r *ResourceRegionInfosServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (n *NetAppResourceRegionInfosServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result)
 	defer close(resultChan)
 
 	go func() {
 		var intercepted bool
 		var res result
-		if resourceRegionInfosServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = resourceRegionInfosServerTransportInterceptor.Do(req)
+		if netAppResourceRegionInfosServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = netAppResourceRegionInfosServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceRegionInfosClient.Get":
-				res.resp, res.err = r.dispatchGet(req)
-			case "ResourceRegionInfosClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
+			case "NetAppResourceRegionInfosClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetAppResourceRegionInfosClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -92,8 +92,8 @@ func (r *ResourceRegionInfosServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
-func (r *ResourceRegionInfosServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
+func (n *NetAppResourceRegionInfosServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfos/default`
@@ -106,7 +106,7 @@ func (r *ResourceRegionInfosServerTransport) dispatchGet(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), locationParam, nil)
+	respr, errRespr := n.srv.Get(req.Context(), locationParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -121,11 +121,11 @@ func (r *ResourceRegionInfosServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (r *ResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
+func (n *NetAppResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
-	newListPager := r.newListPager.get(req)
+	newListPager := n.newListPager.get(req)
 	if newListPager == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfos`
 		regex := regexp.MustCompile(regexStr)
@@ -137,10 +137,10 @@ func (r *ResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		resp := r.srv.NewListPager(locationParam, nil)
+		resp := n.srv.NewListPager(locationParam, nil)
 		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.ResourceRegionInfosClientListResponse, createLink func() string) {
+		n.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.NetAppResourceRegionInfosClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -149,17 +149,17 @@ func (r *ResourceRegionInfosServerTransport) dispatchNewListPager(req *http.Requ
 		return nil, err
 	}
 	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
+		n.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
+		n.newListPager.remove(req)
 	}
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ResourceRegionInfosServerTransport
-var resourceRegionInfosServerTransportInterceptor interface {
+// set this to conditionally intercept incoming requests to NetAppResourceRegionInfosServerTransport
+var netAppResourceRegionInfosServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

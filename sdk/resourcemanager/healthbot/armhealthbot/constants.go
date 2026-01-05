@@ -5,28 +5,23 @@
 
 package armhealthbot
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot"
-	moduleVersion = "v1.2.0"
-)
-
-// IdentityType - The type of identity that creates/modifies resources
-type IdentityType string
+// CreatedByType - The type of identity that created the resource.
+type CreatedByType string
 
 const (
-	IdentityTypeApplication     IdentityType = "Application"
-	IdentityTypeKey             IdentityType = "Key"
-	IdentityTypeManagedIdentity IdentityType = "ManagedIdentity"
-	IdentityTypeUser            IdentityType = "User"
+	CreatedByTypeApplication     CreatedByType = "Application"
+	CreatedByTypeKey             CreatedByType = "Key"
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	CreatedByTypeUser            CreatedByType = "User"
 )
 
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeApplication,
-		IdentityTypeKey,
-		IdentityTypeManagedIdentity,
-		IdentityTypeUser,
+// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{
+		CreatedByTypeApplication,
+		CreatedByTypeKey,
+		CreatedByTypeManagedIdentity,
+		CreatedByTypeUser,
 	}
 }
 
@@ -56,16 +51,18 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type SKUName string
 
 const (
-	SKUNameC0 SKUName = "C0"
-	SKUNameF0 SKUName = "F0"
-	SKUNameS1 SKUName = "S1"
+	SKUNameC0  SKUName = "C0"
+	SKUNameC1  SKUName = "C1"
+	SKUNameF0  SKUName = "F0"
+	SKUNamePES SKUName = "PES"
 )
 
 // PossibleSKUNameValues returns the possible values for the SKUName const type.
 func PossibleSKUNameValues() []SKUName {
 	return []SKUName{
 		SKUNameC0,
+		SKUNameC1,
 		SKUNameF0,
-		SKUNameS1,
+		SKUNamePES,
 	}
 }

@@ -16,7 +16,10 @@ import (
 
 // ServerFactory is a fake server for instances of the armhealthbot.ClientFactory type.
 type ServerFactory struct {
-	BotsServer       BotsServer
+	// BotsServer contains the fakes for client BotsClient
+	BotsServer BotsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 }
 

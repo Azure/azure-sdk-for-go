@@ -7,22 +7,22 @@ package armhealthbot
 
 import "time"
 
-// AvailableOperations - Available operations of the service
+// AvailableOperations - Available operations of the service.
 type AvailableOperations struct {
+	// REQUIRED; Collection of available operation details.
+	Value []*OperationDetail
+
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
 	NextLink *string
-
-	// Collection of available operation details
-	Value []*OperationDetail
 }
 
 // BotResponseList - The list of Azure Health Bot operation response.
 type BotResponseList struct {
-	// READ-ONLY; The link used to get the next page of bot service resources.
-	NextLink *string
-
-	// READ-ONLY; Gets the list of Azure Health Bot results and their properties.
+	// READ-ONLY; The HealthBot items on this page
 	Value []*HealthBot
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // Error - The resource management error response.
@@ -75,16 +75,16 @@ type HealthBot struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -105,6 +105,36 @@ type Identity struct {
 
 	// READ-ONLY; The tenant ID of resource. This property will only be provided for a system assigned identity.
 	TenantID *string
+}
+
+// Key - An entry of HealthBotKeysResponse
+type Key struct {
+	// The name of the key.
+	KeyName *string
+
+	// The value of the key.
+	Value *string
+}
+
+// KeyVaultProperties - Properties of the key vault.
+type KeyVaultProperties struct {
+	// REQUIRED; The name of the key vault key.
+	KeyName *string
+
+	// REQUIRED; The Uri of the key vault.
+	KeyVaultURI *string
+
+	// The version of the key vault key.
+	KeyVersion *string
+
+	// The user assigned identity (ARM resource id) that has access to the key.
+	UserIdentity *string
+}
+
+// KeysResponse - Health Bot Keys Response.
+type KeysResponse struct {
+	// Array of Azure Health Bot Secrets.
+	Secrets []*Key
 }
 
 // OperationDetail - Operation detail payload
@@ -144,6 +174,12 @@ type OperationDisplay struct {
 // in Healthcare organizations to build and deploy their compliant, AI-powered virtual health
 // assistants and health bots, that help them improve processes and reduce costs.
 type Properties struct {
+	// KeyVault properties for the resource encryption.
+	KeyVaultProperties *KeyVaultProperties
+
+	// READ-ONLY; The access control method for the Azure Health Bot resource.
+	AccessControlMethod *string
+
 	// READ-ONLY; The link.
 	BotManagementPortalLink *string
 
@@ -151,18 +187,18 @@ type Properties struct {
 	ProvisioningState *string
 }
 
-// Resource - The resource model definition for a ARM tracked top level resource
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -172,16 +208,16 @@ type SKU struct {
 	Name *SKUName
 }
 
-// SystemData - Read only system data
+// SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
-	// The timestamp of resource creation (UTC)
+	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time
 
 	// The identity that created the resource.
 	CreatedBy *string
 
-	// The type of identity that created the resource
-	CreatedByType *IdentityType
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
 	LastModifiedAt *time.Time
@@ -189,11 +225,12 @@ type SystemData struct {
 	// The identity that last modified the resource.
 	LastModifiedBy *string
 
-	// The type of identity that last modified the resource
-	LastModifiedByType *IdentityType
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }
 
-// TrackedResource - The resource model definition for a ARM tracked top level resource
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
+// and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -201,16 +238,16 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource Id for the resource.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -219,6 +256,9 @@ type UpdateParameters struct {
 	// The identity of the Azure Health Bot.
 	Identity *Identity
 	Location *string
+
+	// Properties of Azure Health Bot.
+	Properties *Properties
 
 	// SKU of the Azure Health Bot.
 	SKU *SKU
@@ -234,10 +274,4 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of user assigned identity.
 	PrincipalID *string
-}
-
-// ValidationResult - The response returned from validation process
-type ValidationResult struct {
-	// The status code of the response validation.
-	Status *string
 }

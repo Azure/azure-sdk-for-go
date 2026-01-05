@@ -1,24 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package datetime
+package datetime_test
 
 import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"github.com/stretchr/testify/require"
 )
 
 func TestPlainTime(t *testing.T) {
 	originalTime := time.Date(2023, time.June, 15, 10, 30, 45, 0, time.UTC)
-	pt := PlainTime(originalTime)
+	pt := datetime.PlainTime(originalTime)
 	result := pt.String()
 	require.Equal(t, "10:30:45", result)
 
 	jsonBytes, err := pt.MarshalJSON()
 	require.NoError(t, err)
-	var pt2 PlainTime
+	var pt2 datetime.PlainTime
 	err = pt2.UnmarshalJSON(jsonBytes)
 	require.NoError(t, err)
 	require.Equal(t, originalTime.Hour(), time.Time(pt2).Hour())
@@ -27,7 +28,7 @@ func TestPlainTime(t *testing.T) {
 
 	textBytes, err := pt.MarshalText()
 	require.NoError(t, err)
-	var pt3 PlainTime
+	var pt3 datetime.PlainTime
 	err = pt3.UnmarshalText(textBytes)
 	require.NoError(t, err)
 	require.Equal(t, originalTime.Hour(), time.Time(pt3).Hour())
@@ -51,12 +52,12 @@ func TestPlainTime_Various(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			originalTime := time.Date(2023, time.January, 15, tt.hour, tt.minute, tt.second, 0, time.UTC)
-			pt := PlainTime(originalTime)
+			pt := datetime.PlainTime(originalTime)
 
 			textBytes, err := pt.MarshalText()
 			require.NoError(t, err)
 
-			var pt2 PlainTime
+			var pt2 datetime.PlainTime
 			err = pt2.UnmarshalText(textBytes)
 			require.NoError(t, err)
 

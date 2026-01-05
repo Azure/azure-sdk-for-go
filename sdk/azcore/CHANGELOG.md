@@ -3,6 +3,7 @@
 ## 1.21.0 (Unreleased)
 
 ### Features Added
+
 * Added `runtime/datetime` package which provides specialized time type wrappers for serializing and deserializing
 time values in various formats used by Azure services.
 

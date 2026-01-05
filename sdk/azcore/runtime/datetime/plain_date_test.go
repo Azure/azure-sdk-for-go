@@ -1,24 +1,25 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package datetime
+package datetime_test
 
 import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"github.com/stretchr/testify/require"
 )
 
 func TestPlainDate(t *testing.T) {
 	originalDate := time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC)
-	pd := PlainDate(originalDate)
+	pd := datetime.PlainDate(originalDate)
 
 	jsonBytes, err := pd.MarshalJSON()
 	require.NoError(t, err)
 	require.Equal(t, `"2023-01-15"`, string(jsonBytes))
 
-	var pd2 PlainDate
+	var pd2 datetime.PlainDate
 	err = pd2.UnmarshalJSON(jsonBytes)
 	require.NoError(t, err)
 
@@ -29,8 +30,8 @@ func TestPlainDate_TimeIgnored(t *testing.T) {
 	date1 := time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC)
 	date2 := time.Date(2023, time.January, 15, 23, 59, 59, 999999999, time.UTC)
 
-	pd1 := PlainDate(date1)
-	pd2 := PlainDate(date2)
+	pd1 := datetime.PlainDate(date1)
+	pd2 := datetime.PlainDate(date2)
 
 	result1, _ := pd1.MarshalJSON()
 	result2, _ := pd2.MarshalJSON()
@@ -41,36 +42,36 @@ func TestPlainDate_TimeIgnored(t *testing.T) {
 }
 
 func TestPlainDate_UnmarshalJSON_Invalid_Format(t *testing.T) {
-	var pd PlainDate
+	var pd datetime.PlainDate
 	err := pd.UnmarshalJSON([]byte("2023/01/15"))
 	require.Error(t, err)
 }
 
 func TestPlainDate_UnmarshalJSON_Invalid_Month(t *testing.T) {
-	var pd PlainDate
+	var pd datetime.PlainDate
 	err := pd.UnmarshalJSON([]byte("2023-13-01"))
 	require.Error(t, err)
 }
 
 func TestPlainDate_UnmarshalJSON_Invalid_Day(t *testing.T) {
-	var pd PlainDate
+	var pd datetime.PlainDate
 	err := pd.UnmarshalJSON([]byte("2023-01-32"))
 	require.Error(t, err)
 }
 
 func TestPlainDate_UnmarshalJSON_Empty(t *testing.T) {
-	var pd PlainDate
+	var pd datetime.PlainDate
 	err := pd.UnmarshalJSON([]byte(""))
 	require.Error(t, err)
 }
 
 func TestPlainDate_UnmarshalJSON_PartialDate(t *testing.T) {
-	var pd PlainDate
+	var pd datetime.PlainDate
 	err := pd.UnmarshalJSON([]byte("2023-01"))
 	require.Error(t, err)
 }
 
 func TestPlainDate_String(t *testing.T) {
-	plainDate := PlainDate(time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC))
+	plainDate := datetime.PlainDate(time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC))
 	require.Equal(t, "2023-01-15", plainDate.String())
 }

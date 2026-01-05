@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package datetime
+package datetime_test
 
 import (
 	"encoding/json"
@@ -9,37 +9,38 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"github.com/stretchr/testify/require"
 )
 
 type timeInfoJSON struct {
-	StartTime *RFC3339
+	StartTime *datetime.RFC3339
 }
 
 type timeInfoXML struct {
-	Expiry *RFC3339
+	Expiry *datetime.RFC3339
 }
 
 type timeInfoSlice struct {
-	Expiry *[]RFC3339
+	Expiry *[]datetime.RFC3339
 }
 
 func TestRFC3339(t *testing.T) {
 	originalTime := time.Date(2023, time.June, 15, 14, 30, 45, 0, time.UTC)
-	dt := RFC3339(originalTime)
+	dt := datetime.RFC3339(originalTime)
 	result := dt.String()
 	require.NotEmpty(t, result)
 
 	jsonBytes, err := dt.MarshalJSON()
 	require.NoError(t, err)
-	var dt2 RFC3339
+	var dt2 datetime.RFC3339
 	err = dt2.UnmarshalJSON(jsonBytes)
 	require.NoError(t, err)
 	require.Equal(t, originalTime, time.Time(dt2))
 
 	textBytes, err := dt.MarshalText()
 	require.NoError(t, err)
-	var dt3 RFC3339
+	var dt3 datetime.RFC3339
 	err = dt3.UnmarshalText(textBytes)
 	require.NoError(t, err)
 	require.Equal(t, originalTime, time.Time(dt3))
@@ -98,7 +99,7 @@ func TestEmptyAndNullTime(t *testing.T) {
 }
 
 func TestRFC3339_empty(t *testing.T) {
-	tt := RFC3339{}
+	tt := datetime.RFC3339{}
 	require.NoError(t, xml.Unmarshal([]byte("<RFC3339/>"), &tt))
 	require.Zero(t, tt)
 }

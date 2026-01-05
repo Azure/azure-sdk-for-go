@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-01-05)
+## 1.3.0 (2026-01-05)
 ### Breaking Changes
 
 - Type of `SystemData.CreatedByType` has been changed from `*IdentityType` to `*CreatedByType`

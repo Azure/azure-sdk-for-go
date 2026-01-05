@@ -1,11 +1,10 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot
 
 go 1.24.0
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.20.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot v1.2.0
 )
 
 require (

@@ -6,5 +6,5 @@ package armhealthbot
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v1.3.0"
 )

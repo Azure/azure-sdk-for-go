@@ -25,13 +25,13 @@ func ExampleBotsClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewBotsClient().BeginCreate(ctx, "healthbotClient", "samplebotname", armhealthbot.HealthBot{
 		Identity: &armhealthbot.Identity{
-			Type:	to.Ptr(armhealthbot.ResourceIdentityTypeSystemAssignedUserAssigned),
+			Type: to.Ptr(armhealthbot.ResourceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armhealthbot.UserAssignedIdentity{
-				"/subscriptions/subscription-id/resourcegroups/myrg/providers/microsoft.managedidentity/userassignedidentities/my-mi":	{},
-				"/subscriptions/subscription-id/resourcegroups/myrg/providers/microsoft.managedidentity/userassignedidentities/my-mi2":	{},
+				"/subscriptions/subscription-id/resourcegroups/myrg/providers/microsoft.managedidentity/userassignedidentities/my-mi":  {},
+				"/subscriptions/subscription-id/resourcegroups/myrg/providers/microsoft.managedidentity/userassignedidentities/my-mi2": {},
 			},
 		},
-		Location:	to.Ptr("East US"),
+		Location: to.Ptr("East US"),
 		SKU: &armhealthbot.SKU{
 			Name: to.Ptr(armhealthbot.SKUNameF0),
 		},

@@ -22,35 +22,35 @@ import (
 type BotsServer struct {
 	// BeginCreate is the fake for method BotsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, botName string, parameters armhealthbot.HealthBot, options *armhealthbot.BotsClientBeginCreateOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, botName string, parameters armhealthbot.HealthBot, options *armhealthbot.BotsClientBeginCreateOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method BotsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method BotsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientGetOptions) (resp azfake.Responder[armhealthbot.BotsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientGetOptions) (resp azfake.Responder[armhealthbot.BotsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method BotsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armhealthbot.BotsClientListOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListResponse])
+	NewListPager func(options *armhealthbot.BotsClientListOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method BotsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armhealthbot.BotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armhealthbot.BotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse])
 
 	// ListSecrets is the fake for method BotsClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSecrets	func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientListSecretsOptions) (resp azfake.Responder[armhealthbot.BotsClientListSecretsResponse], errResp azfake.ErrorResponder)
+	ListSecrets func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientListSecretsOptions) (resp azfake.Responder[armhealthbot.BotsClientListSecretsResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateAPIJwtSecret is the fake for method BotsClient.RegenerateAPIJwtSecret
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateAPIJwtSecret	func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientRegenerateAPIJwtSecretOptions) (resp azfake.Responder[armhealthbot.BotsClientRegenerateAPIJwtSecretResponse], errResp azfake.ErrorResponder)
+	RegenerateAPIJwtSecret func(ctx context.Context, resourceGroupName string, botName string, options *armhealthbot.BotsClientRegenerateAPIJwtSecretOptions) (resp azfake.Responder[armhealthbot.BotsClientRegenerateAPIJwtSecretResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method BotsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, botName string, parameters armhealthbot.UpdateParameters, options *armhealthbot.BotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, botName string, parameters armhealthbot.UpdateParameters, options *armhealthbot.BotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewBotsServerTransport creates a new instance of BotsServerTransport with the provided implementation.
@@ -58,24 +58,24 @@ type BotsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewBotsServerTransport(srv *BotsServer) *BotsServerTransport {
 	return &BotsServerTransport{
-		srv:				srv,
-		beginCreate:			newTracker[azfake.PollerResponder[armhealthbot.BotsClientCreateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse]](),
-		newListPager:			newTracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]](),
-		beginUpdate:			newTracker[azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse]](),
+		srv:                         srv,
+		beginCreate:                 newTracker[azfake.PollerResponder[armhealthbot.BotsClientCreateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse]](),
 	}
 }
 
 // BotsServerTransport connects instances of armhealthbot.BotsClient to instances of BotsServer.
 // Don't use this type directly, use NewBotsServerTransport instead.
 type BotsServerTransport struct {
-	srv				*BotsServer
-	beginCreate			*tracker[azfake.PollerResponder[armhealthbot.BotsClientCreateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse]]
-	newListPager			*tracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]]
-	beginUpdate			*tracker[azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse]]
+	srv                         *BotsServer
+	beginCreate                 *tracker[azfake.PollerResponder[armhealthbot.BotsClientCreateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armhealthbot.BotsClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armhealthbot.BotsClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhealthbot.BotsClientListByResourceGroupResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armhealthbot.BotsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for BotsServerTransport.

@@ -523,7 +523,7 @@ func UpdateLatestChangelogVersion(modulePath string, newVersion *semver.Version,
 
 	for _, line := range lines {
 		trimmed := strings.TrimSpace(line)
-		
+
 		// Look for the first version header (e.g., "## 1.0.0 (2025-01-01)" or "## 1.0.0 (Unreleased)")
 		if !foundFirstVersion && strings.HasPrefix(trimmed, "## ") {
 			// Replace the version line with the new version
@@ -531,7 +531,7 @@ func UpdateLatestChangelogVersion(modulePath string, newVersion *semver.Version,
 			foundFirstVersion = true
 			continue
 		}
-		
+
 		updatedLines = append(updatedLines, line)
 	}
 

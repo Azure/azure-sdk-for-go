@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	internalutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
+	"github.com/Masterminds/semver"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -181,4 +182,136 @@ func TestGetPreviousVersionTag(t *testing.T) {
 	// Test stable - should return latest stable
 	result = getPreviousVersionTag(false, tags)
 	assert.Equal(t, "v1.0.0", result)
+}
+
+func TestUpdateLatestChangelogVersion(t *testing.T) {
+	// Create a temporary directory for testing
+	tempDir, err := os.MkdirTemp("", "test-update-changelog")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	testCases := []struct {
+		name            string
+		initialContent  string
+		newVersion      string
+		releaseDate     string
+		expectedContent string
+		expectError     bool
+	}{
+		{
+			name: "Update unreleased version",
+			initialContent: `# Release History
+
+## 1.0.0 (Unreleased)
+
+### Features Added
+
+- Added new feature X
+- Added new feature Y
+
+## 0.9.0 (2025-01-01)
+
+### Features Added
+
+- Initial release
+`,
+			newVersion:  "1.0.0",
+			releaseDate: "2026-01-06",
+			expectedContent: `# Release History
+
+## 1.0.0 (2026-01-06)
+
+### Features Added
+
+- Added new feature X
+- Added new feature Y
+
+## 0.9.0 (2025-01-01)
+
+### Features Added
+
+- Initial release
+`,
+			expectError: false,
+		},
+		{
+			name: "Update with different version",
+			initialContent: `# Release History
+
+## 0.5.0 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed bug A
+
+## 0.4.0 (2025-12-01)
+
+### Features Added
+
+- Feature B
+`,
+			newVersion:  "0.5.0",
+			releaseDate: "2026-01-06",
+			expectedContent: `# Release History
+
+## 0.5.0 (2026-01-06)
+
+### Bugs Fixed
+
+- Fixed bug A
+
+## 0.4.0 (2025-12-01)
+
+### Features Added
+
+- Feature B
+`,
+			expectError: false,
+		},
+		{
+			name: "No version entry",
+			initialContent: `# Release History
+
+No versions yet.
+`,
+			newVersion:  "1.0.0",
+			releaseDate: "2026-01-06",
+			expectError: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Create a temporary file with the initial content
+			changelogPath := tempDir + "/CHANGELOG.md"
+			err := os.WriteFile(changelogPath, []byte(tc.initialContent), 0644)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			// Call the function
+			version, err := semver.NewVersion(tc.newVersion)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			err = UpdateLatestChangelogVersion(tempDir, version, tc.releaseDate)
+
+			if tc.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+
+				// Read the updated content
+				updatedContent, err := os.ReadFile(changelogPath)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				assert.Equal(t, tc.expectedContent, string(updatedContent))
+			}
+		})
+	}
 }

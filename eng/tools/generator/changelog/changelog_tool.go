@@ -504,6 +504,49 @@ func AddChangelogToFileWithReplacement(changelog *Changelog, version *semver.Ver
 	return additionalChangelog, nil
 }
 
+// UpdateLatestChangelogVersion updates the version of the latest (first) changelog entry
+// This is used when setting a specific version - it keeps the changelog content but updates the version number and date
+func UpdateLatestChangelogVersion(modulePath string, newVersion *semver.Version, releaseDate string) error {
+	changelogPath := filepath.Join(modulePath, utils.ChangelogFileName)
+	b, err := os.ReadFile(changelogPath)
+	if err != nil {
+		return fmt.Errorf("failed to read changelog: %v", err)
+	}
+
+	if releaseDate == "" {
+		releaseDate = time.Now().Format("2006-01-02")
+	}
+
+	lines := strings.Split(string(b), "\n")
+	var updatedLines []string
+	foundFirstVersion := false
+
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+		
+		// Look for the first version header (e.g., "## 1.0.0 (2025-01-01)" or "## 1.0.0 (Unreleased)")
+		if !foundFirstVersion && strings.HasPrefix(trimmed, "## ") {
+			// Replace the version line with the new version
+			updatedLines = append(updatedLines, fmt.Sprintf("## %s (%s)", newVersion.String(), releaseDate))
+			foundFirstVersion = true
+			continue
+		}
+		
+		updatedLines = append(updatedLines, line)
+	}
+
+	if !foundFirstVersion {
+		return fmt.Errorf("no version entry found in changelog")
+	}
+
+	finalChangelog := strings.Join(updatedLines, "\n")
+	if err = os.WriteFile(changelogPath, []byte(finalChangelog), 0644); err != nil {
+		return fmt.Errorf("failed to write changelog: %v", err)
+	}
+
+	return nil
+}
+
 // CreateNewChangelog creates a new changelog file for a new module
 func CreateNewChangelog(modulePath string, sdkRepo repo.SDKRepository, packageVersion, releaseDate string) error {
 	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)

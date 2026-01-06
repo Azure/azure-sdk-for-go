@@ -172,28 +172,6 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 			return result, nil
 		}
 		result.NewVersion = newVersion.String()
-
-		// Generate changelog for the specified version
-		if verbose {
-			log.Printf("Generating changelog for specified version...")
-		}
-
-		// Determine if this should be a preview version based on the version string
-		isCurrentPreview := newVersion.Prerelease() != ""
-
-		// Generate changelog by comparing with previous version
-		changelogResult, err := changelog.GenerateChangelog(packagePath, sdkRepo, isCurrentPreview)
-		if err != nil {
-			result.Success = false
-			result.Message = fmt.Sprintf("Failed to generate changelog: %v", err)
-			return result, nil
-		}
-		changelogData = changelogResult.ChangelogData
-		result.PreviousVersion = changelogResult.PreviousVersion
-
-		if verbose {
-			log.Printf("Generated changelog for version %s", newVersion.String())
-		}
 	} else {
 		// Calculate new version based on changes
 		if verbose {
@@ -262,22 +240,31 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 		log.Printf("Updating CHANGELOG.md...")
 	}
 
-	if changelogData != nil {
-		// Check if this is a new package (no CHANGELOG.md exists)
-		changelogPath := filepath.Join(packagePath, "CHANGELOG.md")
-		if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
-			// Create new changelog for new package
-			if verbose {
-				log.Printf("Creating new CHANGELOG.md for new package...")
-			}
+	// Check if CHANGELOG.md exists
+	changelogPath := filepath.Join(packagePath, "CHANGELOG.md")
+	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
+		// CHANGELOG doesn't exist - create a new one for new packages
+		if verbose {
+			log.Printf("Creating new CHANGELOG.md for new package...")
+		}
+		// Empty string for releaseDate will use current date
+		if err := changelog.CreateNewChangelog(packagePath, sdkRepo, newVersion.String(), ""); err != nil {
+			result.Success = false
+			result.Message = fmt.Sprintf("Failed to create CHANGELOG.md: %v", err)
+			return result, nil
+		}
+	} else {
+		// CHANGELOG exists - update it based on whether version was specified or calculated
+		if sdkVersion != "" {
+			// Version was specified - just update the version in the latest changelog entry
 			// Empty string for releaseDate will use current date
-			if err := changelog.CreateNewChangelog(packagePath, sdkRepo, newVersion.String(), ""); err != nil {
+			if err := changelog.UpdateLatestChangelogVersion(packagePath, newVersion, ""); err != nil {
 				result.Success = false
-				result.Message = fmt.Sprintf("Failed to create CHANGELOG.md: %v", err)
+				result.Message = fmt.Sprintf("Failed to update CHANGELOG.md version: %v", err)
 				return result, nil
 			}
-		} else {
-			// Update existing changelog
+		} else if changelogData != nil {
+			// Version was calculated - add/update changelog with generated content
 			// Empty string for releaseDate will use current date
 			_, err = changelog.AddChangelogToFileWithReplacement(changelogData, newVersion, packagePath, "")
 			if err != nil {
@@ -286,10 +273,10 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 				return result, nil
 			}
 		}
+	}
 
-		if verbose {
-			log.Printf("Successfully updated CHANGELOG.md")
-		}
+	if verbose {
+		log.Printf("Successfully updated CHANGELOG.md")
 	}
 
 	result.Success = true

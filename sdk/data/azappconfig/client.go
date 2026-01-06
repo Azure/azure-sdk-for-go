@@ -7,9 +7,11 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/audience"
@@ -58,10 +60,17 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	
+	cl := cloud.AzurePublic
+	if options != nil && !reflect.ValueOf(options.Cloud).IsZero() {
+		cl = options.Cloud
+	}
 
+	// audience is configured if ok && cfg.Audience != ""
+	cfg, ok := cl.Services[ServiceName]
 	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(options.Cloud.Services != nil && options.Cloud.Services[serviceName].Audience != "")},
+		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(ok && cfg.Audience != "")},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.AppConfig",
 		},

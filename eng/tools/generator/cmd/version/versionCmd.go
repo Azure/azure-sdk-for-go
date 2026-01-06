@@ -270,6 +270,7 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 			if verbose {
 				log.Printf("Creating new CHANGELOG.md for new package...")
 			}
+			// Empty string for releaseDate will use current date
 			if err := changelog.CreateNewChangelog(packagePath, sdkRepo, newVersion.String(), ""); err != nil {
 				result.Success = false
 				result.Message = fmt.Sprintf("Failed to create CHANGELOG.md: %v", err)
@@ -277,6 +278,7 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 			}
 		} else {
 			// Update existing changelog
+			// Empty string for releaseDate will use current date
 			_, err = changelog.AddChangelogToFileWithReplacement(changelogData, newVersion, packagePath, "")
 			if err != nil {
 				result.Success = false

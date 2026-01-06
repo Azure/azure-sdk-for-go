@@ -21,7 +21,6 @@ import (
 )
 
 const timeFormat = time.RFC3339Nano
-const serviceName = "AzureAppConfiguration" // need to double check
 
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
@@ -60,7 +59,7 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	
+
 	cl := cloud.AzurePublic
 	if options != nil && !reflect.ValueOf(options.Cloud).IsZero() {
 		cl = options.Cloud

@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-* Fixed `cloud.AzureGovernment` and `cloud.AzureChina` audience values so they align with Azure CLI and other SDKs.
+* Aligned `cloud.AzureGovernment` and `cloud.AzureChina` audience values with Azure CLI
 
 ## 1.20.0 (2025-11-06)
 

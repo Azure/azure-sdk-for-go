@@ -1,0 +1,4 @@
+directory: specification/providerhub/ProviderHub.Management
+commit: c9b4bf57d0b99ce6098da0923c94cdc07df5a29a
+repo: i-specs
+additionalDirectories: 

@@ -13,6 +13,8 @@ time values in various formats used by Azure services.
 
 ### Other Changes
 
+* Aligned `cloud.AzureGovernment` and `cloud.AzureChina` audience values with Azure CLI
+
 ## 1.20.0 (2025-11-06)
 
 ### Features Added

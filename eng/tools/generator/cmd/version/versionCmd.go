@@ -36,12 +36,12 @@ func Command() *cobra.Command {
 
 	versionCmd := &cobra.Command{
 		Use:   "version <package-path>",
-		Short: "Update package version files",
-		Long: `Update package version files by calculating new version or using a specified version.
+		Short: "Update package version files and CHANGELOG.md",
+		Long: `Update package version files and CHANGELOG.md by calculating new version or using a specified version.
 
 This command will:
-1. If sdkversion is specified: update all version files with the provided version
-2. If sdkversion is not specified: calculate new version based on package changes and sdkreleasetype, then update all version files
+1. If sdkversion is specified: update all version files and CHANGELOG.md with the provided version
+2. If sdkversion is not specified: calculate new version based on package changes and sdkreleasetype, then update all version files and CHANGELOG.md
 
 The package path should be an absolute path to a Go module (containing both go.mod and version.go files).
 
@@ -157,6 +157,7 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 	}
 
 	var newVersion *semver.Version
+	var changelogData *changelog.Changelog
 
 	if sdkVersion != "" {
 		// Use specified version
@@ -171,6 +172,28 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 			return result, nil
 		}
 		result.NewVersion = newVersion.String()
+
+		// Generate changelog for the specified version
+		if verbose {
+			log.Printf("Generating changelog for specified version...")
+		}
+
+		// Determine if this should be a preview version based on the version string
+		isCurrentPreview := newVersion.Prerelease() != ""
+
+		// Generate changelog by comparing with previous version
+		changelogResult, err := changelog.GenerateChangelog(packagePath, sdkRepo, isCurrentPreview)
+		if err != nil {
+			result.Success = false
+			result.Message = fmt.Sprintf("Failed to generate changelog: %v", err)
+			return result, nil
+		}
+		changelogData = changelogResult.ChangelogData
+		result.PreviousVersion = changelogResult.PreviousVersion
+
+		if verbose {
+			log.Printf("Generated changelog for version %s", newVersion.String())
+		}
 	} else {
 		// Calculate new version based on changes
 		if verbose {
@@ -211,6 +234,8 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 			return result, nil
 		}
 
+		changelogData = changelogResult.ChangelogData
+		result.PreviousVersion = changelogResult.PreviousVersion
 		result.NewVersion = newVersion.String()
 		if verbose {
 			log.Printf("Calculated new version: %s", newVersion.String())
@@ -230,6 +255,24 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 
 	if verbose {
 		log.Printf("Successfully updated all version files")
+	}
+
+	// Update CHANGELOG.md file
+	if verbose {
+		log.Printf("Updating CHANGELOG.md...")
+	}
+
+	if changelogData != nil {
+		_, err = changelog.AddChangelogToFileWithReplacement(changelogData, newVersion, packagePath, "")
+		if err != nil {
+			result.Success = false
+			result.Message = fmt.Sprintf("Failed to update CHANGELOG.md: %v", err)
+			return result, nil
+		}
+
+		if verbose {
+			log.Printf("Successfully updated CHANGELOG.md")
+		}
 	}
 
 	result.Success = true

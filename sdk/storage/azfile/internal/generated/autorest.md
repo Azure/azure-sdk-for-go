@@ -189,13 +189,16 @@ directive:
   - zz_file_client.go
   - zz_models.go
   - zz_options.go
+  - zz_share_client.go
+  - zz_response_types.go
   where: $
   transform: >-
     return $.
       replace(/SmbMultichannel/g, `SMBMultichannel`).
       replace(/copyFileSmbInfo/g, `copyFileSMBInfo`).
       replace(/CopyFileSmbInfo/g, `CopyFileSMBInfo`).
-      replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`);
+      replace(/Smb\s+\*ShareSMBSettings/g, `SMB *ShareSMBSettings`).
+      replace(/EnableSmbDirectoryLease/g, `EnableSMBDirectoryLease`); 
 ```
 
 ### Rename models - remove `Item` and `Internal` suffix

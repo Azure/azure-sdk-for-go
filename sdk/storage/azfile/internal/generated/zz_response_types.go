@@ -1370,8 +1370,8 @@ type ShareClientGetPropertiesResponse struct {
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
 
-	// EnableSmbDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
-	EnableSmbDirectoryLease *bool
+	// EnableSMBDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	EnableSMBDirectoryLease *bool
 
 	// EnableSnapshotVirtualDirectoryAccess contains the information returned from the x-ms-enable-snapshot-virtual-directory-access
 	// header response.

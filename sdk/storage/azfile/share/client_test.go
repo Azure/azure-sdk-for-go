@@ -488,7 +488,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled()
 
 	// Create share with directory leases disabled
 	resp, err := shareClient.Create(context.Background(), &share.CreateOptions{
-		EnableSmbDirectoryLease: to.Ptr(false),
+		EnableSMBDirectoryLease: to.Ptr(false),
 	})
 	_require.NoError(err)
 	_require.NotNil(resp.ETag)
@@ -498,7 +498,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDisabled()
 	_require.NoError(err)
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.LastModified)
-	_require.Equal(false, *getResp.EnableSmbDirectoryLease)
+	_require.Equal(false, *getResp.EnableSMBDirectoryLease)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() {
@@ -518,7 +518,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() 
 
 	// Create share with directory leases explicitly enabled
 	resp, err := shareClient.Create(context.Background(), &share.CreateOptions{
-		EnableSmbDirectoryLease: to.Ptr(true),
+		EnableSMBDirectoryLease: to.Ptr(true),
 	})
 	_require.NoError(err)
 	_require.NotNil(resp.ETag)
@@ -526,7 +526,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseEnabled() 
 	// Verify with GetProperties
 	getResp, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.Equal(true, *getResp.EnableSmbDirectoryLease)
+	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() {
@@ -552,7 +552,7 @@ func (s *ShareRecordedTestsSuite) TestShareCreateWithSMBDirectoryLeaseDefault() 
 	// Verify with GetProperties
 	getResp, err := shareClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
-	_require.Equal(true, *getResp.EnableSmbDirectoryLease)
+	_require.Equal(true, *getResp.EnableSMBDirectoryLease)
 }
 
 func (s *ShareRecordedTestsSuite) TestShareDeleteNegativeNonExistent() {

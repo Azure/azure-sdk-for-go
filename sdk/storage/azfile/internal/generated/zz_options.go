@@ -875,7 +875,7 @@ type ShareClientCreateOptions struct {
 	// SMB only, default is true. Specifies whether granting of new directory leases for directories present in a share are to
 	// be enabled or disabled. An input of true specifies that granting of new
 	// directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be blocked.
-	EnableSmbDirectoryLease              *bool
+	EnableSMBDirectoryLease              *bool
 	EnableSnapshotVirtualDirectoryAccess *bool
 
 	// Protocols to enable on the share.
@@ -1057,7 +1057,7 @@ type ShareClientSetPropertiesOptions struct {
 	// SMB only, default is true. Specifies whether granting of new directory leases for directories present in a share are to
 	// be enabled or disabled. An input of true specifies that granting of new
 	// directory leases is to be allowed. An input of false specifies that granting of new directory leases is to be blocked.
-	EnableSmbDirectoryLease              *bool
+	EnableSMBDirectoryLease              *bool
 	EnableSnapshotVirtualDirectoryAccess *bool
 
 	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.

@@ -391,8 +391,8 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.ShareProvisionedBandwidthMibps != nil {
 		req.Raw().Header["x-ms-share-provisioned-bandwidth-mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
 	}
-	if options != nil && options.EnableSmbDirectoryLease != nil {
-		req.Raw().Header["x-ms-enable-smb-directory-lease"] = []string{strconv.FormatBool(*options.EnableSmbDirectoryLease)}
+	if options != nil && options.EnableSMBDirectoryLease != nil {
+		req.Raw().Header["x-ms-enable-smb-directory-lease"] = []string{strconv.FormatBool(*options.EnableSMBDirectoryLease)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil
@@ -935,7 +935,7 @@ func (client *ShareClient) getPropertiesHandleResponse(resp *http.Response) (Sha
 		if err != nil {
 			return ShareClientGetPropertiesResponse{}, err
 		}
-		result.EnableSmbDirectoryLease = &enableSmbDirectoryLease
+		result.EnableSMBDirectoryLease = &enableSmbDirectoryLease
 	}
 	if val := resp.Header.Get("x-ms-enable-snapshot-virtual-directory-access"); val != "" {
 		enableSnapshotVirtualDirectoryAccess, err := strconv.ParseBool(val)
@@ -1696,8 +1696,8 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 	if options != nil && options.ShareProvisionedBandwidthMibps != nil {
 		req.Raw().Header["x-ms-share-provisioned-bandwidth-mibps"] = []string{strconv.FormatInt(*options.ShareProvisionedBandwidthMibps, 10)}
 	}
-	if options != nil && options.EnableSmbDirectoryLease != nil {
-		req.Raw().Header["x-ms-enable-smb-directory-lease"] = []string{strconv.FormatBool(*options.EnableSmbDirectoryLease)}
+	if options != nil && options.EnableSMBDirectoryLease != nil {
+		req.Raw().Header["x-ms-enable-smb-directory-lease"] = []string{strconv.FormatBool(*options.EnableSMBDirectoryLease)}
 	}
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	return req, nil

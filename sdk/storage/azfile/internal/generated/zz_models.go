@@ -301,7 +301,7 @@ type ShareProperties struct {
 	AccessTierChangeTime                 *time.Time `xml:"AccessTierChangeTime"`
 	AccessTierTransitionState            *string    `xml:"AccessTierTransitionState"`
 	DeletedTime                          *time.Time `xml:"DeletedTime"`
-	EnableSmbDirectoryLease              *bool      `xml:"EnableSmbDirectoryLease"`
+	EnableSMBDirectoryLease              *bool      `xml:"EnableSMBDirectoryLease"`
 	EnableSnapshotVirtualDirectoryAccess *bool      `xml:"EnableSnapshotVirtualDirectoryAccess"`
 	EnabledProtocols                     *string    `xml:"EnabledProtocols"`
 	IncludedBurstIops                    *int64     `xml:"IncludedBurstIops"`

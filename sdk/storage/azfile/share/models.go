@@ -36,8 +36,8 @@ type CreateOptions struct {
 	// when NFS is enabled.
 	EnableSnapshotVirtualDirectoryAccess *bool
 
-	// EnableSmbDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
-	EnableSmbDirectoryLease *bool
+	// EnableSMBDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	EnableSMBDirectoryLease *bool
 
 	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
 	PaidBurstingEnabled *bool
@@ -71,7 +71,7 @@ func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 		Quota:                                o.Quota,
 		RootSquash:                           o.RootSquash,
 		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
-		EnableSmbDirectoryLease:              o.EnableSmbDirectoryLease,
+		EnableSMBDirectoryLease:              o.EnableSMBDirectoryLease,
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
@@ -148,7 +148,7 @@ type SetPropertiesOptions struct {
 	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
 	// when NFS is enabled.
 	EnableSnapshotVirtualDirectoryAccess *bool
-	// EnableSmbDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	// EnableSMBDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
 	EnableSMBDirectoryLease *bool
 	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
 	PaidBurstingEnabled *bool
@@ -177,7 +177,7 @@ func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOpti
 		Quota:                                o.Quota,
 		RootSquash:                           o.RootSquash,
 		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
-		EnableSmbDirectoryLease:              o.EnableSMBDirectoryLease,
+		EnableSMBDirectoryLease:              o.EnableSMBDirectoryLease,
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,

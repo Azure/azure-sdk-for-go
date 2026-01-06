@@ -263,11 +263,26 @@ func processVersionUpdate(sdkRoot, packagePath, sdkVersion, sdkReleaseType strin
 	}
 
 	if changelogData != nil {
-		_, err = changelog.AddChangelogToFileWithReplacement(changelogData, newVersion, packagePath, "")
-		if err != nil {
-			result.Success = false
-			result.Message = fmt.Sprintf("Failed to update CHANGELOG.md: %v", err)
-			return result, nil
+		// Check if this is a new package (no CHANGELOG.md exists)
+		changelogPath := filepath.Join(packagePath, "CHANGELOG.md")
+		if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
+			// Create new changelog for new package
+			if verbose {
+				log.Printf("Creating new CHANGELOG.md for new package...")
+			}
+			if err := changelog.CreateNewChangelog(packagePath, sdkRepo, newVersion.String(), ""); err != nil {
+				result.Success = false
+				result.Message = fmt.Sprintf("Failed to create CHANGELOG.md: %v", err)
+				return result, nil
+			}
+		} else {
+			// Update existing changelog
+			_, err = changelog.AddChangelogToFileWithReplacement(changelogData, newVersion, packagePath, "")
+			if err != nil {
+				result.Success = false
+				result.Message = fmt.Sprintf("Failed to update CHANGELOG.md: %v", err)
+				return result, nil
+			}
 		}
 
 		if verbose {

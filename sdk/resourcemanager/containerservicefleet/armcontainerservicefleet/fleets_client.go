@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -356,7 +357,7 @@ func (client *FleetsClient) NewListBySubscriptionPager(options *FleetsClientList
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *FleetsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context, options *FleetsClientListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/fleets"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -367,6 +368,12 @@ func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
 	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

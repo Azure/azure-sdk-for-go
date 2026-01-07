@@ -13,6 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -314,7 +315,7 @@ func (client *AutoUpgradeProfilesClient) NewListByFleetPager(resourceGroupName s
 }
 
 // listByFleetCreateRequest creates the ListByFleet request.
-func (client *AutoUpgradeProfilesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *AutoUpgradeProfilesClientListByFleetOptions) (*policy.Request, error) {
+func (client *AutoUpgradeProfilesClient) listByFleetCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, options *AutoUpgradeProfilesClientListByFleetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -333,6 +334,12 @@ func (client *AutoUpgradeProfilesClient) listByFleetCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
 	reqQP.Set("api-version", "2025-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/communication/armcommunication",
-  "Tag": "go/resourcemanager/communication/armcommunication_da15885555"
+  "Tag": "go/resourcemanager/communication/armcommunication_15eaf67fb5"
 }

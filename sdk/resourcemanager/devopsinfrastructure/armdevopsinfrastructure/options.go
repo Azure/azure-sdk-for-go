@@ -33,16 +33,6 @@ type PoolsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
-// PoolsClientCheckNameAvailabilityOptions contains the optional parameters for the PoolsClient.CheckNameAvailability method.
-type PoolsClientCheckNameAvailabilityOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PoolsClientDeleteResourcesOptions contains the optional parameters for the PoolsClient.DeleteResources method.
-type PoolsClientDeleteResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
 type PoolsClientGetOptions struct {
 	// placeholder for future optional parameters

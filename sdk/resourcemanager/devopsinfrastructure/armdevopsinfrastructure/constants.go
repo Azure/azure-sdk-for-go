@@ -4,6 +4,11 @@
 
 package armdevopsinfrastructure
 
+const (
+	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devopsinfrastructure/armdevopsinfrastructure"
+	moduleVersion = "v1.0.0"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -16,24 +21,6 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
-	}
-}
-
-// AvailabilityStatus - AvailabilityStatus of a name.
-type AvailabilityStatus string
-
-const (
-	// AvailabilityStatusAvailable - The name is available.
-	AvailabilityStatusAvailable AvailabilityStatus = "Available"
-	// AvailabilityStatusUnavailable - The name is unavailable
-	AvailabilityStatusUnavailable AvailabilityStatus = "Unavailable"
-)
-
-// PossibleAvailabilityStatusValues returns the possible values for the AvailabilityStatus const type.
-func PossibleAvailabilityStatusValues() []AvailabilityStatus {
-	return []AvailabilityStatus{
-		AvailabilityStatusAvailable,
-		AvailabilityStatusUnavailable,
 	}
 }
 
@@ -79,42 +66,6 @@ func PossibleCachingTypeValues() []CachingType {
 	}
 }
 
-// CertificateStoreNameOption - The certificate store name type
-type CertificateStoreNameOption string
-
-const (
-	// CertificateStoreNameOptionMy - The X.509 certificate store for personal certificates.
-	CertificateStoreNameOptionMy CertificateStoreNameOption = "My"
-	// CertificateStoreNameOptionRoot - The X.509 certificate store for trusted root certificate authorities (CAs).
-	CertificateStoreNameOptionRoot CertificateStoreNameOption = "Root"
-)
-
-// PossibleCertificateStoreNameOptionValues returns the possible values for the CertificateStoreNameOption const type.
-func PossibleCertificateStoreNameOptionValues() []CertificateStoreNameOption {
-	return []CertificateStoreNameOption{
-		CertificateStoreNameOptionMy,
-		CertificateStoreNameOptionRoot,
-	}
-}
-
-// CheckNameAvailabilityReason - The reason code explaining why the name is unavailable. Will be null if the name is available.
-type CheckNameAvailabilityReason string
-
-const (
-	// CheckNameAvailabilityReasonAlreadyExists - The name already exists.
-	CheckNameAvailabilityReasonAlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
-	// CheckNameAvailabilityReasonInvalid - The name is invalid.
-	CheckNameAvailabilityReasonInvalid CheckNameAvailabilityReason = "Invalid"
-)
-
-// PossibleCheckNameAvailabilityReasonValues returns the possible values for the CheckNameAvailabilityReason const type.
-func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
-	return []CheckNameAvailabilityReason{
-		CheckNameAvailabilityReasonAlreadyExists,
-		CheckNameAvailabilityReasonInvalid,
-	}
-}
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -136,27 +87,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
-	}
-}
-
-// EphemeralType - The type of Ephemeral option the pool will use on underlying VMs when loading this image.
-type EphemeralType string
-
-const (
-	// EphemeralTypeAutomatic - Ephemeral is handled by Managed DevOps Pools service.
-	EphemeralTypeAutomatic EphemeralType = "Automatic"
-	// EphemeralTypeCacheDisk - CacheDisk ephemeral only, requires that the SKU has a cache that is large enough for the image.
-	EphemeralTypeCacheDisk EphemeralType = "CacheDisk"
-	// EphemeralTypeResourceDisk - ResourceDisk ephemeral only, requires only that the SKU supports it.
-	EphemeralTypeResourceDisk EphemeralType = "ResourceDisk"
-)
-
-// PossibleEphemeralTypeValues returns the possible values for the EphemeralType const type.
-func PossibleEphemeralTypeValues() []EphemeralType {
-	return []EphemeralType{
-		EphemeralTypeAutomatic,
-		EphemeralTypeCacheDisk,
-		EphemeralTypeResourceDisk,
 	}
 }
 
@@ -401,21 +331,6 @@ func PossibleResourceStatusValues() []ResourceStatus {
 		ResourceStatusReturned,
 		ResourceStatusStarting,
 		ResourceStatusUpdating,
-	}
-}
-
-// ResourceType - The type of resource.
-type ResourceType string
-
-const (
-	// ResourceTypeMicrosoftDevOpsInfrastructurePools - DevOpsInfrastructure pool resource.
-	ResourceTypeMicrosoftDevOpsInfrastructurePools ResourceType = "Microsoft.DevOpsInfrastructure/pools"
-)
-
-// PossibleResourceTypeValues returns the possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{
-		ResourceTypeMicrosoftDevOpsInfrastructurePools,
 	}
 }
 

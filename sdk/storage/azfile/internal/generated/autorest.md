@@ -37,7 +37,8 @@ directive:
     return $.
       replaceAll(`[]string{"2025-11-05"}`, `[]string{ServiceVersion}`);
 ```
-### Changing casing of NfsFileType
+### Changing casing of NfsFileType, Nfs, ShareNfsSettingsEncryptionInTransit and ShareNfsSettings
+
 ```yaml
 directive:
 - from: 
@@ -46,10 +47,14 @@ directive:
   - zz_response_types.go
   - zz_file_client.go
   - zz_directory_client.go
+  - zz_models.go
   where: $
   transform: >-
     return $.
-      replaceAll(`NfsFileType`, `NFSFileType`);
+      replaceAll(`NfsFileType`, `NFSFileType`).
+      replaceAll(`ShareNfsSettings`, `ShareNFSSettings`).
+      replaceAll(`ShareNfsSettingsEncryptionInTransit`, `ShareNFSSettingsEncryptionInTransit`).
+      replaceAll(`Nfs *`, `NFS *`);
 ```
 
 ### Updating Header Names XMSFileShareSnapshotUsageBytes and XMSFileShareUsageBytes

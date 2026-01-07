@@ -215,7 +215,7 @@ type Metrics struct {
 // ProtocolSettings - Protocol settings
 type ProtocolSettings struct {
 	// Settings for NFS protocol.
-	Nfs *ShareNfsSettings `xml:"NFS"`
+	NFS *ShareNFSSettings `xml:"NFS"`
 
 	// Settings for SMB protocol.
 	Smb *SMBSettings `xml:"SMB"`
@@ -268,14 +268,14 @@ type ShareFileRangeList struct {
 	Ranges      []*FileRange  `xml:"Range"`
 }
 
-// ShareNfsSettings - Settings for SMB protocol.
-type ShareNfsSettings struct {
+// ShareNFSSettings - Settings for SMB protocol.
+type ShareNFSSettings struct {
 	// Enable or disable encryption in transit.
-	EncryptionInTransit *ShareNfsSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
+	EncryptionInTransit *ShareNFSSettingsEncryptionInTransit `xml:"EncryptionInTransit"`
 }
 
-// ShareNfsSettingsEncryptionInTransit - Enable or disable encryption in transit.
-type ShareNfsSettingsEncryptionInTransit struct {
+// ShareNFSSettingsEncryptionInTransit - Enable or disable encryption in transit.
+type ShareNFSSettingsEncryptionInTransit struct {
 	// If encryption in transit is required
 	Required *bool `xml:"Required"`
 }

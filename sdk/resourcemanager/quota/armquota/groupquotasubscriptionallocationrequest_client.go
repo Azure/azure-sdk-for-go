@@ -7,14 +7,13 @@ package armquota
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GroupQuotaSubscriptionAllocationRequestClient contains the methods for the GroupQuotaSubscriptionAllocationRequest group.
@@ -27,7 +26,7 @@ type GroupQuotaSubscriptionAllocationRequestClient struct {
 // NewGroupQuotaSubscriptionAllocationRequestClient creates a new instance of GroupQuotaSubscriptionAllocationRequestClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupQuotaSubscriptionAllocationRequestClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupQuotaSubscriptionAllocationRequestClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -177,7 +176,7 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) listCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", filter)
+	reqQP.Set("$filter", Filter)
 	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

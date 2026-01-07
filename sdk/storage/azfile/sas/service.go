@@ -153,8 +153,8 @@ func (v SignatureValues) SignWithUserDelegation(userDelegationCredential *UserDe
 		startTime,
 		expiryTime,
 		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.ShareName, v.FilePath),
-		*udk.SignedOid,
-		*udk.SignedTid,
+		*udk.SignedOID,
+		*udk.SignedTID,
 		udkStart,
 		udkExpiry,
 		*udk.SignedService,
@@ -205,8 +205,8 @@ func (v SignatureValues) SignWithUserDelegation(userDelegationCredential *UserDe
 		signature:                   signature,
 	}
 
-	p.signedOID = *udk.SignedOid
-	p.signedTID = *udk.SignedTid
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
 	p.signedStart = *udk.SignedStart
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService

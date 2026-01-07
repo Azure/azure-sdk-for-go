@@ -611,8 +611,8 @@ func (s *ServiceUnrecordedTestsSuite) TestUserDelegationSASWithDelegatedUserObje
 		SignedExpiry:  &expiry,
 		SignedService: &serviceCode,
 		SignedVersion: &version,
-		SignedOid:     &oid,
-		SignedTid:     &tid,
+		SignedOID:     &oid,
+		SignedTID:     &tid,
 		Value:         val,
 	}
 	udc := exported.NewUserDelegationCredential("testaccount", udk)

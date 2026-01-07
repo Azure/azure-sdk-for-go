@@ -113,8 +113,8 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 		startTime,
 		expiryTime,
 		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.QueueName),
-		*udk.SignedOid,
-		*udk.SignedTid,
+		*udk.SignedOID,
+		*udk.SignedTID,
 		udkStart,
 		udkExpiry,
 		*udk.SignedService,
@@ -149,8 +149,8 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 		signedDelegatedUserObjectID: v.SignedDelegatedUserObjectID,
 	}
 
-	p.signedOID = *udk.SignedOid
-	p.signedTID = *udk.SignedTid
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
 	p.signedStart = *udk.SignedStart
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService

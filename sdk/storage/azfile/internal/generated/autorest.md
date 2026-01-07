@@ -206,6 +206,18 @@ directive:
       replace(/EnableSmbDirectoryLease/g, `EnableSMBDirectoryLease`); 
 ```
 
+### Fixing casing of SignedTid and SignedOid
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/SignedOid\s+\*string/g, `SignedOID *string`).
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+```
+
 ### Rename models - remove `Item` and `Internal` suffix
 
 ``` yaml

@@ -70,6 +70,19 @@ directive:
     };
 ```
 
+### Fixing casing of SignedTid and SignedOid
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/SignedOid\s+\*string/g, `SignedOID *string`).
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+```
+
+
 ### Remove pager method (since we implement it ourselves on the client layer) and export various generated methods in service client to utilize them in higher layers
 
 ``` yaml

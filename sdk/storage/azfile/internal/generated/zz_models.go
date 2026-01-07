@@ -385,7 +385,7 @@ type UserDelegationKey struct {
 	SignedExpiry *time.Time `xml:"SignedExpiry"`
 
 	// REQUIRED; The Azure Active Directory object ID in GUID format.
-	SignedOid *string `xml:"SignedOid"`
+	SignedOID *string `xml:"SignedOid"`
 
 	// REQUIRED; Abbreviation of the Azure Storage service that accepts the key
 	SignedService *string `xml:"SignedService"`
@@ -394,7 +394,7 @@ type UserDelegationKey struct {
 	SignedStart *time.Time `xml:"SignedStart"`
 
 	// REQUIRED; The Azure Active Directory tenant ID in GUID format
-	SignedTid *string `xml:"SignedTid"`
+	SignedTID *string `xml:"SignedTid"`
 
 	// REQUIRED; The service version that created the key
 	SignedVersion *string `xml:"SignedVersion"`
@@ -402,3 +402,4 @@ type UserDelegationKey struct {
 	// REQUIRED; The key as a base64 string
 	Value *string `xml:"Value"`
 }
+

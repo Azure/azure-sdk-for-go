@@ -8,32 +8,32 @@ package armcommunication
 // DomainsClientBeginCancelVerificationOptions contains the optional parameters for the DomainsClient.BeginCancelVerification
 // method.
 type DomainsClientBeginCancelVerificationOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate method.
 type DomainsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DomainsClientBeginDeleteOptions contains the optional parameters for the DomainsClient.BeginDelete method.
 type DomainsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DomainsClientBeginInitiateVerificationOptions contains the optional parameters for the DomainsClient.BeginInitiateVerification
 // method.
 type DomainsClientBeginInitiateVerificationOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // DomainsClientBeginUpdateOptions contains the optional parameters for the DomainsClient.BeginUpdate method.
 type DomainsClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -51,19 +51,19 @@ type DomainsClientListByEmailServiceResourceOptions struct {
 // EmailServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the EmailServicesClient.BeginCreateOrUpdate
 // method.
 type EmailServicesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EmailServicesClientBeginDeleteOptions contains the optional parameters for the EmailServicesClient.BeginDelete method.
 type EmailServicesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // EmailServicesClientBeginUpdateOptions contains the optional parameters for the EmailServicesClient.BeginUpdate method.
 type EmailServicesClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -95,6 +95,26 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SMTPUsernamesClientCreateOrUpdateOptions contains the optional parameters for the SMTPUsernamesClient.CreateOrUpdate method.
+type SMTPUsernamesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SMTPUsernamesClientDeleteOptions contains the optional parameters for the SMTPUsernamesClient.Delete method.
+type SMTPUsernamesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SMTPUsernamesClientGetOptions contains the optional parameters for the SMTPUsernamesClient.Get method.
+type SMTPUsernamesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SMTPUsernamesClientListOptions contains the optional parameters for the SMTPUsernamesClient.NewListPager method.
+type SMTPUsernamesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SenderUsernamesClientCreateOrUpdateOptions contains the optional parameters for the SenderUsernamesClient.CreateOrUpdate
 // method.
 type SenderUsernamesClientCreateOrUpdateOptions struct {
@@ -119,13 +139,13 @@ type SenderUsernamesClientListByDomainsOptions struct {
 
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
 type ServicesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
 type ServicesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -170,5 +190,50 @@ type ServicesClientRegenerateKeyOptions struct {
 
 // ServicesClientUpdateOptions contains the optional parameters for the ServicesClient.Update method.
 type ServicesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListAddressesClientCreateOrUpdateOptions contains the optional parameters for the SuppressionListAddressesClient.CreateOrUpdate
+// method.
+type SuppressionListAddressesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListAddressesClientDeleteOptions contains the optional parameters for the SuppressionListAddressesClient.Delete
+// method.
+type SuppressionListAddressesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListAddressesClientGetOptions contains the optional parameters for the SuppressionListAddressesClient.Get method.
+type SuppressionListAddressesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListAddressesClientListOptions contains the optional parameters for the SuppressionListAddressesClient.NewListPager
+// method.
+type SuppressionListAddressesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListsClientCreateOrUpdateOptions contains the optional parameters for the SuppressionListsClient.CreateOrUpdate
+// method.
+type SuppressionListsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListsClientDeleteOptions contains the optional parameters for the SuppressionListsClient.Delete method.
+type SuppressionListsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListsClientGetOptions contains the optional parameters for the SuppressionListsClient.Get method.
+type SuppressionListsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SuppressionListsClientListByDomainOptions contains the optional parameters for the SuppressionListsClient.NewListByDomainPager
+// method.
+type SuppressionListsClientListByDomainOptions struct {
 	// placeholder for future optional parameters
 }

@@ -1050,7 +1050,7 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "nivsvluajruxhmsfgmxjnl", armcomputeschedule.CancelOperationsRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "nivsvluajruxhmsfgmxjnl", armcomputeschedule.CancelOperationsContent{
 		OperationIDs: []*string{
 			to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
 		},
@@ -1105,7 +1105,7 @@ func ExampleScheduledActionsClient_VirtualMachinesCancelOperations_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "fhdunfivmjiltaiakwhhwdgemfcld", armcomputeschedule.CancelOperationsRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesCancelOperations(ctx, "fhdunfivmjiltaiakwhhwdgemfcld", armcomputeschedule.CancelOperationsContent{
 		OperationIDs: []*string{
 			to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
 		},
@@ -1138,7 +1138,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "oslhbouzgevzpeydssyelhw", armcomputeschedule.ExecuteCreateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "oslhbouzgevzpeydssyelhw", armcomputeschedule.ExecuteCreateContent{
 		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionPayload{
 			BaseProfile: map[string]any{
 				"hardwareProfile": map[string]any{
@@ -1304,7 +1304,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteCreate_scheduledActions
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "useast", armcomputeschedule.ExecuteCreateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteCreate(ctx, "useast", armcomputeschedule.ExecuteCreateContent{
 		ResourceConfigParameters: &armcomputeschedule.ResourceProvisionPayload{
 			BaseProfile: map[string]any{
 				"hardwareProfile": map[string]any{
@@ -1463,7 +1463,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledAct
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "ykcaptgboliddcfyaiuimj", armcomputeschedule.ExecuteDeallocateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "ykcaptgboliddcfyaiuimj", armcomputeschedule.ExecuteDeallocateContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1530,7 +1530,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDeallocate_scheduledAct
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "qqfrkswrovcice", armcomputeschedule.ExecuteDeallocateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDeallocate(ctx, "qqfrkswrovcice", armcomputeschedule.ExecuteDeallocateContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
@@ -1565,7 +1565,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActions
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "east", armcomputeschedule.ExecuteDeleteRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "east", armcomputeschedule.ExecuteDeleteContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
 				RetryCount:           to.Ptr[int32](2),
@@ -1651,7 +1651,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteDelete_scheduledActions
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "east", armcomputeschedule.ExecuteDeleteRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteDelete(ctx, "east", armcomputeschedule.ExecuteDeleteContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
@@ -1730,7 +1730,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "gztd", armcomputeschedule.ExecuteHibernateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "gztd", armcomputeschedule.ExecuteHibernateContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1797,7 +1797,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteHibernate_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "xtmm", armcomputeschedule.ExecuteHibernateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteHibernate(ctx, "xtmm", armcomputeschedule.ExecuteHibernateContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
@@ -1832,7 +1832,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsV
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "qk", armcomputeschedule.ExecuteStartRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "qk", armcomputeschedule.ExecuteStartContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{
 			OptimizationPreference: to.Ptr(armcomputeschedule.OptimizationPreferenceCost),
 			RetryPolicy: &armcomputeschedule.RetryPolicy{
@@ -1899,7 +1899,7 @@ func ExampleScheduledActionsClient_VirtualMachinesExecuteStart_scheduledActionsV
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "fbdewllahrteoavajbomjc", armcomputeschedule.ExecuteStartRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesExecuteStart(ctx, "fbdewllahrteoavajbomjc", armcomputeschedule.ExecuteStartContent{
 		ExecutionParameters: &armcomputeschedule.ExecutionParameters{},
 		Resources: &armcomputeschedule.Resources{
 			IDs: []*string{
@@ -1934,7 +1934,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "ennweqswbghorrgzbet", armcomputeschedule.GetOperationErrorsRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "ennweqswbghorrgzbet", armcomputeschedule.GetOperationErrorsContent{
 		OperationIDs: []*string{
 			to.Ptr("ksufjznokhsbowdupyt"),
 		},
@@ -1982,7 +1982,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationErrors_scheduledAc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "gcdqwzmxtcn", armcomputeschedule.GetOperationErrorsRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationErrors(ctx, "gcdqwzmxtcn", armcomputeschedule.GetOperationErrorsContent{
 		OperationIDs: []*string{
 			to.Ptr("ksufjznokhsbowdupyt"),
 		},
@@ -2014,7 +2014,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledAc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "ntfcikxsmthfkdhdcjpevmydzu", armcomputeschedule.GetOperationStatusRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "ntfcikxsmthfkdhdcjpevmydzu", armcomputeschedule.GetOperationStatusContent{
 		OperationIDs: []*string{
 			to.Ptr("b211f086-4b91-4686-a453-2f5c012e4d80"),
 		},
@@ -2069,7 +2069,7 @@ func ExampleScheduledActionsClient_VirtualMachinesGetOperationStatus_scheduledAc
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "ykvvjfoopmkwznctgaiblzvea", armcomputeschedule.GetOperationStatusRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesGetOperationStatus(ctx, "ykvvjfoopmkwznctgaiblzvea", armcomputeschedule.GetOperationStatusContent{
 		OperationIDs: []*string{
 			to.Ptr("duhqnwosjzexcfwfhryvy"),
 		},
@@ -2102,7 +2102,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "ycipx", armcomputeschedule.SubmitDeallocateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "ycipx", armcomputeschedule.SubmitDeallocateContent{
 		Schedule: &armcomputeschedule.Schedule{
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
 			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
@@ -2174,7 +2174,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitDeallocate_scheduledActi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "zrcmkxsbuxsxxulky", armcomputeschedule.SubmitDeallocateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitDeallocate(ctx, "zrcmkxsbuxsxxulky", armcomputeschedule.SubmitDeallocateContent{
 		Schedule: &armcomputeschedule.Schedule{
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
 			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
@@ -2214,7 +2214,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "rhadyapnyvmobwg", armcomputeschedule.SubmitHibernateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "rhadyapnyvmobwg", armcomputeschedule.SubmitHibernateContent{
 		Schedule: &armcomputeschedule.Schedule{
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
 			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
@@ -2286,7 +2286,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitHibernate_scheduledActio
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "zuevcqpgdohzbjodhachtr", armcomputeschedule.SubmitHibernateRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitHibernate(ctx, "zuevcqpgdohzbjodhachtr", armcomputeschedule.SubmitHibernateContent{
 		Schedule: &armcomputeschedule.Schedule{
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
 			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
@@ -2326,7 +2326,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "pxtvvk", armcomputeschedule.SubmitStartRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "pxtvvk", armcomputeschedule.SubmitStartContent{
 		Schedule: &armcomputeschedule.Schedule{
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
 			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),
@@ -2398,7 +2398,7 @@ func ExampleScheduledActionsClient_VirtualMachinesSubmitStart_scheduledActionsVi
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "ufrcsuw", armcomputeschedule.SubmitStartRequest{
+	res, err := clientFactory.NewScheduledActionsClient().VirtualMachinesSubmitStart(ctx, "ufrcsuw", armcomputeschedule.SubmitStartContent{
 		Schedule: &armcomputeschedule.Schedule{
 			DeadLine:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:56.803Z"); return t }()),
 			TimeZone:     to.Ptr("aigbjdnldtzkteqi"),

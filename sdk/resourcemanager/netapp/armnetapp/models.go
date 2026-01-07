@@ -318,6 +318,22 @@ type AuthorizeRequest struct {
 	RemoteVolumeResourceID *string
 }
 
+// AzureKeyVaultDetails - Specifies the Azure Key Vault settings. These are used when
+// a) retrieving the bucket server certificate, and
+// b) storing the bucket credentials
+// Notes:
+// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+// 2. These properties are mutually exclusive with the server.certificateObject property.
+type AzureKeyVaultDetails struct {
+	// Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
+	CertificateAkvDetails *CertificateAkvDetails
+
+	// Specifies the Azure Key Vault settings for storing the bucket credentials.
+	CredentialsAkvDetails *CredentialsAkvDetails
+}
+
 // Backup under a Backup Vault
 type Backup struct {
 	// REQUIRED; Backup Properties
@@ -664,6 +680,16 @@ type BucketPatch struct {
 
 // BucketPatchProperties - Bucket resource properties for a Patch operation
 type BucketPatchProperties struct {
+	// Specifies the Azure Key Vault settings. These are used when
+	// a) retrieving the bucket server certificate, and
+	// b) storing the bucket credentials
+	// Notes:
+	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	AkvDetails *AzureKeyVaultDetails
+
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
 	// username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be supplied, but
 	// not both.
@@ -684,6 +710,16 @@ type BucketPatchProperties struct {
 
 // BucketProperties - Bucket resource properties
 type BucketProperties struct {
+	// Specifies the Azure Key Vault settings. These are used when
+	// a) retrieving the bucket server certificate, and
+	// b) storing the bucket credentials
+	// Notes:
+	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	AkvDetails *AzureKeyVaultDetails
+
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
 	// username. Note that the Unix and Windows user details are mutually exclusive, meaning one or other must be supplied, but
 	// not both.
@@ -712,22 +748,34 @@ type BucketProperties struct {
 
 // BucketServerPatchProperties - Properties of the server managing the lifecycle of volume buckets
 type BucketServerPatchProperties struct {
-	// A base64-encoded PEM file, which includes both the bucket server's certificate and private key. It is used to authenticate
-	// the user and allows access to volume data in a read-only manner.
+	// The base64-encoded contents of a PEM file, which includes both the bucket server's certificate and private key. It is generated
+	// by the end user and allows the user to access volume data in a read-only manner.
+	// Note: This is only used when Azure Key Vault is not configured. This property is mutually exclusive with the Azure Key
+	// Vault 'akv' properties.
 	CertificateObject *string
 
 	// The host part of the bucket URL, resolving to the bucket IP address and allowed by the server certificate.
 	Fqdn *string
+
+	// Action to take when there is a certificate conflict.
+	// Possible values include: 'Update', 'Fail'
+	OnCertificateConflictAction *OnCertificateConflictAction
 }
 
 // BucketServerProperties - Properties of the server managing the lifecycle of volume buckets
 type BucketServerProperties struct {
-	// A base64-encoded PEM file, which includes both the bucket server's certificate and private key. It is used to authenticate
-	// the user and allows access to volume data in a read-only manner.
+	// The base64-encoded contents of a PEM file, which includes both the bucket server's certificate and private key. It is generated
+	// by the end user and allows the user to access volume data in a read-only manner.
+	// Note: This is only used when Azure Key Vault is not configured. This property is mutually exclusive with the Azure Key
+	// Vault 'akv' properties.
 	CertificateObject *string
 
 	// The host part of the bucket URL, resolving to the bucket IP address and allowed by the server certificate.
 	Fqdn *string
+
+	// Action to take when there is a certificate conflict.
+	// Possible values include: 'Update', 'Fail'
+	OnCertificateConflictAction *OnCertificateConflictAction
 
 	// READ-ONLY; Certificate Common Name taken from the certificate installed on the bucket server
 	CertificateCommonName *string
@@ -977,6 +1025,15 @@ type CapacityPoolPatch struct {
 	Type *string
 }
 
+// CertificateAkvDetails - Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
+type CertificateAkvDetails struct {
+	// The base URI of the Azure Key Vault that is used when retrieving the bucket certificate.
+	CertificateKeyVaultURI *string
+
+	// The name of the bucket server certificate stored in the Azure Key Vault.
+	CertificateName *string
+}
+
 // ChangeKeyVault - Change key vault request
 type ChangeKeyVault struct {
 	// REQUIRED; The name of the key that should be used for encryption.
@@ -1049,6 +1106,19 @@ type ClusterPeerCommandResponse struct {
 	// A command that needs to be run on the external ONTAP to accept cluster peering. Will only be present if <code>clusterPeeringStatus</code>
 	// is <code>pending</code>
 	PeerAcceptCommand *string
+}
+
+// CredentialsAkvDetails - Specifies the Azure Key Vault settings for storing the bucket credentials.
+type CredentialsAkvDetails struct {
+	// The base URI of the Azure Key Vault that is used when storing the bucket credentials.
+	CredentialsKeyVaultURI *string
+
+	// The name of the secret stored in Azure Key Vault. The associated key pair has the following structure:
+	// {
+	// "access_key_id": "<REDACTED>",
+	// "secret_access_key": "<REDACTED>"
+	// }
+	SecretName *string
 }
 
 // DailySchedule - Daily Schedule properties

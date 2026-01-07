@@ -240,6 +240,20 @@ type BucketsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// BucketsClientBeginGenerateAkvCredentialsOptions contains the optional parameters for the BucketsClient.BeginGenerateAkvCredentials
+// method.
+type BucketsClientBeginGenerateAkvCredentialsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginRefreshCertificateOptions contains the optional parameters for the BucketsClient.BeginRefreshCertificate
+// method.
+type BucketsClientBeginRefreshCertificateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // BucketsClientBeginUpdateOptions contains the optional parameters for the BucketsClient.BeginUpdate method.
 type BucketsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.

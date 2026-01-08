@@ -117,6 +117,8 @@ function Process-Sdk ()
     {
         Write-Host "##[command]Executing go vet $goVetArgs ./... in " $currentDirectory
         go vet $goVetArgs ./...
+        Write-Host "##[command]Vet Complete!"
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 }
 

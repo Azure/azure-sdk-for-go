@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-// Constraints is a type constraint that represents the supported time types in the datetime package.
-type Constraints interface {
-	PlainDate | PlainTime | RFC1123 | RFC3339 | Unix
-}
-
 const (
 	plainDate     = "2006-01-02"
 	plainDateJSON = `"` + plainDate + `"`

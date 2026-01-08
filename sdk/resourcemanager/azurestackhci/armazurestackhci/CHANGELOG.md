@@ -1,5 +1,205 @@
 # Release History
 
+## 3.0.0-beta.1 (2025-12-17)
+### Breaking Changes
+
+- Type of `ArcSettingProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
+- Type of `ArcSettingsPatchProperties.ConnectivityProperties` has been changed from `any` to `*ArcConnectivityProperties`
+- `StatusFailed`, `StatusInProgress`, `StatusSucceeded` from enum `Status` has been removed
+- Operation `*OperationsClient.List` has supported pagination, use `*OperationsClient.NewListPager` instead.
+
+### Features Added
+
+- New enum type `ClusterPattern` with values `ClusterPatternRackAware`, `ClusterPatternStandard`
+- New enum type `ConfidentialVMIntent` with values `ConfidentialVMIntentDisable`, `ConfidentialVMIntentEnable`
+- New enum type `ConfidentialVMStatus` with values `ConfidentialVMStatusDisabled`, `ConfidentialVMStatusEnabled`, `ConfidentialVMStatusPartiallyEnabled`
+- New enum type `DNSServerConfig` with values `DNSServerConfigUseDNSServer`, `DNSServerConfigUseForwarder`
+- New enum type `DeviceLogCollectionStatus` with values `DeviceLogCollectionStatusCanceled`, `DeviceLogCollectionStatusFailed`, `DeviceLogCollectionStatusNotStarted`, `DeviceLogCollectionStatusRunning`, `DeviceLogCollectionStatusSucceeded`
+- New enum type `EdgeDeviceKind` with values `EdgeDeviceKindHCI`
+- New enum type `EdgeMachineConnectivityStatus` with values `EdgeMachineConnectivityStatusConnected`, `EdgeMachineConnectivityStatusDisconnected`, `EdgeMachineConnectivityStatusNotSpecified`
+- New enum type `EdgeMachineJobType` with values `EdgeMachineJobTypeCollectLog`, `EdgeMachineJobTypeDownloadOs`, `EdgeMachineJobTypeProvisionOs`, `EdgeMachineJobTypeRemoteSupport`
+- New enum type `EdgeMachineKind` with values `EdgeMachineKindDedicated`, `EdgeMachineKindStandard`
+- New enum type `EdgeMachineState` with values `EdgeMachineStateCreated`, `EdgeMachineStateFailed`, `EdgeMachineStatePreparing`, `EdgeMachineStatePurposed`, `EdgeMachineStateRegistering`, `EdgeMachineStateResetting`, `EdgeMachineStateTransitioning`, `EdgeMachineStateUnpurposed`, `EdgeMachineStateUpdating`
+- New enum type `HardwareClass` with values `HardwareClassLarge`, `HardwareClassMedium`, `HardwareClassSmall`
+- New enum type `HciEdgeDeviceJobType` with values `HciEdgeDeviceJobTypeCollectLog`, `HciEdgeDeviceJobTypeRemoteSupport`
+- New enum type `IPAssignmentType` with values `IPAssignmentTypeAutomatic`, `IPAssignmentTypeManual`
+- New enum type `IdentityProvider` with values `IdentityProviderActiveDirectory`, `IdentityProviderLocalIdentity`
+- New enum type `IgvmStatus` with values `IgvmStatusDisabled`, `IgvmStatusEnabled`, `IgvmStatusUnknown`
+- New enum type `JobStatus` with values `JobStatusCanceled`, `JobStatusDeploymentFailed`, `JobStatusDeploymentInProgress`, `JobStatusDeploymentSuccess`, `JobStatusFailed`, `JobStatusNotSpecified`, `JobStatusPaused`, `JobStatusScheduled`, `JobStatusSucceeded`, `JobStatusValidationFailed`, `JobStatusValidationInProgress`, `JobStatusValidationSuccess`
+- New enum type `OSOperationType` with values `OSOperationTypeProvision`, `OSOperationTypeReImage`, `OSOperationTypeUpdate`
+- New enum type `OnboardingResourceType` with values `OnboardingResourceTypeHybridComputeMachine`
+- New enum type `OwnerKeyType` with values `OwnerKeyTypeMicrosoftManaged`
+- New enum type `OwnershipVoucherValidationStatus` with values `OwnershipVoucherValidationStatusInvalid`, `OwnershipVoucherValidationStatusValid`
+- New enum type `ProvisioningOsType` with values `ProvisioningOsTypeAzureLinux`, `ProvisioningOsTypeHCI`
+- New enum type `RdmaCapability` with values `RdmaCapabilityDisabled`, `RdmaCapabilityEnabled`
+- New enum type `RemoteSupportAccessLevel` with values `RemoteSupportAccessLevelDiagnostics`, `RemoteSupportAccessLevelDiagnosticsAndRepair`, `RemoteSupportAccessLevelNone`
+- New enum type `SdnIntegrationIntent` with values `SdnIntegrationIntentDisable`, `SdnIntegrationIntentEnable`
+- New enum type `SdnStatus` with values `SdnStatusDisabled`, `SdnStatusEnabled`, `SdnStatusUnknown`
+- New enum type `SecretType` with values `SecretTypeKeyVault`, `SecretTypeSSHPubKey`
+- New enum type `SecretsType` with values `SecretsTypeBackupSecrets`
+- New enum type `ServiceName` with values `ServiceNameWAC`
+- New enum type `SupportStatus` with values `SupportStatusInSupport`, `SupportStatusNotSpecified`, `SupportStatusOutOfSupport`
+- New function `*ArcSettingsClient.BeginReconcile(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest ReconcileArcSettingsRequest, options *ArcSettingsClientBeginReconcileOptions) (*runtime.Poller[ArcSettingsClientReconcileResponse], error)`
+- New function `*ClientFactory.NewEdgeDeviceJobsClient() *EdgeDeviceJobsClient`
+- New function `*ClientFactory.NewEdgeMachineJobsClient() *EdgeMachineJobsClient`
+- New function `*ClientFactory.NewEdgeMachinesClient() *EdgeMachinesClient`
+- New function `*ClientFactory.NewKubernetesVersionsClient() *KubernetesVersionsClient`
+- New function `*ClientFactory.NewOsImagesClient() *OsImagesClient`
+- New function `*ClientFactory.NewOwnershipVouchersClient() *OwnershipVouchersClient`
+- New function `*ClientFactory.NewPlatformUpdatesClient() *PlatformUpdatesClient`
+- New function `*ClientFactory.NewUpdateContentsClient() *UpdateContentsClient`
+- New function `*ClientFactory.NewValidatedSolutionRecipesClient() *ValidatedSolutionRecipesClient`
+- New function `*ClustersClient.BeginChangeRing(ctx context.Context, resourceGroupName string, clusterName string, changeRingRequest ChangeRingRequest, options *ClustersClientBeginChangeRingOptions) (*runtime.Poller[ClustersClientChangeRingResponse], error)`
+- New function `*ClustersClient.BeginUpdateSecretsLocations(ctx context.Context, resourceGroupName string, clusterName string, body SecretsLocationsChangeRequest, options *ClustersClientBeginUpdateSecretsLocationsOptions) (*runtime.Poller[ClustersClientUpdateSecretsLocationsResponse], error)`
+- New function `*DownloadOsJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `*EdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
+- New function `NewEdgeDeviceJobsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeDeviceJobsClient, error)`
+- New function `*EdgeDeviceJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, resource EdgeDeviceJobClassification, options *EdgeDeviceJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeDeviceJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeDeviceJobsClient.BeginDelete(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeDeviceJobsClientDeleteResponse], error)`
+- New function `*EdgeDeviceJobsClient.Get(ctx context.Context, resourceURI string, edgeDeviceName string, jobsName string, options *EdgeDeviceJobsClientGetOptions) (EdgeDeviceJobsClientGetResponse, error)`
+- New function `*EdgeDeviceJobsClient.NewListByEdgeDevicePager(resourceURI string, edgeDeviceName string, options *EdgeDeviceJobsClientListByEdgeDeviceOptions) *runtime.Pager[EdgeDeviceJobsClientListByEdgeDeviceResponse]`
+- New function `*EdgeMachineCollectLogJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `*EdgeMachineJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewEdgeMachineJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachineJobsClient, error)`
+- New function `*EdgeMachineJobsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, resource EdgeMachineJob, options *EdgeMachineJobsClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachineJobsClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachineJobsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, options *EdgeMachineJobsClientBeginDeleteOptions) (*runtime.Poller[EdgeMachineJobsClientDeleteResponse], error)`
+- New function `*EdgeMachineJobsClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, jobsName string, options *EdgeMachineJobsClientGetOptions) (EdgeMachineJobsClientGetResponse, error)`
+- New function `*EdgeMachineJobsClient.NewListPager(resourceGroupName string, edgeMachineName string, options *EdgeMachineJobsClientListOptions) *runtime.Pager[EdgeMachineJobsClientListResponse]`
+- New function `*EdgeMachineRemoteSupportJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewEdgeMachinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeMachinesClient, error)`
+- New function `*EdgeMachinesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, resource EdgeMachine, options *EdgeMachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[EdgeMachinesClientCreateOrUpdateResponse], error)`
+- New function `*EdgeMachinesClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientBeginDeleteOptions) (*runtime.Poller[EdgeMachinesClientDeleteResponse], error)`
+- New function `*EdgeMachinesClient.Get(ctx context.Context, resourceGroupName string, edgeMachineName string, options *EdgeMachinesClientGetOptions) (EdgeMachinesClientGetResponse, error)`
+- New function `*EdgeMachinesClient.NewListByResourceGroupPager(resourceGroupName string, options *EdgeMachinesClientListByResourceGroupOptions) *runtime.Pager[EdgeMachinesClientListByResourceGroupResponse]`
+- New function `*EdgeMachinesClient.NewListBySubscriptionPager(options *EdgeMachinesClientListBySubscriptionOptions) *runtime.Pager[EdgeMachinesClientListBySubscriptionResponse]`
+- New function `*EdgeMachinesClient.BeginUpdate(ctx context.Context, resourceGroupName string, edgeMachineName string, properties EdgeMachinePatch, options *EdgeMachinesClientBeginUpdateOptions) (*runtime.Poller[EdgeMachinesClientUpdateResponse], error)`
+- New function `*HciCollectLogJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `*HciEdgeDeviceJob.GetEdgeDeviceJob() *EdgeDeviceJob`
+- New function `*HciEdgeDeviceJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `*HciRemoteSupportJobProperties.GetHciEdgeDeviceJobProperties() *HciEdgeDeviceJobProperties`
+- New function `NewKubernetesVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KubernetesVersionsClient, error)`
+- New function `*KubernetesVersionsClient.NewListBySubscriptionLocationResourcePager(location string, options *KubernetesVersionsClientListBySubscriptionLocationResourceOptions) *runtime.Pager[KubernetesVersionsClientListBySubscriptionLocationResourceResponse]`
+- New function `NewOsImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OsImagesClient, error)`
+- New function `*OsImagesClient.Get(ctx context.Context, location string, osImageName string, options *OsImagesClientGetOptions) (OsImagesClientGetResponse, error)`
+- New function `*OsImagesClient.NewListBySubscriptionLocationResourcePager(location string, options *OsImagesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[OsImagesClientListBySubscriptionLocationResourceResponse]`
+- New function `NewOwnershipVouchersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OwnershipVouchersClient, error)`
+- New function `*OwnershipVouchersClient.Validate(ctx context.Context, resourceGroupName string, location string, validationRequest ValidateOwnershipVouchersRequest, options *OwnershipVouchersClientValidateOptions) (OwnershipVouchersClientValidateResponse, error)`
+- New function `NewPlatformUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlatformUpdatesClient, error)`
+- New function `*PlatformUpdatesClient.Get(ctx context.Context, location string, platformUpdateName string, options *PlatformUpdatesClientGetOptions) (PlatformUpdatesClientGetResponse, error)`
+- New function `*PlatformUpdatesClient.NewListPager(location string, options *PlatformUpdatesClientListOptions) *runtime.Pager[PlatformUpdatesClientListResponse]`
+- New function `*ProvisionOsJobProperties.GetEdgeMachineJobProperties() *EdgeMachineJobProperties`
+- New function `NewUpdateContentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdateContentsClient, error)`
+- New function `*UpdateContentsClient.Get(ctx context.Context, location string, updateContentName string, options *UpdateContentsClientGetOptions) (UpdateContentsClientGetResponse, error)`
+- New function `*UpdateContentsClient.NewListPager(location string, options *UpdateContentsClientListOptions) *runtime.Pager[UpdateContentsClientListResponse]`
+- New function `NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidatedSolutionRecipesClient, error)`
+- New function `*ValidatedSolutionRecipesClient.Get(ctx context.Context, location string, validatedSolutionRecipeName string, options *ValidatedSolutionRecipesClientGetOptions) (ValidatedSolutionRecipesClientGetResponse, error)`
+- New function `*ValidatedSolutionRecipesClient.NewListBySubscriptionLocationResourcePager(location string, options *ValidatedSolutionRecipesClientListBySubscriptionLocationResourceOptions) *runtime.Pager[ValidatedSolutionRecipesClientListBySubscriptionLocationResourceResponse]`
+- New struct `ArcConnectivityProperties`
+- New struct `AssemblyInfo`
+- New struct `AssemblyInfoPayload`
+- New struct `ChangeRingRequest`
+- New struct `ChangeRingRequestProperties`
+- New struct `ClusterSdnProperties`
+- New struct `ConfidentialVMProfile`
+- New struct `ConfidentialVMProperties`
+- New struct `ContentPayload`
+- New struct `DNSZones`
+- New struct `DownloadOsJobProperties`
+- New struct `DownloadOsProfile`
+- New struct `DownloadRequest`
+- New struct `EdgeDeviceJobListResult`
+- New struct `EdgeMachine`
+- New struct `EdgeMachineCollectLogJobProperties`
+- New struct `EdgeMachineCollectLogJobReportedProperties`
+- New struct `EdgeMachineJob`
+- New struct `EdgeMachineJobListResult`
+- New struct `EdgeMachineListResult`
+- New struct `EdgeMachineNetworkProfile`
+- New struct `EdgeMachineNicDetail`
+- New struct `EdgeMachinePatch`
+- New struct `EdgeMachineProperties`
+- New struct `EdgeMachineRemoteSupportJobProperties`
+- New struct `EdgeMachineRemoteSupportJobReportedProperties`
+- New struct `EdgeMachineRemoteSupportNodeSettings`
+- New struct `EdgeMachineReportedProperties`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `HardwareProfile`
+- New struct `HciCollectLogJobProperties`
+- New struct `HciEdgeDeviceJob`
+- New struct `HciHardwareProfile`
+- New struct `HciRemoteSupportJobProperties`
+- New struct `HciStorageProfile`
+- New struct `IPAddressRange`
+- New struct `IgvmStatusDetail`
+- New struct `KubernetesVersion`
+- New struct `KubernetesVersionListResult`
+- New struct `KubernetesVersionProperties`
+- New struct `LocalAvailabilityZones`
+- New struct `LogCollectionJobSession`
+- New struct `LogCollectionReportedProperties`
+- New struct `NetworkAdapter`
+- New struct `NetworkConfiguration`
+- New struct `OnboardingConfiguration`
+- New struct `OperationDetail`
+- New struct `OsImage`
+- New struct `OsImageListResult`
+- New struct `OsImageProperties`
+- New struct `OsProfile`
+- New struct `OsProvisionProfile`
+- New struct `OwnershipVoucherDetails`
+- New struct `OwnershipVoucherValidationDetails`
+- New struct `PlatformPayload`
+- New struct `PlatformUpdate`
+- New struct `PlatformUpdateDetails`
+- New struct `PlatformUpdateListResult`
+- New struct `PlatformUpdateProperties`
+- New struct `ProvisionOsJobProperties`
+- New struct `ProvisionOsReportedProperties`
+- New struct `ProvisioningDetails`
+- New struct `ProvisioningRequest`
+- New struct `ReconcileArcSettingsRequest`
+- New struct `ReconcileArcSettingsRequestProperties`
+- New struct `RemoteSupportJobNodeSettings`
+- New struct `RemoteSupportJobReportedProperties`
+- New struct `RemoteSupportSession`
+- New struct `SdnProperties`
+- New struct `SecretsLocationDetails`
+- New struct `SecretsLocationsChangeRequest`
+- New struct `ServiceConfiguration`
+- New struct `SiteDetails`
+- New struct `StorageConfiguration`
+- New struct `StorageProfile`
+- New struct `TargetDeviceConfiguration`
+- New struct `TimeConfiguration`
+- New struct `UpdateContent`
+- New struct `UpdateContentListResult`
+- New struct `UpdateContentProperties`
+- New struct `UserDetails`
+- New struct `ValidateOwnershipVouchersRequest`
+- New struct `ValidateOwnershipVouchersResponse`
+- New struct `ValidatedSolutionRecipe`
+- New struct `ValidatedSolutionRecipeCapabilities`
+- New struct `ValidatedSolutionRecipeCapability`
+- New struct `ValidatedSolutionRecipeComponent`
+- New struct `ValidatedSolutionRecipeComponentMetadata`
+- New struct `ValidatedSolutionRecipeComponentPayload`
+- New struct `ValidatedSolutionRecipeContent`
+- New struct `ValidatedSolutionRecipeInfo`
+- New struct `ValidatedSolutionRecipeListResult`
+- New struct `ValidatedSolutionRecipeProperties`
+- New struct `WebProxyConfiguration`
+- New field `Kind` in struct `Cluster`
+- New field `ClusterPattern`, `ConfidentialVMProperties`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones`, `Ring`, `SdnProperties`, `SecretsLocations`, `SupportStatus` in struct `ClusterProperties`
+- New field `HardwareClass`, `MsiExpirationTimeStamp` in struct `ClusterReportedProperties`
+- New field `ClusterPattern`, `HardwareClass` in struct `DeploymentCluster`
+- New field `AssemblyInfo`, `IdentityProvider`, `IsManagementCluster`, `LocalAvailabilityZones` in struct `DeploymentData`
+- New field `SdnProperties` in struct `HciNetworkProfile`
+- New field `RdmaCapability` in struct `HciNicDetail`
+- New field `ConfidentialVMProfile`, `HardwareProfile`, `LastSyncTimestamp`, `StorageProfile` in struct `HciReportedProperties`
+- New field `DNSServerConfig`, `DNSZones` in struct `InfrastructureNetwork`
+
+
 ## 2.0.0 (2024-08-22)
 ### Breaking Changes
 

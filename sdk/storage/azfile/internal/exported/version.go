@@ -5,5 +5,5 @@ package exported
 
 const (
 	ModuleName    = "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile"
-	ModuleVersion = "v1.5.4-beta.1"
+	ModuleVersion = "v1.5.4"
 )

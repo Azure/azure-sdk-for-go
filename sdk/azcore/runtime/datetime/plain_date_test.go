@@ -92,7 +92,7 @@ func TestPlainDate_UnmarshalText(t *testing.T) {
 	require.Equal(t, time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC), time.Time(plainDate))
 }
 
-func TestPlainDate_UnmarshalText_nil(t *testing.T) {
+func TestPlainDate_UnmarshalText_Nil(t *testing.T) {
 	var plainDate datetime.PlainDate
 	err := plainDate.UnmarshalText(nil)
 	require.NoError(t, err)

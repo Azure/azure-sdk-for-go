@@ -47,12 +47,14 @@ func TestPlainTime_UnmarshalText_Empty(t *testing.T) {
 	var pt datetime.PlainTime
 	err := pt.UnmarshalText([]byte(""))
 	require.NoError(t, err)
+	require.Zero(t, pt)
 }
 
-func TestPlainTime_UnmarshalText_nil(t *testing.T) {
+func TestPlainTime_UnmarshalText_Nil(t *testing.T) {
 	var pt datetime.PlainTime
 	err := pt.UnmarshalText(nil)
 	require.NoError(t, err)
+	require.Zero(t, pt)
 }
 
 func TestPlainTime_Various(t *testing.T) {

@@ -24,6 +24,9 @@ parameters:
   - name: EnableRaceDetector
     type: boolean
     default: false
+  - name: GoVetArgs
+    type: string
+    default: ''
 
 jobs:
 - job:
@@ -82,5 +85,6 @@ jobs:
       TestProxy: ${{ parameters.UsePipelineProxy }}
       TestRunTime: ${{ parameters.TestRunTime }}
       EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
+      GoVetArgs: ${{ parameters.GoVetArgs }}
       EnvVars:
         AZURE_RECORD_MODE: 'playback'

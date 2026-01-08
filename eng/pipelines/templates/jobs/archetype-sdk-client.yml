@@ -85,6 +85,9 @@ parameters:
   - name: PersistOidcToken
     type: boolean
     default: false
+  - name: GoVetArgs
+    type: string
+    default: ''
   # This is a list of paths that will trigger the pipeline when changed. The paths can be absolute or relative to the location of this file.
   # it is a way to trigger individual packages if another path is changed within go - pullrequest
   # TriggeringPaths:
@@ -141,6 +144,7 @@ extends:
                       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
               AdditionalParameters:
                 EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
+                GoVetArgs: ${{ parameters.GoVetArgs }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestRunTime: ${{ parameters.TestRunTime }}
                 UsePipelineProxy: ${{ parameters.UsePipelineProxy }}

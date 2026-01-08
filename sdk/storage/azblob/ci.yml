@@ -27,6 +27,7 @@ extends:
       ServiceDirectory: 'storage/azblob'
       RunLiveTests: true
       UsePipelineProxy: false
+      GoVetArgs: -goVetArgs --unsafeptr=false
       EnvVars:
         AZURE_CLIENT_ID: $(AZBLOB_CLIENT_ID)
         AZURE_TENANT_ID: $(AZBLOB_TENANT_ID)

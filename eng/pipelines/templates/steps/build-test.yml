@@ -26,6 +26,9 @@ parameters:
   - name: ServiceConnection
     type: string
     default: ''
+  - name: GoVetArgs
+    type: string
+    default: ''
 
 steps:
   - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
@@ -68,7 +71,7 @@ steps:
       targetType: filePath
       pwsh: true
       filePath: eng/scripts/build.ps1
-      arguments: -vet -skipBuild -filter '$(Packages)'
+      arguments: -vet -skipBuild -filter '$(Packages)' $${{ parameters.GoVetArgs }}
 
   - pwsh: |
       go install github.com/jstemmer/go-junit-report/v2@v2.1.0

@@ -15,7 +15,8 @@ param(
     [string]$config = "autorest.md",
     [string]$goExtension = "@autorest/go@4.0.0-preview.75",
     [string]$filePrefix,
-    [string]$outputFolder
+    [string]$outputFolder,
+    [string]$goVetArgs = ""
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
@@ -114,8 +115,8 @@ function Process-Sdk ()
 
     if ($vet)
     {
-        Write-Host "##[command]Executing go vet ./... in " $currentDirectory
-        go vet ./...
+        Write-Host "##[command]Executing go vet $goVetArgs ./... in " $currentDirectory
+        go vet $goVetArgs ./...
     }
 }
 

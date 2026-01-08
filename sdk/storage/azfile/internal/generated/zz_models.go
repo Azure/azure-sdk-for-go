@@ -402,4 +402,3 @@ type UserDelegationKey struct {
 	// REQUIRED; The key as a base64 string
 	Value *string `xml:"Value"`
 }
-

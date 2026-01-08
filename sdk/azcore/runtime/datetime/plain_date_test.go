@@ -65,13 +65,6 @@ func TestPlainDate_UnmarshalJSON_Empty(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestPlainDate_UnmarshalJSON_Null(t *testing.T) {
-	var pd datetime.PlainDate
-	err := pd.UnmarshalJSON([]byte("null"))
-	require.NoError(t, err)
-	require.Zero(t, pd)
-}
-
 func TestPlainDate_UnmarshalJSON_PartialDate(t *testing.T) {
 	var pd datetime.PlainDate
 	err := pd.UnmarshalJSON([]byte("2023-01"))

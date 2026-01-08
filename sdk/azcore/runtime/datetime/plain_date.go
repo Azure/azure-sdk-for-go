@@ -12,8 +12,6 @@ type Constraints interface {
 	PlainDate | PlainTime | RFC1123 | RFC3339 | Unix
 }
 
-const jsonNull = "null"
-
 const (
 	plainDate     = "2006-01-02"
 	plainDateJSON = `"` + plainDate + `"`
@@ -36,9 +34,6 @@ func (t PlainDate) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into a PlainDate.
 func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
-	if string(data) == jsonNull {
-		return nil
-	}
 	t, err := time.Parse(plainDateJSON, string(data))
 	*d = (PlainDate)(t)
 	return err

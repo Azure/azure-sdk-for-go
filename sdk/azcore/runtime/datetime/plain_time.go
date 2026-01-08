@@ -29,9 +29,6 @@ func (t PlainTime) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into PlainTime.
 func (t *PlainTime) UnmarshalJSON(data []byte) error {
-	if string(data) == jsonNull {
-		return nil
-	}
 	return t.parse(timeOnlyJSON, string(data))
 }
 

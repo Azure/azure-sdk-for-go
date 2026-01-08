@@ -24,9 +24,6 @@ func (t Unix) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into a Unix timestamp.
 func (t *Unix) UnmarshalJSON(data []byte) error {
-	if string(data) == jsonNull {
-		return nil
-	}
 	return t.parse(data)
 }
 

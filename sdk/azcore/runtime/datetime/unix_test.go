@@ -33,13 +33,6 @@ func TestUnix_Invalid(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestUnix_Null(t *testing.T) {
-	var tu datetime.Unix
-	err := tu.UnmarshalJSON([]byte("null"))
-	require.NoError(t, err)
-	require.Zero(t, tu)
-}
-
 func TestUnix_MarshalText(t *testing.T) {
 	originalTime := time.Date(2022, time.December, 25, 10, 0, 0, 0, time.Local)
 	tu := datetime.Unix(originalTime)

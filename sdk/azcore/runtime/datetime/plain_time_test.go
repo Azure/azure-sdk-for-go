@@ -36,13 +36,6 @@ func TestPlainTime(t *testing.T) {
 	require.Equal(t, originalTime.Second(), time.Time(pt3).Second())
 }
 
-func TestPlainTime_UnmarshalJSON_Null(t *testing.T) {
-	var pt datetime.PlainTime
-	err := pt.UnmarshalJSON([]byte("null"))
-	require.NoError(t, err)
-	require.Zero(t, pt)
-}
-
 func TestPlainTime_UnmarshalText_Empty(t *testing.T) {
 	var pt datetime.PlainTime
 	err := pt.UnmarshalText([]byte(""))

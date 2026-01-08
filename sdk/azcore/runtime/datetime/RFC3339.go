@@ -40,9 +40,6 @@ func (t RFC3339) MarshalText() ([]byte, error) {
 
 // UnmarshalJSON unmarshals a JSON byte slice into an RFC3339 time.
 func (t *RFC3339) UnmarshalJSON(data []byte) error {
-	if string(data) == jsonNull {
-		return nil
-	}
 	tzOffset := tzOffsetRegex.Match(data)
 	hasT := strings.Contains(string(data), "T") || strings.Contains(string(data), "t")
 	var layout string

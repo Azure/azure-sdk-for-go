@@ -86,12 +86,6 @@ func TestRFC3339_WithSpace_XML(t *testing.T) {
 	require.WithinDuration(t, time.Date(2024, 1, 18, 14, 18, 54, 123000000, time.UTC), time.Time(*dst.Expiry), 0)
 }
 
-func TestRFC3339_Null(t *testing.T) {
-	tt := datetime.RFC3339{}
-	require.NoError(t, json.Unmarshal([]byte(`null`), &tt))
-	require.Zero(t, tt)
-}
-
 func TestRFC3339_empty(t *testing.T) {
 	tt := datetime.RFC3339{}
 	require.NoError(t, xml.Unmarshal([]byte("<RFC3339/>"), &tt))

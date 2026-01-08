@@ -38,10 +38,3 @@ func TestRFC1123_empty(t *testing.T) {
 	require.NoError(t, xml.Unmarshal([]byte("<RFC1123/>"), &tt))
 	require.Zero(t, tt)
 }
-
-func TestRFC1123_UnmarshalJSON_Null(t *testing.T) {
-	var dt datetime.RFC1123
-	err := dt.UnmarshalJSON([]byte("null"))
-	require.NoError(t, err)
-	require.Zero(t, dt)
-}

@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
 func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +417,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
 func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithScheduledEventPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +473,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithSch
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Create.json
 func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -523,7 +523,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -597,7 +597,7 @@ func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +620,7 @@ func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -637,7 +637,7 @@ func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -654,7 +654,7 @@ func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -671,7 +671,7 @@ func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -695,7 +695,7 @@ func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_StartMigrationToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +716,7 @@ func ExampleAvailabilitySetsClient_StartMigrationToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ValidateMigrationToVirtualMachineScaleSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ValidateMigrationToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_ValidateMigrationToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -737,7 +737,7 @@ func ExampleAvailabilitySetsClient_ValidateMigrationToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -781,7 +781,7 @@ func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetLis
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

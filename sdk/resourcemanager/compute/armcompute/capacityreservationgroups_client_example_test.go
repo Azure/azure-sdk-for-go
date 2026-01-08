@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
 func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapacityReservationGroupsInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapac
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
 func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapacityReservationGroupsWithResourceIdsOnlyInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapac
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
 func ExampleCapacityReservationGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleCapacityReservationGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGrou
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +454,7 @@ func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +552,7 @@ func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationG
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,7 +598,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockC
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -660,7 +660,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapaci
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATargetedCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -724,7 +724,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATarget
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -792,7 +792,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -815,7 +815,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -832,7 +832,7 @@ func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDelet
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7033e85e1f80ef5cd9ca664b538ed193a8fd815b/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/ccea12be6cd5e64743499d46f7a9c8b60df52db1/specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

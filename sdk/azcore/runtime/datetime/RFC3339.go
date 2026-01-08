@@ -27,19 +27,17 @@ const (
 type RFC3339 time.Time
 
 // MarshalJSON marshals the RFC3339 timestamp to a JSON byte slice.
-func (t RFC3339) MarshalJSON() ([]byte, error) {
-	tt := time.Time(t)
-	return tt.MarshalJSON()
+func (r RFC3339) MarshalJSON() ([]byte, error) {
+	return time.Time(r).MarshalJSON()
 }
 
 // MarshalText returns a textual representation of the RFC3339.
-func (t RFC3339) MarshalText() ([]byte, error) {
-	tt := time.Time(t)
-	return tt.MarshalText()
+func (r RFC3339) MarshalText() ([]byte, error) {
+	return time.Time(r).MarshalText()
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into an RFC3339 time.
-func (t *RFC3339) UnmarshalJSON(data []byte) error {
+func (r *RFC3339) UnmarshalJSON(data []byte) error {
 	tzOffset := tzOffsetRegex.Match(data)
 	hasT := strings.Contains(string(data), "T") || strings.Contains(string(data), "t")
 	var layout string
@@ -52,11 +50,11 @@ func (t *RFC3339) UnmarshalJSON(data []byte) error {
 	} else {
 		layout = utcDateTimeJSONNoT
 	}
-	return t.parse(layout, string(data))
+	return r.parse(layout, string(data))
 }
 
 // UnmarshalText decodes the textual representation of a RFC3339.
-func (t *RFC3339) UnmarshalText(data []byte) error {
+func (r *RFC3339) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
 		return nil
 	}
@@ -72,17 +70,17 @@ func (t *RFC3339) UnmarshalText(data []byte) error {
 	} else {
 		layout = utcDateTimeNoT
 	}
-	return t.parse(layout, string(data))
+	return r.parse(layout, string(data))
 }
 
 // parse parses a timestamp string using the specified layout.
-func (t *RFC3339) parse(layout, value string) error {
-	p, err := time.Parse(layout, strings.ToUpper(value))
-	*t = RFC3339(p)
+func (r *RFC3339) parse(layout, value string) error {
+	t, err := time.Parse(layout, strings.ToUpper(value))
+	*r = RFC3339(t)
 	return err
 }
 
 // String returns the string of the RFC3339.
-func (t RFC3339) String() string {
-	return time.Time(t).Format(time.RFC3339Nano)
+func (r RFC3339) String() string {
+	return time.Time(r).Format(time.RFC3339Nano)
 }

@@ -22,34 +22,33 @@ const (
 type PlainDate time.Time
 
 // MarshalJSON marshals the PlainDate to a JSON byte slice.
-func (t PlainDate) MarshalJSON() ([]byte, error) {
-	return []byte(time.Time(t).Format(plainDateJSON)), nil
+func (p PlainDate) MarshalJSON() ([]byte, error) {
+	return []byte(time.Time(p).Format(plainDateJSON)), nil
 }
 
 // MarshalText returns a textual representation of PlainDate.
-func (t PlainDate) MarshalText() ([]byte, error) {
-	tt := time.Time(t)
-	return []byte(tt.Format(plainDate)), nil
+func (p PlainDate) MarshalText() ([]byte, error) {
+	return []byte(time.Time(p).Format(plainDate)), nil
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into a PlainDate.
-func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
+func (p *PlainDate) UnmarshalJSON(data []byte) (err error) {
 	t, err := time.Parse(plainDateJSON, string(data))
-	*d = (PlainDate)(t)
+	*p = (PlainDate)(t)
 	return err
 }
 
 // UnmarshalText decodes the textual representation of PlainDate.
-func (t *PlainDate) UnmarshalText(data []byte) error {
+func (p *PlainDate) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
 		return nil
 	}
-	p, err := time.Parse(plainDate, string(data))
-	*t = PlainDate(p)
+	t, err := time.Parse(plainDate, string(data))
+	*p = PlainDate(t)
 	return err
 }
 
 // String returns the string representation of PlainDate.
-func (t PlainDate) String() string {
-	return time.Time(t).Format(plainDate)
+func (p PlainDate) String() string {
+	return time.Time(p).Format(plainDate)
 }

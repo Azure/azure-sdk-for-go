@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -90,6 +87,11 @@ type CreateOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]*string
+	// SMB only, default value is New. Restore will apply changes without further modification.
+	FilePropertySemantics *PropertySemantics
+	OptionalBody          io.ReadSeekCloser
+	ContentLength         *int64
+	ContentMD5            []byte
 }
 
 func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated.ShareFileHTTPHeaders, *LeaseAccessConditions) {
@@ -123,6 +125,7 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			FilePermission:    permission,
 			FilePermissionKey: permissionKey,
 			Metadata:          o.Metadata,
+			Optionalbody:      o.OptionalBody,
 		}
 		// Refer the documentation for details - https://learn.microsoft.com/en-us/rest/api/storageservices/create-file#smb-only-request-headers
 		if permissionKey != nil {
@@ -134,6 +137,12 @@ func (o *CreateOptions) format() (*generated.FileClientCreateOptions, *generated
 			} else {
 				createOptions.FilePermissionFormat = to.Ptr(FilePermissionFormatSddl) // optional, default
 			}
+		}
+		if o.FilePropertySemantics != nil {
+			createOptions.FilePropertySemantics = o.FilePropertySemantics
+		}
+		if len(o.ContentMD5) > 0 {
+			createOptions.ContentMD5 = o.ContentMD5
 		}
 	}
 	return createOptions, o.HTTPHeaders, o.LeaseAccessConditions
@@ -673,7 +682,9 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (strin
 	}
 
 	var leaseAccessConditions *LeaseAccessConditions
-	uploadRangeOptions := &generated.FileClientUploadRangeOptions{}
+	uploadRangeOptions := &generated.FileClientUploadRangeOptions{
+		Optionalbody: body,
+	}
 
 	if o != nil {
 		leaseAccessConditions = o.LeaseAccessConditions

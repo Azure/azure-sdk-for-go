@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/39970688f01821bbb1d2a09182d882da86a51a18/specification/storage/data-plane/Microsoft.QueueStorage/stable/2018-03-28/queue.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -21,7 +21,7 @@ modelerfour:
 export-clients: true
 use: "@autorest/go@4.0.0-preview.45"
 ```
-### Updating service version to 2024-08-04
+### Updating service version to 2026-02-06
 ```yaml
 directive:
 - from: 
@@ -33,7 +33,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2018-03-28"}`, `[]string{"2024-08-04"}`);
+      replaceAll(`[]string{"2024-08-04"}`, `[]string{"2024-08-04"}`);
 ```
 
 ### Remove QueueName from parameter list since it is not needed
@@ -69,6 +69,19 @@ directive:
         "modelAsString": false
     };
 ```
+
+### Fixing casing of SignedTid and SignedOid
+
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/SignedOid\s+\*string/g, `SignedOID *string`).
+      replace(/SignedTid\s+\*string/g, `SignedTID *string`);
+```
+
 
 ### Remove pager method (since we implement it ourselves on the client layer) and export various generated methods in service client to utilize them in higher layers
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.3-beta.1 (Unreleased)
+## 1.6.3 (2026-01-09)
 
 ### Features Added
 * Added support for the StartFrom parameter on `BlobContainerClient.listBlobs()` and `BlobContainerClient.listBlobsByHierarchy()` APIs. 

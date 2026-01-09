@@ -8,6 +8,23 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 // ServiceName is the [cloud.ServiceName] for Azure App Configuration, used to identify the respective [cloud.ServiceConfiguration].
 //
 // NOTE: ServiceConfiguration omits the Endpoint as that's explicitly passed to client constructors.
+// Example to set the audience for Azure App Configuration in Bleu Cloud:
+//
+//	BleuCloudConfig := cloud.Configuration{
+//		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{},
+//	}
+//
+//	BleuCloudConfig.Services[ServiceName] = cloud.ServiceConfiguration{
+//		Audience: "https://appconfig.sovcloud-api.fr",
+//	}
+//
+//	clientOptions := azappconfig.ClientOptions{
+//		Cloud: BleuCloudConfig,
+//	}
+//
+//	client, err := azappconfig.NewClient("<endpoint>", credential, &clientOptions)
+//
+// For details on how to configure the authentication token audience visit https://learn.microsoft.com/azure/azure-app-configuration/rest-api-authentication-azure-ad#audience
 const ServiceName cloud.ServiceName = "data/azappconfig"
 
 func init() {

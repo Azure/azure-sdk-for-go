@@ -24,7 +24,7 @@ type GroupQuotaUsagesClient struct {
 
 // NewGroupQuotaUsagesClient creates a new instance of GroupQuotaUsagesClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupQuotaUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupQuotaUsagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

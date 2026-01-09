@@ -115,7 +115,7 @@ function Process-Sdk ()
     if ($vet)
     {
         $goVetArgs = ""
-        if ($IsWindows -and $filter -like "storage*")
+        if ($IsWindows -and $currentDirectory -like "*\sdk\storage\*")
         {
             # there's a false positive in mmf_windows.go for storage
             $goVetArgs = "--unsafeptr=false"

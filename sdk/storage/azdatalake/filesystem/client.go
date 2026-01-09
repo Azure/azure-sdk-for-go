@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -58,10 +55,10 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		options = &ClientOptions{}
 	}
 	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
-	if options.ClientOptions.PerCallPolicies != nil {
-		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	if options.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.PerCallPolicies...)
 	}
-	options.ClientOptions.PerCallPolicies = perCallPolicies
+	options.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -90,10 +87,10 @@ func NewClientWithNoCredential(filesystemURL string, options *ClientOptions) (*C
 		options = &ClientOptions{}
 	}
 	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
-	if options.ClientOptions.PerCallPolicies != nil {
-		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	if options.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.PerCallPolicies...)
 	}
-	options.ClientOptions.PerCallPolicies = perCallPolicies
+	options.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}
@@ -125,10 +122,10 @@ func NewClientWithSharedKeyCredential(filesystemURL string, cred *SharedKeyCrede
 		options = &ClientOptions{}
 	}
 	perCallPolicies := []policy.Policy{shared.NewIncludeBlobResponsePolicy()}
-	if options.ClientOptions.PerCallPolicies != nil {
-		perCallPolicies = append(perCallPolicies, options.ClientOptions.PerCallPolicies...)
+	if options.PerCallPolicies != nil {
+		perCallPolicies = append(perCallPolicies, options.PerCallPolicies...)
 	}
-	options.ClientOptions.PerCallPolicies = perCallPolicies
+	options.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
 	}

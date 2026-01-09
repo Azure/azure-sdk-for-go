@@ -226,6 +226,104 @@ func (client *BucketsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	return req, nil
 }
 
+// BeginGenerateAkvCredentials - Generate the access key and secret key used for accessing the specified volume bucket and
+// store in Azure Key Vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - bucketName - The name of the bucket
+//   - body - The content of the action request
+//   - options - BucketsClientBeginGenerateAkvCredentialsOptions contains the optional parameters for the BucketsClient.BeginGenerateAkvCredentials
+//     method.
+func (client *BucketsClient) BeginGenerateAkvCredentials(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketCredentialsExpiry, options *BucketsClientBeginGenerateAkvCredentialsOptions) (*runtime.Poller[BucketsClientGenerateAkvCredentialsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.generateAkvCredentials(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BucketsClientGenerateAkvCredentialsResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BucketsClientGenerateAkvCredentialsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// GenerateAkvCredentials - Generate the access key and secret key used for accessing the specified volume bucket and store
+// in Azure Key Vault.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01-preview
+func (client *BucketsClient) generateAkvCredentials(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketCredentialsExpiry, options *BucketsClientBeginGenerateAkvCredentialsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BucketsClient.BeginGenerateAkvCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.generateAkvCredentialsCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// generateAkvCredentialsCreateRequest creates the GenerateAkvCredentials request.
+func (client *BucketsClient) generateAkvCredentialsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, body BucketCredentialsExpiry, _ *BucketsClientBeginGenerateAkvCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}/generateAkvCredentials"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // GenerateCredentials - Generate the access key and secret key used for accessing the specified volume bucket. Also return
 // expiry date and time of key pair (in UTC).
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -465,6 +563,97 @@ func (client *BucketsClient) listHandleResponse(resp *http.Response) (BucketsCli
 		return BucketsClientListResponse{}, err
 	}
 	return result, nil
+}
+
+// BeginRefreshCertificate - This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the NetApp account
+//   - poolName - The name of the capacity pool
+//   - volumeName - The name of the volume
+//   - bucketName - The name of the bucket
+//   - options - BucketsClientBeginRefreshCertificateOptions contains the optional parameters for the BucketsClient.BeginRefreshCertificate
+//     method.
+func (client *BucketsClient) BeginRefreshCertificate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientBeginRefreshCertificateOptions) (*runtime.Poller[BucketsClientRefreshCertificateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.refreshCertificate(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BucketsClientRefreshCertificateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BucketsClientRefreshCertificateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RefreshCertificate - This operation will fetch the certificate from Azure Key Vault and install it on the bucket server.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-09-01-preview
+func (client *BucketsClient) refreshCertificate(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, options *BucketsClientBeginRefreshCertificateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BucketsClient.BeginRefreshCertificate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshCertificateCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, bucketName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// refreshCertificateCreateRequest creates the RefreshCertificate request.
+func (client *BucketsClient) refreshCertificateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, bucketName string, _ *BucketsClientBeginRefreshCertificateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/buckets/{bucketName}/refreshCertificate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if poolName == "" {
+		return nil, errors.New("parameter poolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	if bucketName == "" {
+		return nil, errors.New("parameter bucketName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bucketName}", url.PathEscape(bucketName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-09-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
 }
 
 // BeginUpdate - Updates the details of a volume bucket.

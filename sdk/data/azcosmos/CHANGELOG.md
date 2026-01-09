@@ -61,7 +61,7 @@
 
 ### Features Added
 
-* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and <https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway> for more details.
+* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and this [querying with Cosmos document](https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway) for more details.
 
 ### Other Changes
 
@@ -114,7 +114,7 @@
 ### Features Added
 
 * Added regional routing support through ClientOptions.PreferredRegions
-* Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
+* Added availability logic and failover mechanics to support cross-regional retries and resiliency enhancements
 * Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes

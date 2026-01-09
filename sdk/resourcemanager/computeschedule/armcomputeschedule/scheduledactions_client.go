@@ -969,7 +969,7 @@ func (client *ScheduledActionsClient) updateHandleResponse(resp *http.Response) 
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesCancelOperationsOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesCancelOperations
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (ScheduledActionsClientVirtualMachinesCancelOperationsResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (ScheduledActionsClientVirtualMachinesCancelOperationsResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesCancelOperations"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -992,7 +992,7 @@ func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx contex
 }
 
 // virtualMachinesCancelOperationsCreateRequest creates the VirtualMachinesCancelOperations request.
-func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateRequest(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, _ *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateRequest(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, _ *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1026,8 +1026,8 @@ func (client *ScheduledActionsClient) virtualMachinesCancelOperationsHandleRespo
 	return result, nil
 }
 
-// VirtualMachinesExecuteCreate - VirtualMachinesExecuteCreate: Execute create operation for a batch of virtual machines,
-// this operation is triggered as soon as Computeschedule receives it.
+// VirtualMachinesExecuteCreate - [PRIVATE PREVIEW]: VirtualMachinesExecuteCreate: Execute create operation for a batch of
+// virtual machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-15-preview
@@ -1035,7 +1035,7 @@ func (client *ScheduledActionsClient) virtualMachinesCancelOperationsHandleRespo
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteCreateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1058,7 +1058,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.C
 }
 
 // virtualMachinesExecuteCreateCreateRequest creates the VirtualMachinesExecuteCreate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, _ *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1101,7 +1101,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateHandleResponse
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteDeallocate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteDeallocate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1124,7 +1124,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx conte
 }
 
 // virtualMachinesExecuteDeallocateCreateRequest creates the VirtualMachinesExecuteDeallocate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, _ *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1158,8 +1158,8 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateHandleResp
 	return result, nil
 }
 
-// VirtualMachinesExecuteDelete - VirtualMachinesExecuteDelete: Execute delete operation for a batch of virtual machines,
-// this operation is triggered as soon as Computeschedule receives it.
+// VirtualMachinesExecuteDelete - [PRIVATE PREVIEW]: VirtualMachinesExecuteDelete: Execute delete operation for a batch of
+// virtual machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-04-15-preview
@@ -1167,7 +1167,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateHandleResp
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteDeleteOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteDelete
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (ScheduledActionsClientVirtualMachinesExecuteDeleteResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (ScheduledActionsClientVirtualMachinesExecuteDeleteResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1190,7 +1190,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.C
 }
 
 // virtualMachinesExecuteDeleteCreateRequest creates the VirtualMachinesExecuteDelete request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, _ *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, _ *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDelete"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1233,7 +1233,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteHandleResponse
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteHibernateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteHibernate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (ScheduledActionsClientVirtualMachinesExecuteHibernateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (ScheduledActionsClientVirtualMachinesExecuteHibernateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteHibernate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1256,7 +1256,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx contex
 }
 
 // virtualMachinesExecuteHibernateCreateRequest creates the VirtualMachinesExecuteHibernate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, _ *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteHibernate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1299,7 +1299,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateHandleRespo
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteStartOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteStart
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (ScheduledActionsClientVirtualMachinesExecuteStartResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (ScheduledActionsClientVirtualMachinesExecuteStartResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1322,7 +1322,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Co
 }
 
 // virtualMachinesExecuteStartCreateRequest creates the VirtualMachinesExecuteStart request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, _ *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, _ *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1365,7 +1365,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteStartHandleResponse(
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesGetOperationErrors
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesGetOperationErrors"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1388,7 +1388,7 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx cont
 }
 
 // virtualMachinesGetOperationErrorsCreateRequest creates the VirtualMachinesGetOperationErrors request.
-func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, _ *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, _ *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1431,7 +1431,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsHandleRes
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesGetOperationStatus
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (ScheduledActionsClientVirtualMachinesGetOperationStatusResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (ScheduledActionsClientVirtualMachinesGetOperationStatusResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesGetOperationStatus"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1454,7 +1454,7 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx cont
 }
 
 // virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
-func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, _ *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, _ *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1497,7 +1497,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusHandleRes
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitDeallocate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitDeallocate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1520,7 +1520,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx contex
 }
 
 // virtualMachinesSubmitDeallocateCreateRequest creates the VirtualMachinesSubmitDeallocate request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, _ *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, _ *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1563,7 +1563,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateHandleRespo
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitHibernateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitHibernate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (ScheduledActionsClientVirtualMachinesSubmitHibernateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (ScheduledActionsClientVirtualMachinesSubmitHibernateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitHibernate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1586,7 +1586,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context
 }
 
 // virtualMachinesSubmitHibernateCreateRequest creates the VirtualMachinesSubmitHibernate request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, _ *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, _ *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1629,7 +1629,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateHandleRespon
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitStartOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitStart
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (ScheduledActionsClientVirtualMachinesSubmitStartResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Context, locationparameter string, requestBody SubmitStartContent, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (ScheduledActionsClientVirtualMachinesSubmitStartResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1652,7 +1652,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Con
 }
 
 // virtualMachinesSubmitStartCreateRequest creates the VirtualMachinesSubmitStart request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, _ *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitStartContent, _ *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitStart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

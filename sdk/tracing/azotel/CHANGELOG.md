@@ -11,6 +11,7 @@
 ### Other Changes
 
 * Updated dependencies.
+* Removed build constraints.
 
 ## 0.4.0 (2023-11-07)
 

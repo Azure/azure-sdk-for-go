@@ -1233,6 +1233,30 @@ func PossibleNetworkSiblingSetProvisioningStateValues() []NetworkSiblingSetProvi
 	}
 }
 
+// OnCertificateConflictAction - This action is triggered when a certificate conflict occurs. A conflict arises if you try
+// to create a new bucket while one or more already exist on the server, or if you update a bucket when multiple buckets are
+// present. This happens because a single certificate is shared among all buckets on the same server.
+// Note: This applies both to certificates provided directly via the certificateObject property and to those retrieved from
+// Azure Key Vault. Details for the latter case are specified in the akvDetails.certificateAkvDetails section.
+type OnCertificateConflictAction string
+
+const (
+	// OnCertificateConflictActionFail - Fail the operation if a conflict occurs, meaning the bucket operation will fail, and
+	// the existing certificate will continue to be in use.
+	OnCertificateConflictActionFail OnCertificateConflictAction = "Fail"
+	// OnCertificateConflictActionUpdate - Update the existing certificate regardless of whether there is a conflict or not. This
+	// means all buckets on the server will now use the new certificate.
+	OnCertificateConflictActionUpdate OnCertificateConflictAction = "Update"
+)
+
+// PossibleOnCertificateConflictActionValues returns the possible values for the OnCertificateConflictAction const type.
+func PossibleOnCertificateConflictActionValues() []OnCertificateConflictAction {
+	return []OnCertificateConflictAction{
+		OnCertificateConflictActionFail,
+		OnCertificateConflictActionUpdate,
+	}
+}
+
 // PolicyStatus - Policy status
 type PolicyStatus string
 

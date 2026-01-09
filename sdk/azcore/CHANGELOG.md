@@ -3,6 +3,7 @@
 ## 1.21.0 (Unreleased)
 
 ### Features Added
+
 * Added `runtime/datetime` package which provides specialized time type wrappers for serializing and deserializing
 time values in various formats used by Azure services.
 
@@ -11,6 +12,8 @@ time values in various formats used by Azure services.
 ### Bugs Fixed
 
 ### Other Changes
+
+* Aligned `cloud.AzureGovernment` and `cloud.AzureChina` audience values with Azure CLI
 
 ## 1.20.0 (2025-11-06)
 

@@ -220,6 +220,11 @@ type BucketsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// BucketsClientGenerateAkvCredentialsResponse contains the response from method BucketsClient.BeginGenerateAkvCredentials.
+type BucketsClientGenerateAkvCredentialsResponse struct {
+	// placeholder for future response values
+}
+
 // BucketsClientGenerateCredentialsResponse contains the response from method BucketsClient.GenerateCredentials.
 type BucketsClientGenerateCredentialsResponse struct {
 	// Bucket Access Key, Secret Key, and Expiry date and time of the key pair
@@ -236,6 +241,11 @@ type BucketsClientGetResponse struct {
 type BucketsClientListResponse struct {
 	// List of volume bucket resources
 	BucketList
+}
+
+// BucketsClientRefreshCertificateResponse contains the response from method BucketsClient.BeginRefreshCertificate.
+type BucketsClientRefreshCertificateResponse struct {
+	// placeholder for future response values
 }
 
 // BucketsClientUpdateResponse contains the response from method BucketsClient.BeginUpdate.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaxim
 	// }
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinim
 	// }
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_Delete_MaximumSet_Gen.json
 func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +235,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_Delete_MinimumSet_Gen.json
 func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_Get_MaximumSet_Gen.json
 func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_Get_MinimumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_Get_MinimumSet_Gen.json
 func ExampleFileSystemsClient_Get_fileSystemsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +390,7 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -484,7 +484,7 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 	}
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -543,7 +543,7 @@ func ExampleFileSystemsClient_NewListByResourceGroupPager_fileSystemsListByResou
 	}
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_ListBySubscription_MaximumSet_Gen.json
 func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -637,7 +637,7 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 	}
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_ListBySubscription_MinimumSet_Gen.json
 func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -696,7 +696,7 @@ func ExampleFileSystemsClient_NewListBySubscriptionPager_fileSystemsListBySubscr
 	}
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_Update_MaximumSet_Gen.json
 func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -804,7 +804,7 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-03-21-preview/FileSystems_Update_MinimumSet_Gen.json
+// Generated from example definition: 2025-03-21/FileSystems_Update_MinimumSet_Gen.json
 func ExampleFileSystemsClient_Update_fileSystemsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

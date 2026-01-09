@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -201,4 +198,12 @@ func TestSerializeBlobTagsToStrPtr(t *testing.T) {
 		delete(tags, pair[0])
 	}
 	require.Len(t, tags, 0)
+}
+
+func TestIsIPEndpointStyle(t *testing.T) {
+	require.False(t, IsIPEndpointStyle(""))
+	require.False(t, IsIPEndpointStyle(":0"))
+
+	require.True(t, IsIPEndpointStyle("127.0.0.1"))
+	require.True(t, IsIPEndpointStyle("127.0.0.1:80"))
 }

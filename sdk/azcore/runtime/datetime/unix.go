@@ -30,6 +30,7 @@ func (u *Unix) UnmarshalJSON(data []byte) error {
 // UnmarshalText decodes the textual representation of Unix.
 func (u *Unix) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
+		// empty XML element means no value
 		return nil
 	}
 	return u.parse(data)

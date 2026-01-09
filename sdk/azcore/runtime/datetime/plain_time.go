@@ -34,6 +34,7 @@ func (p *PlainTime) UnmarshalJSON(data []byte) error {
 // UnmarshalText decodes the textual representation of PlainTime.
 func (p *PlainTime) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
+		// empty XML element means no value
 		return nil
 	}
 	return p.parse(time.TimeOnly, string(data))

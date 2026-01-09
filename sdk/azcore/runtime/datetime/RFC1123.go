@@ -36,6 +36,7 @@ func (r *RFC1123) UnmarshalJSON(data []byte) error {
 // UnmarshalText decodes the textual representation of RFC1123.
 func (r *RFC1123) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
+		// empty XML element means no value
 		return nil
 	}
 	t, err := time.Parse(time.RFC1123, string(data))

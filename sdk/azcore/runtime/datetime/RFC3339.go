@@ -56,6 +56,7 @@ func (r *RFC3339) UnmarshalJSON(data []byte) error {
 // UnmarshalText decodes the textual representation of a RFC3339.
 func (r *RFC3339) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
+		// empty XML element means no value
 		return nil
 	}
 	tzOffset := tzOffsetRegex.Match(data)

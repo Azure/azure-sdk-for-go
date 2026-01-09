@@ -36,6 +36,7 @@ func (p *PlainDate) UnmarshalJSON(data []byte) (err error) {
 // UnmarshalText decodes the textual representation of PlainDate.
 func (p *PlainDate) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
+		// empty XML element means no value
 		return nil
 	}
 	t, err := time.Parse(plainDate, string(data))

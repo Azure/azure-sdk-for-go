@@ -114,8 +114,15 @@ function Process-Sdk ()
 
     if ($vet)
     {
-        Write-Host "##[command]Executing go vet ./... in " $currentDirectory
-        go vet ./...
+        $goVetArgs = ""
+        if ($IsWindows -and $currentDirectory -like "*\sdk\storage\*")
+        {
+            # there's a false positive in mmf_windows.go for storage
+            $goVetArgs = "--unsafeptr=false"
+        }
+        Write-Host "##[command]Executing go vet $goVetArgs ./... in " $currentDirectory
+        go vet $goVetArgs ./...
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 }
 

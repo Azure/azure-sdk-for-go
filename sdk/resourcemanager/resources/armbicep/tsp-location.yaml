@@ -1,4 +1,4 @@
-directory: specification/resources/Bicep.Management
-commit: 113b466bf76cd86da547beee5300d2ef5210cfb3
+directory: specification/resources/resource-manager/Microsoft.Resources/bicep
+commit: 3f2170fbaf7ba5e53de5ced9d27fe79722f9ce88
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

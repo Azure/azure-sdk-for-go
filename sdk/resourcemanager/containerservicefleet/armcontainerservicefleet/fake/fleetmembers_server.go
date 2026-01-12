@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // FleetMembersServer is a fake server for instances of the armcontainerservicefleet.FleetMembersClient type.
@@ -281,6 +282,7 @@ func (f *FleetMembersServerTransport) dispatchNewListByFleetPager(req *http.Requ
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -289,7 +291,39 @@ func (f *FleetMembersServerTransport) dispatchNewListByFleetPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		resp := f.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, nil)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
+		var options *armcontainerservicefleet.FleetMembersClientListByFleetOptions
+		if topParam != nil || skipTokenParam != nil || filterParam != nil {
+			options = &armcontainerservicefleet.FleetMembersClientListByFleetOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+				Filter:    filterParam,
+			}
+		}
+		resp := f.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, options)
 		newListByFleetPager = &resp
 		f.newListByFleetPager.add(req, newListByFleetPager)
 		server.PagerResponderInjectNextLinks(newListByFleetPager, req, func(page *armcontainerservicefleet.FleetMembersClientListByFleetResponse, createLink func() string) {

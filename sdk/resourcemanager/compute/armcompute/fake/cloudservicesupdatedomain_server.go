@@ -24,15 +24,15 @@ import (
 type CloudServicesUpdateDomainServer struct {
 	// GetUpdateDomain is the fake for method CloudServicesUpdateDomainClient.GetUpdateDomain
 	// HTTP status codes to indicate success: http.StatusOK
-	GetUpdateDomain func(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *armcompute.CloudServicesUpdateDomainClientGetUpdateDomainOptions) (resp azfake.Responder[armcompute.CloudServicesUpdateDomainClientGetUpdateDomainResponse], errResp azfake.ErrorResponder)
+	GetUpdateDomain	func(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *armcompute.CloudServicesUpdateDomainClientGetUpdateDomainOptions) (resp azfake.Responder[armcompute.CloudServicesUpdateDomainClientGetUpdateDomainResponse], errResp azfake.ErrorResponder)
 
 	// NewListUpdateDomainsPager is the fake for method CloudServicesUpdateDomainClient.NewListUpdateDomainsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListUpdateDomainsPager func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesUpdateDomainClientListUpdateDomainsOptions) (resp azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse])
+	NewListUpdateDomainsPager	func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesUpdateDomainClientListUpdateDomainsOptions) (resp azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse])
 
 	// BeginWalkUpdateDomain is the fake for method CloudServicesUpdateDomainClient.BeginWalkUpdateDomain
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginWalkUpdateDomain func(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, parameters armcompute.UpdateDomain, options *armcompute.CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions) (resp azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse], errResp azfake.ErrorResponder)
+	BeginWalkUpdateDomain	func(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, parameters armcompute.UpdateDomain, options *armcompute.CloudServicesUpdateDomainClientBeginWalkUpdateDomainOptions) (resp azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudServicesUpdateDomainServerTransport creates a new instance of CloudServicesUpdateDomainServerTransport with the provided implementation.
@@ -40,18 +40,18 @@ type CloudServicesUpdateDomainServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServicesUpdateDomainServerTransport(srv *CloudServicesUpdateDomainServer) *CloudServicesUpdateDomainServerTransport {
 	return &CloudServicesUpdateDomainServerTransport{
-		srv:                       srv,
-		newListUpdateDomainsPager: newTracker[azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]](),
-		beginWalkUpdateDomain:     newTracker[azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]](),
+		srv:				srv,
+		newListUpdateDomainsPager:	newTracker[azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]](),
+		beginWalkUpdateDomain:		newTracker[azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]](),
 	}
 }
 
 // CloudServicesUpdateDomainServerTransport connects instances of armcompute.CloudServicesUpdateDomainClient to instances of CloudServicesUpdateDomainServer.
 // Don't use this type directly, use NewCloudServicesUpdateDomainServerTransport instead.
 type CloudServicesUpdateDomainServerTransport struct {
-	srv                       *CloudServicesUpdateDomainServer
-	newListUpdateDomainsPager *tracker[azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]]
-	beginWalkUpdateDomain     *tracker[azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]]
+	srv				*CloudServicesUpdateDomainServer
+	newListUpdateDomainsPager	*tracker[azfake.PagerResponder[armcompute.CloudServicesUpdateDomainClientListUpdateDomainsResponse]]
+	beginWalkUpdateDomain		*tracker[azfake.PollerResponder[armcompute.CloudServicesUpdateDomainClientWalkUpdateDomainResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServicesUpdateDomainServerTransport.

@@ -30,16 +30,16 @@ type UsageServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewUsageServerTransport(srv *UsageServer) *UsageServerTransport {
 	return &UsageServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.UsageClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.UsageClientListResponse]](),
 	}
 }
 
 // UsageServerTransport connects instances of armcompute.UsageClient to instances of UsageServer.
 // Don't use this type directly, use NewUsageServerTransport instead.
 type UsageServerTransport struct {
-	srv          *UsageServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.UsageClientListResponse]]
+	srv		*UsageServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.UsageClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for UsageServerTransport.

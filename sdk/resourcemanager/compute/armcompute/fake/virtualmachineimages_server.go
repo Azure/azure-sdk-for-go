@@ -23,31 +23,31 @@ import (
 type VirtualMachineImagesServer struct {
 	// Get is the fake for method VirtualMachineImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *armcompute.VirtualMachineImagesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, location string, publisherName string, offer string, skus string, version string, options *armcompute.VirtualMachineImagesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// List is the fake for method VirtualMachineImagesClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, location string, publisherName string, offer string, skus string, options *armcompute.VirtualMachineImagesClientListOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListResponse], errResp azfake.ErrorResponder)
+	List	func(ctx context.Context, location string, publisherName string, offer string, skus string, options *armcompute.VirtualMachineImagesClientListOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListResponse], errResp azfake.ErrorResponder)
 
 	// ListByEdgeZone is the fake for method VirtualMachineImagesClient.ListByEdgeZone
 	// HTTP status codes to indicate success: http.StatusOK
-	ListByEdgeZone func(ctx context.Context, location string, edgeZone string, options *armcompute.VirtualMachineImagesClientListByEdgeZoneOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListByEdgeZoneResponse], errResp azfake.ErrorResponder)
+	ListByEdgeZone	func(ctx context.Context, location string, edgeZone string, options *armcompute.VirtualMachineImagesClientListByEdgeZoneOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListByEdgeZoneResponse], errResp azfake.ErrorResponder)
 
 	// ListOffers is the fake for method VirtualMachineImagesClient.ListOffers
 	// HTTP status codes to indicate success: http.StatusOK
-	ListOffers func(ctx context.Context, location string, publisherName string, options *armcompute.VirtualMachineImagesClientListOffersOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListOffersResponse], errResp azfake.ErrorResponder)
+	ListOffers	func(ctx context.Context, location string, publisherName string, options *armcompute.VirtualMachineImagesClientListOffersOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListOffersResponse], errResp azfake.ErrorResponder)
 
 	// ListPublishers is the fake for method VirtualMachineImagesClient.ListPublishers
 	// HTTP status codes to indicate success: http.StatusOK
-	ListPublishers func(ctx context.Context, location string, options *armcompute.VirtualMachineImagesClientListPublishersOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListPublishersResponse], errResp azfake.ErrorResponder)
+	ListPublishers	func(ctx context.Context, location string, options *armcompute.VirtualMachineImagesClientListPublishersOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListPublishersResponse], errResp azfake.ErrorResponder)
 
 	// ListSKUs is the fake for method VirtualMachineImagesClient.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSKUs func(ctx context.Context, location string, publisherName string, offer string, options *armcompute.VirtualMachineImagesClientListSKUsOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListSKUsResponse], errResp azfake.ErrorResponder)
+	ListSKUs	func(ctx context.Context, location string, publisherName string, offer string, options *armcompute.VirtualMachineImagesClientListSKUsOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListSKUsResponse], errResp azfake.ErrorResponder)
 
 	// ListWithProperties is the fake for method VirtualMachineImagesClient.ListWithProperties
 	// HTTP status codes to indicate success: http.StatusOK
-	ListWithProperties func(ctx context.Context, location string, publisherName string, offer string, skus string, expand string, options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListWithPropertiesResponse], errResp azfake.ErrorResponder)
+	ListWithProperties	func(ctx context.Context, location string, publisherName string, offer string, skus string, expand string, options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions) (resp azfake.Responder[armcompute.VirtualMachineImagesClientListWithPropertiesResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineImagesServerTransport creates a new instance of VirtualMachineImagesServerTransport with the provided implementation.
@@ -218,9 +218,9 @@ func (v *VirtualMachineImagesServerTransport) dispatchList(req *http.Request) (*
 	var options *armcompute.VirtualMachineImagesClientListOptions
 	if expandParam != nil || topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineImagesClientListOptions{
-			Expand:  expandParam,
-			Top:     topParam,
-			Orderby: orderbyParam,
+			Expand:		expandParam,
+			Top:		topParam,
+			Orderby:	orderbyParam,
 		}
 	}
 	respr, errRespr := v.srv.List(req.Context(), locationParam, publisherNameParam, offerParam, skusParam, options)
@@ -423,8 +423,8 @@ func (v *VirtualMachineImagesServerTransport) dispatchListWithProperties(req *ht
 	var options *armcompute.VirtualMachineImagesClientListWithPropertiesOptions
 	if topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineImagesClientListWithPropertiesOptions{
-			Top:     topParam,
-			Orderby: orderbyParam,
+			Top:		topParam,
+			Orderby:	orderbyParam,
 		}
 	}
 	respr, errRespr := v.srv.ListWithProperties(req.Context(), locationParam, publisherNameParam, offerParam, skusParam, expandParam, options)

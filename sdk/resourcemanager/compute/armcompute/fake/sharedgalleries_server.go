@@ -23,11 +23,11 @@ import (
 type SharedGalleriesServer struct {
 	// Get is the fake for method SharedGalleriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, galleryUniqueName string, options *armcompute.SharedGalleriesClientGetOptions) (resp azfake.Responder[armcompute.SharedGalleriesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, location string, galleryUniqueName string, options *armcompute.SharedGalleriesClientGetOptions) (resp azfake.Responder[armcompute.SharedGalleriesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method SharedGalleriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armcompute.SharedGalleriesClientListOptions) (resp azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse])
+	NewListPager	func(location string, options *armcompute.SharedGalleriesClientListOptions) (resp azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse])
 }
 
 // NewSharedGalleriesServerTransport creates a new instance of SharedGalleriesServerTransport with the provided implementation.
@@ -35,16 +35,16 @@ type SharedGalleriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSharedGalleriesServerTransport(srv *SharedGalleriesServer) *SharedGalleriesServerTransport {
 	return &SharedGalleriesServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse]](),
 	}
 }
 
 // SharedGalleriesServerTransport connects instances of armcompute.SharedGalleriesClient to instances of SharedGalleriesServer.
 // Don't use this type directly, use NewSharedGalleriesServerTransport instead.
 type SharedGalleriesServerTransport struct {
-	srv          *SharedGalleriesServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse]]
+	srv		*SharedGalleriesServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.SharedGalleriesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SharedGalleriesServerTransport.

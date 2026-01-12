@@ -23,11 +23,11 @@ import (
 type CommunityGalleryImagesServer struct {
 	// Get is the fake for method CommunityGalleryImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *armcompute.CommunityGalleryImagesClientGetOptions) (resp azfake.Responder[armcompute.CommunityGalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, location string, publicGalleryName string, galleryImageName string, options *armcompute.CommunityGalleryImagesClientGetOptions) (resp azfake.Responder[armcompute.CommunityGalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CommunityGalleryImagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, publicGalleryName string, options *armcompute.CommunityGalleryImagesClientListOptions) (resp azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse])
+	NewListPager	func(location string, publicGalleryName string, options *armcompute.CommunityGalleryImagesClientListOptions) (resp azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse])
 }
 
 // NewCommunityGalleryImagesServerTransport creates a new instance of CommunityGalleryImagesServerTransport with the provided implementation.
@@ -35,16 +35,16 @@ type CommunityGalleryImagesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCommunityGalleryImagesServerTransport(srv *CommunityGalleryImagesServer) *CommunityGalleryImagesServerTransport {
 	return &CommunityGalleryImagesServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]](),
 	}
 }
 
 // CommunityGalleryImagesServerTransport connects instances of armcompute.CommunityGalleryImagesClient to instances of CommunityGalleryImagesServer.
 // Don't use this type directly, use NewCommunityGalleryImagesServerTransport instead.
 type CommunityGalleryImagesServerTransport struct {
-	srv          *CommunityGalleryImagesServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]]
+	srv		*CommunityGalleryImagesServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.CommunityGalleryImagesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CommunityGalleryImagesServerTransport.

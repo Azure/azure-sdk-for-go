@@ -23,27 +23,27 @@ import (
 type DedicatedHostGroupsServer struct {
 	// CreateOrUpdate is the fake for method DedicatedHostGroupsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, hostGroupName string, parameters armcompute.DedicatedHostGroup, options *armcompute.DedicatedHostGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, hostGroupName string, parameters armcompute.DedicatedHostGroup, options *armcompute.DedicatedHostGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method DedicatedHostGroupsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostGroupsClientDeleteOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostGroupsClientDeleteOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DedicatedHostGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostGroupsClientGetOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostGroupsClientGetOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method DedicatedHostGroupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.DedicatedHostGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.DedicatedHostGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method DedicatedHostGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armcompute.DedicatedHostGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager	func(options *armcompute.DedicatedHostGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse])
 
 	// Update is the fake for method DedicatedHostGroupsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, hostGroupName string, parameters armcompute.DedicatedHostGroupUpdate, options *armcompute.DedicatedHostGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, hostGroupName string, parameters armcompute.DedicatedHostGroupUpdate, options *armcompute.DedicatedHostGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.DedicatedHostGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDedicatedHostGroupsServerTransport creates a new instance of DedicatedHostGroupsServerTransport with the provided implementation.
@@ -51,18 +51,18 @@ type DedicatedHostGroupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDedicatedHostGroupsServerTransport(srv *DedicatedHostGroupsServer) *DedicatedHostGroupsServerTransport {
 	return &DedicatedHostGroupsServerTransport{
-		srv:                         srv,
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]](),
+		srv:				srv,
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]](),
 	}
 }
 
 // DedicatedHostGroupsServerTransport connects instances of armcompute.DedicatedHostGroupsClient to instances of DedicatedHostGroupsServer.
 // Don't use this type directly, use NewDedicatedHostGroupsServerTransport instead.
 type DedicatedHostGroupsServerTransport struct {
-	srv                         *DedicatedHostGroupsServer
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]]
+	srv				*DedicatedHostGroupsServer
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armcompute.DedicatedHostGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DedicatedHostGroupsServerTransport.

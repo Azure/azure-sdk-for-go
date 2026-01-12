@@ -24,31 +24,31 @@ import (
 type SSHPublicKeysServer struct {
 	// Create is the fake for method SSHPublicKeysClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters armcompute.SSHPublicKeyResource, options *armcompute.SSHPublicKeysClientCreateOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientCreateResponse], errResp azfake.ErrorResponder)
+	Create	func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters armcompute.SSHPublicKeyResource, options *armcompute.SSHPublicKeysClientCreateOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method SSHPublicKeysClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *armcompute.SSHPublicKeysClientDeleteOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *armcompute.SSHPublicKeysClientDeleteOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// GenerateKeyPair is the fake for method SSHPublicKeysClient.GenerateKeyPair
 	// HTTP status codes to indicate success: http.StatusOK
-	GenerateKeyPair func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *armcompute.SSHPublicKeysClientGenerateKeyPairOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientGenerateKeyPairResponse], errResp azfake.ErrorResponder)
+	GenerateKeyPair	func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *armcompute.SSHPublicKeysClientGenerateKeyPairOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientGenerateKeyPairResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SSHPublicKeysClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *armcompute.SSHPublicKeysClientGetOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, options *armcompute.SSHPublicKeysClientGetOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method SSHPublicKeysClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.SSHPublicKeysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.SSHPublicKeysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method SSHPublicKeysClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armcompute.SSHPublicKeysClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse])
+	NewListBySubscriptionPager	func(options *armcompute.SSHPublicKeysClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse])
 
 	// Update is the fake for method SSHPublicKeysClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters armcompute.SSHPublicKeyUpdateResource, options *armcompute.SSHPublicKeysClientUpdateOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, sshPublicKeyName string, parameters armcompute.SSHPublicKeyUpdateResource, options *armcompute.SSHPublicKeysClientUpdateOptions) (resp azfake.Responder[armcompute.SSHPublicKeysClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSSHPublicKeysServerTransport creates a new instance of SSHPublicKeysServerTransport with the provided implementation.
@@ -56,18 +56,18 @@ type SSHPublicKeysServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSSHPublicKeysServerTransport(srv *SSHPublicKeysServer) *SSHPublicKeysServerTransport {
 	return &SSHPublicKeysServerTransport{
-		srv:                         srv,
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]](),
+		srv:				srv,
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]](),
 	}
 }
 
 // SSHPublicKeysServerTransport connects instances of armcompute.SSHPublicKeysClient to instances of SSHPublicKeysServer.
 // Don't use this type directly, use NewSSHPublicKeysServerTransport instead.
 type SSHPublicKeysServerTransport struct {
-	srv                         *SSHPublicKeysServer
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]]
+	srv				*SSHPublicKeysServer
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListByResourceGroupResponse]]
+	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armcompute.SSHPublicKeysClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for SSHPublicKeysServerTransport.

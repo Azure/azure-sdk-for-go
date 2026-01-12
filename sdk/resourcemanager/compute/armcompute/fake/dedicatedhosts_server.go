@@ -23,35 +23,35 @@ import (
 type DedicatedHostsServer struct {
 	// BeginCreateOrUpdate is the fake for method DedicatedHostsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters armcompute.DedicatedHost, options *armcompute.DedicatedHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters armcompute.DedicatedHost, options *armcompute.DedicatedHostsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DedicatedHostsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DedicatedHostsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientGetOptions) (resp azfake.Responder[armcompute.DedicatedHostsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientGetOptions) (resp azfake.Responder[armcompute.DedicatedHostsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListAvailableSizesPager is the fake for method DedicatedHostsClient.NewListAvailableSizesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAvailableSizesPager func(resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientListAvailableSizesOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse])
+	NewListAvailableSizesPager	func(resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientListAvailableSizesOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse])
 
 	// NewListByHostGroupPager is the fake for method DedicatedHostsClient.NewListByHostGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByHostGroupPager func(resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostsClientListByHostGroupOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse])
+	NewListByHostGroupPager	func(resourceGroupName string, hostGroupName string, options *armcompute.DedicatedHostsClientListByHostGroupOptions) (resp azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse])
 
 	// BeginRedeploy is the fake for method DedicatedHostsClient.BeginRedeploy
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRedeploy func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginRedeployOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse], errResp azfake.ErrorResponder)
+	BeginRedeploy	func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginRedeployOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method DedicatedHostsClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	BeginRestart func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse], errResp azfake.ErrorResponder)
+	BeginRestart	func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, options *armcompute.DedicatedHostsClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method DedicatedHostsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters armcompute.DedicatedHostUpdate, options *armcompute.DedicatedHostsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, hostGroupName string, hostName string, parameters armcompute.DedicatedHostUpdate, options *armcompute.DedicatedHostsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDedicatedHostsServerTransport creates a new instance of DedicatedHostsServerTransport with the provided implementation.
@@ -59,28 +59,28 @@ type DedicatedHostsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDedicatedHostsServerTransport(srv *DedicatedHostsServer) *DedicatedHostsServerTransport {
 	return &DedicatedHostsServerTransport{
-		srv:                        srv,
-		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]](),
-		beginDelete:                newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]](),
-		newListAvailableSizesPager: newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]](),
-		newListByHostGroupPager:    newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]](),
-		beginRedeploy:              newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse]](),
-		beginRestart:               newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]](),
+		srv:				srv,
+		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]](),
+		newListAvailableSizesPager:	newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]](),
+		newListByHostGroupPager:	newTracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]](),
+		beginRedeploy:			newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse]](),
+		beginRestart:			newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]](),
 	}
 }
 
 // DedicatedHostsServerTransport connects instances of armcompute.DedicatedHostsClient to instances of DedicatedHostsServer.
 // Don't use this type directly, use NewDedicatedHostsServerTransport instead.
 type DedicatedHostsServerTransport struct {
-	srv                        *DedicatedHostsServer
-	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]]
-	beginDelete                *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]]
-	newListAvailableSizesPager *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]]
-	newListByHostGroupPager    *tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]]
-	beginRedeploy              *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse]]
-	beginRestart               *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]]
+	srv				*DedicatedHostsServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientDeleteResponse]]
+	newListAvailableSizesPager	*tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListAvailableSizesResponse]]
+	newListByHostGroupPager		*tracker[azfake.PagerResponder[armcompute.DedicatedHostsClientListByHostGroupResponse]]
+	beginRedeploy			*tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRedeployResponse]]
+	beginRestart			*tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientRestartResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.DedicatedHostsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DedicatedHostsServerTransport.

@@ -30,16 +30,16 @@ type VirtualMachineSizesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineSizesServerTransport(srv *VirtualMachineSizesServer) *VirtualMachineSizesServerTransport {
 	return &VirtualMachineSizesServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]](),
 	}
 }
 
 // VirtualMachineSizesServerTransport connects instances of armcompute.VirtualMachineSizesClient to instances of VirtualMachineSizesServer.
 // Don't use this type directly, use NewVirtualMachineSizesServerTransport instead.
 type VirtualMachineSizesServerTransport struct {
-	srv          *VirtualMachineSizesServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]]
+	srv		*VirtualMachineSizesServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.VirtualMachineSizesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineSizesServerTransport.

@@ -23,27 +23,27 @@ import (
 type ImagesServer struct {
 	// BeginCreateOrUpdate is the fake for method ImagesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.Image, options *armcompute.ImagesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.Image, options *armcompute.ImagesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ImagesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, imageName string, options *armcompute.ImagesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.ImagesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, imageName string, options *armcompute.ImagesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.ImagesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, imageName string, options *armcompute.ImagesClientGetOptions) (resp azfake.Responder[armcompute.ImagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, imageName string, options *armcompute.ImagesClientGetOptions) (resp azfake.Responder[armcompute.ImagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ImagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.ImagesClientListOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListResponse])
+	NewListPager	func(options *armcompute.ImagesClientListOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ImagesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.ImagesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.ImagesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse])
 
 	// BeginUpdate is the fake for method ImagesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.ImageUpdate, options *armcompute.ImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, imageName string, parameters armcompute.ImageUpdate, options *armcompute.ImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.ImagesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewImagesServerTransport creates a new instance of ImagesServerTransport with the provided implementation.
@@ -51,24 +51,24 @@ type ImagesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewImagesServerTransport(srv *ImagesServer) *ImagesServerTransport {
 	return &ImagesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]](),
+		srv:				srv,
+		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]](),
+		newListPager:			newTracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]](),
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]](),
 	}
 }
 
 // ImagesServerTransport connects instances of armcompute.ImagesClient to instances of ImagesServer.
 // Don't use this type directly, use NewImagesServerTransport instead.
 type ImagesServerTransport struct {
-	srv                         *ImagesServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]]
+	srv				*ImagesServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.ImagesClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.ImagesClientDeleteResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.ImagesClientListResponse]]
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.ImagesClientListByResourceGroupResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.ImagesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ImagesServerTransport.

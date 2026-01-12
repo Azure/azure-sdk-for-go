@@ -23,23 +23,23 @@ import (
 type GalleryApplicationVersionsServer struct {
 	// BeginCreateOrUpdate is the fake for method GalleryApplicationVersionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion armcompute.GalleryApplicationVersion, options *armcompute.GalleryApplicationVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion armcompute.GalleryApplicationVersion, options *armcompute.GalleryApplicationVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method GalleryApplicationVersionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *armcompute.GalleryApplicationVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *armcompute.GalleryApplicationVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method GalleryApplicationVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *armcompute.GalleryApplicationVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryApplicationVersionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *armcompute.GalleryApplicationVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryApplicationVersionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByGalleryApplicationPager is the fake for method GalleryApplicationVersionsClient.NewListByGalleryApplicationPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByGalleryApplicationPager func(resourceGroupName string, galleryName string, galleryApplicationName string, options *armcompute.GalleryApplicationVersionsClientListByGalleryApplicationOptions) (resp azfake.PagerResponder[armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse])
+	NewListByGalleryApplicationPager	func(resourceGroupName string, galleryName string, galleryApplicationName string, options *armcompute.GalleryApplicationVersionsClientListByGalleryApplicationOptions) (resp azfake.PagerResponder[armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse])
 
 	// BeginUpdate is the fake for method GalleryApplicationVersionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion armcompute.GalleryApplicationVersionUpdate, options *armcompute.GalleryApplicationVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion armcompute.GalleryApplicationVersionUpdate, options *armcompute.GalleryApplicationVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleryApplicationVersionsServerTransport creates a new instance of GalleryApplicationVersionsServerTransport with the provided implementation.
@@ -47,22 +47,22 @@ type GalleryApplicationVersionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGalleryApplicationVersionsServerTransport(srv *GalleryApplicationVersionsServer) *GalleryApplicationVersionsServerTransport {
 	return &GalleryApplicationVersionsServerTransport{
-		srv:                              srv,
-		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse]](),
-		beginDelete:                      newTracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientDeleteResponse]](),
-		newListByGalleryApplicationPager: newTracker[azfake.PagerResponder[armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse]](),
-		beginUpdate:                      newTracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientUpdateResponse]](),
+		srv:					srv,
+		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse]](),
+		beginDelete:				newTracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientDeleteResponse]](),
+		newListByGalleryApplicationPager:	newTracker[azfake.PagerResponder[armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse]](),
+		beginUpdate:				newTracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientUpdateResponse]](),
 	}
 }
 
 // GalleryApplicationVersionsServerTransport connects instances of armcompute.GalleryApplicationVersionsClient to instances of GalleryApplicationVersionsServer.
 // Don't use this type directly, use NewGalleryApplicationVersionsServerTransport instead.
 type GalleryApplicationVersionsServerTransport struct {
-	srv                              *GalleryApplicationVersionsServer
-	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse]]
-	beginDelete                      *tracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientDeleteResponse]]
-	newListByGalleryApplicationPager *tracker[azfake.PagerResponder[armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse]]
-	beginUpdate                      *tracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientUpdateResponse]]
+	srv					*GalleryApplicationVersionsServer
+	beginCreateOrUpdate			*tracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse]]
+	beginDelete				*tracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientDeleteResponse]]
+	newListByGalleryApplicationPager	*tracker[azfake.PagerResponder[armcompute.GalleryApplicationVersionsClientListByGalleryApplicationResponse]]
+	beginUpdate				*tracker[azfake.PollerResponder[armcompute.GalleryApplicationVersionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryApplicationVersionsServerTransport.

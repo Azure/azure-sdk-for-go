@@ -22,19 +22,19 @@ import (
 type VirtualMachineScaleSetRollingUpgradesServer struct {
 	// BeginCancel is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginCancel
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginCancel func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse], errResp azfake.ErrorResponder)
+	BeginCancel	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginCancelOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// GetLatest is the fake for method VirtualMachineScaleSetRollingUpgradesClient.GetLatest
 	// HTTP status codes to indicate success: http.StatusOK
-	GetLatest func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse], errResp azfake.ErrorResponder)
+	GetLatest	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse], errResp azfake.ErrorResponder)
 
 	// BeginStartExtensionUpgrade is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginStartExtensionUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStartExtensionUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartExtensionUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse], errResp azfake.ErrorResponder)
+	BeginStartExtensionUpgrade	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartExtensionUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse], errResp azfake.ErrorResponder)
 
 	// BeginStartOSUpgrade is the fake for method VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStartOSUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], errResp azfake.ErrorResponder)
+	BeginStartOSUpgrade	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetRollingUpgradesClientBeginStartOSUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineScaleSetRollingUpgradesServerTransport creates a new instance of VirtualMachineScaleSetRollingUpgradesServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type VirtualMachineScaleSetRollingUpgradesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetRollingUpgradesServerTransport(srv *VirtualMachineScaleSetRollingUpgradesServer) *VirtualMachineScaleSetRollingUpgradesServerTransport {
 	return &VirtualMachineScaleSetRollingUpgradesServerTransport{
-		srv:                        srv,
-		beginCancel:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]](),
-		beginStartExtensionUpgrade: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse]](),
-		beginStartOSUpgrade:        newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]](),
+		srv:				srv,
+		beginCancel:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]](),
+		beginStartExtensionUpgrade:	newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse]](),
+		beginStartOSUpgrade:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetRollingUpgradesServerTransport connects instances of armcompute.VirtualMachineScaleSetRollingUpgradesClient to instances of VirtualMachineScaleSetRollingUpgradesServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetRollingUpgradesServerTransport instead.
 type VirtualMachineScaleSetRollingUpgradesServerTransport struct {
-	srv                        *VirtualMachineScaleSetRollingUpgradesServer
-	beginCancel                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]]
-	beginStartExtensionUpgrade *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse]]
-	beginStartOSUpgrade        *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]]
+	srv				*VirtualMachineScaleSetRollingUpgradesServer
+	beginCancel			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientCancelResponse]]
+	beginStartExtensionUpgrade	*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse]]
+	beginStartOSUpgrade		*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetRollingUpgradesServerTransport.

@@ -25,75 +25,75 @@ import (
 type VirtualMachineScaleSetVMsServer struct {
 	// BeginApproveRollingUpgrade is the fake for method VirtualMachineScaleSetVMsClient.BeginApproveRollingUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginApproveRollingUpgrade func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse], errResp azfake.ErrorResponder)
+	BeginApproveRollingUpgrade	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginApproveRollingUpgradeOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse], errResp azfake.ErrorResponder)
 
 	// BeginAttachDetachDataDisks is the fake for method VirtualMachineScaleSetVMsClient.BeginAttachDetachDataDisks
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginAttachDetachDataDisks func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.AttachDetachDataDisksRequest, options *armcompute.VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse], errResp azfake.ErrorResponder)
+	BeginAttachDetachDataDisks	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.AttachDetachDataDisksRequest, options *armcompute.VirtualMachineScaleSetVMsClientBeginAttachDetachDataDisksOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeallocate is the fake for method VirtualMachineScaleSetVMsClient.BeginDeallocate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeallocate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse], errResp azfake.ErrorResponder)
+	BeginDeallocate	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginDeallocateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualMachineScaleSetVMsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualMachineScaleSetVMsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceView is the fake for method VirtualMachineScaleSetVMsClient.GetInstanceView
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceView func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientGetInstanceViewOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientGetInstanceViewResponse], errResp azfake.ErrorResponder)
+	GetInstanceView	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientGetInstanceViewOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientGetInstanceViewResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method VirtualMachineScaleSetVMsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, virtualMachineScaleSetName string, options *armcompute.VirtualMachineScaleSetVMsClientListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse])
+	NewListPager	func(resourceGroupName string, virtualMachineScaleSetName string, options *armcompute.VirtualMachineScaleSetVMsClientListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse])
 
 	// BeginPerformMaintenance is the fake for method VirtualMachineScaleSetVMsClient.BeginPerformMaintenance
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPerformMaintenance func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse], errResp azfake.ErrorResponder)
+	BeginPerformMaintenance	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginPerformMaintenanceOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse], errResp azfake.ErrorResponder)
 
 	// BeginPowerOff is the fake for method VirtualMachineScaleSetVMsClient.BeginPowerOff
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPowerOff func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginPowerOffOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse], errResp azfake.ErrorResponder)
+	BeginPowerOff	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginPowerOffOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse], errResp azfake.ErrorResponder)
 
 	// BeginRedeploy is the fake for method VirtualMachineScaleSetVMsClient.BeginRedeploy
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRedeploy func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginRedeployOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse], errResp azfake.ErrorResponder)
+	BeginRedeploy	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginRedeployOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimage is the fake for method VirtualMachineScaleSetVMsClient.BeginReimage
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReimage func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginReimageOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse], errResp azfake.ErrorResponder)
+	BeginReimage	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginReimageOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimageAll is the fake for method VirtualMachineScaleSetVMsClient.BeginReimageAll
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReimageAll func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginReimageAllOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse], errResp azfake.ErrorResponder)
+	BeginReimageAll	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginReimageAllOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method VirtualMachineScaleSetVMsClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestart func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse], errResp azfake.ErrorResponder)
+	BeginRestart	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// RetrieveBootDiagnosticsData is the fake for method VirtualMachineScaleSetVMsClient.RetrieveBootDiagnosticsData
 	// HTTP status codes to indicate success: http.StatusOK
-	RetrieveBootDiagnosticsData func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse], errResp azfake.ErrorResponder)
+	RetrieveBootDiagnosticsData	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse], errResp azfake.ErrorResponder)
 
 	// BeginRunCommand is the fake for method VirtualMachineScaleSetVMsClient.BeginRunCommand
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRunCommand func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.RunCommandInput, options *armcompute.VirtualMachineScaleSetVMsClientBeginRunCommandOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse], errResp azfake.ErrorResponder)
+	BeginRunCommand	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.RunCommandInput, options *armcompute.VirtualMachineScaleSetVMsClientBeginRunCommandOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse], errResp azfake.ErrorResponder)
 
 	// SimulateEviction is the fake for method VirtualMachineScaleSetVMsClient.SimulateEviction
 	// HTTP status codes to indicate success: http.StatusNoContent
-	SimulateEviction func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientSimulateEvictionOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientSimulateEvictionResponse], errResp azfake.ErrorResponder)
+	SimulateEviction	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientSimulateEvictionOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMsClientSimulateEvictionResponse], errResp azfake.ErrorResponder)
 
 	// BeginStart is the fake for method VirtualMachineScaleSetVMsClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStart func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginStartOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse], errResp azfake.ErrorResponder)
+	BeginStart	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMsClientBeginStartOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method VirtualMachineScaleSetVMsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.VirtualMachineScaleSetVM, options *armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, parameters armcompute.VirtualMachineScaleSetVM, options *armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineScaleSetVMsServerTransport creates a new instance of VirtualMachineScaleSetVMsServerTransport with the provided implementation.
@@ -101,42 +101,42 @@ type VirtualMachineScaleSetVMsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetVMsServerTransport(srv *VirtualMachineScaleSetVMsServer) *VirtualMachineScaleSetVMsServerTransport {
 	return &VirtualMachineScaleSetVMsServerTransport{
-		srv:                        srv,
-		beginApproveRollingUpgrade: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]](),
-		beginAttachDetachDataDisks: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]](),
-		beginDeallocate:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
-		beginDelete:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
-		beginPerformMaintenance:    newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
-		beginPowerOff:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
-		beginRedeploy:              newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
-		beginReimage:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
-		beginReimageAll:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
-		beginRestart:               newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
-		beginRunCommand:            newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
-		beginStart:                 newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
+		srv:				srv,
+		beginApproveRollingUpgrade:	newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]](),
+		beginAttachDetachDataDisks:	newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]](),
+		beginDeallocate:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]](),
+		newListPager:			newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]](),
+		beginPerformMaintenance:	newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]](),
+		beginPowerOff:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]](),
+		beginRedeploy:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]](),
+		beginReimage:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]](),
+		beginReimageAll:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]](),
+		beginRestart:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]](),
+		beginRunCommand:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]](),
+		beginStart:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetVMsServerTransport connects instances of armcompute.VirtualMachineScaleSetVMsClient to instances of VirtualMachineScaleSetVMsServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMsServerTransport instead.
 type VirtualMachineScaleSetVMsServerTransport struct {
-	srv                        *VirtualMachineScaleSetVMsServer
-	beginApproveRollingUpgrade *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]]
-	beginAttachDetachDataDisks *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]]
-	beginDeallocate            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
-	beginDelete                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
-	beginPerformMaintenance    *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
-	beginPowerOff              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
-	beginRedeploy              *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
-	beginReimage               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
-	beginReimageAll            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
-	beginRestart               *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
-	beginRunCommand            *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
-	beginStart                 *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
+	srv				*VirtualMachineScaleSetVMsServer
+	beginApproveRollingUpgrade	*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientApproveRollingUpgradeResponse]]
+	beginAttachDetachDataDisks	*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientAttachDetachDataDisksResponse]]
+	beginDeallocate			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeallocateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientDeleteResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetVMsClientListResponse]]
+	beginPerformMaintenance		*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPerformMaintenanceResponse]]
+	beginPowerOff			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientPowerOffResponse]]
+	beginRedeploy			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRedeployResponse]]
+	beginReimage			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageResponse]]
+	beginReimageAll			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientReimageAllResponse]]
+	beginRestart			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRestartResponse]]
+	beginRunCommand			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientRunCommandResponse]]
+	beginStart			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientStartResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetVMsServerTransport.
@@ -553,9 +553,9 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchNewListPager(req *htt
 		var options *armcompute.VirtualMachineScaleSetVMsClientListOptions
 		if filterParam != nil || selectParam != nil || expandParam != nil {
 			options = &armcompute.VirtualMachineScaleSetVMsClientListOptions{
-				Filter: filterParam,
-				Select: selectParam,
-				Expand: expandParam,
+				Filter:	filterParam,
+				Select:	selectParam,
+				Expand:	expandParam,
 			}
 		}
 		resp := v.srv.NewListPager(resourceGroupNameParam, virtualMachineScaleSetNameParam, options)
@@ -1120,8 +1120,8 @@ func (v *VirtualMachineScaleSetVMsServerTransport) dispatchBeginUpdate(req *http
 		var options *armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions
 		if ifMatchParam != nil || ifNoneMatchParam != nil {
 			options = &armcompute.VirtualMachineScaleSetVMsClientBeginUpdateOptions{
-				IfMatch:     ifMatchParam,
-				IfNoneMatch: ifNoneMatchParam,
+				IfMatch:	ifMatchParam,
+				IfNoneMatch:	ifNoneMatchParam,
 			}
 		}
 		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, instanceIDParam, body, options)

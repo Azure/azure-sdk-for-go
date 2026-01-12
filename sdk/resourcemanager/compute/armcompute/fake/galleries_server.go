@@ -23,27 +23,27 @@ import (
 type GalleriesServer struct {
 	// BeginCreateOrUpdate is the fake for method GalleriesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, galleryName string, gallery armcompute.Gallery, options *armcompute.GalleriesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, galleryName string, gallery armcompute.Gallery, options *armcompute.GalleriesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method GalleriesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, galleryName string, options *armcompute.GalleriesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, galleryName string, options *armcompute.GalleriesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method GalleriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, galleryName string, options *armcompute.GalleriesClientGetOptions) (resp azfake.Responder[armcompute.GalleriesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, galleryName string, options *armcompute.GalleriesClientGetOptions) (resp azfake.Responder[armcompute.GalleriesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method GalleriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.GalleriesClientListOptions) (resp azfake.PagerResponder[armcompute.GalleriesClientListResponse])
+	NewListPager	func(options *armcompute.GalleriesClientListOptions) (resp azfake.PagerResponder[armcompute.GalleriesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method GalleriesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.GalleriesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.GalleriesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse])
 
 	// BeginUpdate is the fake for method GalleriesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, gallery armcompute.GalleryUpdate, options *armcompute.GalleriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, galleryName string, gallery armcompute.GalleryUpdate, options *armcompute.GalleriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleriesServerTransport creates a new instance of GalleriesServerTransport with the provided implementation.
@@ -51,24 +51,24 @@ type GalleriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGalleriesServerTransport(srv *GalleriesServer) *GalleriesServerTransport {
 	return &GalleriesServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]](),
+		srv:				srv,
+		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]](),
+		newListPager:			newTracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]](),
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]](),
 	}
 }
 
 // GalleriesServerTransport connects instances of armcompute.GalleriesClient to instances of GalleriesServer.
 // Don't use this type directly, use NewGalleriesServerTransport instead.
 type GalleriesServerTransport struct {
-	srv                         *GalleriesServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]]
+	srv				*GalleriesServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.GalleriesClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.GalleriesClientDeleteResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.GalleriesClientListResponse]]
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.GalleriesClientListByResourceGroupResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.GalleriesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleriesServerTransport.
@@ -249,8 +249,8 @@ func (g *GalleriesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	var options *armcompute.GalleriesClientGetOptions
 	if selectParam != nil || expandParam != nil {
 		options = &armcompute.GalleriesClientGetOptions{
-			Select: selectParam,
-			Expand: expandParam,
+			Select:	selectParam,
+			Expand:	expandParam,
 		}
 	}
 	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryNameParam, options)

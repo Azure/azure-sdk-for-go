@@ -22,23 +22,23 @@ import (
 type VirtualMachineScaleSetVMExtensionsServer struct {
 	// BeginCreateOrUpdate is the fake for method VirtualMachineScaleSetVMExtensionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters armcompute.VirtualMachineScaleSetVMExtension, options *armcompute.VirtualMachineScaleSetVMExtensionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters armcompute.VirtualMachineScaleSetVMExtension, options *armcompute.VirtualMachineScaleSetVMExtensionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualMachineScaleSetVMExtensionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *armcompute.VirtualMachineScaleSetVMExtensionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *armcompute.VirtualMachineScaleSetVMExtensionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualMachineScaleSetVMExtensionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *armcompute.VirtualMachineScaleSetVMExtensionsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMExtensionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, options *armcompute.VirtualMachineScaleSetVMExtensionsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMExtensionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// List is the fake for method VirtualMachineScaleSetVMExtensionsClient.List
 	// HTTP status codes to indicate success: http.StatusOK
-	List func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMExtensionsClientListOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMExtensionsClientListResponse], errResp azfake.ErrorResponder)
+	List	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, options *armcompute.VirtualMachineScaleSetVMExtensionsClientListOptions) (resp azfake.Responder[armcompute.VirtualMachineScaleSetVMExtensionsClientListResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method VirtualMachineScaleSetVMExtensionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters armcompute.VirtualMachineScaleSetVMExtensionUpdate, options *armcompute.VirtualMachineScaleSetVMExtensionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, vmExtensionName string, extensionParameters armcompute.VirtualMachineScaleSetVMExtensionUpdate, options *armcompute.VirtualMachineScaleSetVMExtensionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineScaleSetVMExtensionsServerTransport creates a new instance of VirtualMachineScaleSetVMExtensionsServerTransport with the provided implementation.
@@ -46,20 +46,20 @@ type VirtualMachineScaleSetVMExtensionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineScaleSetVMExtensionsServerTransport(srv *VirtualMachineScaleSetVMExtensionsServer) *VirtualMachineScaleSetVMExtensionsServerTransport {
 	return &VirtualMachineScaleSetVMExtensionsServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse]](),
+		srv:			srv,
+		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse]](),
+		beginDelete:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse]](),
+		beginUpdate:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineScaleSetVMExtensionsServerTransport connects instances of armcompute.VirtualMachineScaleSetVMExtensionsClient to instances of VirtualMachineScaleSetVMExtensionsServer.
 // Don't use this type directly, use NewVirtualMachineScaleSetVMExtensionsServerTransport instead.
 type VirtualMachineScaleSetVMExtensionsServerTransport struct {
-	srv                 *VirtualMachineScaleSetVMExtensionsServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse]]
-	beginDelete         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse]]
+	srv			*VirtualMachineScaleSetVMExtensionsServer
+	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientCreateOrUpdateResponse]]
+	beginDelete		*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientDeleteResponse]]
+	beginUpdate		*tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetVMExtensionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineScaleSetVMExtensionsServerTransport.

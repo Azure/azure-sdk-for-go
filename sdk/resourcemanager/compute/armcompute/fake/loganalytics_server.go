@@ -22,11 +22,11 @@ import (
 type LogAnalyticsServer struct {
 	// BeginExportRequestRateByInterval is the fake for method LogAnalyticsClient.BeginExportRequestRateByInterval
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginExportRequestRateByInterval func(ctx context.Context, location string, parameters armcompute.RequestRateByIntervalInput, options *armcompute.LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (resp azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse], errResp azfake.ErrorResponder)
+	BeginExportRequestRateByInterval	func(ctx context.Context, location string, parameters armcompute.RequestRateByIntervalInput, options *armcompute.LogAnalyticsClientBeginExportRequestRateByIntervalOptions) (resp azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse], errResp azfake.ErrorResponder)
 
 	// BeginExportThrottledRequests is the fake for method LogAnalyticsClient.BeginExportThrottledRequests
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginExportThrottledRequests func(ctx context.Context, location string, parameters armcompute.ThrottledRequestsInput, options *armcompute.LogAnalyticsClientBeginExportThrottledRequestsOptions) (resp azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse], errResp azfake.ErrorResponder)
+	BeginExportThrottledRequests	func(ctx context.Context, location string, parameters armcompute.ThrottledRequestsInput, options *armcompute.LogAnalyticsClientBeginExportThrottledRequestsOptions) (resp azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewLogAnalyticsServerTransport creates a new instance of LogAnalyticsServerTransport with the provided implementation.
@@ -34,18 +34,18 @@ type LogAnalyticsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewLogAnalyticsServerTransport(srv *LogAnalyticsServer) *LogAnalyticsServerTransport {
 	return &LogAnalyticsServerTransport{
-		srv:                              srv,
-		beginExportRequestRateByInterval: newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]](),
-		beginExportThrottledRequests:     newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]](),
+		srv:					srv,
+		beginExportRequestRateByInterval:	newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]](),
+		beginExportThrottledRequests:		newTracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]](),
 	}
 }
 
 // LogAnalyticsServerTransport connects instances of armcompute.LogAnalyticsClient to instances of LogAnalyticsServer.
 // Don't use this type directly, use NewLogAnalyticsServerTransport instead.
 type LogAnalyticsServerTransport struct {
-	srv                              *LogAnalyticsServer
-	beginExportRequestRateByInterval *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]]
-	beginExportThrottledRequests     *tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]]
+	srv					*LogAnalyticsServer
+	beginExportRequestRateByInterval	*tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportRequestRateByIntervalResponse]]
+	beginExportThrottledRequests		*tracker[azfake.PollerResponder[armcompute.LogAnalyticsClientExportThrottledRequestsResponse]]
 }
 
 // Do implements the policy.Transporter interface for LogAnalyticsServerTransport.

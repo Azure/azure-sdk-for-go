@@ -30,16 +30,16 @@ type ResourceSKUsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResourceSKUsServerTransport(srv *ResourceSKUsServer) *ResourceSKUsServerTransport {
 	return &ResourceSKUsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]](),
 	}
 }
 
 // ResourceSKUsServerTransport connects instances of armcompute.ResourceSKUsClient to instances of ResourceSKUsServer.
 // Don't use this type directly, use NewResourceSKUsServerTransport instead.
 type ResourceSKUsServerTransport struct {
-	srv          *ResourceSKUsServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]]
+	srv		*ResourceSKUsServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.ResourceSKUsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceSKUsServerTransport.
@@ -112,8 +112,8 @@ func (r *ResourceSKUsServerTransport) dispatchNewListPager(req *http.Request) (*
 		var options *armcompute.ResourceSKUsClientListOptions
 		if filterParam != nil || includeExtendedLocationsParam != nil {
 			options = &armcompute.ResourceSKUsClientListOptions{
-				Filter:                   filterParam,
-				IncludeExtendedLocations: includeExtendedLocationsParam,
+				Filter:				filterParam,
+				IncludeExtendedLocations:	includeExtendedLocationsParam,
 			}
 		}
 		resp := r.srv.NewListPager(options)

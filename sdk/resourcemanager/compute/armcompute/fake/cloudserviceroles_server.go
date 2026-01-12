@@ -23,11 +23,11 @@ import (
 type CloudServiceRolesServer struct {
 	// Get is the fake for method CloudServiceRolesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRolesClientGetOptions) (resp azfake.Responder[armcompute.CloudServiceRolesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, roleName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRolesClientGetOptions) (resp azfake.Responder[armcompute.CloudServiceRolesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CloudServiceRolesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRolesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse])
+	NewListPager	func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRolesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse])
 }
 
 // NewCloudServiceRolesServerTransport creates a new instance of CloudServiceRolesServerTransport with the provided implementation.
@@ -35,16 +35,16 @@ type CloudServiceRolesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceRolesServerTransport(srv *CloudServiceRolesServer) *CloudServiceRolesServerTransport {
 	return &CloudServiceRolesServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]](),
 	}
 }
 
 // CloudServiceRolesServerTransport connects instances of armcompute.CloudServiceRolesClient to instances of CloudServiceRolesServer.
 // Don't use this type directly, use NewCloudServiceRolesServerTransport instead.
 type CloudServiceRolesServerTransport struct {
-	srv          *CloudServiceRolesServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]]
+	srv		*CloudServiceRolesServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.CloudServiceRolesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServiceRolesServerTransport.

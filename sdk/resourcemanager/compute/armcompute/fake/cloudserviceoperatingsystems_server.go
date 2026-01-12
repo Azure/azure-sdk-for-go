@@ -23,19 +23,19 @@ import (
 type CloudServiceOperatingSystemsServer struct {
 	// GetOSFamily is the fake for method CloudServiceOperatingSystemsClient.GetOSFamily
 	// HTTP status codes to indicate success: http.StatusOK
-	GetOSFamily func(ctx context.Context, location string, osFamilyName string, options *armcompute.CloudServiceOperatingSystemsClientGetOSFamilyOptions) (resp azfake.Responder[armcompute.CloudServiceOperatingSystemsClientGetOSFamilyResponse], errResp azfake.ErrorResponder)
+	GetOSFamily	func(ctx context.Context, location string, osFamilyName string, options *armcompute.CloudServiceOperatingSystemsClientGetOSFamilyOptions) (resp azfake.Responder[armcompute.CloudServiceOperatingSystemsClientGetOSFamilyResponse], errResp azfake.ErrorResponder)
 
 	// GetOSVersion is the fake for method CloudServiceOperatingSystemsClient.GetOSVersion
 	// HTTP status codes to indicate success: http.StatusOK
-	GetOSVersion func(ctx context.Context, location string, osVersionName string, options *armcompute.CloudServiceOperatingSystemsClientGetOSVersionOptions) (resp azfake.Responder[armcompute.CloudServiceOperatingSystemsClientGetOSVersionResponse], errResp azfake.ErrorResponder)
+	GetOSVersion	func(ctx context.Context, location string, osVersionName string, options *armcompute.CloudServiceOperatingSystemsClientGetOSVersionOptions) (resp azfake.Responder[armcompute.CloudServiceOperatingSystemsClientGetOSVersionResponse], errResp azfake.ErrorResponder)
 
 	// NewListOSFamiliesPager is the fake for method CloudServiceOperatingSystemsClient.NewListOSFamiliesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListOSFamiliesPager func(location string, options *armcompute.CloudServiceOperatingSystemsClientListOSFamiliesOptions) (resp azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse])
+	NewListOSFamiliesPager	func(location string, options *armcompute.CloudServiceOperatingSystemsClientListOSFamiliesOptions) (resp azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse])
 
 	// NewListOSVersionsPager is the fake for method CloudServiceOperatingSystemsClient.NewListOSVersionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListOSVersionsPager func(location string, options *armcompute.CloudServiceOperatingSystemsClientListOSVersionsOptions) (resp azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse])
+	NewListOSVersionsPager	func(location string, options *armcompute.CloudServiceOperatingSystemsClientListOSVersionsOptions) (resp azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse])
 }
 
 // NewCloudServiceOperatingSystemsServerTransport creates a new instance of CloudServiceOperatingSystemsServerTransport with the provided implementation.
@@ -43,18 +43,18 @@ type CloudServiceOperatingSystemsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceOperatingSystemsServerTransport(srv *CloudServiceOperatingSystemsServer) *CloudServiceOperatingSystemsServerTransport {
 	return &CloudServiceOperatingSystemsServerTransport{
-		srv:                    srv,
-		newListOSFamiliesPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]](),
-		newListOSVersionsPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]](),
+		srv:			srv,
+		newListOSFamiliesPager:	newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]](),
+		newListOSVersionsPager:	newTracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]](),
 	}
 }
 
 // CloudServiceOperatingSystemsServerTransport connects instances of armcompute.CloudServiceOperatingSystemsClient to instances of CloudServiceOperatingSystemsServer.
 // Don't use this type directly, use NewCloudServiceOperatingSystemsServerTransport instead.
 type CloudServiceOperatingSystemsServerTransport struct {
-	srv                    *CloudServiceOperatingSystemsServer
-	newListOSFamiliesPager *tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]]
-	newListOSVersionsPager *tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]]
+	srv			*CloudServiceOperatingSystemsServer
+	newListOSFamiliesPager	*tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSFamiliesResponse]]
+	newListOSVersionsPager	*tracker[azfake.PagerResponder[armcompute.CloudServiceOperatingSystemsClientListOSVersionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServiceOperatingSystemsServerTransport.

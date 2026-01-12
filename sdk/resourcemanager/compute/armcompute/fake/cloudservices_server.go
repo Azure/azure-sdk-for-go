@@ -24,55 +24,55 @@ import (
 type CloudServicesServer struct {
 	// BeginCreateOrUpdate is the fake for method CloudServicesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters armcompute.CloudService, options *armcompute.CloudServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters armcompute.CloudService, options *armcompute.CloudServicesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CloudServicesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeleteInstances is the fake for method CloudServicesClient.BeginDeleteInstances
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteInstances func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginDeleteInstancesOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse], errResp azfake.ErrorResponder)
+	BeginDeleteInstances	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginDeleteInstancesOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CloudServicesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientGetOptions) (resp azfake.Responder[armcompute.CloudServicesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientGetOptions) (resp azfake.Responder[armcompute.CloudServicesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceView is the fake for method CloudServicesClient.GetInstanceView
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceView func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientGetInstanceViewOptions) (resp azfake.Responder[armcompute.CloudServicesClientGetInstanceViewResponse], errResp azfake.ErrorResponder)
+	GetInstanceView	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientGetInstanceViewOptions) (resp azfake.Responder[armcompute.CloudServicesClientGetInstanceViewResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CloudServicesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armcompute.CloudServicesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServicesClientListResponse])
+	NewListPager	func(resourceGroupName string, options *armcompute.CloudServicesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServicesClientListResponse])
 
 	// NewListAllPager is the fake for method CloudServicesClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armcompute.CloudServicesClientListAllOptions) (resp azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse])
+	NewListAllPager	func(options *armcompute.CloudServicesClientListAllOptions) (resp azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse])
 
 	// BeginPowerOff is the fake for method CloudServicesClient.BeginPowerOff
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPowerOff func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse], errResp azfake.ErrorResponder)
+	BeginPowerOff	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse], errResp azfake.ErrorResponder)
 
 	// BeginRebuild is the fake for method CloudServicesClient.BeginRebuild
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRebuild func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginRebuildOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse], errResp azfake.ErrorResponder)
+	BeginRebuild	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginRebuildOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimage is the fake for method CloudServicesClient.BeginReimage
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReimage func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginReimageOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse], errResp azfake.ErrorResponder)
+	BeginReimage	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginReimageOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method CloudServicesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestart func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse], errResp azfake.ErrorResponder)
+	BeginRestart	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// BeginStart is the fake for method CloudServicesClient.BeginStart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStart func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginStartOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientStartResponse], errResp azfake.ErrorResponder)
+	BeginStart	func(ctx context.Context, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServicesClientBeginStartOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientStartResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method CloudServicesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters armcompute.CloudServiceUpdate, options *armcompute.CloudServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, cloudServiceName string, parameters armcompute.CloudServiceUpdate, options *armcompute.CloudServicesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudServicesServerTransport creates a new instance of CloudServicesServerTransport with the provided implementation.
@@ -80,36 +80,36 @@ type CloudServicesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServicesServerTransport(srv *CloudServicesServer) *CloudServicesServerTransport {
 	return &CloudServicesServerTransport{
-		srv:                  srv,
-		beginCreateOrUpdate:  newTracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]](),
-		beginDelete:          newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]](),
-		beginDeleteInstances: newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse]](),
-		newListPager:         newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]](),
-		newListAllPager:      newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]](),
-		beginPowerOff:        newTracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]](),
-		beginRebuild:         newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]](),
-		beginReimage:         newTracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]](),
-		beginRestart:         newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]](),
-		beginStart:           newTracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]](),
-		beginUpdate:          newTracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]](),
+		srv:			srv,
+		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]](),
+		beginDelete:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]](),
+		beginDeleteInstances:	newTracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse]](),
+		newListPager:		newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]](),
+		newListAllPager:	newTracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]](),
+		beginPowerOff:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]](),
+		beginRebuild:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]](),
+		beginReimage:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]](),
+		beginRestart:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]](),
+		beginStart:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]](),
+		beginUpdate:		newTracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]](),
 	}
 }
 
 // CloudServicesServerTransport connects instances of armcompute.CloudServicesClient to instances of CloudServicesServer.
 // Don't use this type directly, use NewCloudServicesServerTransport instead.
 type CloudServicesServerTransport struct {
-	srv                  *CloudServicesServer
-	beginCreateOrUpdate  *tracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]]
-	beginDelete          *tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]]
-	beginDeleteInstances *tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse]]
-	newListPager         *tracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]]
-	newListAllPager      *tracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]]
-	beginPowerOff        *tracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]]
-	beginRebuild         *tracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]]
-	beginReimage         *tracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]]
-	beginRestart         *tracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]]
-	beginStart           *tracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]]
-	beginUpdate          *tracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]]
+	srv			*CloudServicesServer
+	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armcompute.CloudServicesClientCreateOrUpdateResponse]]
+	beginDelete		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteResponse]]
+	beginDeleteInstances	*tracker[azfake.PollerResponder[armcompute.CloudServicesClientDeleteInstancesResponse]]
+	newListPager		*tracker[azfake.PagerResponder[armcompute.CloudServicesClientListResponse]]
+	newListAllPager		*tracker[azfake.PagerResponder[armcompute.CloudServicesClientListAllResponse]]
+	beginPowerOff		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientPowerOffResponse]]
+	beginRebuild		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientRebuildResponse]]
+	beginReimage		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientReimageResponse]]
+	beginRestart		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientRestartResponse]]
+	beginStart		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientStartResponse]]
+	beginUpdate		*tracker[azfake.PollerResponder[armcompute.CloudServicesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServicesServerTransport.

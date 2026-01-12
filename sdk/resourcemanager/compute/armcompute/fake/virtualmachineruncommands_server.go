@@ -23,31 +23,31 @@ import (
 type VirtualMachineRunCommandsServer struct {
 	// BeginCreateOrUpdate is the fake for method VirtualMachineRunCommandsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand armcompute.VirtualMachineRunCommand, options *armcompute.VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand armcompute.VirtualMachineRunCommand, options *armcompute.VirtualMachineRunCommandsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method VirtualMachineRunCommandsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *armcompute.VirtualMachineRunCommandsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *armcompute.VirtualMachineRunCommandsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualMachineRunCommandsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, commandID string, options *armcompute.VirtualMachineRunCommandsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineRunCommandsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, location string, commandID string, options *armcompute.VirtualMachineRunCommandsClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineRunCommandsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetByVirtualMachine is the fake for method VirtualMachineRunCommandsClient.GetByVirtualMachine
 	// HTTP status codes to indicate success: http.StatusOK
-	GetByVirtualMachine func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *armcompute.VirtualMachineRunCommandsClientGetByVirtualMachineOptions) (resp azfake.Responder[armcompute.VirtualMachineRunCommandsClientGetByVirtualMachineResponse], errResp azfake.ErrorResponder)
+	GetByVirtualMachine	func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *armcompute.VirtualMachineRunCommandsClientGetByVirtualMachineOptions) (resp azfake.Responder[armcompute.VirtualMachineRunCommandsClientGetByVirtualMachineResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method VirtualMachineRunCommandsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, options *armcompute.VirtualMachineRunCommandsClientListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse])
+	NewListPager	func(location string, options *armcompute.VirtualMachineRunCommandsClientListOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse])
 
 	// NewListByVirtualMachinePager is the fake for method VirtualMachineRunCommandsClient.NewListByVirtualMachinePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVirtualMachinePager func(resourceGroupName string, vmName string, options *armcompute.VirtualMachineRunCommandsClientListByVirtualMachineOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse])
+	NewListByVirtualMachinePager	func(resourceGroupName string, vmName string, options *armcompute.VirtualMachineRunCommandsClientListByVirtualMachineOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse])
 
 	// BeginUpdate is the fake for method VirtualMachineRunCommandsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand armcompute.VirtualMachineRunCommandUpdate, options *armcompute.VirtualMachineRunCommandsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand armcompute.VirtualMachineRunCommandUpdate, options *armcompute.VirtualMachineRunCommandsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineRunCommandsServerTransport creates a new instance of VirtualMachineRunCommandsServerTransport with the provided implementation.
@@ -55,24 +55,24 @@ type VirtualMachineRunCommandsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewVirtualMachineRunCommandsServerTransport(srv *VirtualMachineRunCommandsServer) *VirtualMachineRunCommandsServerTransport {
 	return &VirtualMachineRunCommandsServerTransport{
-		srv:                          srv,
-		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]](),
-		beginDelete:                  newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]](),
-		newListPager:                 newTracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]](),
-		newListByVirtualMachinePager: newTracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]](),
-		beginUpdate:                  newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]](),
+		srv:				srv,
+		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]](),
+		newListPager:			newTracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]](),
+		newListByVirtualMachinePager:	newTracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]](),
 	}
 }
 
 // VirtualMachineRunCommandsServerTransport connects instances of armcompute.VirtualMachineRunCommandsClient to instances of VirtualMachineRunCommandsServer.
 // Don't use this type directly, use NewVirtualMachineRunCommandsServerTransport instead.
 type VirtualMachineRunCommandsServerTransport struct {
-	srv                          *VirtualMachineRunCommandsServer
-	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]]
-	beginDelete                  *tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]]
-	newListPager                 *tracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]]
-	newListByVirtualMachinePager *tracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]]
-	beginUpdate                  *tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]]
+	srv				*VirtualMachineRunCommandsServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientDeleteResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListResponse]]
+	newListByVirtualMachinePager	*tracker[azfake.PagerResponder[armcompute.VirtualMachineRunCommandsClientListByVirtualMachineResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.VirtualMachineRunCommandsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineRunCommandsServerTransport.

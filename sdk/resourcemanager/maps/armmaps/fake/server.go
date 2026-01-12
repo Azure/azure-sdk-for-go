@@ -12,9 +12,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
 	"net/http"
-	"regexp"
 )
 
 // Server is a fake server for instances of the armmaps.Client type.
@@ -22,10 +21,6 @@ type Server struct {
 	// NewListOperationsPager is the fake for method Client.NewListOperationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListOperationsPager func(options *armmaps.ClientListOperationsOptions) (resp azfake.PagerResponder[armmaps.ClientListOperationsResponse])
-
-	// NewListSubscriptionOperationsPager is the fake for method Client.NewListSubscriptionOperationsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListSubscriptionOperationsPager func(options *armmaps.ClientListSubscriptionOperationsOptions) (resp azfake.PagerResponder[armmaps.ClientListSubscriptionOperationsResponse])
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -33,18 +28,16 @@ type Server struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
-		srv:                                srv,
-		newListOperationsPager:             newTracker[azfake.PagerResponder[armmaps.ClientListOperationsResponse]](),
-		newListSubscriptionOperationsPager: newTracker[azfake.PagerResponder[armmaps.ClientListSubscriptionOperationsResponse]](),
+		srv:                    srv,
+		newListOperationsPager: newTracker[azfake.PagerResponder[armmaps.ClientListOperationsResponse]](),
 	}
 }
 
 // ServerTransport connects instances of armmaps.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                                *Server
-	newListOperationsPager             *tracker[azfake.PagerResponder[armmaps.ClientListOperationsResponse]]
-	newListSubscriptionOperationsPager *tracker[azfake.PagerResponder[armmaps.ClientListSubscriptionOperationsResponse]]
+	srv                    *Server
+	newListOperationsPager *tracker[azfake.PagerResponder[armmaps.ClientListOperationsResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -55,23 +48,40 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "Client.NewListOperationsPager":
-		resp, err = s.dispatchNewListOperationsPager(req)
-	case "Client.NewListSubscriptionOperationsPager":
-		resp, err = s.dispatchNewListSubscriptionOperationsPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if serverTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serverTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "Client.NewListOperationsPager":
+				res.resp, res.err = s.dispatchNewListOperationsPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchNewListOperationsPager(req *http.Request) (*http.Response, error) {
@@ -101,35 +111,8 @@ func (s *ServerTransport) dispatchNewListOperationsPager(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchNewListSubscriptionOperationsPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListSubscriptionOperationsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListSubscriptionOperationsPager not implemented")}
-	}
-	newListSubscriptionOperationsPager := s.newListSubscriptionOperationsPager.get(req)
-	if newListSubscriptionOperationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Maps/operations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListSubscriptionOperationsPager(nil)
-		newListSubscriptionOperationsPager = &resp
-		s.newListSubscriptionOperationsPager.add(req, newListSubscriptionOperationsPager)
-		server.PagerResponderInjectNextLinks(newListSubscriptionOperationsPager, req, func(page *armmaps.ClientListSubscriptionOperationsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListSubscriptionOperationsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListSubscriptionOperationsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListSubscriptionOperationsPager) {
-		s.newListSubscriptionOperationsPager.remove(req)
-	}
-	return resp, nil
+// set this to conditionally intercept incoming requests to ServerTransport
+var serverTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

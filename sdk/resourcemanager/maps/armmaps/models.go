@@ -27,13 +27,13 @@ type Account struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -56,7 +56,7 @@ type AccountKeys struct {
 	SecondaryKeyLastUpdated *string
 }
 
-// AccountProperties - Additional Map account properties
+// AccountProperties - Additional Maps account properties
 type AccountProperties struct {
 	// Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no CorsRule
 	// elements are included in the request body, all CORS rules will be deleted, and
@@ -67,22 +67,33 @@ type AccountProperties struct {
 	// Keys and Shared Access Signature Token authentication from any usage.
 	DisableLocalAuth *bool
 
-	// (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform (AKA infrastructure)
-	// encryption. Azure SQL TDE is an example of this. Values are enabled
-	// and disabled.
+	// All encryption configuration for a resource.
 	Encryption *Encryption
 
-	// The array of associated resources to the Map account. Linked resource in the array cannot individually update, you must
+	// The array of associated resources to the Maps account. Linked resource in the array cannot individually update, you must
 	// update all linked resources in the array together. These resources may be used
-	// on operations on the Azure Maps REST API. Access is controlled by the Map Account Managed Identity(s) permissions to those
+	// on operations on the Azure Maps REST API. Access is controlled by the Maps Account Managed Identity(s) permissions to those
 	// resource(s).
 	LinkedResources []*LinkedResource
 
-	// READ-ONLY; The provisioning state of the Map account resource, Account updates can only be performed on terminal states.
+	// List of additional data processing regions for the Maps Account, which may result in requests being processed in another
+	// geography. Some features or results may be restricted to specific regions. By
+	// default, Maps REST APIs process requests according to the account location or the geographic scope [https://learn.microsoft.com/azure/azure-maps/geographic-scope].
+	Locations []*LocationsItem
+
+	// Property to specify whether the Maps Account will accept traffic from public internet. If set to 'disabled' all traffic
+	// except private endpoint traffic and that that originates from trusted services
+	// will be blocked.
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// READ-ONLY; List of private endpoint connections associated with the Maps Account.
+	PrivateEndpointConnections []*PrivateEndpointConnection
+
+	// READ-ONLY; The provisioning state of the Maps account resource, Account updates can only be performed on terminal states.
 	// Terminal states: Succeeded and Failed
 	ProvisioningState *string
 
-	// READ-ONLY; A unique identifier for the maps account
+	// READ-ONLY; A unique identifier for the Maps Account
 	UniqueID *string
 }
 
@@ -98,13 +109,13 @@ type AccountSasParameters struct {
 	// guards of abuse with eventual enforcement.
 	MaxRatePerSecond *int32
 
-	// REQUIRED; The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Map
+	// REQUIRED; The principal Id also known as the object Id of a User Assigned Managed Identity currently assigned to the Maps
 	// Account. To assign a Managed Identity of the account, use operation Create or Update an
 	// assign a User Assigned Identity resource Id.
 	PrincipalID *string
 
-	// REQUIRED; The Map account key to use for signing. Picking primaryKey or secondaryKey will use the Map account Shared Keys,
-	// and using managedIdentity will use the auto-renewed private key to sign the SAS.
+	// REQUIRED; The Maps account key to use for signing. Picking primaryKey or secondaryKey will use the Maps account Shared
+	// Keys, and using managedIdentity will use the auto-renewed private key to sign the SAS.
 	SigningKey *SigningKey
 
 	// REQUIRED; The date time offset of when the token validity begins. For example "2017-05-24T10:42:03.1567373Z". Maximum duration
@@ -177,13 +188,13 @@ type Creator struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; The system meta data relating to this resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -204,6 +215,12 @@ type CreatorProperties struct {
 	// REQUIRED; The storage units to be allocated. Integer values from 1 to 100, inclusive.
 	StorageUnits *int32
 
+	// The consumed storage unit size in bytes for the creator resource.
+	ConsumedStorageUnitSizeInBytes *int32
+
+	// The total allocated storage unit size in bytes for the creator resource.
+	TotalStorageUnitSizeInBytes *int32
+
 	// READ-ONLY; The state of the resource provisioning, terminal states: Succeeded, Failed, Canceled
 	ProvisioningState *string
 }
@@ -219,62 +236,43 @@ type CreatorUpdateParameters struct {
 	Tags map[string]*string
 }
 
-// CustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
-type CustomerManagedKeyEncryption struct {
-	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
-	KeyEncryptionKeyIdentity *CustomerManagedKeyEncryptionKeyIdentity
+// Encryption - All encryption configuration for a resource.
+type Encryption struct {
+	// All Customer-managed key encryption properties for the resource.
+	CustomerManagedKeyEncryption *EncryptionCustomerManagedKeyEncryption
 
-	// key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+	// (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform (AKA infrastructure)
+	// encryption. Azure SQL TDE is an example of this. Values are enabled
+	// and disabled.
+	InfrastructureEncryption *InfrastructureEncryption
+}
+
+// EncryptionCustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
+type EncryptionCustomerManagedKeyEncryption struct {
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	KeyEncryptionKeyIdentity *EncryptionCustomerManagedKeyEncryptionKeyIdentity
+
+	// key encryption key Url, versioned or unversioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
 	// or https://contosovault.vault.azure.net/keys/contosokek.
 	KeyEncryptionKeyURL *string
 }
 
-// CustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining which identity
-// should be used to auth to Key Vault.
-type CustomerManagedKeyEncryptionKeyIdentity struct {
+// EncryptionCustomerManagedKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings defining
+// which identity should be used to auth to Key Vault.
+type EncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
 	// delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups//providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId.
 	// Mutually exclusive with identityType systemAssignedIdentity and userAssignedIdentity - internal use only.
 	DelegatedIdentityClientID *string
 
-	// Values can be systemAssignedIdentity or userAssignedIdentity
-	IdentityType *IdentityType
+	// application client identity to use for accessing key encryption key Url in a different tenant. Ex: f83c6b1b-4d34-47e4-bb34-9d83df58b540
+	FederatedClientID *string
 
-	// user assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/
-	// /providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity
-	// and delegatedResourceIdentity.
+	// The type of identity to use. Values can be systemAssignedIdentity, userAssignedIdentity, or delegatedResourceIdentity.
+	IdentityType *EncryptionCustomerManagedKeyEncryptionKeyIdentityType
+
+	// User assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/
+	// /providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
 	UserAssignedIdentityResourceID *string
-}
-
-// Dimension of map account, for example API Category, Api Name, Result Type, and Response Code.
-type Dimension struct {
-	// Display name of dimension.
-	DisplayName *string
-
-	// Internal metric name of the dimension.
-	InternalMetricName *string
-
-	// Internal name of the dimension.
-	InternalName *string
-
-	// Display name of dimension.
-	Name *string
-
-	// Source Mdm Namespace of the dimension.
-	SourceMdmNamespace *string
-
-	// Flag to indicate exporting to Azure Monitor.
-	ToBeExportedToShoebox *bool
-}
-
-// Encryption - (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform
-// (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled
-// and disabled.
-type Encryption struct {
-	// All Customer-managed key encryption properties for the resource.
-	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
-
-	// Values are enabled and disabled.
-	InfrastructureEncryption *InfrastructureEncryption
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -327,6 +325,12 @@ type LinkedResource struct {
 	UniqueName *string
 }
 
+// LocationsItem - Data processing location.
+type LocationsItem struct {
+	// REQUIRED; The location name.
+	LocationName *string
+}
+
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
@@ -347,106 +351,197 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
-// MetricSpecification - Metric specification of operation.
-type MetricSpecification struct {
-	// Aggregation type could be Average.
-	AggregationType *string
-
-	// The category this metric specification belong to, could be Capacity.
-	Category *string
-
-	// Dimensions of map account.
-	Dimensions []*Dimension
-
-	// Display description of metric specification.
-	DisplayDescription *string
-
-	// Display name of metric specification.
-	DisplayName *string
-
-	// The property to decide fill gap with zero or not.
-	FillGapWithZero *bool
-
-	// Internal metric name.
-	InternalMetricName *string
-
-	// Lock aggregation type for metrics.
-	LockAggregationType *string
-
-	// Name of metric specification.
-	Name *string
-
-	// Account Resource Id.
-	ResourceIDDimensionNameOverride *string
-
-	// Source metrics account.
-	SourceMdmAccount *string
-
-	// Metrics namespace.
-	SourceMdmNamespace *string
-
-	// Allowed aggregation types for metrics.
-	SupportedAggregationTypes *string
-
-	// Unit could be Count.
-	Unit *string
-}
-
-// OperationDetail - Operation detail payload
-type OperationDetail struct {
-	// Display of the operation
+// Operation - Details of a REST API operation, returned from the Resource Provider Operations API
+type Operation struct {
+	// Localized display information for this particular operation.
 	Display *OperationDisplay
 
-	// Indicates whether the operation is a data action
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
 	IsDataAction *bool
 
-	// Name of the operation
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
 	Name *string
 
-	// Origin of the operation
-	Origin *string
-
-	// Properties of the operation
-	Properties *OperationProperties
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
-// OperationDisplay - Operation display payload
+// OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
-	// Localized friendly description for the operation
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
 
-	// Localized friendly name for the operation
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
 	Operation *string
 
-	// Resource provider of the operation
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
 	Provider *string
 
-	// Resource of the operation
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
 	Resource *string
 }
 
-// OperationProperties - Properties of operation, include metric specifications.
-type OperationProperties struct {
-	// One property of operation, include metric specifications.
-	ServiceSpecification *ServiceSpecification
-}
-
-// Operations - The set of operations available for Maps.
-type Operations struct {
-	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
+// OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
+// get the next set of results.
+type OperationListResult struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
 	NextLink *string
 
-	// READ-ONLY; An operation available for Maps.
-	Value []*OperationDetail
+	// READ-ONLY; List of operations supported by the resource provider
+	Value []*Operation
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float32
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
+}
+
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The ARM identifier for private endpoint.
+	ID *string
+}
+
+// PrivateEndpointConnection - The private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionList - A list of private endpoint connections
+type PrivateEndpointConnectionList struct {
+	// The list of the private endpoint connections
+	Value []*PrivateEndpointConnection
+
+	// READ-ONLY; Request URL that can be used to query next page of private endpoint connections. Returned when the total number
+	// of requested private endpoint connections exceed maximum page size.
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource.
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceList - A list of private link resources for a Maps Account resource type.
+type PrivateLinkResourceList struct {
+	// The list of the private link resources which can be used for Maps Account.
+	Value []*PrivateLinkResource
+
+	// READ-ONLY; Request URL that can be used to query next page of private link resources. Returned when the total number of
+	// requested private resources exceed maximum page size.
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
@@ -454,17 +549,11 @@ type Resource struct {
 
 // SKU - The SKU of the Maps Account.
 type SKU struct {
-	// REQUIRED; The name of the SKU, in standard format (such as S0).
+	// REQUIRED; The name of the SKU, in standard format (such as G2).
 	Name *Name
 
 	// READ-ONLY; Gets the sku tier. This is based on the SKU name.
 	Tier *string
-}
-
-// ServiceSpecification - One property of operation, include metric specifications.
-type ServiceSpecification struct {
-	// Metric specifications of operation.
-	MetricSpecifications []*MetricSpecification
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -497,11 +586,14 @@ type TrackedResource struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string

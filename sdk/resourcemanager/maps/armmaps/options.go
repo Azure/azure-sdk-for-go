@@ -57,12 +57,6 @@ type ClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListSubscriptionOperationsOptions contains the optional parameters for the Client.NewListSubscriptionOperationsPager
-// method.
-type ClientListSubscriptionOperationsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CreatorsClientCreateOrUpdateOptions contains the optional parameters for the CreatorsClient.CreateOrUpdate method.
 type CreatorsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -85,5 +79,52 @@ type CreatorsClientListByAccountOptions struct {
 
 // CreatorsClientUpdateOptions contains the optional parameters for the CreatorsClient.Update method.
 type CreatorsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationResultClientGetOptions contains the optional parameters for the OperationResultClient.Get method.
+type OperationResultClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
+type OperationStatusClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByAccountPager
+// method.
+type PrivateEndpointConnectionsClientListByAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByAccountPager
+// method.
+type PrivateLinkResourcesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }

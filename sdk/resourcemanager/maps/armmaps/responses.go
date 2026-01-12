@@ -61,14 +61,8 @@ type AccountsClientUpdateResponse struct {
 
 // ClientListOperationsResponse contains the response from method Client.NewListOperationsPager.
 type ClientListOperationsResponse struct {
-	// The set of operations available for Maps.
-	Operations
-}
-
-// ClientListSubscriptionOperationsResponse contains the response from method Client.NewListSubscriptionOperationsPager.
-type ClientListSubscriptionOperationsResponse struct {
-	// The set of operations available for Maps.
-	Operations
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }
 
 // CreatorsClientCreateOrUpdateResponse contains the response from method CreatorsClient.CreateOrUpdate.
@@ -98,4 +92,51 @@ type CreatorsClientListByAccountResponse struct {
 type CreatorsClientUpdateResponse struct {
 	// An Azure resource which represents Maps Creator product and provides ability to manage private location data.
 	Creator
+}
+
+// OperationResultClientGetResponse contains the response from method OperationResultClient.Get.
+type OperationResultClientGetResponse struct {
+	// Location contains the information returned from the Location header response.
+	Location *string
+}
+
+// OperationStatusClientGetResponse contains the response from method OperationStatusClient.Get.
+type OperationStatusClientGetResponse struct {
+	// The current status of an async operation.
+	OperationStatusResult
+}
+
+// PrivateEndpointConnectionsClientCreateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreate.
+type PrivateEndpointConnectionsClientCreateResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// The private endpoint connection resource.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListByAccountResponse contains the response from method PrivateEndpointConnectionsClient.NewListByAccountPager.
+type PrivateEndpointConnectionsClientListByAccountResponse struct {
+	// A list of private endpoint connections
+	PrivateEndpointConnectionList
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	// A private link resource.
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListByAccountResponse contains the response from method PrivateLinkResourcesClient.NewListByAccountPager.
+type PrivateLinkResourcesClientListByAccountResponse struct {
+	// A list of private link resources for a Maps Account resource type.
+	PrivateLinkResourceList
 }

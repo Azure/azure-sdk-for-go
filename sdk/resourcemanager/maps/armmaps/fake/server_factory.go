@@ -16,9 +16,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armmaps.ClientFactory type.
 type ServerFactory struct {
+	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
-	Server         Server
+
+	// Server contains the fakes for client Client
+	Server Server
+
+	// CreatorsServer contains the fakes for client CreatorsClient
 	CreatorsServer CreatorsServer
+
+	// OperationResultServer contains the fakes for client OperationResultClient
+	OperationResultServer OperationResultServer
+
+	// OperationStatusServer contains the fakes for client OperationStatusClient
+	OperationStatusServer OperationStatusServer
+
+	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
+	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
+
+	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
+	PrivateLinkResourcesServer PrivateLinkResourcesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -33,11 +50,15 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armmaps.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv              *ServerFactory
-	trMu             sync.Mutex
-	trAccountsServer *AccountsServerTransport
-	trServer         *ServerTransport
-	trCreatorsServer *CreatorsServerTransport
+	srv                                *ServerFactory
+	trMu                               sync.Mutex
+	trAccountsServer                   *AccountsServerTransport
+	trServer                           *ServerTransport
+	trCreatorsServer                   *CreatorsServerTransport
+	trOperationResultServer            *OperationResultServerTransport
+	trOperationStatusServer            *OperationStatusServerTransport
+	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -62,6 +83,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "CreatorsClient":
 		initServer(s, &s.trCreatorsServer, func() *CreatorsServerTransport { return NewCreatorsServerTransport(&s.srv.CreatorsServer) })
 		resp, err = s.trCreatorsServer.Do(req)
+	case "OperationResultClient":
+		initServer(s, &s.trOperationResultServer, func() *OperationResultServerTransport {
+			return NewOperationResultServerTransport(&s.srv.OperationResultServer)
+		})
+		resp, err = s.trOperationResultServer.Do(req)
+	case "OperationStatusClient":
+		initServer(s, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
+			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)
+		})
+		resp, err = s.trOperationStatusServer.Do(req)
+	case "PrivateEndpointConnectionsClient":
+		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
+	case "PrivateLinkResourcesClient":
+		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
+		})
+		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

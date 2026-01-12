@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListMapsCreatorsByAccount.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/preview/2025-10-01-preview/examples/ListMapsCreatorsByAccount.json
 func ExampleCreatorsClient_NewListByAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleCreatorsClient_NewListByAccountPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/CreateMapsCreator.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/preview/2025-10-01-preview/examples/CreateMapsCreator.json
 func ExampleCreatorsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleCreatorsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/UpdateMapsCreator.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/preview/2025-10-01-preview/examples/UpdateMapsCreator.json
 func ExampleCreatorsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleCreatorsClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/DeleteMapsCreator.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/preview/2025-10-01-preview/examples/DeleteMapsCreator.json
 func ExampleCreatorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleCreatorsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetMapsCreator.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/preview/2025-10-01-preview/examples/GetMapsCreator.json
 func ExampleCreatorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

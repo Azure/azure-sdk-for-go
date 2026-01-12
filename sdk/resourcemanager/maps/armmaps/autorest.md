@@ -5,9 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/b9403296f0b0e112b0d8222ad05fd1d79ee10e03/specification/maps/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1c015252f160a0221eb326ab192874c915a7f9ab/specification/maps/resource-manager/Microsoft.Maps/Maps/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.1.0
-tag: package-2023-06
+module-version: 2.0.0-beta.1
+tag: package-preview-2025-10
 ```

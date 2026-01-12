@@ -5,10 +5,19 @@
 
 package armmaps
 
+// ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+type ActionType string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
-	moduleVersion = "v1.1.0"
+	ActionTypeInternal ActionType = "Internal"
 )
+
+// PossibleActionTypeValues returns the possible values for the ActionType const type.
+func PossibleActionTypeValues() []ActionType {
+	return []ActionType{
+		ActionTypeInternal,
+	}
+}
 
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
@@ -30,25 +39,28 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// IdentityType - Values can be systemAssignedIdentity or userAssignedIdentity
-type IdentityType string
+// EncryptionCustomerManagedKeyEncryptionKeyIdentityType - The type of identity to use. Values can be systemAssignedIdentity,
+// userAssignedIdentity, or delegatedResourceIdentity.
+type EncryptionCustomerManagedKeyEncryptionKeyIdentityType string
 
 const (
-	IdentityTypeDelegatedResourceIdentity IdentityType = "delegatedResourceIdentity"
-	IdentityTypeSystemAssignedIdentity    IdentityType = "systemAssignedIdentity"
-	IdentityTypeUserAssignedIdentity      IdentityType = "userAssignedIdentity"
+	EncryptionCustomerManagedKeyEncryptionKeyIdentityTypeDelegatedResourceIdentity EncryptionCustomerManagedKeyEncryptionKeyIdentityType = "delegatedResourceIdentity"
+	EncryptionCustomerManagedKeyEncryptionKeyIdentityTypeSystemAssignedIdentity    EncryptionCustomerManagedKeyEncryptionKeyIdentityType = "systemAssignedIdentity"
+	EncryptionCustomerManagedKeyEncryptionKeyIdentityTypeUserAssignedIdentity      EncryptionCustomerManagedKeyEncryptionKeyIdentityType = "userAssignedIdentity"
 )
 
-// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
-func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{
-		IdentityTypeDelegatedResourceIdentity,
-		IdentityTypeSystemAssignedIdentity,
-		IdentityTypeUserAssignedIdentity,
+// PossibleEncryptionCustomerManagedKeyEncryptionKeyIdentityTypeValues returns the possible values for the EncryptionCustomerManagedKeyEncryptionKeyIdentityType const type.
+func PossibleEncryptionCustomerManagedKeyEncryptionKeyIdentityTypeValues() []EncryptionCustomerManagedKeyEncryptionKeyIdentityType {
+	return []EncryptionCustomerManagedKeyEncryptionKeyIdentityType{
+		EncryptionCustomerManagedKeyEncryptionKeyIdentityTypeDelegatedResourceIdentity,
+		EncryptionCustomerManagedKeyEncryptionKeyIdentityTypeSystemAssignedIdentity,
+		EncryptionCustomerManagedKeyEncryptionKeyIdentityTypeUserAssignedIdentity,
 	}
 }
 
-// InfrastructureEncryption - Values are enabled and disabled.
+// InfrastructureEncryption - (Optional) Discouraged to include in resource definition. Only needed where it is possible to
+// disable platform (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled
+// and disabled.
 type InfrastructureEncryption string
 
 const (
@@ -84,14 +96,12 @@ func PossibleKeyTypeValues() []KeyType {
 type Kind string
 
 const (
-	KindGen1 Kind = "Gen1"
 	KindGen2 Kind = "Gen2"
 )
 
 // PossibleKindValues returns the possible values for the Kind const type.
 func PossibleKindValues() []Kind {
 	return []Kind{
-		KindGen1,
 		KindGen2,
 	}
 }
@@ -102,7 +112,7 @@ type ManagedServiceIdentityType string
 const (
 	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
 	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
 	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
 )
 
@@ -116,25 +126,96 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// Name - The name of the SKU, in standard format (such as S0).
+// Name - The name of the SKU, in standard format (such as G2).
 type Name string
 
 const (
 	NameG2 Name = "G2"
-	NameS0 Name = "S0"
-	NameS1 Name = "S1"
 )
 
 // PossibleNameValues returns the possible values for the Name const type.
 func PossibleNameValues() []Name {
 	return []Name{
 		NameG2,
-		NameS0,
-		NameS1,
 	}
 }
 
-// SigningKey - The Map account key to use for signing. Picking primaryKey or secondaryKey will use the Map account Shared
+// Origin - The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+// value is "user,system"
+type Origin string
+
+const (
+	OriginSystem     Origin = "system"
+	OriginUser       Origin = "user"
+	OriginUserSystem Origin = "user,system"
+)
+
+// PossibleOriginValues returns the possible values for the Origin const type.
+func PossibleOriginValues() []Origin {
+	return []Origin{
+		OriginSystem,
+		OriginUser,
+		OriginUserSystem,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = "Creating"
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = "Deleting"
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = "Failed"
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = "Pending"
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
+// PublicNetworkAccess - Property to specify whether the Maps Account will accept traffic from public internet. If set to
+// 'disabled' all traffic except private endpoint traffic and that that originates from trusted services
+// will be blocked.
+type PublicNetworkAccess string
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = "disabled"
+	PublicNetworkAccessEnabled  PublicNetworkAccess = "enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+	}
+}
+
+// SigningKey - The Maps account key to use for signing. Picking primaryKey or secondaryKey will use the Maps account Shared
 // Keys, and using managedIdentity will use the auto-renewed private key to sign the SAS.
 type SigningKey string
 

@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"github.com/stretchr/testify/require"
 )
 
 func TestParseSuccess(t *testing.T) {
@@ -39,7 +40,7 @@ func TestParseSuccess(t *testing.T) {
 			name:  "RFC1123",
 			parse: func(s string) (time.Time, error) { return datetime.Parse[datetime.RFC1123](s) },
 			input: "Mon, 02 Jan 2006 15:04:05 GMT",
-			want:  time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC),
+			want:  time.Date(2006, time.January, 2, 15, 4, 5, 0, time.FixedZone("GMT", 0)),
 		},
 		{
 			name:  "Unix",
@@ -52,12 +53,8 @@ func TestParseSuccess(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			got, err := tc.parse(tc.input)
-			if err != nil {
-				t.Fatalf("Parse returned error: %v", err)
-			}
-			if !got.Equal(tc.want) {
-				t.Fatalf("unexpected result: got %v want %v", got, tc.want)
-			}
+			require.NoError(t, err, tc.name)
+			require.WithinDuration(t, tc.want, got, 0, tc.name)
 		})
 	}
 }
@@ -98,12 +95,8 @@ func TestParseFailure(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			got, err := tc.parse(tc.input)
-			if err == nil {
-				t.Fatalf("expected error but got none (result: %v)", got)
-			}
-			if !got.IsZero() {
-				t.Fatalf("expected zero time on error, got %v", got)
-			}
+			require.Error(t, err, tc.name)
+			require.Zero(t, got, tc.name)
 		})
 	}
 }

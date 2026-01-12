@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // AutoUpgradeProfilesServer is a fake server for instances of the armcontainerservicefleet.AutoUpgradeProfilesClient type.
@@ -273,6 +274,7 @@ func (a *AutoUpgradeProfilesServerTransport) dispatchNewListByFleetPager(req *ht
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -281,7 +283,33 @@ func (a *AutoUpgradeProfilesServerTransport) dispatchNewListByFleetPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		resp := a.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, nil)
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armcontainerservicefleet.AutoUpgradeProfilesClientListByFleetOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armcontainerservicefleet.AutoUpgradeProfilesClientListByFleetOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := a.srv.NewListByFleetPager(resourceGroupNameParam, fleetNameParam, options)
 		newListByFleetPager = &resp
 		a.newListByFleetPager.add(req, newListByFleetPager)
 		server.PagerResponderInjectNextLinks(newListByFleetPager, req, func(page *armcontainerservicefleet.AutoUpgradeProfilesClientListByFleetResponse, createLink func() string) {

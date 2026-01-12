@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 )
 
 // FleetsServer is a fake server for instances of the armcontainerservicefleet.FleetsClient type.
@@ -320,7 +321,34 @@ func (f *FleetsServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resp := f.srv.NewListBySubscriptionPager(nil)
+		qp := req.URL.Query()
+		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+			p, parseErr := strconv.ParseInt(v, 10, 32)
+			if parseErr != nil {
+				return 0, parseErr
+			}
+			return int32(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(skipTokenUnescaped)
+		var options *armcontainerservicefleet.FleetsClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armcontainerservicefleet.FleetsClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := f.srv.NewListBySubscriptionPager(options)
 		newListBySubscriptionPager = &resp
 		f.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
 		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcontainerservicefleet.FleetsClientListBySubscriptionResponse, createLink func() string) {

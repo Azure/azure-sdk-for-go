@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.0.1 (2026-01-08)
+### 2.0.1 (2026-01-12)
 
 #### Features Added
 * Added support for User Delegation SAS.

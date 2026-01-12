@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.4 (2026-01-09)
+## 1.4.4 (2026-01-12)
 
 ### Features Added
 * Added support for service version 2026-02-06.

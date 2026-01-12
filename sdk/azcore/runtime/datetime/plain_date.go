@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-// Constraints is a type constraint that represents the supported time types in the datetime package
-type Constraints interface {
-	PlainDate | PlainTime | RFC1123 | RFC3339 | Unix
-}
-
 const (
 	plainDate     = "2006-01-02"
 	plainDateJSON = `"` + plainDate + `"`
@@ -22,18 +17,34 @@ const (
 type PlainDate time.Time
 
 // MarshalJSON marshals the PlainDate to a JSON byte slice.
-func (t PlainDate) MarshalJSON() ([]byte, error) {
-	return []byte(time.Time(t).Format(plainDateJSON)), nil
+func (p PlainDate) MarshalJSON() ([]byte, error) {
+	return []byte(time.Time(p).Format(plainDateJSON)), nil
+}
+
+// MarshalText returns a textual representation of PlainDate.
+func (p PlainDate) MarshalText() ([]byte, error) {
+	return []byte(time.Time(p).Format(plainDate)), nil
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into a PlainDate.
-func (d *PlainDate) UnmarshalJSON(data []byte) (err error) {
+func (p *PlainDate) UnmarshalJSON(data []byte) (err error) {
 	t, err := time.Parse(plainDateJSON, string(data))
-	*d = (PlainDate)(t)
+	*p = (PlainDate)(t)
+	return err
+}
+
+// UnmarshalText decodes the textual representation of PlainDate.
+func (p *PlainDate) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		// empty XML element means no value
+		return nil
+	}
+	t, err := time.Parse(plainDate, string(data))
+	*p = PlainDate(t)
 	return err
 }
 
 // String returns the string representation of PlainDate.
-func (t PlainDate) String() string {
-	return time.Time(t).Format(plainDate)
+func (p PlainDate) String() string {
+	return time.Time(p).Format(plainDate)
 }

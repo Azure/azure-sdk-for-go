@@ -71,6 +71,34 @@ func TestPlainDate_UnmarshalJSON_PartialDate(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestPlainDate_MarshalText(t *testing.T) {
+	plainDate := datetime.PlainDate(time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC))
+	textBytes, err := plainDate.MarshalText()
+	require.NoError(t, err)
+	require.Equal(t, "2023-01-15", string(textBytes))
+}
+
+func TestPlainDate_UnmarshalText(t *testing.T) {
+	var plainDate datetime.PlainDate
+	err := plainDate.UnmarshalText([]byte("2023-01-15"))
+	require.NoError(t, err)
+	require.Equal(t, time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC), time.Time(plainDate))
+}
+
+func TestPlainDate_UnmarshalText_Nil(t *testing.T) {
+	var plainDate datetime.PlainDate
+	err := plainDate.UnmarshalText(nil)
+	require.NoError(t, err)
+	require.Zero(t, plainDate)
+}
+
+func TestPlainDate_UnmarshalText_Empty(t *testing.T) {
+	var plainDate datetime.PlainDate
+	err := plainDate.UnmarshalText([]byte(""))
+	require.NoError(t, err)
+	require.Zero(t, plainDate)
+}
+
 func TestPlainDate_String(t *testing.T) {
 	plainDate := datetime.PlainDate(time.Date(2023, time.January, 15, 0, 0, 0, 0, time.UTC))
 	require.Equal(t, "2023-01-15", plainDate.String())

@@ -21,10 +21,6 @@ type timeInfoXML struct {
 	Expiry *datetime.RFC3339
 }
 
-type timeInfoSlice struct {
-	Expiry *[]datetime.RFC3339
-}
-
 func TestRFC3339(t *testing.T) {
 	originalTime := time.Date(2023, time.June, 15, 14, 30, 45, 0, time.UTC)
 	dt := datetime.RFC3339(originalTime)
@@ -88,14 +84,6 @@ func TestRFC3339_WithSpace_XML(t *testing.T) {
 	require.NoError(t, xml.Unmarshal([]byte(`<timeInfo><Expiry>2024-01-18 14:18:54.123</Expiry></timeInfo>`), &dst))
 	require.NotNil(t, dst.Expiry)
 	require.WithinDuration(t, time.Date(2024, 1, 18, 14, 18, 54, 123000000, time.UTC), time.Time(*dst.Expiry), 0)
-}
-
-func TestEmptyAndNullTime(t *testing.T) {
-	dst := timeInfoSlice{}
-	require.NoError(t, json.Unmarshal([]byte("{}"), &dst))
-	require.Nil(t, dst.Expiry)
-	require.NoError(t, json.Unmarshal([]byte(`{"interval": null}`), &dst))
-	require.Nil(t, dst.Expiry)
 }
 
 func TestRFC3339_empty(t *testing.T) {

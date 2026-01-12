@@ -33,6 +33,31 @@ func TestUnix_Invalid(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestUnix_MarshalText(t *testing.T) {
+	originalTime := time.Date(2022, time.December, 25, 10, 0, 0, 0, time.Local)
+	tu := datetime.Unix(originalTime)
+	textBytes, err := tu.MarshalText()
+	require.NoError(t, err)
+	expected := fmt.Sprintf("%d", originalTime.Unix())
+	require.Equal(t, expected, string(textBytes))
+}
+
+func TestUnix_UnmarshalText(t *testing.T) {
+	originalTime := time.Date(2021, time.November, 5, 8, 15, 30, 0, time.Local)
+	text := fmt.Sprintf("%d", originalTime.Unix())
+	var tu datetime.Unix
+	err := tu.UnmarshalText([]byte(text))
+	require.NoError(t, err)
+	require.Equal(t, originalTime, time.Time(tu))
+}
+
+func TestUnix_UnmarshalText_Empty(t *testing.T) {
+	var tu datetime.Unix
+	err := tu.UnmarshalText([]byte(""))
+	require.NoError(t, err)
+	require.Zero(t, tu)
+}
+
 func TestUnix_Epoch(t *testing.T) {
 	tu := datetime.Unix(time.Unix(0, 0).UTC())
 	result := tu.String()

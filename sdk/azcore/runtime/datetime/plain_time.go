@@ -17,38 +17,38 @@ const (
 type PlainTime time.Time
 
 // MarshalJSON marshals the PlainTime to a JSON byte slice.
-func (t PlainTime) MarshalJSON() ([]byte, error) {
-	return []byte(time.Time(t).Format(timeOnlyJSON)), nil
+func (p PlainTime) MarshalJSON() ([]byte, error) {
+	return []byte(time.Time(p).Format(timeOnlyJSON)), nil
 }
 
-// MarshalText returns a textual representation of PlainTime
-func (t PlainTime) MarshalText() ([]byte, error) {
-	tt := time.Time(t)
-	return []byte(tt.Format(time.TimeOnly)), nil
+// MarshalText returns a textual representation of PlainTime.
+func (p PlainTime) MarshalText() ([]byte, error) {
+	return []byte(time.Time(p).Format(time.TimeOnly)), nil
 }
 
 // UnmarshalJSON unmarshals a JSON byte slice into PlainTime.
-func (t *PlainTime) UnmarshalJSON(data []byte) error {
-	return t.parse(timeOnlyJSON, string(data))
+func (p *PlainTime) UnmarshalJSON(data []byte) error {
+	return p.parse(timeOnlyJSON, string(data))
 }
 
-// UnmarshalText decodes the textual representation of PlainTime
-func (t *PlainTime) UnmarshalText(data []byte) error {
+// UnmarshalText decodes the textual representation of PlainTime.
+func (p *PlainTime) UnmarshalText(data []byte) error {
 	if len(data) == 0 {
+		// empty XML element means no value
 		return nil
 	}
-	return t.parse(time.TimeOnly, string(data))
+	return p.parse(time.TimeOnly, string(data))
 }
 
 // parse parses a time string using the specified layout
-func (t *PlainTime) parse(layout, value string) error {
-	p, err := time.Parse(layout, strings.ToUpper(value))
-	*t = PlainTime(p)
+func (p *PlainTime) parse(layout, value string) error {
+	t, err := time.Parse(layout, strings.ToUpper(value))
+	*p = PlainTime(t)
 	return err
 }
 
-// String returns the string of PlainTime
-func (t PlainTime) String() string {
-	tt := time.Time(t)
+// String returns the string of PlainTime.
+func (p PlainTime) String() string {
+	tt := time.Time(p)
 	return tt.Format(time.TimeOnly)
 }

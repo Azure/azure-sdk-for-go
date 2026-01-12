@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2
 
 go 1.24.0
 

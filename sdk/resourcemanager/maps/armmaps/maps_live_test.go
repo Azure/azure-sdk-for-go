@@ -14,22 +14,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maps/armmaps/v2"
 	"github.com/stretchr/testify/suite"
 )
 
 type MapsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	accountName       string
-	armEndpoint       string
-	creatorName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	accountName		string
+	armEndpoint		string
+	creatorName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *MapsTestSuite) SetupSuite() {
@@ -67,11 +67,11 @@ func (testsuite *MapsTestSuite) Prepare() {
 	accountsClient, err := armmaps.NewAccountsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = accountsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armmaps.Account{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"test": to.Ptr("true"),
 		},
-		Kind: to.Ptr(armmaps.KindGen2),
+		Kind:	to.Ptr(armmaps.KindGen2),
 		Properties: &armmaps.AccountProperties{
 			Cors: &armmaps.CorsRules{
 				CorsRules: []*armmaps.CorsRule{
@@ -81,7 +81,7 @@ func (testsuite *MapsTestSuite) Prepare() {
 							to.Ptr("http://www.fabrikam.com")},
 					}},
 			},
-			DisableLocalAuth: to.Ptr(false),
+			DisableLocalAuth:	to.Ptr(false),
 		},
 		SKU: &armmaps.SKU{
 			Name: to.Ptr(armmaps.NameG2),
@@ -121,13 +121,13 @@ func (testsuite *MapsTestSuite) TestAccounts() {
 	// From step Accounts_ListSas
 	fmt.Println("Call operation: Accounts_ListSas")
 	_, err = accountsClient.ListSas(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, armmaps.AccountSasParameters{
-		Expiry:           to.Ptr("2017-05-24T11:42:03.1567373Z"),
-		MaxRatePerSecond: to.Ptr[int32](500),
-		PrincipalID:      to.Ptr("e917f87b-324d-4728-98ed-e31d311a7d65"),
+		Expiry:			to.Ptr("2017-05-24T11:42:03.1567373Z"),
+		MaxRatePerSecond:	to.Ptr[int32](500),
+		PrincipalID:		to.Ptr("e917f87b-324d-4728-98ed-e31d311a7d65"),
 		Regions: []*string{
 			to.Ptr("eastus")},
-		SigningKey: to.Ptr(armmaps.SigningKeyPrimaryKey),
-		Start:      to.Ptr("2017-05-24T10:42:03.1567373Z"),
+		SigningKey:	to.Ptr(armmaps.SigningKeyPrimaryKey),
+		Start:		to.Ptr("2017-05-24T10:42:03.1567373Z"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
@@ -167,7 +167,7 @@ func (testsuite *MapsTestSuite) TestCreators() {
 	creatorsClient, err := armmaps.NewCreatorsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = creatorsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.creatorName, armmaps.Creator{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"test": to.Ptr("true"),
 		},

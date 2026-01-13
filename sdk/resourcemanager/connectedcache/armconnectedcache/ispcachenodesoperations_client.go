@@ -42,7 +42,7 @@ func NewIspCacheNodesOperationsClient(subscriptionID string, credential azcore.T
 // BeginCreateOrUpdate - This api creates an ispCacheNode with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -69,7 +69,7 @@ func (client *IspCacheNodesOperationsClient) BeginCreateOrUpdate(ctx context.Con
 // CreateOrUpdate - This api creates an ispCacheNode with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 func (client *IspCacheNodesOperationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, resource IspCacheNodeResource, options *IspCacheNodesOperationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IspCacheNodesOperationsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *IspCacheNodesOperationsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *IspCacheNodesOperationsClient) createOrUpdateCreateRequest(ctx con
 // BeginDelete - This api deletes an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -154,7 +154,7 @@ func (client *IspCacheNodesOperationsClient) BeginDelete(ctx context.Context, re
 // Delete - This api deletes an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 func (client *IspCacheNodesOperationsClient) deleteOperation(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *IspCacheNodesOperationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IspCacheNodesOperationsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *IspCacheNodesOperationsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *IspCacheNodesOperationsClient) deleteCreateRequest(ctx context.Con
 // Get - This api gets ispCacheNode resource information
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -260,7 +260,7 @@ func (client *IspCacheNodesOperationsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *IspCacheNodesOperationsClient) getHandleResponse(resp *http.Respon
 // GetBgpCidrs - This api gets ispCacheNode resource information
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -330,7 +330,7 @@ func (client *IspCacheNodesOperationsClient) getBgpCidrsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -345,10 +345,80 @@ func (client *IspCacheNodesOperationsClient) getBgpCidrsHandleResponse(resp *htt
 	return result, nil
 }
 
+// GetCacheNodeAutoUpdateHistory - This api gets ispCacheNode resource auto update histrory information
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - customerResourceName - Name of the Customer resource
+//   - cacheNodeResourceName - Name of the ConnectedCache resource
+//   - options - IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions contains the optional parameters for the IspCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory
+//     method.
+func (client *IspCacheNodesOperationsClient) GetCacheNodeAutoUpdateHistory(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions) (IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse, error) {
+	var err error
+	const operationName = "IspCacheNodesOperationsClient.GetCacheNodeAutoUpdateHistory"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCacheNodeAutoUpdateHistoryCreateRequest(ctx, resourceGroupName, customerResourceName, cacheNodeResourceName, options)
+	if err != nil {
+		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
+	}
+	resp, err := client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCacheNodeAutoUpdateHistoryCreateRequest creates the GetCacheNodeAutoUpdateHistory request.
+func (client *IspCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeAutoUpdateHistory"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if customerResourceName == "" {
+		return nil, errors.New("parameter customerResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerResourceName}", url.PathEscape(customerResourceName))
+	if cacheNodeResourceName == "" {
+		return nil, errors.New("parameter cacheNodeResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cacheNodeResourceName}", url.PathEscape(cacheNodeResourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCacheNodeAutoUpdateHistoryHandleResponse handles the GetCacheNodeAutoUpdateHistory response.
+func (client *IspCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse, error) {
+	result := IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeAutoUpdateHistory); err != nil {
+		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
+	}
+	return result, nil
+}
+
 // GetCacheNodeInstallDetails - This api gets secrets of the ispCacheNode resource install details
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -400,7 +470,7 @@ func (client *IspCacheNodesOperationsClient) getCacheNodeInstallDetailsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -415,10 +485,80 @@ func (client *IspCacheNodesOperationsClient) getCacheNodeInstallDetailsHandleRes
 	return result, nil
 }
 
+// GetCacheNodeMccIssueDetailsHistory - This api gets ispCacheNode resource issues details histrory information
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-11-30-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - customerResourceName - Name of the Customer resource
+//   - cacheNodeResourceName - Name of the ConnectedCache resource
+//   - options - IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions contains the optional parameters for the
+//     IspCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory method.
+func (client *IspCacheNodesOperationsClient) GetCacheNodeMccIssueDetailsHistory(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions) (IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse, error) {
+	var err error
+	const operationName = "IspCacheNodesOperationsClient.GetCacheNodeMccIssueDetailsHistory"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCacheNodeMccIssueDetailsHistoryCreateRequest(ctx, resourceGroupName, customerResourceName, cacheNodeResourceName, options)
+	if err != nil {
+		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
+	}
+	resp, err := client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp)
+	return resp, err
+}
+
+// getCacheNodeMccIssueDetailsHistoryCreateRequest creates the GetCacheNodeMccIssueDetailsHistory request.
+func (client *IspCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes/{cacheNodeResourceName}/getCacheNodeMccIssueDetailsHistory"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if customerResourceName == "" {
+		return nil, errors.New("parameter customerResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customerResourceName}", url.PathEscape(customerResourceName))
+	if cacheNodeResourceName == "" {
+		return nil, errors.New("parameter cacheNodeResourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cacheNodeResourceName}", url.PathEscape(cacheNodeResourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2024-11-30-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getCacheNodeMccIssueDetailsHistoryHandleResponse handles the GetCacheNodeMccIssueDetailsHistory response.
+func (client *IspCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse, error) {
+	result := IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeIssueHistory); err != nil {
+		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListByIspCustomerResourcePager - This api retrieves information about all ispCacheNode resources under the given subscription
 // and resource group
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - options - IspCacheNodesOperationsClientListByIspCustomerResourceOptions contains the optional parameters for the IspCacheNodesOperationsClient.NewListByIspCustomerResourcePager
@@ -466,7 +606,7 @@ func (client *IspCacheNodesOperationsClient) listByIspCustomerResourceCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -484,7 +624,7 @@ func (client *IspCacheNodesOperationsClient) listByIspCustomerResourceHandleResp
 // Update - This api updates an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-05-01-preview
+// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -537,7 +677,7 @@ func (client *IspCacheNodesOperationsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-05-01-preview")
+	reqQP.Set("api-version", "2024-11-30-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

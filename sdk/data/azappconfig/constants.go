@@ -7,6 +7,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
 )
 
+const azurePublicAudience = "https://appconfig.azure.com"
+const azureGovernmentAudience = "https://appconfig.azure.us"
+const azureChinaAudience = "https://appconfig.azure.cn"
+
 // SettingFields are fields to retrieve from a configuration setting.
 type SettingFields = generated.SettingFields
 

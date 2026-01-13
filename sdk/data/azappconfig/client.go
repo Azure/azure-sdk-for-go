@@ -5,8 +5,8 @@ package azappconfig
 
 import (
 	"context"
-	"fmt"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -28,17 +28,25 @@ type Client struct {
 // ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
 	azcore.ClientOptions
+
+	// Audience is the audience to use for authentication with Azure AD credentials.
+	// If not specified, the default audience https://appconfig.azure.com is used.
+	Audience string
 }
 
 // NewClient returns a pointer to a Client object affinitized to an endpoint.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	u, err := url.Parse(endpoint)
+	_, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, err
 	}
 
+	if options == nil {
+		options = &ClientOptions{}
+	}
+
 	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{
-		fmt.Sprintf("%s://%s/.default", u.Scheme, u.Host),
+		getScope(endpoint, options.Audience),
 	}, nil), options)
 }
 
@@ -575,4 +583,23 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 	}
 
 	return resp, nil
+}
+
+func getScope(endpoint string, audience string) string {
+	if audience != "" {
+		return audience + "/.default"
+	}
+
+	if strings.HasSuffix(endpoint, "azconfig.azure.us") ||
+		strings.HasSuffix(endpoint, "appconfig.azure.us") {
+		return azureGovernmentAudience + "/.default"
+	}
+
+	if strings.HasSuffix(endpoint, "azconfig.azure.cn") ||
+		strings.HasSuffix(endpoint, "appconfig.azure.cn") {
+		return azureChinaAudience + "/.default"
+	}
+
+	// Default to Azure Public Cloud
+	return azurePublicAudience + "/.default"
 }

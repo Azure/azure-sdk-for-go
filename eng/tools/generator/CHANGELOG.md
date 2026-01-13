@@ -1,5 +1,12 @@
 # Release History
 
+## 0.4.4 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed `version` command to skip CHANGELOG.md update when the file doesn't exist and `--sdkversion` is specified.
+- Updated `version` command to only update the version in the latest CHANGELOG.md entry (not regenerate changelog content) when `--sdkversion` is specified.
+
 ## 0.4.3 (2025-12-17)
 
 ### Bugs Fixed

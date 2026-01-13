@@ -1,12 +1,12 @@
 # Testing SDKs
 
 * [Write Tests](#write-tests)
-    * [Test Mode Options](#test-mode-options)
-    * [Routing Request to the Proxy](#routing-requests-to-the-proxy)
-    * [Writing Tests](#writing-tests)
-        * [Scrubbing Secrets](#scrubbing-secrets)
-    * [Live Test Resource Management](#live-test-resource-management)
-    * [Committing/Updating Recordings](#committingupdating-recordings)
+  * [Test Mode Options](#test-mode-options)
+  * [Routing Request to the Proxy](#routing-requests-to-the-proxy)
+  * [Writing Tests](#writing-tests)
+    * [Scrubbing Secrets](#scrubbing-secrets)
+  * [Live Test Resource Management](#live-test-resource-management)
+  * [Committing/Updating Recordings](#committingupdating-recordings)
 * [Write Examples](#write-examples)
 
 ## Write Tests
@@ -94,6 +94,8 @@ NOTE: the path to the recordings **must** be in or under a directory named `test
 
 ### Writing Tests
 
+#### Example: Data Plane
+
 A simple test for `aztables` is shown below:
 
 ```go
@@ -137,6 +139,149 @@ The rest of the snippet shows a test that creates a single table and requirement
 Check out the docs for more information about the methods available in the [`require`][require_package] libraries.
 
 If you set the environment variable `AZURE_RECORD_MODE` to "record" and run `go test` with this code and the proper environment variables this test would pass and you would be left with a new directory and file. Test recordings are saved to a `recording` directory in the same directory that your test code lives. Running the above test would also create a file `recording/TestCreateTable.json` with the HTTP interactions persisted on disk. Now you can set `AZURE_RECORD_MODE` to "playback" and run `go test` again, the test will have the same output but without reaching the service.
+
+#### Example: Management Plane
+
+A simple test for `armchaos` is shown below:
+##### The first step is to download prepared scripts to generated assets.json in the path and create file utils_test.go
+
+1. Run the following PowerShell commands to download necessary scripts:
+
+ ```powershell
+ Invoke-WebRequest -OutFile "generate-assets-json.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/generate-assets-json.ps1
+ Invoke-WebRequest -OutFile "common-asset-functions.ps1" https://raw.githubusercontent.com/Azure/azure-sdk-tools/main/eng/common/testproxy/onboarding/common-asset-functions.ps1
+```
+
+2. Run the script in the service path:
+`.\generate-assets-json.ps1 -InitialPush`
+This will create a config file `assets.json` and push recordings to the Azure SDK Assets repo.
+
+`assets.json`
+```json
+{
+  "AssetsRepo": "Azure/azure-sdk-assets",
+  "AssetsRepoPrefixPath": "go",
+  "TagPrefix": "go/resourcemanager/chaos/armchaos",
+  "Tag": "go/resourcemanager/chaos/armchaos_fd50b88100"
+}
+```
+
+3. Before testing, create a utils_test.go file as the entry point for live tests. Modify "package" and pathToPackage to match your service.
+
+`utils_test.go`
+```go
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package armchaos_test
+
+import (
+    "os"
+    "testing"
+    
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
+)
+
+const (
+    pathToPackage = "sdk/resourcemanager/chaos/armchaos/testdata"
+)
+
+func TestMain(m *testing.M) {
+    code := run(m)
+    os.Exit(code)
+}
+
+func run(m *testing.M) int {
+    f := testutil.StartProxy(pathToPackage)
+    defer f()
+    return m.Run()
+}
+
+```
+
+##### Then you can add the test file
+This is an example for testing an operation, developer could test their own operations here
+
+`operation_live_test.go`
+
+```go
+//go:build go1.18
+// +build go1.18
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package armchaos_test
+
+import (
+    "context"
+    "testing"
+    
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+    "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
+    "github.com/stretchr/testify/suite"
+)
+
+type OperationsTestSuite struct {
+    suite.Suite
+    
+    ctx               context.Context
+    cred              azcore.TokenCredential
+    options           *arm.ClientOptions
+    armEndpoint       string
+    location          string
+    resourceGroupName string
+    subscriptionId    string
+}
+
+func (testsuite *OperationsTestSuite) SetupSuite() {
+    testutil.StartRecording(testsuite.T(), pathToPackage)
+    
+    testsuite.ctx = context.Background()
+    testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
+    testsuite.armEndpoint = "https://management.azure.com"
+    testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
+    testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
+    testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+    resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
+    testsuite.Require().NoError(err)
+    testsuite.resourceGroupName = *resourceGroup.Name
+}
+
+func (testsuite *OperationsTestSuite) TearDownSuite() {
+    _, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
+    testsuite.Require().NoError(err)
+    testutil.StopRecording(testsuite.T())
+}
+
+func TestOperationsTestSuite(t *testing.T) {
+    suite.Run(t, new(OperationsTestSuite))
+}
+
+// Microsoft.Chaos/operations
+func (testsuite *OperationsTestSuite) TestOperation() {
+    var err error
+    // From step Operations_ListAll
+    operationsClient, err := armchaos.NewOperationStatusesClient(testsuite.subscriptionId, testsuite.cred, nil)
+    testsuite.Require().NoError(err)
+    _, err = operationsClient.Get(testsuite.ctx, testsuite.location, testsuite.subscriptionId, nil)
+    testsuite.Require().NoError(err)
+}
+
+```
+
+##### At last, you can run test via command `go test -run TestOperationsTestSuite`
+
+1. Set the test mode to "live" using:
+`$ENV:AZURE_RECORD_MODE="live"`
+2. Once tests pass, switch to "playback" mode and ensure all tests pass in both modes.
+3. Push the final assets with `test-proxy push --assets-json-path assets.json`.
 
 ### Scrubbing Secrets
 

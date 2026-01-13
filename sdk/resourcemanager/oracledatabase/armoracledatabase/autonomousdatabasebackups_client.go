@@ -26,7 +26,7 @@ type AutonomousDatabaseBackupsClient struct {
 // NewAutonomousDatabaseBackupsClient creates a new instance of AutonomousDatabaseBackupsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutonomousDatabaseBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutonomousDatabaseBackupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -42,7 +42,7 @@ func NewAutonomousDatabaseBackupsClient(subscriptionID string, credential azcore
 // BeginCreateOrUpdate - Create a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - autonomousdatabasename - The database name.
 //   - adbbackupid - AutonomousDatabaseBackup id
@@ -69,7 +69,7 @@ func (client *AutonomousDatabaseBackupsClient) BeginCreateOrUpdate(ctx context.C
 // CreateOrUpdate - Create a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *AutonomousDatabaseBackupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, resource AutonomousDatabaseBackup, options *AutonomousDatabaseBackupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutonomousDatabaseBackupsClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *AutonomousDatabaseBackupsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *AutonomousDatabaseBackupsClient) createOrUpdateCreateRequest(ctx c
 // BeginDelete - Delete a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - autonomousdatabasename - The database name.
 //   - adbbackupid - AutonomousDatabaseBackup id
@@ -154,7 +154,7 @@ func (client *AutonomousDatabaseBackupsClient) BeginDelete(ctx context.Context, 
 // Delete - Delete a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *AutonomousDatabaseBackupsClient) deleteOperation(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, options *AutonomousDatabaseBackupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutonomousDatabaseBackupsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *AutonomousDatabaseBackupsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *AutonomousDatabaseBackupsClient) deleteCreateRequest(ctx context.C
 // Get - Get a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - autonomousdatabasename - The database name.
 //   - adbbackupid - AutonomousDatabaseBackup id
@@ -260,7 +260,7 @@ func (client *AutonomousDatabaseBackupsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *AutonomousDatabaseBackupsClient) getHandleResponse(resp *http.Resp
 
 // NewListByAutonomousDatabasePager - List AutonomousDatabaseBackup resources by AutonomousDatabase
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - autonomousdatabasename - The database name.
 //   - options - AutonomousDatabaseBackupsClientListByAutonomousDatabaseOptions contains the optional parameters for the AutonomousDatabaseBackupsClient.NewListByAutonomousDatabasePager
@@ -325,7 +325,7 @@ func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseHandleRes
 // BeginUpdate - Update a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - autonomousdatabasename - The database name.
 //   - adbbackupid - AutonomousDatabaseBackup id
@@ -370,7 +370,7 @@ func (client *AutonomousDatabaseBackupsClient) BeginUpdate(ctx context.Context, 
 // Update - Update a AutonomousDatabaseBackup
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2025-09-01
 func (client *AutonomousDatabaseBackupsClient) update(ctx context.Context, resourceGroupName string, autonomousdatabasename string, adbbackupid string, properties AutonomousDatabaseBackupUpdate, options *AutonomousDatabaseBackupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AutonomousDatabaseBackupsClient.BeginUpdate"
@@ -416,7 +416,7 @@ func (client *AutonomousDatabaseBackupsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

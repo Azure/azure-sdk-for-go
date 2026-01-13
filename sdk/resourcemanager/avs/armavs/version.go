@@ -6,5 +6,5 @@ package armavs
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/avs/armavs"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.2.0"
 )

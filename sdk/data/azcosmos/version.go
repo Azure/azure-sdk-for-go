@@ -7,5 +7,5 @@ const (
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 
 	// serviceLibVersion is the semantic version (see http://semver.org) of this module.
-	serviceLibVersion = "v1.5.0-beta.1"
+	serviceLibVersion = "v1.5.0-beta.5"
 )

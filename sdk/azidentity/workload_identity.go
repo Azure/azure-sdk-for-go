@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -55,6 +52,15 @@ type WorkloadIdentityCredentialOptions struct {
 	// the application responsible for ensuring the configured authority is valid and trustworthy.
 	DisableInstanceDiscovery bool
 
+	// EnableAzureProxy determines whether the credential reads proxy configuration from environment variables. When
+	// this value is true and proxy configuration isn't present or this value is false, the credential will request
+	// tokens directly from Entra ID.
+	//
+	// The proxy feature is designed for applications that deploy to many clusters and clusters that host many
+	// applications. See the Azure Kubernetes Service identity bindings documentation for more information on when
+	// to set this option: https://learn.microsoft.com/azure/aks/identity-bindings-concepts
+	EnableAzureProxy bool
+
 	// TenantID of the service principal. Defaults to the value of the environment variable AZURE_TENANT_ID.
 	TenantID string
 
@@ -97,10 +103,10 @@ func NewWorkloadIdentityCredential(options *WorkloadIdentityCredentialOptions) (
 		DisableInstanceDiscovery:   options.DisableInstanceDiscovery,
 	}
 
-	// configure custom token proxy if environment variables are present.
-	// In custom token proxy mode, a dedicated transport will be used for proxying token requests to a dedicated proxy endpoint.
-	if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
-		return nil, err
+	if options.EnableAzureProxy {
+		if err := customtokenproxy.Configure(&caco.ClientOptions); err != nil {
+			return nil, err
+		}
 	}
 
 	cred, err := NewClientAssertionCredential(tenantID, clientID, w.getAssertion, caco)

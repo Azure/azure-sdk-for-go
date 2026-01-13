@@ -12,11 +12,12 @@ clear-output-folder: false
 export-clients: true
 openapi-type: "data-plane"
 output-folder: ../azcontainerregistry
-use: "@autorest/go@4.0.0-preview.60"
+use: "@autorest/go@4.0.0-preview.75"
 honor-body-placement: true
 remove-unreferenced-types: true
 module-name: sdk/containers/azcontainerregistry
 module: github.com/Azure/azure-sdk-for-go/$(module-name)
+module-version: "v0.2.4"
 inject-spans: true
 ```
 
@@ -252,7 +253,7 @@ directive:
 
 ```yaml
 directive:
-  - from: 
+  - from:
       - authentication_client.go
       - client.go
       - blob_client.go
@@ -372,7 +373,7 @@ directive:
     where: $
     transform: return $.replace(/ClientGetManifestResponse\{Body/, "ClientGetManifestResponse{ManifestData");
   - from:
-      - response_types.go
+      - responses.go
     where: $
     transform: return $.replace(/Body io\.ReadCloser/, "BlobData io.ReadCloser").replace(/Body io\.ReadCloser/, "ChunkData io.ReadCloser").replace(/Body io\.ReadCloser/, "ManifestData io.ReadCloser");
 ```

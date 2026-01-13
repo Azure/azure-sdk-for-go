@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v4"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 )
 
@@ -48,7 +47,7 @@ type ConnectedEnvironmentsServer struct {
 
 	// Update is the fake for method ConnectedEnvironmentsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, options *armappcontainers.ConnectedEnvironmentsClientUpdateOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, environmentEnvelope armappcontainers.ConnectedEnvironmentPatchResource, options *armappcontainers.ConnectedEnvironmentsClientUpdateOptions) (resp azfake.Responder[armappcontainers.ConnectedEnvironmentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConnectedEnvironmentsServerTransport creates a new instance of ConnectedEnvironmentsServerTransport with the provided implementation.
@@ -384,13 +383,7 @@ func (c *ConnectedEnvironmentsServerTransport) dispatchUpdate(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	var options *armappcontainers.ConnectedEnvironmentsClientUpdateOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armappcontainers.ConnectedEnvironmentsClientUpdateOptions{
-			EnvironmentEnvelope: &body,
-		}
-	}
-	respr, errRespr := c.srv.Update(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, options)
+	respr, errRespr := c.srv.Update(req.Context(), resourceGroupNameParam, connectedEnvironmentNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

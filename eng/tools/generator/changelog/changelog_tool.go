@@ -14,18 +14,16 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
-)
-
-const (
-	sdk_remote_url = "https://github.com/Azure/azure-sdk-for-go.git"
 )
 
 func GetAllVersionTags(moduleRelativePath string, sdkRepo repo.SDKRepository) ([]string, error) {
@@ -93,7 +91,7 @@ func GetAllVersionTags(moduleRelativePath string, sdkRepo repo.SDKRepository) ([
 
 func fetchTagsFromRemote(sdkRepo repo.SDKRepository, remoteName string, fetchOpts *git.FetchOptions) error {
 	// Create remote with center sdk repo if it doesn't exist
-	_, err := sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{sdk_remote_url}})
+	_, err := sdkRepo.CreateRemote(&config.RemoteConfig{Name: remoteName, URLs: []string{utils.SDKRemoteURL}})
 	if err != nil && err != git.ErrRemoteExists {
 		return fmt.Errorf("failed to create remote: %v", err)
 	}
@@ -117,37 +115,7 @@ func cleanupRemote(sdkRepo repo.SDKRepository, remoteName string) error {
 	return nil
 }
 
-func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
-	log.Printf("Judge whether contains preview API version from '%s' ...", packagePath)
-
-	files, err := os.ReadDir(packagePath)
-	if err != nil {
-		return false, err
-	}
-
-	for _, file := range files {
-		if filepath.Ext(file.Name()) == ".go" {
-			b, err := os.ReadFile(filepath.Join(packagePath, file.Name()))
-			if err != nil {
-				return false, err
-			}
-
-			lines := strings.Split(string(b), "\n")
-			for _, line := range lines {
-				if strings.Contains(line, "\"api-version\"") {
-					parts := strings.Split(line, "\"")
-					if len(parts) == 5 && strings.Contains(parts[3], "preview") {
-						return true, nil
-					}
-				}
-			}
-		}
-	}
-
-	return false, nil
-}
-
-func GetPreviousVersionTag(isCurrentPreview bool, allReleases []string) string {
+func getPreviousVersionTag(isCurrentPreview bool, allReleases []string) string {
 	if isCurrentPreview {
 		// for preview api, always compare with latest release
 		return allReleases[0]
@@ -162,40 +130,40 @@ func GetPreviousVersionTag(isCurrentPreview bool, allReleases []string) string {
 	}
 }
 
-func GetExportsFromTag(relativePackagePath, tag string) (*exports.Content, error) {
-	log.Printf("Get exports for '%s' from specific tag '%s' ...", relativePackagePath, tag)
+func getExportsFromTag(moduleRelativePath, tag string) (*exports.Content, error) {
+	log.Printf("Get exports for '%s' from specific tag '%s' ...", moduleRelativePath, tag)
 
 	// Extract tag name from ref/tags/ prefix if present
 	tagName := strings.TrimPrefix(tag, "refs/tags/")
 
-	// Download and extract only the packagePath folder
-	extractedPackagePath, err := downloadAndExtractPackagePath(tagName, relativePackagePath)
+	// Download and extract only the module folder
+	extractedPath, err := downloadAndExtractCode(tagName, moduleRelativePath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to download and extract package path: %v", err)
+		return nil, fmt.Errorf("failed to download and extract code: %v", err)
 	}
-	defer os.RemoveAll(filepath.Dir(extractedPackagePath)) // Clean up temp directory
+	defer os.RemoveAll(filepath.Dir(extractedPath)) // Clean up temp directory
 
-	// Check if the package path exists in the extracted source
-	if _, err := os.Stat(extractedPackagePath); os.IsNotExist(err) {
-		log.Printf("Package path '%s' does not exist in tag '%s'", relativePackagePath, tagName)
+	// Check if the module path exists in the extracted source
+	if _, err := os.Stat(extractedPath); os.IsNotExist(err) {
+		log.Printf("Module path '%s' does not exist in tag '%s'", moduleRelativePath, tagName)
 		return &exports.Content{}, nil
 	}
 
-	// Get exports from the extracted package path
-	result, err := exports.Get(extractedPackagePath)
-	// bypass the error if the package doesn't contain any exports, return empty content
+	// Get exports from the extracted module path
+	result, err := exports.Get(extractedPath)
+	// bypass the error if the module doesn't contain any exports, return empty content
 	if err != nil && strings.Contains(err.Error(), "doesn't contain any exports") {
 		return &exports.Content{}, nil
 	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to get exports from extracted package: %v", err)
+		return nil, fmt.Errorf("failed to get exports from extracted code: %v", err)
 	}
 
 	return &result, nil
 }
 
-// downloadAndExtractPackagePath downloads the source code for a specific tag and extracts only the packagePath folder
-func downloadAndExtractPackagePath(tagName, relativePackagePath string) (string, error) {
+// downloadAndExtractCode downloads the source code for a specific tag and extracts only the moduleRelativePath folder
+func downloadAndExtractCode(tagName, moduleRelativePath string) (string, error) {
 	// Create a temporary directory
 	tempDir, err := os.MkdirTemp("", "azure-sdk-for-go-*")
 	if err != nil {
@@ -233,28 +201,28 @@ func downloadAndExtractPackagePath(tagName, relativePackagePath string) (string,
 		return "", fmt.Errorf("failed to save zip file: %v", err)
 	}
 
-	// Extract only the packagePath folder from the zip file
-	extractedPackagePath, err := extractPackagePathFromZip(zipFilePath, tempDir, relativePackagePath)
+	// Extract only the moduleRelativePath folder from the zip file
+	extractedPath, err := extractCodeFromZip(zipFilePath, tempDir, moduleRelativePath)
 	if err != nil {
 		os.RemoveAll(tempDir)
-		return "", fmt.Errorf("failed to extract package path from zip file: %v", err)
+		return "", fmt.Errorf("failed to extract code from zip file: %v", err)
 	}
 
 	// Remove the zip file after extraction
 	os.Remove(zipFilePath)
 
-	return extractedPackagePath, nil
+	return extractedPath, nil
 }
 
-// extractPackagePathFromZip extracts only the specified packagePath from the zip file
-func extractPackagePathFromZip(src, dest, relativePackagePath string) (string, error) {
+// extractCodeFromZip extracts only the specified moduleRelativePath from the zip file
+func extractCodeFromZip(src, dest, moduleRelativePath string) (string, error) {
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return "", err
 	}
 	defer r.Close()
 
-	var extractedPackagePath string
+	var extractedPath string
 	repoPrefix := ""
 
 	// First pass: find the repository prefix (e.g., "azure-sdk-for-go-v1.2.3/")
@@ -273,29 +241,29 @@ func extractPackagePathFromZip(src, dest, relativePackagePath string) (string, e
 	}
 
 	// Target path within the zip file (normalize path separators to forward slashes for zip compatibility)
-	normalizedPackagePath := strings.ReplaceAll(relativePackagePath, "\\", "/")
-	targetPathInZip := repoPrefix + normalizedPackagePath + "/"
+	normalizedPath := strings.ReplaceAll(moduleRelativePath, "\\", "/")
+	targetPathInZip := repoPrefix + normalizedPath + "/"
 
-	// Create destination directory for the package
-	packageDestDir := filepath.Join(dest, relativePackagePath)
-	os.MkdirAll(packageDestDir, 0755)
-	extractedPackagePath = packageDestDir
+	// Create destination directory for the code
+	codeDestDir := filepath.Join(dest, moduleRelativePath)
+	os.MkdirAll(codeDestDir, 0755)
+	extractedPath = codeDestDir
 
-	// Second pass: extract only files under the packagePath
+	// Second pass: extract only files under the module path
 	for _, f := range r.File {
-		// Check if this file is within our target package path
+		// Check if this file is within our target module path
 		if !strings.HasPrefix(f.Name, targetPathInZip) {
 			continue
 		}
 
-		// Remove the repo prefix and package path prefix to get relative path within package
+		// Remove the repo prefix and module path prefix to get relative path within module
 		relativePath := strings.TrimPrefix(f.Name, targetPathInZip)
 		if relativePath == "" {
 			continue // Skip the directory itself
 		}
 
 		// Create the file path in destination
-		destPath := filepath.Join(packageDestDir, relativePath)
+		destPath := filepath.Join(codeDestDir, relativePath)
 
 		// Check for ZipSlip vulnerability
 		if !strings.HasPrefix(destPath, filepath.Clean(dest)+string(os.PathSeparator)) {
@@ -334,22 +302,22 @@ func extractPackagePathFromZip(src, dest, relativePackagePath string) (string, e
 		}
 	}
 
-	return extractedPackagePath, nil
+	return extractedPath, nil
 }
 
-// GetChangelogForPackage generates the changelog report with the given two Contents
-func GetChangelogForPackage(lhs, rhs *exports.Content) (*Changelog, error) {
+// getChangelog generates the changelog report with the given two Contents
+func getChangelog(lhs, rhs *exports.Content) (*Changelog, error) {
 	if lhs == nil && rhs == nil {
-		return nil, fmt.Errorf("this package does not exist even after the generation, this should never happen")
+		return nil, fmt.Errorf("nothing exists after the generation, this should never happen")
 	}
 	if lhs == nil {
-		// the package does not exist before the generation: this is a new package
+		// the module does not exist before the generation: this is a new module
 		return &Changelog{
 			NewPackage: true,
 		}, nil
 	}
 	if rhs == nil {
-		// the package no longer exists after the generation: this package was removed
+		// the module no longer exists after the generation: this module was removed
 		return &Changelog{
 			RemovedPackage: true,
 		}, nil
@@ -359,4 +327,244 @@ func GetChangelogForPackage(lhs, rhs *exports.Content) (*Changelog, error) {
 	return &Changelog{
 		Modified: &p,
 	}, nil
+}
+
+// DetermineModuleStatus determines whether a module is new or existing
+func DetermineModuleStatus(modulePath string, sdkRepo repo.SDKRepository) (utils.PackageStatus, error) {
+	changelogPath := filepath.Join(modulePath, utils.ChangelogFileName)
+
+	// Check if changelog exists
+	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
+		return utils.PackageStatusNew, nil
+	}
+
+	// Get all version tags for this module
+	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
+	if err != nil {
+		return utils.PackageStatusNew, err
+	}
+	tags, err := GetAllVersionTags(moduleRelativePath, sdkRepo)
+	if err != nil {
+		return utils.PackageStatusNew, err
+	}
+
+	if len(tags) == 0 {
+		return utils.PackageStatusNew, nil
+	}
+
+	return utils.PackageStatusExisting, nil
+}
+
+type ChangelogResult struct {
+	ChangelogData   *Changelog
+	OriExports      *exports.Content
+	NewExports      *exports.Content
+	PreviousVersion string
+}
+
+// GenerateChangelog generates changelog by comparing exports and filtering unnecessary changes
+func GenerateChangelog(modulePath string, sdkRepo repo.SDKRepository, isCurrentPreview bool) (ChangelogResult, error) {
+	oriExports, previousVersion, err := getPreviousVersionAndExports(modulePath, sdkRepo, isCurrentPreview)
+	if err != nil {
+		return ChangelogResult{}, err
+	}
+
+	newExports, err := exports.Get(modulePath)
+	if err != nil {
+		return ChangelogResult{}, err
+	}
+
+	changelogData, err := getChangelog(oriExports, &newExports)
+	if err != nil {
+		return ChangelogResult{}, err
+	}
+
+	log.Printf("Filter changelog...")
+	FilterChangelog(changelogData,
+		NonExportedFilter,
+		MarshalUnmarshalFilter,
+		EnumFilter,
+		FuncFilter,
+		LROFilter,
+		PageableFilter,
+		InterfaceToAnyFilter,
+		TypeToAnyFilter,
+		ParamNameToUnderscoreFilter)
+
+	return ChangelogResult{
+		ChangelogData:   changelogData,
+		OriExports:      oriExports,
+		NewExports:      &newExports,
+		PreviousVersion: previousVersion,
+	}, nil
+}
+
+// getPreviousVersionAndExports gets the previous version and exports
+func getPreviousVersionAndExports(modulePath string, sdkRepo repo.SDKRepository, isCurrentPreview bool) (*exports.Content, string, error) {
+	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
+	if err != nil {
+		return nil, "", err
+	}
+
+	tags, err := GetAllVersionTags(moduleRelativePath, sdkRepo)
+	if err != nil {
+		return nil, "", err
+	}
+
+	// New module
+	if len(tags) == 0 {
+		return nil, "", nil
+	}
+
+	previousVersionTag := getPreviousVersionTag(isCurrentPreview, tags)
+
+	oriExports, err := getExportsFromTag(moduleRelativePath, previousVersionTag)
+	if err != nil && !strings.Contains(err.Error(), "doesn't contain any exports") {
+		return nil, "", err
+	}
+
+	tagSplit := strings.Split(previousVersionTag, "/")
+	previousVersion := strings.TrimLeft(tagSplit[len(tagSplit)-1], "v")
+
+	return oriExports, previousVersion, nil
+}
+
+// AddChangelogToFileWithReplacement adds changelog to file, replacing existing version if it exists
+func AddChangelogToFileWithReplacement(changelog *Changelog, version *semver.Version, modulePath, releaseDate string) (string, error) {
+	path := filepath.Join(modulePath, utils.ChangelogFileName)
+	b, err := os.ReadFile(path)
+	if err != nil {
+		return "", err
+	}
+
+	oldChangelog := string(b)
+	additionalChangelog := changelog.ToCompactMarkdown()
+	if releaseDate == "" {
+		releaseDate = time.Now().Format("2006-01-02")
+	}
+
+	// Look for existing version entry and replace it
+	versionString := version.String()
+
+	lines := strings.Split(oldChangelog, "\n")
+	var newLines []string
+	var skipLines bool
+	var i int
+
+	// Add the new header
+	newLines = append(newLines, "# Release History", "")
+	newLines = append(newLines, fmt.Sprintf("## %s (%s)", versionString, releaseDate))
+	newLines = append(newLines, additionalChangelog)
+	newLines = append(newLines, "")
+
+	// Skip the old "# Release History" header and process the rest
+	for i = 0; i < len(lines); i++ {
+		line := strings.TrimSpace(lines[i])
+		if line == "# Release History" {
+			i++
+			if i < len(lines) && strings.TrimSpace(lines[i]) == "" {
+				i++
+			}
+			break
+		}
+	}
+
+	// Process remaining lines
+	for ; i < len(lines); i++ {
+		line := lines[i]
+
+		// Check if this is a version header
+		if strings.HasPrefix(strings.TrimSpace(line), "## ") && strings.Contains(line, versionString) {
+			skipLines = true
+			continue
+		}
+
+		// If we're skipping lines (inside the version we want to replace)
+		if skipLines {
+			// Stop skipping when we hit the next version header
+			if strings.HasPrefix(strings.TrimSpace(line), "## ") {
+				skipLines = false
+				newLines = append(newLines, line)
+			}
+			// Otherwise, continue skipping
+			continue
+		}
+
+		// Normal line, add it
+		newLines = append(newLines, line)
+	}
+
+	// If we didn't find the version, all content after "# Release History" has been added
+	finalChangelog := strings.Join(newLines, "\n")
+
+	if err = os.WriteFile(path, []byte(finalChangelog), 0644); err != nil {
+		return "", err
+	}
+
+	return additionalChangelog, nil
+}
+
+// UpdateLatestChangelogVersion updates the version of the latest (first) changelog entry
+// This is used when setting a specific version - it keeps the changelog content but updates the version number and date
+func UpdateLatestChangelogVersion(modulePath string, newVersion *semver.Version, releaseDate string) error {
+	changelogPath := filepath.Join(modulePath, utils.ChangelogFileName)
+	b, err := os.ReadFile(changelogPath)
+	if err != nil {
+		return fmt.Errorf("failed to read changelog: %v", err)
+	}
+
+	if releaseDate == "" {
+		releaseDate = time.Now().Format("2006-01-02")
+	}
+
+	lines := strings.Split(string(b), "\n")
+	var updatedLines []string
+	foundFirstVersion := false
+
+	for _, line := range lines {
+		trimmed := strings.TrimSpace(line)
+
+		// Look for the first version header (e.g., "## 1.0.0 (2025-01-01)" or "## 1.0.0 (Unreleased)")
+		if !foundFirstVersion && strings.HasPrefix(trimmed, "## ") {
+			// Replace the version line with the new version
+			updatedLines = append(updatedLines, fmt.Sprintf("## %s (%s)", newVersion.String(), releaseDate))
+			foundFirstVersion = true
+			continue
+		}
+
+		updatedLines = append(updatedLines, line)
+	}
+
+	if !foundFirstVersion {
+		return fmt.Errorf("no version entry found in changelog")
+	}
+
+	finalChangelog := strings.Join(updatedLines, "\n")
+	if err = os.WriteFile(changelogPath, []byte(finalChangelog), 0644); err != nil {
+		return fmt.Errorf("failed to write changelog: %v", err)
+	}
+
+	return nil
+}
+
+// CreateNewChangelog creates a new changelog file for a new module
+func CreateNewChangelog(modulePath string, sdkRepo repo.SDKRepository, packageVersion, releaseDate string) error {
+	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
+	if err != nil {
+		return err
+	}
+
+	if releaseDate == "" {
+		releaseDate = time.Now().Format("2006-01-02")
+	}
+
+	content := fmt.Sprintf("# Release History\n\n## %s (%s)\n### Other Changes\n\nThe package of `github.com/Azure/azure-sdk-for-go/%s` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).\n\nTo learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).", packageVersion, releaseDate, moduleRelativePath)
+
+	// Write the changelog file
+	changelogPath := filepath.Join(modulePath, utils.ChangelogFileName)
+	if err = os.WriteFile(changelogPath, []byte(content), 0644); err != nil {
+		return fmt.Errorf("failed to write changelog file: %v", err)
+	}
+
+	return nil
 }

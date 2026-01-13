@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure DNS Private Resolver module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dnsresolver/armdnsresolver/v2
 ```
 
 ## Authorization

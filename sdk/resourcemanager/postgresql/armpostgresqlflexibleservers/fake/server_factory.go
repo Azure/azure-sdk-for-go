@@ -16,17 +16,26 @@ import (
 
 // ServerFactory is a fake server for instances of the armpostgresqlflexibleservers.ClientFactory type.
 type ServerFactory struct {
-	// AdministratorsServer contains the fakes for client AdministratorsClient
-	AdministratorsServer AdministratorsServer
+	// AdministratorsMicrosoftEntraServer contains the fakes for client AdministratorsMicrosoftEntraClient
+	AdministratorsMicrosoftEntraServer AdministratorsMicrosoftEntraServer
 
-	// BackupsServer contains the fakes for client BackupsClient
-	BackupsServer BackupsServer
+	// AdvancedThreatProtectionSettingsServer contains the fakes for client AdvancedThreatProtectionSettingsClient
+	AdvancedThreatProtectionSettingsServer AdvancedThreatProtectionSettingsServer
 
-	// CheckNameAvailabilityServer contains the fakes for client CheckNameAvailabilityClient
-	CheckNameAvailabilityServer CheckNameAvailabilityServer
+	// BackupsAutomaticAndOnDemandServer contains the fakes for client BackupsAutomaticAndOnDemandClient
+	BackupsAutomaticAndOnDemandServer BackupsAutomaticAndOnDemandServer
 
-	// CheckNameAvailabilityWithLocationServer contains the fakes for client CheckNameAvailabilityWithLocationClient
-	CheckNameAvailabilityWithLocationServer CheckNameAvailabilityWithLocationServer
+	// BackupsLongTermRetentionServer contains the fakes for client BackupsLongTermRetentionClient
+	BackupsLongTermRetentionServer BackupsLongTermRetentionServer
+
+	// CapabilitiesByLocationServer contains the fakes for client CapabilitiesByLocationClient
+	CapabilitiesByLocationServer CapabilitiesByLocationServer
+
+	// CapabilitiesByServerServer contains the fakes for client CapabilitiesByServerClient
+	CapabilitiesByServerServer CapabilitiesByServerServer
+
+	// CapturedLogsServer contains the fakes for client CapturedLogsClient
+	CapturedLogsServer CapturedLogsServer
 
 	// ConfigurationsServer contains the fakes for client ConfigurationsClient
 	ConfigurationsServer ConfigurationsServer
@@ -37,32 +46,17 @@ type ServerFactory struct {
 	// FirewallRulesServer contains the fakes for client FirewallRulesClient
 	FirewallRulesServer FirewallRulesServer
 
-	// FlexibleServerServer contains the fakes for client FlexibleServerClient
-	FlexibleServerServer FlexibleServerServer
-
-	// GetPrivateDNSZoneSuffixServer contains the fakes for client GetPrivateDNSZoneSuffixClient
-	GetPrivateDNSZoneSuffixServer GetPrivateDNSZoneSuffixServer
-
-	// LocationBasedCapabilitiesServer contains the fakes for client LocationBasedCapabilitiesClient
-	LocationBasedCapabilitiesServer LocationBasedCapabilitiesServer
-
-	// LogFilesServer contains the fakes for client LogFilesClient
-	LogFilesServer LogFilesServer
-
-	// LtrBackupOperationsServer contains the fakes for client LtrBackupOperationsClient
-	LtrBackupOperationsServer LtrBackupOperationsServer
-
 	// MigrationsServer contains the fakes for client MigrationsClient
 	MigrationsServer MigrationsServer
+
+	// NameAvailabilityServer contains the fakes for client NameAvailabilityClient
+	NameAvailabilityServer NameAvailabilityServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// PostgreSQLManagementServer contains the fakes for client PostgreSQLManagementClient
-	PostgreSQLManagementServer PostgreSQLManagementServer
-
-	// PrivateEndpointConnectionServer contains the fakes for client PrivateEndpointConnectionClient
-	PrivateEndpointConnectionServer PrivateEndpointConnectionServer
+	// PrivateDNSZoneSuffixServer contains the fakes for client PrivateDNSZoneSuffixClient
+	PrivateDNSZoneSuffixServer PrivateDNSZoneSuffixServer
 
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
@@ -76,20 +70,11 @@ type ServerFactory struct {
 	// ReplicasServer contains the fakes for client ReplicasClient
 	ReplicasServer ReplicasServer
 
-	// ServerCapabilitiesServer contains the fakes for client ServerCapabilitiesClient
-	ServerCapabilitiesServer ServerCapabilitiesServer
-
 	// ServerThreatProtectionSettingsServer contains the fakes for client ServerThreatProtectionSettingsClient
 	ServerThreatProtectionSettingsServer ServerThreatProtectionSettingsServer
 
 	// ServersServer contains the fakes for client ServersClient
 	ServersServer ServersServer
-
-	// TuningConfigurationServer contains the fakes for client TuningConfigurationClient
-	TuningConfigurationServer TuningConfigurationServer
-
-	// TuningIndexServer contains the fakes for client TuningIndexClient
-	TuningIndexServer TuningIndexServer
 
 	// TuningOptionsServer contains the fakes for client TuningOptionsClient
 	TuningOptionsServer TuningOptionsServer
@@ -113,36 +98,31 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armpostgresqlflexibleservers.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                       *ServerFactory
-	trMu                                      sync.Mutex
-	trAdministratorsServer                    *AdministratorsServerTransport
-	trBackupsServer                           *BackupsServerTransport
-	trCheckNameAvailabilityServer             *CheckNameAvailabilityServerTransport
-	trCheckNameAvailabilityWithLocationServer *CheckNameAvailabilityWithLocationServerTransport
-	trConfigurationsServer                    *ConfigurationsServerTransport
-	trDatabasesServer                         *DatabasesServerTransport
-	trFirewallRulesServer                     *FirewallRulesServerTransport
-	trFlexibleServerServer                    *FlexibleServerServerTransport
-	trGetPrivateDNSZoneSuffixServer           *GetPrivateDNSZoneSuffixServerTransport
-	trLocationBasedCapabilitiesServer         *LocationBasedCapabilitiesServerTransport
-	trLogFilesServer                          *LogFilesServerTransport
-	trLtrBackupOperationsServer               *LtrBackupOperationsServerTransport
-	trMigrationsServer                        *MigrationsServerTransport
-	trOperationsServer                        *OperationsServerTransport
-	trPostgreSQLManagementServer              *PostgreSQLManagementServerTransport
-	trPrivateEndpointConnectionServer         *PrivateEndpointConnectionServerTransport
-	trPrivateEndpointConnectionsServer        *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer              *PrivateLinkResourcesServerTransport
-	trQuotaUsagesServer                       *QuotaUsagesServerTransport
-	trReplicasServer                          *ReplicasServerTransport
-	trServerCapabilitiesServer                *ServerCapabilitiesServerTransport
-	trServerThreatProtectionSettingsServer    *ServerThreatProtectionSettingsServerTransport
-	trServersServer                           *ServersServerTransport
-	trTuningConfigurationServer               *TuningConfigurationServerTransport
-	trTuningIndexServer                       *TuningIndexServerTransport
-	trTuningOptionsServer                     *TuningOptionsServerTransport
-	trVirtualEndpointsServer                  *VirtualEndpointsServerTransport
-	trVirtualNetworkSubnetUsageServer         *VirtualNetworkSubnetUsageServerTransport
+	srv                                      *ServerFactory
+	trMu                                     sync.Mutex
+	trAdministratorsMicrosoftEntraServer     *AdministratorsMicrosoftEntraServerTransport
+	trAdvancedThreatProtectionSettingsServer *AdvancedThreatProtectionSettingsServerTransport
+	trBackupsAutomaticAndOnDemandServer      *BackupsAutomaticAndOnDemandServerTransport
+	trBackupsLongTermRetentionServer         *BackupsLongTermRetentionServerTransport
+	trCapabilitiesByLocationServer           *CapabilitiesByLocationServerTransport
+	trCapabilitiesByServerServer             *CapabilitiesByServerServerTransport
+	trCapturedLogsServer                     *CapturedLogsServerTransport
+	trConfigurationsServer                   *ConfigurationsServerTransport
+	trDatabasesServer                        *DatabasesServerTransport
+	trFirewallRulesServer                    *FirewallRulesServerTransport
+	trMigrationsServer                       *MigrationsServerTransport
+	trNameAvailabilityServer                 *NameAvailabilityServerTransport
+	trOperationsServer                       *OperationsServerTransport
+	trPrivateDNSZoneSuffixServer             *PrivateDNSZoneSuffixServerTransport
+	trPrivateEndpointConnectionsServer       *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer             *PrivateLinkResourcesServerTransport
+	trQuotaUsagesServer                      *QuotaUsagesServerTransport
+	trReplicasServer                         *ReplicasServerTransport
+	trServerThreatProtectionSettingsServer   *ServerThreatProtectionSettingsServerTransport
+	trServersServer                          *ServersServerTransport
+	trTuningOptionsServer                    *TuningOptionsServerTransport
+	trVirtualEndpointsServer                 *VirtualEndpointsServerTransport
+	trVirtualNetworkSubnetUsageServer        *VirtualNetworkSubnetUsageServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -158,24 +138,39 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AdministratorsClient":
-		initServer(s, &s.trAdministratorsServer, func() *AdministratorsServerTransport {
-			return NewAdministratorsServerTransport(&s.srv.AdministratorsServer)
+	case "AdministratorsMicrosoftEntraClient":
+		initServer(s, &s.trAdministratorsMicrosoftEntraServer, func() *AdministratorsMicrosoftEntraServerTransport {
+			return NewAdministratorsMicrosoftEntraServerTransport(&s.srv.AdministratorsMicrosoftEntraServer)
 		})
-		resp, err = s.trAdministratorsServer.Do(req)
-	case "BackupsClient":
-		initServer(s, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
-		resp, err = s.trBackupsServer.Do(req)
-	case "CheckNameAvailabilityClient":
-		initServer(s, &s.trCheckNameAvailabilityServer, func() *CheckNameAvailabilityServerTransport {
-			return NewCheckNameAvailabilityServerTransport(&s.srv.CheckNameAvailabilityServer)
+		resp, err = s.trAdministratorsMicrosoftEntraServer.Do(req)
+	case "AdvancedThreatProtectionSettingsClient":
+		initServer(s, &s.trAdvancedThreatProtectionSettingsServer, func() *AdvancedThreatProtectionSettingsServerTransport {
+			return NewAdvancedThreatProtectionSettingsServerTransport(&s.srv.AdvancedThreatProtectionSettingsServer)
 		})
-		resp, err = s.trCheckNameAvailabilityServer.Do(req)
-	case "CheckNameAvailabilityWithLocationClient":
-		initServer(s, &s.trCheckNameAvailabilityWithLocationServer, func() *CheckNameAvailabilityWithLocationServerTransport {
-			return NewCheckNameAvailabilityWithLocationServerTransport(&s.srv.CheckNameAvailabilityWithLocationServer)
+		resp, err = s.trAdvancedThreatProtectionSettingsServer.Do(req)
+	case "BackupsAutomaticAndOnDemandClient":
+		initServer(s, &s.trBackupsAutomaticAndOnDemandServer, func() *BackupsAutomaticAndOnDemandServerTransport {
+			return NewBackupsAutomaticAndOnDemandServerTransport(&s.srv.BackupsAutomaticAndOnDemandServer)
 		})
-		resp, err = s.trCheckNameAvailabilityWithLocationServer.Do(req)
+		resp, err = s.trBackupsAutomaticAndOnDemandServer.Do(req)
+	case "BackupsLongTermRetentionClient":
+		initServer(s, &s.trBackupsLongTermRetentionServer, func() *BackupsLongTermRetentionServerTransport {
+			return NewBackupsLongTermRetentionServerTransport(&s.srv.BackupsLongTermRetentionServer)
+		})
+		resp, err = s.trBackupsLongTermRetentionServer.Do(req)
+	case "CapabilitiesByLocationClient":
+		initServer(s, &s.trCapabilitiesByLocationServer, func() *CapabilitiesByLocationServerTransport {
+			return NewCapabilitiesByLocationServerTransport(&s.srv.CapabilitiesByLocationServer)
+		})
+		resp, err = s.trCapabilitiesByLocationServer.Do(req)
+	case "CapabilitiesByServerClient":
+		initServer(s, &s.trCapabilitiesByServerServer, func() *CapabilitiesByServerServerTransport {
+			return NewCapabilitiesByServerServerTransport(&s.srv.CapabilitiesByServerServer)
+		})
+		resp, err = s.trCapabilitiesByServerServer.Do(req)
+	case "CapturedLogsClient":
+		initServer(s, &s.trCapturedLogsServer, func() *CapturedLogsServerTransport { return NewCapturedLogsServerTransport(&s.srv.CapturedLogsServer) })
+		resp, err = s.trCapturedLogsServer.Do(req)
 	case "ConfigurationsClient":
 		initServer(s, &s.trConfigurationsServer, func() *ConfigurationsServerTransport {
 			return NewConfigurationsServerTransport(&s.srv.ConfigurationsServer)
@@ -189,45 +184,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)
 		})
 		resp, err = s.trFirewallRulesServer.Do(req)
-	case "FlexibleServerClient":
-		initServer(s, &s.trFlexibleServerServer, func() *FlexibleServerServerTransport {
-			return NewFlexibleServerServerTransport(&s.srv.FlexibleServerServer)
-		})
-		resp, err = s.trFlexibleServerServer.Do(req)
-	case "GetPrivateDNSZoneSuffixClient":
-		initServer(s, &s.trGetPrivateDNSZoneSuffixServer, func() *GetPrivateDNSZoneSuffixServerTransport {
-			return NewGetPrivateDNSZoneSuffixServerTransport(&s.srv.GetPrivateDNSZoneSuffixServer)
-		})
-		resp, err = s.trGetPrivateDNSZoneSuffixServer.Do(req)
-	case "LocationBasedCapabilitiesClient":
-		initServer(s, &s.trLocationBasedCapabilitiesServer, func() *LocationBasedCapabilitiesServerTransport {
-			return NewLocationBasedCapabilitiesServerTransport(&s.srv.LocationBasedCapabilitiesServer)
-		})
-		resp, err = s.trLocationBasedCapabilitiesServer.Do(req)
-	case "LogFilesClient":
-		initServer(s, &s.trLogFilesServer, func() *LogFilesServerTransport { return NewLogFilesServerTransport(&s.srv.LogFilesServer) })
-		resp, err = s.trLogFilesServer.Do(req)
-	case "LtrBackupOperationsClient":
-		initServer(s, &s.trLtrBackupOperationsServer, func() *LtrBackupOperationsServerTransport {
-			return NewLtrBackupOperationsServerTransport(&s.srv.LtrBackupOperationsServer)
-		})
-		resp, err = s.trLtrBackupOperationsServer.Do(req)
 	case "MigrationsClient":
 		initServer(s, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
 		resp, err = s.trMigrationsServer.Do(req)
+	case "NameAvailabilityClient":
+		initServer(s, &s.trNameAvailabilityServer, func() *NameAvailabilityServerTransport {
+			return NewNameAvailabilityServerTransport(&s.srv.NameAvailabilityServer)
+		})
+		resp, err = s.trNameAvailabilityServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PostgreSQLManagementClient":
-		initServer(s, &s.trPostgreSQLManagementServer, func() *PostgreSQLManagementServerTransport {
-			return NewPostgreSQLManagementServerTransport(&s.srv.PostgreSQLManagementServer)
+	case "PrivateDNSZoneSuffixClient":
+		initServer(s, &s.trPrivateDNSZoneSuffixServer, func() *PrivateDNSZoneSuffixServerTransport {
+			return NewPrivateDNSZoneSuffixServerTransport(&s.srv.PrivateDNSZoneSuffixServer)
 		})
-		resp, err = s.trPostgreSQLManagementServer.Do(req)
-	case "PrivateEndpointConnectionClient":
-		initServer(s, &s.trPrivateEndpointConnectionServer, func() *PrivateEndpointConnectionServerTransport {
-			return NewPrivateEndpointConnectionServerTransport(&s.srv.PrivateEndpointConnectionServer)
-		})
-		resp, err = s.trPrivateEndpointConnectionServer.Do(req)
+		resp, err = s.trPrivateDNSZoneSuffixServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
@@ -244,11 +216,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ReplicasClient":
 		initServer(s, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
 		resp, err = s.trReplicasServer.Do(req)
-	case "ServerCapabilitiesClient":
-		initServer(s, &s.trServerCapabilitiesServer, func() *ServerCapabilitiesServerTransport {
-			return NewServerCapabilitiesServerTransport(&s.srv.ServerCapabilitiesServer)
-		})
-		resp, err = s.trServerCapabilitiesServer.Do(req)
 	case "ServerThreatProtectionSettingsClient":
 		initServer(s, &s.trServerThreatProtectionSettingsServer, func() *ServerThreatProtectionSettingsServerTransport {
 			return NewServerThreatProtectionSettingsServerTransport(&s.srv.ServerThreatProtectionSettingsServer)
@@ -257,14 +224,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServersClient":
 		initServer(s, &s.trServersServer, func() *ServersServerTransport { return NewServersServerTransport(&s.srv.ServersServer) })
 		resp, err = s.trServersServer.Do(req)
-	case "TuningConfigurationClient":
-		initServer(s, &s.trTuningConfigurationServer, func() *TuningConfigurationServerTransport {
-			return NewTuningConfigurationServerTransport(&s.srv.TuningConfigurationServer)
-		})
-		resp, err = s.trTuningConfigurationServer.Do(req)
-	case "TuningIndexClient":
-		initServer(s, &s.trTuningIndexServer, func() *TuningIndexServerTransport { return NewTuningIndexServerTransport(&s.srv.TuningIndexServer) })
-		resp, err = s.trTuningIndexServer.Do(req)
 	case "TuningOptionsClient":
 		initServer(s, &s.trTuningOptionsServer, func() *TuningOptionsServerTransport {
 			return NewTuningOptionsServerTransport(&s.srv.TuningOptionsServer)

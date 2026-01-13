@@ -113,6 +113,14 @@ func (c *ClientFactory) NewManagedNamespacesClient() *ManagedNamespacesClient {
 	}
 }
 
+// NewMeshMembershipsClient creates a new instance of MeshMembershipsClient.
+func (c *ClientFactory) NewMeshMembershipsClient() *MeshMembershipsClient {
+	return &MeshMembershipsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationStatusResultClient creates a new instance of OperationStatusResultClient.
 func (c *ClientFactory) NewOperationStatusResultClient() *OperationStatusResultClient {
 	return &OperationStatusResultClient{

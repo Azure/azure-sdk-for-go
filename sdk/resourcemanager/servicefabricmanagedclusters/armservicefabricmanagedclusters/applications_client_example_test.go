@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/ApplicationPutOperation_example_max.json
+// Generated from example definition: 2025-10-01-preview/ApplicationPutOperation_example_max.json
 func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMaximumPa
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationPutOperation_example_min.json
+// Generated from example definition: 2025-10-01-preview/ApplicationPutOperation_example_min.json
 func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleApplicationsClient_BeginCreateOrUpdate_putAnApplicationWithMinimumPa
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationDeleteOperation_example.json
+// Generated from example definition: 2025-10-01-preview/ApplicationDeleteOperation_example.json
 func ExampleApplicationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,34 @@ func ExampleApplicationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationGetOperation_example.json
+// Generated from example definition: 2025-10-01-preview/ApplicationActionFetchHealth_example.json
+func ExampleApplicationsClient_BeginFetchHealth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginFetchHealth(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.ApplicationFetchHealthRequest{
+		EventsHealthStateFilter:               to.Ptr(armservicefabricmanagedclusters.HealthFilterError),
+		DeployedApplicationsHealthStateFilter: to.Ptr(armservicefabricmanagedclusters.HealthFilterError),
+		ServicesHealthStateFilter:             to.Ptr(armservicefabricmanagedclusters.HealthFilterError),
+		ExcludeHealthStatistics:               to.Ptr(true),
+		Timeout:                               to.Ptr[int64](30),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-10-01-preview/ApplicationGetOperation_example.json
 func ExampleApplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +318,7 @@ func ExampleApplicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationListOperation_example.json
+// Generated from example definition: 2025-10-01-preview/ApplicationListOperation_example.json
 func ExampleApplicationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +359,7 @@ func ExampleApplicationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationActionGetUpgrade_example.json
+// Generated from example definition: 2025-10-01-preview/ApplicationActionGetUpgrade_example.json
 func ExampleApplicationsClient_BeginReadUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +380,34 @@ func ExampleApplicationsClient_BeginReadUpgrade() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationActionResumeUpgrade_example.json
+// Generated from example definition: 2025-10-01-preview/ApplicationActionRestartDeployedCodePackage_example.json
+func ExampleApplicationsClient_BeginRestartDeployedCodePackage() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginRestartDeployedCodePackage(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.RestartDeployedCodePackageRequest{
+		NodeName:                   to.Ptr("nt1_0"),
+		ServiceManifestName:        to.Ptr("TestPkg"),
+		ServicePackageActivationID: to.Ptr("sharedProcess"),
+		CodePackageName:            to.Ptr("Code"),
+		CodePackageInstanceID:      to.Ptr("133991326715515522"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-10-01-preview/ApplicationActionResumeUpgrade_example.json
 func ExampleApplicationsClient_BeginResumeUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +430,7 @@ func ExampleApplicationsClient_BeginResumeUpgrade() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationActionStartRollback_example.json
+// Generated from example definition: 2025-10-01-preview/ApplicationActionStartRollback_example.json
 func ExampleApplicationsClient_BeginStartRollback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,8 +451,8 @@ func ExampleApplicationsClient_BeginStartRollback() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ApplicationPatchOperation_example.json
-func ExampleApplicationsClient_Update() {
+// Generated from example definition: 2025-10-01-preview/ApplicationPatchOperation_example.json
+func ExampleApplicationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -408,13 +462,23 @@ func ExampleApplicationsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewApplicationsClient().Update(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.ApplicationUpdateParameters{
+	poller, err := clientFactory.NewApplicationsClient().BeginUpdate(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.ApplicationUpdateParameters{
 		Tags: map[string]*string{
 			"a": to.Ptr("b"),
+		},
+		Properties: &armservicefabricmanagedclusters.ApplicationUpdateParametersProperties{
+			Parameters: map[string]*string{
+				"param1": to.Ptr("value1"),
+				"param2": to.Ptr("value2"),
+			},
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -428,6 +492,7 @@ func ExampleApplicationsClient_Update() {
 	// 		Properties: &armservicefabricmanagedclusters.ApplicationResourceProperties{
 	// 			Parameters: map[string]*string{
 	// 				"param1": to.Ptr("value1"),
+	// 				"param2": to.Ptr("value2"),
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			UpgradePolicy: &armservicefabricmanagedclusters.ApplicationUpgradePolicy{
@@ -468,4 +533,54 @@ func ExampleApplicationsClient_Update() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-10-01-preview/ApplicationActionUpdateUpgrade_example.json
+func ExampleApplicationsClient_BeginUpdateUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewApplicationsClient().BeginUpdateUpgrade(ctx, "resRg", "myCluster", "myApp", armservicefabricmanagedclusters.RuntimeUpdateApplicationUpgradeParameters{
+		UpgradeKind: to.Ptr(armservicefabricmanagedclusters.RuntimeUpgradeKindRolling),
+		Name:        to.Ptr("fabric:/Voting"),
+		UpdateDescription: &armservicefabricmanagedclusters.RuntimeRollingUpgradeUpdateMonitoringPolicy{
+			RollingUpgradeMode:                      to.Ptr(armservicefabricmanagedclusters.RuntimeRollingUpgradeModeMonitored),
+			ForceRestart:                            to.Ptr(true),
+			FailureAction:                           to.Ptr(armservicefabricmanagedclusters.RuntimeFailureActionManual),
+			HealthCheckWaitDurationInMilliseconds:   to.Ptr("PT0H0M10S"),
+			HealthCheckStableDurationInMilliseconds: to.Ptr("PT1H0M0S"),
+			HealthCheckRetryTimeoutInMilliseconds:   to.Ptr("PT0H15M0S"),
+			UpgradeTimeoutInMilliseconds:            to.Ptr("PT2H0M0S"),
+			UpgradeDomainTimeoutInMilliseconds:      to.Ptr("PT2H0M0S"),
+		},
+		ApplicationHealthPolicy: &armservicefabricmanagedclusters.RuntimeApplicationHealthPolicy{
+			ConsiderWarningAsError:                  to.Ptr(true),
+			MaxPercentUnhealthyDeployedApplications: to.Ptr[int32](10),
+			DefaultServiceTypeHealthPolicy: &armservicefabricmanagedclusters.RuntimeServiceTypeHealthPolicy{
+				MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](10),
+				MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](11),
+				MaxPercentUnhealthyServices:             to.Ptr[int32](12),
+			},
+			ServiceTypeHealthPolicyMap: map[string]*armservicefabricmanagedclusters.RuntimeServiceTypeHealthPolicy{
+				"VotingWeb": {
+					MaxPercentUnhealthyPartitionsPerService: to.Ptr[int32](13),
+					MaxPercentUnhealthyReplicasPerPartition: to.Ptr[int32](14),
+					MaxPercentUnhealthyServices:             to.Ptr[int32](15),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

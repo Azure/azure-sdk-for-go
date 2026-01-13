@@ -1,10 +1,16 @@
 # Release History
 
-## 1.0.0-beta.1 (TBD)
+## 0.9.0 (2025-11-10)
+
+### Features Added
+
+- Updating to /v3 of the OpenAI SDK (github.com/openai/openai-go/v3).
 
 ### Other Changes
-- Added examples demonstrating support for Managed Identity
-- Added examples demonstrating support for deepseek-r1 reasoning.  
+
+- Added examples demonstrating support for Managed Identity.
+- Added examples demonstrating support for deepseek-r1 reasoning.
+- Migrated examples to using the openai/v1 endpoint.
 
 ## 0.8.0 (2025-06-03)
 

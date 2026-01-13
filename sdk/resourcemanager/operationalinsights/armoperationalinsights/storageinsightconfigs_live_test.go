@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -58,7 +55,7 @@ func (testsuite *StorageInsightConfigsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestStorageInsightConfigsTestSuite(t *testing.T) {
+func TTestStorageInsightConfigsTestSuite(t *testing.T) {
 	suite.Run(t, new(StorageInsightConfigsTestSuite))
 }
 

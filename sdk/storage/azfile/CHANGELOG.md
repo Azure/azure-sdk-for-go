@@ -1,14 +1,17 @@
 # Release History
 
-## 1.5.3-beta.1 (Unreleased)
+## 1.5.4 (2026-01-12)
 
 ### Features Added
+* Added support for User Delegation SAS.
+* Added support for service version 2026-02-06.
 
-### Breaking Changes
-
-### Bugs Fixed
+## 1.5.3 (2025-10-16)
 
 ### Other Changes
+* Updated service version to `2025-11-05`
+* Updated `azidentity` version to `1.13.0`
+* Updated `azcore` version to `1.19.1`
 
 ## 1.5.2 (2025-07-23)
 

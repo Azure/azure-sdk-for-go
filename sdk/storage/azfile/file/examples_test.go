@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -361,7 +358,7 @@ func Example_fileClient_DownloadStream() {
 
 	content1, err := io.ReadAll(resp.Body)
 	handleError(err)
-	fmt.Println(content1)
+	fmt.Println(string(content1))
 
 	_, err = srcFileClient.Delete(context.Background(), nil)
 	handleError(err)

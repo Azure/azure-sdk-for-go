@@ -5,10 +5,23 @@
 
 package armnetworkcloud
 
+// ActionStateStatus - The status of the action.
+type ActionStateStatus string
+
 const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
-	moduleVersion = "v1.3.0"
+	ActionStateStatusCompleted  ActionStateStatus = "Completed"
+	ActionStateStatusFailed     ActionStateStatus = "Failed"
+	ActionStateStatusInProgress ActionStateStatus = "InProgress"
 )
+
+// PossibleActionStateStatusValues returns the possible values for the ActionStateStatus const type.
+func PossibleActionStateStatusValues() []ActionStateStatus {
+	return []ActionStateStatus{
+		ActionStateStatusCompleted,
+		ActionStateStatusFailed,
+		ActionStateStatusInProgress,
+	}
+}
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
@@ -217,6 +230,7 @@ func PossibleBareMetalMachineKeySetDetailedStatusValues() []BareMetalMachineKeyS
 type BareMetalMachineKeySetPrivilegeLevel string
 
 const (
+	BareMetalMachineKeySetPrivilegeLevelOther     BareMetalMachineKeySetPrivilegeLevel = "Other"
 	BareMetalMachineKeySetPrivilegeLevelStandard  BareMetalMachineKeySetPrivilegeLevel = "Standard"
 	BareMetalMachineKeySetPrivilegeLevelSuperuser BareMetalMachineKeySetPrivilegeLevel = "Superuser"
 )
@@ -224,6 +238,7 @@ const (
 // PossibleBareMetalMachineKeySetPrivilegeLevelValues returns the possible values for the BareMetalMachineKeySetPrivilegeLevel const type.
 func PossibleBareMetalMachineKeySetPrivilegeLevelValues() []BareMetalMachineKeySetPrivilegeLevel {
 	return []BareMetalMachineKeySetPrivilegeLevel{
+		BareMetalMachineKeySetPrivilegeLevelOther,
 		BareMetalMachineKeySetPrivilegeLevelStandard,
 		BareMetalMachineKeySetPrivilegeLevelSuperuser,
 	}
@@ -318,6 +333,40 @@ func PossibleBareMetalMachineReadyStateValues() []BareMetalMachineReadyState {
 	return []BareMetalMachineReadyState{
 		BareMetalMachineReadyStateFalse,
 		BareMetalMachineReadyStateTrue,
+	}
+}
+
+// BareMetalMachineReplaceSafeguardMode - The safeguard mode to use for the replace action, where None indicates to bypass
+// safeguards and All indicates to utilize all safeguards.
+type BareMetalMachineReplaceSafeguardMode string
+
+const (
+	BareMetalMachineReplaceSafeguardModeAll  BareMetalMachineReplaceSafeguardMode = "All"
+	BareMetalMachineReplaceSafeguardModeNone BareMetalMachineReplaceSafeguardMode = "None"
+)
+
+// PossibleBareMetalMachineReplaceSafeguardModeValues returns the possible values for the BareMetalMachineReplaceSafeguardMode const type.
+func PossibleBareMetalMachineReplaceSafeguardModeValues() []BareMetalMachineReplaceSafeguardMode {
+	return []BareMetalMachineReplaceSafeguardMode{
+		BareMetalMachineReplaceSafeguardModeAll,
+		BareMetalMachineReplaceSafeguardModeNone,
+	}
+}
+
+// BareMetalMachineReplaceStoragePolicy - The indicator of whether to bypass clearing storage while replacing a bare metal
+// machine.
+type BareMetalMachineReplaceStoragePolicy string
+
+const (
+	BareMetalMachineReplaceStoragePolicyDiscardAll BareMetalMachineReplaceStoragePolicy = "DiscardAll"
+	BareMetalMachineReplaceStoragePolicyPreserve   BareMetalMachineReplaceStoragePolicy = "Preserve"
+)
+
+// PossibleBareMetalMachineReplaceStoragePolicyValues returns the possible values for the BareMetalMachineReplaceStoragePolicy const type.
+func PossibleBareMetalMachineReplaceStoragePolicyValues() []BareMetalMachineReplaceStoragePolicy {
+	return []BareMetalMachineReplaceStoragePolicy{
+		BareMetalMachineReplaceStoragePolicyDiscardAll,
+		BareMetalMachineReplaceStoragePolicyPreserve,
 	}
 }
 
@@ -496,6 +545,41 @@ func PossibleCloudServicesNetworkProvisioningStateValues() []CloudServicesNetwor
 		CloudServicesNetworkProvisioningStateFailed,
 		CloudServicesNetworkProvisioningStateProvisioning,
 		CloudServicesNetworkProvisioningStateSucceeded,
+	}
+}
+
+// CloudServicesNetworkStorageMode - The indicator to enable shared storage on the cloud services network. If not specified,
+// the allocation will align with the standard storage enablement.
+type CloudServicesNetworkStorageMode string
+
+const (
+	CloudServicesNetworkStorageModeNone     CloudServicesNetworkStorageMode = "None"
+	CloudServicesNetworkStorageModeStandard CloudServicesNetworkStorageMode = "Standard"
+)
+
+// PossibleCloudServicesNetworkStorageModeValues returns the possible values for the CloudServicesNetworkStorageMode const type.
+func PossibleCloudServicesNetworkStorageModeValues() []CloudServicesNetworkStorageMode {
+	return []CloudServicesNetworkStorageMode{
+		CloudServicesNetworkStorageModeNone,
+		CloudServicesNetworkStorageModeStandard,
+	}
+}
+
+// CloudServicesNetworkStorageStatusStatus - The status of the storage allocation for the cloud services network.
+type CloudServicesNetworkStorageStatusStatus string
+
+const (
+	CloudServicesNetworkStorageStatusStatusAvailable       CloudServicesNetworkStorageStatusStatus = "Available"
+	CloudServicesNetworkStorageStatusStatusExpandingVolume CloudServicesNetworkStorageStatusStatus = "ExpandingVolume"
+	CloudServicesNetworkStorageStatusStatusExpansionFailed CloudServicesNetworkStorageStatusStatus = "ExpansionFailed"
+)
+
+// PossibleCloudServicesNetworkStorageStatusStatusValues returns the possible values for the CloudServicesNetworkStorageStatusStatus const type.
+func PossibleCloudServicesNetworkStorageStatusStatusValues() []CloudServicesNetworkStorageStatusStatus {
+	return []CloudServicesNetworkStorageStatusStatus{
+		CloudServicesNetworkStorageStatusStatusAvailable,
+		CloudServicesNetworkStorageStatusStatusExpandingVolume,
+		CloudServicesNetworkStorageStatusStatusExpansionFailed,
 	}
 }
 
@@ -753,6 +837,28 @@ func PossibleClusterUpdateStrategyTypeValues() []ClusterUpdateStrategyType {
 	return []ClusterUpdateStrategyType{
 		ClusterUpdateStrategyTypePauseAfterRack,
 		ClusterUpdateStrategyTypeRack,
+	}
+}
+
+// CommandOutputType - The type of command output for the override.
+type CommandOutputType string
+
+const (
+	CommandOutputTypeBareMetalMachineRunCommand                CommandOutputType = "BareMetalMachineRunCommand"
+	CommandOutputTypeBareMetalMachineRunDataExtracts           CommandOutputType = "BareMetalMachineRunDataExtracts"
+	CommandOutputTypeBareMetalMachineRunDataExtractsRestricted CommandOutputType = "BareMetalMachineRunDataExtractsRestricted"
+	CommandOutputTypeBareMetalMachineRunReadCommands           CommandOutputType = "BareMetalMachineRunReadCommands"
+	CommandOutputTypeStorageRunReadCommands                    CommandOutputType = "StorageRunReadCommands"
+)
+
+// PossibleCommandOutputTypeValues returns the possible values for the CommandOutputType const type.
+func PossibleCommandOutputTypeValues() []CommandOutputType {
+	return []CommandOutputType{
+		CommandOutputTypeBareMetalMachineRunCommand,
+		CommandOutputTypeBareMetalMachineRunDataExtracts,
+		CommandOutputTypeBareMetalMachineRunDataExtractsRestricted,
+		CommandOutputTypeBareMetalMachineRunReadCommands,
+		CommandOutputTypeStorageRunReadCommands,
 	}
 }
 
@@ -1483,6 +1589,24 @@ func PossibleRackSKUTypeValues() []RackSKUType {
 	}
 }
 
+// RelayType - The indicator of which relay type the machine should be assigned to use. Platform indicates the use of a platform-dedicated
+// relay. Public indicates the use of the standard public relay for Arc
+// services.
+type RelayType string
+
+const (
+	RelayTypePlatform RelayType = "Platform"
+	RelayTypePublic   RelayType = "Public"
+)
+
+// PossibleRelayTypeValues returns the possible values for the RelayType const type.
+func PossibleRelayTypeValues() []RelayType {
+	return []RelayType{
+		RelayTypePlatform,
+		RelayTypePublic,
+	}
+}
+
 // RemoteVendorManagementFeature - The indicator of whether the storage appliance supports remote vendor management.
 type RemoteVendorManagementFeature string
 
@@ -1553,6 +1677,26 @@ func PossibleSkipShutdownValues() []SkipShutdown {
 	return []SkipShutdown{
 		SkipShutdownFalse,
 		SkipShutdownTrue,
+	}
+}
+
+// StepStateStatus - The status of the step. A value of Completed or Failed indicates a terminal state for the step.
+type StepStateStatus string
+
+const (
+	StepStateStatusCompleted  StepStateStatus = "Completed"
+	StepStateStatusFailed     StepStateStatus = "Failed"
+	StepStateStatusInProgress StepStateStatus = "InProgress"
+	StepStateStatusNotStarted StepStateStatus = "NotStarted"
+)
+
+// PossibleStepStateStatusValues returns the possible values for the StepStateStatus const type.
+func PossibleStepStateStatusValues() []StepStateStatus {
+	return []StepStateStatus{
+		StepStateStatusCompleted,
+		StepStateStatusFailed,
+		StepStateStatusInProgress,
+		StepStateStatusNotStarted,
 	}
 }
 

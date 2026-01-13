@@ -7,12 +7,11 @@ package azsystemevents
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"regexp"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // Azure reports time in UTC but it doesn't include the 'Z' time zone suffix in some cases.

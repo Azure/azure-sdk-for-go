@@ -1,5 +1,31 @@
 # Release History
 
+## 5.1.0 (2025-11-26)
+### Features Added
+
+- New enum type `InstallScriptType` with values `InstallScriptTypePlatformStorage`, `InstallScriptTypeRemoteAzureBlob`
+- New enum type `RegistryAdapterType` with values `RegistryAdapterTypeBinary`, `RegistryAdapterTypeDWord`, `RegistryAdapterTypeExpandString`, `RegistryAdapterTypeMultiString`, `RegistryAdapterTypeQWord`, `RegistryAdapterTypeString`
+- New enum type `StorageMountType` with values `StorageMountTypeAzureFiles`, `StorageMountTypeFileShare`, `StorageMountTypeLocalStorage`
+- New function `*PlansClient.GetServerFarmInstanceDetails(context.Context, string, string, *PlansClientGetServerFarmInstanceDetailsOptions) (PlansClientGetServerFarmInstanceDetailsResponse, error)`
+- New function `*PlansClient.GetServerFarmRdpPassword(context.Context, string, string, *PlansClientGetServerFarmRdpPasswordOptions) (PlansClientGetServerFarmRdpPasswordResponse, error)`
+- New function `*PlansClient.RecycleManagedInstanceWorker(context.Context, string, string, string, *PlansClientRecycleManagedInstanceWorkerOptions) (PlansClientRecycleManagedInstanceWorkerResponse, error)`
+- New struct `DefaultIdentity`
+- New struct `InstallScript`
+- New struct `InstallScriptSource`
+- New struct `KeyVaultReferenceWithStatus`
+- New struct `RegistryAdapter`
+- New struct `ServerFarmInstance`
+- New struct `ServerFarmInstanceDetails`
+- New struct `ServerFarmNetworkSettings`
+- New struct `ServerFarmRdpDetails`
+- New struct `StorageMount`
+- New field `Identity` in struct `Plan`
+- New field `Identity` in struct `PlanPatchResource`
+- New field `InstallScripts`, `IsCustomMode`, `Network`, `PlanDefaultIdentity`, `RdpEnabled`, `RegistryAdapters`, `StorageMounts` in struct `PlanProperties`
+- New field `PublicNetworkAccess` in struct `SitePatchResourceProperties`
+- New field `CustomModeWorkersEnabled` in struct `WebSiteManagementClientListGeoRegionsOptions`
+
+
 ## 5.0.0 (2025-06-12)
 ### Breaking Changes
 

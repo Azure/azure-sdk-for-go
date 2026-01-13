@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -95,5 +92,6 @@ const (
 
 var (
 	// MissingSharedKeyCredential - Error is returned when SAS URL is being created without SharedKeyCredential.
+	//nolint:staticcheck // ST1012: Renaming these errors would be a breaking change, so suppressing linter warning.
 	MissingSharedKeyCredential = errors.New("SAS can only be signed with a SharedKeyCredential")
 )

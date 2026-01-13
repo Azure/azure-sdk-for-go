@@ -1017,6 +1017,10 @@ func (v *VolumesServerTransport) dispatchNewListReplicationsPager(req *http.Requ
 		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.ListReplicationsRequest](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -1033,7 +1037,13 @@ func (v *VolumesServerTransport) dispatchNewListReplicationsPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		resp := v.srv.NewListReplicationsPager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		var options *armnetapp.VolumesClientListReplicationsOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armnetapp.VolumesClientListReplicationsOptions{
+				Body: &body,
+			}
+		}
+		resp := v.srv.NewListReplicationsPager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, options)
 		newListReplicationsPager = &resp
 		v.newListReplicationsPager.add(req, newListReplicationsPager)
 		server.PagerResponderInjectNextLinks(newListReplicationsPager, req, func(page *armnetapp.VolumesClientListReplicationsResponse, createLink func() string) {

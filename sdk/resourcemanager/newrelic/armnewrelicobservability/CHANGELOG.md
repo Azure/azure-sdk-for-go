@@ -1,5 +1,32 @@
 # Release History
 
+## 2.0.0-beta.1 (2025-11-24)
+### Breaking Changes
+
+- Type of `PlanData.BillingCycle` has been changed from `*BillingCycle` to `*string`
+- Enum `BillingCycle` has been removed
+- Operation `*MonitorsClient.Update` has been changed to LRO, use `*MonitorsClient.BeginUpdate` instead.
+
+### Features Added
+
+- New function `*ClientFactory.NewSaaSClient() *SaaSClient`
+- New function `*MonitorsClient.LatestLinkedSaaS(context.Context, string, string, *MonitorsClientLatestLinkedSaaSOptions) (MonitorsClientLatestLinkedSaaSResponse, error)`
+- New function `*MonitorsClient.BeginLinkSaaS(context.Context, string, string, SaaSData, *MonitorsClientBeginLinkSaaSOptions) (*runtime.Poller[MonitorsClientLinkSaaSResponse], error)`
+- New function `*MonitorsClient.RefreshIngestionKey(context.Context, string, string, *MonitorsClientRefreshIngestionKeyOptions) (MonitorsClientRefreshIngestionKeyResponse, error)`
+- New function `*MonitorsClient.BeginResubscribe(context.Context, string, string, *MonitorsClientBeginResubscribeOptions) (*runtime.Poller[MonitorsClientResubscribeResponse], error)`
+- New function `NewSaaSClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SaaSClient, error)`
+- New function `*SaaSClient.ActivateResource(context.Context, ActivateSaaSParameterRequest, *SaaSClientActivateResourceOptions) (SaaSClientActivateResourceResponse, error)`
+- New struct `ActivateSaaSParameterRequest`
+- New struct `LatestLinkedSaaSResponse`
+- New struct `ResubscribeProperties`
+- New struct `SaaSData`
+- New struct `SaaSResourceDetailsResponse`
+- New field `OfferID`, `PublisherID` in struct `MarketplaceSaaSInfo`
+- New field `SaaSData` in struct `MonitorProperties`
+- New field `SystemData` in struct `MonitoredSubscriptionProperties`
+- New field `SaaSData` in struct `NewRelicMonitorResourceUpdateProperties`
+
+
 ## 1.2.0 (2024-03-22)
 ### Features Added
 

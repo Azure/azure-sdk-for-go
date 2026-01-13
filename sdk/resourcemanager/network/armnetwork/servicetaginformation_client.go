@@ -29,7 +29,7 @@ type ServiceTagInformationClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewServiceTagInformationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceTagInformationClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewServiceTagInformationClient(subscriptionID string, credential azcore.Tok
 
 // NewListPager - Gets a list of service tag information resources with pagination.
 //
-// Generated from API version 2024-10-01
+// Generated from API version 2025-03-01
 //   - location - The location that will be used as a reference for cloud (not as a filter based on location, you will get the
 //     list of service tags with prefix details across all regions but limited to the cloud that
 //     your subscription belongs to).
@@ -89,7 +89,7 @@ func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-01")
+	reqQP.Set("api-version", "2025-03-01")
 	if options != nil && options.NoAddressPrefixes != nil {
 		reqQP.Set("noAddressPrefixes", strconv.FormatBool(*options.NoAddressPrefixes))
 	}

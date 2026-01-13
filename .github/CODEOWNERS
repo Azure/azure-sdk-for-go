@@ -651,16 +651,18 @@
 ###########
 # Eng Sys
 ###########
-/eng/                         @benbp @weshaggard
-/eng/common/                  @Azure/azure-sdk-eng
-/eng/config.json              @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
-/.config/1espt/               @benbp @weshaggard
-/.github/workflows/           @Azure/azure-sdk-eng
-/.github/CODEOWNERS           @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/eng/                              @benbp @weshaggard
+/eng/common/                       @Azure/azure-sdk-eng
+/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox
+/.config/1espt/                    @benbp @weshaggard
+/.github/workflows/                @Azure/azure-sdk-eng
+/.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool
-/eng/tools/generator          @lirenhe @tadelesh @JiaqiZhang-Dev
-/eng/tools/internal           @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/generator            @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/tools/internal             @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
 /eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @chlowell @gracewilcox

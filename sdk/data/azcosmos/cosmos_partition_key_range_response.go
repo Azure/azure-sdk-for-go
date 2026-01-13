@@ -31,7 +31,7 @@ func newPartitionKeyRangeResponse(resp *http.Response) (partitionKeyRangeRespons
 		Response: newResponse(resp),
 	}
 
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	body, err := azruntime.Payload(resp)
 	if err != nil {

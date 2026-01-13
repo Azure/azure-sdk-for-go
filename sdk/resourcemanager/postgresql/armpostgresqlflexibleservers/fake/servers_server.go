@@ -22,9 +22,9 @@ import (
 
 // ServersServer is a fake server for instances of the armpostgresqlflexibleservers.ServersClient type.
 type ServersServer struct {
-	// BeginCreate is the fake for method ServersClient.BeginCreate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreate func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.Server, options *armpostgresqlflexibleservers.ServersClientBeginCreateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateResponse], errResp azfake.ErrorResponder)
+	// BeginCreateOrUpdate is the fake for method ServersClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.Server, options *armpostgresqlflexibleservers.ServersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ServersClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -34,13 +34,13 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.ServersClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.ServersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ServersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armpostgresqlflexibleservers.ServersClientListOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ServersClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armpostgresqlflexibleservers.ServersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method ServersClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armpostgresqlflexibleservers.ServersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse])
 
 	// BeginRestart is the fake for method ServersClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -56,7 +56,7 @@ type ServersServer struct {
 
 	// BeginUpdate is the fake for method ServersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.ServerForUpdate, options *armpostgresqlflexibleservers.ServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, parameters armpostgresqlflexibleservers.ServerForPatch, options *armpostgresqlflexibleservers.ServersClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServersServerTransport creates a new instance of ServersServerTransport with the provided implementation.
@@ -65,10 +65,10 @@ type ServersServer struct {
 func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 	return &ServersServerTransport{
 		srv:                         srv,
-		beginCreate:                 newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateResponse]](),
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientRestartResponse]](),
 		beginStart:                  newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse]](),
 		beginStop:                   newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse]](),
@@ -80,10 +80,10 @@ func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 // Don't use this type directly, use NewServersServerTransport instead.
 type ServersServerTransport struct {
 	srv                         *ServersServer
-	beginCreate                 *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateResponse]]
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientRestartResponse]]
 	beginStart                  *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse]]
 	beginStop                   *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse]]
@@ -113,16 +113,16 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 		}
 		if !intercepted {
 			switch method {
-			case "ServersClient.BeginCreate":
-				res.resp, res.err = s.dispatchBeginCreate(req)
+			case "ServersClient.BeginCreateOrUpdate":
+				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ServersClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
 			case "ServersClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
-			case "ServersClient.NewListPager":
-				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServersClient.NewListByResourceGroupPager":
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
+			case "ServersClient.NewListBySubscriptionPager":
+				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
 			case "ServersClient.BeginRestart":
 				res.resp, res.err = s.dispatchBeginRestart(req)
 			case "ServersClient.BeginStart":
@@ -150,16 +150,16 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 	}
 }
 
-func (s *ServersServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginCreate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
+func (s *ServersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
-	beginCreate := s.beginCreate.get(req)
-	if beginCreate == nil {
+	beginCreateOrUpdate := s.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.Server](req)
@@ -174,25 +174,25 @@ func (s *ServersServerTransport) dispatchBeginCreate(req *http.Request) (*http.R
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreate(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginCreate = &respr
-		s.beginCreate.add(req, beginCreate)
+		beginCreateOrUpdate = &respr
+		s.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
-	resp, err := server.PollerResponderNext(beginCreate, req)
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
-		s.beginCreate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginCreate) {
-		s.beginCreate.remove(req)
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		s.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
@@ -207,7 +207,7 @@ func (s *ServersServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -249,7 +249,7 @@ func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -275,39 +275,6 @@ func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
-func (s *ServersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := s.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := s.srv.NewListPager(nil)
-		newListPager = &resp
-		s.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpostgresqlflexibleservers.ServersClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		s.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if s.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -317,7 +284,7 @@ func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -345,6 +312,39 @@ func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	return resp, nil
 }
 
+func (s *ServersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := s.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := s.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		s.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		s.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (s *ServersServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginRestart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
@@ -354,7 +354,7 @@ func (s *ServersServerTransport) dispatchBeginRestart(req *http.Request) (*http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.RestartParameter](req)
@@ -408,7 +408,7 @@ func (s *ServersServerTransport) dispatchBeginStart(req *http.Request) (*http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -452,7 +452,7 @@ func (s *ServersServerTransport) dispatchBeginStop(req *http.Request) (*http.Res
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -496,10 +496,10 @@ func (s *ServersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.ServerForUpdate](req)
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.ServerForPatch](req)
 		if err != nil {
 			return nil, err
 		}

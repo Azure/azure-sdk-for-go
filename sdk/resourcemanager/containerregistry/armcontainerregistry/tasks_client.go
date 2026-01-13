@@ -27,7 +27,7 @@ type TasksClient struct {
 // NewTasksClient creates a new instance of TasksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TasksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,8 +44,8 @@ func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, op
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
 //   - taskCreateParameters - The parameters for creating a task.
 //   - options - TasksClientCreateOptions contains the optional parameters for the TasksClient.Create method.
@@ -117,8 +117,8 @@ func (client *TasksClient) createHandleResponse(resp *http.Response) (TasksClien
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
 //   - options - TasksClientDeleteOptions contains the optional parameters for the TasksClient.Delete method.
 func (client *TasksClient) Delete(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksClientDeleteOptions) (TasksClientDeleteResponse, error) {
@@ -176,8 +176,8 @@ func (client *TasksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
 //   - options - TasksClientGetOptions contains the optional parameters for the TasksClient.Get method.
 func (client *TasksClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksClientGetOptions) (TasksClientGetResponse, error) {
@@ -245,8 +245,8 @@ func (client *TasksClient) getHandleResponse(resp *http.Response) (TasksClientGe
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
 //   - options - TasksClientGetDetailsOptions contains the optional parameters for the TasksClient.GetDetails method.
 func (client *TasksClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksClientGetDetailsOptions) (TasksClientGetDetailsResponse, error) {
@@ -313,8 +313,8 @@ func (client *TasksClient) getDetailsHandleResponse(resp *http.Response) (TasksC
 // NewListPager - Lists all the tasks for a specified container registry.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - options - TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
 func (client *TasksClient) NewListPager(resourceGroupName string, registryName string, options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TasksClientListResponse]{
@@ -378,8 +378,8 @@ func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksClientL
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-01-preview
-//   - resourceGroupName - The name of the resource group to which the container registry belongs.
-//   - registryName - The name of the container registry.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the Registry
 //   - taskName - The name of the container registry task.
 //   - taskUpdateParameters - The parameters for updating a task.
 //   - options - TasksClientUpdateOptions contains the optional parameters for the TasksClient.Update method.

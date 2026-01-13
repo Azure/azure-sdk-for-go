@@ -208,7 +208,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// 			},
 	// 			PrivateEndpointConnections: []*armkeyvault.PrivateEndpointConnectionItem{
 	// 				{
-	// 					Etag: &azcore.ETag(""),
+	// 					Etag: to.Ptr(azcore.ETag("")),
 	// 					ID: to.Ptr(""),
 	// 					Properties: &armkeyvault.PrivateEndpointConnectionProperties{
 	// 						PrivateEndpoint: &armkeyvault.PrivateEndpoint{

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/QuotaLimitsAccount_Get.json
+// Generated from example definition: 2025-09-01-preview/NetAppResourceQuotaLimitsAccount_Get.json
 func ExampleResourceQuotaLimitsAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,20 +30,20 @@ func ExampleResourceQuotaLimitsAccountClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceQuotaLimitsAccountClientGetResponse{
-	// 	QuotaItem: &armnetapp.QuotaItem{
+	// 	SubscriptionQuotaItem: &armnetapp.SubscriptionQuotaItem{
+	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
 	// 		Name: to.Ptr("myAccount/poolsPerAccount"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),
-	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
-	// 		Properties: &armnetapp.QuotaItemProperties{
-	// 			Default: to.Ptr[int32](10),
+	// 		Properties: &armnetapp.SubscriptionQuotaItemProperties{
 	// 			Current: to.Ptr[int32](10),
+	// 			Default: to.Ptr[int32](10),
 	// 			Usage: to.Ptr[int32](10),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/QuotaLimitsAccount_List.json
+// Generated from example definition: 2025-09-01-preview/NetAppResourceQuotaLimitsAccount_List.json
 func ExampleResourceQuotaLimitsAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,15 +66,15 @@ func ExampleResourceQuotaLimitsAccountClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armnetapp.ResourceQuotaLimitsAccountClientListResponse{
-		// 	QuotaItemList: armnetapp.QuotaItemList{
-		// 		Value: []*armnetapp.QuotaItem{
+		// 	SubscriptionQuotaItemList: armnetapp.SubscriptionQuotaItemList{
+		// 		Value: []*armnetapp.SubscriptionQuotaItem{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
 		// 				Name: to.Ptr("myAccount/poolsPerAccount"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),
-		// 				ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
-		// 				Properties: &armnetapp.QuotaItemProperties{
-		// 					Default: to.Ptr[int32](10),
+		// 				Properties: &armnetapp.SubscriptionQuotaItemProperties{
 		// 					Current: to.Ptr[int32](10),
+		// 					Default: to.Ptr[int32](10),
 		// 					Usage: to.Ptr[int32](10),
 		// 				},
 		// 			},

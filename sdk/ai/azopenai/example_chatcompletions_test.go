@@ -10,7 +10,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
+	"github.com/openai/openai-go/v3/option"
 )
 
 // Example_getChatCompletions demonstrates how to use Azure OpenAI's Chat Completions API.
@@ -22,7 +25,7 @@ import (
 //
 // The example uses environment variables for configuration:
 // - AOAI_CHAT_COMPLETIONS_MODEL: The deployment name of your chat model
-// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 //
 // Chat completions are useful for:
 // - Building conversational AI interfaces
@@ -30,19 +33,20 @@ import (
 // - Maintaining context across multiple interactions
 // - Generating human-like text responses
 func Example_getChatCompletions() {
-	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL", "AOAI_CHAT_COMPLETIONS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 	endpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// This is a conversation in progress.
 	// NOTE: all messages, regardless of role, count against token usage for this API.
@@ -117,27 +121,27 @@ func Example_getChatCompletions() {
 //
 // The example uses environment variables for configuration:
 // - AOAI_CHAT_COMPLETIONS_MODEL: The deployment name of your chat model
-// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 //
-// Function calling is useful for:
+// Tool calling is useful for:
 // - Integrating external APIs and services
 // - Structured data extraction from natural language
 // - Task automation and workflow integration
 // - Building context-aware applications
-func Example_chatCompletionsFunctions() {
-	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL", "AOAI_CHAT_COMPLETIONS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
+func Example_getChatCompletions_usingTools() {
 	model := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 	endpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Define the function schema
 	functionSchema := map[string]interface{}{
@@ -166,14 +170,15 @@ func Example_chatCompletionsFunctions() {
 				},
 			},
 		},
-		Tools: []openai.ChatCompletionToolParam{
+		Tools: []openai.ChatCompletionToolUnionParam{
 			{
-				Function: openai.FunctionDefinitionParam{
-					Name:        "get_current_weather",
-					Description: openai.String("Get the current weather in a given location"),
-					Parameters:  functionSchema,
+				OfFunction: &openai.ChatCompletionFunctionToolParam{
+					Function: openai.FunctionDefinitionParam{
+						Name:        "get_current_weather",
+						Description: openai.String("Get the current weather in a given location"),
+						Parameters:  functionSchema,
+					},
 				},
-				Type: "function",
 			},
 		},
 		Temperature: openai.Float(0.0),
@@ -217,25 +222,27 @@ func Example_chatCompletionsFunctions() {
 // The example uses environment variables for configuration:
 // - AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_MODEL: The deployment name of your chat model
 // - AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Legacy function support ensures:
 // - Compatibility with older implementations
 // - Smooth transition to new tools API
 // - Support for existing function-based workflows
 func Example_chatCompletionsLegacyFunctions() {
-	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_MODEL", "AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_MODEL")
 	endpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL_LEGACY_FUNCTIONS_ENDPOINT")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Define the function schema
 	parametersJSON := map[string]interface{}{
@@ -265,13 +272,14 @@ func Example_chatCompletionsLegacyFunctions() {
 			},
 		},
 		// Note: Legacy functions are supported through the Tools API in the OpenAI Go SDK
-		Tools: []openai.ChatCompletionToolParam{
+		Tools: []openai.ChatCompletionToolUnionParam{
 			{
-				Type: "function",
-				Function: openai.FunctionDefinitionParam{
-					Name:        "get_current_weather",
-					Description: openai.String("Get the current weather in a given location"),
-					Parameters:  parametersJSON,
+				OfFunction: &openai.ChatCompletionFunctionToolParam{
+					Function: openai.FunctionDefinitionParam{
+						Name:        "get_current_weather",
+						Description: openai.String("Get the current weather in a given location"),
+						Parameters:  parametersJSON,
+					},
 				},
 			},
 		},
@@ -318,7 +326,7 @@ func Example_chatCompletionsLegacyFunctions() {
 //
 // The example uses environment variables for configuration:
 // - AOAI_CHAT_COMPLETIONS_MODEL: The deployment name of your chat model
-// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_CHAT_COMPLETIONS_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 //
 // Streaming is useful for:
 // - Real-time response display
@@ -326,19 +334,19 @@ func Example_chatCompletionsLegacyFunctions() {
 // - Interactive chat interfaces
 // - Long-form content generation
 func Example_chatCompletionStream() {
-	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_MODEL", "AOAI_CHAT_COMPLETIONS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_CHAT_COMPLETIONS_MODEL")
 	endpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// This is a conversation in progress
 	stream := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
@@ -408,7 +416,7 @@ func Example_chatCompletionStream() {
 //
 // The example uses environment variables for configuration:
 // - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL: The deployment name of your chat model
-// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 //
 // Structured outputs are useful for:
 // - Database query generation
@@ -416,19 +424,20 @@ func Example_chatCompletionStream() {
 // - API request formatting
 // - Consistent response formatting
 func Example_chatCompletionsStructuredOutputs() {
-	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL", "AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL")
 	endpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Define the structured output schema
 	structuredJSONSchema := map[string]interface{}{
@@ -506,12 +515,13 @@ func Example_chatCompletionsStructuredOutputs() {
 				},
 			},
 		},
-		Tools: []openai.ChatCompletionToolParam{
+		Tools: []openai.ChatCompletionToolUnionParam{
 			{
-				Type: "function",
-				Function: openai.FunctionDefinitionParam{
-					Name:       "query",
-					Parameters: structuredJSONSchema,
+				OfFunction: &openai.ChatCompletionFunctionToolParam{
+					Function: openai.FunctionDefinitionParam{
+						Name:       "query",
+						Parameters: structuredJSONSchema,
+					},
 				},
 			},
 		},
@@ -547,28 +557,29 @@ func Example_chatCompletionsStructuredOutputs() {
 // - Parse and process formatted JSON responses
 //
 // The example uses environment variables for configuration:
-// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL: The deployment name of your chat model
-// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL: The deployment name of your model
+// - AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT: Your Azure OpenAI endpoint URL (ex: "https://yourservice.openai.azure.com")
 //
 // Response formatting is useful for:
 // - Mathematical problem solving
 // - Step-by-step explanations
 // - Structured data generation
 // - Consistent output formatting
-func Example_structuredOutputsResponseFormat() {
-	if !CheckRequiredEnvVars("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL", "AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
+func Example_structuredOutputsWithTools() {
 	model := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_MODEL")
 	endpoint := os.Getenv("AOAI_CHAT_COMPLETIONS_STRUCTURED_OUTPUTS_ENDPOINT")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		option.WithBaseURL(fmt.Sprintf("%s/openai/v1", endpoint)),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	// Define the structured output schema
 	mathResponseSchema := map[string]interface{}{

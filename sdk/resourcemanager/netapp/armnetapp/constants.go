@@ -52,6 +52,30 @@ func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	}
 }
 
+// ActualRansomwareProtectionState - The actual state of the Advanced Ransomware Protection feature
+type ActualRansomwareProtectionState string
+
+const (
+	// ActualRansomwareProtectionStateDisabled - Advanced Ransomware Protection is disabled
+	ActualRansomwareProtectionStateDisabled ActualRansomwareProtectionState = "Disabled"
+	// ActualRansomwareProtectionStateEnabled - Advanced Ransomware Protection is enabled
+	ActualRansomwareProtectionStateEnabled ActualRansomwareProtectionState = "Enabled"
+	// ActualRansomwareProtectionStateLearning - Advanced Ransomware Protection is in learning mode
+	ActualRansomwareProtectionStateLearning ActualRansomwareProtectionState = "Learning"
+	// ActualRansomwareProtectionStatePaused - Advanced Ransomware Protection is in paused state
+	ActualRansomwareProtectionStatePaused ActualRansomwareProtectionState = "Paused"
+)
+
+// PossibleActualRansomwareProtectionStateValues returns the possible values for the ActualRansomwareProtectionState const type.
+func PossibleActualRansomwareProtectionStateValues() []ActualRansomwareProtectionState {
+	return []ActualRansomwareProtectionState{
+		ActualRansomwareProtectionStateDisabled,
+		ActualRansomwareProtectionStateEnabled,
+		ActualRansomwareProtectionStateLearning,
+		ActualRansomwareProtectionStatePaused,
+	}
+}
+
 // ApplicationType - Application Type
 type ApplicationType string
 
@@ -104,6 +128,30 @@ func PossibleBackupTypeValues() []BackupType {
 	}
 }
 
+// BreakthroughMode - Specifies whether the volume operates in Breakthrough Mode. When set to 'Enabled', the volume runs on
+// the resources configured for this mode,
+// delivering improved performance and higher throughput. If set to 'Disabled' or omitted, the volume uses the basic configuration.
+// This feature
+// is available only in regions where it’s been configured and first-time users must finish onboarding prior to using Breakthrough
+// Mode.
+type BreakthroughMode string
+
+const (
+	// BreakthroughModeDisabled - The volume uses configuration that provides basic performance and throughput.
+	BreakthroughModeDisabled BreakthroughMode = "Disabled"
+	// BreakthroughModeEnabled - The volume runs on the resources configured for Breakthrough mode which ensures consistent high
+	// performance and a higher throughput.
+	BreakthroughModeEnabled BreakthroughMode = "Enabled"
+)
+
+// PossibleBreakthroughModeValues returns the possible values for the BreakthroughMode const type.
+func PossibleBreakthroughModeValues() []BreakthroughMode {
+	return []BreakthroughMode{
+		BreakthroughModeDisabled,
+		BreakthroughModeEnabled,
+	}
+}
+
 // BucketPatchPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite.
 type BucketPatchPermissions string
 
@@ -141,13 +189,112 @@ func PossibleBucketPermissionsValues() []BucketPermissions {
 	}
 }
 
+// CacheLifeCycleState - Azure NetApp Files Cache lifecycle management
+type CacheLifeCycleState string
+
+const (
+	// CacheLifeCycleStateClusterPeeringOfferSent - Cluster peering offer has been sent.
+	CacheLifeCycleStateClusterPeeringOfferSent CacheLifeCycleState = "ClusterPeeringOfferSent"
+	// CacheLifeCycleStateCreating - Cache creation in progress.
+	CacheLifeCycleStateCreating CacheLifeCycleState = "Creating"
+	// CacheLifeCycleStateFailed - Cache is in a failed state
+	CacheLifeCycleStateFailed CacheLifeCycleState = "Failed"
+	// CacheLifeCycleStateSucceeded - Cache creation succeeded and is available for use.
+	CacheLifeCycleStateSucceeded CacheLifeCycleState = "Succeeded"
+	// CacheLifeCycleStateVserverPeeringOfferSent - VServer peering offer has been sent.
+	CacheLifeCycleStateVserverPeeringOfferSent CacheLifeCycleState = "VserverPeeringOfferSent"
+)
+
+// PossibleCacheLifeCycleStateValues returns the possible values for the CacheLifeCycleState const type.
+func PossibleCacheLifeCycleStateValues() []CacheLifeCycleState {
+	return []CacheLifeCycleState{
+		CacheLifeCycleStateClusterPeeringOfferSent,
+		CacheLifeCycleStateCreating,
+		CacheLifeCycleStateFailed,
+		CacheLifeCycleStateSucceeded,
+		CacheLifeCycleStateVserverPeeringOfferSent,
+	}
+}
+
+// CacheProvisioningState - Azure lifecycle management
+type CacheProvisioningState string
+
+const (
+	// CacheProvisioningStateCanceled - Resource creation was canceled.
+	CacheProvisioningStateCanceled CacheProvisioningState = "Canceled"
+	// CacheProvisioningStateCreating - The resource is being created.
+	CacheProvisioningStateCreating CacheProvisioningState = "Creating"
+	// CacheProvisioningStateDeleting - The resource is being deleted.
+	CacheProvisioningStateDeleting CacheProvisioningState = "Deleting"
+	// CacheProvisioningStateFailed - The resource is in a failed state.
+	CacheProvisioningStateFailed CacheProvisioningState = "Failed"
+	// CacheProvisioningStateSucceeded - The resource is succeeded.
+	CacheProvisioningStateSucceeded CacheProvisioningState = "Succeeded"
+	// CacheProvisioningStateUpdating - The resource is being updated.
+	CacheProvisioningStateUpdating CacheProvisioningState = "Updating"
+)
+
+// PossibleCacheProvisioningStateValues returns the possible values for the CacheProvisioningState const type.
+func PossibleCacheProvisioningStateValues() []CacheProvisioningState {
+	return []CacheProvisioningState{
+		CacheProvisioningStateCanceled,
+		CacheProvisioningStateCreating,
+		CacheProvisioningStateDeleting,
+		CacheProvisioningStateFailed,
+		CacheProvisioningStateSucceeded,
+		CacheProvisioningStateUpdating,
+	}
+}
+
+// CheckElasticResourceAvailabilityReason - Availability reason
+type CheckElasticResourceAvailabilityReason string
+
+const (
+	// CheckElasticResourceAvailabilityReasonAlreadyExists - Value indicating the name is already in use and is therefore unavailable
+	CheckElasticResourceAvailabilityReasonAlreadyExists CheckElasticResourceAvailabilityReason = "AlreadyExists"
+	// CheckElasticResourceAvailabilityReasonInvalid - Value indicating the name provided does not match Azure NetApp Files naming
+	// requirements
+	CheckElasticResourceAvailabilityReasonInvalid CheckElasticResourceAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckElasticResourceAvailabilityReasonValues returns the possible values for the CheckElasticResourceAvailabilityReason const type.
+func PossibleCheckElasticResourceAvailabilityReasonValues() []CheckElasticResourceAvailabilityReason {
+	return []CheckElasticResourceAvailabilityReason{
+		CheckElasticResourceAvailabilityReasonAlreadyExists,
+		CheckElasticResourceAvailabilityReasonInvalid,
+	}
+}
+
+// CheckElasticResourceAvailabilityStatus - Availability status
+type CheckElasticResourceAvailabilityStatus string
+
+const (
+	// CheckElasticResourceAvailabilityStatusFalse - Value indicating the the name is invalid, unavailable, or both.
+	CheckElasticResourceAvailabilityStatusFalse CheckElasticResourceAvailabilityStatus = "False"
+	// CheckElasticResourceAvailabilityStatusTrue - Value indicating the name is valid and available
+	CheckElasticResourceAvailabilityStatusTrue CheckElasticResourceAvailabilityStatus = "True"
+)
+
+// PossibleCheckElasticResourceAvailabilityStatusValues returns the possible values for the CheckElasticResourceAvailabilityStatus const type.
+func PossibleCheckElasticResourceAvailabilityStatusValues() []CheckElasticResourceAvailabilityStatus {
+	return []CheckElasticResourceAvailabilityStatus{
+		CheckElasticResourceAvailabilityStatusFalse,
+		CheckElasticResourceAvailabilityStatusTrue,
+	}
+}
+
 // CheckNameResourceTypes - Resource type used for verification.
 type CheckNameResourceTypes string
 
 const (
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccounts                              CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools                 CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes          CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccounts CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
+	// CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups - ANF Backup under a volume , deprecated, use `Microsoft.NetApp/netAppAccounts/backupVaults/backups`
+	// instead.
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups  CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools        CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	// CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups - ANF Backup under a Backup Vault
+	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups   CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups"
 	CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots CheckNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
 )
 
@@ -155,8 +302,10 @@ const (
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return []CheckNameResourceTypes{
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccounts,
+		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes,
+		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups,
 		CheckNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots,
 	}
 }
@@ -165,9 +314,14 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 type CheckQuotaNameResourceTypes string
 
 const (
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts                              CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools                 CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
-	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes          CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts"
+	// CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups - ANF Backup under a volume , deprecated, use
+	// `Microsoft.NetApp/netAppAccounts/backupVaults/backups` instead.
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups  CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/backupVaults/backups"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools        CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools"
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes"
+	// CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups - ANF Backup under a Backup Vault
+	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups   CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/backups"
 	CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots CheckQuotaNameResourceTypes = "Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"
 )
 
@@ -175,8 +329,10 @@ const (
 func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
 	return []CheckQuotaNameResourceTypes{
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccounts,
+		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsBackupVaultsBackups,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPools,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumes,
+		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesBackups,
 		CheckQuotaNameResourceTypesMicrosoftNetAppNetAppAccountsCapacityPoolsVolumesSnapshots,
 	}
 }
@@ -195,6 +351,24 @@ func PossibleChownModeValues() []ChownMode {
 	return []ChownMode{
 		ChownModeRestricted,
 		ChownModeUnrestricted,
+	}
+}
+
+// CifsChangeNotifyState - Flag indicating whether a CIFS change notification is enabled for the cache.
+type CifsChangeNotifyState string
+
+const (
+	// CifsChangeNotifyStateDisabled - CIFS change notification is disabled
+	CifsChangeNotifyStateDisabled CifsChangeNotifyState = "Disabled"
+	// CifsChangeNotifyStateEnabled - CIFS change notification is enabled
+	CifsChangeNotifyStateEnabled CifsChangeNotifyState = "Enabled"
+)
+
+// PossibleCifsChangeNotifyStateValues returns the possible values for the CifsChangeNotifyState const type.
+func PossibleCifsChangeNotifyStateValues() []CifsChangeNotifyState {
+	return []CifsChangeNotifyState{
+		CifsChangeNotifyStateDisabled,
+		CifsChangeNotifyStateEnabled,
 	}
 }
 
@@ -287,6 +461,324 @@ func PossibleCredentialsStatusValues() []CredentialsStatus {
 	}
 }
 
+// DayOfWeek - Day of the week
+type DayOfWeek string
+
+const (
+	// DayOfWeekFriday - Take a snapshot each Friday
+	DayOfWeekFriday DayOfWeek = "Friday"
+	// DayOfWeekMonday - Take a snapshot each Monday
+	DayOfWeekMonday DayOfWeek = "Monday"
+	// DayOfWeekSaturday - Take a snapshot each Saturday
+	DayOfWeekSaturday DayOfWeek = "Saturday"
+	// DayOfWeekSunday - Take a snapshot each Sunday
+	DayOfWeekSunday DayOfWeek = "Sunday"
+	// DayOfWeekThursday - Take a snapshot each Thursday
+	DayOfWeekThursday DayOfWeek = "Thursday"
+	// DayOfWeekTuesday - Take a snapshot each Tuesday
+	DayOfWeekTuesday DayOfWeek = "Tuesday"
+	// DayOfWeekWednesday - Take a snapshot each Wednesday
+	DayOfWeekWednesday DayOfWeek = "Wednesday"
+)
+
+// PossibleDayOfWeekValues returns the possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{
+		DayOfWeekFriday,
+		DayOfWeekMonday,
+		DayOfWeekSaturday,
+		DayOfWeekSunday,
+		DayOfWeekThursday,
+		DayOfWeekTuesday,
+		DayOfWeekWednesday,
+	}
+}
+
+// DesiredRansomwareProtectionState - The desired state of the Advanced Ransomware Protection feature
+type DesiredRansomwareProtectionState string
+
+const (
+	// DesiredRansomwareProtectionStateDisabled - Advanced Ransomware Protection is disabled
+	DesiredRansomwareProtectionStateDisabled DesiredRansomwareProtectionState = "Disabled"
+	// DesiredRansomwareProtectionStateEnabled - Advanced Ransomware Protection is enabled
+	DesiredRansomwareProtectionStateEnabled DesiredRansomwareProtectionState = "Enabled"
+)
+
+// PossibleDesiredRansomwareProtectionStateValues returns the possible values for the DesiredRansomwareProtectionState const type.
+func PossibleDesiredRansomwareProtectionStateValues() []DesiredRansomwareProtectionState {
+	return []DesiredRansomwareProtectionState{
+		DesiredRansomwareProtectionStateDisabled,
+		DesiredRansomwareProtectionStateEnabled,
+	}
+}
+
+// ElasticBackupPolicyState - Elastic Backup Policy state
+type ElasticBackupPolicyState string
+
+const (
+	// ElasticBackupPolicyStateDisabled - Value indicating the policy is disabled
+	ElasticBackupPolicyStateDisabled ElasticBackupPolicyState = "Disabled"
+	// ElasticBackupPolicyStateEnabled - Value indicating the policy is enabled
+	ElasticBackupPolicyStateEnabled ElasticBackupPolicyState = "Enabled"
+)
+
+// PossibleElasticBackupPolicyStateValues returns the possible values for the ElasticBackupPolicyState const type.
+func PossibleElasticBackupPolicyStateValues() []ElasticBackupPolicyState {
+	return []ElasticBackupPolicyState{
+		ElasticBackupPolicyStateDisabled,
+		ElasticBackupPolicyStateEnabled,
+	}
+}
+
+// ElasticBackupType - Type of backup
+type ElasticBackupType string
+
+const (
+	// ElasticBackupTypeManual - Manual backup type
+	ElasticBackupTypeManual ElasticBackupType = "Manual"
+	// ElasticBackupTypeScheduled - Scheduled backup type
+	ElasticBackupTypeScheduled ElasticBackupType = "Scheduled"
+)
+
+// PossibleElasticBackupTypeValues returns the possible values for the ElasticBackupType const type.
+func PossibleElasticBackupTypeValues() []ElasticBackupType {
+	return []ElasticBackupType{
+		ElasticBackupTypeManual,
+		ElasticBackupTypeScheduled,
+	}
+}
+
+// ElasticKeyVaultStatus - KeyVault status
+type ElasticKeyVaultStatus string
+
+const (
+	// ElasticKeyVaultStatusCreated - KeyVault connection created but not in use
+	ElasticKeyVaultStatusCreated ElasticKeyVaultStatus = "Created"
+	// ElasticKeyVaultStatusDeleted - KeyVault connection Deleted
+	ElasticKeyVaultStatusDeleted ElasticKeyVaultStatus = "Deleted"
+	// ElasticKeyVaultStatusError - Error with the KeyVault connection
+	ElasticKeyVaultStatusError ElasticKeyVaultStatus = "Error"
+	// ElasticKeyVaultStatusInUse - KeyVault connection in use by SMB Volume
+	ElasticKeyVaultStatusInUse ElasticKeyVaultStatus = "InUse"
+	// ElasticKeyVaultStatusUpdating - KeyVault connection Updating
+	ElasticKeyVaultStatusUpdating ElasticKeyVaultStatus = "Updating"
+)
+
+// PossibleElasticKeyVaultStatusValues returns the possible values for the ElasticKeyVaultStatus const type.
+func PossibleElasticKeyVaultStatusValues() []ElasticKeyVaultStatus {
+	return []ElasticKeyVaultStatus{
+		ElasticKeyVaultStatusCreated,
+		ElasticKeyVaultStatusDeleted,
+		ElasticKeyVaultStatusError,
+		ElasticKeyVaultStatusInUse,
+		ElasticKeyVaultStatusUpdating,
+	}
+}
+
+// ElasticNfsv3Access - NFSv3 access
+type ElasticNfsv3Access string
+
+const (
+	// ElasticNfsv3AccessDisabled - Clients can't connect to the volume using the NFSv3 protocol.
+	ElasticNfsv3AccessDisabled ElasticNfsv3Access = "Disabled"
+	// ElasticNfsv3AccessEnabled - Clients can connect to the volume using the NFSv3 protocol.
+	ElasticNfsv3AccessEnabled ElasticNfsv3Access = "Enabled"
+)
+
+// PossibleElasticNfsv3AccessValues returns the possible values for the ElasticNfsv3Access const type.
+func PossibleElasticNfsv3AccessValues() []ElasticNfsv3Access {
+	return []ElasticNfsv3Access{
+		ElasticNfsv3AccessDisabled,
+		ElasticNfsv3AccessEnabled,
+	}
+}
+
+// ElasticNfsv4Access - NFSv4 access
+type ElasticNfsv4Access string
+
+const (
+	// ElasticNfsv4AccessDisabled - Clients can't connect to the volume using the NFSv4 protocol.
+	ElasticNfsv4AccessDisabled ElasticNfsv4Access = "Disabled"
+	// ElasticNfsv4AccessEnabled - Clients can connect to the volume using the NFSv4 protocol.
+	ElasticNfsv4AccessEnabled ElasticNfsv4Access = "Enabled"
+)
+
+// PossibleElasticNfsv4AccessValues returns the possible values for the ElasticNfsv4Access const type.
+func PossibleElasticNfsv4AccessValues() []ElasticNfsv4Access {
+	return []ElasticNfsv4Access{
+		ElasticNfsv4AccessDisabled,
+		ElasticNfsv4AccessEnabled,
+	}
+}
+
+// ElasticPoolEncryptionKeySource - Pool Encryption Key Source.
+type ElasticPoolEncryptionKeySource string
+
+const (
+	// ElasticPoolEncryptionKeySourceKeyVault - Represents the encryption key source of Elastic pool is Microsoft.KeyVault
+	ElasticPoolEncryptionKeySourceKeyVault ElasticPoolEncryptionKeySource = "KeyVault"
+	// ElasticPoolEncryptionKeySourceNetApp - Represents the encryption key source of Elastic pool is Microsoft.NetApp
+	ElasticPoolEncryptionKeySourceNetApp ElasticPoolEncryptionKeySource = "NetApp"
+)
+
+// PossibleElasticPoolEncryptionKeySourceValues returns the possible values for the ElasticPoolEncryptionKeySource const type.
+func PossibleElasticPoolEncryptionKeySourceValues() []ElasticPoolEncryptionKeySource {
+	return []ElasticPoolEncryptionKeySource{
+		ElasticPoolEncryptionKeySourceKeyVault,
+		ElasticPoolEncryptionKeySourceNetApp,
+	}
+}
+
+// ElasticProtocolType - Protocol types for elastic volume
+type ElasticProtocolType string
+
+const (
+	// ElasticProtocolTypeNFSv3 - NFSv3 protocol type
+	ElasticProtocolTypeNFSv3 ElasticProtocolType = "NFSv3"
+	// ElasticProtocolTypeNFSv4 - NFSv4 protocol type
+	ElasticProtocolTypeNFSv4 ElasticProtocolType = "NFSv4"
+	// ElasticProtocolTypeSMB - SMB/CIFS protocol type
+	ElasticProtocolTypeSMB ElasticProtocolType = "SMB"
+)
+
+// PossibleElasticProtocolTypeValues returns the possible values for the ElasticProtocolType const type.
+func PossibleElasticProtocolTypeValues() []ElasticProtocolType {
+	return []ElasticProtocolType{
+		ElasticProtocolTypeNFSv3,
+		ElasticProtocolTypeNFSv4,
+		ElasticProtocolTypeSMB,
+	}
+}
+
+// ElasticResourceAvailabilityStatus - Current availability status of the resource.
+type ElasticResourceAvailabilityStatus string
+
+const (
+	// ElasticResourceAvailabilityStatusOffline - The resource is currently Offline and not accessible
+	ElasticResourceAvailabilityStatusOffline ElasticResourceAvailabilityStatus = "Offline"
+	// ElasticResourceAvailabilityStatusOnline - The resource is currently Online and accessible
+	ElasticResourceAvailabilityStatusOnline ElasticResourceAvailabilityStatus = "Online"
+)
+
+// PossibleElasticResourceAvailabilityStatusValues returns the possible values for the ElasticResourceAvailabilityStatus const type.
+func PossibleElasticResourceAvailabilityStatusValues() []ElasticResourceAvailabilityStatus {
+	return []ElasticResourceAvailabilityStatus{
+		ElasticResourceAvailabilityStatusOffline,
+		ElasticResourceAvailabilityStatusOnline,
+	}
+}
+
+// ElasticRootAccess - Root access
+type ElasticRootAccess string
+
+const (
+	// ElasticRootAccessDisabled - Root user access is disabled for clients affected by this rule
+	ElasticRootAccessDisabled ElasticRootAccess = "Disabled"
+	// ElasticRootAccessEnabled - Root user access is enabled for clients affected by this rule
+	ElasticRootAccessEnabled ElasticRootAccess = "Enabled"
+)
+
+// PossibleElasticRootAccessValues returns the possible values for the ElasticRootAccess const type.
+func PossibleElasticRootAccessValues() []ElasticRootAccess {
+	return []ElasticRootAccess{
+		ElasticRootAccessDisabled,
+		ElasticRootAccessEnabled,
+	}
+}
+
+// ElasticServiceLevel - Service level for elastic capacity pool
+type ElasticServiceLevel string
+
+const (
+	// ElasticServiceLevelZoneRedundant - Zone redundant storage service level.
+	ElasticServiceLevelZoneRedundant ElasticServiceLevel = "ZoneRedundant"
+)
+
+// PossibleElasticServiceLevelValues returns the possible values for the ElasticServiceLevel const type.
+func PossibleElasticServiceLevelValues() []ElasticServiceLevel {
+	return []ElasticServiceLevel{
+		ElasticServiceLevelZoneRedundant,
+	}
+}
+
+// ElasticSmbEncryption - SMB encryption
+type ElasticSmbEncryption string
+
+const (
+	// ElasticSmbEncryptionDisabled - Value indicating the SMB encryption is disabled
+	ElasticSmbEncryptionDisabled ElasticSmbEncryption = "Disabled"
+	// ElasticSmbEncryptionEnabled - Value indicating the SMB encryption is enabled
+	ElasticSmbEncryptionEnabled ElasticSmbEncryption = "Enabled"
+)
+
+// PossibleElasticSmbEncryptionValues returns the possible values for the ElasticSmbEncryption const type.
+func PossibleElasticSmbEncryptionValues() []ElasticSmbEncryption {
+	return []ElasticSmbEncryption{
+		ElasticSmbEncryptionDisabled,
+		ElasticSmbEncryptionEnabled,
+	}
+}
+
+// ElasticUnixAccessRule - Unix access rule
+type ElasticUnixAccessRule string
+
+const (
+	// ElasticUnixAccessRuleNoAccess - Clients connecting with this rule will have no access to the volume
+	ElasticUnixAccessRuleNoAccess ElasticUnixAccessRule = "NoAccess"
+	// ElasticUnixAccessRuleReadOnly - Clients connecting with this rule will only have read access to the volume
+	ElasticUnixAccessRuleReadOnly ElasticUnixAccessRule = "ReadOnly"
+	// ElasticUnixAccessRuleReadWrite - Clients connecting with this rule will have full read and write access to the volume
+	ElasticUnixAccessRuleReadWrite ElasticUnixAccessRule = "ReadWrite"
+)
+
+// PossibleElasticUnixAccessRuleValues returns the possible values for the ElasticUnixAccessRule const type.
+func PossibleElasticUnixAccessRuleValues() []ElasticUnixAccessRule {
+	return []ElasticUnixAccessRule{
+		ElasticUnixAccessRuleNoAccess,
+		ElasticUnixAccessRuleReadOnly,
+		ElasticUnixAccessRuleReadWrite,
+	}
+}
+
+// ElasticVolumePolicyEnforcement - Policy enforcement
+type ElasticVolumePolicyEnforcement string
+
+const (
+	// ElasticVolumePolicyEnforcementEnforced - Value indicating the policy is enforced on the volume.
+	ElasticVolumePolicyEnforcementEnforced ElasticVolumePolicyEnforcement = "Enforced"
+	// ElasticVolumePolicyEnforcementNotEnforced - Value indicating the policy is not enforced on the volume.
+	ElasticVolumePolicyEnforcementNotEnforced ElasticVolumePolicyEnforcement = "NotEnforced"
+)
+
+// PossibleElasticVolumePolicyEnforcementValues returns the possible values for the ElasticVolumePolicyEnforcement const type.
+func PossibleElasticVolumePolicyEnforcementValues() []ElasticVolumePolicyEnforcement {
+	return []ElasticVolumePolicyEnforcement{
+		ElasticVolumePolicyEnforcementEnforced,
+		ElasticVolumePolicyEnforcementNotEnforced,
+	}
+}
+
+// ElasticVolumeRestorationState - The current state of the restoration process.
+type ElasticVolumeRestorationState string
+
+const (
+	// ElasticVolumeRestorationStateFailed - Value indicating that the volume restore has failed.
+	ElasticVolumeRestorationStateFailed ElasticVolumeRestorationState = "Failed"
+	// ElasticVolumeRestorationStateRestored - Value indicating that the volume is restored.
+	ElasticVolumeRestorationStateRestored ElasticVolumeRestorationState = "Restored"
+	// ElasticVolumeRestorationStateRestoring - Value indicating that the volume is currently restoring.
+	ElasticVolumeRestorationStateRestoring ElasticVolumeRestorationState = "Restoring"
+)
+
+// PossibleElasticVolumeRestorationStateValues returns the possible values for the ElasticVolumeRestorationState const type.
+func PossibleElasticVolumeRestorationStateValues() []ElasticVolumeRestorationState {
+	return []ElasticVolumeRestorationState{
+		ElasticVolumeRestorationStateFailed,
+		ElasticVolumeRestorationStateRestored,
+		ElasticVolumeRestorationStateRestoring,
+	}
+}
+
 // EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
 type EnableSubvolumes string
 
@@ -302,6 +794,24 @@ func PossibleEnableSubvolumesValues() []EnableSubvolumes {
 	return []EnableSubvolumes{
 		EnableSubvolumesDisabled,
 		EnableSubvolumesEnabled,
+	}
+}
+
+// EnableWriteBackState - Flag indicating whether writeback is enabled for the cache.
+type EnableWriteBackState string
+
+const (
+	// EnableWriteBackStateDisabled - Writeback cache is disabled
+	EnableWriteBackStateDisabled EnableWriteBackState = "Disabled"
+	// EnableWriteBackStateEnabled - Writeback cache is enabled
+	EnableWriteBackStateEnabled EnableWriteBackState = "Enabled"
+)
+
+// PossibleEnableWriteBackStateValues returns the possible values for the EnableWriteBackState const type.
+func PossibleEnableWriteBackStateValues() []EnableWriteBackState {
+	return []EnableWriteBackState{
+		EnableWriteBackStateDisabled,
+		EnableWriteBackStateEnabled,
 	}
 }
 
@@ -321,6 +831,24 @@ func PossibleEncryptionKeySourceValues() []EncryptionKeySource {
 	return []EncryptionKeySource{
 		EncryptionKeySourceMicrosoftKeyVault,
 		EncryptionKeySourceMicrosoftNetApp,
+	}
+}
+
+// EncryptionState - Specifies if the cache is encryption or not.
+type EncryptionState string
+
+const (
+	// EncryptionStateDisabled - Encryption is disabled
+	EncryptionStateDisabled EncryptionState = "Disabled"
+	// EncryptionStateEnabled - Encryption is enabled
+	EncryptionStateEnabled EncryptionState = "Enabled"
+)
+
+// PossibleEncryptionStateValues returns the possible values for the EncryptionState const type.
+func PossibleEncryptionStateValues() []EncryptionState {
+	return []EncryptionState{
+		EncryptionStateDisabled,
+		EncryptionStateEnabled,
 	}
 }
 
@@ -356,6 +884,25 @@ func PossibleEndpointTypeValues() []EndpointType {
 	return []EndpointType{
 		EndpointTypeDst,
 		EndpointTypeSrc,
+	}
+}
+
+// Exclude - An option to filter out replications. 'None' returns all replications, 'Deleted' excludes deleted replications.
+// Default is 'None'
+type Exclude string
+
+const (
+	// ExcludeDeleted - 'Deleted' excludes deleted replications
+	ExcludeDeleted Exclude = "Deleted"
+	// ExcludeNone - 'None' returns all replications
+	ExcludeNone Exclude = "None"
+)
+
+// PossibleExcludeValues returns the possible values for the Exclude const type.
+func PossibleExcludeValues() []Exclude {
+	return []Exclude{
+		ExcludeDeleted,
+		ExcludeNone,
 	}
 }
 
@@ -411,6 +958,24 @@ func PossibleFileAccessLogsValues() []FileAccessLogs {
 	}
 }
 
+// GlobalFileLockingState - Flag indicating whether the global file lock is enabled for the cache.
+type GlobalFileLockingState string
+
+const (
+	// GlobalFileLockingStateDisabled - Global file locking is disabled
+	GlobalFileLockingStateDisabled GlobalFileLockingState = "Disabled"
+	// GlobalFileLockingStateEnabled - Global file locking is enabled
+	GlobalFileLockingStateEnabled GlobalFileLockingState = "Enabled"
+)
+
+// PossibleGlobalFileLockingStateValues returns the possible values for the GlobalFileLockingState const type.
+func PossibleGlobalFileLockingStateValues() []GlobalFileLockingState {
+	return []GlobalFileLockingState{
+		GlobalFileLockingStateDisabled,
+		GlobalFileLockingStateEnabled,
+	}
+}
+
 // InAvailabilityReasonType - <code>Invalid</code> indicates the name provided does not match Azure App Service naming requirements.
 // <code>AlreadyExists</code> indicates that the name is already in use and is therefore unavailable.
 type InAvailabilityReasonType string
@@ -425,6 +990,24 @@ func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return []InAvailabilityReasonType{
 		InAvailabilityReasonTypeAlreadyExists,
 		InAvailabilityReasonTypeInvalid,
+	}
+}
+
+// KerberosState - Describe if a cache is Kerberos enabled.
+type KerberosState string
+
+const (
+	// KerberosStateDisabled - Kerberos is disabled
+	KerberosStateDisabled KerberosState = "Disabled"
+	// KerberosStateEnabled - Kerberos is enabled
+	KerberosStateEnabled KerberosState = "Enabled"
+)
+
+// PossibleKerberosStateValues returns the possible values for the KerberosState const type.
+func PossibleKerberosStateValues() []KerberosState {
+	return []KerberosState{
+		KerberosStateDisabled,
+		KerberosStateEnabled,
 	}
 }
 
@@ -473,6 +1056,30 @@ func PossibleKeyVaultStatusValues() []KeyVaultStatus {
 	}
 }
 
+// LargeVolumeType - Specifies the type of the Large Volume. When set to 'LargeVolume', the large volume is created with standard
+// configuration.
+// If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB with cool
+// access enabled,
+// delivering higher capacity limit with lower costs.
+type LargeVolumeType string
+
+const (
+	// LargeVolumeTypeExtraLargeVolume7Dot2PiB - The extra large volume is created with higher volume capacity limit 7.2PiB with
+	// cool access enabled, delivering higher capacity limit with lower costs
+	LargeVolumeTypeExtraLargeVolume7Dot2PiB LargeVolumeType = "PremExtraLargeVolume7Dot2PiB"
+	// LargeVolumeTypeLargeVolume - The large volume is created with standard configuration that provides standard performance
+	// and throughput.
+	LargeVolumeTypeLargeVolume LargeVolumeType = "LargeVolume"
+)
+
+// PossibleLargeVolumeTypeValues returns the possible values for the LargeVolumeType const type.
+func PossibleLargeVolumeTypeValues() []LargeVolumeType {
+	return []LargeVolumeType{
+		LargeVolumeTypeExtraLargeVolume7Dot2PiB,
+		LargeVolumeTypeLargeVolume,
+	}
+}
+
 // LdapServerType - The type of the LDAP server
 type LdapServerType string
 
@@ -488,6 +1095,24 @@ func PossibleLdapServerTypeValues() []LdapServerType {
 	return []LdapServerType{
 		LdapServerTypeActiveDirectory,
 		LdapServerTypeOpenLDAP,
+	}
+}
+
+// LdapState - Specifies whether LDAP is enabled or not.
+type LdapState string
+
+const (
+	// LdapStateDisabled - ldap is disabled.
+	LdapStateDisabled LdapState = "Disabled"
+	// LdapStateEnabled - ldap is enabled
+	LdapStateEnabled LdapState = "Enabled"
+)
+
+// PossibleLdapStateValues returns the possible values for the LdapState const type.
+func PossibleLdapStateValues() []LdapState {
+	return []LdapState{
+		LdapStateDisabled,
+		LdapStateEnabled,
 	}
 }
 
@@ -608,24 +1233,89 @@ func PossibleNetworkSiblingSetProvisioningStateValues() []NetworkSiblingSetProvi
 	}
 }
 
+// OnCertificateConflictAction - This action is triggered when a certificate conflict occurs. A conflict arises if you try
+// to create a new bucket while one or more already exist on the server, or if you update a bucket when multiple buckets are
+// present. This happens because a single certificate is shared among all buckets on the same server.
+// Note: This applies both to certificates provided directly via the certificateObject property and to those retrieved from
+// Azure Key Vault. Details for the latter case are specified in the akvDetails.certificateAkvDetails section.
+type OnCertificateConflictAction string
+
+const (
+	// OnCertificateConflictActionFail - Fail the operation if a conflict occurs, meaning the bucket operation will fail, and
+	// the existing certificate will continue to be in use.
+	OnCertificateConflictActionFail OnCertificateConflictAction = "Fail"
+	// OnCertificateConflictActionUpdate - Update the existing certificate regardless of whether there is a conflict or not. This
+	// means all buckets on the server will now use the new certificate.
+	OnCertificateConflictActionUpdate OnCertificateConflictAction = "Update"
+)
+
+// PossibleOnCertificateConflictActionValues returns the possible values for the OnCertificateConflictAction const type.
+func PossibleOnCertificateConflictActionValues() []OnCertificateConflictAction {
+	return []OnCertificateConflictAction{
+		OnCertificateConflictActionFail,
+		OnCertificateConflictActionUpdate,
+	}
+}
+
+// PolicyStatus - Policy status
+type PolicyStatus string
+
+const (
+	// PolicyStatusDisabled - Value indicating the policy is disabled
+	PolicyStatusDisabled PolicyStatus = "Disabled"
+	// PolicyStatusEnabled - Value indicating the policy is enabled
+	PolicyStatusEnabled PolicyStatus = "Enabled"
+)
+
+// PossiblePolicyStatusValues returns the possible values for the PolicyStatus const type.
+func PossiblePolicyStatusValues() []PolicyStatus {
+	return []PolicyStatus{
+		PolicyStatusDisabled,
+		PolicyStatusEnabled,
+	}
+}
+
+// ProtocolTypes - Set of supported protocol types, which include NFSv3, NFSv4 and SMB protocol
+type ProtocolTypes string
+
+const (
+	// ProtocolTypesNFSv3 - NFSv3 protocol type
+	ProtocolTypesNFSv3 ProtocolTypes = "NFSv3"
+	// ProtocolTypesNFSv4 - NFSv4 protocol type
+	ProtocolTypesNFSv4 ProtocolTypes = "NFSv4"
+	// ProtocolTypesSMB - SMB protocol type
+	ProtocolTypesSMB ProtocolTypes = "SMB"
+)
+
+// PossibleProtocolTypesValues returns the possible values for the ProtocolTypes const type.
+func PossibleProtocolTypesValues() []ProtocolTypes {
+	return []ProtocolTypes{
+		ProtocolTypesNFSv3,
+		ProtocolTypesNFSv4,
+		ProtocolTypesSMB,
+	}
+}
+
 // ProvisioningState - Gets the status of the VolumeQuotaRule at the time the operation was called.
 type ProvisioningState string
 
 const (
-	// ProvisioningStateAccepted - Accepted
+	// ProvisioningStateAccepted - Resource has been Accepted
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
-	// ProvisioningStateCreating - Creating
+	// ProvisioningStateCreating - Resource is being Created
 	ProvisioningStateCreating ProvisioningState = "Creating"
-	// ProvisioningStateDeleting - Deleting
+	// ProvisioningStateDeleting - Resource is being Deleted
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Failed
+	// ProvisioningStateFailed - Resource has Failed
 	ProvisioningStateFailed ProvisioningState = "Failed"
-	// ProvisioningStateMoving - Moving
+	// ProvisioningStateMoving - Resource is being Moved
 	ProvisioningStateMoving ProvisioningState = "Moving"
-	// ProvisioningStatePatching - Patching
+	// ProvisioningStatePatching - Resource is being Patched
 	ProvisioningStatePatching ProvisioningState = "Patching"
-	// ProvisioningStateSucceeded - Succeeded
+	// ProvisioningStateSucceeded - Resource has Succeeded
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - Resource is updating
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -638,6 +1328,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateMoving,
 		ProvisioningStatePatching,
 		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
 	}
 }
 
@@ -656,6 +1347,68 @@ func PossibleQosTypeValues() []QosType {
 	return []QosType{
 		QosTypeAuto,
 		QosTypeManual,
+	}
+}
+
+// RansomwareReportSeverity - Severity of the Advanced Ransomware Protection (ARP) report
+type RansomwareReportSeverity string
+
+const (
+	// RansomwareReportSeverityHigh - High amount of data is suspected for ransomware activity
+	RansomwareReportSeverityHigh RansomwareReportSeverity = "High"
+	// RansomwareReportSeverityLow - Low attack probability
+	RansomwareReportSeverityLow RansomwareReportSeverity = "Low"
+	// RansomwareReportSeverityModerate - Moderate attack probability
+	RansomwareReportSeverityModerate RansomwareReportSeverity = "Moderate"
+	// RansomwareReportSeverityNone - No data is suspected for ransomware activity
+	RansomwareReportSeverityNone RansomwareReportSeverity = "None"
+)
+
+// PossibleRansomwareReportSeverityValues returns the possible values for the RansomwareReportSeverity const type.
+func PossibleRansomwareReportSeverityValues() []RansomwareReportSeverity {
+	return []RansomwareReportSeverity{
+		RansomwareReportSeverityHigh,
+		RansomwareReportSeverityLow,
+		RansomwareReportSeverityModerate,
+		RansomwareReportSeverityNone,
+	}
+}
+
+// RansomwareReportState - State of the Advanced Ransomware Protection (ARP) report
+type RansomwareReportState string
+
+const (
+	// RansomwareReportStateActive - The ARP report has been created. Take action by running clearsuspects marking suspects as
+	// FalsePositive or PotentialThreats
+	RansomwareReportStateActive RansomwareReportState = "Active"
+	// RansomwareReportStateResolved - The ARP Report has been resolved
+	RansomwareReportStateResolved RansomwareReportState = "Resolved"
+)
+
+// PossibleRansomwareReportStateValues returns the possible values for the RansomwareReportState const type.
+func PossibleRansomwareReportStateValues() []RansomwareReportState {
+	return []RansomwareReportState{
+		RansomwareReportStateActive,
+		RansomwareReportStateResolved,
+	}
+}
+
+// RansomwareSuspectResolution - ARP report suspect resolution
+type RansomwareSuspectResolution string
+
+const (
+	// RansomwareSuspectResolutionFalsePositive - The identified file type is expected in your workload and can be ignored
+	RansomwareSuspectResolutionFalsePositive RansomwareSuspectResolution = "FalsePositive"
+	// RansomwareSuspectResolutionPotentialThreat - The identified file type is unexpected in your workload and should be treated
+	// as a potential attack
+	RansomwareSuspectResolutionPotentialThreat RansomwareSuspectResolution = "PotentialThreat"
+)
+
+// PossibleRansomwareSuspectResolutionValues returns the possible values for the RansomwareSuspectResolution const type.
+func PossibleRansomwareSuspectResolutionValues() []RansomwareSuspectResolution {
+	return []RansomwareSuspectResolution{
+		RansomwareSuspectResolutionFalsePositive,
+		RansomwareSuspectResolutionPotentialThreat,
 	}
 }
 
@@ -692,6 +1445,27 @@ func PossibleRegionStorageToNetworkProximityValues() []RegionStorageToNetworkPro
 		RegionStorageToNetworkProximityT1AndT2AndAcrossT2,
 		RegionStorageToNetworkProximityT2,
 		RegionStorageToNetworkProximityT2AndAcrossT2,
+	}
+}
+
+// ReplicationMirrorState - The status of the replication
+type ReplicationMirrorState string
+
+const (
+	// ReplicationMirrorStateBroken - Destination volume is RW, replication relationship has been broken off
+	ReplicationMirrorStateBroken ReplicationMirrorState = "Broken"
+	// ReplicationMirrorStateMirrored - Destination volume has been initialized and is ready
+	ReplicationMirrorStateMirrored ReplicationMirrorState = "Mirrored"
+	// ReplicationMirrorStateUninitialized - Destination volume has not been initialized
+	ReplicationMirrorStateUninitialized ReplicationMirrorState = "Uninitialized"
+)
+
+// PossibleReplicationMirrorStateValues returns the possible values for the ReplicationMirrorState const type.
+func PossibleReplicationMirrorStateValues() []ReplicationMirrorState {
+	return []ReplicationMirrorState{
+		ReplicationMirrorStateBroken,
+		ReplicationMirrorStateMirrored,
+		ReplicationMirrorStateUninitialized,
 	}
 }
 
@@ -793,6 +1567,24 @@ func PossibleSmbAccessBasedEnumerationValues() []SmbAccessBasedEnumeration {
 	}
 }
 
+// SmbEncryptionState - Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol cache
+type SmbEncryptionState string
+
+const (
+	// SmbEncryptionStateDisabled - SMB encryption is disabled
+	SmbEncryptionStateDisabled SmbEncryptionState = "Disabled"
+	// SmbEncryptionStateEnabled - SMB encryption is enabled
+	SmbEncryptionStateEnabled SmbEncryptionState = "Enabled"
+)
+
+// PossibleSmbEncryptionStateValues returns the possible values for the SmbEncryptionState const type.
+func PossibleSmbEncryptionStateValues() []SmbEncryptionState {
+	return []SmbEncryptionState{
+		SmbEncryptionStateDisabled,
+		SmbEncryptionStateEnabled,
+	}
+}
+
 // SmbNonBrowsable - Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume
 type SmbNonBrowsable string
 
@@ -808,6 +1600,43 @@ func PossibleSmbNonBrowsableValues() []SmbNonBrowsable {
 	return []SmbNonBrowsable{
 		SmbNonBrowsableDisabled,
 		SmbNonBrowsableEnabled,
+	}
+}
+
+// SnapshotDirectoryVisibility - Controls the visibility of the Elastic Volume's read-only snapshot directory, which provides
+// access to each of the volume's snapshots.
+type SnapshotDirectoryVisibility string
+
+const (
+	// SnapshotDirectoryVisibilityHidden - Value indicating the read-only snapshot directory is not visible
+	SnapshotDirectoryVisibilityHidden SnapshotDirectoryVisibility = "Hidden"
+	// SnapshotDirectoryVisibilityVisible - Value indicating the read-only snapshot directory is visible
+	SnapshotDirectoryVisibilityVisible SnapshotDirectoryVisibility = "Visible"
+)
+
+// PossibleSnapshotDirectoryVisibilityValues returns the possible values for the SnapshotDirectoryVisibility const type.
+func PossibleSnapshotDirectoryVisibilityValues() []SnapshotDirectoryVisibility {
+	return []SnapshotDirectoryVisibility{
+		SnapshotDirectoryVisibilityHidden,
+		SnapshotDirectoryVisibilityVisible,
+	}
+}
+
+// SnapshotUsage - Snapshot usage for backup
+type SnapshotUsage string
+
+const (
+	// SnapshotUsageCreateNewSnapshot - Value indicating a new snapshot is created
+	SnapshotUsageCreateNewSnapshot SnapshotUsage = "CreateNewSnapshot"
+	// SnapshotUsageUseExistingSnapshot - Value indicating an existing snapshot is used
+	SnapshotUsageUseExistingSnapshot SnapshotUsage = "UseExistingSnapshot"
+)
+
+// PossibleSnapshotUsageValues returns the possible values for the SnapshotUsage const type.
+func PossibleSnapshotUsageValues() []SnapshotUsage {
+	return []SnapshotUsage{
+		SnapshotUsageCreateNewSnapshot,
+		SnapshotUsageUseExistingSnapshot,
 	}
 }
 
@@ -1107,6 +1936,24 @@ func PossibleVolumeRestoreRelationshipStatusValues() []VolumeRestoreRelationship
 		VolumeRestoreRelationshipStatusIdle,
 		VolumeRestoreRelationshipStatusTransferring,
 		VolumeRestoreRelationshipStatusUnknown,
+	}
+}
+
+// VolumeSize - Volume size for backup
+type VolumeSize string
+
+const (
+	// VolumeSizeLarge - Value indicating backup is for a large volume
+	VolumeSizeLarge VolumeSize = "Large"
+	// VolumeSizeRegular - Value indicating backup is not for a large volume
+	VolumeSizeRegular VolumeSize = "Regular"
+)
+
+// PossibleVolumeSizeValues returns the possible values for the VolumeSize const type.
+func PossibleVolumeSizeValues() []VolumeSize {
+	return []VolumeSize{
+		VolumeSizeLarge,
+		VolumeSizeRegular,
 	}
 }
 

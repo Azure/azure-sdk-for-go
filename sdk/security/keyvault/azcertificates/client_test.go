@@ -44,7 +44,7 @@ func pollStatus(t *testing.T, expectedStatus int, fn func() error) {
 	for i := 0; i < 12; i++ {
 		err = fn()
 		var respErr *azcore.ResponseError
-		if !(errors.As(err, &respErr) && respErr.StatusCode == expectedStatus) {
+		if !errors.As(err, &respErr) || respErr.StatusCode != expectedStatus {
 			break
 		}
 		if i < 11 {
@@ -649,12 +649,11 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 
 	getResp, err := client.GetCertificatePolicy(ctx, certName, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, getResp.CertificatePolicy.IssuerParameters)
-	require.Equal(t, policy.KeyProperties, getResp.CertificatePolicy.KeyProperties)
-	require.Equal(t, policy.LifetimeActions, getResp.CertificatePolicy.LifetimeActions)
-	require.Equal(t, policy.SecretProperties, getResp.CertificatePolicy.SecretProperties)
-	require.Equal(t, policy.X509CertificateProperties, getResp.CertificatePolicy.X509CertificateProperties)
-
+	require.Equal(t, policy.IssuerParameters, getResp.IssuerParameters)
+	require.Equal(t, policy.KeyProperties, getResp.KeyProperties)
+	require.Equal(t, policy.LifetimeActions, getResp.LifetimeActions)
+	require.Equal(t, policy.SecretProperties, getResp.SecretProperties)
+	require.Equal(t, policy.X509CertificateProperties, getResp.X509CertificateProperties)
 	updatedPolicy := azcertificates.CertificatePolicy{
 		KeyProperties: &azcertificates.KeyProperties{
 			Curve:      to.Ptr(azcertificates.CurveNameP256K),
@@ -666,11 +665,11 @@ func TestUpdateCertificatePolicy(t *testing.T) {
 	}
 	updateResp, err := client.UpdateCertificatePolicy(ctx, certName, updatedPolicy, nil)
 	require.NoError(t, err)
-	require.Equal(t, policy.IssuerParameters, updateResp.CertificatePolicy.IssuerParameters)
-	require.Equal(t, updatedPolicy.KeyProperties, updateResp.CertificatePolicy.KeyProperties)
-	require.Equal(t, policy.LifetimeActions, updateResp.CertificatePolicy.LifetimeActions)
-	require.Equal(t, policy.SecretProperties, updateResp.CertificatePolicy.SecretProperties)
-	require.Equal(t, policy.X509CertificateProperties, updateResp.CertificatePolicy.X509CertificateProperties)
+	require.Equal(t, policy.IssuerParameters, updateResp.IssuerParameters)
+	require.Equal(t, updatedPolicy.KeyProperties, updateResp.KeyProperties)
+	require.Equal(t, policy.LifetimeActions, updateResp.LifetimeActions)
+	require.Equal(t, policy.SecretProperties, updateResp.SecretProperties)
+	require.Equal(t, policy.X509CertificateProperties, updateResp.X509CertificateProperties)
 }
 
 func TestAPIVersion(t *testing.T) {

@@ -71,6 +71,44 @@ type AccountsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ActiveDirectoryConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the ActiveDirectoryConfigsClient.BeginCreateOrUpdate
+// method.
+type ActiveDirectoryConfigsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ActiveDirectoryConfigsClientBeginDeleteOptions contains the optional parameters for the ActiveDirectoryConfigsClient.BeginDelete
+// method.
+type ActiveDirectoryConfigsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ActiveDirectoryConfigsClientBeginUpdateOptions contains the optional parameters for the ActiveDirectoryConfigsClient.BeginUpdate
+// method.
+type ActiveDirectoryConfigsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ActiveDirectoryConfigsClientGetOptions contains the optional parameters for the ActiveDirectoryConfigsClient.Get method.
+type ActiveDirectoryConfigsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActiveDirectoryConfigsClientListByResourceGroupOptions contains the optional parameters for the ActiveDirectoryConfigsClient.NewListByResourceGroupPager
+// method.
+type ActiveDirectoryConfigsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActiveDirectoryConfigsClientListBySubscriptionOptions contains the optional parameters for the ActiveDirectoryConfigsClient.NewListBySubscriptionPager
+// method.
+type ActiveDirectoryConfigsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BackupPoliciesClientBeginCreateOptions contains the optional parameters for the BackupPoliciesClient.BeginCreate method.
 type BackupPoliciesClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -202,6 +240,20 @@ type BucketsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// BucketsClientBeginGenerateAkvCredentialsOptions contains the optional parameters for the BucketsClient.BeginGenerateAkvCredentials
+// method.
+type BucketsClientBeginGenerateAkvCredentialsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// BucketsClientBeginRefreshCertificateOptions contains the optional parameters for the BucketsClient.BeginRefreshCertificate
+// method.
+type BucketsClientBeginRefreshCertificateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // BucketsClientBeginUpdateOptions contains the optional parameters for the BucketsClient.BeginUpdate method.
 type BucketsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -220,6 +272,320 @@ type BucketsClientGetOptions struct {
 
 // BucketsClientListOptions contains the optional parameters for the BucketsClient.NewListPager method.
 type BucketsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CachesClientBeginCreateOrUpdateOptions contains the optional parameters for the CachesClient.BeginCreateOrUpdate method.
+type CachesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginDeleteOptions contains the optional parameters for the CachesClient.BeginDelete method.
+type CachesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginPoolChangeOptions contains the optional parameters for the CachesClient.BeginPoolChange method.
+type CachesClientBeginPoolChangeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientBeginUpdateOptions contains the optional parameters for the CachesClient.BeginUpdate method.
+type CachesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// CachesClientGetOptions contains the optional parameters for the CachesClient.Get method.
+type CachesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CachesClientListByCapacityPoolsOptions contains the optional parameters for the CachesClient.NewListByCapacityPoolsPager
+// method.
+type CachesClientListByCapacityPoolsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CachesClientListPeeringPassphrasesOptions contains the optional parameters for the CachesClient.ListPeeringPassphrases
+// method.
+type CachesClientListPeeringPassphrasesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticAccountsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticAccountsClient.BeginCreateOrUpdate
+// method.
+type ElasticAccountsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticAccountsClientBeginDeleteOptions contains the optional parameters for the ElasticAccountsClient.BeginDelete method.
+type ElasticAccountsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticAccountsClientBeginUpdateOptions contains the optional parameters for the ElasticAccountsClient.BeginUpdate method.
+type ElasticAccountsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticAccountsClientGetOptions contains the optional parameters for the ElasticAccountsClient.Get method.
+type ElasticAccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticAccountsClientListByResourceGroupOptions contains the optional parameters for the ElasticAccountsClient.NewListByResourceGroupPager
+// method.
+type ElasticAccountsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticAccountsClientListBySubscriptionOptions contains the optional parameters for the ElasticAccountsClient.NewListBySubscriptionPager
+// method.
+type ElasticAccountsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticBackupPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticBackupPoliciesClient.BeginCreateOrUpdate
+// method.
+type ElasticBackupPoliciesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupPoliciesClientBeginDeleteOptions contains the optional parameters for the ElasticBackupPoliciesClient.BeginDelete
+// method.
+type ElasticBackupPoliciesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupPoliciesClientBeginUpdateOptions contains the optional parameters for the ElasticBackupPoliciesClient.BeginUpdate
+// method.
+type ElasticBackupPoliciesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupPoliciesClientGetOptions contains the optional parameters for the ElasticBackupPoliciesClient.Get method.
+type ElasticBackupPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticBackupPoliciesClientListByElasticAccountOptions contains the optional parameters for the ElasticBackupPoliciesClient.NewListByElasticAccountPager
+// method.
+type ElasticBackupPoliciesClientListByElasticAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticBackupVaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticBackupVaultsClient.BeginCreateOrUpdate
+// method.
+type ElasticBackupVaultsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupVaultsClientBeginDeleteOptions contains the optional parameters for the ElasticBackupVaultsClient.BeginDelete
+// method.
+type ElasticBackupVaultsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupVaultsClientBeginUpdateOptions contains the optional parameters for the ElasticBackupVaultsClient.BeginUpdate
+// method.
+type ElasticBackupVaultsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupVaultsClientGetOptions contains the optional parameters for the ElasticBackupVaultsClient.Get method.
+type ElasticBackupVaultsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticBackupVaultsClientListByElasticAccountOptions contains the optional parameters for the ElasticBackupVaultsClient.NewListByElasticAccountPager
+// method.
+type ElasticBackupVaultsClientListByElasticAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticBackupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticBackupsClient.BeginCreateOrUpdate
+// method.
+type ElasticBackupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupsClientBeginDeleteOptions contains the optional parameters for the ElasticBackupsClient.BeginDelete method.
+type ElasticBackupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupsClientBeginUpdateOptions contains the optional parameters for the ElasticBackupsClient.BeginUpdate method.
+type ElasticBackupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticBackupsClientGetOptions contains the optional parameters for the ElasticBackupsClient.Get method.
+type ElasticBackupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticBackupsClientListByVaultOptions contains the optional parameters for the ElasticBackupsClient.NewListByVaultPager
+// method.
+type ElasticBackupsClientListByVaultOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticCapacityPoolsClientBeginChangeZoneOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginChangeZone
+// method.
+type ElasticCapacityPoolsClientBeginChangeZoneOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticCapacityPoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginCreateOrUpdate
+// method.
+type ElasticCapacityPoolsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticCapacityPoolsClientBeginDeleteOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginDelete
+// method.
+type ElasticCapacityPoolsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticCapacityPoolsClientBeginUpdateOptions contains the optional parameters for the ElasticCapacityPoolsClient.BeginUpdate
+// method.
+type ElasticCapacityPoolsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityOptions contains the optional parameters for the ElasticCapacityPoolsClient.CheckVolumeFilePathAvailability
+// method.
+type ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticCapacityPoolsClientGetOptions contains the optional parameters for the ElasticCapacityPoolsClient.Get method.
+type ElasticCapacityPoolsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticCapacityPoolsClientListByElasticAccountOptions contains the optional parameters for the ElasticCapacityPoolsClient.NewListByElasticAccountPager
+// method.
+type ElasticCapacityPoolsClientListByElasticAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSnapshotPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.BeginCreateOrUpdate
+// method.
+type ElasticSnapshotPoliciesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticSnapshotPoliciesClientBeginDeleteOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.BeginDelete
+// method.
+type ElasticSnapshotPoliciesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticSnapshotPoliciesClientBeginUpdateOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.BeginUpdate
+// method.
+type ElasticSnapshotPoliciesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticSnapshotPoliciesClientGetOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.Get method.
+type ElasticSnapshotPoliciesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSnapshotPoliciesClientListByElasticAccountOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.NewListByElasticAccountPager
+// method.
+type ElasticSnapshotPoliciesClientListByElasticAccountOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSnapshotPoliciesClientListElasticVolumesOptions contains the optional parameters for the ElasticSnapshotPoliciesClient.NewListElasticVolumesPager
+// method.
+type ElasticSnapshotPoliciesClientListElasticVolumesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSnapshotsClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticSnapshotsClient.BeginCreateOrUpdate
+// method.
+type ElasticSnapshotsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticSnapshotsClientBeginDeleteOptions contains the optional parameters for the ElasticSnapshotsClient.BeginDelete method.
+type ElasticSnapshotsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticSnapshotsClientGetOptions contains the optional parameters for the ElasticSnapshotsClient.Get method.
+type ElasticSnapshotsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticSnapshotsClientListByElasticVolumeOptions contains the optional parameters for the ElasticSnapshotsClient.NewListByElasticVolumePager
+// method.
+type ElasticSnapshotsClientListByElasticVolumeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticVolumesClientBeginCreateOrUpdateOptions contains the optional parameters for the ElasticVolumesClient.BeginCreateOrUpdate
+// method.
+type ElasticVolumesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticVolumesClientBeginDeleteOptions contains the optional parameters for the ElasticVolumesClient.BeginDelete method.
+type ElasticVolumesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticVolumesClientBeginRevertOptions contains the optional parameters for the ElasticVolumesClient.BeginRevert method.
+type ElasticVolumesClientBeginRevertOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticVolumesClientBeginUpdateOptions contains the optional parameters for the ElasticVolumesClient.BeginUpdate method.
+type ElasticVolumesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ElasticVolumesClientGetOptions contains the optional parameters for the ElasticVolumesClient.Get method.
+type ElasticVolumesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ElasticVolumesClientListByElasticPoolOptions contains the optional parameters for the ElasticVolumesClient.NewListByElasticPoolPager
+// method.
+type ElasticVolumesClientListByElasticPoolOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -253,6 +619,23 @@ type PoolsClientGetOptions struct {
 
 // PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
 type PoolsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RansomwareReportsClientBeginClearSuspectsOptions contains the optional parameters for the RansomwareReportsClient.BeginClearSuspects
+// method.
+type RansomwareReportsClientBeginClearSuspectsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RansomwareReportsClientGetOptions contains the optional parameters for the RansomwareReportsClient.Get method.
+type RansomwareReportsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RansomwareReportsClientListOptions contains the optional parameters for the RansomwareReportsClient.NewListPager method.
+type RansomwareReportsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -670,7 +1053,8 @@ type VolumesClientListOptions struct {
 
 // VolumesClientListReplicationsOptions contains the optional parameters for the VolumesClient.NewListReplicationsPager method.
 type VolumesClientListReplicationsOptions struct {
-	// placeholder for future optional parameters
+	// The content of the action request
+	Body *ListReplicationsRequest
 }
 
 // VolumesClientReplicationStatusOptions contains the optional parameters for the VolumesClient.ReplicationStatus method.

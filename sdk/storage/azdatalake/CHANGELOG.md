@@ -1,14 +1,9 @@
 # Release History
 
-## 1.4.4-beta.1 (Unreleased)
+## 1.4.4 (2026-01-12)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added support for service version 2026-02-06.
 
 ## 1.4.3 (2025-10-16)
 

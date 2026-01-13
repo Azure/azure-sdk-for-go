@@ -42,6 +42,54 @@ type AutoUpgradeProfilesClientGetOptions struct {
 // AutoUpgradeProfilesClientListByFleetOptions contains the optional parameters for the AutoUpgradeProfilesClient.NewListByFleetPager
 // method.
 type AutoUpgradeProfilesClientListByFleetOptions struct {
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of result items to return.
+	Top *int32
+}
+
+// FleetManagedNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginCreateOrUpdate
+// method.
+type FleetManagedNamespacesClientBeginCreateOrUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// The request should only proceed if no entity matches this string.
+	IfNoneMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetManagedNamespacesClientBeginDeleteOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginDelete
+// method.
+type FleetManagedNamespacesClientBeginDeleteOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetManagedNamespacesClientBeginUpdateOptions contains the optional parameters for the FleetManagedNamespacesClient.BeginUpdate
+// method.
+type FleetManagedNamespacesClientBeginUpdateOptions struct {
+	// The request should only proceed if an entity matches this string.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// FleetManagedNamespacesClientGetOptions contains the optional parameters for the FleetManagedNamespacesClient.Get method.
+type FleetManagedNamespacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FleetManagedNamespacesClientListByFleetOptions contains the optional parameters for the FleetManagedNamespacesClient.NewListByFleetPager
+// method.
+type FleetManagedNamespacesClientListByFleetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -83,7 +131,14 @@ type FleetMembersClientGetOptions struct {
 
 // FleetMembersClientListByFleetOptions contains the optional parameters for the FleetMembersClient.NewListByFleetPager method.
 type FleetMembersClientListByFleetOptions struct {
-	// placeholder for future optional parameters
+	// Filter the result list using the given expression.
+	Filter *string
+
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of result items to return.
+	Top *int32
 }
 
 // FleetUpdateStrategiesClientBeginCreateOrUpdateOptions contains the optional parameters for the FleetUpdateStrategiesClient.BeginCreateOrUpdate
@@ -117,7 +172,11 @@ type FleetUpdateStrategiesClientGetOptions struct {
 // FleetUpdateStrategiesClientListByFleetOptions contains the optional parameters for the FleetUpdateStrategiesClient.NewListByFleetPager
 // method.
 type FleetUpdateStrategiesClientListByFleetOptions struct {
-	// placeholder for future optional parameters
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of result items to return.
+	Top *int32
 }
 
 // FleetsClientBeginCreateOptions contains the optional parameters for the FleetsClient.BeginCreate method.
@@ -164,7 +223,11 @@ type FleetsClientListByResourceGroupOptions struct {
 // FleetsClientListBySubscriptionOptions contains the optional parameters for the FleetsClient.NewListBySubscriptionPager
 // method.
 type FleetsClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of result items to return.
+	Top *int32
 }
 
 // FleetsClientListCredentialsOptions contains the optional parameters for the FleetsClient.ListCredentials method.
@@ -191,7 +254,14 @@ type GatesClientGetOptions struct {
 
 // GatesClientListByFleetOptions contains the optional parameters for the GatesClient.NewListByFleetPager method.
 type GatesClientListByFleetOptions struct {
-	// placeholder for future optional parameters
+	// Filter the result list using the given expression.
+	Filter *string
+
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of result items to return.
+	Top *int32
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -255,5 +325,9 @@ type UpdateRunsClientGetOptions struct {
 
 // UpdateRunsClientListByFleetOptions contains the optional parameters for the UpdateRunsClient.NewListByFleetPager method.
 type UpdateRunsClientListByFleetOptions struct {
-	// placeholder for future optional parameters
+	// The page-continuation token to use with a paged version of this API.
+	SkipToken *string
+
+	// The number of result items to return.
+	Top *int32
 }

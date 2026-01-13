@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -21,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity/internal/customtokenproxy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
@@ -44,7 +42,9 @@ func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
 func TestDefaultAzureCredential_AZURE_TOKEN_CREDENTIALS(t *testing.T) {
 	if v, ok := os.LookupEnv(azureTokenCredentials); ok {
 		require.NoError(t, os.Unsetenv(azureTokenCredentials))
-		defer os.Setenv(azureTokenCredentials, v)
+		defer func() {
+			_ = os.Setenv(azureTokenCredentials, v)
+		}()
 	}
 	// configure EnvironmentCredential and WorkloadIdentityCredential
 	// so those types appear in the chain instead of error reporters
@@ -318,7 +318,7 @@ func TestDefaultAzureCredential_UserAssignedIdentity(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestDefaultAzureCredential_Workload(t *testing.T) {
+func TestDefaultAzureCredential_WorkloadIdentity(t *testing.T) {
 	expectedAssertion := "service account token"
 	tempFile := filepath.Join(t.TempDir(), "service-account-token-file")
 	if err := os.WriteFile(tempFile, []byte(expectedAssertion), os.ModePerm); err != nil {
@@ -352,6 +352,25 @@ func TestDefaultAzureCredential_Workload(t *testing.T) {
 		t.Fatal(err)
 	}
 	testGetTokenSuccess(t, cred)
+
+	t.Run("disables identity binding mode", func(t *testing.T) {
+		t.Setenv(azureTokenCredentials, credNameWorkloadIdentity)
+		// these values should trigger validation errors if WorkloadIdentityCredential
+		// tries to configure identity binding mode...
+		t.Setenv(customtokenproxy.AzureKubernetesCAData, "not a valid cert")
+		t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "http://timeout.local&fail=yes#please")
+
+		cred, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+			ClientOptions: policy.ClientOptions{Transport: &mockSTS{}},
+		})
+		require.NoError(t, err)
+
+		// ...but ensure a timeout should it try the proxy anyway
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		_, err = cred.GetToken(ctx, testTRO)
+		require.NoError(t, err)
+	})
 }
 
 // delayPolicy adds a delay to pipeline requests. Used to test timeout behavior.

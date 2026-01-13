@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/Subvolumes_Create.json
+// Generated from example definition: 2025-09-01-preview/Subvolumes_Create.json
 func ExampleSubvolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleSubvolumesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Subvolumes_Delete.json
+// Generated from example definition: 2025-09-01-preview/Subvolumes_Delete.json
 func ExampleSubvolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleSubvolumesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Subvolumes_Get.json
+// Generated from example definition: 2025-09-01-preview/Subvolumes_Get.json
 func ExampleSubvolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleSubvolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Subvolumes_Metadata.json
+// Generated from example definition: 2025-09-01-preview/Subvolumes_Metadata.json
 func ExampleSubvolumesClient_BeginGetMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleSubvolumesClient_BeginGetMetadata() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Subvolumes_List.json
+// Generated from example definition: 2025-09-01-preview/Subvolumes_List.json
 func ExampleSubvolumesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleSubvolumesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Subvolumes_Update.json
+// Generated from example definition: 2025-09-01-preview/Subvolumes_Update.json
 func ExampleSubvolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

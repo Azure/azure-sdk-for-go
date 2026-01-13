@@ -163,11 +163,11 @@ func createLink(parentPath string, pathSegment string, id string) string {
 	parentPathLength := len(parentPath)
 	completePath.Grow(parentPathLength + 2 + len(pathSegment) + len(id))
 	if parentPathLength > 0 {
-		completePath.WriteString(parentPath)
-		completePath.WriteString("/")
+		fmt.Fprint(&completePath, parentPath)
+		fmt.Fprint(&completePath, "/")
 	}
-	completePath.WriteString(pathSegment)
-	completePath.WriteString("/")
-	completePath.WriteString(url.PathEscape(id))
+	fmt.Fprint(&completePath, pathSegment)
+	fmt.Fprint(&completePath, "/")
+	fmt.Fprint(&completePath, url.PathEscape(id))
 	return completePath.String()
 }

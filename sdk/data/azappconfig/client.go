@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -156,7 +153,7 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
 		SyncToken:    SyncToken(*resp.SyncToken),
-		LastModified: resp.KeyValue.LastModified,
+		LastModified: resp.LastModified,
 	}, nil
 }
 
@@ -474,9 +471,9 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 			ETag:            (*azcore.ETag)(getResp.Etag),
 			Expires:         getResp.Expires,
 			ItemsCount:      getResp.ItemsCount,
-			Name:            getResp.Snapshot.Name,
+			Name:            getResp.Name,
 			Size:            getResp.Size,
-			Status:          getResp.Snapshot.Status,
+			Status:          getResp.Status,
 		},
 		SyncToken: SyncToken(*getResp.SyncToken),
 		Link:      getResp.Link,
@@ -569,9 +566,9 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 			ETag:            (*azcore.ETag)(updateResp.Etag),
 			Expires:         updateResp.Expires,
 			ItemsCount:      updateResp.ItemsCount,
-			Name:            updateResp.Snapshot.Name,
+			Name:            updateResp.Name,
 			Size:            updateResp.Size,
-			Status:          updateResp.Snapshot.Status,
+			Status:          updateResp.Status,
 		},
 		SyncToken: SyncToken(*updateResp.SyncToken),
 		Link:      updateResp.Link,

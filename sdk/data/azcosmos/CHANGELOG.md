@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.2 (Unreleased)
+## 1.5.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0-beta.4 (2025-11-24)
+
+### Features Added
+
+* Added client engine support for `ReadManyItems`. See [PR 25458](https://github.com/Azure/azure-sdk-for-go/pull/25458)
+
+## 1.5.0-beta.3 (2025-11-10)
+
+### Features Added
+
+* Adjusted the query engine abstraction to support future enhancements and optimizations. See [PR 25503](https://github.com/Azure/azure-sdk-for-go/pull/25503)
+
+## 1.5.0-beta.2 (2025-11-03)
+
+### Features Added
+
+* Added `ReadManyItems` API to read documents across partitions. See [PR 25522](https://github.com/Azure/azure-sdk-for-go/pull/25522)
 
 ## 1.5.0-beta.1 (2025-10-16)
 
@@ -43,7 +61,7 @@
 
 ### Features Added
 
-* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and <https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway> for more details.
+* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and this [querying with Cosmos document](https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway) for more details.
 
 ### Other Changes
 
@@ -96,7 +114,7 @@
 ### Features Added
 
 * Added regional routing support through ClientOptions.PreferredRegions
-* Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
+* Added availability logic and failover mechanics to support cross-regional retries and resiliency enhancements
 * Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes

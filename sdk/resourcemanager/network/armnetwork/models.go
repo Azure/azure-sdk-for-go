@@ -662,6 +662,9 @@ type ApplicationGatewayBackendSettings struct {
 
 // ApplicationGatewayBackendSettingsPropertiesFormat - Properties of Backend address pool settings of an application gateway.
 type ApplicationGatewayBackendSettingsPropertiesFormat struct {
+	// Whether to send Proxy Protocol header to backend servers over TCP or TLS protocols. Default value is false.
+	EnableL4ClientIPPreservation *bool
+
 	// Server name indication to be sent to the backend servers for Tls protocol.
 	HostName *string
 
@@ -690,6 +693,9 @@ type ApplicationGatewayBackendSettingsPropertiesFormat struct {
 
 // ApplicationGatewayClientAuthConfiguration - Application gateway client authentication configuration.
 type ApplicationGatewayClientAuthConfiguration struct {
+	// Verify client Authentication mode.
+	VerifyClientAuthMode *ApplicationGatewayClientAuthVerificationModes
+
 	// Verify client certificate issuer name on the application gateway.
 	VerifyClientCertIssuerDN *bool
 
@@ -714,6 +720,40 @@ type ApplicationGatewayCustomError struct {
 
 	// Status code of the application gateway custom error.
 	StatusCode *ApplicationGatewayCustomErrorStatusCode
+}
+
+// ApplicationGatewayEntraJWTValidationConfig - Entra JWT Validation Configuration of an application gateway.
+type ApplicationGatewayEntraJWTValidationConfig struct {
+	// Resource ID.
+	ID *string
+
+	// Name of the entra jwt validation configuration that is unique within an application gateway.
+	Name *string
+
+	// Properties of the application gateway entra jwt validation configuration.
+	Properties *ApplicationGatewayEntraJWTValidationConfigPropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+}
+
+// ApplicationGatewayEntraJWTValidationConfigPropertiesFormat - Properties of entra jwt validation configuration of the application
+// gateway.
+type ApplicationGatewayEntraJWTValidationConfigPropertiesFormat struct {
+	// List of acceptable audience claims that can be present in the token (aud claim). A maximum of 5 audiences are permitted.
+	Audiences []*string
+
+	// The Client ID of the Microsoft Entra ID application.
+	ClientID *string
+
+	// The Tenant ID of the Microsoft Entra ID application.
+	TenantID *string
+
+	// Unauthorized request action.
+	UnAuthorizedRequestAction *ApplicationGatewayUnAuthorizedRequestAction
+
+	// READ-ONLY; The provisioning state of the entra jwt validation configuration resource.
+	ProvisioningState *ProvisioningState
 }
 
 // ApplicationGatewayFirewallDisabledRuleGroup - Allows to disable rules within a rule group or an entire rule group.
@@ -1121,6 +1161,9 @@ type ApplicationGatewayOnDemandProbe struct {
 	// Reference to backend http setting of application gateway to be used for test probe.
 	BackendHTTPSettings *SubResource
 
+	// Whether to send Proxy Protocol header along with the Health Probe over TCP or TLS protocol. Default value is false.
+	EnableProbeProxyProtocolHeader *bool
+
 	// Host name to send the probe to.
 	Host *string
 
@@ -1361,6 +1404,9 @@ type ApplicationGatewayProbeHealthResponseMatch struct {
 
 // ApplicationGatewayProbePropertiesFormat - Properties of probe of an application gateway.
 type ApplicationGatewayProbePropertiesFormat struct {
+	// Whether to send Proxy Protocol header along with the Health Probe over TCP or TLS protocol. Default value is false.
+	EnableProbeProxyProtocolHeader *bool
+
 	// Host name to send the probe to.
 	Host *string
 
@@ -1432,6 +1478,10 @@ type ApplicationGatewayPropertiesFormat struct {
 
 	// Whether HTTP2 is enabled on the application gateway resource.
 	EnableHTTP2 *bool
+
+	// Entra JWT validation configurations for the application gateway resource. For default limits, see Application Gateway limits
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	EntraJWTValidationConfigs []*ApplicationGatewayEntraJWTValidationConfig
 
 	// Reference to the FirewallPolicy resource.
 	FirewallPolicy *SubResource
@@ -1593,6 +1643,9 @@ type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 
 	// Backend http settings resource of the application gateway.
 	BackendHTTPSettings *SubResource
+
+	// Entra JWT validation configuration resource of the application gateway.
+	EntraJWTValidationConfig *SubResource
 
 	// Http listener resource of the application gateway.
 	HTTPListener *SubResource
@@ -3304,6 +3357,18 @@ type BreakOutCategoryPolicies struct {
 	Optimize *bool
 }
 
+// CertificateAuthentication - Certificate Authentication information for a certificate based authentication connection.
+type CertificateAuthentication struct {
+	// Inbound authentication certificate public keys.
+	InboundAuthCertificateChain []*string
+
+	// Inbound authentication certificate subject name.
+	InboundAuthCertificateSubjectName *string
+
+	// Keyvault secret ID for outbound authentication certificate.
+	OutboundAuthCertificate *string
+}
+
 // CheckPrivateLinkServiceVisibilityRequest - Request body of the CheckPrivateLinkServiceVisibility API service call.
 type CheckPrivateLinkServiceVisibilityRequest struct {
 	// The alias of the private link service.
@@ -4340,12 +4405,48 @@ type DdosCustomPolicy struct {
 
 // DdosCustomPolicyPropertiesFormat - DDoS custom policy properties.
 type DdosCustomPolicyPropertiesFormat struct {
+	// The list of DDoS detection rules associated with the custom policy.
+	DetectionRules []*DdosDetectionRule
+
+	// The list of frontend IP configurations associated with the custom policy.
+	FrontEndIPConfiguration []*SubResource
+
 	// READ-ONLY; The provisioning state of the DDoS custom policy resource.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if
 	// the user changes its name or migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string
+}
+
+// DdosDetectionRule - A DDoS detection rule resource.
+type DdosDetectionRule struct {
+	// Resource ID.
+	ID *string
+
+	// The name of the DDoS detection rule.
+	Name *string
+
+	// Properties of the DDoS detection rule.
+	Properties *DdosDetectionRulePropertiesFormat
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string
+
+	// READ-ONLY; The resource type.
+	Type *string
+}
+
+// DdosDetectionRulePropertiesFormat - DDoS detection rule properties.
+type DdosDetectionRulePropertiesFormat struct {
+	// The detection mode for the DDoS detection rule.
+	DetectionMode *DdosDetectionMode
+
+	// The traffic detection rule details.
+	TrafficDetectionRule *TrafficDetectionRule
+
+	// READ-ONLY; The provisioning state of the DDoS detection rule.
+	ProvisioningState *ProvisioningState
 }
 
 // DdosProtectionPlan - A DDoS protection plan in a resource group.
@@ -4547,6 +4648,13 @@ type Dimension struct {
 
 	// The name of the dimension.
 	Name *string
+}
+
+// DisassociateCloudServicePublicIPRequest - The request for DisassociateCloudServicePublicIpOperation.
+type DisassociateCloudServicePublicIPRequest struct {
+	// REQUIRED; ARM ID of the Standalone Public IP to associate. This is of the form :
+	// /subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}
+	PublicIPArmID *string
 }
 
 // DscpConfiguration - Differentiated Services Code Point configuration for any given network interface
@@ -6776,6 +6884,13 @@ type FlowLogProperties struct {
 	// Parameters that define the flow log format.
 	Format *FlowLogFormatParameters
 
+	// Optional field to filter network traffic logs based on flow states. Value of this field could be any comma separated combination
+	// string of letters B,C,E or D. B represents Begin, when a flow is
+	// created. C represents Continue for an ongoing flow generated at every five-minute interval. E represents End, when a flow
+	// is terminated. D represents Deny, when a flow is denied. If not specified, all
+	// network traffic will be logged.
+	RecordTypes *string
+
 	// Parameters that define the retention policy for flow log.
 	RetentionPolicy *RetentionPolicyParameters
 }
@@ -6800,6 +6915,13 @@ type FlowLogPropertiesFormat struct {
 
 	// Parameters that define the flow log format.
 	Format *FlowLogFormatParameters
+
+	// Optional field to filter network traffic logs based on flow states. Value of this field could be any comma separated combination
+	// string of letters B,C,E or D. B represents Begin, when a flow is
+	// created. C represents Continue for an ongoing flow generated at every five-minute interval. E represents End, when a flow
+	// is terminated. D represents Deny, when a flow is denied. If not specified, all
+	// network traffic will be logged.
+	RecordTypes *string
 
 	// Parameters that define the retention policy for flow log.
 	RetentionPolicy *RetentionPolicyParameters
@@ -8601,6 +8723,9 @@ type LoadBalancerPropertiesFormat struct {
 	// Collection of probe objects used in the load balancer.
 	Probes []*Probe
 
+	// Indicates the scope of the load balancer: external (Public) or internal (Private).
+	Scope *LoadBalancerScope
+
 	// READ-ONLY; The provisioning state of the load balancer resource.
 	ProvisioningState *ProvisioningState
 
@@ -9080,6 +9205,10 @@ type ManagerRoutingConfigurationListResult struct {
 type ManagerRoutingConfigurationPropertiesFormat struct {
 	// A description of the routing configuration.
 	Description *string
+
+	// Route table usage mode defines which route table will be used by the configuration. If not defined, this will default to
+	// 'ManagedOnly'.
+	RouteTableUsageMode *RouteTableUsageMode
 
 	// READ-ONLY; The provisioning state of the resource.
 	ProvisioningState *ProvisioningState
@@ -10671,6 +10800,9 @@ type PrivateEndpointProperties struct {
 	// A list of IP configurations of the private endpoint. This will be used to map to the First Party Service's endpoints.
 	IPConfigurations []*PrivateEndpointIPConfiguration
 
+	// Specifies the IP version type for the private IPs of the private endpoint. If not defined, this defaults to IPv4.
+	IPVersionType *PrivateEndpointIPVersionType
+
 	// A grouping of information about the connection to the remote resource. Used when the network admin does not have access
 	// to approve connections to the remote resource.
 	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection
@@ -10814,6 +10946,9 @@ type PrivateLinkServiceListResult struct {
 
 // PrivateLinkServiceProperties - Properties of the private link service.
 type PrivateLinkServiceProperties struct {
+	// The access mode of the private link service.
+	AccessMode *AccessMode
+
 	// The auto-approval list of the private link service.
 	AutoApproval *PrivateLinkServicePropertiesAutoApproval
 
@@ -11443,6 +11578,12 @@ type RecordSet struct {
 type ReferencedPublicIPAddress struct {
 	// The PublicIPAddress Reference.
 	ID *string
+}
+
+// ReserveCloudServicePublicIPAddressRequest - The request for ReserveCloudServicePublicIpAddressOperation.
+type ReserveCloudServicePublicIPAddressRequest struct {
+	// REQUIRED; When true, reverts from Static to Dynamic allocation (undo reservation).
+	IsRollback *IsRollback
 }
 
 // ResiliencyRecommendationComponents - Gateway Resiliency based Recommendations
@@ -13097,9 +13238,7 @@ type SubnetPropertiesFormat struct {
 	// Application gateway IP configurations of virtual network resource.
 	ApplicationGatewayIPConfigurations []*ApplicationGatewayIPConfiguration
 
-	// Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can only be
-	// set at the time of subnet creation and cannot be updated for an existing
-	// subnet.
+	// Set this property to false to disable default outbound connectivity for all VMs in the subnet.
 	DefaultOutboundAccess *bool
 
 	// An array of references to the delegations on the subnet.
@@ -13316,6 +13455,15 @@ type TrafficAnalyticsConfigurationProperties struct {
 type TrafficAnalyticsProperties struct {
 	// Parameters that define the configuration of traffic analytics.
 	NetworkWatcherFlowAnalyticsConfiguration *TrafficAnalyticsConfigurationProperties
+}
+
+// TrafficDetectionRule - Ddos Custom Policy traffic detection rule.
+type TrafficDetectionRule struct {
+	// The customized packets per second threshold.
+	PacketsPerSecond *int32
+
+	// The traffic type (one of Tcp, Udp, TcpSyn) that the detection rule will be applied upon.
+	TrafficType *DdosTrafficType
 }
 
 // TrafficSelectorPolicy - An traffic selector policy for a virtual network gateway connection.
@@ -15171,8 +15319,14 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	// REQUIRED; The reference to virtual network gateway resource.
 	VirtualNetworkGateway1 *VirtualNetworkGateway
 
+	// Gateway connection authentication type.
+	AuthenticationType *ConnectionAuthenticationType
+
 	// The authorizationKey.
 	AuthorizationKey *string
+
+	// Certificate Authentication information for a certificate based authentication connection.
+	CertificateAuthentication *CertificateAuthentication
 
 	// The connection mode for this connection.
 	ConnectionMode *VirtualNetworkGatewayConnectionMode

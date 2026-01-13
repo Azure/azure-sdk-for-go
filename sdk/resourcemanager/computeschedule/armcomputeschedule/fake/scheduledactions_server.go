@@ -78,47 +78,47 @@ type ScheduledActionsServer struct {
 
 	// VirtualMachinesCancelOperations is the fake for method ScheduledActionsClient.VirtualMachinesCancelOperations
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesCancelOperations func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.CancelOperationsRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesCancelOperationsResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesCancelOperations func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.CancelOperationsContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesCancelOperationsResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesExecuteCreate is the fake for method ScheduledActionsClient.VirtualMachinesExecuteCreate
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesExecuteCreate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteCreateRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesExecuteCreate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteCreateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteCreateResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesExecuteDeallocate is the fake for method ScheduledActionsClient.VirtualMachinesExecuteDeallocate
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesExecuteDeallocate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteDeallocateRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesExecuteDeallocate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteDeallocateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesExecuteDelete is the fake for method ScheduledActionsClient.VirtualMachinesExecuteDelete
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesExecuteDelete func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteDeleteRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesExecuteDelete func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteDeleteContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteDeleteResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesExecuteHibernate is the fake for method ScheduledActionsClient.VirtualMachinesExecuteHibernate
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesExecuteHibernate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteHibernateRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesExecuteHibernate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteHibernateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteHibernateResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesExecuteStart is the fake for method ScheduledActionsClient.VirtualMachinesExecuteStart
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesExecuteStart func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteStartRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesExecuteStart func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.ExecuteStartContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesExecuteStartResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesGetOperationErrors is the fake for method ScheduledActionsClient.VirtualMachinesGetOperationErrors
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesGetOperationErrors func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.GetOperationErrorsRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesGetOperationErrors func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.GetOperationErrorsContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesGetOperationStatus is the fake for method ScheduledActionsClient.VirtualMachinesGetOperationStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesGetOperationStatus func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.GetOperationStatusRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationStatusResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesGetOperationStatus func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.GetOperationStatusContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesGetOperationStatusResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesSubmitDeallocate is the fake for method ScheduledActionsClient.VirtualMachinesSubmitDeallocate
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesSubmitDeallocate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.SubmitDeallocateRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesSubmitDeallocate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.SubmitDeallocateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesSubmitHibernate is the fake for method ScheduledActionsClient.VirtualMachinesSubmitHibernate
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesSubmitHibernate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.SubmitHibernateRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesSubmitHibernate func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.SubmitHibernateContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitHibernateResponse], errResp azfake.ErrorResponder)
 
 	// VirtualMachinesSubmitStart is the fake for method ScheduledActionsClient.VirtualMachinesSubmitStart
 	// HTTP status codes to indicate success: http.StatusOK
-	VirtualMachinesSubmitStart func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.SubmitStartRequest, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartResponse], errResp azfake.ErrorResponder)
+	VirtualMachinesSubmitStart func(ctx context.Context, locationparameter string, requestBody armcomputeschedule.SubmitStartContent, options *armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartOptions) (resp azfake.Responder[armcomputeschedule.ScheduledActionsClientVirtualMachinesSubmitStartResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScheduledActionsServerTransport creates a new instance of ScheduledActionsServerTransport with the provided implementation.
@@ -768,7 +768,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesCancelOperation
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.CancelOperationsRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.CancelOperationsContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -801,7 +801,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteCreate(r
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteCreateRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteCreateContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -834,7 +834,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteDealloca
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteDeallocateRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteDeallocateContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -867,7 +867,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteDelete(r
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteDeleteRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteDeleteContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -900,7 +900,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteHibernat
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteHibernateRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteHibernateContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -933,7 +933,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesExecuteStart(re
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteStartRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.ExecuteStartContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -966,7 +966,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesGetOperationErr
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.GetOperationErrorsRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.GetOperationErrorsContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -999,7 +999,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesGetOperationSta
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.GetOperationStatusRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.GetOperationStatusContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -1032,7 +1032,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesSubmitDeallocat
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.SubmitDeallocateRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.SubmitDeallocateContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -1065,7 +1065,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesSubmitHibernate
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.SubmitHibernateRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.SubmitHibernateContent](req)
 	if err != nil {
 		return nil, err
 	}
@@ -1098,7 +1098,7 @@ func (s *ScheduledActionsServerTransport) dispatchVirtualMachinesSubmitStart(req
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.SubmitStartRequest](req)
+	body, err := server.UnmarshalRequestAsJSON[armcomputeschedule.SubmitStartContent](req)
 	if err != nil {
 		return nil, err
 	}

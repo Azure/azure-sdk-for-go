@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/Pools_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01-preview/Pools_CreateOrUpdate.json
 func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_CreateOrUpdate_CustomThroughput.json
+// Generated from example definition: 2025-09-01-preview/Pools_CreateOrUpdate_CustomThroughput.json
 func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput(
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_Delete.json
+// Generated from example definition: 2025-09-01-preview/Pools_Delete.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExamplePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_Get.json
+// Generated from example definition: 2025-09-01-preview/Pools_Get.json
 func ExamplePoolsClient_Get_poolsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExamplePoolsClient_Get_poolsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_Get_CustomThroughput.json
+// Generated from example definition: 2025-09-01-preview/Pools_Get_CustomThroughput.json
 func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_List.json
+// Generated from example definition: 2025-09-01-preview/Pools_List.json
 func ExamplePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExamplePoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_Update.json
+// Generated from example definition: 2025-09-01-preview/Pools_Update.json
 func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Pools_Update_CustomThroughput.json
+// Generated from example definition: 2025-09-01-preview/Pools_Update_CustomThroughput.json
 func ExamplePoolsClient_BeginUpdate_poolsUpdateCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

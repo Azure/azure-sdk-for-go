@@ -213,9 +213,6 @@ type PrivateLinkResourcesClientListByVaultResponse struct {
 type SecretsClientCreateOrUpdateResponse struct {
 	// Resource information with extended details.
 	Secret
-
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
 }
 
 // SecretsClientGetResponse contains the response from method SecretsClient.Get.

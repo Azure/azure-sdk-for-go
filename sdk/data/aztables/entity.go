@@ -102,7 +102,7 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 			err = json.Unmarshal(propRawValue, &e.Timestamp)
 		default:
 			// Try to find the EDM type for this property & get it's value
-			var propertyEdmTypeValue string = ""
+			var propertyEdmTypeValue string
 			if propertyEdmTypeRawValue, ok := entity[propName+"@odata.type"]; ok {
 				if err = json.Unmarshal(propertyEdmTypeRawValue, &propertyEdmTypeValue); err != nil {
 					return

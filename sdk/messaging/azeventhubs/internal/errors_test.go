@@ -38,6 +38,45 @@ func TestOwnershipLost(t *testing.T) {
 	require.False(t, IsOwnershipLostError(errors.New("definitely not an ownership lost error")))
 }
 
+func TestIsQuickRecoveryError(t *testing.T) {
+	t.Run("LinkError returns true", func(t *testing.T) {
+		require.True(t, IsQuickRecoveryError(&amqp.LinkError{}))
+	})
+
+	t.Run("LinkError with remote error returns true", func(t *testing.T) {
+		require.True(t, IsQuickRecoveryError(&amqp.LinkError{
+			RemoteErr: &amqp.Error{
+				Condition: amqp.ErrCondDetachForced,
+			},
+		}))
+	})
+
+	t.Run("ownership lost error returns false", func(t *testing.T) {
+		require.False(t, IsQuickRecoveryError(&amqp.LinkError{
+			RemoteErr: &amqp.Error{
+				Condition: amqp.ErrCond("amqp:link:stolen"),
+			},
+		}))
+	})
+
+	t.Run("ConnError returns false", func(t *testing.T) {
+		require.False(t, IsQuickRecoveryError(&amqp.ConnError{}))
+	})
+
+	t.Run("generic error returns false", func(t *testing.T) {
+		require.False(t, IsQuickRecoveryError(errors.New("some error")))
+	})
+
+	t.Run("nil error returns false", func(t *testing.T) {
+		require.False(t, IsQuickRecoveryError(nil))
+	})
+
+	t.Run("wrapped LinkError returns true", func(t *testing.T) {
+		wrappedErr := fmt.Errorf("wrapped: %w", &amqp.LinkError{})
+		require.True(t, IsQuickRecoveryError(wrappedErr))
+	})
+}
+
 func TestGetRecoveryKind(t *testing.T) {
 	require.Equal(t, GetRecoveryKind(nil), RecoveryKindNone)
 	require.Equal(t, GetRecoveryKind(amqpwrap.ErrConnResetNeeded), RecoveryKindConn)

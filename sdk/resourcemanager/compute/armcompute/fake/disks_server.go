@@ -23,35 +23,35 @@ import (
 type DisksServer struct {
 	// BeginCreateOrUpdate is the fake for method DisksClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, diskName string, disk armcompute.Disk, options *armcompute.DisksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DisksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, diskName string, disk armcompute.Disk, options *armcompute.DisksClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DisksClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DisksClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, diskName string, options *armcompute.DisksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DisksClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, diskName string, options *armcompute.DisksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DisksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DisksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, diskName string, options *armcompute.DisksClientGetOptions) (resp azfake.Responder[armcompute.DisksClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, diskName string, options *armcompute.DisksClientGetOptions) (resp azfake.Responder[armcompute.DisksClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGrantAccess is the fake for method DisksClient.BeginGrantAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGrantAccess func(ctx context.Context, resourceGroupName string, diskName string, grantAccessData armcompute.GrantAccessData, options *armcompute.DisksClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.DisksClientGrantAccessResponse], errResp azfake.ErrorResponder)
+	BeginGrantAccess	func(ctx context.Context, resourceGroupName string, diskName string, grantAccessData armcompute.GrantAccessData, options *armcompute.DisksClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.DisksClientGrantAccessResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DisksClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.DisksClientListOptions) (resp azfake.PagerResponder[armcompute.DisksClientListResponse])
+	NewListPager	func(options *armcompute.DisksClientListOptions) (resp azfake.PagerResponder[armcompute.DisksClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method DisksClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.DisksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DisksClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.DisksClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DisksClientListByResourceGroupResponse])
 
 	// BeginRevokeAccess is the fake for method DisksClient.BeginRevokeAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRevokeAccess func(ctx context.Context, resourceGroupName string, diskName string, options *armcompute.DisksClientBeginRevokeAccessOptions) (resp azfake.PollerResponder[armcompute.DisksClientRevokeAccessResponse], errResp azfake.ErrorResponder)
+	BeginRevokeAccess	func(ctx context.Context, resourceGroupName string, diskName string, options *armcompute.DisksClientBeginRevokeAccessOptions) (resp azfake.PollerResponder[armcompute.DisksClientRevokeAccessResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method DisksClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, diskName string, disk armcompute.DiskUpdate, options *armcompute.DisksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DisksClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, diskName string, disk armcompute.DiskUpdate, options *armcompute.DisksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DisksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDisksServerTransport creates a new instance of DisksServerTransport with the provided implementation.
@@ -59,28 +59,28 @@ type DisksServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDisksServerTransport(srv *DisksServer) *DisksServerTransport {
 	return &DisksServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.DisksClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.DisksClientDeleteResponse]](),
-		beginGrantAccess:            newTracker[azfake.PollerResponder[armcompute.DisksClientGrantAccessResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.DisksClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.DisksClientListByResourceGroupResponse]](),
-		beginRevokeAccess:           newTracker[azfake.PollerResponder[armcompute.DisksClientRevokeAccessResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.DisksClientUpdateResponse]](),
+		srv:				srv,
+		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armcompute.DisksClientCreateOrUpdateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.DisksClientDeleteResponse]](),
+		beginGrantAccess:		newTracker[azfake.PollerResponder[armcompute.DisksClientGrantAccessResponse]](),
+		newListPager:			newTracker[azfake.PagerResponder[armcompute.DisksClientListResponse]](),
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.DisksClientListByResourceGroupResponse]](),
+		beginRevokeAccess:		newTracker[azfake.PollerResponder[armcompute.DisksClientRevokeAccessResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.DisksClientUpdateResponse]](),
 	}
 }
 
 // DisksServerTransport connects instances of armcompute.DisksClient to instances of DisksServer.
 // Don't use this type directly, use NewDisksServerTransport instead.
 type DisksServerTransport struct {
-	srv                         *DisksServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.DisksClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.DisksClientDeleteResponse]]
-	beginGrantAccess            *tracker[azfake.PollerResponder[armcompute.DisksClientGrantAccessResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.DisksClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.DisksClientListByResourceGroupResponse]]
-	beginRevokeAccess           *tracker[azfake.PollerResponder[armcompute.DisksClientRevokeAccessResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.DisksClientUpdateResponse]]
+	srv				*DisksServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.DisksClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.DisksClientDeleteResponse]]
+	beginGrantAccess		*tracker[azfake.PollerResponder[armcompute.DisksClientGrantAccessResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.DisksClientListResponse]]
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.DisksClientListByResourceGroupResponse]]
+	beginRevokeAccess		*tracker[azfake.PollerResponder[armcompute.DisksClientRevokeAccessResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.DisksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DisksServerTransport.

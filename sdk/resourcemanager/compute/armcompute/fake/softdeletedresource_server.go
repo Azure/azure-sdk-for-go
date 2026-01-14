@@ -30,16 +30,16 @@ type SoftDeletedResourceServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSoftDeletedResourceServerTransport(srv *SoftDeletedResourceServer) *SoftDeletedResourceServerTransport {
 	return &SoftDeletedResourceServerTransport{
-		srv:                        srv,
-		newListByArtifactNamePager: newTracker[azfake.PagerResponder[armcompute.SoftDeletedResourceClientListByArtifactNameResponse]](),
+		srv:				srv,
+		newListByArtifactNamePager:	newTracker[azfake.PagerResponder[armcompute.SoftDeletedResourceClientListByArtifactNameResponse]](),
 	}
 }
 
 // SoftDeletedResourceServerTransport connects instances of armcompute.SoftDeletedResourceClient to instances of SoftDeletedResourceServer.
 // Don't use this type directly, use NewSoftDeletedResourceServerTransport instead.
 type SoftDeletedResourceServerTransport struct {
-	srv                        *SoftDeletedResourceServer
-	newListByArtifactNamePager *tracker[azfake.PagerResponder[armcompute.SoftDeletedResourceClientListByArtifactNameResponse]]
+	srv				*SoftDeletedResourceServer
+	newListByArtifactNamePager	*tracker[azfake.PagerResponder[armcompute.SoftDeletedResourceClientListByArtifactNameResponse]]
 }
 
 // Do implements the policy.Transporter interface for SoftDeletedResourceServerTransport.

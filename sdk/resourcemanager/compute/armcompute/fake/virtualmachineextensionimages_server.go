@@ -23,15 +23,15 @@ import (
 type VirtualMachineExtensionImagesServer struct {
 	// Get is the fake for method VirtualMachineExtensionImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, publisherName string, typeParam string, version string, options *armcompute.VirtualMachineExtensionImagesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, location string, publisherName string, typeParam string, version string, options *armcompute.VirtualMachineExtensionImagesClientGetOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// ListTypes is the fake for method VirtualMachineExtensionImagesClient.ListTypes
 	// HTTP status codes to indicate success: http.StatusOK
-	ListTypes func(ctx context.Context, location string, publisherName string, options *armcompute.VirtualMachineExtensionImagesClientListTypesOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientListTypesResponse], errResp azfake.ErrorResponder)
+	ListTypes	func(ctx context.Context, location string, publisherName string, options *armcompute.VirtualMachineExtensionImagesClientListTypesOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientListTypesResponse], errResp azfake.ErrorResponder)
 
 	// ListVersions is the fake for method VirtualMachineExtensionImagesClient.ListVersions
 	// HTTP status codes to indicate success: http.StatusOK
-	ListVersions func(ctx context.Context, location string, publisherName string, typeParam string, options *armcompute.VirtualMachineExtensionImagesClientListVersionsOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientListVersionsResponse], errResp azfake.ErrorResponder)
+	ListVersions	func(ctx context.Context, location string, publisherName string, typeParam string, options *armcompute.VirtualMachineExtensionImagesClientListVersionsOptions) (resp azfake.Responder[armcompute.VirtualMachineExtensionImagesClientListVersionsResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualMachineExtensionImagesServerTransport creates a new instance of VirtualMachineExtensionImagesServerTransport with the provided implementation.
@@ -219,9 +219,9 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 	var options *armcompute.VirtualMachineExtensionImagesClientListVersionsOptions
 	if filterParam != nil || topParam != nil || orderbyParam != nil {
 		options = &armcompute.VirtualMachineExtensionImagesClientListVersionsOptions{
-			Filter:  filterParam,
-			Top:     topParam,
-			Orderby: orderbyParam,
+			Filter:		filterParam,
+			Top:		topParam,
+			Orderby:	orderbyParam,
 		}
 	}
 	respr, errRespr := v.srv.ListVersions(req.Context(), locationParam, publisherNameParam, typeParamParam, options)

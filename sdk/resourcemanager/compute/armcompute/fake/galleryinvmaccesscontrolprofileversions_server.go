@@ -23,23 +23,23 @@ import (
 type GalleryInVMAccessControlProfileVersionsServer struct {
 	// BeginCreateOrUpdate is the fake for method GalleryInVMAccessControlProfileVersionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, galleryInVMAccessControlProfileVersion armcompute.GalleryInVMAccessControlProfileVersion, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, galleryInVMAccessControlProfileVersion armcompute.GalleryInVMAccessControlProfileVersion, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method GalleryInVMAccessControlProfileVersionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method GalleryInVMAccessControlProfileVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryInVMAccessControlProfileVersionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientGetOptions) (resp azfake.Responder[armcompute.GalleryInVMAccessControlProfileVersionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByGalleryInVMAccessControlProfilePager is the fake for method GalleryInVMAccessControlProfileVersionsClient.NewListByGalleryInVMAccessControlProfilePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByGalleryInVMAccessControlProfilePager func(resourceGroupName string, galleryName string, inVMAccessControlProfileName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions) (resp azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse])
+	NewListByGalleryInVMAccessControlProfilePager	func(resourceGroupName string, galleryName string, inVMAccessControlProfileName string, options *armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileOptions) (resp azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse])
 
 	// BeginUpdate is the fake for method GalleryInVMAccessControlProfileVersionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, galleryInVMAccessControlProfileVersion armcompute.GalleryInVMAccessControlProfileVersionUpdate, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, galleryName string, inVMAccessControlProfileName string, inVMAccessControlProfileVersionName string, galleryInVMAccessControlProfileVersion armcompute.GalleryInVMAccessControlProfileVersionUpdate, options *armcompute.GalleryInVMAccessControlProfileVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleryInVMAccessControlProfileVersionsServerTransport creates a new instance of GalleryInVMAccessControlProfileVersionsServerTransport with the provided implementation.
@@ -47,22 +47,22 @@ type GalleryInVMAccessControlProfileVersionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGalleryInVMAccessControlProfileVersionsServerTransport(srv *GalleryInVMAccessControlProfileVersionsServer) *GalleryInVMAccessControlProfileVersionsServerTransport {
 	return &GalleryInVMAccessControlProfileVersionsServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]](),
-		beginDelete:         newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse]](),
-		newListByGalleryInVMAccessControlProfilePager: newTracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]](),
-		beginUpdate: newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]](),
+		srv:			srv,
+		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]](),
+		beginDelete:		newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse]](),
+		newListByGalleryInVMAccessControlProfilePager:	newTracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]](),
+		beginUpdate:	newTracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]](),
 	}
 }
 
 // GalleryInVMAccessControlProfileVersionsServerTransport connects instances of armcompute.GalleryInVMAccessControlProfileVersionsClient to instances of GalleryInVMAccessControlProfileVersionsServer.
 // Don't use this type directly, use NewGalleryInVMAccessControlProfileVersionsServerTransport instead.
 type GalleryInVMAccessControlProfileVersionsServerTransport struct {
-	srv                                           *GalleryInVMAccessControlProfileVersionsServer
-	beginCreateOrUpdate                           *tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]]
-	beginDelete                                   *tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse]]
-	newListByGalleryInVMAccessControlProfilePager *tracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]]
-	beginUpdate                                   *tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]]
+	srv						*GalleryInVMAccessControlProfileVersionsServer
+	beginCreateOrUpdate				*tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientCreateOrUpdateResponse]]
+	beginDelete					*tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientDeleteResponse]]
+	newListByGalleryInVMAccessControlProfilePager	*tracker[azfake.PagerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientListByGalleryInVMAccessControlProfileResponse]]
+	beginUpdate					*tracker[azfake.PollerResponder[armcompute.GalleryInVMAccessControlProfileVersionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryInVMAccessControlProfileVersionsServerTransport.

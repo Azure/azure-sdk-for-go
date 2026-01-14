@@ -23,27 +23,27 @@ import (
 type ProximityPlacementGroupsServer struct {
 	// CreateOrUpdate is the fake for method ProximityPlacementGroupsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters armcompute.ProximityPlacementGroup, options *armcompute.ProximityPlacementGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters armcompute.ProximityPlacementGroup, options *armcompute.ProximityPlacementGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method ProximityPlacementGroupsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK
-	Delete func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *armcompute.ProximityPlacementGroupsClientDeleteOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *armcompute.ProximityPlacementGroupsClientDeleteOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ProximityPlacementGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *armcompute.ProximityPlacementGroupsClientGetOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, options *armcompute.ProximityPlacementGroupsClientGetOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method ProximityPlacementGroupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.ProximityPlacementGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.ProximityPlacementGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method ProximityPlacementGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armcompute.ProximityPlacementGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager	func(options *armcompute.ProximityPlacementGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse])
 
 	// Update is the fake for method ProximityPlacementGroupsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters armcompute.ProximityPlacementGroupUpdate, options *armcompute.ProximityPlacementGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, proximityPlacementGroupName string, parameters armcompute.ProximityPlacementGroupUpdate, options *armcompute.ProximityPlacementGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.ProximityPlacementGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewProximityPlacementGroupsServerTransport creates a new instance of ProximityPlacementGroupsServerTransport with the provided implementation.
@@ -51,18 +51,18 @@ type ProximityPlacementGroupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewProximityPlacementGroupsServerTransport(srv *ProximityPlacementGroupsServer) *ProximityPlacementGroupsServerTransport {
 	return &ProximityPlacementGroupsServerTransport{
-		srv:                         srv,
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]](),
+		srv:				srv,
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]](),
 	}
 }
 
 // ProximityPlacementGroupsServerTransport connects instances of armcompute.ProximityPlacementGroupsClient to instances of ProximityPlacementGroupsServer.
 // Don't use this type directly, use NewProximityPlacementGroupsServerTransport instead.
 type ProximityPlacementGroupsServerTransport struct {
-	srv                         *ProximityPlacementGroupsServer
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]]
+	srv				*ProximityPlacementGroupsServer
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armcompute.ProximityPlacementGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ProximityPlacementGroupsServerTransport.

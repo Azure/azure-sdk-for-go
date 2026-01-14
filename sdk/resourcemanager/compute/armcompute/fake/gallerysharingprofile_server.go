@@ -30,16 +30,16 @@ type GallerySharingProfileServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGallerySharingProfileServerTransport(srv *GallerySharingProfileServer) *GallerySharingProfileServerTransport {
 	return &GallerySharingProfileServerTransport{
-		srv:         srv,
-		beginUpdate: newTracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]](),
+		srv:		srv,
+		beginUpdate:	newTracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]](),
 	}
 }
 
 // GallerySharingProfileServerTransport connects instances of armcompute.GallerySharingProfileClient to instances of GallerySharingProfileServer.
 // Don't use this type directly, use NewGallerySharingProfileServerTransport instead.
 type GallerySharingProfileServerTransport struct {
-	srv         *GallerySharingProfileServer
-	beginUpdate *tracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]]
+	srv		*GallerySharingProfileServer
+	beginUpdate	*tracker[azfake.PollerResponder[armcompute.GallerySharingProfileClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GallerySharingProfileServerTransport.

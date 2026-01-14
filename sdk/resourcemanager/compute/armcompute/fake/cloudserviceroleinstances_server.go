@@ -23,35 +23,35 @@ import (
 type CloudServiceRoleInstancesServer struct {
 	// BeginDelete is the fake for method CloudServiceRoleInstancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CloudServiceRoleInstancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientGetOptions) (resp azfake.Responder[armcompute.CloudServiceRoleInstancesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientGetOptions) (resp azfake.Responder[armcompute.CloudServiceRoleInstancesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceView is the fake for method CloudServiceRoleInstancesClient.GetInstanceView
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceView func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientGetInstanceViewOptions) (resp azfake.Responder[armcompute.CloudServiceRoleInstancesClientGetInstanceViewResponse], errResp azfake.ErrorResponder)
+	GetInstanceView	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientGetInstanceViewOptions) (resp azfake.Responder[armcompute.CloudServiceRoleInstancesClientGetInstanceViewResponse], errResp azfake.ErrorResponder)
 
 	// GetRemoteDesktopFile is the fake for method CloudServiceRoleInstancesClient.GetRemoteDesktopFile
 	// HTTP status codes to indicate success: http.StatusOK
-	GetRemoteDesktopFile func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions) (resp azfake.Responder[armcompute.CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse], errResp azfake.ErrorResponder)
+	GetRemoteDesktopFile	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientGetRemoteDesktopFileOptions) (resp azfake.Responder[armcompute.CloudServiceRoleInstancesClientGetRemoteDesktopFileResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CloudServiceRoleInstancesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse])
+	NewListPager	func(resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientListOptions) (resp azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse])
 
 	// BeginRebuild is the fake for method CloudServiceRoleInstancesClient.BeginRebuild
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRebuild func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginRebuildOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse], errResp azfake.ErrorResponder)
+	BeginRebuild	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginRebuildOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimage is the fake for method CloudServiceRoleInstancesClient.BeginReimage
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginReimage func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginReimageOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse], errResp azfake.ErrorResponder)
+	BeginReimage	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginReimageOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method CloudServiceRoleInstancesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestart func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse], errResp azfake.ErrorResponder)
+	BeginRestart	func(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, options *armcompute.CloudServiceRoleInstancesClientBeginRestartOptions) (resp azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudServiceRoleInstancesServerTransport creates a new instance of CloudServiceRoleInstancesServerTransport with the provided implementation.
@@ -59,24 +59,24 @@ type CloudServiceRoleInstancesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCloudServiceRoleInstancesServerTransport(srv *CloudServiceRoleInstancesServer) *CloudServiceRoleInstancesServerTransport {
 	return &CloudServiceRoleInstancesServerTransport{
-		srv:          srv,
-		beginDelete:  newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]](),
-		beginRebuild: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]](),
-		beginReimage: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]](),
-		beginRestart: newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]](),
+		srv:		srv,
+		beginDelete:	newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]](),
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]](),
+		beginRebuild:	newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]](),
+		beginReimage:	newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]](),
+		beginRestart:	newTracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]](),
 	}
 }
 
 // CloudServiceRoleInstancesServerTransport connects instances of armcompute.CloudServiceRoleInstancesClient to instances of CloudServiceRoleInstancesServer.
 // Don't use this type directly, use NewCloudServiceRoleInstancesServerTransport instead.
 type CloudServiceRoleInstancesServerTransport struct {
-	srv          *CloudServiceRoleInstancesServer
-	beginDelete  *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]]
-	newListPager *tracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]]
-	beginRebuild *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]]
-	beginReimage *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]]
-	beginRestart *tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]]
+	srv		*CloudServiceRoleInstancesServer
+	beginDelete	*tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientDeleteResponse]]
+	newListPager	*tracker[azfake.PagerResponder[armcompute.CloudServiceRoleInstancesClientListResponse]]
+	beginRebuild	*tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRebuildResponse]]
+	beginReimage	*tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientReimageResponse]]
+	beginRestart	*tracker[azfake.PollerResponder[armcompute.CloudServiceRoleInstancesClientRestartResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudServiceRoleInstancesServerTransport.
@@ -302,8 +302,8 @@ func (c *CloudServiceRoleInstancesServerTransport) dispatchGetRemoteDesktopFile(
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:        server.GetResponse(respr).Body,
-		ContentType: req.Header.Get("Content-Type"),
+		Body:		server.GetResponse(respr).Body,
+		ContentType:	req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err

@@ -23,27 +23,27 @@ import (
 type RestorePointCollectionsServer struct {
 	// CreateOrUpdate is the fake for method RestorePointCollectionsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters armcompute.RestorePointCollection, options *armcompute.RestorePointCollectionsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.RestorePointCollectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters armcompute.RestorePointCollection, options *armcompute.RestorePointCollectionsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.RestorePointCollectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method RestorePointCollectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *armcompute.RestorePointCollectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *armcompute.RestorePointCollectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RestorePointCollectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *armcompute.RestorePointCollectionsClientGetOptions) (resp azfake.Responder[armcompute.RestorePointCollectionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, options *armcompute.RestorePointCollectionsClientGetOptions) (resp azfake.Responder[armcompute.RestorePointCollectionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method RestorePointCollectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armcompute.RestorePointCollectionsClientListOptions) (resp azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse])
+	NewListPager	func(resourceGroupName string, options *armcompute.RestorePointCollectionsClientListOptions) (resp azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse])
 
 	// NewListAllPager is the fake for method RestorePointCollectionsClient.NewListAllPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAllPager func(options *armcompute.RestorePointCollectionsClientListAllOptions) (resp azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse])
+	NewListAllPager	func(options *armcompute.RestorePointCollectionsClientListAllOptions) (resp azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse])
 
 	// Update is the fake for method RestorePointCollectionsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters armcompute.RestorePointCollectionUpdate, options *armcompute.RestorePointCollectionsClientUpdateOptions) (resp azfake.Responder[armcompute.RestorePointCollectionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters armcompute.RestorePointCollectionUpdate, options *armcompute.RestorePointCollectionsClientUpdateOptions) (resp azfake.Responder[armcompute.RestorePointCollectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRestorePointCollectionsServerTransport creates a new instance of RestorePointCollectionsServerTransport with the provided implementation.
@@ -51,20 +51,20 @@ type RestorePointCollectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRestorePointCollectionsServerTransport(srv *RestorePointCollectionsServer) *RestorePointCollectionsServerTransport {
 	return &RestorePointCollectionsServerTransport{
-		srv:             srv,
-		beginDelete:     newTracker[azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]](),
-		newListPager:    newTracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]](),
-		newListAllPager: newTracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]](),
+		srv:			srv,
+		beginDelete:		newTracker[azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]](),
+		newListPager:		newTracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]](),
+		newListAllPager:	newTracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]](),
 	}
 }
 
 // RestorePointCollectionsServerTransport connects instances of armcompute.RestorePointCollectionsClient to instances of RestorePointCollectionsServer.
 // Don't use this type directly, use NewRestorePointCollectionsServerTransport instead.
 type RestorePointCollectionsServerTransport struct {
-	srv             *RestorePointCollectionsServer
-	beginDelete     *tracker[azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]]
-	newListPager    *tracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]]
-	newListAllPager *tracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]]
+	srv		*RestorePointCollectionsServer
+	beginDelete	*tracker[azfake.PollerResponder[armcompute.RestorePointCollectionsClientDeleteResponse]]
+	newListPager	*tracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListResponse]]
+	newListAllPager	*tracker[azfake.PagerResponder[armcompute.RestorePointCollectionsClientListAllResponse]]
 }
 
 // Do implements the policy.Transporter interface for RestorePointCollectionsServerTransport.

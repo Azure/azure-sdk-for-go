@@ -23,11 +23,11 @@ import (
 type SharedGalleryImagesServer struct {
 	// Get is the fake for method SharedGalleryImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *armcompute.SharedGalleryImagesClientGetOptions) (resp azfake.Responder[armcompute.SharedGalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *armcompute.SharedGalleryImagesClientGetOptions) (resp azfake.Responder[armcompute.SharedGalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method SharedGalleryImagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(location string, galleryUniqueName string, options *armcompute.SharedGalleryImagesClientListOptions) (resp azfake.PagerResponder[armcompute.SharedGalleryImagesClientListResponse])
+	NewListPager	func(location string, galleryUniqueName string, options *armcompute.SharedGalleryImagesClientListOptions) (resp azfake.PagerResponder[armcompute.SharedGalleryImagesClientListResponse])
 }
 
 // NewSharedGalleryImagesServerTransport creates a new instance of SharedGalleryImagesServerTransport with the provided implementation.
@@ -35,16 +35,16 @@ type SharedGalleryImagesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSharedGalleryImagesServerTransport(srv *SharedGalleryImagesServer) *SharedGalleryImagesServerTransport {
 	return &SharedGalleryImagesServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcompute.SharedGalleryImagesClientListResponse]](),
+		srv:		srv,
+		newListPager:	newTracker[azfake.PagerResponder[armcompute.SharedGalleryImagesClientListResponse]](),
 	}
 }
 
 // SharedGalleryImagesServerTransport connects instances of armcompute.SharedGalleryImagesClient to instances of SharedGalleryImagesServer.
 // Don't use this type directly, use NewSharedGalleryImagesServerTransport instead.
 type SharedGalleryImagesServerTransport struct {
-	srv          *SharedGalleryImagesServer
-	newListPager *tracker[azfake.PagerResponder[armcompute.SharedGalleryImagesClientListResponse]]
+	srv		*SharedGalleryImagesServer
+	newListPager	*tracker[azfake.PagerResponder[armcompute.SharedGalleryImagesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for SharedGalleryImagesServerTransport.

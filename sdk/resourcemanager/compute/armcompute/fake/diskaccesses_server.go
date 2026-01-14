@@ -23,47 +23,47 @@ import (
 type DiskAccessesServer struct {
 	// BeginCreateOrUpdate is the fake for method DiskAccessesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess armcompute.DiskAccess, options *armcompute.DiskAccessesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess armcompute.DiskAccess, options *armcompute.DiskAccessesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DiskAccessesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeleteAPrivateEndpointConnection is the fake for method DiskAccessesClient.BeginDeleteAPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *armcompute.DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAPrivateEndpointConnection	func(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *armcompute.DiskAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DiskAccessesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientGetOptions) (resp azfake.Responder[armcompute.DiskAccessesClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientGetOptions) (resp azfake.Responder[armcompute.DiskAccessesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetAPrivateEndpointConnection is the fake for method DiskAccessesClient.GetAPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *armcompute.DiskAccessesClientGetAPrivateEndpointConnectionOptions) (resp azfake.Responder[armcompute.DiskAccessesClientGetAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	GetAPrivateEndpointConnection	func(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, options *armcompute.DiskAccessesClientGetAPrivateEndpointConnectionOptions) (resp azfake.Responder[armcompute.DiskAccessesClientGetAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateLinkResources is the fake for method DiskAccessesClient.GetPrivateLinkResources
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateLinkResources func(ctx context.Context, resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientGetPrivateLinkResourcesOptions) (resp azfake.Responder[armcompute.DiskAccessesClientGetPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
+	GetPrivateLinkResources	func(ctx context.Context, resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientGetPrivateLinkResourcesOptions) (resp azfake.Responder[armcompute.DiskAccessesClientGetPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DiskAccessesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.DiskAccessesClientListOptions) (resp azfake.PagerResponder[armcompute.DiskAccessesClientListResponse])
+	NewListPager	func(options *armcompute.DiskAccessesClientListOptions) (resp azfake.PagerResponder[armcompute.DiskAccessesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method DiskAccessesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.DiskAccessesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.DiskAccessesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse])
 
 	// NewListPrivateEndpointConnectionsPager is the fake for method DiskAccessesClient.NewListPrivateEndpointConnectionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPrivateEndpointConnectionsPager func(resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientListPrivateEndpointConnectionsOptions) (resp azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse])
+	NewListPrivateEndpointConnectionsPager	func(resourceGroupName string, diskAccessName string, options *armcompute.DiskAccessesClientListPrivateEndpointConnectionsOptions) (resp azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse])
 
 	// BeginUpdate is the fake for method DiskAccessesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess armcompute.DiskAccessUpdate, options *armcompute.DiskAccessesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, diskAccessName string, diskAccess armcompute.DiskAccessUpdate, options *armcompute.DiskAccessesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdateAPrivateEndpointConnection is the fake for method DiskAccessesClient.BeginUpdateAPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateAPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection armcompute.PrivateEndpointConnection, options *armcompute.DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	BeginUpdateAPrivateEndpointConnection	func(ctx context.Context, resourceGroupName string, diskAccessName string, privateEndpointConnectionName string, privateEndpointConnection armcompute.PrivateEndpointConnection, options *armcompute.DiskAccessesClientBeginUpdateAPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiskAccessesServerTransport creates a new instance of DiskAccessesServerTransport with the provided implementation.
@@ -71,30 +71,30 @@ type DiskAccessesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskAccessesServerTransport(srv *DiskAccessesServer) *DiskAccessesServerTransport {
 	return &DiskAccessesServerTransport{
-		srv:                                    srv,
-		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]](),
-		beginDelete:                            newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]](),
-		beginDeleteAPrivateEndpointConnection:  newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]](),
-		newListPager:                           newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]](),
-		newListByResourceGroupPager:            newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]](),
-		newListPrivateEndpointConnectionsPager: newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]](),
-		beginUpdate:                            newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]](),
-		beginUpdateAPrivateEndpointConnection:  newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]](),
+		srv:					srv,
+		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]](),
+		beginDelete:				newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]](),
+		beginDeleteAPrivateEndpointConnection:	newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]](),
+		newListPager:				newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]](),
+		newListByResourceGroupPager:		newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]](),
+		newListPrivateEndpointConnectionsPager:	newTracker[azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]](),
+		beginUpdate:				newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]](),
+		beginUpdateAPrivateEndpointConnection:	newTracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]](),
 	}
 }
 
 // DiskAccessesServerTransport connects instances of armcompute.DiskAccessesClient to instances of DiskAccessesServer.
 // Don't use this type directly, use NewDiskAccessesServerTransport instead.
 type DiskAccessesServerTransport struct {
-	srv                                    *DiskAccessesServer
-	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]]
-	beginDelete                            *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]]
-	beginDeleteAPrivateEndpointConnection  *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]]
-	newListPager                           *tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]]
-	newListByResourceGroupPager            *tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]]
-	newListPrivateEndpointConnectionsPager *tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]]
-	beginUpdate                            *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]]
-	beginUpdateAPrivateEndpointConnection  *tracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]]
+	srv					*DiskAccessesServer
+	beginCreateOrUpdate			*tracker[azfake.PollerResponder[armcompute.DiskAccessesClientCreateOrUpdateResponse]]
+	beginDelete				*tracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteResponse]]
+	beginDeleteAPrivateEndpointConnection	*tracker[azfake.PollerResponder[armcompute.DiskAccessesClientDeleteAPrivateEndpointConnectionResponse]]
+	newListPager				*tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListResponse]]
+	newListByResourceGroupPager		*tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListByResourceGroupResponse]]
+	newListPrivateEndpointConnectionsPager	*tracker[azfake.PagerResponder[armcompute.DiskAccessesClientListPrivateEndpointConnectionsResponse]]
+	beginUpdate				*tracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateResponse]]
+	beginUpdateAPrivateEndpointConnection	*tracker[azfake.PollerResponder[armcompute.DiskAccessesClientUpdateAPrivateEndpointConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskAccessesServerTransport.

@@ -234,7 +234,7 @@ func TestLinkFailure(t *testing.T) {
 func TestLinksManagementRetry(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 	ns, links := newLinksForTest(t)
-	defer ns.Close(context.Background(), true)
+	defer func() { _ = ns.Close(context.Background(), true) }()
 	defer test.RequireClose(t, links)
 
 	var prevLWID LinkWithID[amqpwrap.RPCLink]

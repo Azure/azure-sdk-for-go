@@ -603,14 +603,14 @@ func TestProducerClient_SendBatchExample(t *testing.T) {
 	consumerClient, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, testParams.Cred, nil)
 	require.NoError(t, err)
 
-	defer consumerClient.Close(context.Background())
+	defer func() { _ = consumerClient.Close(context.Background()) }()
 
 	partitionClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(beforeSend),
 	})
 	require.NoError(t, err)
 
-	defer partitionClient.Close(context.Background())
+	defer func() { _ = partitionClient.Close(context.Background()) }()
 
 	receivedEvents, err := partitionClient.ReceiveEvents(context.Background(), 5, nil)
 	require.NoError(t, err)

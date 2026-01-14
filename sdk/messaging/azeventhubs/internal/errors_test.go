@@ -81,7 +81,7 @@ func TestGetRecoveryKind(t *testing.T) {
 	require.Equal(t, GetRecoveryKind(nil), RecoveryKindNone)
 	require.Equal(t, GetRecoveryKind(amqpwrap.ErrConnResetNeeded), RecoveryKindConn)
 	require.Equal(t, GetRecoveryKind(&amqp.LinkError{}), RecoveryKindLink)
-	require.Equal(t, GetRecoveryKind(RPCLinkClosedErr), RecoveryKindFatal)
+	require.Equal(t, GetRecoveryKind(ErrRPCLinkClosed), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(context.Canceled), RecoveryKindFatal)
 	require.Equal(t, GetRecoveryKind(&amqp.Error{Condition: amqp.ErrCondResourceLimitExceeded}), RecoveryKindFatal)
 

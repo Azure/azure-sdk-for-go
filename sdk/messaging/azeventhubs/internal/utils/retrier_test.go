@@ -481,7 +481,7 @@ func TestLinkRecoveryDelay(t *testing.T) {
 
 	t.Run("LinkRecoveryDelay with specific value", func(t *testing.T) {
 		var actualDelays []time.Duration
-		var lastTime time.Time = time.Now()
+		lastTime := time.Now()
 
 		err := Retry(context.Background(), testLogEvent, func() string { return "test" }, exported.RetryOptions{
 			MaxRetries:        2,
@@ -513,7 +513,7 @@ func TestLinkRecoveryDelay(t *testing.T) {
 
 	t.Run("LinkRecoveryDelay with negative value (no delay)", func(t *testing.T) {
 		var actualDelays []time.Duration
-		var lastTime time.Time = time.Now()
+		lastTime := time.Now()
 
 		err := Retry(context.Background(), testLogEvent, func() string { return "test" }, exported.RetryOptions{
 			MaxRetries:        2,
@@ -544,7 +544,7 @@ func TestLinkRecoveryDelay(t *testing.T) {
 
 	t.Run("LinkRecoveryDelay zero uses normal exponential backoff", func(t *testing.T) {
 		var actualDelays []time.Duration
-		var lastTime time.Time = time.Now()
+		lastTime := time.Now()
 
 		err := Retry(context.Background(), testLogEvent, func() string { return "test" }, exported.RetryOptions{
 			MaxRetries:        2,
@@ -578,7 +578,7 @@ func TestLinkRecoveryDelay(t *testing.T) {
 
 	t.Run("Normal error without UseLinkRecoveryDelay uses exponential backoff", func(t *testing.T) {
 		var actualDelays []time.Duration
-		var lastTime time.Time = time.Now()
+		lastTime := time.Now()
 
 		err := Retry(context.Background(), testLogEvent, func() string { return "test" }, exported.RetryOptions{
 			MaxRetries:        2,

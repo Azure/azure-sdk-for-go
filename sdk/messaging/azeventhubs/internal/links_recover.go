@@ -72,7 +72,7 @@ func (l LinkRetrier[LinkT]) Retry(ctx context.Context,
 				args.ResetAttempts()
 			}
 
-			if recoveryErr := l.RecoverIfNeeded(ctx, err, args); recoveryErr != nil {
+			if recoveryErr := l.RecoverIfNeeded(ctx, err); recoveryErr != nil {
 				// it's okay to return this error, and we're still in an okay state. The next loop through will end
 				// up reopening all the closed links and will either get the same error again (ie, network is _still_
 				// down) or will work and then things proceed as normal.
@@ -90,7 +90,7 @@ func (l LinkRetrier[LinkT]) Retry(ctx context.Context,
 
 // RecoverIfNeeded will check the error and pick the correct minimal recovery pattern (none, link only, connection and link, etc..)
 // NOTE: if 'ctx' is cancelled this function will still close out all the connections/links involved.
-func (l LinkRetrier[LinkT]) RecoverIfNeeded(ctx context.Context, err error, args *utils.RetryFnArgs) error {
+func (l LinkRetrier[LinkT]) RecoverIfNeeded(ctx context.Context, err error) error {
 	rk := GetRecoveryKind(err)
 
 	switch rk {
@@ -108,9 +108,6 @@ func (l LinkRetrier[LinkT]) RecoverIfNeeded(ctx context.Context, err error, args
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", formatLogPrefix(awErr.ConnID, awErr.LinkName, awErr.PartitionID), err)
 			return err
 		}
-
-		// Signal that the next retry should use link recovery delay
-		args.UseLinkRecoveryDelay()
 
 		return nil
 	case RecoveryKindConn:

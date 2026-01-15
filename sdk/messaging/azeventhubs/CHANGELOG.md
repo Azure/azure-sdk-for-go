@@ -1,11 +1,5 @@
 # Release History
 
-## 2.0.2 (Unreleased)
-
-### Features Added
-
-- Added immediate retry for link detach errors to handle go-amqp's asynchronous detach processing.
-
 ## 2.0.1 (2025-10-08)
 
 ### Bugs Fixed

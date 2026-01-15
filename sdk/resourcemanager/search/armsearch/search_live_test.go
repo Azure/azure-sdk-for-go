@@ -14,23 +14,23 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
 	"github.com/stretchr/testify/suite"
 )
 
 type SearchTestSuite struct {
 	suite.Suite
 
-	ctx                           context.Context
-	cred                          azcore.TokenCredential
-	options                       *arm.ClientOptions
-	searchServiceName             string
-	serviceId                     string
-	sharedPrivateLinkResourceName string
-	storageAccountName            string
-	location                      string
-	resourceGroupName             string
-	subscriptionId                string
+	ctx				context.Context
+	cred				azcore.TokenCredential
+	options				*arm.ClientOptions
+	searchServiceName		string
+	serviceId			string
+	sharedPrivateLinkResourceName	string
+	storageAccountName		string
+	location			string
+	resourceGroupName		string
+	subscriptionId			string
 }
 
 func (testsuite *SearchTestSuite) SetupSuite() {
@@ -69,22 +69,22 @@ func (testsuite *SearchTestSuite) Prepare() {
 	servicesClient, err := armsearch.NewServicesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = servicesClient.CheckNameAvailability(testsuite.ctx, armsearch.CheckNameAvailabilityInput{
-		Name: to.Ptr(testsuite.searchServiceName),
-		Type: to.Ptr("Microsoft.Search/searchServices"),
+		Name:	to.Ptr(testsuite.searchServiceName),
+		Type:	to.Ptr("Microsoft.Search/searchServices"),
 	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Services_CreateOrUpdate
 	fmt.Println("Call operation: Services_CreateOrUpdate")
 	servicesClientCreateOrUpdateResponsePoller, err := servicesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, armsearch.Service{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Tags: map[string]*string{
 			"app-name": to.Ptr("My e-commerce app"),
 		},
 		Properties: &armsearch.ServiceProperties{
-			HostingMode:    to.Ptr(armsearch.HostingModeDefault),
-			PartitionCount: to.Ptr[int32](1),
-			ReplicaCount:   to.Ptr[int32](3),
+			HostingMode:	to.Ptr(armsearch.HostingModeDefault),
+			PartitionCount:	to.Ptr[int32](1),
+			ReplicaCount:	to.Ptr[int32](3),
 		},
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
@@ -132,8 +132,8 @@ func (testsuite *SearchTestSuite) TestServices() {
 			ReplicaCount: to.Ptr[int32](2),
 		},
 		Tags: map[string]*string{
-			"app-name": to.Ptr("My e-commerce app"),
-			"new-tag":  to.Ptr("Adding a new tag"),
+			"app-name":	to.Ptr("My e-commerce app"),
+			"new-tag":	to.Ptr("Adding a new tag"),
 		},
 	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
 	testsuite.Require().NoError(err)
@@ -145,74 +145,74 @@ func (testsuite *SearchTestSuite) TestSharedPrivateLinkResources() {
 	var err error
 	// From step Create_StorageAccount
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"outputs": map[string]any{
 			"storageAccountId": map[string]any{
-				"type":  "string",
-				"value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+				"type":		"string",
+				"value":	"[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
 			},
 		},
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"storageAccountName": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.storageAccountName,
+				"type":		"string",
+				"defaultValue":	testsuite.storageAccountName,
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('storageAccountName')]",
-				"type":       "Microsoft.Storage/storageAccounts",
-				"apiVersion": "2022-05-01",
-				"kind":       "StorageV2",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('storageAccountName')]",
+				"type":		"Microsoft.Storage/storageAccounts",
+				"apiVersion":	"2022-05-01",
+				"kind":		"StorageV2",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"accessTier":                   "Hot",
-					"allowBlobPublicAccess":        true,
-					"allowCrossTenantReplication":  true,
-					"allowSharedKeyAccess":         true,
-					"defaultToOAuthAuthentication": false,
-					"dnsEndpointType":              "Standard",
+					"accessTier":			"Hot",
+					"allowBlobPublicAccess":	true,
+					"allowCrossTenantReplication":	true,
+					"allowSharedKeyAccess":		true,
+					"defaultToOAuthAuthentication":	false,
+					"dnsEndpointType":		"Standard",
 					"encryption": map[string]any{
-						"keySource":                       "Microsoft.Storage",
-						"requireInfrastructureEncryption": false,
+						"keySource":				"Microsoft.Storage",
+						"requireInfrastructureEncryption":	false,
 						"services": map[string]any{
 							"blob": map[string]any{
-								"enabled": true,
-								"keyType": "Account",
+								"enabled":	true,
+								"keyType":	"Account",
 							},
 							"file": map[string]any{
-								"enabled": true,
-								"keyType": "Account",
+								"enabled":	true,
+								"keyType":	"Account",
 							},
 						},
 					},
-					"minimumTlsVersion": "TLS1_2",
+					"minimumTlsVersion":	"TLS1_2",
 					"networkAcls": map[string]any{
-						"bypass":              "AzureServices",
-						"defaultAction":       "Allow",
-						"ipRules":             []any{},
-						"virtualNetworkRules": []any{},
+						"bypass":		"AzureServices",
+						"defaultAction":	"Allow",
+						"ipRules":		[]any{},
+						"virtualNetworkRules":	[]any{},
 					},
-					"publicNetworkAccess":      "Enabled",
-					"supportsHttpsTrafficOnly": true,
+					"publicNetworkAccess":		"Enabled",
+					"supportsHttpsTrafficOnly":	true,
 				},
 				"sku": map[string]any{
-					"name": "Standard_RAGRS",
-					"tier": "Standard",
+					"name":	"Standard_RAGRS",
+					"tier":	"Standard",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)
@@ -225,9 +225,9 @@ func (testsuite *SearchTestSuite) TestSharedPrivateLinkResources() {
 	testsuite.Require().NoError(err)
 	sharedPrivateLinkResourcesClientCreateOrUpdateResponsePoller, err := sharedPrivateLinkResourcesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, testsuite.sharedPrivateLinkResourceName, armsearch.SharedPrivateLinkResource{
 		Properties: &armsearch.SharedPrivateLinkResourceProperties{
-			GroupID:               to.Ptr("blob"),
-			PrivateLinkResourceID: to.Ptr(storageAccountId),
-			RequestMessage:        to.Ptr("please approve"),
+			GroupID:		to.Ptr("blob"),
+			PrivateLinkResourceID:	to.Ptr(storageAccountId),
+			RequestMessage:		to.Ptr("please approve"),
 		},
 	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
 	testsuite.Require().NoError(err)
@@ -262,78 +262,78 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 	var err error
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"networkInterfaceName": map[string]any{
-				"type":         "string",
-				"defaultValue": "endpointsearch-nic",
+				"type":		"string",
+				"defaultValue":	"endpointsearch-nic",
 			},
 			"privateEndpointName": map[string]any{
-				"type":         "string",
-				"defaultValue": "endpointsearch",
+				"type":		"string",
+				"defaultValue":	"endpointsearch",
 			},
 			"serviceId": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.serviceId,
+				"type":		"string",
+				"defaultValue":	testsuite.serviceId,
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "searchvnet",
+				"type":		"string",
+				"defaultValue":	"searchvnet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []any{
 						map[string]any{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]any{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []any{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]any{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []any{},
+					"virtualNetworkPeerings":	[]any{},
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('networkInterfaceName')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('networkInterfaceName')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"dnsSettings": map[string]any{
 						"dnsServers": []any{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []any{
 						map[string]any{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]any{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]any{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -343,29 +343,29 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('privateEndpointName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"customDnsConfigs":                    []any{},
-					"manualPrivateLinkServiceConnections": []any{},
+					"customDnsConfigs":			[]any{},
+					"manualPrivateLinkServiceConnections":	[]any{},
 					"privateLinkServiceConnections": []any{
 						map[string]any{
-							"name": "[parameters('privateEndpointName')]",
+							"name":	"[parameters('privateEndpointName')]",
 							"properties": map[string]any{
 								"groupIds": []any{
 									"searchService",
 								},
 								"privateLinkServiceConnectionState": map[string]any{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('serviceId')]",
+								"privateLinkServiceId":	"[parameters('serviceId')]",
 							},
 						},
 					},
@@ -375,26 +375,26 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 				},
 			},
 			map[string]any{
-				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
-				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('virtualNetworksName'), '/default')]",
+				"type":		"Microsoft.Network/virtualNetworks/subnets",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
-					"addressPrefix":                     "10.0.0.0/24",
-					"delegations":                       []any{},
-					"privateEndpointNetworkPolicies":    "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
+					"addressPrefix":			"10.0.0.0/24",
+					"delegations":				[]any{},
+					"privateEndpointNetworkPolicies":	"Disabled",
+					"privateLinkServiceNetworkPolicies":	"Enabled",
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -418,8 +418,8 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 	_, err = privateEndpointConnectionsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, privateEndpointConnectionName, armsearch.PrivateEndpointConnection{
 		Properties: &armsearch.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armsearch.PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState{
-				Description: to.Ptr("Rejected for some reason"),
-				Status:      to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
+				Description:	to.Ptr("Rejected for some reason"),
+				Status:		to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
 			},
 		},
 	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)

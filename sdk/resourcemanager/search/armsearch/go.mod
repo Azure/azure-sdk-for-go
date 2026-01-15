@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2
 
 go 1.24.0
 

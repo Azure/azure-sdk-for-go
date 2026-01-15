@@ -350,7 +350,7 @@ func (client *EdgeActionExecutionFiltersClient) listByEdgeActionHandleResponse(r
 //   - properties - The resource properties to be updated.
 //   - options - EdgeActionExecutionFiltersClientBeginUpdateOptions contains the optional parameters for the EdgeActionExecutionFiltersClient.BeginUpdate
 //     method.
-func (client *EdgeActionExecutionFiltersClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilter, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*runtime.Poller[EdgeActionExecutionFiltersClientUpdateResponse], error) {
+func (client *EdgeActionExecutionFiltersClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*runtime.Poller[EdgeActionExecutionFiltersClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, edgeActionName, executionFilter, properties, options)
 		if err != nil {
@@ -371,7 +371,7 @@ func (client *EdgeActionExecutionFiltersClient) BeginUpdate(ctx context.Context,
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview
-func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilter, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*http.Response, error) {
+func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionExecutionFiltersClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -393,7 +393,7 @@ func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, reso
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EdgeActionExecutionFiltersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilter, _ *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *EdgeActionExecutionFiltersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, _ *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/executionFilters/{executionFilter}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

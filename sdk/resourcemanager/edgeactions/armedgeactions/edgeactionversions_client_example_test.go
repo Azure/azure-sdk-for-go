@@ -268,8 +268,8 @@ func ExampleEdgeActionVersionsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginUpdate(ctx, "testrg", "edgeAction1", "version1", armedgeactions.EdgeActionVersion{
-		Properties: &armedgeactions.EdgeActionVersionProperties{
+	poller, err := clientFactory.NewEdgeActionVersionsClient().BeginUpdate(ctx, "testrg", "edgeAction1", "version1", armedgeactions.EdgeActionVersionUpdate{
+		Properties: &armedgeactions.EdgeActionVersionUpdateProperties{
 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeOthers),
 		},
 	}, nil)

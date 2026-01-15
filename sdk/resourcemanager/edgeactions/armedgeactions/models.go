@@ -94,6 +94,27 @@ type EdgeActionExecutionFilterProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// EdgeActionExecutionFilterUpdate - The type used for update operations of the EdgeActionExecutionFilter.
+type EdgeActionExecutionFilterUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *EdgeActionExecutionFilterUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// EdgeActionExecutionFilterUpdateProperties - The updatable properties of the EdgeActionExecutionFilter.
+type EdgeActionExecutionFilterUpdateProperties struct {
+	// Custom Header Key associated with the execution filter
+	ExecutionFilterIdentifierHeaderName *string
+
+	// Custom Header Value associated with the execution filter
+	ExecutionFilterIdentifierHeaderValue *string
+
+	// The referenced versionId of the edgeaction version
+	VersionID *string
+}
+
 // EdgeActionListResult - The response of a EdgeAction list operation.
 type EdgeActionListResult struct {
 	// REQUIRED; The EdgeAction items on this page
@@ -110,6 +131,22 @@ type EdgeActionProperties struct {
 
 	// READ-ONLY; The provisioning state of the edge action
 	ProvisioningState *ProvisioningState
+}
+
+// EdgeActionPropertiesUpdate - Represents an edge action properties
+type EdgeActionPropertiesUpdate struct {
+}
+
+// EdgeActionUpdate - The type used for update operations of the EdgeAction.
+type EdgeActionUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *EdgeActionPropertiesUpdate
+
+	// The sku type of the edge action
+	SKU *SKUTypeUpdate
+
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // EdgeActionVersion - Concrete tracked resource types can be created by aliasing this type using a specific property type.
@@ -163,12 +200,39 @@ type EdgeActionVersionProperties struct {
 	ValidationStatus *EdgeActionVersionValidationStatus
 }
 
+// EdgeActionVersionUpdate - The type used for update operations of the EdgeActionVersion.
+type EdgeActionVersionUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *EdgeActionVersionUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// EdgeActionVersionUpdateProperties - The updatable properties of the EdgeActionVersion.
+type EdgeActionVersionUpdateProperties struct {
+	// The deployment type
+	DeploymentType *EdgeActionVersionDeploymentType
+
+	// The active state
+	IsDefaultVersion *EdgeActionIsDefaultVersion
+}
+
 // SKUType - The SKU type for the edge action
 type SKUType struct {
 	// REQUIRED; The name of the SKU
 	Name *string
 
 	// REQUIRED; The tier of the SKU
+	Tier *string
+}
+
+// SKUTypeUpdate - The SKU type for update operations
+type SKUTypeUpdate struct {
+	// The name of the SKU
+	Name *string
+
+	// The tier of the SKU
 	Tier *string
 }
 

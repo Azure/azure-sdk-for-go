@@ -42,7 +42,7 @@ type Server struct {
 
 	// BeginUpdate is the fake for method Client.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, properties armedgeactions.EdgeAction, options *armedgeactions.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.ClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, properties armedgeactions.EdgeActionUpdate, options *armedgeactions.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.ClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -331,7 +331,7 @@ func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armedgeactions.EdgeAction](req)
+		body, err := server.UnmarshalRequestAsJSON[armedgeactions.EdgeActionUpdate](req)
 		if err != nil {
 			return nil, err
 		}

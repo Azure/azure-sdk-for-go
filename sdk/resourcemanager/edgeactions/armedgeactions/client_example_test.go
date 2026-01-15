@@ -250,8 +250,8 @@ func ExampleClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "testrg", "edgeAction1", armedgeactions.EdgeAction{
-		SKU: &armedgeactions.SKUType{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "testrg", "edgeAction1", armedgeactions.EdgeActionUpdate{
+		SKU: &armedgeactions.SKUTypeUpdate{
 			Name: to.Ptr("Standard"),
 			Tier: to.Ptr("Standard"),
 		},

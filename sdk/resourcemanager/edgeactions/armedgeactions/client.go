@@ -379,7 +379,7 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 //   - edgeActionName - The name of the Edge Action
 //   - properties - The resource properties to be updated.
 //   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, properties EdgeAction, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
+func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, properties EdgeActionUpdate, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, edgeActionName, properties, options)
 		if err != nil {
@@ -400,7 +400,7 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string,
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview
-func (client *Client) update(ctx context.Context, resourceGroupName string, edgeActionName string, properties EdgeAction, options *ClientBeginUpdateOptions) (*http.Response, error) {
+func (client *Client) update(ctx context.Context, resourceGroupName string, edgeActionName string, properties EdgeActionUpdate, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -422,7 +422,7 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, edge
 }
 
 // updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, properties EdgeAction, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, properties EdgeActionUpdate, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

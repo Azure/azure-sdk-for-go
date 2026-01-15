@@ -596,7 +596,7 @@ func (client *EdgeActionVersionsClient) swapDefaultCreateRequest(ctx context.Con
 //   - properties - The resource properties to be updated.
 //   - options - EdgeActionVersionsClientBeginUpdateOptions contains the optional parameters for the EdgeActionVersionsClient.BeginUpdate
 //     method.
-func (client *EdgeActionVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersion, options *EdgeActionVersionsClientBeginUpdateOptions) (*runtime.Poller[EdgeActionVersionsClientUpdateResponse], error) {
+func (client *EdgeActionVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*runtime.Poller[EdgeActionVersionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, edgeActionName, version, properties, options)
 		if err != nil {
@@ -617,7 +617,7 @@ func (client *EdgeActionVersionsClient) BeginUpdate(ctx context.Context, resourc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview
-func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersion, options *EdgeActionVersionsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -639,7 +639,7 @@ func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGrou
 }
 
 // updateCreateRequest creates the Update request.
-func (client *EdgeActionVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersion, _ *EdgeActionVersionsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *EdgeActionVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, _ *EdgeActionVersionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

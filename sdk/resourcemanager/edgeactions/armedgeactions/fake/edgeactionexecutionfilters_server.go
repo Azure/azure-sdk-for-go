@@ -38,7 +38,7 @@ type EdgeActionExecutionFiltersServer struct {
 
 	// BeginUpdate is the fake for method EdgeActionExecutionFiltersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties armedgeactions.EdgeActionExecutionFilter, options *armedgeactions.EdgeActionExecutionFiltersClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties armedgeactions.EdgeActionExecutionFilterUpdate, options *armedgeactions.EdgeActionExecutionFiltersClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionExecutionFiltersClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEdgeActionExecutionFiltersServerTransport creates a new instance of EdgeActionExecutionFiltersServerTransport with the provided implementation.
@@ -306,7 +306,7 @@ func (e *EdgeActionExecutionFiltersServerTransport) dispatchBeginUpdate(req *htt
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armedgeactions.EdgeActionExecutionFilter](req)
+		body, err := server.UnmarshalRequestAsJSON[armedgeactions.EdgeActionExecutionFilterUpdate](req)
 		if err != nil {
 			return nil, err
 		}

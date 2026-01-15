@@ -50,7 +50,7 @@ type EdgeActionVersionsServer struct {
 
 	// BeginUpdate is the fake for method EdgeActionVersionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties armedgeactions.EdgeActionVersion, options *armedgeactions.EdgeActionVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties armedgeactions.EdgeActionVersionUpdate, options *armedgeactions.EdgeActionVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armedgeactions.EdgeActionVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEdgeActionVersionsServerTransport creates a new instance of EdgeActionVersionsServerTransport with the provided implementation.
@@ -478,7 +478,7 @@ func (e *EdgeActionVersionsServerTransport) dispatchBeginUpdate(req *http.Reques
 		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armedgeactions.EdgeActionVersion](req)
+		body, err := server.UnmarshalRequestAsJSON[armedgeactions.EdgeActionVersionUpdate](req)
 		if err != nil {
 			return nil, err
 		}

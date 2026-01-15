@@ -182,8 +182,8 @@ func ExampleEdgeActionExecutionFiltersClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewEdgeActionExecutionFiltersClient().BeginUpdate(ctx, "testrg", "edgeAction1", "executionFilter1", armedgeactions.EdgeActionExecutionFilter{
-		Properties: &armedgeactions.EdgeActionExecutionFilterProperties{
+	poller, err := clientFactory.NewEdgeActionExecutionFiltersClient().BeginUpdate(ctx, "testrg", "edgeAction1", "executionFilter1", armedgeactions.EdgeActionExecutionFilterUpdate{
+		Properties: &armedgeactions.EdgeActionExecutionFilterUpdateProperties{
 			ExecutionFilterIdentifierHeaderValue: to.Ptr("header-value2"),
 		},
 	}, nil)

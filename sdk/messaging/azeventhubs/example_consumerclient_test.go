@@ -56,7 +56,7 @@ func ExampleConsumerClient_NewPartitionClient_receiveEvents() {
 		panic(err)
 	}
 
-	defer partitionClient.Close(context.TODO())
+	defer func() { _ = partitionClient.Close(context.TODO()) }()
 
 	// Using a context with a timeout will allow ReceiveEvents() to return with events it
 	// collected in a minute, or earlier if it actually gets all 100 events we requested.
@@ -111,7 +111,7 @@ func ExampleConsumerClient_NewPartitionClient_configuringPrefetch() {
 		panic(err)
 	}
 
-	defer partitionClient.Close(context.TODO())
+	defer func() { _ = partitionClient.Close(context.TODO()) }()
 
 	// You can configure the prefetch buffer size as well. The default is 300.
 	partitionClientWithCustomPrefetch, err := consumerClient.NewPartitionClient(partitionID, &azeventhubs.PartitionClientOptions{
@@ -122,7 +122,7 @@ func ExampleConsumerClient_NewPartitionClient_configuringPrefetch() {
 		panic(err)
 	}
 
-	defer partitionClientWithCustomPrefetch.Close(context.TODO())
+	defer func() { _ = partitionClientWithCustomPrefetch.Close(context.TODO()) }()
 
 	// And prefetch can be disabled if you prefer to manually control the flow of events. Excess
 	// events (that arrive after your ReceiveEvents() call has completed) will still be
@@ -135,7 +135,7 @@ func ExampleConsumerClient_NewPartitionClient_configuringPrefetch() {
 		panic(err)
 	}
 
-	defer partitionClientWithPrefetchDisabled.Close(context.TODO())
+	defer func() { _ = partitionClientWithPrefetchDisabled.Close(context.TODO()) }()
 
 	// Using a context with a timeout will allow ReceiveEvents() to return with events it
 	// collected in a minute, or earlier if it actually gets all 100 events we requested.

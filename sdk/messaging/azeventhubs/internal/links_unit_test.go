@@ -7,8 +7,10 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/amqpwrap"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/v2/internal/test"
 	"github.com/Azure/go-amqp"
@@ -334,4 +336,144 @@ func TestLinks_linkRecoveryFailsWithLinkFailure(t *testing.T) {
 
 	// we still cleanup what we can (including cancelling our background negotiate claim loop)
 	require.ErrorIs(t, context.Canceled, negotiateClaimCtx.Err())
+}
+
+func TestLinks_QuickRetryOnLinkError(t *testing.T) {
+	t.Run("triggers quick retry on first LinkError", func(t *testing.T) {
+		fakeNS := &FakeNSForPartClient{}
+		var callCount int
+		var receivers []*FakeAMQPReceiver
+
+		links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+			return fmt.Sprintf("part:%s", partitionID)
+		}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (*FakeAMQPReceiver, error) {
+			receivers = append(receivers, &FakeAMQPReceiver{
+				NameForLink: fmt.Sprintf("Link%d", len(receivers)+1),
+			})
+			return receivers[len(receivers)-1], nil
+		})
+
+		// The callback will fail with LinkError on first two calls, then succeed.
+		// With quick retry, we expect:
+		// - Call 1 (attempt 0): LinkError -> triggers quick retry (resets to attempt 0)
+		// - Call 2 (attempt 0, after reset): LinkError -> no quick retry (already did it)
+		// - Calls 3+ would be retries with backoff, but we'll succeed on call 3
+		err := links.lr.Retry(context.Background(), exported.EventConn, "testOp", "0", exported.RetryOptions{
+			MaxRetries:    3,
+			RetryDelay:    1 * time.Millisecond,
+			MaxRetryDelay: 1 * time.Millisecond,
+		}, func(ctx context.Context, lwid LinkWithID[*FakeAMQPReceiver]) error {
+			callCount++
+			if callCount <= 2 {
+				return lwidToError(&amqp.LinkError{}, lwid)
+			}
+			return nil
+		})
+
+		require.NoError(t, err)
+		// We expect 3 calls: initial, quick retry, then success
+		require.Equal(t, 3, callCount, "expected 3 calls: initial + quick retry + success")
+	})
+
+	t.Run("quick retry only happens once per Retry call", func(t *testing.T) {
+		fakeNS := &FakeNSForPartClient{}
+		var callCount int
+		var receivers []*FakeAMQPReceiver
+
+		links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+			return fmt.Sprintf("part:%s", partitionID)
+		}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (*FakeAMQPReceiver, error) {
+			receivers = append(receivers, &FakeAMQPReceiver{
+				NameForLink: fmt.Sprintf("Link%d", len(receivers)+1),
+			})
+			return receivers[len(receivers)-1], nil
+		})
+
+		// All calls fail with LinkError. We expect:
+		// - Call 1 (attempt 0): LinkError -> triggers quick retry
+		// - Call 2 (attempt 0 after reset): LinkError -> no quick retry, proceeds to attempt 1
+		// - Call 3 (attempt 1): LinkError -> no quick retry
+		// - Call 4 (attempt 2): LinkError -> no quick retry
+		// - MaxRetries exhausted
+		err := links.lr.Retry(context.Background(), exported.EventConn, "testOp", "0", exported.RetryOptions{
+			MaxRetries:    2,
+			RetryDelay:    1 * time.Millisecond,
+			MaxRetryDelay: 1 * time.Millisecond,
+		}, func(ctx context.Context, lwid LinkWithID[*FakeAMQPReceiver]) error {
+			callCount++
+			return lwidToError(&amqp.LinkError{}, lwid)
+		})
+
+		require.Error(t, err)
+		// We expect 4 calls: initial + quick retry + 2 normal retries
+		require.Equal(t, 4, callCount, "expected 4 calls: initial + quick retry + 2 retries")
+	})
+
+	t.Run("no quick retry for non-LinkError", func(t *testing.T) {
+		fakeNS := &FakeNSForPartClient{
+			RecoverFn: func(ctx context.Context, clientRevision uint64) error {
+				return nil
+			},
+		}
+		var callCount int
+		var receivers []*FakeAMQPReceiver
+
+		links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+			return fmt.Sprintf("part:%s", partitionID)
+		}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (*FakeAMQPReceiver, error) {
+			receivers = append(receivers, &FakeAMQPReceiver{
+				NameForLink: fmt.Sprintf("Link%d", len(receivers)+1),
+			})
+			return receivers[len(receivers)-1], nil
+		})
+
+		// All calls fail with ConnError (not LinkError). No quick retry should trigger.
+		err := links.lr.Retry(context.Background(), exported.EventConn, "testOp", "0", exported.RetryOptions{
+			MaxRetries:    2,
+			RetryDelay:    1 * time.Millisecond,
+			MaxRetryDelay: 1 * time.Millisecond,
+		}, func(ctx context.Context, lwid LinkWithID[*FakeAMQPReceiver]) error {
+			callCount++
+			return lwidToError(&amqp.ConnError{}, lwid)
+		})
+
+		require.Error(t, err)
+		// We expect 3 calls: initial + 2 retries (no quick retry for ConnError)
+		require.Equal(t, 3, callCount, "expected 3 calls: initial + 2 retries (no quick retry)")
+	})
+
+	t.Run("no quick retry for ownership lost error", func(t *testing.T) {
+		fakeNS := &FakeNSForPartClient{}
+		var callCount int
+		var receivers []*FakeAMQPReceiver
+
+		links := NewLinks(fakeNS, "managementPath", func(partitionID string) string {
+			return fmt.Sprintf("part:%s", partitionID)
+		}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string, partitionID string) (*FakeAMQPReceiver, error) {
+			receivers = append(receivers, &FakeAMQPReceiver{
+				NameForLink: fmt.Sprintf("Link%d", len(receivers)+1),
+			})
+			return receivers[len(receivers)-1], nil
+		})
+
+		// Ownership lost error is fatal, so it should fail immediately without quick retry
+		ownershipLostErr := &amqp.LinkError{
+			RemoteErr: &amqp.Error{
+				Condition: amqp.ErrCond("amqp:link:stolen"),
+			},
+		}
+
+		err := links.lr.Retry(context.Background(), exported.EventConn, "testOp", "0", exported.RetryOptions{
+			MaxRetries:    2,
+			RetryDelay:    1 * time.Millisecond,
+			MaxRetryDelay: 1 * time.Millisecond,
+		}, func(ctx context.Context, lwid LinkWithID[*FakeAMQPReceiver]) error {
+			callCount++
+			return lwidToError(ownershipLostErr, lwid)
+		})
+
+		require.Error(t, err)
+		// Ownership lost is fatal, so we expect only 1 call
+		require.Equal(t, 1, callCount, "expected 1 call: ownership lost is fatal")
+	})
 }

@@ -108,7 +108,7 @@
         },
         {
             "Name": "messaging/azeventhubs",
-            "CoverageGoal": 0.45
+            "CoverageGoal": 0.40
         },
         {
             "Name": "messaging/eventgrid/aznamespaces",

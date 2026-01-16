@@ -5,11 +5,6 @@
 
 package armcommunication
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication"
-	moduleVersion = "v2.2.0"
-)
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -250,6 +245,30 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUnknown,
 		ProvisioningStateUpdating,
+	}
+}
+
+// PublicNetworkAccess - Allow, disallow, or let network security perimeter configuration control public network access to
+// the protected resource. Value is optional but if passed in, it must be 'Enabled', 'Disabled' or
+// 'SecuredByPerimeter'.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled - Disallows public network access to the resource
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled - Allows public network access to the resource
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessSecuredByPerimeter - The network security perimeter configuration rules allow or disallow public network
+	// access to the resource. Requires an associated network security perimeter.
+	PublicNetworkAccessSecuredByPerimeter PublicNetworkAccess = "SecuredByPerimeter"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
+		PublicNetworkAccessSecuredByPerimeter,
 	}
 }
 

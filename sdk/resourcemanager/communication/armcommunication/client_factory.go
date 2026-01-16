@@ -56,6 +56,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewSMTPUsernamesClient creates a new instance of SMTPUsernamesClient.
+func (c *ClientFactory) NewSMTPUsernamesClient() *SMTPUsernamesClient {
+	return &SMTPUsernamesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSenderUsernamesClient creates a new instance of SenderUsernamesClient.
 func (c *ClientFactory) NewSenderUsernamesClient() *SenderUsernamesClient {
 	return &SenderUsernamesClient{
@@ -67,6 +75,22 @@ func (c *ClientFactory) NewSenderUsernamesClient() *SenderUsernamesClient {
 // NewServicesClient creates a new instance of ServicesClient.
 func (c *ClientFactory) NewServicesClient() *ServicesClient {
 	return &ServicesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSuppressionListAddressesClient creates a new instance of SuppressionListAddressesClient.
+func (c *ClientFactory) NewSuppressionListAddressesClient() *SuppressionListAddressesClient {
+	return &SuppressionListAddressesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSuppressionListsClient creates a new instance of SuppressionListsClient.
+func (c *ClientFactory) NewSuppressionListsClient() *SuppressionListsClient {
+	return &SuppressionListsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

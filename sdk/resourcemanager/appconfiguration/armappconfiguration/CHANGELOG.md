@@ -1,5 +1,21 @@
 # Release History
 
+## 3.1.0-beta.1 (2026-01-16)
+### Features Added
+
+- New struct `AzureFrontDoorProperties`
+- New struct `ManagedOnBehalfOfConfiguration`
+- New struct `MoboBrokerResource`
+- New struct `TelemetryProperties`
+- New field `AzureFrontDoor`, `ManagedOnBehalfOfConfiguration`, `Telemetry` in struct `ConfigurationStoreProperties`
+- New field `AzureFrontDoor`, `Telemetry` in struct `ConfigurationStorePropertiesUpdateParameters`
+- New field `SystemData` in struct `DeletedConfigurationStore`
+- New field `SystemData` in struct `KeyValue`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `Snapshot`
+
+
 ## 3.0.0 (2025-06-10)
 ### Breaking Changes
 

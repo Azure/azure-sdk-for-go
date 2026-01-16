@@ -7,11 +7,13 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"reflect"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/audience"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2/internal/synctoken"
@@ -37,9 +39,14 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 		return nil, err
 	}
 
-	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{
-		fmt.Sprintf("%s://%s/.default", u.Scheme, u.Host),
-	}, nil), options)
+	audience := fmt.Sprintf("%s://%s", u.Scheme, u.Host)
+	if options != nil && !reflect.ValueOf(options.Cloud).IsZero() {
+		if cfg, ok := options.Cloud.Services[ServiceName]; ok && cfg.Audience != "" {
+			audience = cfg.Audience
+		}
+	}
+
+	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{audience + "/.default"}, nil), options)
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
@@ -57,9 +64,16 @@ func newClient(endpoint string, authPolicy policy.Policy, options *ClientOptions
 		options = &ClientOptions{}
 	}
 
+	audienceConfigured := false
+	if !reflect.ValueOf(options.Cloud).IsZero() {
+		if cfg, ok := options.Cloud.Services[ServiceName]; ok && cfg.Audience != "" {
+			audienceConfigured = true
+		}
+	}
+
 	cache := synctoken.NewCache()
 	client, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
-		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache)},
+		PerRetry: []policy.Policy{authPolicy, synctoken.NewPolicy(cache), audience.NewAudienceErrorHandlingPolicy(audienceConfigured)},
 		Tracing: runtime.TracingOptions{
 			Namespace: "Microsoft.AppConfig",
 		},

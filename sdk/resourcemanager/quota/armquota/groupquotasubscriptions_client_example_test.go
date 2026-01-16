@@ -109,7 +109,7 @@ func ExampleGroupQuotaSubscriptionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewGroupQuotaSubscriptionsClient("00000000-0000-0000-0000-000000000000").NewListPager("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", nil)
+	pager := clientFactory.NewGroupQuotaSubscriptionsClient().NewListPager("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"hash/fnv"
+	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -85,10 +86,15 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				StatusCodes: statusCodesForRetry(),
+			},
+			TracingProvider: tp,
+			Transport:       client,
+		},
+	}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
@@ -101,10 +107,15 @@ func createClientForRecordingForSharedKey(t *testing.T, tableName string, servic
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				StatusCodes: statusCodesForRetry(),
+			},
+			TracingProvider: tp,
+			Transport:       client,
+		},
+	}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
@@ -117,10 +128,15 @@ func createClientForRecordingWithNoCredential(t *testing.T, tableName string, se
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				StatusCodes: statusCodesForRetry(),
+			},
+			TracingProvider: tp,
+			Transport:       client,
+		},
+	}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
@@ -136,10 +152,15 @@ func createServiceClientForRecording(t *testing.T, serviceURL string, tp tracing
 	tokenCredential, err := credential.New(nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				StatusCodes: statusCodesForRetry(),
+			},
+			TracingProvider: tp,
+			Transport:       client,
+		},
+	}
 	return NewServiceClient(serviceURL, tokenCredential, options)
 }
 
@@ -147,10 +168,15 @@ func createServiceClientForRecordingForSharedKey(t *testing.T, serviceURL string
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				StatusCodes: statusCodesForRetry(),
+			},
+			TracingProvider: tp,
+			Transport:       client,
+		},
+	}
 	return NewServiceClientWithSharedKey(serviceURL, &cred, options)
 }
 
@@ -158,10 +184,15 @@ func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL st
 	client, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
-		TracingProvider: tp,
-		Transport:       client,
-	}}
+	options := &ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Retry: policy.RetryOptions{
+				StatusCodes: statusCodesForRetry(),
+			},
+			TracingProvider: tp,
+			Transport:       client,
+		},
+	}
 	return NewServiceClientWithNoCredential(serviceURL, options)
 }
 
@@ -374,4 +405,19 @@ func clearAllTables(service *ServiceClient) error {
 		}
 	}
 	return nil
+}
+
+func statusCodesForRetry() []int {
+	// we add 403 to the standard list of status
+	// codes as we see transient live test failures
+	// due to 403s
+	return []int{
+		http.StatusForbidden,           // 403
+		http.StatusRequestTimeout,      // 408
+		http.StatusTooManyRequests,     // 429
+		http.StatusInternalServerError, // 500
+		http.StatusBadGateway,          // 502
+		http.StatusServiceUnavailable,  // 503
+		http.StatusGatewayTimeout,      // 504
+	}
 }

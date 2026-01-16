@@ -189,12 +189,12 @@ func initClientTest(t *testing.T, service endpointType, createTable bool, tp tra
 
 	if createTable {
 		_, err = client.CreateTable(ctx, nil)
-		require.NoError(t, err)
+		require.NoError(t, err, "failed to create table %s", client.name)
 	}
 
 	t.Cleanup(func() {
 		_, err = client.Delete(ctx, nil)
-		require.NoError(t, err)
+		require.NoError(t, err, "failed to delete table %s", client.name)
 		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	})

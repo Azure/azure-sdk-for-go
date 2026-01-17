@@ -25,7 +25,7 @@ type CollectionPartitionClient struct {
 }
 
 // NewCollectionPartitionClient creates a new instance of CollectionPartitionClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCollectionPartitionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectionPartitionClient, error) {
@@ -42,7 +42,7 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given collection, split by partition.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -105,7 +105,7 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,7 +122,7 @@ func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Re
 
 // NewListUsagesPager - Retrieves the usages (most recent storage data) for the given collection, split by partition.
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -184,7 +184,7 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -25,7 +25,7 @@ type RestorableTablesClient struct {
 }
 
 // NewRestorableTablesClient creates a new instance of RestorableTablesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRestorableTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTablesClient, error) {
@@ -44,7 +44,7 @@ func NewRestorableTablesClient(subscriptionID string, credential azcore.TokenCre
 // table was accidentally deleted. This API requires
 // 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
 //
-// Generated from API version 2025-10-15
+// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableTablesClientListOptions contains the optional parameters for the RestorableTablesClient.NewListPager
@@ -93,7 +93,7 @@ func (client *RestorableTablesClient) listCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-15")
+	reqQP.Set("api-version", "2025-11-01-preview")
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}

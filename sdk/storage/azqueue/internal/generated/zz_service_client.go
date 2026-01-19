@@ -21,15 +21,18 @@ import (
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
 	endpoint string
+	version  string
 	pl       runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
 //   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - version - Specifies the version of the operation to use for this request.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
+func NewServiceClient(endpoint string, version string, pl runtime.Pipeline) *ServiceClient {
 	client := &ServiceClient{
 		endpoint: endpoint,
+		version:  version,
 		pl:       pl,
 	}
 	return client
@@ -39,7 +42,7 @@ func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 // CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
@@ -69,7 +72,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -97,7 +100,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 func (client *ServiceClient) GetStatistics(ctx context.Context, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
 	req, err := client.getStatisticsCreateRequest(ctx, options)
@@ -127,7 +130,7 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -161,7 +164,7 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // bearer token authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - keyInfo - Key information
 //   - options - ServiceClientGetUserDelegationKeyOptions contains the optional parameters for the ServiceClient.GetUserDelegationKey
 //     method.
@@ -193,7 +196,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -228,7 +231,7 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 
 // NewListQueuesSegmentPager - The List Queues Segment operation returns a list of the queues under the specified account
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - ServiceClientListQueuesSegmentOptions contains the optional parameters for the ServiceClient.NewListQueuesSegmentPager
 //     method.
 //
@@ -256,7 +259,7 @@ func (client *ServiceClient) ListQueuesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -290,7 +293,7 @@ func (client *ServiceClient) ListQueuesSegmentHandleResponse(resp *http.Response
 // and CORS (Cross-Origin Resource Sharing) rules
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - storageServiceProperties - The StorageService properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
@@ -321,7 +324,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

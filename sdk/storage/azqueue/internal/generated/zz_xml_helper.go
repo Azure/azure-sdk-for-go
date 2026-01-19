@@ -20,6 +20,7 @@ func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElem
 		switch tt := t.(type) {
 		case xml.StartElement:
 			tokName = strings.ToLower(tt.Name.Local)
+			break
 		case xml.CharData:
 			if tokName == "" {
 				continue
@@ -30,6 +31,7 @@ func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElem
 			s := string(tt)
 			(*ap)[tokName] = &s
 			tokName = ""
+			break
 		}
 	}
 	return nil

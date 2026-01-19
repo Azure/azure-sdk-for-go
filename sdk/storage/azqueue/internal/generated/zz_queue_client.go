@@ -22,15 +22,18 @@ import (
 // Don't use this type directly, use NewQueueClient() instead.
 type QueueClient struct {
 	endpoint string
+	version  string
 	pl       runtime.Pipeline
 }
 
 // NewQueueClient creates a new instance of QueueClient with the specified values.
 //   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - version - Specifies the version of the operation to use for this request.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewQueueClient(endpoint string, pl runtime.Pipeline) *QueueClient {
+func NewQueueClient(endpoint string, version string, pl runtime.Pipeline) *QueueClient {
 	client := &QueueClient{
 		endpoint: endpoint,
+		version:  version,
 		pl:       pl,
 	}
 	return client
@@ -39,7 +42,7 @@ func NewQueueClient(endpoint string, pl runtime.Pipeline) *QueueClient {
 // Create - creates a new queue under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - QueueClientCreateOptions contains the optional parameters for the QueueClient.Create method.
 func (client *QueueClient) Create(ctx context.Context, options *QueueClientCreateOptions) (QueueClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, options)
@@ -74,7 +77,7 @@ func (client *QueueClient) createCreateRequest(ctx context.Context, options *Que
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -104,7 +107,7 @@ func (client *QueueClient) createHandleResponse(resp *http.Response) (QueueClien
 // Delete - operation permanently deletes the specified queue
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - QueueClientDeleteOptions contains the optional parameters for the QueueClient.Delete method.
 func (client *QueueClient) Delete(ctx context.Context, options *QueueClientDeleteOptions) (QueueClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, options)
@@ -132,7 +135,7 @@ func (client *QueueClient) deleteCreateRequest(ctx context.Context, options *Que
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -163,7 +166,7 @@ func (client *QueueClient) deleteHandleResponse(resp *http.Response) (QueueClien
 // Access Signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - QueueClientGetAccessPolicyOptions contains the optional parameters for the QueueClient.GetAccessPolicy method.
 func (client *QueueClient) GetAccessPolicy(ctx context.Context, options *QueueClientGetAccessPolicyOptions) (QueueClientGetAccessPolicyResponse, error) {
 	req, err := client.getAccessPolicyCreateRequest(ctx, options)
@@ -192,7 +195,7 @@ func (client *QueueClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -226,7 +229,7 @@ func (client *QueueClient) getAccessPolicyHandleResponse(resp *http.Response) (Q
 // the queue as name-values pairs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - QueueClientGetPropertiesOptions contains the optional parameters for the QueueClient.GetProperties method.
 func (client *QueueClient) GetProperties(ctx context.Context, options *QueueClientGetPropertiesOptions) (QueueClientGetPropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
@@ -255,7 +258,7 @@ func (client *QueueClient) getPropertiesCreateRequest(ctx context.Context, optio
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -300,7 +303,7 @@ func (client *QueueClient) getPropertiesHandleResponse(resp *http.Response) (Que
 // SetAccessPolicy - sets stored access policies for the queue that may be used with Shared Access Signatures
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - queueACL - the acls for the queue
 //   - options - QueueClientSetAccessPolicyOptions contains the optional parameters for the QueueClient.SetAccessPolicy method.
 func (client *QueueClient) SetAccessPolicy(ctx context.Context, queueACL []*SignedIdentifier, options *QueueClientSetAccessPolicyOptions) (QueueClientSetAccessPolicyResponse, error) {
@@ -330,7 +333,7 @@ func (client *QueueClient) setAccessPolicyCreateRequest(ctx context.Context, que
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -364,7 +367,7 @@ func (client *QueueClient) setAccessPolicyHandleResponse(resp *http.Response) (Q
 // SetMetadata - sets user-defined metadata on the specified queue. Metadata is associated with the queue as name-value pairs.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - QueueClientSetMetadataOptions contains the optional parameters for the QueueClient.SetMetadata method.
 func (client *QueueClient) SetMetadata(ctx context.Context, options *QueueClientSetMetadataOptions) (QueueClientSetMetadataResponse, error) {
 	req, err := client.setMetadataCreateRequest(ctx, options)
@@ -400,7 +403,7 @@ func (client *QueueClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

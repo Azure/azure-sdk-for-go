@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b6472ffd34d5d4a155101b41b4eb1f356abff600/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a30ef1ee2e9795f4d77e8c62fad52b33e60d4cb7/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-04-06/queue.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"
@@ -21,7 +21,7 @@ modelerfour:
 export-clients: true
 use: "@autorest/go@4.0.0-preview.45"
 ```
-### Updating service version to 2026-02-06
+### Updating service version to 2026-04-06
 ```yaml
 directive:
 - from: 
@@ -33,7 +33,7 @@ directive:
   where: $
   transform: >-
     return $.
-      replaceAll(`[]string{"2024-08-04"}`, `[]string{"2024-08-04"}`);
+      replaceAll(`[]string{"2026-02-04"}`, `[]string{"2026-04-06"}`);
 ```
 
 ### Remove QueueName from parameter list since it is not needed

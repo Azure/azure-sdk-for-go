@@ -23,31 +23,31 @@ import (
 type DiskEncryptionSetsServer struct {
 	// BeginCreateOrUpdate is the fake for method DiskEncryptionSetsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet armcompute.DiskEncryptionSet, options *armcompute.DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet armcompute.DiskEncryptionSet, options *armcompute.DiskEncryptionSetsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method DiskEncryptionSetsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *armcompute.DiskEncryptionSetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *armcompute.DiskEncryptionSetsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DiskEncryptionSetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *armcompute.DiskEncryptionSetsClientGetOptions) (resp azfake.Responder[armcompute.DiskEncryptionSetsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, options *armcompute.DiskEncryptionSetsClientGetOptions) (resp azfake.Responder[armcompute.DiskEncryptionSetsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DiskEncryptionSetsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.DiskEncryptionSetsClientListOptions) (resp azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse])
+	NewListPager	func(options *armcompute.DiskEncryptionSetsClientListOptions) (resp azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse])
 
 	// NewListAssociatedResourcesPager is the fake for method DiskEncryptionSetsClient.NewListAssociatedResourcesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAssociatedResourcesPager func(resourceGroupName string, diskEncryptionSetName string, options *armcompute.DiskEncryptionSetsClientListAssociatedResourcesOptions) (resp azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse])
+	NewListAssociatedResourcesPager	func(resourceGroupName string, diskEncryptionSetName string, options *armcompute.DiskEncryptionSetsClientListAssociatedResourcesOptions) (resp azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse])
 
 	// NewListByResourceGroupPager is the fake for method DiskEncryptionSetsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.DiskEncryptionSetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.DiskEncryptionSetsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse])
 
 	// BeginUpdate is the fake for method DiskEncryptionSetsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet armcompute.DiskEncryptionSetUpdate, options *armcompute.DiskEncryptionSetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, diskEncryptionSetName string, diskEncryptionSet armcompute.DiskEncryptionSetUpdate, options *armcompute.DiskEncryptionSetsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiskEncryptionSetsServerTransport creates a new instance of DiskEncryptionSetsServerTransport with the provided implementation.
@@ -55,26 +55,26 @@ type DiskEncryptionSetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskEncryptionSetsServerTransport(srv *DiskEncryptionSetsServer) *DiskEncryptionSetsServerTransport {
 	return &DiskEncryptionSetsServerTransport{
-		srv:                             srv,
-		beginCreateOrUpdate:             newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]](),
-		beginDelete:                     newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]](),
-		newListPager:                    newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]](),
-		newListAssociatedResourcesPager: newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]](),
-		newListByResourceGroupPager:     newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]](),
-		beginUpdate:                     newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]](),
+		srv:					srv,
+		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]](),
+		beginDelete:				newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]](),
+		newListPager:				newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]](),
+		newListAssociatedResourcesPager:	newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]](),
+		newListByResourceGroupPager:		newTracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]](),
+		beginUpdate:				newTracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]](),
 	}
 }
 
 // DiskEncryptionSetsServerTransport connects instances of armcompute.DiskEncryptionSetsClient to instances of DiskEncryptionSetsServer.
 // Don't use this type directly, use NewDiskEncryptionSetsServerTransport instead.
 type DiskEncryptionSetsServerTransport struct {
-	srv                             *DiskEncryptionSetsServer
-	beginCreateOrUpdate             *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]]
-	beginDelete                     *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]]
-	newListPager                    *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]]
-	newListAssociatedResourcesPager *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]]
-	newListByResourceGroupPager     *tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]]
-	beginUpdate                     *tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]]
+	srv				*DiskEncryptionSetsServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientDeleteResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListResponse]]
+	newListAssociatedResourcesPager	*tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListAssociatedResourcesResponse]]
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.DiskEncryptionSetsClientListByResourceGroupResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.DiskEncryptionSetsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskEncryptionSetsServerTransport.

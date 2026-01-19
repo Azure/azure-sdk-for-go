@@ -23,19 +23,19 @@ import (
 type DiskRestorePointServer struct {
 	// Get is the fake for method DiskRestorePointClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *armcompute.DiskRestorePointClientGetOptions) (resp azfake.Responder[armcompute.DiskRestorePointClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *armcompute.DiskRestorePointClientGetOptions) (resp azfake.Responder[armcompute.DiskRestorePointClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGrantAccess is the fake for method DiskRestorePointClient.BeginGrantAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGrantAccess func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData armcompute.GrantAccessData, options *armcompute.DiskRestorePointClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse], errResp azfake.ErrorResponder)
+	BeginGrantAccess	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, grantAccessData armcompute.GrantAccessData, options *armcompute.DiskRestorePointClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse], errResp azfake.ErrorResponder)
 
 	// NewListByRestorePointPager is the fake for method DiskRestorePointClient.NewListByRestorePointPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByRestorePointPager func(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *armcompute.DiskRestorePointClientListByRestorePointOptions) (resp azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse])
+	NewListByRestorePointPager	func(resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, options *armcompute.DiskRestorePointClientListByRestorePointOptions) (resp azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse])
 
 	// BeginRevokeAccess is the fake for method DiskRestorePointClient.BeginRevokeAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRevokeAccess func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *armcompute.DiskRestorePointClientBeginRevokeAccessOptions) (resp azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse], errResp azfake.ErrorResponder)
+	BeginRevokeAccess	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, vmRestorePointName string, diskRestorePointName string, options *armcompute.DiskRestorePointClientBeginRevokeAccessOptions) (resp azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDiskRestorePointServerTransport creates a new instance of DiskRestorePointServerTransport with the provided implementation.
@@ -43,20 +43,20 @@ type DiskRestorePointServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiskRestorePointServerTransport(srv *DiskRestorePointServer) *DiskRestorePointServerTransport {
 	return &DiskRestorePointServerTransport{
-		srv:                        srv,
-		beginGrantAccess:           newTracker[azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]](),
-		newListByRestorePointPager: newTracker[azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]](),
-		beginRevokeAccess:          newTracker[azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]](),
+		srv:				srv,
+		beginGrantAccess:		newTracker[azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]](),
+		newListByRestorePointPager:	newTracker[azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]](),
+		beginRevokeAccess:		newTracker[azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]](),
 	}
 }
 
 // DiskRestorePointServerTransport connects instances of armcompute.DiskRestorePointClient to instances of DiskRestorePointServer.
 // Don't use this type directly, use NewDiskRestorePointServerTransport instead.
 type DiskRestorePointServerTransport struct {
-	srv                        *DiskRestorePointServer
-	beginGrantAccess           *tracker[azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]]
-	newListByRestorePointPager *tracker[azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]]
-	beginRevokeAccess          *tracker[azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]]
+	srv				*DiskRestorePointServer
+	beginGrantAccess		*tracker[azfake.PollerResponder[armcompute.DiskRestorePointClientGrantAccessResponse]]
+	newListByRestorePointPager	*tracker[azfake.PagerResponder[armcompute.DiskRestorePointClientListByRestorePointResponse]]
+	beginRevokeAccess		*tracker[azfake.PollerResponder[armcompute.DiskRestorePointClientRevokeAccessResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiskRestorePointServerTransport.

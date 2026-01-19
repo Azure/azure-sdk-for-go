@@ -24,47 +24,47 @@ import (
 type AvailabilitySetsServer struct {
 	// CancelMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.CancelMigrationToVirtualMachineScaleSet
 	// HTTP status codes to indicate success: http.StatusNoContent
-	CancelMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
+	CancelMigrationToVirtualMachineScaleSet	func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
 
 	// BeginConvertToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.BeginConvertToVirtualMachineScaleSet
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginConvertToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (resp azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
+	BeginConvertToVirtualMachineScaleSet	func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientBeginConvertToVirtualMachineScaleSetOptions) (resp azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdate is the fake for method AvailabilitySetsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySet, options *armcompute.AvailabilitySetsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySet, options *armcompute.AvailabilitySetsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method AvailabilitySetsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientDeleteOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientDeleteOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AvailabilitySetsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientGetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientGetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method AvailabilitySetsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armcompute.AvailabilitySetsClientListOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse])
+	NewListPager	func(resourceGroupName string, options *armcompute.AvailabilitySetsClientListOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse])
 
 	// NewListAvailableSizesPager is the fake for method AvailabilitySetsClient.NewListAvailableSizesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAvailableSizesPager func(resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientListAvailableSizesOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse])
+	NewListAvailableSizesPager	func(resourceGroupName string, availabilitySetName string, options *armcompute.AvailabilitySetsClientListAvailableSizesOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse])
 
 	// NewListBySubscriptionPager is the fake for method AvailabilitySetsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armcompute.AvailabilitySetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager	func(options *armcompute.AvailabilitySetsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse])
 
 	// StartMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.StartMigrationToVirtualMachineScaleSet
 	// HTTP status codes to indicate success: http.StatusNoContent
-	StartMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.MigrateToVirtualMachineScaleSetInput, options *armcompute.AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
+	StartMigrationToVirtualMachineScaleSet	func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.MigrateToVirtualMachineScaleSetInput, options *armcompute.AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method AvailabilitySetsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySetUpdate, options *armcompute.AvailabilitySetsClientUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.AvailabilitySetUpdate, options *armcompute.AvailabilitySetsClientUpdateOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// ValidateMigrationToVirtualMachineScaleSet is the fake for method AvailabilitySetsClient.ValidateMigrationToVirtualMachineScaleSet
 	// HTTP status codes to indicate success: http.StatusNoContent
-	ValidateMigrationToVirtualMachineScaleSet func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.MigrateToVirtualMachineScaleSetInput, options *armcompute.AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
+	ValidateMigrationToVirtualMachineScaleSet	func(ctx context.Context, resourceGroupName string, availabilitySetName string, parameters armcompute.MigrateToVirtualMachineScaleSetInput, options *armcompute.AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions) (resp azfake.Responder[armcompute.AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAvailabilitySetsServerTransport creates a new instance of AvailabilitySetsServerTransport with the provided implementation.
@@ -72,22 +72,22 @@ type AvailabilitySetsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewAvailabilitySetsServerTransport(srv *AvailabilitySetsServer) *AvailabilitySetsServerTransport {
 	return &AvailabilitySetsServerTransport{
-		srv:                                  srv,
-		beginConvertToVirtualMachineScaleSet: newTracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]](),
-		newListPager:                         newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
-		newListAvailableSizesPager:           newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]](),
-		newListBySubscriptionPager:           newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]](),
+		srv:					srv,
+		beginConvertToVirtualMachineScaleSet:	newTracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]](),
+		newListPager:				newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]](),
+		newListAvailableSizesPager:		newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]](),
+		newListBySubscriptionPager:		newTracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]](),
 	}
 }
 
 // AvailabilitySetsServerTransport connects instances of armcompute.AvailabilitySetsClient to instances of AvailabilitySetsServer.
 // Don't use this type directly, use NewAvailabilitySetsServerTransport instead.
 type AvailabilitySetsServerTransport struct {
-	srv                                  *AvailabilitySetsServer
-	beginConvertToVirtualMachineScaleSet *tracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]]
-	newListPager                         *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
-	newListAvailableSizesPager           *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]]
-	newListBySubscriptionPager           *tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]]
+	srv					*AvailabilitySetsServer
+	beginConvertToVirtualMachineScaleSet	*tracker[azfake.PollerResponder[armcompute.AvailabilitySetsClientConvertToVirtualMachineScaleSetResponse]]
+	newListPager				*tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListResponse]]
+	newListAvailableSizesPager		*tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListAvailableSizesResponse]]
+	newListBySubscriptionPager		*tracker[azfake.PagerResponder[armcompute.AvailabilitySetsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for AvailabilitySetsServerTransport.

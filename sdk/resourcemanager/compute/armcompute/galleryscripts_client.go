@@ -17,68 +17,70 @@ import (
 	"strings"
 )
 
-// GalleryImagesClient contains the methods for the GalleryImages group.
-// Don't use this type directly, use NewGalleryImagesClient() instead.
-type GalleryImagesClient struct {
+// GalleryScriptsClient contains the methods for the GalleryScripts group.
+// Don't use this type directly, use NewGalleryScriptsClient() instead.
+type GalleryScriptsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewGalleryImagesClient creates a new instance of GalleryImagesClient with the specified values.
+// NewGalleryScriptsClient creates a new instance of GalleryScriptsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryImagesClient, error) {
+func NewGalleryScriptsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GalleryScriptsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &GalleryImagesClient{
+	client := &GalleryScriptsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a gallery image definition.
+// BeginCreateOrUpdate - Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse
+// of common scripts
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - galleryName - The name of the Shared Image Gallery.
-//   - galleryImageName - The name of the gallery image definition to be retrieved.
-//   - galleryImage - Parameters supplied to the create or update gallery image operation.
-//   - options - GalleryImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryImagesClient.BeginCreateOrUpdate
+//   - galleryScriptName - The name of the gallery Script Definition to be retrieved.
+//   - galleryScript - Parameters supplied to the create or update gallery Script operation.
+//   - options - GalleryScriptsClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleryScriptsClient.BeginCreateOrUpdate
 //     method.
-func (client *GalleryImagesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage, options *GalleryImagesClientBeginCreateOrUpdateOptions) (*runtime.Poller[GalleryImagesClientCreateOrUpdateResponse], error) {
+func (client *GalleryScriptsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScript, options *GalleryScriptsClientBeginCreateOrUpdateOptions) (*runtime.Poller[GalleryScriptsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryScriptName, galleryScript, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImagesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryScriptsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryImagesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryScriptsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create or update a gallery image definition.
+// CreateOrUpdate - Create or update a Gallery Script Definition. Gallery scripts allow the storage, sharing and reuse of
+// common scripts
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
-func (client *GalleryImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage, options *GalleryImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *GalleryScriptsClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScript, options *GalleryScriptsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GalleryImagesClient.BeginCreateOrUpdate"
+	const operationName = "GalleryScriptsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, galleryScriptName, galleryScript, options)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +88,7 @@ func (client *GalleryImagesClient) createOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -94,8 +96,8 @@ func (client *GalleryImagesClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GalleryImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImage, _ *GalleryImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}"
+func (client *GalleryScriptsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScript, _ *GalleryScriptsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{galleryScriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -108,10 +110,10 @@ func (client *GalleryImagesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	if galleryImageName == "" {
-		return nil, errors.New("parameter galleryImageName cannot be empty")
+	if galleryScriptName == "" {
+		return nil, errors.New("parameter galleryScriptName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
+	urlPath = strings.ReplaceAll(urlPath, "{galleryScriptName}", url.PathEscape(galleryScriptName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -120,50 +122,50 @@ func (client *GalleryImagesClient) createOrUpdateCreateRequest(ctx context.Conte
 	reqQP.Set("api-version", "2025-03-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, galleryImage); err != nil {
+	if err := runtime.MarshalAsJSON(req, galleryScript); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// BeginDelete - Delete a gallery image.
+// BeginDelete - Delete a gallery Script Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - galleryName - The name of the Shared Image Gallery.
-//   - galleryImageName - The name of the gallery image definition to be retrieved.
-//   - options - GalleryImagesClientBeginDeleteOptions contains the optional parameters for the GalleryImagesClient.BeginDelete
+//   - galleryScriptName - The name of the gallery Script Definition to be retrieved.
+//   - options - GalleryScriptsClientBeginDeleteOptions contains the optional parameters for the GalleryScriptsClient.BeginDelete
 //     method.
-func (client *GalleryImagesClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesClientBeginDeleteOptions) (*runtime.Poller[GalleryImagesClientDeleteResponse], error) {
+func (client *GalleryScriptsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, options *GalleryScriptsClientBeginDeleteOptions) (*runtime.Poller[GalleryScriptsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, galleryName, galleryImageName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, galleryName, galleryScriptName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImagesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryScriptsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryImagesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryScriptsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete a gallery image.
+// Delete - Delete a gallery Script Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
-func (client *GalleryImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *GalleryScriptsClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, options *GalleryScriptsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GalleryImagesClient.BeginDelete"
+	const operationName = "GalleryScriptsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, galleryScriptName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -171,7 +173,7 @@ func (client *GalleryImagesClient) deleteOperation(ctx context.Context, resource
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -179,8 +181,8 @@ func (client *GalleryImagesClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GalleryImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, _ *GalleryImagesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}"
+func (client *GalleryScriptsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, _ *GalleryScriptsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{galleryScriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -193,10 +195,10 @@ func (client *GalleryImagesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	if galleryImageName == "" {
-		return nil, errors.New("parameter galleryImageName cannot be empty")
+	if galleryScriptName == "" {
+		return nil, errors.New("parameter galleryScriptName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
+	urlPath = strings.ReplaceAll(urlPath, "{galleryScriptName}", url.PathEscape(galleryScriptName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -208,39 +210,39 @@ func (client *GalleryImagesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// Get - Retrieves information about a gallery image definition.
+// Get - Retrieves information about a gallery script definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - galleryName - The name of the Shared Image Gallery.
-//   - galleryImageName - The name of the gallery image definition to be retrieved.
-//   - options - GalleryImagesClientGetOptions contains the optional parameters for the GalleryImagesClient.Get method.
-func (client *GalleryImagesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, options *GalleryImagesClientGetOptions) (GalleryImagesClientGetResponse, error) {
+//   - galleryScriptName - The name of the gallery Script Definition to be retrieved.
+//   - options - GalleryScriptsClientGetOptions contains the optional parameters for the GalleryScriptsClient.Get method.
+func (client *GalleryScriptsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, options *GalleryScriptsClientGetOptions) (GalleryScriptsClientGetResponse, error) {
 	var err error
-	const operationName = "GalleryImagesClient.Get"
+	const operationName = "GalleryScriptsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryScriptName, options)
 	if err != nil {
-		return GalleryImagesClientGetResponse{}, err
+		return GalleryScriptsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return GalleryImagesClientGetResponse{}, err
+		return GalleryScriptsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return GalleryImagesClientGetResponse{}, err
+		return GalleryScriptsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *GalleryImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, _ *GalleryImagesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}"
+func (client *GalleryScriptsClient) getCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, _ *GalleryScriptsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{galleryScriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -253,10 +255,10 @@ func (client *GalleryImagesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	if galleryImageName == "" {
-		return nil, errors.New("parameter galleryImageName cannot be empty")
+	if galleryScriptName == "" {
+		return nil, errors.New("parameter galleryScriptName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
+	urlPath = strings.ReplaceAll(urlPath, "{galleryScriptName}", url.PathEscape(galleryScriptName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -269,28 +271,28 @@ func (client *GalleryImagesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *GalleryImagesClient) getHandleResponse(resp *http.Response) (GalleryImagesClientGetResponse, error) {
-	result := GalleryImagesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImage); err != nil {
-		return GalleryImagesClientGetResponse{}, err
+func (client *GalleryScriptsClient) getHandleResponse(resp *http.Response) (GalleryScriptsClientGetResponse, error) {
+	result := GalleryScriptsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryScript); err != nil {
+		return GalleryScriptsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByGalleryPager - List gallery image definitions in a gallery.
+// NewListByGalleryPager - List gallery Script Definitions in a gallery.
 //
 // Generated from API version 2025-03-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - galleryName - The name of the Shared Image Gallery.
-//   - options - GalleryImagesClientListByGalleryOptions contains the optional parameters for the GalleryImagesClient.NewListByGalleryPager
+//   - options - GalleryScriptsClientListByGalleryOptions contains the optional parameters for the GalleryScriptsClient.NewListByGalleryPager
 //     method.
-func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryImagesClientListByGalleryOptions) *runtime.Pager[GalleryImagesClientListByGalleryResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GalleryImagesClientListByGalleryResponse]{
-		More: func(page GalleryImagesClientListByGalleryResponse) bool {
+func (client *GalleryScriptsClient) NewListByGalleryPager(resourceGroupName string, galleryName string, options *GalleryScriptsClientListByGalleryOptions) *runtime.Pager[GalleryScriptsClientListByGalleryResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GalleryScriptsClientListByGalleryResponse]{
+		More: func(page GalleryScriptsClientListByGalleryResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *GalleryImagesClientListByGalleryResponse) (GalleryImagesClientListByGalleryResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleryImagesClient.NewListByGalleryPager")
+		Fetcher: func(ctx context.Context, page *GalleryScriptsClientListByGalleryResponse) (GalleryScriptsClientListByGalleryResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GalleryScriptsClient.NewListByGalleryPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -299,7 +301,7 @@ func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName strin
 				return client.listByGalleryCreateRequest(ctx, resourceGroupName, galleryName, options)
 			}, nil)
 			if err != nil {
-				return GalleryImagesClientListByGalleryResponse{}, err
+				return GalleryScriptsClientListByGalleryResponse{}, err
 			}
 			return client.listByGalleryHandleResponse(resp)
 		},
@@ -308,8 +310,8 @@ func (client *GalleryImagesClient) NewListByGalleryPager(resourceGroupName strin
 }
 
 // listByGalleryCreateRequest creates the ListByGallery request.
-func (client *GalleryImagesClient) listByGalleryCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, _ *GalleryImagesClientListByGalleryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images"
+func (client *GalleryScriptsClient) listByGalleryCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, _ *GalleryScriptsClientListByGalleryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -334,53 +336,53 @@ func (client *GalleryImagesClient) listByGalleryCreateRequest(ctx context.Contex
 }
 
 // listByGalleryHandleResponse handles the ListByGallery response.
-func (client *GalleryImagesClient) listByGalleryHandleResponse(resp *http.Response) (GalleryImagesClientListByGalleryResponse, error) {
-	result := GalleryImagesClientListByGalleryResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryImageList); err != nil {
-		return GalleryImagesClientListByGalleryResponse{}, err
+func (client *GalleryScriptsClient) listByGalleryHandleResponse(resp *http.Response) (GalleryScriptsClientListByGalleryResponse, error) {
+	result := GalleryScriptsClientListByGalleryResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryScriptList); err != nil {
+		return GalleryScriptsClientListByGalleryResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Update a gallery image definition.
+// BeginUpdate - Update a gallery Script Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - galleryName - The name of the Shared Image Gallery.
-//   - galleryImageName - The name of the gallery image definition to be retrieved.
-//   - galleryImage - Parameters supplied to the update gallery image operation.
-//   - options - GalleryImagesClientBeginUpdateOptions contains the optional parameters for the GalleryImagesClient.BeginUpdate
+//   - galleryScriptName - The name of the gallery Script Definition to be retrieved.
+//   - galleryScript - Parameters supplied to the update gallery Script operation.
+//   - options - GalleryScriptsClientBeginUpdateOptions contains the optional parameters for the GalleryScriptsClient.BeginUpdate
 //     method.
-func (client *GalleryImagesClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate, options *GalleryImagesClientBeginUpdateOptions) (*runtime.Poller[GalleryImagesClientUpdateResponse], error) {
+func (client *GalleryScriptsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScriptUpdate, options *GalleryScriptsClientBeginUpdateOptions) (*runtime.Poller[GalleryScriptsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
+		resp, err := client.update(ctx, resourceGroupName, galleryName, galleryScriptName, galleryScript, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryImagesClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GalleryScriptsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryImagesClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GalleryScriptsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Update a gallery image definition.
+// Update - Update a gallery Script Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-03-03
-func (client *GalleryImagesClient) update(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate, options *GalleryImagesClientBeginUpdateOptions) (*http.Response, error) {
+func (client *GalleryScriptsClient) update(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScriptUpdate, options *GalleryScriptsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "GalleryImagesClient.BeginUpdate"
+	const operationName = "GalleryScriptsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, galleryImageName, galleryImage, options)
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, galleryScriptName, galleryScript, options)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +390,7 @@ func (client *GalleryImagesClient) update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -396,8 +398,8 @@ func (client *GalleryImagesClient) update(ctx context.Context, resourceGroupName
 }
 
 // updateCreateRequest creates the Update request.
-func (client *GalleryImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string, galleryImage GalleryImageUpdate, _ *GalleryImagesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{galleryImageName}"
+func (client *GalleryScriptsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryScriptName string, galleryScript GalleryScriptUpdate, _ *GalleryScriptsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/scripts/{galleryScriptName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -410,10 +412,10 @@ func (client *GalleryImagesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	if galleryImageName == "" {
-		return nil, errors.New("parameter galleryImageName cannot be empty")
+	if galleryScriptName == "" {
+		return nil, errors.New("parameter galleryScriptName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
+	urlPath = strings.ReplaceAll(urlPath, "{galleryScriptName}", url.PathEscape(galleryScriptName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -422,7 +424,7 @@ func (client *GalleryImagesClient) updateCreateRequest(ctx context.Context, reso
 	reqQP.Set("api-version", "2025-03-03")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, galleryImage); err != nil {
+	if err := runtime.MarshalAsJSON(req, galleryScript); err != nil {
 		return nil, err
 	}
 	return req, nil

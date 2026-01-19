@@ -23,23 +23,23 @@ import (
 type CapacityReservationsServer struct {
 	// BeginCreateOrUpdate is the fake for method CapacityReservationsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservation, options *armcompute.CapacityReservationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservation, options *armcompute.CapacityReservationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CapacityReservationsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, options *armcompute.CapacityReservationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, options *armcompute.CapacityReservationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CapacityReservationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, options *armcompute.CapacityReservationsClientGetOptions) (resp azfake.Responder[armcompute.CapacityReservationsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, options *armcompute.CapacityReservationsClientGetOptions) (resp azfake.Responder[armcompute.CapacityReservationsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByCapacityReservationGroupPager is the fake for method CapacityReservationsClient.NewListByCapacityReservationGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByCapacityReservationGroupPager func(resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationsClientListByCapacityReservationGroupOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse])
+	NewListByCapacityReservationGroupPager	func(resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationsClientListByCapacityReservationGroupOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse])
 
 	// BeginUpdate is the fake for method CapacityReservationsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservationUpdate, options *armcompute.CapacityReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservationUpdate, options *armcompute.CapacityReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCapacityReservationsServerTransport creates a new instance of CapacityReservationsServerTransport with the provided implementation.
@@ -47,22 +47,22 @@ type CapacityReservationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCapacityReservationsServerTransport(srv *CapacityReservationsServer) *CapacityReservationsServerTransport {
 	return &CapacityReservationsServerTransport{
-		srv:                                    srv,
-		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]](),
-		beginDelete:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]](),
-		newListByCapacityReservationGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]](),
-		beginUpdate:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]](),
+		srv:					srv,
+		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]](),
+		beginDelete:				newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]](),
+		newListByCapacityReservationGroupPager:	newTracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]](),
+		beginUpdate:				newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]](),
 	}
 }
 
 // CapacityReservationsServerTransport connects instances of armcompute.CapacityReservationsClient to instances of CapacityReservationsServer.
 // Don't use this type directly, use NewCapacityReservationsServerTransport instead.
 type CapacityReservationsServerTransport struct {
-	srv                                    *CapacityReservationsServer
-	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]]
-	beginDelete                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]]
-	newListByCapacityReservationGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]]
-	beginUpdate                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]]
+	srv					*CapacityReservationsServer
+	beginCreateOrUpdate			*tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]]
+	beginDelete				*tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]]
+	newListByCapacityReservationGroupPager	*tracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]]
+	beginUpdate				*tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacityReservationsServerTransport.

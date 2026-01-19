@@ -23,27 +23,27 @@ import (
 type CapacityReservationGroupsServer struct {
 	// CreateOrUpdate is the fake for method CapacityReservationGroupsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters armcompute.CapacityReservationGroup, options *armcompute.CapacityReservationGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters armcompute.CapacityReservationGroup, options *armcompute.CapacityReservationGroupsClientCreateOrUpdateOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method CapacityReservationGroupsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationGroupsClientDeleteOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationGroupsClientDeleteOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CapacityReservationGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationGroupsClientGetOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationGroupsClientGetOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method CapacityReservationGroupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.CapacityReservationGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.CapacityReservationGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method CapacityReservationGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armcompute.CapacityReservationGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager	func(options *armcompute.CapacityReservationGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse])
 
 	// Update is the fake for method CapacityReservationGroupsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters armcompute.CapacityReservationGroupUpdate, options *armcompute.CapacityReservationGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update	func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, parameters armcompute.CapacityReservationGroupUpdate, options *armcompute.CapacityReservationGroupsClientUpdateOptions) (resp azfake.Responder[armcompute.CapacityReservationGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCapacityReservationGroupsServerTransport creates a new instance of CapacityReservationGroupsServerTransport with the provided implementation.
@@ -51,18 +51,18 @@ type CapacityReservationGroupsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCapacityReservationGroupsServerTransport(srv *CapacityReservationGroupsServer) *CapacityReservationGroupsServerTransport {
 	return &CapacityReservationGroupsServerTransport{
-		srv:                         srv,
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]](),
+		srv:				srv,
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]](),
 	}
 }
 
 // CapacityReservationGroupsServerTransport connects instances of armcompute.CapacityReservationGroupsClient to instances of CapacityReservationGroupsServer.
 // Don't use this type directly, use NewCapacityReservationGroupsServerTransport instead.
 type CapacityReservationGroupsServerTransport struct {
-	srv                         *CapacityReservationGroupsServer
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]]
+	srv				*CapacityReservationGroupsServer
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armcompute.CapacityReservationGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacityReservationGroupsServerTransport.
@@ -309,8 +309,8 @@ func (c *CapacityReservationGroupsServerTransport) dispatchNewListBySubscription
 		var options *armcompute.CapacityReservationGroupsClientListBySubscriptionOptions
 		if expandParam != nil || resourceIDsOnlyParam != nil {
 			options = &armcompute.CapacityReservationGroupsClientListBySubscriptionOptions{
-				Expand:          expandParam,
-				ResourceIDsOnly: resourceIDsOnlyParam,
+				Expand:			expandParam,
+				ResourceIDsOnly:	resourceIDsOnlyParam,
 			}
 		}
 		resp := c.srv.NewListBySubscriptionPager(options)

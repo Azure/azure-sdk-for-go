@@ -22,15 +22,15 @@ import (
 type RestorePointsServer struct {
 	// BeginCreate is the fake for method RestorePointsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters armcompute.RestorePoint, options *armcompute.RestorePointsClientBeginCreateOptions) (resp azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters armcompute.RestorePoint, options *armcompute.RestorePointsClientBeginCreateOptions) (resp azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method RestorePointsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *armcompute.RestorePointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *armcompute.RestorePointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RestorePointsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *armcompute.RestorePointsClientGetOptions) (resp azfake.Responder[armcompute.RestorePointsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, options *armcompute.RestorePointsClientGetOptions) (resp azfake.Responder[armcompute.RestorePointsClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRestorePointsServerTransport creates a new instance of RestorePointsServerTransport with the provided implementation.
@@ -38,18 +38,18 @@ type RestorePointsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRestorePointsServerTransport(srv *RestorePointsServer) *RestorePointsServerTransport {
 	return &RestorePointsServerTransport{
-		srv:         srv,
-		beginCreate: newTracker[azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]](),
-		beginDelete: newTracker[azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]](),
+		srv:		srv,
+		beginCreate:	newTracker[azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]](),
+		beginDelete:	newTracker[azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]](),
 	}
 }
 
 // RestorePointsServerTransport connects instances of armcompute.RestorePointsClient to instances of RestorePointsServer.
 // Don't use this type directly, use NewRestorePointsServerTransport instead.
 type RestorePointsServerTransport struct {
-	srv         *RestorePointsServer
-	beginCreate *tracker[azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]]
-	beginDelete *tracker[azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]]
+	srv		*RestorePointsServer
+	beginCreate	*tracker[azfake.PollerResponder[armcompute.RestorePointsClientCreateResponse]]
+	beginDelete	*tracker[azfake.PollerResponder[armcompute.RestorePointsClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for RestorePointsServerTransport.

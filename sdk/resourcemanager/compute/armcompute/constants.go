@@ -113,7 +113,7 @@ func PossibleAlternativeTypeValues() []AlternativeType {
 	}
 }
 
-// Architecture - The architecture of the image. Applicable to OS disks only.
+// Architecture - CPU architecture supported by an OS disk.
 type Architecture string
 
 const (
@@ -1035,6 +1035,34 @@ func PossibleGalleryProvisioningStateValues() []GalleryProvisioningState {
 	}
 }
 
+// GalleryScriptParameterType - Specifies the type of the Gallery Script parameter. Possible values are: String, Int, Double,
+// Boolean, Enum
+type GalleryScriptParameterType string
+
+const (
+	// GalleryScriptParameterTypeBoolean - Boolean gallery script parameter type
+	GalleryScriptParameterTypeBoolean GalleryScriptParameterType = "Boolean"
+	// GalleryScriptParameterTypeDouble - Double gallery script parameter type
+	GalleryScriptParameterTypeDouble GalleryScriptParameterType = "Double"
+	// GalleryScriptParameterTypeEnum - Enum gallery script parameter type
+	GalleryScriptParameterTypeEnum GalleryScriptParameterType = "Enum"
+	// GalleryScriptParameterTypeInt - Int gallery script parameter type
+	GalleryScriptParameterTypeInt GalleryScriptParameterType = "Int"
+	// GalleryScriptParameterTypeString - String gallery script parameter type
+	GalleryScriptParameterTypeString GalleryScriptParameterType = "String"
+)
+
+// PossibleGalleryScriptParameterTypeValues returns the possible values for the GalleryScriptParameterType const type.
+func PossibleGalleryScriptParameterTypeValues() []GalleryScriptParameterType {
+	return []GalleryScriptParameterType{
+		GalleryScriptParameterTypeBoolean,
+		GalleryScriptParameterTypeDouble,
+		GalleryScriptParameterTypeEnum,
+		GalleryScriptParameterTypeInt,
+		GalleryScriptParameterTypeString,
+	}
+}
+
 // GallerySharingPermissionTypes - This property allows you to specify the permission of sharing gallery. Possible values
 // are: Private, Groups, Community.
 type GallerySharingPermissionTypes string
@@ -1458,8 +1486,7 @@ func PossibleOperatingSystemTypeValues() []OperatingSystemType {
 	}
 }
 
-// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
-// Possible values are: Windows, Linux.
+// OperatingSystemTypes - The Operating System type.
 type OperatingSystemTypes string
 
 const (
@@ -2411,6 +2438,28 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 	}
 }
 
+// StorageAccountStrategy - Specifies the strategy to be used when selecting the storage account type. Cannot be specified
+// along with storageAccountType, but can be overridden per region by specifying
+// targetRegions[].storageAccountType. This property is not updatable.
+type StorageAccountStrategy string
+
+const (
+	// StorageAccountStrategyDefaultStandardLRS - Choose Standard_LRS storage unless overridden by specifying regional storageAccountType.
+	StorageAccountStrategyDefaultStandardLRS StorageAccountStrategy = "DefaultStandard_LRS"
+	// StorageAccountStrategyPreferStandardZRS - Choose Standard_ZRS storage if the region supports it, else choose Standard_LRS
+	// storage, unless overridden by specifying regional storageAccountType. If no storageAccountStrategy is specified, this is
+	// the default strategy (from API version 2025-03-03 onwards).
+	StorageAccountStrategyPreferStandardZRS StorageAccountStrategy = "PreferStandard_ZRS"
+)
+
+// PossibleStorageAccountStrategyValues returns the possible values for the StorageAccountStrategy const type.
+func PossibleStorageAccountStrategyValues() []StorageAccountStrategy {
+	return []StorageAccountStrategy{
+		StorageAccountStrategyDefaultStandardLRS,
+		StorageAccountStrategyPreferStandardZRS,
+	}
+}
+
 // StorageAccountType - Specifies the storage account type to be used to store the image. This property is not updatable.
 type StorageAccountType string
 
@@ -2460,6 +2509,46 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 		StorageAccountTypesStandardSSDLRS,
 		StorageAccountTypesStandardSSDZRS,
 		StorageAccountTypesUltraSSDLRS,
+	}
+}
+
+// StorageAlignmentStatus - Specifies the storage alignment status for the disk.
+type StorageAlignmentStatus string
+
+const (
+	// StorageAlignmentStatusAligned - Disk has Storage Fault Domain to Compute Fault Domain mapping. Storage Fault Domain failure
+	// is contained to VMs in a single Compute Fault Domain.
+	StorageAlignmentStatusAligned StorageAlignmentStatus = "Aligned"
+	// StorageAlignmentStatusUnaligned - Disk does not have Storage Fault Domain to Compute Fault Domain mapping. A single Storage
+	// Fault Domain failure may impact all VMs that reference this disk profile.
+	StorageAlignmentStatusUnaligned StorageAlignmentStatus = "Unaligned"
+)
+
+// PossibleStorageAlignmentStatusValues returns the possible values for the StorageAlignmentStatus const type.
+func PossibleStorageAlignmentStatusValues() []StorageAlignmentStatus {
+	return []StorageAlignmentStatus{
+		StorageAlignmentStatusAligned,
+		StorageAlignmentStatusUnaligned,
+	}
+}
+
+// StorageFaultDomainAlignmentType - Specifies the storage fault domain alignment type for the disk.
+type StorageFaultDomainAlignmentType string
+
+const (
+	// StorageFaultDomainAlignmentTypeAligned - Disk Storage Fault Domains are mapped to Compute Fault Domains. Deployment fails
+	// if disk does not support enough Fault Domains.
+	StorageFaultDomainAlignmentTypeAligned StorageFaultDomainAlignmentType = "Aligned"
+	// StorageFaultDomainAlignmentTypeBestEffortAligned - Attempt to map Storage Fault Domains to Compute Fault Domains. Disks
+	// are unaligned if disk does not support enough Fault Domains.
+	StorageFaultDomainAlignmentTypeBestEffortAligned StorageFaultDomainAlignmentType = "BestEffortAligned"
+)
+
+// PossibleStorageFaultDomainAlignmentTypeValues returns the possible values for the StorageFaultDomainAlignmentType const type.
+func PossibleStorageFaultDomainAlignmentTypeValues() []StorageFaultDomainAlignmentType {
+	return []StorageFaultDomainAlignmentType{
+		StorageFaultDomainAlignmentTypeAligned,
+		StorageFaultDomainAlignmentTypeBestEffortAligned,
 	}
 }
 
@@ -3209,14 +3298,18 @@ func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 type ZonalPlatformFaultDomainAlignMode string
 
 const (
-	ZonalPlatformFaultDomainAlignModeAligned   ZonalPlatformFaultDomainAlignMode = "Aligned"
-	ZonalPlatformFaultDomainAlignModeUnaligned ZonalPlatformFaultDomainAlignMode = "Unaligned"
+	ZonalPlatformFaultDomainAlignModeAligned ZonalPlatformFaultDomainAlignMode = "Aligned"
+	// ZonalPlatformFaultDomainAlignModeBestEffortAligned - Offload Alignment to VMSS. VMSS aligns disks that support enough Storage
+	// Fault Domains, while keeping others unaligned.
+	ZonalPlatformFaultDomainAlignModeBestEffortAligned ZonalPlatformFaultDomainAlignMode = "BestEffortAligned"
+	ZonalPlatformFaultDomainAlignModeUnaligned         ZonalPlatformFaultDomainAlignMode = "Unaligned"
 )
 
 // PossibleZonalPlatformFaultDomainAlignModeValues returns the possible values for the ZonalPlatformFaultDomainAlignMode const type.
 func PossibleZonalPlatformFaultDomainAlignModeValues() []ZonalPlatformFaultDomainAlignMode {
 	return []ZonalPlatformFaultDomainAlignMode{
 		ZonalPlatformFaultDomainAlignModeAligned,
+		ZonalPlatformFaultDomainAlignModeBestEffortAligned,
 		ZonalPlatformFaultDomainAlignModeUnaligned,
 	}
 }

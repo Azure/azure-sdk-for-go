@@ -23,35 +23,35 @@ import (
 type SnapshotsServer struct {
 	// BeginCreateOrUpdate is the fake for method SnapshotsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.Snapshot, options *armcompute.SnapshotsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.Snapshot, options *armcompute.SnapshotsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method SnapshotsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete	func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SnapshotsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientGetOptions) (resp azfake.Responder[armcompute.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientGetOptions) (resp azfake.Responder[armcompute.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginGrantAccess is the fake for method SnapshotsClient.BeginGrantAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGrantAccess func(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData armcompute.GrantAccessData, options *armcompute.SnapshotsClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse], errResp azfake.ErrorResponder)
+	BeginGrantAccess	func(ctx context.Context, resourceGroupName string, snapshotName string, grantAccessData armcompute.GrantAccessData, options *armcompute.SnapshotsClientBeginGrantAccessOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method SnapshotsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcompute.SnapshotsClientListOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListResponse])
+	NewListPager	func(options *armcompute.SnapshotsClientListOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method SnapshotsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcompute.SnapshotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager	func(resourceGroupName string, options *armcompute.SnapshotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse])
 
 	// BeginRevokeAccess is the fake for method SnapshotsClient.BeginRevokeAccess
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRevokeAccess func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientBeginRevokeAccessOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse], errResp azfake.ErrorResponder)
+	BeginRevokeAccess	func(ctx context.Context, resourceGroupName string, snapshotName string, options *armcompute.SnapshotsClientBeginRevokeAccessOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method SnapshotsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.SnapshotUpdate, options *armcompute.SnapshotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate	func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.SnapshotUpdate, options *armcompute.SnapshotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
@@ -59,28 +59,28 @@ type SnapshotsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport {
 	return &SnapshotsServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
-		beginGrantAccess:            newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
-		beginRevokeAccess:           newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
+		srv:				srv,
+		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
+		beginDelete:			newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
+		beginGrantAccess:		newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
+		newListPager:			newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
+		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
+		beginRevokeAccess:		newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
+		beginUpdate:			newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
 	}
 }
 
 // SnapshotsServerTransport connects instances of armcompute.SnapshotsClient to instances of SnapshotsServer.
 // Don't use this type directly, use NewSnapshotsServerTransport instead.
 type SnapshotsServerTransport struct {
-	srv                         *SnapshotsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
-	beginGrantAccess            *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
-	beginRevokeAccess           *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
+	srv				*SnapshotsServer
+	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
+	beginDelete			*tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
+	beginGrantAccess		*tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
+	newListPager			*tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
+	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
+	beginRevokeAccess		*tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
+	beginUpdate			*tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.

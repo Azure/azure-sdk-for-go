@@ -17,30 +17,30 @@ import (
 	"strings"
 )
 
-// SenderUsernamesClient contains the methods for the SenderUsernames group.
-// Don't use this type directly, use NewSenderUsernamesClient() instead.
-type SenderUsernamesClient struct {
+// SuppressionListsClient contains the methods for the SuppressionLists group.
+// Don't use this type directly, use NewSuppressionListsClient() instead.
+type SuppressionListsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSenderUsernamesClient creates a new instance of SenderUsernamesClient with the specified values.
+// NewSuppressionListsClient creates a new instance of SuppressionListsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewSenderUsernamesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SenderUsernamesClient, error) {
+func NewSuppressionListsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SuppressionListsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SenderUsernamesClient{
+	client := &SuppressionListsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Add a new SenderUsername resource under the parent Domains resource or update an existing SenderUsername
+// CreateOrUpdate - Add a new SuppressionList resource under the parent Domains resource or update an existing SuppressionList
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -48,35 +48,35 @@ func NewSenderUsernamesClient(subscriptionID string, credential azcore.TokenCred
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
-//   - senderUsername - The valid sender Username.
+//   - suppressionListName - The name of the suppression list.
 //   - parameters - Parameters for the create or update operation
-//   - options - SenderUsernamesClientCreateOrUpdateOptions contains the optional parameters for the SenderUsernamesClient.CreateOrUpdate
+//   - options - SuppressionListsClientCreateOrUpdateOptions contains the optional parameters for the SuppressionListsClient.CreateOrUpdate
 //     method.
-func (client *SenderUsernamesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, parameters SenderUsernameResource, options *SenderUsernamesClientCreateOrUpdateOptions) (SenderUsernamesClientCreateOrUpdateResponse, error) {
+func (client *SuppressionListsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, suppressionListName string, parameters SuppressionListResource, options *SuppressionListsClientCreateOrUpdateOptions) (SuppressionListsClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "SenderUsernamesClient.CreateOrUpdate"
+	const operationName = "SuppressionListsClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, senderUsername, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, suppressionListName, parameters, options)
 	if err != nil {
-		return SenderUsernamesClientCreateOrUpdateResponse{}, err
+		return SuppressionListsClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SenderUsernamesClientCreateOrUpdateResponse{}, err
+		return SuppressionListsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return SenderUsernamesClientCreateOrUpdateResponse{}, err
+		return SuppressionListsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, parameters SenderUsernameResource, _ *SenderUsernamesClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}"
+func (client *SuppressionListsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, suppressionListName string, parameters SuppressionListResource, _ *SuppressionListsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/suppressionLists/{suppressionListName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -93,10 +93,10 @@ func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	if senderUsername == "" {
-		return nil, errors.New("parameter senderUsername cannot be empty")
+	if suppressionListName == "" {
+		return nil, errors.New("parameter suppressionListName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{senderUsername}", url.PathEscape(senderUsername))
+	urlPath = strings.ReplaceAll(urlPath, "{suppressionListName}", url.PathEscape(suppressionListName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -112,47 +112,47 @@ func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SenderUsernamesClient) createOrUpdateHandleResponse(resp *http.Response) (SenderUsernamesClientCreateOrUpdateResponse, error) {
-	result := SenderUsernamesClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SenderUsernameResource); err != nil {
-		return SenderUsernamesClientCreateOrUpdateResponse{}, err
+func (client *SuppressionListsClient) createOrUpdateHandleResponse(resp *http.Response) (SuppressionListsClientCreateOrUpdateResponse, error) {
+	result := SuppressionListsClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionListResource); err != nil {
+		return SuppressionListsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Operation to delete a SenderUsernames resource.
+// Delete - Delete a SuppressionList.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
-//   - senderUsername - The valid sender Username.
-//   - options - SenderUsernamesClientDeleteOptions contains the optional parameters for the SenderUsernamesClient.Delete method.
-func (client *SenderUsernamesClient) Delete(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, options *SenderUsernamesClientDeleteOptions) (SenderUsernamesClientDeleteResponse, error) {
+//   - suppressionListName - The name of the suppression list.
+//   - options - SuppressionListsClientDeleteOptions contains the optional parameters for the SuppressionListsClient.Delete method.
+func (client *SuppressionListsClient) Delete(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, suppressionListName string, options *SuppressionListsClientDeleteOptions) (SuppressionListsClientDeleteResponse, error) {
 	var err error
-	const operationName = "SenderUsernamesClient.Delete"
+	const operationName = "SuppressionListsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, senderUsername, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, suppressionListName, options)
 	if err != nil {
-		return SenderUsernamesClientDeleteResponse{}, err
+		return SuppressionListsClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SenderUsernamesClientDeleteResponse{}, err
+		return SuppressionListsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return SenderUsernamesClientDeleteResponse{}, err
+		return SuppressionListsClientDeleteResponse{}, err
 	}
-	return SenderUsernamesClientDeleteResponse{}, nil
+	return SuppressionListsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, _ *SenderUsernamesClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}"
+func (client *SuppressionListsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, suppressionListName string, _ *SuppressionListsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/suppressionLists/{suppressionListName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -169,10 +169,10 @@ func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	if senderUsername == "" {
-		return nil, errors.New("parameter senderUsername cannot be empty")
+	if suppressionListName == "" {
+		return nil, errors.New("parameter suppressionListName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{senderUsername}", url.PathEscape(senderUsername))
+	urlPath = strings.ReplaceAll(urlPath, "{suppressionListName}", url.PathEscape(suppressionListName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -184,40 +184,40 @@ func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
-// Get - Get a valid sender username for a domains resource.
+// Get - Get a SuppressionList resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
-//   - senderUsername - The valid sender Username.
-//   - options - SenderUsernamesClientGetOptions contains the optional parameters for the SenderUsernamesClient.Get method.
-func (client *SenderUsernamesClient) Get(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, options *SenderUsernamesClientGetOptions) (SenderUsernamesClientGetResponse, error) {
+//   - suppressionListName - The name of the suppression list.
+//   - options - SuppressionListsClientGetOptions contains the optional parameters for the SuppressionListsClient.Get method.
+func (client *SuppressionListsClient) Get(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, suppressionListName string, options *SuppressionListsClientGetOptions) (SuppressionListsClientGetResponse, error) {
 	var err error
-	const operationName = "SenderUsernamesClient.Get"
+	const operationName = "SuppressionListsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, senderUsername, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, suppressionListName, options)
 	if err != nil {
-		return SenderUsernamesClientGetResponse{}, err
+		return SuppressionListsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SenderUsernamesClientGetResponse{}, err
+		return SuppressionListsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SenderUsernamesClientGetResponse{}, err
+		return SuppressionListsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, _ *SenderUsernamesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}"
+func (client *SuppressionListsClient) getCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, suppressionListName string, _ *SuppressionListsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/suppressionLists/{suppressionListName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -234,10 +234,10 @@ func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter domainName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	if senderUsername == "" {
-		return nil, errors.New("parameter senderUsername cannot be empty")
+	if suppressionListName == "" {
+		return nil, errors.New("parameter suppressionListName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{senderUsername}", url.PathEscape(senderUsername))
+	urlPath = strings.ReplaceAll(urlPath, "{suppressionListName}", url.PathEscape(suppressionListName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -250,48 +250,48 @@ func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *SenderUsernamesClient) getHandleResponse(resp *http.Response) (SenderUsernamesClientGetResponse, error) {
-	result := SenderUsernamesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SenderUsernameResource); err != nil {
-		return SenderUsernamesClientGetResponse{}, err
+func (client *SuppressionListsClient) getHandleResponse(resp *http.Response) (SuppressionListsClientGetResponse, error) {
+	result := SuppressionListsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionListResource); err != nil {
+		return SuppressionListsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByDomainsPager - List all valid sender usernames for a domains resource.
+// NewListByDomainPager - List all suppression lists for a domains resource.
 //
 // Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
-//   - options - SenderUsernamesClientListByDomainsOptions contains the optional parameters for the SenderUsernamesClient.NewListByDomainsPager
+//   - options - SuppressionListsClientListByDomainOptions contains the optional parameters for the SuppressionListsClient.NewListByDomainPager
 //     method.
-func (client *SenderUsernamesClient) NewListByDomainsPager(resourceGroupName string, emailServiceName string, domainName string, options *SenderUsernamesClientListByDomainsOptions) *runtime.Pager[SenderUsernamesClientListByDomainsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SenderUsernamesClientListByDomainsResponse]{
-		More: func(page SenderUsernamesClientListByDomainsResponse) bool {
+func (client *SuppressionListsClient) NewListByDomainPager(resourceGroupName string, emailServiceName string, domainName string, options *SuppressionListsClientListByDomainOptions) *runtime.Pager[SuppressionListsClientListByDomainResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SuppressionListsClientListByDomainResponse]{
+		More: func(page SuppressionListsClientListByDomainResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SenderUsernamesClientListByDomainsResponse) (SenderUsernamesClientListByDomainsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SenderUsernamesClient.NewListByDomainsPager")
+		Fetcher: func(ctx context.Context, page *SuppressionListsClientListByDomainResponse) (SuppressionListsClientListByDomainResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SuppressionListsClient.NewListByDomainPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDomainsCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, options)
+				return client.listByDomainCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, options)
 			}, nil)
 			if err != nil {
-				return SenderUsernamesClientListByDomainsResponse{}, err
+				return SuppressionListsClientListByDomainResponse{}, err
 			}
-			return client.listByDomainsHandleResponse(resp)
+			return client.listByDomainHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// listByDomainsCreateRequest creates the ListByDomains request.
-func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, _ *SenderUsernamesClientListByDomainsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames"
+// listByDomainCreateRequest creates the ListByDomain request.
+func (client *SuppressionListsClient) listByDomainCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, _ *SuppressionListsClientListByDomainOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/suppressionLists"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -319,11 +319,11 @@ func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// listByDomainsHandleResponse handles the ListByDomains response.
-func (client *SenderUsernamesClient) listByDomainsHandleResponse(resp *http.Response) (SenderUsernamesClientListByDomainsResponse, error) {
-	result := SenderUsernamesClientListByDomainsResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SenderUsernameResourceCollection); err != nil {
-		return SenderUsernamesClientListByDomainsResponse{}, err
+// listByDomainHandleResponse handles the ListByDomain response.
+func (client *SuppressionListsClient) listByDomainHandleResponse(resp *http.Response) (SuppressionListsClientListByDomainResponse, error) {
+	result := SuppressionListsClientListByDomainResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionListResourceCollection); err != nil {
+		return SuppressionListsClientListByDomainResponse{}, err
 	}
 	return result, nil
 }

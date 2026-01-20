@@ -22,7 +22,7 @@ import (
 // DomainsServer is a fake server for instances of the armcommunication.DomainsClient type.
 type DomainsServer struct {
 	// BeginCancelVerification is the fake for method DomainsClient.BeginCancelVerification
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginCancelVerification func(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters armcommunication.VerificationParameter, options *armcommunication.DomainsClientBeginCancelVerificationOptions) (resp azfake.PollerResponder[armcommunication.DomainsClientCancelVerificationResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method DomainsClient.BeginCreateOrUpdate
@@ -38,7 +38,7 @@ type DomainsServer struct {
 	Get func(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, options *armcommunication.DomainsClientGetOptions) (resp azfake.Responder[armcommunication.DomainsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// BeginInitiateVerification is the fake for method DomainsClient.BeginInitiateVerification
-	// HTTP status codes to indicate success: http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginInitiateVerification func(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, parameters armcommunication.VerificationParameter, options *armcommunication.DomainsClientBeginInitiateVerificationOptions) (resp azfake.PollerResponder[armcommunication.DomainsClientInitiateVerificationResponse], errResp azfake.ErrorResponder)
 
 	// NewListByEmailServiceResourcePager is the fake for method DomainsClient.NewListByEmailServiceResourcePager
@@ -85,33 +85,52 @@ func (d *DomainsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return d.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "DomainsClient.BeginCancelVerification":
-		resp, err = d.dispatchBeginCancelVerification(req)
-	case "DomainsClient.BeginCreateOrUpdate":
-		resp, err = d.dispatchBeginCreateOrUpdate(req)
-	case "DomainsClient.BeginDelete":
-		resp, err = d.dispatchBeginDelete(req)
-	case "DomainsClient.Get":
-		resp, err = d.dispatchGet(req)
-	case "DomainsClient.BeginInitiateVerification":
-		resp, err = d.dispatchBeginInitiateVerification(req)
-	case "DomainsClient.NewListByEmailServiceResourcePager":
-		resp, err = d.dispatchNewListByEmailServiceResourcePager(req)
-	case "DomainsClient.BeginUpdate":
-		resp, err = d.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (d *DomainsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if domainsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = domainsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "DomainsClient.BeginCancelVerification":
+				res.resp, res.err = d.dispatchBeginCancelVerification(req)
+			case "DomainsClient.BeginCreateOrUpdate":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
+			case "DomainsClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DomainsClient.Get":
+				res.resp, res.err = d.dispatchGet(req)
+			case "DomainsClient.BeginInitiateVerification":
+				res.resp, res.err = d.dispatchBeginInitiateVerification(req)
+			case "DomainsClient.NewListByEmailServiceResourcePager":
+				res.resp, res.err = d.dispatchNewListByEmailServiceResourcePager(req)
+			case "DomainsClient.BeginUpdate":
+				res.resp, res.err = d.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (d *DomainsServerTransport) dispatchBeginCancelVerification(req *http.Request) (*http.Response, error) {
@@ -123,7 +142,7 @@ func (d *DomainsServerTransport) dispatchBeginCancelVerification(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancelVerification`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcommunication.VerificationParameter](req)
@@ -155,9 +174,9 @@ func (d *DomainsServerTransport) dispatchBeginCancelVerification(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginCancelVerification.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCancelVerification) {
 		d.beginCancelVerification.remove(req)
@@ -175,7 +194,7 @@ func (d *DomainsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcommunication.DomainResource](req)
@@ -227,7 +246,7 @@ func (d *DomainsServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -273,7 +292,7 @@ func (d *DomainsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -312,7 +331,7 @@ func (d *DomainsServerTransport) dispatchBeginInitiateVerification(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/initiateVerification`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcommunication.VerificationParameter](req)
@@ -344,9 +363,9 @@ func (d *DomainsServerTransport) dispatchBeginInitiateVerification(req *http.Req
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		d.beginInitiateVerification.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginInitiateVerification) {
 		d.beginInitiateVerification.remove(req)
@@ -364,7 +383,7 @@ func (d *DomainsServerTransport) dispatchNewListByEmailServiceResourcePager(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -405,7 +424,7 @@ func (d *DomainsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Communication/emailServices/(?P<emailServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armcommunication.UpdateDomainRequestParameters](req)
@@ -446,4 +465,10 @@ func (d *DomainsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to DomainsServerTransport
+var domainsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -73,6 +73,14 @@ func (c *ClientFactory) NewAPIGatewayConfigConnectionClient() *APIGatewayConfigC
 	}
 }
 
+// NewAPIGatewayHostnameBindingClient creates a new instance of APIGatewayHostnameBindingClient.
+func (c *ClientFactory) NewAPIGatewayHostnameBindingClient() *APIGatewayHostnameBindingClient {
+	return &APIGatewayHostnameBindingClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAPIIssueAttachmentClient creates a new instance of APIIssueAttachmentClient.
 func (c *ClientFactory) NewAPIIssueAttachmentClient() *APIIssueAttachmentClient {
 	return &APIIssueAttachmentClient{
@@ -156,6 +164,14 @@ func (c *ClientFactory) NewAPISchemaClient() *APISchemaClient {
 // NewAPITagDescriptionClient creates a new instance of APITagDescriptionClient.
 func (c *ClientFactory) NewAPITagDescriptionClient() *APITagDescriptionClient {
 	return &APITagDescriptionClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewAPIToolClient creates a new instance of APIToolClient.
+func (c *ClientFactory) NewAPIToolClient() *APIToolClient {
+	return &APIToolClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -260,6 +276,22 @@ func (c *ClientFactory) NewCertificateClient() *CertificateClient {
 // NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
 	return &Client{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClientApplicationClient creates a new instance of ClientApplicationClient.
+func (c *ClientFactory) NewClientApplicationClient() *ClientApplicationClient {
+	return &ClientApplicationClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClientApplicationProductLinkClient creates a new instance of ClientApplicationProductLinkClient.
+func (c *ClientFactory) NewClientApplicationProductLinkClient() *ClientApplicationProductLinkClient {
+	return &ClientApplicationProductLinkClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

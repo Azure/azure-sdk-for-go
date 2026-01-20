@@ -27,7 +27,7 @@ type PolicyDescriptionClient struct {
 // NewPolicyDescriptionClient creates a new instance of PolicyDescriptionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyDescriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyDescriptionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPolicyDescriptionClient(subscriptionID string, credential azcore.TokenCr
 // ListByService - Lists all policy descriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - PolicyDescriptionClientListByServiceOptions contains the optional parameters for the PolicyDescriptionClient.ListByService
@@ -90,7 +90,7 @@ func (client *PolicyDescriptionClient) listByServiceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", string(*options.Scope))
 	}

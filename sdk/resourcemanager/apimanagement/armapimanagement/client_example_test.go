@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementPerformConnectivityCheckHttpConnect.json
@@ -28,16 +28,16 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 	}
 	poller, err := clientFactory.NewClient().BeginPerformConnectivityCheckAsync(ctx, "rg1", "apimService1", armapimanagement.ConnectivityCheckRequest{
 		Destination: &armapimanagement.ConnectivityCheckRequestDestination{
-			Address: to.Ptr("https://microsoft.com"),
-			Port:    to.Ptr[int64](3306),
+			Address:	to.Ptr("https://microsoft.com"),
+			Port:		to.Ptr[int64](3306),
 		},
 		ProtocolConfiguration: &armapimanagement.ConnectivityCheckRequestProtocolConfiguration{
 			HTTPConfiguration: &armapimanagement.ConnectivityCheckRequestProtocolConfigurationHTTPConfiguration{
-				Method: to.Ptr(armapimanagement.MethodGET),
+				Method:	to.Ptr(armapimanagement.MethodGET),
 				Headers: []*armapimanagement.HTTPHeader{
 					{
-						Name:  to.Ptr("Authorization"),
-						Value: to.Ptr("Bearer myPreciousToken"),
+						Name:	to.Ptr("Authorization"),
+						Value:	to.Ptr("Bearer myPreciousToken"),
 					}},
 				ValidStatusCodes: []*int64{
 					to.Ptr[int64](200),
@@ -47,7 +47,7 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_httpConnectivityCheck() {
 		Source: &armapimanagement.ConnectivityCheckRequestSource{
 			Region: to.Ptr("northeurope"),
 		},
-		Protocol: to.Ptr(armapimanagement.ConnectivityCheckProtocolHTTPS),
+		Protocol:	to.Ptr(armapimanagement.ConnectivityCheckProtocolHTTPS),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -102,10 +102,10 @@ func ExampleClient_BeginPerformConnectivityCheckAsync_tcpConnectivityCheck() {
 	}
 	poller, err := clientFactory.NewClient().BeginPerformConnectivityCheckAsync(ctx, "rg1", "apimService1", armapimanagement.ConnectivityCheckRequest{
 		Destination: &armapimanagement.ConnectivityCheckRequestDestination{
-			Address: to.Ptr("8.8.8.8"),
-			Port:    to.Ptr[int64](53),
+			Address:	to.Ptr("8.8.8.8"),
+			Port:		to.Ptr[int64](53),
 		},
-		PreferredIPVersion: to.Ptr(armapimanagement.PreferredIPVersionIPv4),
+		PreferredIPVersion:	to.Ptr(armapimanagement.PreferredIPVersionIPv4),
 		Source: &armapimanagement.ConnectivityCheckRequestSource{
 			Region: to.Ptr("northeurope"),
 		},

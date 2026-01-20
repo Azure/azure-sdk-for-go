@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceBackends.json
@@ -27,8 +27,8 @@ func ExampleWorkspaceBackendClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceBackendClient().NewListByWorkspacePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceBackendClientListByWorkspaceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -179,11 +179,11 @@ func ExampleWorkspaceBackendClient_CreateOrUpdate_apiManagementCreateWorkspaceBa
 	}
 	res, err := clientFactory.NewWorkspaceBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "proxybackend", armapimanagement.BackendContract{
 		Properties: &armapimanagement.BackendContractProperties{
-			Description: to.Ptr("description5308"),
+			Description:	to.Ptr("description5308"),
 			Credentials: &armapimanagement.BackendCredentialsContract{
 				Authorization: &armapimanagement.BackendAuthorizationHeaderCredentials{
-					Parameter: to.Ptr("opensesma"),
-					Scheme:    to.Ptr("Basic"),
+					Parameter:	to.Ptr("opensesma"),
+					Scheme:		to.Ptr("Basic"),
 				},
 				Header: map[string][]*string{
 					"x-my-1": {
@@ -198,16 +198,16 @@ func ExampleWorkspaceBackendClient_CreateOrUpdate_apiManagementCreateWorkspaceBa
 				},
 			},
 			Proxy: &armapimanagement.BackendProxyContract{
-				Password: to.Ptr("<password>"),
-				URL:      to.Ptr("http://192.168.1.1:8080"),
-				Username: to.Ptr("Contoso\\admin"),
+				Password:	to.Ptr("<password>"),
+				URL:		to.Ptr("http://192.168.1.1:8080"),
+				Username:	to.Ptr("Contoso\\admin"),
 			},
 			TLS: &armapimanagement.BackendTLSProperties{
-				ValidateCertificateChain: to.Ptr(true),
-				ValidateCertificateName:  to.Ptr(true),
+				ValidateCertificateChain:	to.Ptr(true),
+				ValidateCertificateName:	to.Ptr(true),
 			},
-			URL:      to.Ptr("https://backendname2644/"),
-			Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+			URL:		to.Ptr("https://backendname2644/"),
+			Protocol:	to.Ptr(armapimanagement.BackendProtocolHTTP),
 		},
 	}, &armapimanagement.WorkspaceBackendClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -267,22 +267,22 @@ func ExampleWorkspaceBackendClient_CreateOrUpdate_apiManagementCreateWorkspaceBa
 	}
 	res, err := clientFactory.NewWorkspaceBackendClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "sfbackend", armapimanagement.BackendContract{
 		Properties: &armapimanagement.BackendContractProperties{
-			Description: to.Ptr("Service Fabric Test App 1"),
+			Description:	to.Ptr("Service Fabric Test App 1"),
 			Properties: &armapimanagement.BackendProperties{
 				ServiceFabricCluster: &armapimanagement.BackendServiceFabricClusterProperties{
-					ClientCertificateID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/cert1"),
+					ClientCertificateID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/cert1"),
 					ManagementEndpoints: []*string{
 						to.Ptr("https://somecluster.com")},
-					MaxPartitionResolutionRetries: to.Ptr[int32](5),
+					MaxPartitionResolutionRetries:	to.Ptr[int32](5),
 					ServerX509Names: []*armapimanagement.X509CertificateName{
 						{
-							Name:                        to.Ptr("ServerCommonName1"),
-							IssuerCertificateThumbprint: to.Ptr("IssuerCertificateThumbprint1"),
+							Name:				to.Ptr("ServerCommonName1"),
+							IssuerCertificateThumbprint:	to.Ptr("IssuerCertificateThumbprint1"),
 						}},
 				},
 			},
-			URL:      to.Ptr("fabric:/mytestapp/mytestservice"),
-			Protocol: to.Ptr(armapimanagement.BackendProtocolHTTP),
+			URL:		to.Ptr("fabric:/mytestapp/mytestservice"),
+			Protocol:	to.Ptr(armapimanagement.BackendProtocolHTTP),
 		},
 	}, &armapimanagement.WorkspaceBackendClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -329,10 +329,10 @@ func ExampleWorkspaceBackendClient_Update() {
 	}
 	res, err := clientFactory.NewWorkspaceBackendClient().Update(ctx, "rg1", "apimService1", "wks1", "proxybackend", "*", armapimanagement.BackendUpdateParameters{
 		Properties: &armapimanagement.BackendUpdateParameterProperties{
-			Description: to.Ptr("description5308"),
+			Description:	to.Ptr("description5308"),
 			TLS: &armapimanagement.BackendTLSProperties{
-				ValidateCertificateChain: to.Ptr(false),
-				ValidateCertificateName:  to.Ptr(true),
+				ValidateCertificateChain:	to.Ptr(false),
+				ValidateCertificateName:	to.Ptr(true),
 			},
 		},
 	}, nil)

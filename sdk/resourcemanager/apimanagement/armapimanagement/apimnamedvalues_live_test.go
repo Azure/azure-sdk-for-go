@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,14 +20,14 @@ import (
 type ApimnamedvaluesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	namedValueId      string
-	serviceName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	namedValueId		string
+	serviceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimnamedvaluesTestSuite) SetupSuite() {
@@ -64,17 +64,17 @@ func (testsuite *ApimnamedvaluesTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -91,12 +91,12 @@ func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	testsuite.Require().NoError(err)
 	namedValueClientCreateOrUpdateResponsePoller, err := namedValueClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, armapimanagement.NamedValueCreateContract{
 		Properties: &armapimanagement.NamedValueCreateContractProperties{
-			Secret: to.Ptr(false),
+			Secret:	to.Ptr(false),
 			Tags: []*string{
 				to.Ptr("foo"),
 				to.Ptr("bar")},
-			DisplayName: to.Ptr("prop3name"),
-			Value:       to.Ptr("propValue"),
+			DisplayName:	to.Ptr("prop3name"),
+			Value:		to.Ptr("propValue"),
 		},
 	}, &armapimanagement.NamedValueClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -111,9 +111,9 @@ func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	// From step NamedValue_ListByService
 	fmt.Println("Call operation: NamedValue_ListByService")
 	namedValueClientNewListByServicePager := namedValueClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.NamedValueClientListByServiceOptions{Filter: nil,
-		Top:                     nil,
-		Skip:                    nil,
-		IsKeyVaultRefreshFailed: nil,
+		Top:				nil,
+		Skip:				nil,
+		IsKeyVaultRefreshFailed:	nil,
 	})
 	for namedValueClientNewListByServicePager.More() {
 		_, err := namedValueClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -130,12 +130,12 @@ func (testsuite *ApimnamedvaluesTestSuite) TestNamedvalue() {
 	fmt.Println("Call operation: NamedValue_Update")
 	namedValueClientUpdateResponsePoller, err := namedValueClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.namedValueId, "*", armapimanagement.NamedValueUpdateParameters{
 		Properties: &armapimanagement.NamedValueUpdateParameterProperties{
-			Secret: to.Ptr(false),
+			Secret:	to.Ptr(false),
 			Tags: []*string{
 				to.Ptr("foo"),
 				to.Ptr("bar2")},
-			DisplayName: to.Ptr("prop3name"),
-			Value:       to.Ptr("propValue"),
+			DisplayName:	to.Ptr("prop3name"),
+			Value:		to.Ptr("propValue"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

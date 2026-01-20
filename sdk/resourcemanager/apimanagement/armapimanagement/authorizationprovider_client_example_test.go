@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListAuthorizationProviders.json
@@ -27,8 +27,8 @@ func ExampleAuthorizationProviderClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAuthorizationProviderClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.AuthorizationProviderClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -180,18 +180,18 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	}
 	res, err := clientFactory.NewAuthorizationProviderClient().CreateOrUpdate(ctx, "rg1", "apimService1", "aadwithauthcode", armapimanagement.AuthorizationProviderContract{
 		Properties: &armapimanagement.AuthorizationProviderContractProperties{
-			DisplayName:      to.Ptr("aadwithauthcode"),
-			IdentityProvider: to.Ptr("aad"),
+			DisplayName:		to.Ptr("aadwithauthcode"),
+			IdentityProvider:	to.Ptr("aad"),
 			Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
-						"clientId":     to.Ptr("clientsecretid"),
-						"clientSecret": to.Ptr("clientsecretvalue"),
-						"resourceUri":  to.Ptr("https://graph.microsoft.com"),
-						"scopes":       to.Ptr("User.Read.All Group.Read.All"),
+						"clientId":	to.Ptr("clientsecretid"),
+						"clientSecret":	to.Ptr("clientsecretvalue"),
+						"resourceUri":	to.Ptr("https://graph.microsoft.com"),
+						"scopes":	to.Ptr("User.Read.All Group.Read.All"),
 					},
 				},
-				RedirectURL: to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
+				RedirectURL:	to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
 			},
 		},
 	}, &armapimanagement.AuthorizationProviderClientCreateOrUpdateOptions{IfMatch: nil})
@@ -237,16 +237,16 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	}
 	res, err := clientFactory.NewAuthorizationProviderClient().CreateOrUpdate(ctx, "rg1", "apimService1", "aadwithclientcred", armapimanagement.AuthorizationProviderContract{
 		Properties: &armapimanagement.AuthorizationProviderContractProperties{
-			DisplayName:      to.Ptr("aadwithclientcred"),
-			IdentityProvider: to.Ptr("aad"),
+			DisplayName:		to.Ptr("aadwithclientcred"),
+			IdentityProvider:	to.Ptr("aad"),
 			Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
-						"resourceUri": to.Ptr("https://graph.microsoft.com"),
-						"scopes":      to.Ptr("User.Read.All Group.Read.All"),
+						"resourceUri":	to.Ptr("https://graph.microsoft.com"),
+						"scopes":	to.Ptr("User.Read.All Group.Read.All"),
 					},
 				},
-				RedirectURL: to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
+				RedirectURL:	to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
 			},
 		},
 	}, &armapimanagement.AuthorizationProviderClientCreateOrUpdateOptions{IfMatch: nil})
@@ -291,20 +291,20 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	}
 	res, err := clientFactory.NewAuthorizationProviderClient().CreateOrUpdate(ctx, "rg1", "apimService1", "eventbrite", armapimanagement.AuthorizationProviderContract{
 		Properties: &armapimanagement.AuthorizationProviderContractProperties{
-			DisplayName:      to.Ptr("eventbrite"),
-			IdentityProvider: to.Ptr("oauth2"),
+			DisplayName:		to.Ptr("eventbrite"),
+			IdentityProvider:	to.Ptr("oauth2"),
 			Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
-						"authorizationUrl": to.Ptr("https://www.eventbrite.com/oauth/authorize"),
-						"clientId":         to.Ptr("clientid"),
-						"clientSecret":     to.Ptr("clientsecretvalue"),
-						"refreshUrl":       to.Ptr("https://www.eventbrite.com/oauth/token"),
-						"scopes":           nil,
-						"tokenUrl":         to.Ptr("https://www.eventbrite.com/oauth/token"),
+						"authorizationUrl":	to.Ptr("https://www.eventbrite.com/oauth/authorize"),
+						"clientId":		to.Ptr("clientid"),
+						"clientSecret":		to.Ptr("clientsecretvalue"),
+						"refreshUrl":		to.Ptr("https://www.eventbrite.com/oauth/token"),
+						"scopes":		nil,
+						"tokenUrl":		to.Ptr("https://www.eventbrite.com/oauth/token"),
 					},
 				},
-				RedirectURL: to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
+				RedirectURL:	to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
 			},
 		},
 	}, &armapimanagement.AuthorizationProviderClientCreateOrUpdateOptions{IfMatch: nil})
@@ -350,17 +350,17 @@ func ExampleAuthorizationProviderClient_CreateOrUpdate_apiManagementCreateAuthor
 	}
 	res, err := clientFactory.NewAuthorizationProviderClient().CreateOrUpdate(ctx, "rg1", "apimService1", "google", armapimanagement.AuthorizationProviderContract{
 		Properties: &armapimanagement.AuthorizationProviderContractProperties{
-			DisplayName:      to.Ptr("google"),
-			IdentityProvider: to.Ptr("google"),
+			DisplayName:		to.Ptr("google"),
+			IdentityProvider:	to.Ptr("google"),
 			Oauth2: &armapimanagement.AuthorizationProviderOAuth2Settings{
 				GrantTypes: &armapimanagement.AuthorizationProviderOAuth2GrantTypes{
 					AuthorizationCode: map[string]*string{
-						"clientId":     to.Ptr("99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"),
-						"clientSecret": to.Ptr("clientsecretvalue"),
-						"scopes":       to.Ptr("openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"),
+						"clientId":	to.Ptr("99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com"),
+						"clientSecret":	to.Ptr("clientsecretvalue"),
+						"scopes":	to.Ptr("openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"),
 					},
 				},
-				RedirectURL: to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
+				RedirectURL:	to.Ptr("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1"),
 			},
 		},
 	}, &armapimanagement.AuthorizationProviderClientCreateOrUpdateOptions{IfMatch: nil})

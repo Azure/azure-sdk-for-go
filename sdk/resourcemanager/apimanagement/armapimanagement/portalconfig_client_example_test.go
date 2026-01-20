@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListPortalConfig.json
@@ -164,22 +164,22 @@ func ExamplePortalConfigClient_Update() {
 			Csp: &armapimanagement.PortalConfigCspProperties{
 				AllowedSources: []*string{
 					to.Ptr("*.contoso.com")},
-				Mode: to.Ptr(armapimanagement.PortalSettingsCspModeReportOnly),
+				Mode:	to.Ptr(armapimanagement.PortalSettingsCspModeReportOnly),
 				ReportURI: []*string{
 					to.Ptr("https://report.contoso.com")},
 			},
 			Delegation: &armapimanagement.PortalConfigDelegationProperties{
-				DelegateRegistration: to.Ptr(false),
-				DelegateSubscription: to.Ptr(false),
+				DelegateRegistration:	to.Ptr(false),
+				DelegateSubscription:	to.Ptr(false),
 			},
-			EnableBasicAuth: to.Ptr(true),
+			EnableBasicAuth:	to.Ptr(true),
 			Signin: &armapimanagement.PortalConfigPropertiesSignin{
 				Require: to.Ptr(false),
 			},
 			Signup: &armapimanagement.PortalConfigPropertiesSignup{
 				TermsOfService: &armapimanagement.PortalConfigTermsOfServiceProperties{
-					RequireConsent: to.Ptr(false),
-					Text:           to.Ptr("I agree to the service terms and conditions."),
+					RequireConsent:	to.Ptr(false),
+					Text:		to.Ptr("I agree to the service terms and conditions."),
 				},
 			},
 		},
@@ -244,22 +244,22 @@ func ExamplePortalConfigClient_CreateOrUpdate() {
 			Csp: &armapimanagement.PortalConfigCspProperties{
 				AllowedSources: []*string{
 					to.Ptr("*.contoso.com")},
-				Mode: to.Ptr(armapimanagement.PortalSettingsCspModeReportOnly),
+				Mode:	to.Ptr(armapimanagement.PortalSettingsCspModeReportOnly),
 				ReportURI: []*string{
 					to.Ptr("https://report.contoso.com")},
 			},
 			Delegation: &armapimanagement.PortalConfigDelegationProperties{
-				DelegateRegistration: to.Ptr(false),
-				DelegateSubscription: to.Ptr(false),
+				DelegateRegistration:	to.Ptr(false),
+				DelegateSubscription:	to.Ptr(false),
 			},
-			EnableBasicAuth: to.Ptr(true),
+			EnableBasicAuth:	to.Ptr(true),
 			Signin: &armapimanagement.PortalConfigPropertiesSignin{
 				Require: to.Ptr(false),
 			},
 			Signup: &armapimanagement.PortalConfigPropertiesSignup{
 				TermsOfService: &armapimanagement.PortalConfigTermsOfServiceProperties{
-					RequireConsent: to.Ptr(false),
-					Text:           to.Ptr("I agree to the service terms and conditions."),
+					RequireConsent:	to.Ptr(false),
+					Text:		to.Ptr("I agree to the service terms and conditions."),
 				},
 			},
 		},

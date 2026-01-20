@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApiOperationTags.json
@@ -27,8 +27,8 @@ func ExampleTagClient_NewListByOperationPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewTagClient().NewListByOperationPager("rg1", "apimService1", "57d2ef278aa04f0888cba3f3", "57d2ef278aa04f0888cba3f6", &armapimanagement.TagClientListByOperationOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -157,8 +157,8 @@ func ExampleTagClient_NewListByAPIPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewTagClient().NewListByAPIPager("rg1", "apimService1", "57d2ef278aa04f0888cba3f3", &armapimanagement.TagClientListByAPIOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -287,8 +287,8 @@ func ExampleTagClient_NewListByProductPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewTagClient().NewListByProductPager("rg1", "apimService1", "57d2ef278aa04f0888cba3f1", &armapimanagement.TagClientListByProductOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -417,9 +417,9 @@ func ExampleTagClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewTagClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.TagClientListByServiceOptions{Filter: nil,
-		Top:   nil,
-		Skip:  nil,
-		Scope: nil,
+		Top:	nil,
+		Skip:	nil,
+		Scope:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)

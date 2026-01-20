@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListCaches.json
@@ -27,7 +27,7 @@ func ExampleCacheClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewCacheClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.CacheClientListByServiceOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -118,10 +118,10 @@ func ExampleCacheClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewCacheClient().CreateOrUpdate(ctx, "rg1", "apimService1", "c1", armapimanagement.CacheContract{
 		Properties: &armapimanagement.CacheContractProperties{
-			Description:      to.Ptr("Redis cache instances in West India"),
-			ConnectionString: to.Ptr("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False"),
-			ResourceID:       to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1"),
-			UseFromLocation:  to.Ptr("default"),
+			Description:		to.Ptr("Redis cache instances in West India"),
+			ConnectionString:	to.Ptr("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False"),
+			ResourceID:		to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1"),
+			UseFromLocation:	to.Ptr("default"),
 		},
 	}, &armapimanagement.CacheClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {

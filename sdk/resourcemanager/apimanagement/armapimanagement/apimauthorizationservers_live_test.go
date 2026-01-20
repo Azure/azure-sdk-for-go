@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,14 +20,14 @@ import (
 type ApimauthorizationserversTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	authsid           string
-	serviceName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	authsid			string
+	serviceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimauthorizationserversTestSuite) SetupSuite() {
@@ -64,17 +64,17 @@ func (testsuite *ApimauthorizationserversTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -91,21 +91,21 @@ func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 	testsuite.Require().NoError(err)
 	_, err = authorizationServerClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, armapimanagement.AuthorizationServerContract{
 		Properties: &armapimanagement.AuthorizationServerContractProperties{
-			Description: to.Ptr("test server"),
+			Description:	to.Ptr("test server"),
 			AuthorizationMethods: []*armapimanagement.AuthorizationMethod{
 				to.Ptr(armapimanagement.AuthorizationMethodGET)},
 			BearerTokenSendingMethods: []*armapimanagement.BearerTokenSendingMethod{
 				to.Ptr(armapimanagement.BearerTokenSendingMethodAuthorizationHeader)},
-			DefaultScope:               to.Ptr("read write"),
-			ResourceOwnerPassword:      to.Ptr("pwd"),
-			ResourceOwnerUsername:      to.Ptr("un"),
-			SupportState:               to.Ptr(true),
-			TokenEndpoint:              to.Ptr("https://www.contoso.com/oauth2/token"),
-			AuthorizationEndpoint:      to.Ptr("https://www.contoso.com/oauth2/auth"),
-			ClientID:                   to.Ptr("1"),
-			ClientRegistrationEndpoint: to.Ptr("https://www.contoso.com/apps"),
-			ClientSecret:               to.Ptr("2"),
-			DisplayName:                to.Ptr("test2"),
+			DefaultScope:			to.Ptr("read write"),
+			ResourceOwnerPassword:		to.Ptr("pwd"),
+			ResourceOwnerUsername:		to.Ptr("un"),
+			SupportState:			to.Ptr(true),
+			TokenEndpoint:			to.Ptr("https://www.contoso.com/oauth2/token"),
+			AuthorizationEndpoint:		to.Ptr("https://www.contoso.com/oauth2/auth"),
+			ClientID:			to.Ptr("1"),
+			ClientRegistrationEndpoint:	to.Ptr("https://www.contoso.com/apps"),
+			ClientSecret:			to.Ptr("2"),
+			DisplayName:			to.Ptr("test2"),
 			GrantTypes: []*armapimanagement.GrantType{
 				to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 				to.Ptr(armapimanagement.GrantTypeImplicit)},
@@ -120,8 +120,8 @@ func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 
 	// From step AuthorizationServer_ListByService
 	authorizationServerClientNewListByServicePager := authorizationServerClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.AuthorizationServerClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for authorizationServerClientNewListByServicePager.More() {
 		_, err := authorizationServerClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -138,8 +138,8 @@ func (testsuite *ApimauthorizationserversTestSuite) TestAuthorizationserver() {
 	fmt.Println("Call operation: AuthorizationServer_Update")
 	_, err = authorizationServerClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.authsid, "*", armapimanagement.AuthorizationServerUpdateContract{
 		Properties: &armapimanagement.AuthorizationServerUpdateContractProperties{
-			ClientID:     to.Ptr("update"),
-			ClientSecret: to.Ptr("updated"),
+			ClientID:	to.Ptr("update"),
+			ClientSecret:	to.Ptr("updated"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,24 +20,24 @@ import (
 type ApimapisTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	operationId       string
-	apiId             string
-	attachmentId      string
-	commentId         string
-	diagnosticId      string
-	issueId           string
-	releaseId         string
-	schemaId          string
-	serviceName       string
-	tagDescriptionId  string
-	tagId             string
-	tagOperationId    string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	operationId		string
+	apiId			string
+	attachmentId		string
+	commentId		string
+	diagnosticId		string
+	issueId			string
+	releaseId		string
+	schemaId		string
+	serviceName		string
+	tagDescriptionId	string
+	tagId			string
+	tagOperationId		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimapisTestSuite) SetupSuite() {
@@ -85,17 +85,17 @@ func (testsuite *ApimapisTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -108,9 +108,9 @@ func (testsuite *ApimapisTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	aPIClientCreateOrUpdateResponsePoller, err := aPIClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:   to.Ptr("petstore"),
-			Format: to.Ptr(armapimanagement.ContentFormatOpenapiLink),
-			Value:  to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
+			Path:	to.Ptr("petstore"),
+			Format:	to.Ptr(armapimanagement.ContentFormatOpenapiLink),
+			Value:	to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -125,13 +125,13 @@ func (testsuite *ApimapisTestSuite) Prepare() {
 		Properties: &armapimanagement.OperationContractProperties{
 			TemplateParameters: []*armapimanagement.ParameterContract{
 				{
-					Name:        to.Ptr("uid"),
-					Type:        to.Ptr("string"),
-					Description: to.Ptr("user id"),
+					Name:		to.Ptr("uid"),
+					Type:		to.Ptr("string"),
+					Description:	to.Ptr("user id"),
 				}},
-			Method:      to.Ptr("GET"),
-			DisplayName: to.Ptr("example operation"),
-			URLTemplate: to.Ptr("/operation/customers/{uid}"),
+			Method:		to.Ptr("GET"),
+			DisplayName:	to.Ptr("example operation"),
+			URLTemplate:	to.Ptr("/operation/customers/{uid}"),
 		},
 	}, &armapimanagement.APIOperationClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -150,10 +150,10 @@ func (testsuite *ApimapisTestSuite) TestApi() {
 	// From step Api_ListByService
 	fmt.Println("Call operation: Api_ListByService")
 	aPIClientNewListByServicePager := aPIClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.APIClientListByServiceOptions{Filter: nil,
-		Top:                 nil,
-		Skip:                nil,
-		Tags:                nil,
-		ExpandAPIVersionSet: nil,
+		Top:			nil,
+		Skip:			nil,
+		Tags:			nil,
+		ExpandAPIVersionSet:	nil,
 	})
 	for aPIClientNewListByServicePager.More() {
 		_, err := aPIClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -164,9 +164,9 @@ func (testsuite *ApimapisTestSuite) TestApi() {
 	// From step Api_ListByTags
 	fmt.Println("Call operation: Api_ListByTags")
 	aPIClientNewListByTagsPager := aPIClient.NewListByTagsPager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.APIClientListByTagsOptions{Filter: nil,
-		Top:                  nil,
-		Skip:                 nil,
-		IncludeNotTaggedApis: nil,
+		Top:			nil,
+		Skip:			nil,
+		IncludeNotTaggedApis:	nil,
 	})
 	for aPIClientNewListByTagsPager.More() {
 		_, err := aPIClientNewListByTagsPager.NextPage(testsuite.ctx)
@@ -183,9 +183,9 @@ func (testsuite *ApimapisTestSuite) TestApi() {
 	fmt.Println("Call operation: Api_Update")
 	_, err = aPIClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, "*", armapimanagement.APIUpdateContract{
 		Properties: &armapimanagement.APIContractUpdateProperties{
-			Path:        to.Ptr("newecho"),
-			DisplayName: to.Ptr("Echo API New"),
-			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api2"),
+			Path:		to.Ptr("newecho"),
+			DisplayName:	to.Ptr("Echo API New"),
+			ServiceURL:	to.Ptr("http://echoapi.cloudapp.net/api2"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -235,8 +235,8 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 	testsuite.Require().NoError(err)
 	_, err = aPIReleaseClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, armapimanagement.APIReleaseContract{
 		Properties: &armapimanagement.APIReleaseContractProperties{
-			APIID: to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/apis/" + testsuite.apiId),
-			Notes: to.Ptr("yahooagain"),
+			APIID:	to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/apis/" + testsuite.apiId),
+			Notes:	to.Ptr("yahooagain"),
 		},
 	}, &armapimanagement.APIReleaseClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -249,8 +249,8 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 	// From step ApiRelease_ListByService
 	fmt.Println("Call operation: ApiRelease_ListByService")
 	aPIReleaseClientNewListByServicePager := aPIReleaseClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, &armapimanagement.APIReleaseClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for aPIReleaseClientNewListByServicePager.More() {
 		_, err := aPIReleaseClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -267,8 +267,8 @@ func (testsuite *ApimapisTestSuite) TestApirelease() {
 	fmt.Println("Call operation: ApiRelease_Update")
 	_, err = aPIReleaseClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.releaseId, "*", armapimanagement.APIReleaseContract{
 		Properties: &armapimanagement.APIReleaseContractProperties{
-			APIID: to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/apis/" + testsuite.apiId),
-			Notes: to.Ptr("yahooagain"),
+			APIID:	to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/apis/" + testsuite.apiId),
+			Notes:	to.Ptr("yahooagain"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -288,8 +288,8 @@ func (testsuite *ApimapisTestSuite) TestApipolicy() {
 	testsuite.Require().NoError(err)
 	_, err = aPIPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
 		Properties: &armapimanagement.PolicyContractProperties{
-			Value:  to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
-			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
+			Value:	to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
+			Format:	to.Ptr(armapimanagement.PolicyContentFormatXML),
 		},
 	}, &armapimanagement.APIPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	testsuite.Require().NoError(err)
@@ -324,7 +324,7 @@ func (testsuite *ApimapisTestSuite) TestApischema() {
 	testsuite.Require().NoError(err)
 	aPISchemaClientCreateOrUpdateResponsePoller, err := aPISchemaClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.schemaId, armapimanagement.SchemaContract{
 		Properties: &armapimanagement.SchemaContractProperties{
-			ContentType: to.Ptr("application/vnd.ms-azure-apim.xsd+xml"),
+			ContentType:	to.Ptr("application/vnd.ms-azure-apim.xsd+xml"),
 			Document: &armapimanagement.SchemaDocumentProperties{
 				Value: to.Ptr("<s:schema elementFormDefault=\"qualified\" targetNamespace=\"http://ws.cdyne.com/WeatherWS/\" xmlns:tns=\"http://ws.cdyne.com/WeatherWS/\" xmlns:s=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://schemas.xmlsoap.org/wsdl/soap12/\" xmlns:mime=\"http://schemas.xmlsoap.org/wsdl/mime/\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xmlns:tm=\"http://microsoft.com/wsdl/mime/textMatching/\" xmlns:http=\"http://schemas.xmlsoap.org/wsdl/http/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\" xmlns:apim-wsdltns=\"http://ws.cdyne.com/WeatherWS/\">\r\n  <s:element name=\"GetWeatherInformation\">\r\n    <s:complexType />\r\n  </s:element>\r\n  <s:element name=\"GetWeatherInformationResponse\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"GetWeatherInformationResult\" type=\"tns:ArrayOfWeatherDescription\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:complexType name=\"ArrayOfWeatherDescription\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"unbounded\" name=\"WeatherDescription\" type=\"tns:WeatherDescription\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"WeatherDescription\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"WeatherID\" type=\"s:short\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Description\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"PictureURL\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:element name=\"GetCityForecastByZIP\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ZIP\" type=\"s:string\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:element name=\"GetCityForecastByZIPResponse\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"GetCityForecastByZIPResult\" type=\"tns:ForecastReturn\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:complexType name=\"ForecastReturn\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Success\" type=\"s:boolean\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ResponseText\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"State\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"City\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"WeatherStationCity\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ForecastResult\" type=\"tns:ArrayOfForecast\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"ArrayOfForecast\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"unbounded\" name=\"Forecast\" nillable=\"true\" type=\"tns:Forecast\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"Forecast\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Date\" type=\"s:dateTime\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"WeatherID\" type=\"s:short\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Desciption\" type=\"s:string\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Temperatures\" type=\"tns:temp\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"ProbabilityOfPrecipiation\" type=\"tns:POP\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"temp\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"MorningLow\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"DaytimeHigh\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"POP\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Nighttime\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Daytime\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:element name=\"GetCityWeatherByZIP\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ZIP\" type=\"s:string\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:element name=\"GetCityWeatherByZIPResponse\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"GetCityWeatherByZIPResult\" type=\"tns:WeatherReturn\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:complexType name=\"WeatherReturn\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Success\" type=\"s:boolean\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ResponseText\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"State\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"City\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"WeatherStationCity\" type=\"s:string\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"WeatherID\" type=\"s:short\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Description\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Temperature\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"RelativeHumidity\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Wind\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Pressure\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Visibility\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"WindChill\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Remarks\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:element name=\"ArrayOfWeatherDescription\" nillable=\"true\" type=\"tns:ArrayOfWeatherDescription\" />\r\n  <s:element name=\"ForecastReturn\" nillable=\"true\" type=\"tns:ForecastReturn\" />\r\n  <s:element name=\"WeatherReturn\" type=\"tns:WeatherReturn\" />\r\n</s:schema>"),
 			},
@@ -342,8 +342,8 @@ func (testsuite *ApimapisTestSuite) TestApischema() {
 	// From step ApiSchema_ListByApi
 	fmt.Println("Call operation: ApiSchema_ListByApi")
 	aPISchemaClientNewListByAPIPager := aPISchemaClient.NewListByAPIPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, &armapimanagement.APISchemaClientListByAPIOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for aPISchemaClientNewListByAPIPager.More() {
 		_, err := aPISchemaClientNewListByAPIPager.NextPage(testsuite.ctx)
@@ -375,9 +375,9 @@ func (testsuite *ApimapisTestSuite) TestApioperation() {
 	// From step ApiOperation_ListByApi
 	fmt.Println("Call operation: ApiOperation_ListByApi")
 	aPIOperationClientNewListByAPIPager := aPIOperationClient.NewListByAPIPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, &armapimanagement.APIOperationClientListByAPIOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
-		Tags: nil,
+		Top:	nil,
+		Skip:	nil,
+		Tags:	nil,
 	})
 	for aPIOperationClientNewListByAPIPager.More() {
 		_, err := aPIOperationClientNewListByAPIPager.NextPage(testsuite.ctx)
@@ -444,8 +444,8 @@ func (testsuite *ApimapisTestSuite) TestApioperationpolicy() {
 	testsuite.Require().NoError(err)
 	_, err = aPIOperationPolicyClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, testsuite.operationId, armapimanagement.PolicyIDNamePolicy, armapimanagement.PolicyContract{
 		Properties: &armapimanagement.PolicyContractProperties{
-			Value:  to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
-			Format: to.Ptr(armapimanagement.PolicyContentFormatXML),
+			Value:	to.Ptr("<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>"),
+			Format:	to.Ptr(armapimanagement.PolicyContentFormatXML),
 		},
 	}, &armapimanagement.APIOperationPolicyClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
 	testsuite.Require().NoError(err)

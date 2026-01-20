@@ -19,15 +19,18 @@ import (
 // Don't use this type directly, use NewMessagesClient() instead.
 type MessagesClient struct {
 	endpoint string
+	version  string
 	pl       runtime.Pipeline
 }
 
 // NewMessagesClient creates a new instance of MessagesClient with the specified values.
 //   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - version - Specifies the version of the operation to use for this request.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewMessagesClient(endpoint string, pl runtime.Pipeline) *MessagesClient {
+func NewMessagesClient(endpoint string, version string, pl runtime.Pipeline) *MessagesClient {
 	client := &MessagesClient{
 		endpoint: endpoint,
+		version:  version,
 		pl:       pl,
 	}
 	return client
@@ -36,7 +39,7 @@ func NewMessagesClient(endpoint string, pl runtime.Pipeline) *MessagesClient {
 // Clear - The Clear operation deletes all messages from the specified queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - MessagesClientClearOptions contains the optional parameters for the MessagesClient.Clear method.
 func (client *MessagesClient) Clear(ctx context.Context, options *MessagesClientClearOptions) (MessagesClientClearResponse, error) {
 	req, err := client.clearCreateRequest(ctx, options)
@@ -64,7 +67,7 @@ func (client *MessagesClient) clearCreateRequest(ctx context.Context, options *M
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -94,7 +97,7 @@ func (client *MessagesClient) clearHandleResponse(resp *http.Response) (Messages
 // Dequeue - The Dequeue operation retrieves one or more messages from the front of the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - MessagesClientDequeueOptions contains the optional parameters for the MessagesClient.Dequeue method.
 func (client *MessagesClient) Dequeue(ctx context.Context, options *MessagesClientDequeueOptions) (MessagesClientDequeueResponse, error) {
 	req, err := client.dequeueCreateRequest(ctx, options)
@@ -128,7 +131,7 @@ func (client *MessagesClient) dequeueCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -164,7 +167,7 @@ func (client *MessagesClient) dequeueHandleResponse(resp *http.Response) (Messag
 // for versions 2011-08-18 and newer, or 8 KB in size for previous versions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - queueMessage - A Message object which can be stored in a Queue
 //   - options - MessagesClientEnqueueOptions contains the optional parameters for the MessagesClient.Enqueue method.
 func (client *MessagesClient) Enqueue(ctx context.Context, queueMessage QueueMessage, options *MessagesClientEnqueueOptions) (MessagesClientEnqueueResponse, error) {
@@ -199,7 +202,7 @@ func (client *MessagesClient) enqueueCreateRequest(ctx context.Context, queueMes
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -233,7 +236,7 @@ func (client *MessagesClient) enqueueHandleResponse(resp *http.Response) (Messag
 // of the message.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - options - MessagesClientPeekOptions contains the optional parameters for the MessagesClient.Peek method.
 func (client *MessagesClient) Peek(ctx context.Context, options *MessagesClientPeekOptions) (MessagesClientPeekResponse, error) {
 	req, err := client.peekCreateRequest(ctx, options)
@@ -265,7 +268,7 @@ func (client *MessagesClient) peekCreateRequest(ctx context.Context, options *Me
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

@@ -230,7 +230,8 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 	}
 	for key, val := range rawMsg {
 		var err error
-		if key == "Message" {
+		switch key {
+		case "Message":
 			err = unpopulate(val, "Message", &s.Message)
 			delete(rawMsg, key)
 		}

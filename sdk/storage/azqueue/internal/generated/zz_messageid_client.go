@@ -19,15 +19,18 @@ import (
 // Don't use this type directly, use NewMessageIDClient() instead.
 type MessageIDClient struct {
 	endpoint string
+	version  string
 	pl       runtime.Pipeline
 }
 
 // NewMessageIDClient creates a new instance of MessageIDClient with the specified values.
 //   - endpoint - The URL of the service account, queue or message that is the target of the desired operation.
+//   - version - Specifies the version of the operation to use for this request.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewMessageIDClient(endpoint string, pl runtime.Pipeline) *MessageIDClient {
+func NewMessageIDClient(endpoint string, version string, pl runtime.Pipeline) *MessageIDClient {
 	client := &MessageIDClient{
 		endpoint: endpoint,
+		version:  version,
 		pl:       pl,
 	}
 	return client
@@ -36,7 +39,7 @@ func NewMessageIDClient(endpoint string, pl runtime.Pipeline) *MessageIDClient {
 // Delete - The Delete operation deletes the specified message.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
 //     Message operation.
 //   - options - MessageIDClientDeleteOptions contains the optional parameters for the MessageIDClient.Delete method.
@@ -67,7 +70,7 @@ func (client *MessageIDClient) deleteCreateRequest(ctx context.Context, popRecei
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
@@ -100,7 +103,7 @@ func (client *MessageIDClient) deleteHandleResponse(resp *http.Response) (Messag
 // and the encoded message can be up to 64KB in size.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-02-06
+// Generated from API version 2026-04-06
 //   - popReceipt - Required. Specifies the valid pop receipt value returned from an earlier call to the Get Messages or Update
 //     Message operation.
 //   - queueMessage - A Message object which can be stored in a Queue
@@ -135,7 +138,7 @@ func (client *MessageIDClient) updateCreateRequest(ctx context.Context, popRecei
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}

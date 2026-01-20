@@ -16,7 +16,6 @@ The generator tool provides several commands to support the Azure SDK for Go dev
 - **Automation**: Process batch SDK generation for CI/CD pipelines
 - **Refresh**: Regenerate all existing SDK packages
 - **Templates**: Scaffold the package for onboard services
-- **Generate Go Readme**: Generate or update readme.go.md files for Swagger specifications
 
 ## Commands
 
@@ -509,10 +508,11 @@ generator template (<rpName> <packageName>) | <packagePath>
 
 **What it does:**
 
-1. Creates the standard Azure SDK for Go package directory structure under `sdk/resourcemanager/<rpName>/<packageName>`
-2. Reads template files from the template directory
-3. Replaces placeholder values (rpName, packageName, packageTitle, commitID, releaseDate, etc.)
-4. Generates the package files with proper content
+1. Creates the standard Azure SDK for Go package directory structure
+2. Generates boilerplate Go files with proper package structure
+3. Creates example files and test scaffolding
+4. Sets up proper module configuration and dependencies
+5. Includes standard documentation templates
 
 **Examples:**
 
@@ -530,47 +530,4 @@ generator template network armnetwork --package-title "Network" --commit abc123 
 # Generate with custom SDK folder path
 generator template storage armstorage --package-title "Storage" --commit abc123 \
   --go-sdk-folder /path/to/azure-sdk-for-go
-```
-
-#### The `generate-go-readme` command
-
-The `generate-go-readme` command generates or updates a `readme.go.md` file for a resource provider based on the base swagger readme file.
-
-**Usage:**
-
-```bash
-generator generate-go-readme <rp readme filepath>
-```
-
-**Arguments:**
-
-- `rp readme filepath`: Path to the resource provider's readme.md file in the swagger spec repository
-
-**What it does:**
-
-1. Checks if the readme.md file exists at the specified path
-2. Looks for an existing `readme.go.md` file in the same directory
-3. If the Go track2 configuration section doesn't exist, appends the standard Go SDK configuration
-4. Creates or updates the `readme.go.md` file with the appropriate module configuration
-
-**Examples:**
-
-```bash
-# Generate readme.go.md for network RP
-generator generate-go-readme /path/to/azure-rest-api-specs/specification/network/resource-manager/readme.md
-
-# Generate readme.go.md for compute RP
-generator generate-go-readme /path/to/azure-rest-api-specs/specification/compute/resource-manager/readme.md
-```
-
-**Generated Content:**
-The command adds a Go track2 configuration section like:
-
-```yaml
-``` yaml $(go) && $(track2)
-license-header: MICROSOFT_MIT_NO_VERSION
-module-name: sdk/resourcemanager/<rpName>/arm<rpName>
-module: github.com/Azure/azure-sdk-for-go/$(module-name)
-output-folder: $(go-sdk-folder)/$(module-name)
-azure-arm: true
 ```

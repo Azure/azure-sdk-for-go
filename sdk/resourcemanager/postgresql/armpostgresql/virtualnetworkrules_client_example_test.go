@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/VirtualNetworkRulesGet.json
@@ -58,8 +58,8 @@ func ExampleVirtualNetworkRulesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewVirtualNetworkRulesClient().BeginCreateOrUpdate(ctx, "TestGroup", "vnet-test-svr", "vnet-firewall-rule", armpostgresql.VirtualNetworkRule{
 		Properties: &armpostgresql.VirtualNetworkRuleProperties{
-			IgnoreMissingVnetServiceEndpoint: to.Ptr(false),
-			VirtualNetworkSubnetID:           to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"),
+			IgnoreMissingVnetServiceEndpoint:	to.Ptr(false),
+			VirtualNetworkSubnetID:			to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"),
 		},
 	}, nil)
 	if err != nil {

@@ -13,21 +13,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 	"github.com/stretchr/testify/suite"
 )
 
 type ServerSecurityAlertPoliciesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	serverName        string
-	adminPassword     string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	serverName		string
+	adminPassword		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ServerSecurityAlertPoliciesTestSuite) SetupSuite() {
@@ -63,23 +63,23 @@ func (testsuite *ServerSecurityAlertPoliciesTestSuite) Prepare() {
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClientCreateResponsePoller, err := serversClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerForCreate{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armpostgresql.ServerPropertiesForDefaultCreate{
-			CreateMode:        to.Ptr(armpostgresql.CreateModeDefault),
-			MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:    to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
+			CreateMode:		to.Ptr(armpostgresql.CreateModeDefault),
+			MinimalTLSVersion:	to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
+			SSLEnforcement:		to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 			StorageProfile: &armpostgresql.StorageProfile{
-				BackupRetentionDays: to.Ptr[int32](7),
-				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-				StorageMB:           to.Ptr[int32](128000),
+				BackupRetentionDays:	to.Ptr[int32](7),
+				GeoRedundantBackup:	to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
+				StorageMB:		to.Ptr[int32](128000),
 			},
-			AdministratorLogin:         to.Ptr("cloudsa"),
-			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
+			AdministratorLogin:		to.Ptr("cloudsa"),
+			AdministratorLoginPassword:	to.Ptr(testsuite.adminPassword),
 		},
 		SKU: &armpostgresql.SKU{
-			Name:   to.Ptr("GP_Gen5_8"),
-			Family: to.Ptr("Gen5"),
-			Tier:   to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+			Name:	to.Ptr("GP_Gen5_8"),
+			Family:	to.Ptr("Gen5"),
+			Tier:	to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 		Tags: map[string]*string{
 			"ElasticServer": to.Ptr("1"),
@@ -99,8 +99,8 @@ func (testsuite *ServerSecurityAlertPoliciesTestSuite) TestServerSecurityAlertPo
 	testsuite.Require().NoError(err)
 	serverSecurityAlertPoliciesClientCreateOrUpdateResponsePoller, err := serverSecurityAlertPoliciesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.SecurityAlertPolicyNameDefault, armpostgresql.ServerSecurityAlertPolicy{
 		Properties: &armpostgresql.SecurityAlertPolicyProperties{
-			EmailAccountAdmins: to.Ptr(true),
-			State:              to.Ptr(armpostgresql.ServerSecurityAlertPolicyStateDisabled),
+			EmailAccountAdmins:	to.Ptr(true),
+			State:			to.Ptr(armpostgresql.ServerSecurityAlertPolicyStateDisabled),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/examples/ServerSecurityAlertsGet.json
@@ -66,13 +66,13 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServers
 			DisabledAlerts: []*string{
 				to.Ptr("Access_Anomaly"),
 				to.Ptr("Usage_Anomaly")},
-			EmailAccountAdmins: to.Ptr(true),
+			EmailAccountAdmins:	to.Ptr(true),
 			EmailAddresses: []*string{
 				to.Ptr("testSecurityAlert@microsoft.com")},
-			RetentionDays:           to.Ptr[int32](5),
-			State:                   to.Ptr(armpostgresql.ServerSecurityAlertPolicyStateEnabled),
-			StorageAccountAccessKey: to.Ptr("sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
-			StorageEndpoint:         to.Ptr("https://mystorage.blob.core.windows.net"),
+			RetentionDays:			to.Ptr[int32](5),
+			State:				to.Ptr(armpostgresql.ServerSecurityAlertPolicyStateEnabled),
+			StorageAccountAccessKey:	to.Ptr("sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD=="),
+			StorageEndpoint:		to.Ptr("https://mystorage.blob.core.windows.net"),
 		},
 	}, nil)
 	if err != nil {
@@ -116,8 +116,8 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServers
 	}
 	poller, err := clientFactory.NewServerSecurityAlertPoliciesClient().BeginCreateOrUpdate(ctx, "securityalert-4799", "securityalert-6440", armpostgresql.SecurityAlertPolicyNameDefault, armpostgresql.ServerSecurityAlertPolicy{
 		Properties: &armpostgresql.SecurityAlertPolicyProperties{
-			EmailAccountAdmins: to.Ptr(true),
-			State:              to.Ptr(armpostgresql.ServerSecurityAlertPolicyStateDisabled),
+			EmailAccountAdmins:	to.Ptr(true),
+			State:			to.Ptr(armpostgresql.ServerSecurityAlertPolicyStateDisabled),
 		},
 	}, nil)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -21,15 +21,15 @@ import (
 type PrivateEndpointConnectionsTestSuite struct {
 	suite.Suite
 
-	ctx                context.Context
-	cred               azcore.TokenCredential
-	options            *arm.ClientOptions
-	postgresqlserverId string
-	serverName         string
-	adminPassword      string
-	location           string
-	resourceGroupName  string
-	subscriptionId     string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	postgresqlserverId	string
+	serverName		string
+	adminPassword		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *PrivateEndpointConnectionsTestSuite) SetupSuite() {
@@ -65,23 +65,23 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) Prepare() {
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClientCreateResponsePoller, err := serversClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerForCreate{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armpostgresql.ServerPropertiesForDefaultCreate{
-			CreateMode:        to.Ptr(armpostgresql.CreateModeDefault),
-			MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:    to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
+			CreateMode:		to.Ptr(armpostgresql.CreateModeDefault),
+			MinimalTLSVersion:	to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
+			SSLEnforcement:		to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 			StorageProfile: &armpostgresql.StorageProfile{
-				BackupRetentionDays: to.Ptr[int32](7),
-				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-				StorageMB:           to.Ptr[int32](128000),
+				BackupRetentionDays:	to.Ptr[int32](7),
+				GeoRedundantBackup:	to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
+				StorageMB:		to.Ptr[int32](128000),
 			},
-			AdministratorLogin:         to.Ptr("cloudsa"),
-			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
+			AdministratorLogin:		to.Ptr("cloudsa"),
+			AdministratorLoginPassword:	to.Ptr(testsuite.adminPassword),
 		},
 		SKU: &armpostgresql.SKU{
-			Name:   to.Ptr("GP_Gen5_8"),
-			Family: to.Ptr("Gen5"),
-			Tier:   to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+			Name:	to.Ptr("GP_Gen5_8"),
+			Family:	to.Ptr("Gen5"),
+			Tier:	to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 		Tags: map[string]*string{
 			"ElasticServer": to.Ptr("1"),
@@ -99,78 +99,78 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnect
 	var err error
 	// From step Create_PrivateEndpoint
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"networkInterfaceName": map[string]any{
-				"type":         "string",
-				"defaultValue": "pepostgresql-nic",
+				"type":		"string",
+				"defaultValue":	"pepostgresql-nic",
 			},
 			"postgresqlserverId": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.postgresqlserverId,
+				"type":		"string",
+				"defaultValue":	testsuite.postgresqlserverId,
 			},
 			"privateEndpointName": map[string]any{
-				"type":         "string",
-				"defaultValue": "pepostgresql",
+				"type":		"string",
+				"defaultValue":	"pepostgresql",
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "pepostgresqlvnet",
+				"type":		"string",
+				"defaultValue":	"pepostgresqlvnet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []any{
 						map[string]any{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]any{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []any{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]any{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []any{},
+					"virtualNetworkPeerings":	[]any{},
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('networkInterfaceName')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('networkInterfaceName')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"dnsSettings": map[string]any{
 						"dnsServers": []any{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []any{
 						map[string]any{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]any{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]any{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -180,29 +180,29 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnect
 				},
 			},
 			map[string]any{
-				"name":       "[parameters('privateEndpointName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
-					"customDnsConfigs":                    []any{},
-					"manualPrivateLinkServiceConnections": []any{},
+					"customDnsConfigs":			[]any{},
+					"manualPrivateLinkServiceConnections":	[]any{},
 					"privateLinkServiceConnections": []any{
 						map[string]any{
-							"name": "[parameters('privateEndpointName')]",
+							"name":	"[parameters('privateEndpointName')]",
 							"properties": map[string]any{
 								"groupIds": []any{
 									"postgresqlServer",
 								},
 								"privateLinkServiceConnectionState": map[string]any{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('postgresqlserverId')]",
+								"privateLinkServiceId":	"[parameters('postgresqlserverId')]",
 							},
 						},
 					},
@@ -212,12 +212,12 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnect
 				},
 			},
 		},
-		"variables": map[string]any{},
+		"variables":	map[string]any{},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)

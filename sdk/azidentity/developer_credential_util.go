@@ -42,7 +42,7 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		return stdout, nil
 	}
 	if err != nil {
-		msg := stderr.String()
+		msg := strings.Trim(stderr.String(), "\r\n")
 		var exErr *exec.ExitError
 		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.Contains(msg, "' is not recognized") {
 			return nil, newCredentialUnavailableError(credName, "executable not found on path")

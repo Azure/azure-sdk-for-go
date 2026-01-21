@@ -1,0 +1,4 @@
+directory: specification/machinelearningservices/MachineLearningServices.Management
+commit: d4b17d42f7c6fcfef22e88ad37a27353d245cf0b
+repo: i-specs
+additionalDirectories: 

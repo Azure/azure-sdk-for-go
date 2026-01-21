@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/WorkspaceConnection/list.json
@@ -28,7 +28,7 @@ func ExampleWorkspaceConnectionsClient_NewListPager() {
 	pager := client.NewListPager("resourceGroup-1",
 		"workspace-1",
 		&armmachinelearningservices.WorkspaceConnectionsClientListOptions{Target: to.Ptr("www.facebook.com"),
-			Category: to.Ptr("ACR"),
+			Category:	to.Ptr("ACR"),
 		})
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
@@ -59,10 +59,10 @@ func ExampleWorkspaceConnectionsClient_Create() {
 		"connection-1",
 		armmachinelearningservices.WorkspaceConnection{
 			Properties: &armmachinelearningservices.WorkspaceConnectionProps{
-				AuthType: to.Ptr("PAT"),
-				Category: to.Ptr("ACR"),
-				Target:   to.Ptr("www.facebook.com"),
-				Value:    to.Ptr("secrets"),
+				AuthType:	to.Ptr("PAT"),
+				Category:	to.Ptr("ACR"),
+				Target:		to.Ptr("www.facebook.com"),
+				Value:		to.Ptr("secrets"),
 			},
 		},
 		nil)

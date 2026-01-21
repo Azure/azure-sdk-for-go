@@ -93,8 +93,12 @@ This way, the changes are documented and preserved across regenerations.
 ## Code Customizations
 
 > **Note**: Go SDKs strongly prefer TypeSpec customizations over post-generation code customizations.
-> Most customization needs should be addressed by modifying `client.tsp` in your TypeSpec project.
-> See the [TypeSpec Client Customizations Reference](https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/knowledge/customizing-client-tsp.md) for available decorators.
+
+## Before You Customize
+
+Before customizing generated code, consider whether your change should be made in TypeSpec (`client.tsp`) instead. TypeSpec customizations are cleaner and survive regeneration. See the [TypeSpec Client Customizations Reference](https://github.com/Azure/azure-sdk-tools/blob/main/eng/common/knowledge/customizing-client-tsp.md) for available decorators like `@@clientName`, `@@access`, etc.
+
+Use Go code customizations (wrapper files) when TypeSpec cannot express the behavior you need.
 
 For cases where TypeSpec cannot express your customization:
 

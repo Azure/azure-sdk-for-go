@@ -52,12 +52,16 @@ func ParseSyncToken(syncToken SyncToken) ([]SyncTokenValues, error) {
 		tokenID := strings.TrimSpace(items[0][:assignmentIndex])
 		tokenValue := strings.TrimSpace(items[0][assignmentIndex+1:])
 
+		if tokenID == "" {
+			return nil, fmt.Errorf("empty token id in token %s", token)
+		}
+
 		// items[1] contains "sn=<sn>"
-		// parse the version number after the equals sign
 		assignmentIndex = strings.Index(items[1], "=")
-		if assignmentIndex < 0 {
+		if assignmentIndex < 0 || strings.TrimSpace(items[1][:assignmentIndex]) != "sn" {
 			return nil, fmt.Errorf("unexpected token version format %s", items[1])
 		}
+		// parse the version number after the equals sign
 		tokenVersion, err := strconv.ParseInt(strings.TrimSpace(items[1][assignmentIndex+1:]), 10, 64)
 		if err != nil {
 			return nil, err

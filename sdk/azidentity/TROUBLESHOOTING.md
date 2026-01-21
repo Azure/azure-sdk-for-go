@@ -240,6 +240,7 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 | Error Message |Description| Mitigation |
 |---|---|---|
 |no client ID/tenant ID/token file specified|Incomplete configuration|In most cases these values are provided via environment variables set by Azure Workload Identity.<ul><li>If your application runs on Azure Kubernetes Service (AKS) or a cluster that has deployed the Azure Workload Identity admission webhook, check pod labels and service account configuration. See the [AKS documentation](https://learn.microsoft.com/azure/aks/workload-identity-deploy-cluster#disable-workload-identity) and [Azure Workload Identity troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for more details.<li>If your application isn't running on AKS or your cluster hasn't deployed the Workload Identity admission webhook, set these values in `WorkloadIdentityCredentialOptions`
+|In an application using [Azure Kubernetes Service identity bindings](https://learn.microsoft.com/azure/aks/identity-bindings-concepts): <ul><li> AADSTS700211: No matching federated identity record found for presented assertion issuer ... <li> AADSTS700212: No matching federated identity record found for presented assertion audience 'api://AKSIdentityBinding'. |`WorkloadIdentityCredential` isn't configured to use the identity binding proxy|Set `WorkloadIdentityCredentialOptions.EnableAzureProxy` to `true`
 
 <a id="apc"></a>
 ## Troubleshoot AzurePipelinesCredential authentication issues

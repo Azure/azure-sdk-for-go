@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/DataContainer/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/DataContainer/list.json
 func ExampleDataContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleDataContainersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/DataContainer/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/DataContainer/delete.json
 func ExampleDataContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleDataContainersClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/DataContainer/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/DataContainer/get.json
 func ExampleDataContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleDataContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/DataContainer/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/DataContainer/createOrUpdate.json
 func ExampleDataContainersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

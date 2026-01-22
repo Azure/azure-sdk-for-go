@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/ModelContainer/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/ModelContainer/list.json
 func ExampleRegistryModelContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleRegistryModelContainersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/ModelContainer/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/ModelContainer/delete.json
 func ExampleRegistryModelContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleRegistryModelContainersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/ModelContainer/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/ModelContainer/get.json
 func ExampleRegistryModelContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +126,7 @@ func ExampleRegistryModelContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/ModelContainer/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/ModelContainer/createOrUpdate.json
 func ExampleRegistryModelContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

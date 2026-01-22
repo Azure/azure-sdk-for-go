@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/DataVersionBase/registryList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/DataVersionBase/registryList.json
 func ExampleRegistryDataVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleRegistryDataVersionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/DataVersionBase/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/DataVersionBase/delete.json
 func ExampleRegistryDataVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleRegistryDataVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/DataVersionBase/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/DataVersionBase/get.json
 func ExampleRegistryDataVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleRegistryDataVersionsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/DataVersionBase/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/DataVersionBase/createOrUpdate.json
 func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleRegistryDataVersionsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Registry/DataVersionBase/createOrGetStartPendingUpload.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Registry/DataVersionBase/createOrGetStartPendingUpload.json
 func ExampleRegistryDataVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

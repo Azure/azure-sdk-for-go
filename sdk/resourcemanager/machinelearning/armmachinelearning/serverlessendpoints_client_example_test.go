@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/list.json
 func ExampleServerlessEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,6 +69,7 @@ func ExampleServerlessEndpointsClient_NewListPager() {
 		// 			Properties: &armmachinelearning.ServerlessEndpointProperties{
 		// 				AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 		// 				ContentSafety: &armmachinelearning.ContentSafety{
+		// 					ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 		// 					ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusDisabled),
 		// 				},
 		// 				EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateReinstating),
@@ -96,7 +97,7 @@ func ExampleServerlessEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/delete.json
 func ExampleServerlessEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +118,7 @@ func ExampleServerlessEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/get.json
 func ExampleServerlessEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,6 +166,7 @@ func ExampleServerlessEndpointsClient_Get() {
 	// 	Properties: &armmachinelearning.ServerlessEndpointProperties{
 	// 		AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 	// 		ContentSafety: &armmachinelearning.ContentSafety{
+	// 			ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 	// 			ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusEnabled),
 	// 		},
 	// 		EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateSuspending),
@@ -190,7 +192,7 @@ func ExampleServerlessEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/update.json
 func ExampleServerlessEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,6 +259,7 @@ func ExampleServerlessEndpointsClient_BeginUpdate() {
 	// 	Properties: &armmachinelearning.ServerlessEndpointProperties{
 	// 		AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 	// 		ContentSafety: &armmachinelearning.ContentSafety{
+	// 			ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 	// 			ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusDisabled),
 	// 		},
 	// 		EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateSuspended),
@@ -282,7 +285,7 @@ func ExampleServerlessEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/createOrUpdate.json
 func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,6 +309,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 		Properties: &armmachinelearning.ServerlessEndpointProperties{
 			AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 			ContentSafety: &armmachinelearning.ContentSafety{
+				ContentSafetyLevel:  to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 				ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusEnabled),
 			},
 			ModelSettings: &armmachinelearning.ModelSettings{
@@ -360,6 +364,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	// 	Properties: &armmachinelearning.ServerlessEndpointProperties{
 	// 		AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 	// 		ContentSafety: &armmachinelearning.ContentSafety{
+	// 			ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelDeferred),
 	// 			ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusDisabled),
 	// 		},
 	// 		EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateDeleting),
@@ -385,7 +390,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/listKeys.json
 func ExampleServerlessEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +414,7 @@ func ExampleServerlessEndpointsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/ServerlessEndpoint/regenerateKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/ServerlessEndpoint/regenerateKeys.json
 func ExampleServerlessEndpointsClient_BeginRegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

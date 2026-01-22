@@ -61,6 +61,15 @@ type DataDriftMetricThresholdBaseClassification interface {
 	GetDataDriftMetricThresholdBase() *DataDriftMetricThresholdBase
 }
 
+// DataGenerationVerticalClassification provides polymorphic access to related types.
+// Call the interface's GetDataGenerationVertical() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *DataGenerationVertical, *LabelGeneration
+type DataGenerationVerticalClassification interface {
+	// GetDataGenerationVertical returns the DataGenerationVertical content of the underlying type.
+	GetDataGenerationVertical() *DataGenerationVertical
+}
+
 // DataQualityMetricThresholdBaseClassification provides polymorphic access to related types.
 // Call the interface's GetDataQualityMetricThresholdBase() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -135,6 +144,35 @@ type EarlyTerminationPolicyClassification interface {
 	GetEarlyTerminationPolicy() *EarlyTerminationPolicy
 }
 
+// EndpointDeploymentResourcePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEndpointDeploymentResourceProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ContentSafetyEndpointDeploymentResourceProperties, *EndpointDeploymentResourceProperties, *ManagedOnlineEndpointDeploymentResourceProperties,
+// - *OpenAIEndpointDeploymentResourceProperties, *SpeechEndpointDeploymentResourceProperties
+type EndpointDeploymentResourcePropertiesClassification interface {
+	// GetEndpointDeploymentResourceProperties returns the EndpointDeploymentResourceProperties content of the underlying type.
+	GetEndpointDeploymentResourceProperties() *EndpointDeploymentResourceProperties
+}
+
+// EndpointResourcePropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetEndpointResourceProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ContentSafetyEndpointResourceProperties, *EndpointResourceProperties, *ManagedOnlineEndpointResourceProperties, *OpenAIEndpointResourceProperties,
+// - *ServerlessEndpointResourceProperties, *SpeechEndpointResourceProperties
+type EndpointResourcePropertiesClassification interface {
+	// GetEndpointResourceProperties returns the EndpointResourceProperties content of the underlying type.
+	GetEndpointResourceProperties() *EndpointResourceProperties
+}
+
+// FineTuningVerticalClassification provides polymorphic access to related types.
+// Call the interface's GetFineTuningVertical() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AzureOpenAiFineTuning, *CustomModelFineTuning, *FineTuningVertical
+type FineTuningVerticalClassification interface {
+	// GetFineTuningVertical returns the FineTuningVertical content of the underlying type.
+	GetFineTuningVertical() *FineTuningVertical
+}
+
 // ForecastHorizonClassification provides polymorphic access to related types.
 // Call the interface's GetForecastHorizon() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -156,7 +194,7 @@ type IdentityConfigurationClassification interface {
 // JobBasePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetJobBaseProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AutoMLJob, *CommandJob, *JobBaseProperties, *PipelineJob, *SparkJob, *SweepJob
+// - *AutoMLJob, *CommandJob, *DistillationJob, *FineTuningJob, *JobBaseProperties, *PipelineJob, *SparkJob, *SweepJob
 type JobBasePropertiesClassification interface {
 	// GetJobBaseProperties returns the JobBaseProperties content of the underlying type.
 	GetJobBaseProperties() *JobBaseProperties

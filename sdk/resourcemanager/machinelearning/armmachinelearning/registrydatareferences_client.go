@@ -27,7 +27,7 @@ type RegistryDataReferencesClient struct {
 // NewRegistryDataReferencesClient creates a new instance of RegistryDataReferencesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegistryDataReferencesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryDataReferencesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRegistryDataReferencesClient(subscriptionID string, credential azcore.To
 // GetBlobReferenceSAS - Get blob reference SAS Uri.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - name - Data reference name.
@@ -74,7 +74,7 @@ func (client *RegistryDataReferencesClient) GetBlobReferenceSAS(ctx context.Cont
 }
 
 // getBlobReferenceSASCreateRequest creates the GetBlobReferenceSAS request.
-func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body GetBlobReferenceSASRequestDto, options *RegistryDataReferencesClientGetBlobReferenceSASOptions) (*policy.Request, error) {
+func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx context.Context, resourceGroupName string, registryName string, name string, version string, body GetBlobReferenceSASRequestDto, _ *RegistryDataReferencesClientGetBlobReferenceSASOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/datareferences/{name}/versions/{version}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +101,7 @@ func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

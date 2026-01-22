@@ -12,11 +12,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/get.json
-func ExampleWorkspacesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/listBySubscription.json
+func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -26,270 +26,57 @@ func ExampleWorkspacesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "workspace-1234", "testworkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Workspace = armmachinelearning.Workspace{
-	// 	Name: to.Ptr("testworkspace"),
-	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
-	// 	Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-	// 		PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 		TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 		UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 			"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": &armmachinelearning.UserAssignedIdentity{
-	// 				ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			},
-	// 		},
-	// 	},
-	// 	Location: to.Ptr("eastus2euap"),
-	// 	Properties: &armmachinelearning.WorkspaceProperties{
-	// 		Description: to.Ptr("test description"),
-	// 		AllowPublicAccessWhenBehindVnet: to.Ptr(false),
-	// 		ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-	// 		ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
-	// 		DiscoveryURL: to.Ptr("http://example.com"),
-	// 		Encryption: &armmachinelearning.EncryptionProperty{
-	// 			Identity: &armmachinelearning.IdentityForCmk{
-	// 				UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
-	// 			},
-	// 			KeyVaultProperties: &armmachinelearning.EncryptionKeyVaultProperties{
-	// 				IdentityClientID: to.Ptr(""),
-	// 				KeyIdentifier: to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
-	// 				KeyVaultArmID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-	// 			},
-	// 			Status: to.Ptr(armmachinelearning.EncryptionStatusEnabled),
-	// 		},
-	// 		FriendlyName: to.Ptr("HelloName"),
-	// 		HbiWorkspace: to.Ptr(false),
-	// 		ImageBuildCompute: to.Ptr("testcompute"),
-	// 		KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-	// 		PrivateEndpointConnections: []*armmachinelearning.PrivateEndpointConnection{
-	// 			{
-	// 				Name: to.Ptr("testprivatelinkconnection"),
-	// 				Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/privateEndpointConnections"),
-	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace/privateEndpointConnections/testprivatelinkconnection"),
-	// 				Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
-	// 					PrivateEndpoint: &armmachinelearning.PrivateEndpoint{
-	// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.Network/privateEndpoints/petest01"),
-	// 					},
-	// 					PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
-	// 						Description: to.Ptr("Auto-Approved"),
-	// 						ActionsRequired: to.Ptr("None"),
-	// 						Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
-	// 					},
-	// 					ProvisioningState: to.Ptr(armmachinelearning.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 				},
-	// 		}},
-	// 		PrivateLinkCount: to.Ptr[int32](0),
-	// 		PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessDisabled),
-	// 		ServiceProvisionedResourceGroup: to.Ptr("testworkspace_0000111122223333"),
-	// 		SharedPrivateLinkResources: []*armmachinelearning.SharedPrivateLinkResource{
-	// 			{
-	// 				Name: to.Ptr("testcosmosdbresource"),
-	// 				Properties: &armmachinelearning.SharedPrivateLinkResourceProperty{
-	// 					GroupID: to.Ptr("Sql"),
-	// 					PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testcosmosdbresource/privateLinkResources/Sql"),
-	// 					RequestMessage: to.Ptr("Please approve"),
-	// 					Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
-	// 				},
-	// 		}},
-	// 		StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/create.json
-func ExampleWorkspacesClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "workspace-1234", "testworkspace", armmachinelearning.Workspace{
-		Identity: &armmachinelearning.ManagedServiceIdentity{
-			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": {},
-			},
-		},
-		Location: to.Ptr("eastus2euap"),
-		Properties: &armmachinelearning.WorkspaceProperties{
-			Description:         to.Ptr("test description"),
-			ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-			ContainerRegistry:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
-			Encryption: &armmachinelearning.EncryptionProperty{
-				Identity: &armmachinelearning.IdentityForCmk{
-					UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
-				},
-				KeyVaultProperties: &armmachinelearning.EncryptionKeyVaultProperties{
-					IdentityClientID: to.Ptr(""),
-					KeyIdentifier:    to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
-					KeyVaultArmID:    to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-				},
-				Status: to.Ptr(armmachinelearning.EncryptionStatusEnabled),
-			},
-			FriendlyName: to.Ptr("HelloName"),
-			HbiWorkspace: to.Ptr(false),
-			KeyVault:     to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-			SharedPrivateLinkResources: []*armmachinelearning.SharedPrivateLinkResource{
-				{
-					Name: to.Ptr("testdbresource"),
-					Properties: &armmachinelearning.SharedPrivateLinkResourceProperty{
-						GroupID:               to.Ptr("Sql"),
-						PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql"),
-						RequestMessage:        to.Ptr("Please approve"),
-						Status:                to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
-					},
-				}},
-			StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Workspace = armmachinelearning.Workspace{
-	// 	Name: to.Ptr("testworkspace"),
-	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
-	// 	Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-	// 		PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 		TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 		UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 			"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": &armmachinelearning.UserAssignedIdentity{
-	// 				ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			},
-	// 		},
-	// 	},
-	// 	Location: to.Ptr("eastus2euap"),
-	// 	Properties: &armmachinelearning.WorkspaceProperties{
-	// 		Description: to.Ptr("test description"),
-	// 		AllowPublicAccessWhenBehindVnet: to.Ptr(false),
-	// 		ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-	// 		ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
-	// 		DiscoveryURL: to.Ptr("http://example.com"),
-	// 		Encryption: &armmachinelearning.EncryptionProperty{
-	// 			Identity: &armmachinelearning.IdentityForCmk{
-	// 				UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
-	// 			},
-	// 			KeyVaultProperties: &armmachinelearning.EncryptionKeyVaultProperties{
-	// 				IdentityClientID: to.Ptr(""),
-	// 				KeyIdentifier: to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
-	// 				KeyVaultArmID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-	// 			},
-	// 			Status: to.Ptr(armmachinelearning.EncryptionStatusEnabled),
-	// 		},
-	// 		FriendlyName: to.Ptr("HelloName"),
-	// 		HbiWorkspace: to.Ptr(false),
-	// 		KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-	// 		PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessDisabled),
-	// 		SharedPrivateLinkResources: []*armmachinelearning.SharedPrivateLinkResource{
-	// 			{
-	// 				Name: to.Ptr("testdbresource"),
-	// 				Properties: &armmachinelearning.SharedPrivateLinkResourceProperty{
-	// 					GroupID: to.Ptr("Sql"),
-	// 					PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql"),
-	// 					RequestMessage: to.Ptr("Please approve"),
-	// 					Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
-	// 				},
-	// 		}},
-	// 		StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/delete.json
-func ExampleWorkspacesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "workspace-1234", "testworkspace", &armmachinelearning.WorkspacesClientBeginDeleteOptions{ForceToPurge: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+	pager := clientFactory.NewWorkspacesClient().NewListBySubscriptionPager(&armmachinelearning.WorkspacesClientListBySubscriptionOptions{Kind: nil,
+		Skip:           nil,
+		AiCapabilities: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkspaceListResult = armmachinelearning.WorkspaceListResult{
+		// 	Value: []*armmachinelearning.Workspace{
+		// 		{
+		// 			Name: to.Ptr("testworkspace"),
+		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
+		// 			Location: to.Ptr("eastus2euap"),
+		// 			Properties: &armmachinelearning.WorkspaceProperties{
+		// 				Description: to.Ptr("test description"),
+		// 				ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+		// 				ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
+		// 				DiscoveryURL: to.Ptr("http://example.com"),
+		// 				FriendlyName: to.Ptr("HelloName"),
+		// 				KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+		// 				StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("testworkspace"),
+		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-5678/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
+		// 			Location: to.Ptr("eastus2euap"),
+		// 			Properties: &armmachinelearning.WorkspaceProperties{
+		// 				Description: to.Ptr("test description"),
+		// 				ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+		// 				ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistryNew"),
+		// 				DiscoveryURL: to.Ptr("http://example.com"),
+		// 				FriendlyName: to.Ptr("HelloName"),
+		// 				KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkvNew"),
+		// 				StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccountOld"),
+		// 			},
+		// 	}},
+		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/update.json
-func ExampleWorkspacesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "workspace-1234", "testworkspace", armmachinelearning.WorkspaceUpdateParameters{
-		Properties: &armmachinelearning.WorkspacePropertiesUpdateParameters{
-			Description:         to.Ptr("new description"),
-			FriendlyName:        to.Ptr("New friendly name"),
-			PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessDisabled),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Workspace = armmachinelearning.Workspace{
-	// 	Name: to.Ptr("testworkspace"),
-	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
-	// 	Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 		Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
-	// 		PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 		TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 	},
-	// 	Location: to.Ptr("eastus2euap"),
-	// 	Properties: &armmachinelearning.WorkspaceProperties{
-	// 		Description: to.Ptr("new description"),
-	// 		ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-	// 		ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
-	// 		DiscoveryURL: to.Ptr("http://example.com"),
-	// 		FriendlyName: to.Ptr("New friendly name"),
-	// 		KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-	// 		PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessDisabled),
-	// 		StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/listByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/listByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +87,10 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkspacesClient().NewListByResourceGroupPager("workspace-1234", &armmachinelearning.WorkspacesClientListByResourceGroupOptions{Skip: nil})
+	pager := clientFactory.NewWorkspacesClient().NewListByResourceGroupPager("workspace-1234", &armmachinelearning.WorkspacesClientListByResourceGroupOptions{Kind: nil,
+		Skip:           nil,
+		AiCapabilities: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -347,7 +137,298 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/diagnose.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/delete.json
+func ExampleWorkspacesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "workspace-1234", "testworkspace", &armmachinelearning.WorkspacesClientBeginDeleteOptions{ForceToPurge: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/get.json
+func ExampleWorkspacesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "workspace-1234", "testworkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workspace = armmachinelearning.Workspace{
+	// 	Name: to.Ptr("testworkspace"),
+	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
+	// 	Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 		TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 		UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": &armmachinelearning.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Properties: &armmachinelearning.WorkspaceProperties{
+	// 		Description: to.Ptr("test description"),
+	// 		AllowPublicAccessWhenBehindVnet: to.Ptr(false),
+	// 		ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+	// 		ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
+	// 		DiscoveryURL: to.Ptr("http://example.com"),
+	// 		Encryption: &armmachinelearning.EncryptionProperty{
+	// 			Identity: &armmachinelearning.IdentityForCmk{
+	// 				UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
+	// 			},
+	// 			KeyVaultProperties: &armmachinelearning.KeyVaultProperties{
+	// 				IdentityClientID: to.Ptr(""),
+	// 				KeyIdentifier: to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
+	// 				KeyVaultArmID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+	// 			},
+	// 			Status: to.Ptr(armmachinelearning.EncryptionStatusEnabled),
+	// 		},
+	// 		FriendlyName: to.Ptr("HelloName"),
+	// 		HbiWorkspace: to.Ptr(false),
+	// 		ImageBuildCompute: to.Ptr("testcompute"),
+	// 		KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+	// 		ManagedNetwork: &armmachinelearning.ManagedNetworkSettings{
+	// 			IsolationMode: to.Ptr(armmachinelearning.IsolationModeAllowOnlyApprovedOutbound),
+	// 			NetworkID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			OutboundRules: map[string]armmachinelearning.OutboundRuleClassification{
+	// 				"some_string": &armmachinelearning.FqdnOutboundRule{
+	// 					Type: to.Ptr(armmachinelearning.RuleTypeFQDN),
+	// 					Category: to.Ptr(armmachinelearning.RuleCategoryRequired),
+	// 					Status: to.Ptr(armmachinelearning.RuleStatusInactive),
+	// 					Destination: to.Ptr("some_string"),
+	// 				},
+	// 			},
+	// 			Status: &armmachinelearning.ManagedNetworkProvisionStatus{
+	// 				SparkReady: to.Ptr(false),
+	// 				Status: to.Ptr(armmachinelearning.ManagedNetworkStatusActive),
+	// 			},
+	// 		},
+	// 		PrivateEndpointConnections: []*armmachinelearning.PrivateEndpointConnection{
+	// 			{
+	// 				Name: to.Ptr("testprivatelinkconnection"),
+	// 				Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/privateEndpointConnections"),
+	// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace/privateEndpointConnections/testprivatelinkconnection"),
+	// 				Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
+	// 					PrivateEndpoint: &armmachinelearning.WorkspacePrivateEndpointResource{
+	// 						ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.Network/privateEndpoints/petest01"),
+	// 					},
+	// 					PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
+	// 						Description: to.Ptr("Auto-Approved"),
+	// 						ActionsRequired: to.Ptr("None"),
+	// 						Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
+	// 					},
+	// 					ProvisioningState: to.Ptr(armmachinelearning.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 				},
+	// 		}},
+	// 		PrivateLinkCount: to.Ptr[int32](0),
+	// 		PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessTypeDisabled),
+	// 		ServiceProvisionedResourceGroup: to.Ptr("testworkspace_0000111122223333"),
+	// 		SharedPrivateLinkResources: []*armmachinelearning.SharedPrivateLinkResource{
+	// 			{
+	// 				Name: to.Ptr("testcosmosdbresource"),
+	// 				Properties: &armmachinelearning.SharedPrivateLinkResourceProperty{
+	// 					GroupID: to.Ptr("Sql"),
+	// 					PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testcosmosdbresource/privateLinkResources/Sql"),
+	// 					RequestMessage: to.Ptr("Please approve"),
+	// 					Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
+	// 				},
+	// 		}},
+	// 		StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/update.json
+func ExampleWorkspacesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "workspace-1234", "testworkspace", armmachinelearning.WorkspaceUpdateParameters{
+		Properties: &armmachinelearning.WorkspacePropertiesUpdateParameters{
+			Description:         to.Ptr("new description"),
+			FriendlyName:        to.Ptr("New friendly name"),
+			PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessTypeDisabled),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workspace = armmachinelearning.Workspace{
+	// 	Name: to.Ptr("testworkspace"),
+	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
+	// 	Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssigned),
+	// 		PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 		TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 	},
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Properties: &armmachinelearning.WorkspaceProperties{
+	// 		Description: to.Ptr("new description"),
+	// 		ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+	// 		ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
+	// 		DiscoveryURL: to.Ptr("http://example.com"),
+	// 		FriendlyName: to.Ptr("New friendly name"),
+	// 		KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+	// 		PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessTypeDisabled),
+	// 		StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/create.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "workspace-1234", "testworkspace", armmachinelearning.Workspace{
+		Identity: &armmachinelearning.ManagedServiceIdentity{
+			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": {},
+			},
+		},
+		Location: to.Ptr("eastus2euap"),
+		Properties: &armmachinelearning.WorkspaceProperties{
+			Description:         to.Ptr("test description"),
+			ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+			ContainerRegistry:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
+			Encryption: &armmachinelearning.EncryptionProperty{
+				Identity: &armmachinelearning.IdentityForCmk{
+					UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
+				},
+				KeyVaultProperties: &armmachinelearning.KeyVaultProperties{
+					IdentityClientID: to.Ptr(""),
+					KeyIdentifier:    to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
+					KeyVaultArmID:    to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+				},
+				Status: to.Ptr(armmachinelearning.EncryptionStatusEnabled),
+			},
+			FriendlyName: to.Ptr("HelloName"),
+			HbiWorkspace: to.Ptr(false),
+			KeyVault:     to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+			SharedPrivateLinkResources: []*armmachinelearning.SharedPrivateLinkResource{
+				{
+					Name: to.Ptr("testdbresource"),
+					Properties: &armmachinelearning.SharedPrivateLinkResourceProperty{
+						GroupID:               to.Ptr("Sql"),
+						PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql"),
+						RequestMessage:        to.Ptr("Please approve"),
+						Status:                to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
+					},
+				}},
+			StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Workspace = armmachinelearning.Workspace{
+	// 	Name: to.Ptr("testworkspace"),
+	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
+	// 	Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 		Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 		PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 		TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 		UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 			"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": &armmachinelearning.UserAssignedIdentity{
+	// 				ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			},
+	// 		},
+	// 	},
+	// 	Location: to.Ptr("eastus2euap"),
+	// 	Properties: &armmachinelearning.WorkspaceProperties{
+	// 		Description: to.Ptr("test description"),
+	// 		AllowPublicAccessWhenBehindVnet: to.Ptr(false),
+	// 		ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+	// 		ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
+	// 		DiscoveryURL: to.Ptr("http://example.com"),
+	// 		EnableDataIsolation: to.Ptr(false),
+	// 		Encryption: &armmachinelearning.EncryptionProperty{
+	// 			Identity: &armmachinelearning.IdentityForCmk{
+	// 				UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
+	// 			},
+	// 			KeyVaultProperties: &armmachinelearning.KeyVaultProperties{
+	// 				IdentityClientID: to.Ptr(""),
+	// 				KeyIdentifier: to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
+	// 				KeyVaultArmID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+	// 			},
+	// 			Status: to.Ptr(armmachinelearning.EncryptionStatusEnabled),
+	// 		},
+	// 		FriendlyName: to.Ptr("HelloName"),
+	// 		HbiWorkspace: to.Ptr(false),
+	// 		KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+	// 		PublicNetworkAccess: to.Ptr(armmachinelearning.PublicNetworkAccessTypeDisabled),
+	// 		SharedPrivateLinkResources: []*armmachinelearning.SharedPrivateLinkResource{
+	// 			{
+	// 				Name: to.Ptr("testdbresource"),
+	// 				Properties: &armmachinelearning.SharedPrivateLinkResourceProperty{
+	// 					GroupID: to.Ptr("Sql"),
+	// 					PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql"),
+	// 					RequestMessage: to.Ptr("Please approve"),
+	// 					Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
+	// 				},
+	// 		}},
+	// 		StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/diagnose.json
 func ExampleWorkspacesClient_BeginDiagnose() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +439,7 @@ func ExampleWorkspacesClient_BeginDiagnose() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginDiagnose(ctx, "workspace-1234", "testworkspace", &armmachinelearning.WorkspacesClientBeginDiagnoseOptions{Parameters: &armmachinelearning.DiagnoseWorkspaceParameters{
+	poller, err := clientFactory.NewWorkspacesClient().BeginDiagnose(ctx, "workspace-1234", "testworkspace", &armmachinelearning.WorkspacesClientBeginDiagnoseOptions{Body: &armmachinelearning.DiagnoseWorkspaceParameters{
 		Value: &armmachinelearning.DiagnoseRequestProperties{
 			ApplicationInsights: map[string]any{},
 			ContainerRegistry:   map[string]any{},
@@ -410,7 +491,7 @@ func ExampleWorkspacesClient_BeginDiagnose() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/listKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/listKeys.json
 func ExampleWorkspacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,90 +524,11 @@ func ExampleWorkspacesClient_ListKeys() {
 	// 	},
 	// 	NotebookAccessKeys: &armmachinelearning.ListNotebookKeysResult{
 	// 	},
-	// 	UserStorageResourceID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/ragargeastus2euap/providers/Microsoft.Storage/storageAccounts/testdemoworkazashomr"),
+	// 	UserStorageArmID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/ragargeastus2euap/providers/Microsoft.Storage/storageAccounts/testdemoworkazashomr"),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/resyncKeys.json
-func ExampleWorkspacesClient_BeginResyncKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginResyncKeys(ctx, "testrg123", "workspaces123", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/listBySubscription.json
-func ExampleWorkspacesClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkspacesClient().NewListBySubscriptionPager(&armmachinelearning.WorkspacesClientListBySubscriptionOptions{Skip: nil})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkspaceListResult = armmachinelearning.WorkspaceListResult{
-		// 	Value: []*armmachinelearning.Workspace{
-		// 		{
-		// 			Name: to.Ptr("testworkspace"),
-		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
-		// 			Location: to.Ptr("eastus2euap"),
-		// 			Properties: &armmachinelearning.WorkspaceProperties{
-		// 				Description: to.Ptr("test description"),
-		// 				ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-		// 				ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
-		// 				DiscoveryURL: to.Ptr("http://example.com"),
-		// 				FriendlyName: to.Ptr("HelloName"),
-		// 				KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
-		// 				StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("testworkspace"),
-		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-5678/providers/Microsoft.MachineLearningServices/workspaces/testworkspace"),
-		// 			Location: to.Ptr("eastus2euap"),
-		// 			Properties: &armmachinelearning.WorkspaceProperties{
-		// 				Description: to.Ptr("test description"),
-		// 				ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-		// 				ContainerRegistry: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistryNew"),
-		// 				DiscoveryURL: to.Ptr("http://example.com"),
-		// 				FriendlyName: to.Ptr("HelloName"),
-		// 				KeyVault: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkvNew"),
-		// 				StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccountOld"),
-		// 			},
-		// 	}},
-		// }
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/listNotebookAccessToken.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/listNotebookAccessToken.json
 func ExampleWorkspacesClient_ListNotebookAccessToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +556,100 @@ func ExampleWorkspacesClient_ListNotebookAccessToken() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Notebook/prepare.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Notebook/listKeys.json
+func ExampleWorkspacesClient_ListNotebookKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().ListNotebookKeys(ctx, "testrg123", "workspaces123", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ListNotebookKeysResult = armmachinelearning.ListNotebookKeysResult{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/listStorageAccountKeys.json
+func ExampleWorkspacesClient_ListStorageAccountKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().ListStorageAccountKeys(ctx, "testrg123", "workspaces123", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ListStorageAccountKeysResult = armmachinelearning.ListStorageAccountKeysResult{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/ExternalFQDN/get.json
+func ExampleWorkspacesClient_ListOutboundNetworkDependenciesEndpoints() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().ListOutboundNetworkDependenciesEndpoints(ctx, "workspace-1234", "testworkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ExternalFQDNResponse = armmachinelearning.ExternalFQDNResponse{
+	// 	Value: []*armmachinelearning.FQDNEndpointsPropertyBag{
+	// 		{
+	// 			Properties: &armmachinelearning.FQDNEndpoints{
+	// 				Category: to.Ptr("Azure Active Directory"),
+	// 				Endpoints: []*armmachinelearning.FQDNEndpoint{
+	// 					{
+	// 						DomainName: to.Ptr("login.microsoftonline.com"),
+	// 						EndpointDetails: []*armmachinelearning.FQDNEndpointDetail{
+	// 							{
+	// 								Port: to.Ptr[int32](443),
+	// 						}},
+	// 				}},
+	// 			},
+	// 		},
+	// 		{
+	// 			Properties: &armmachinelearning.FQDNEndpoints{
+	// 				Category: to.Ptr("Azure portal"),
+	// 				Endpoints: []*armmachinelearning.FQDNEndpoint{
+	// 					{
+	// 						DomainName: to.Ptr("management.azure.com"),
+	// 						EndpointDetails: []*armmachinelearning.FQDNEndpointDetail{
+	// 							{
+	// 								Port: to.Ptr[int32](443),
+	// 						}},
+	// 				}},
+	// 			},
+	// 	}},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Notebook/prepare.json
 func ExampleWorkspacesClient_BeginPrepareNotebook() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,8 +681,8 @@ func ExampleWorkspacesClient_BeginPrepareNotebook() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Workspace/listStorageAccountKeys.json
-func ExampleWorkspacesClient_ListStorageAccountKeys() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Workspace/resyncKeys.json
+func ExampleWorkspacesClient_BeginResyncKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -597,84 +692,12 @@ func ExampleWorkspacesClient_ListStorageAccountKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkspacesClient().ListStorageAccountKeys(ctx, "testrg123", "workspaces123", nil)
+	poller, err := clientFactory.NewWorkspacesClient().BeginResyncKeys(ctx, "testrg123", "workspaces123", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ListStorageAccountKeysResult = armmachinelearning.ListStorageAccountKeysResult{
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Notebook/listKeys.json
-func ExampleWorkspacesClient_ListNotebookKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkspacesClient().ListNotebookKeys(ctx, "testrg123", "workspaces123", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ListNotebookKeysResult = armmachinelearning.ListNotebookKeysResult{
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/ExternalFQDN/get.json
-func ExampleWorkspacesClient_ListOutboundNetworkDependenciesEndpoints() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkspacesClient().ListOutboundNetworkDependenciesEndpoints(ctx, "workspace-1234", "testworkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ExternalFQDNResponse = armmachinelearning.ExternalFQDNResponse{
-	// 	Value: []*armmachinelearning.FQDNEndpoints{
-	// 		{
-	// 			Properties: &armmachinelearning.FQDNEndpointsProperties{
-	// 				Category: to.Ptr("Azure Active Directory"),
-	// 				Endpoints: []*armmachinelearning.FQDNEndpoint{
-	// 					{
-	// 						DomainName: to.Ptr("login.microsoftonline.com"),
-	// 						EndpointDetails: []*armmachinelearning.FQDNEndpointDetail{
-	// 							{
-	// 								Port: to.Ptr[int32](443),
-	// 						}},
-	// 				}},
-	// 			},
-	// 		},
-	// 		{
-	// 			Properties: &armmachinelearning.FQDNEndpointsProperties{
-	// 				Category: to.Ptr("Azure portal"),
-	// 				Endpoints: []*armmachinelearning.FQDNEndpoint{
-	// 					{
-	// 						DomainName: to.Ptr("management.azure.com"),
-	// 						EndpointDetails: []*armmachinelearning.FQDNEndpointDetail{
-	// 							{
-	// 								Port: to.Ptr[int32](443),
-	// 						}},
-	// 				}},
-	// 			},
-	// 	}},
-	// }
 }

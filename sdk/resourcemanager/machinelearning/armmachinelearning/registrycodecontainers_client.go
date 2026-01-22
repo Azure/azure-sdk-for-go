@@ -27,7 +27,7 @@ type RegistryCodeContainersClient struct {
 // NewRegistryCodeContainersClient creates a new instance of RegistryCodeContainersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegistryCodeContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegistryCodeContainersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewRegistryCodeContainersClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create or update Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - codeName - Container name.
@@ -71,7 +71,7 @@ func (client *RegistryCodeContainersClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create or update Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *RegistryCodeContainersClient) createOrUpdate(ctx context.Context, resourceGroupName string, registryName string, codeName string, body CodeContainer, options *RegistryCodeContainersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryCodeContainersClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *RegistryCodeContainersClient) createOrUpdate(ctx context.Context, 
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, body CodeContainer, options *RegistryCodeContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, body CodeContainer, _ *RegistryCodeContainersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -129,7 +129,7 @@ func (client *RegistryCodeContainersClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - codeName - Container name.
@@ -156,7 +156,7 @@ func (client *RegistryCodeContainersClient) BeginDelete(ctx context.Context, res
 // Delete - Delete Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *RegistryCodeContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryCodeContainersClient.BeginDelete"
@@ -179,7 +179,7 @@ func (client *RegistryCodeContainersClient) deleteOperation(ctx context.Context,
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeContainersClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, _ *RegistryCodeContainersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,7 +202,7 @@ func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *RegistryCodeContainersClient) deleteCreateRequest(ctx context.Cont
 // Get - Get Code container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - codeName - Container name.
@@ -240,7 +240,7 @@ func (client *RegistryCodeContainersClient) Get(ctx context.Context, resourceGro
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegistryCodeContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeContainersClientGetOptions) (*policy.Request, error) {
+func (client *RegistryCodeContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, _ *RegistryCodeContainersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -263,7 +263,7 @@ func (client *RegistryCodeContainersClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *RegistryCodeContainersClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - List containers.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - Name of Azure Machine Learning registry. This is case-insensitive
 //   - options - RegistryCodeContainersClientListOptions contains the optional parameters for the RegistryCodeContainersClient.NewListPager
@@ -331,7 +331,7 @@ func (client *RegistryCodeContainersClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

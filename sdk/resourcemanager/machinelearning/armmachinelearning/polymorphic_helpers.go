@@ -198,6 +198,27 @@ func unmarshalDataDriftMetricThresholdBaseClassificationArray(rawMsg json.RawMes
 	return fArray, nil
 }
 
+func unmarshalDataGenerationVerticalClassification(rawMsg json.RawMessage) (DataGenerationVerticalClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DataGenerationVerticalClassification
+	switch m["dataGenerationType"] {
+	case string(DataGenerationTypeLabelGeneration):
+		b = &LabelGeneration{}
+	default:
+		b = &DataGenerationVertical{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalDataQualityMetricThresholdBaseClassification(rawMsg json.RawMessage) (DataQualityMetricThresholdBaseClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -427,6 +448,85 @@ func unmarshalEarlyTerminationPolicyClassification(rawMsg json.RawMessage) (Earl
 	return b, nil
 }
 
+func unmarshalEndpointDeploymentResourcePropertiesClassification(rawMsg json.RawMessage) (EndpointDeploymentResourcePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EndpointDeploymentResourcePropertiesClassification
+	switch m["type"] {
+	case "Azure.ContentSafety":
+		b = &ContentSafetyEndpointDeploymentResourceProperties{}
+	case "Azure.OpenAI":
+		b = &OpenAIEndpointDeploymentResourceProperties{}
+	case "Azure.Speech":
+		b = &SpeechEndpointDeploymentResourceProperties{}
+	case "managedOnlineEndpoint":
+		b = &ManagedOnlineEndpointDeploymentResourceProperties{}
+	default:
+		b = &EndpointDeploymentResourceProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalEndpointResourcePropertiesClassification(rawMsg json.RawMessage) (EndpointResourcePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b EndpointResourcePropertiesClassification
+	switch m["endpointType"] {
+	case string(EndpointTypeAzureContentSafety):
+		b = &ContentSafetyEndpointResourceProperties{}
+	case string(EndpointTypeAzureOpenAI):
+		b = &OpenAIEndpointResourceProperties{}
+	case string(EndpointTypeAzureSpeech):
+		b = &SpeechEndpointResourceProperties{}
+	case string(EndpointTypeManagedOnlineEndpoint):
+		b = &ManagedOnlineEndpointResourceProperties{}
+	case string(EndpointTypeServerlessEndpoint):
+		b = &ServerlessEndpointResourceProperties{}
+	default:
+		b = &EndpointResourceProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalFineTuningVerticalClassification(rawMsg json.RawMessage) (FineTuningVerticalClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b FineTuningVerticalClassification
+	switch m["modelProvider"] {
+	case string(ModelProviderAzureOpenAI):
+		b = &AzureOpenAiFineTuning{}
+	case string(ModelProviderCustom):
+		b = &CustomModelFineTuning{}
+	default:
+		b = &FineTuningVertical{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalForecastHorizonClassification(rawMsg json.RawMessage) (ForecastHorizonClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -489,6 +589,10 @@ func unmarshalJobBasePropertiesClassification(rawMsg json.RawMessage) (JobBasePr
 		b = &AutoMLJob{}
 	case string(JobTypeCommand):
 		b = &CommandJob{}
+	case string(JobTypeDistillation):
+		b = &DistillationJob{}
+	case string(JobTypeFineTuning):
+		b = &FineTuningJob{}
 	case string(JobTypePipeline):
 		b = &PipelineJob{}
 	case string(JobTypeSpark):

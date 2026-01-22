@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v5"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -25,7 +25,7 @@ import (
 type WorkspacesServer struct {
 	// BeginCreateOrUpdate is the fake for method WorkspacesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, parameters armmachinelearning.Workspace, options *armmachinelearning.WorkspacesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, body armmachinelearning.Workspace, options *armmachinelearning.WorkspacesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspacesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method WorkspacesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -72,12 +72,12 @@ type WorkspacesServer struct {
 	BeginPrepareNotebook func(ctx context.Context, resourceGroupName string, workspaceName string, options *armmachinelearning.WorkspacesClientBeginPrepareNotebookOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspacesClientPrepareNotebookResponse], errResp azfake.ErrorResponder)
 
 	// BeginResyncKeys is the fake for method WorkspacesClient.BeginResyncKeys
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginResyncKeys func(ctx context.Context, resourceGroupName string, workspaceName string, options *armmachinelearning.WorkspacesClientBeginResyncKeysOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspacesClientResyncKeysResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method WorkspacesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, parameters armmachinelearning.WorkspaceUpdateParameters, options *armmachinelearning.WorkspacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, body armmachinelearning.WorkspaceUpdateParameters, options *armmachinelearning.WorkspacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspacesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkspacesServerTransport creates a new instance of WorkspacesServerTransport with the provided implementation.
@@ -119,47 +119,66 @@ func (w *WorkspacesServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return w.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "WorkspacesClient.BeginCreateOrUpdate":
-		resp, err = w.dispatchBeginCreateOrUpdate(req)
-	case "WorkspacesClient.BeginDelete":
-		resp, err = w.dispatchBeginDelete(req)
-	case "WorkspacesClient.BeginDiagnose":
-		resp, err = w.dispatchBeginDiagnose(req)
-	case "WorkspacesClient.Get":
-		resp, err = w.dispatchGet(req)
-	case "WorkspacesClient.NewListByResourceGroupPager":
-		resp, err = w.dispatchNewListByResourceGroupPager(req)
-	case "WorkspacesClient.NewListBySubscriptionPager":
-		resp, err = w.dispatchNewListBySubscriptionPager(req)
-	case "WorkspacesClient.ListKeys":
-		resp, err = w.dispatchListKeys(req)
-	case "WorkspacesClient.ListNotebookAccessToken":
-		resp, err = w.dispatchListNotebookAccessToken(req)
-	case "WorkspacesClient.ListNotebookKeys":
-		resp, err = w.dispatchListNotebookKeys(req)
-	case "WorkspacesClient.ListOutboundNetworkDependenciesEndpoints":
-		resp, err = w.dispatchListOutboundNetworkDependenciesEndpoints(req)
-	case "WorkspacesClient.ListStorageAccountKeys":
-		resp, err = w.dispatchListStorageAccountKeys(req)
-	case "WorkspacesClient.BeginPrepareNotebook":
-		resp, err = w.dispatchBeginPrepareNotebook(req)
-	case "WorkspacesClient.BeginResyncKeys":
-		resp, err = w.dispatchBeginResyncKeys(req)
-	case "WorkspacesClient.BeginUpdate":
-		resp, err = w.dispatchBeginUpdate(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (w *WorkspacesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if workspacesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = workspacesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "WorkspacesClient.BeginCreateOrUpdate":
+				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
+			case "WorkspacesClient.BeginDelete":
+				res.resp, res.err = w.dispatchBeginDelete(req)
+			case "WorkspacesClient.BeginDiagnose":
+				res.resp, res.err = w.dispatchBeginDiagnose(req)
+			case "WorkspacesClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WorkspacesClient.NewListByResourceGroupPager":
+				res.resp, res.err = w.dispatchNewListByResourceGroupPager(req)
+			case "WorkspacesClient.NewListBySubscriptionPager":
+				res.resp, res.err = w.dispatchNewListBySubscriptionPager(req)
+			case "WorkspacesClient.ListKeys":
+				res.resp, res.err = w.dispatchListKeys(req)
+			case "WorkspacesClient.ListNotebookAccessToken":
+				res.resp, res.err = w.dispatchListNotebookAccessToken(req)
+			case "WorkspacesClient.ListNotebookKeys":
+				res.resp, res.err = w.dispatchListNotebookKeys(req)
+			case "WorkspacesClient.ListOutboundNetworkDependenciesEndpoints":
+				res.resp, res.err = w.dispatchListOutboundNetworkDependenciesEndpoints(req)
+			case "WorkspacesClient.ListStorageAccountKeys":
+				res.resp, res.err = w.dispatchListStorageAccountKeys(req)
+			case "WorkspacesClient.BeginPrepareNotebook":
+				res.resp, res.err = w.dispatchBeginPrepareNotebook(req)
+			case "WorkspacesClient.BeginResyncKeys":
+				res.resp, res.err = w.dispatchBeginResyncKeys(req)
+			case "WorkspacesClient.BeginUpdate":
+				res.resp, res.err = w.dispatchBeginUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (w *WorkspacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -171,7 +190,7 @@ func (w *WorkspacesServerTransport) dispatchBeginCreateOrUpdate(req *http.Reques
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.Workspace](req)
@@ -219,7 +238,7 @@ func (w *WorkspacesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -278,7 +297,7 @@ func (w *WorkspacesServerTransport) dispatchBeginDiagnose(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/diagnose`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.DiagnoseWorkspaceParameters](req)
@@ -296,7 +315,7 @@ func (w *WorkspacesServerTransport) dispatchBeginDiagnose(req *http.Request) (*h
 		var options *armmachinelearning.WorkspacesClientBeginDiagnoseOptions
 		if !reflect.ValueOf(body).IsZero() {
 			options = &armmachinelearning.WorkspacesClientBeginDiagnoseOptions{
-				Parameters: &body,
+				Body: &body,
 			}
 		}
 		respr, errRespr := w.srv.BeginDiagnose(req.Context(), resourceGroupNameParam, workspaceNameParam, options)
@@ -330,7 +349,7 @@ func (w *WorkspacesServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -365,7 +384,7 @@ func (w *WorkspacesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -373,15 +392,27 @@ func (w *WorkspacesServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		if err != nil {
 			return nil, err
 		}
+		kindUnescaped, err := url.QueryUnescape(qp.Get("kind"))
+		if err != nil {
+			return nil, err
+		}
+		kindParam := getOptional(kindUnescaped)
 		skipUnescaped, err := url.QueryUnescape(qp.Get("$skip"))
 		if err != nil {
 			return nil, err
 		}
 		skipParam := getOptional(skipUnescaped)
+		aiCapabilitiesUnescaped, err := url.QueryUnescape(qp.Get("aiCapabilities"))
+		if err != nil {
+			return nil, err
+		}
+		aiCapabilitiesParam := getOptional(aiCapabilitiesUnescaped)
 		var options *armmachinelearning.WorkspacesClientListByResourceGroupOptions
-		if skipParam != nil {
+		if kindParam != nil || skipParam != nil || aiCapabilitiesParam != nil {
 			options = &armmachinelearning.WorkspacesClientListByResourceGroupOptions{
-				Skip: skipParam,
+				Kind:           kindParam,
+				Skip:           skipParam,
+				AiCapabilities: aiCapabilitiesParam,
 			}
 		}
 		resp := w.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
@@ -414,19 +445,31 @@ func (w *WorkspacesServerTransport) dispatchNewListBySubscriptionPager(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		kindUnescaped, err := url.QueryUnescape(qp.Get("kind"))
+		if err != nil {
+			return nil, err
+		}
+		kindParam := getOptional(kindUnescaped)
 		skipUnescaped, err := url.QueryUnescape(qp.Get("$skip"))
 		if err != nil {
 			return nil, err
 		}
 		skipParam := getOptional(skipUnescaped)
+		aiCapabilitiesUnescaped, err := url.QueryUnescape(qp.Get("aiCapabilities"))
+		if err != nil {
+			return nil, err
+		}
+		aiCapabilitiesParam := getOptional(aiCapabilitiesUnescaped)
 		var options *armmachinelearning.WorkspacesClientListBySubscriptionOptions
-		if skipParam != nil {
+		if kindParam != nil || skipParam != nil || aiCapabilitiesParam != nil {
 			options = &armmachinelearning.WorkspacesClientListBySubscriptionOptions{
-				Skip: skipParam,
+				Kind:           kindParam,
+				Skip:           skipParam,
+				AiCapabilities: aiCapabilitiesParam,
 			}
 		}
 		resp := w.srv.NewListBySubscriptionPager(options)
@@ -457,7 +500,7 @@ func (w *WorkspacesServerTransport) dispatchListKeys(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -490,7 +533,7 @@ func (w *WorkspacesServerTransport) dispatchListNotebookAccessToken(req *http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNotebookAccessToken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -523,7 +566,7 @@ func (w *WorkspacesServerTransport) dispatchListNotebookKeys(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNotebookKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -556,7 +599,7 @@ func (w *WorkspacesServerTransport) dispatchListOutboundNetworkDependenciesEndpo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/outboundNetworkDependenciesEndpoints`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -589,7 +632,7 @@ func (w *WorkspacesServerTransport) dispatchListStorageAccountKeys(req *http.Req
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listStorageAccountKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -624,7 +667,7 @@ func (w *WorkspacesServerTransport) dispatchBeginPrepareNotebook(req *http.Reque
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prepareNotebook`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -668,7 +711,7 @@ func (w *WorkspacesServerTransport) dispatchBeginResyncKeys(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resyncKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -692,9 +735,9 @@ func (w *WorkspacesServerTransport) dispatchBeginResyncKeys(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		w.beginResyncKeys.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginResyncKeys) {
 		w.beginResyncKeys.remove(req)
@@ -712,7 +755,7 @@ func (w *WorkspacesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.WorkspaceUpdateParameters](req)
@@ -749,4 +792,10 @@ func (w *WorkspacesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 	}
 
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to WorkspacesServerTransport
+var workspacesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

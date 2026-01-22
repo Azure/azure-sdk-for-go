@@ -5,11 +5,6 @@
 
 package armmachinelearning
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
-	moduleVersion = "v4.0.0"
-)
-
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -41,6 +36,24 @@ func PossibleAllocationStateValues() []AllocationState {
 	return []AllocationState{
 		AllocationStateResizing,
 		AllocationStateSteady,
+	}
+}
+
+// AllowedContentLevel - Level at which content is filtered.
+type AllowedContentLevel string
+
+const (
+	AllowedContentLevelHigh   AllowedContentLevel = "High"
+	AllowedContentLevelLow    AllowedContentLevel = "Low"
+	AllowedContentLevelMedium AllowedContentLevel = "Medium"
+)
+
+// PossibleAllowedContentLevelValues returns the possible values for the AllowedContentLevel const type.
+func PossibleAllowedContentLevelValues() []AllowedContentLevel {
+	return []AllowedContentLevel{
+		AllowedContentLevelHigh,
+		AllowedContentLevelLow,
+		AllowedContentLevelMedium,
 	}
 }
 
@@ -83,6 +96,20 @@ func PossibleAssetProvisioningStateValues() []AssetProvisioningState {
 		AssetProvisioningStateFailed,
 		AssetProvisioningStateSucceeded,
 		AssetProvisioningStateUpdating,
+	}
+}
+
+// AuthMode - Enum to determine endpoint authentication mode.
+type AuthMode string
+
+const (
+	AuthModeAAD AuthMode = "AAD"
+)
+
+// PossibleAuthModeValues returns the possible values for the AuthMode const type.
+func PossibleAuthModeValues() []AuthMode {
+	return []AuthMode{
+		AuthModeAAD,
 	}
 }
 
@@ -249,6 +276,43 @@ func PossibleCachingValues() []Caching {
 	}
 }
 
+type CapabilityHostKind string
+
+const (
+	CapabilityHostKindAgents CapabilityHostKind = "Agents"
+)
+
+// PossibleCapabilityHostKindValues returns the possible values for the CapabilityHostKind const type.
+func PossibleCapabilityHostKindValues() []CapabilityHostKind {
+	return []CapabilityHostKind{
+		CapabilityHostKindAgents,
+	}
+}
+
+// CapabilityHostProvisioningState - Provisioning state of capability host.
+type CapabilityHostProvisioningState string
+
+const (
+	CapabilityHostProvisioningStateCanceled  CapabilityHostProvisioningState = "Canceled"
+	CapabilityHostProvisioningStateCreating  CapabilityHostProvisioningState = "Creating"
+	CapabilityHostProvisioningStateDeleting  CapabilityHostProvisioningState = "Deleting"
+	CapabilityHostProvisioningStateFailed    CapabilityHostProvisioningState = "Failed"
+	CapabilityHostProvisioningStateSucceeded CapabilityHostProvisioningState = "Succeeded"
+	CapabilityHostProvisioningStateUpdating  CapabilityHostProvisioningState = "Updating"
+)
+
+// PossibleCapabilityHostProvisioningStateValues returns the possible values for the CapabilityHostProvisioningState const type.
+func PossibleCapabilityHostProvisioningStateValues() []CapabilityHostProvisioningState {
+	return []CapabilityHostProvisioningState{
+		CapabilityHostProvisioningStateCanceled,
+		CapabilityHostProvisioningStateCreating,
+		CapabilityHostProvisioningStateDeleting,
+		CapabilityHostProvisioningStateFailed,
+		CapabilityHostProvisioningStateSucceeded,
+		CapabilityHostProvisioningStateUpdating,
+	}
+}
+
 type CategoricalDataDriftMetric string
 
 const (
@@ -349,7 +413,7 @@ const (
 	// tf-idf may also work.
 	ClassificationModelsMultinomialNaiveBayes ClassificationModels = "MultinomialNaiveBayes"
 	// ClassificationModelsRandomForest - Random forest is a supervised learning algorithm.
-	// The "forest" it builds, is an ensemble of decision trees, usually trained with the “bagging” method.
+	// The "forest" it builds, is an ensemble of decision trees, usually trained with the "bagging" method.
 	// The general idea of the bagging method is that a combination of learning models increases the overall result.
 	ClassificationModelsRandomForest ClassificationModels = "RandomForest"
 	// ClassificationModelsSGD - SGD: Stochastic gradient descent is an optimization algorithm often used in machine learning
@@ -496,6 +560,7 @@ const (
 	ComputeInstanceStateCreating        ComputeInstanceState = "Creating"
 	ComputeInstanceStateDeleting        ComputeInstanceState = "Deleting"
 	ComputeInstanceStateJobRunning      ComputeInstanceState = "JobRunning"
+	ComputeInstanceStateResizing        ComputeInstanceState = "Resizing"
 	ComputeInstanceStateRestarting      ComputeInstanceState = "Restarting"
 	ComputeInstanceStateRunning         ComputeInstanceState = "Running"
 	ComputeInstanceStateSettingUp       ComputeInstanceState = "SettingUp"
@@ -516,6 +581,7 @@ func PossibleComputeInstanceStateValues() []ComputeInstanceState {
 		ComputeInstanceStateCreating,
 		ComputeInstanceStateDeleting,
 		ComputeInstanceStateJobRunning,
+		ComputeInstanceStateResizing,
 		ComputeInstanceStateRestarting,
 		ComputeInstanceStateRunning,
 		ComputeInstanceStateSettingUp,
@@ -530,7 +596,7 @@ func PossibleComputeInstanceStateValues() []ComputeInstanceState {
 	}
 }
 
-// ComputePowerAction - The compute power action.
+// ComputePowerAction - [Required] The compute power action.
 type ComputePowerAction string
 
 const (
@@ -573,7 +639,6 @@ func PossibleComputeRecurrenceFrequencyValues() []ComputeRecurrenceFrequency {
 	}
 }
 
-// ComputeTriggerType - Is the trigger type recurrence or cron.
 type ComputeTriggerType string
 
 const (
@@ -658,18 +723,25 @@ func PossibleComputeWeekDayValues() []ComputeWeekDay {
 type ConnectionAuthType string
 
 const (
-	ConnectionAuthTypeAAD              ConnectionAuthType = "AAD"
-	ConnectionAuthTypeAPIKey           ConnectionAuthType = "ApiKey"
-	ConnectionAuthTypeAccessKey        ConnectionAuthType = "AccessKey"
-	ConnectionAuthTypeAccountKey       ConnectionAuthType = "AccountKey"
-	ConnectionAuthTypeCustomKeys       ConnectionAuthType = "CustomKeys"
-	ConnectionAuthTypeManagedIdentity  ConnectionAuthType = "ManagedIdentity"
-	ConnectionAuthTypeNone             ConnectionAuthType = "None"
-	ConnectionAuthTypeOAuth2           ConnectionAuthType = "OAuth2"
-	ConnectionAuthTypePAT              ConnectionAuthType = "PAT"
-	ConnectionAuthTypeSAS              ConnectionAuthType = "SAS"
-	ConnectionAuthTypeServicePrincipal ConnectionAuthType = "ServicePrincipal"
-	ConnectionAuthTypeUsernamePassword ConnectionAuthType = "UsernamePassword"
+	ConnectionAuthTypeAAD                    ConnectionAuthType = "AAD"
+	ConnectionAuthTypeAPIKey                 ConnectionAuthType = "ApiKey"
+	ConnectionAuthTypeAccessKey              ConnectionAuthType = "AccessKey"
+	ConnectionAuthTypeAccountKey             ConnectionAuthType = "AccountKey"
+	ConnectionAuthTypeAccountManagedIdentity ConnectionAuthType = "AccountManagedIdentity"
+	ConnectionAuthTypeAgentUserImpersonation ConnectionAuthType = "AgentUserImpersonation"
+	ConnectionAuthTypeAgenticIdentityToken   ConnectionAuthType = "AgenticIdentityToken"
+	ConnectionAuthTypeAgenticUser            ConnectionAuthType = "AgenticUser"
+	ConnectionAuthTypeCustomKeys             ConnectionAuthType = "CustomKeys"
+	ConnectionAuthTypeDelegatedSAS           ConnectionAuthType = "DelegatedSAS"
+	ConnectionAuthTypeManagedIdentity        ConnectionAuthType = "ManagedIdentity"
+	ConnectionAuthTypeNone                   ConnectionAuthType = "None"
+	ConnectionAuthTypeOAuth2                 ConnectionAuthType = "OAuth2"
+	ConnectionAuthTypePAT                    ConnectionAuthType = "PAT"
+	ConnectionAuthTypeProjectManagedIdentity ConnectionAuthType = "ProjectManagedIdentity"
+	ConnectionAuthTypeSAS                    ConnectionAuthType = "SAS"
+	ConnectionAuthTypeServicePrincipal       ConnectionAuthType = "ServicePrincipal"
+	ConnectionAuthTypeUserEntraToken         ConnectionAuthType = "UserEntraToken"
+	ConnectionAuthTypeUsernamePassword       ConnectionAuthType = "UsernamePassword"
 )
 
 // PossibleConnectionAuthTypeValues returns the possible values for the ConnectionAuthType const type.
@@ -679,13 +751,20 @@ func PossibleConnectionAuthTypeValues() []ConnectionAuthType {
 		ConnectionAuthTypeAPIKey,
 		ConnectionAuthTypeAccessKey,
 		ConnectionAuthTypeAccountKey,
+		ConnectionAuthTypeAccountManagedIdentity,
+		ConnectionAuthTypeAgentUserImpersonation,
+		ConnectionAuthTypeAgenticIdentityToken,
+		ConnectionAuthTypeAgenticUser,
 		ConnectionAuthTypeCustomKeys,
+		ConnectionAuthTypeDelegatedSAS,
 		ConnectionAuthTypeManagedIdentity,
 		ConnectionAuthTypeNone,
 		ConnectionAuthTypeOAuth2,
 		ConnectionAuthTypePAT,
+		ConnectionAuthTypeProjectManagedIdentity,
 		ConnectionAuthTypeSAS,
 		ConnectionAuthTypeServicePrincipal,
+		ConnectionAuthTypeUserEntraToken,
 		ConnectionAuthTypeUsernamePassword,
 	}
 }
@@ -694,108 +773,126 @@ func PossibleConnectionAuthTypeValues() []ConnectionAuthType {
 type ConnectionCategory string
 
 const (
-	ConnectionCategoryADLSGen2                 ConnectionCategory = "ADLSGen2"
-	ConnectionCategoryAIServices               ConnectionCategory = "AIServices"
-	ConnectionCategoryAPIKey                   ConnectionCategory = "ApiKey"
-	ConnectionCategoryAmazonMws                ConnectionCategory = "AmazonMws"
-	ConnectionCategoryAmazonRdsForOracle       ConnectionCategory = "AmazonRdsForOracle"
-	ConnectionCategoryAmazonRdsForSQLServer    ConnectionCategory = "AmazonRdsForSqlServer"
-	ConnectionCategoryAmazonRedshift           ConnectionCategory = "AmazonRedshift"
-	ConnectionCategoryAmazonS3Compatible       ConnectionCategory = "AmazonS3Compatible"
-	ConnectionCategoryAzureBlob                ConnectionCategory = "AzureBlob"
-	ConnectionCategoryAzureDataExplorer        ConnectionCategory = "AzureDataExplorer"
-	ConnectionCategoryAzureDatabricksDeltaLake ConnectionCategory = "AzureDatabricksDeltaLake"
-	ConnectionCategoryAzureMariaDb             ConnectionCategory = "AzureMariaDb"
-	ConnectionCategoryAzureMySQLDb             ConnectionCategory = "AzureMySqlDb"
-	ConnectionCategoryAzureOneLake             ConnectionCategory = "AzureOneLake"
-	ConnectionCategoryAzureOpenAI              ConnectionCategory = "AzureOpenAI"
-	ConnectionCategoryAzurePostgresDb          ConnectionCategory = "AzurePostgresDb"
-	ConnectionCategoryAzureSQLDb               ConnectionCategory = "AzureSqlDb"
-	ConnectionCategoryAzureSQLMi               ConnectionCategory = "AzureSqlMi"
-	ConnectionCategoryAzureSynapseAnalytics    ConnectionCategory = "AzureSynapseAnalytics"
-	ConnectionCategoryAzureTableStorage        ConnectionCategory = "AzureTableStorage"
-	ConnectionCategoryBingLLMSearch            ConnectionCategory = "BingLLMSearch"
-	ConnectionCategoryCassandra                ConnectionCategory = "Cassandra"
-	ConnectionCategoryCognitiveSearch          ConnectionCategory = "CognitiveSearch"
-	ConnectionCategoryCognitiveService         ConnectionCategory = "CognitiveService"
-	ConnectionCategoryConcur                   ConnectionCategory = "Concur"
-	ConnectionCategoryContainerRegistry        ConnectionCategory = "ContainerRegistry"
-	ConnectionCategoryCosmosDb                 ConnectionCategory = "CosmosDb"
-	ConnectionCategoryCosmosDbMongoDbAPI       ConnectionCategory = "CosmosDbMongoDbApi"
-	ConnectionCategoryCouchbase                ConnectionCategory = "Couchbase"
-	ConnectionCategoryCustomKeys               ConnectionCategory = "CustomKeys"
-	ConnectionCategoryDb2                      ConnectionCategory = "Db2"
-	ConnectionCategoryDrill                    ConnectionCategory = "Drill"
-	ConnectionCategoryDynamics                 ConnectionCategory = "Dynamics"
-	ConnectionCategoryDynamicsAx               ConnectionCategory = "DynamicsAx"
-	ConnectionCategoryDynamicsCrm              ConnectionCategory = "DynamicsCrm"
-	ConnectionCategoryEloqua                   ConnectionCategory = "Eloqua"
-	ConnectionCategoryFileServer               ConnectionCategory = "FileServer"
-	ConnectionCategoryFtpServer                ConnectionCategory = "FtpServer"
-	ConnectionCategoryGenericContainerRegistry ConnectionCategory = "GenericContainerRegistry"
-	ConnectionCategoryGenericHTTP              ConnectionCategory = "GenericHttp"
-	ConnectionCategoryGenericRest              ConnectionCategory = "GenericRest"
-	ConnectionCategoryGit                      ConnectionCategory = "Git"
-	ConnectionCategoryGoogleAdWords            ConnectionCategory = "GoogleAdWords"
-	ConnectionCategoryGoogleBigQuery           ConnectionCategory = "GoogleBigQuery"
-	ConnectionCategoryGoogleCloudStorage       ConnectionCategory = "GoogleCloudStorage"
-	ConnectionCategoryGreenplum                ConnectionCategory = "Greenplum"
-	ConnectionCategoryHbase                    ConnectionCategory = "Hbase"
-	ConnectionCategoryHdfs                     ConnectionCategory = "Hdfs"
-	ConnectionCategoryHive                     ConnectionCategory = "Hive"
-	ConnectionCategoryHubspot                  ConnectionCategory = "Hubspot"
-	ConnectionCategoryImpala                   ConnectionCategory = "Impala"
-	ConnectionCategoryInformix                 ConnectionCategory = "Informix"
-	ConnectionCategoryJira                     ConnectionCategory = "Jira"
-	ConnectionCategoryMagento                  ConnectionCategory = "Magento"
-	ConnectionCategoryMariaDb                  ConnectionCategory = "MariaDb"
-	ConnectionCategoryMarketo                  ConnectionCategory = "Marketo"
-	ConnectionCategoryMicrosoftAccess          ConnectionCategory = "MicrosoftAccess"
-	ConnectionCategoryMongoDbAtlas             ConnectionCategory = "MongoDbAtlas"
-	ConnectionCategoryMongoDbV2                ConnectionCategory = "MongoDbV2"
-	ConnectionCategoryMySQL                    ConnectionCategory = "MySql"
-	ConnectionCategoryNetezza                  ConnectionCategory = "Netezza"
-	ConnectionCategoryODataRest                ConnectionCategory = "ODataRest"
-	ConnectionCategoryOdbc                     ConnectionCategory = "Odbc"
-	ConnectionCategoryOffice365                ConnectionCategory = "Office365"
-	ConnectionCategoryOpenAI                   ConnectionCategory = "OpenAI"
-	ConnectionCategoryOracle                   ConnectionCategory = "Oracle"
-	ConnectionCategoryOracleCloudStorage       ConnectionCategory = "OracleCloudStorage"
-	ConnectionCategoryOracleServiceCloud       ConnectionCategory = "OracleServiceCloud"
-	ConnectionCategoryPayPal                   ConnectionCategory = "PayPal"
-	ConnectionCategoryPhoenix                  ConnectionCategory = "Phoenix"
-	ConnectionCategoryPostgreSQL               ConnectionCategory = "PostgreSql"
-	ConnectionCategoryPresto                   ConnectionCategory = "Presto"
-	ConnectionCategoryPythonFeed               ConnectionCategory = "PythonFeed"
-	ConnectionCategoryQuickBooks               ConnectionCategory = "QuickBooks"
-	ConnectionCategoryRedis                    ConnectionCategory = "Redis"
-	ConnectionCategoryResponsys                ConnectionCategory = "Responsys"
-	ConnectionCategoryS3                       ConnectionCategory = "S3"
-	ConnectionCategorySQLServer                ConnectionCategory = "SqlServer"
-	ConnectionCategorySalesforce               ConnectionCategory = "Salesforce"
-	ConnectionCategorySalesforceMarketingCloud ConnectionCategory = "SalesforceMarketingCloud"
-	ConnectionCategorySalesforceServiceCloud   ConnectionCategory = "SalesforceServiceCloud"
-	ConnectionCategorySapBw                    ConnectionCategory = "SapBw"
-	ConnectionCategorySapCloudForCustomer      ConnectionCategory = "SapCloudForCustomer"
-	ConnectionCategorySapEcc                   ConnectionCategory = "SapEcc"
-	ConnectionCategorySapHana                  ConnectionCategory = "SapHana"
-	ConnectionCategorySapOpenHub               ConnectionCategory = "SapOpenHub"
-	ConnectionCategorySapTable                 ConnectionCategory = "SapTable"
-	ConnectionCategorySerp                     ConnectionCategory = "Serp"
-	ConnectionCategoryServerless               ConnectionCategory = "Serverless"
-	ConnectionCategoryServiceNow               ConnectionCategory = "ServiceNow"
-	ConnectionCategorySftp                     ConnectionCategory = "Sftp"
-	ConnectionCategorySharePointOnlineList     ConnectionCategory = "SharePointOnlineList"
-	ConnectionCategoryShopify                  ConnectionCategory = "Shopify"
-	ConnectionCategorySnowflake                ConnectionCategory = "Snowflake"
-	ConnectionCategorySpark                    ConnectionCategory = "Spark"
-	ConnectionCategorySquare                   ConnectionCategory = "Square"
-	ConnectionCategorySybase                   ConnectionCategory = "Sybase"
-	ConnectionCategoryTeradata                 ConnectionCategory = "Teradata"
-	ConnectionCategoryVertica                  ConnectionCategory = "Vertica"
-	ConnectionCategoryWebTable                 ConnectionCategory = "WebTable"
-	ConnectionCategoryXero                     ConnectionCategory = "Xero"
-	ConnectionCategoryZoho                     ConnectionCategory = "Zoho"
+	ConnectionCategoryADLSGen2                     ConnectionCategory = "ADLSGen2"
+	ConnectionCategoryAIServices                   ConnectionCategory = "AIServices"
+	ConnectionCategoryAPIKey                       ConnectionCategory = "ApiKey"
+	ConnectionCategoryAPIManagement                ConnectionCategory = "ApiManagement"
+	ConnectionCategoryAmazonMws                    ConnectionCategory = "AmazonMws"
+	ConnectionCategoryAmazonRdsForOracle           ConnectionCategory = "AmazonRdsForOracle"
+	ConnectionCategoryAmazonRdsForSQLServer        ConnectionCategory = "AmazonRdsForSqlServer"
+	ConnectionCategoryAmazonRedshift               ConnectionCategory = "AmazonRedshift"
+	ConnectionCategoryAmazonS3Compatible           ConnectionCategory = "AmazonS3Compatible"
+	ConnectionCategoryAppConfig                    ConnectionCategory = "AppConfig"
+	ConnectionCategoryAppInsights                  ConnectionCategory = "AppInsights"
+	ConnectionCategoryAzureBlob                    ConnectionCategory = "AzureBlob"
+	ConnectionCategoryAzureContainerAppEnvironment ConnectionCategory = "AzureContainerAppEnvironment"
+	ConnectionCategoryAzureDataExplorer            ConnectionCategory = "AzureDataExplorer"
+	ConnectionCategoryAzureDatabricksDeltaLake     ConnectionCategory = "AzureDatabricksDeltaLake"
+	ConnectionCategoryAzureKeyVault                ConnectionCategory = "AzureKeyVault"
+	ConnectionCategoryAzureMariaDb                 ConnectionCategory = "AzureMariaDb"
+	ConnectionCategoryAzureMySQLDb                 ConnectionCategory = "AzureMySqlDb"
+	ConnectionCategoryAzureOneLake                 ConnectionCategory = "AzureOneLake"
+	ConnectionCategoryAzureOpenAI                  ConnectionCategory = "AzureOpenAI"
+	ConnectionCategoryAzurePostgresDb              ConnectionCategory = "AzurePostgresDb"
+	ConnectionCategoryAzureSQLDb                   ConnectionCategory = "AzureSqlDb"
+	ConnectionCategoryAzureSQLMi                   ConnectionCategory = "AzureSqlMi"
+	ConnectionCategoryAzureStorageAccount          ConnectionCategory = "AzureStorageAccount"
+	ConnectionCategoryAzureSynapseAnalytics        ConnectionCategory = "AzureSynapseAnalytics"
+	ConnectionCategoryAzureTableStorage            ConnectionCategory = "AzureTableStorage"
+	ConnectionCategoryBingLLMSearch                ConnectionCategory = "BingLLMSearch"
+	ConnectionCategoryCassandra                    ConnectionCategory = "Cassandra"
+	ConnectionCategoryCognitiveSearch              ConnectionCategory = "CognitiveSearch"
+	ConnectionCategoryCognitiveService             ConnectionCategory = "CognitiveService"
+	ConnectionCategoryConcur                       ConnectionCategory = "Concur"
+	ConnectionCategoryContainerRegistry            ConnectionCategory = "ContainerRegistry"
+	ConnectionCategoryCosmosDb                     ConnectionCategory = "CosmosDb"
+	ConnectionCategoryCosmosDbMongoDbAPI           ConnectionCategory = "CosmosDbMongoDbApi"
+	ConnectionCategoryCouchbase                    ConnectionCategory = "Couchbase"
+	ConnectionCategoryCustomKeys                   ConnectionCategory = "CustomKeys"
+	ConnectionCategoryDatabricks                   ConnectionCategory = "Databricks"
+	ConnectionCategoryDb2                          ConnectionCategory = "Db2"
+	ConnectionCategoryDrill                        ConnectionCategory = "Drill"
+	ConnectionCategoryDynamics                     ConnectionCategory = "Dynamics"
+	ConnectionCategoryDynamicsAx                   ConnectionCategory = "DynamicsAx"
+	ConnectionCategoryDynamicsCrm                  ConnectionCategory = "DynamicsCrm"
+	ConnectionCategoryElasticsearch                ConnectionCategory = "Elasticsearch"
+	ConnectionCategoryEloqua                       ConnectionCategory = "Eloqua"
+	ConnectionCategoryFileServer                   ConnectionCategory = "FileServer"
+	ConnectionCategoryFtpServer                    ConnectionCategory = "FtpServer"
+	ConnectionCategoryGenericContainerRegistry     ConnectionCategory = "GenericContainerRegistry"
+	ConnectionCategoryGenericHTTP                  ConnectionCategory = "GenericHttp"
+	ConnectionCategoryGenericRest                  ConnectionCategory = "GenericRest"
+	ConnectionCategoryGit                          ConnectionCategory = "Git"
+	ConnectionCategoryGoogleAdWords                ConnectionCategory = "GoogleAdWords"
+	ConnectionCategoryGoogleBigQuery               ConnectionCategory = "GoogleBigQuery"
+	ConnectionCategoryGoogleCloudStorage           ConnectionCategory = "GoogleCloudStorage"
+	ConnectionCategoryGreenplum                    ConnectionCategory = "Greenplum"
+	ConnectionCategoryGroundingWithBingSearch      ConnectionCategory = "GroundingWithBingSearch"
+	ConnectionCategoryGroundingWithCustomSearch    ConnectionCategory = "GroundingWithCustomSearch"
+	ConnectionCategoryHbase                        ConnectionCategory = "Hbase"
+	ConnectionCategoryHdfs                         ConnectionCategory = "Hdfs"
+	ConnectionCategoryHive                         ConnectionCategory = "Hive"
+	ConnectionCategoryHubspot                      ConnectionCategory = "Hubspot"
+	ConnectionCategoryImpala                       ConnectionCategory = "Impala"
+	ConnectionCategoryInformix                     ConnectionCategory = "Informix"
+	ConnectionCategoryJira                         ConnectionCategory = "Jira"
+	ConnectionCategoryMagento                      ConnectionCategory = "Magento"
+	ConnectionCategoryManagedOnlineEndpoint        ConnectionCategory = "ManagedOnlineEndpoint"
+	ConnectionCategoryMariaDb                      ConnectionCategory = "MariaDb"
+	ConnectionCategoryMarketo                      ConnectionCategory = "Marketo"
+	ConnectionCategoryMicrosoftAccess              ConnectionCategory = "MicrosoftAccess"
+	ConnectionCategoryMicrosoftFabric              ConnectionCategory = "MicrosoftFabric"
+	ConnectionCategoryModelGateway                 ConnectionCategory = "ModelGateway"
+	ConnectionCategoryMongoDbAtlas                 ConnectionCategory = "MongoDbAtlas"
+	ConnectionCategoryMongoDbV2                    ConnectionCategory = "MongoDbV2"
+	ConnectionCategoryMySQL                        ConnectionCategory = "MySql"
+	ConnectionCategoryNetezza                      ConnectionCategory = "Netezza"
+	ConnectionCategoryODataRest                    ConnectionCategory = "ODataRest"
+	ConnectionCategoryOdbc                         ConnectionCategory = "Odbc"
+	ConnectionCategoryOffice365                    ConnectionCategory = "Office365"
+	ConnectionCategoryOpenAI                       ConnectionCategory = "OpenAI"
+	ConnectionCategoryOracle                       ConnectionCategory = "Oracle"
+	ConnectionCategoryOracleCloudStorage           ConnectionCategory = "OracleCloudStorage"
+	ConnectionCategoryOracleServiceCloud           ConnectionCategory = "OracleServiceCloud"
+	ConnectionCategoryPayPal                       ConnectionCategory = "PayPal"
+	ConnectionCategoryPhoenix                      ConnectionCategory = "Phoenix"
+	ConnectionCategoryPinecone                     ConnectionCategory = "Pinecone"
+	ConnectionCategoryPostgreSQL                   ConnectionCategory = "PostgreSql"
+	ConnectionCategoryPowerPlatformEnvironment     ConnectionCategory = "PowerPlatformEnvironment"
+	ConnectionCategoryPresto                       ConnectionCategory = "Presto"
+	ConnectionCategoryPythonFeed                   ConnectionCategory = "PythonFeed"
+	ConnectionCategoryQuickBooks                   ConnectionCategory = "QuickBooks"
+	ConnectionCategoryRedis                        ConnectionCategory = "Redis"
+	ConnectionCategoryRemoteA2A                    ConnectionCategory = "RemoteA2A"
+	ConnectionCategoryRemoteTool                   ConnectionCategory = "RemoteTool"
+	ConnectionCategoryResponsys                    ConnectionCategory = "Responsys"
+	ConnectionCategoryS3                           ConnectionCategory = "S3"
+	ConnectionCategorySQLServer                    ConnectionCategory = "SqlServer"
+	ConnectionCategorySalesforce                   ConnectionCategory = "Salesforce"
+	ConnectionCategorySalesforceMarketingCloud     ConnectionCategory = "SalesforceMarketingCloud"
+	ConnectionCategorySalesforceServiceCloud       ConnectionCategory = "SalesforceServiceCloud"
+	ConnectionCategorySapBw                        ConnectionCategory = "SapBw"
+	ConnectionCategorySapCloudForCustomer          ConnectionCategory = "SapCloudForCustomer"
+	ConnectionCategorySapEcc                       ConnectionCategory = "SapEcc"
+	ConnectionCategorySapHana                      ConnectionCategory = "SapHana"
+	ConnectionCategorySapOpenHub                   ConnectionCategory = "SapOpenHub"
+	ConnectionCategorySapTable                     ConnectionCategory = "SapTable"
+	ConnectionCategorySerp                         ConnectionCategory = "Serp"
+	ConnectionCategoryServerless                   ConnectionCategory = "Serverless"
+	ConnectionCategoryServiceNow                   ConnectionCategory = "ServiceNow"
+	ConnectionCategorySftp                         ConnectionCategory = "Sftp"
+	ConnectionCategorySharePointOnlineList         ConnectionCategory = "SharePointOnlineList"
+	ConnectionCategorySharepoint                   ConnectionCategory = "Sharepoint"
+	ConnectionCategoryShopify                      ConnectionCategory = "Shopify"
+	ConnectionCategorySnowflake                    ConnectionCategory = "Snowflake"
+	ConnectionCategorySpark                        ConnectionCategory = "Spark"
+	ConnectionCategorySquare                       ConnectionCategory = "Square"
+	ConnectionCategorySybase                       ConnectionCategory = "Sybase"
+	ConnectionCategoryTeradata                     ConnectionCategory = "Teradata"
+	ConnectionCategoryVertica                      ConnectionCategory = "Vertica"
+	ConnectionCategoryWebTable                     ConnectionCategory = "WebTable"
+	ConnectionCategoryXero                         ConnectionCategory = "Xero"
+	ConnectionCategoryZoho                         ConnectionCategory = "Zoho"
 )
 
 // PossibleConnectionCategoryValues returns the possible values for the ConnectionCategory const type.
@@ -804,14 +901,19 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryADLSGen2,
 		ConnectionCategoryAIServices,
 		ConnectionCategoryAPIKey,
+		ConnectionCategoryAPIManagement,
 		ConnectionCategoryAmazonMws,
 		ConnectionCategoryAmazonRdsForOracle,
 		ConnectionCategoryAmazonRdsForSQLServer,
 		ConnectionCategoryAmazonRedshift,
 		ConnectionCategoryAmazonS3Compatible,
+		ConnectionCategoryAppConfig,
+		ConnectionCategoryAppInsights,
 		ConnectionCategoryAzureBlob,
+		ConnectionCategoryAzureContainerAppEnvironment,
 		ConnectionCategoryAzureDataExplorer,
 		ConnectionCategoryAzureDatabricksDeltaLake,
+		ConnectionCategoryAzureKeyVault,
 		ConnectionCategoryAzureMariaDb,
 		ConnectionCategoryAzureMySQLDb,
 		ConnectionCategoryAzureOneLake,
@@ -819,6 +921,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryAzurePostgresDb,
 		ConnectionCategoryAzureSQLDb,
 		ConnectionCategoryAzureSQLMi,
+		ConnectionCategoryAzureStorageAccount,
 		ConnectionCategoryAzureSynapseAnalytics,
 		ConnectionCategoryAzureTableStorage,
 		ConnectionCategoryBingLLMSearch,
@@ -831,11 +934,13 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryCosmosDbMongoDbAPI,
 		ConnectionCategoryCouchbase,
 		ConnectionCategoryCustomKeys,
+		ConnectionCategoryDatabricks,
 		ConnectionCategoryDb2,
 		ConnectionCategoryDrill,
 		ConnectionCategoryDynamics,
 		ConnectionCategoryDynamicsAx,
 		ConnectionCategoryDynamicsCrm,
+		ConnectionCategoryElasticsearch,
 		ConnectionCategoryEloqua,
 		ConnectionCategoryFileServer,
 		ConnectionCategoryFtpServer,
@@ -847,6 +952,8 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryGoogleBigQuery,
 		ConnectionCategoryGoogleCloudStorage,
 		ConnectionCategoryGreenplum,
+		ConnectionCategoryGroundingWithBingSearch,
+		ConnectionCategoryGroundingWithCustomSearch,
 		ConnectionCategoryHbase,
 		ConnectionCategoryHdfs,
 		ConnectionCategoryHive,
@@ -855,9 +962,12 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryInformix,
 		ConnectionCategoryJira,
 		ConnectionCategoryMagento,
+		ConnectionCategoryManagedOnlineEndpoint,
 		ConnectionCategoryMariaDb,
 		ConnectionCategoryMarketo,
 		ConnectionCategoryMicrosoftAccess,
+		ConnectionCategoryMicrosoftFabric,
+		ConnectionCategoryModelGateway,
 		ConnectionCategoryMongoDbAtlas,
 		ConnectionCategoryMongoDbV2,
 		ConnectionCategoryMySQL,
@@ -871,11 +981,15 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryOracleServiceCloud,
 		ConnectionCategoryPayPal,
 		ConnectionCategoryPhoenix,
+		ConnectionCategoryPinecone,
 		ConnectionCategoryPostgreSQL,
+		ConnectionCategoryPowerPlatformEnvironment,
 		ConnectionCategoryPresto,
 		ConnectionCategoryPythonFeed,
 		ConnectionCategoryQuickBooks,
 		ConnectionCategoryRedis,
+		ConnectionCategoryRemoteA2A,
+		ConnectionCategoryRemoteTool,
 		ConnectionCategoryResponsys,
 		ConnectionCategoryS3,
 		ConnectionCategorySQLServer,
@@ -893,6 +1007,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryServiceNow,
 		ConnectionCategorySftp,
 		ConnectionCategorySharePointOnlineList,
+		ConnectionCategorySharepoint,
 		ConnectionCategoryShopify,
 		ConnectionCategorySnowflake,
 		ConnectionCategorySpark,
@@ -944,6 +1059,22 @@ func PossibleContainerTypeValues() []ContainerType {
 	return []ContainerType{
 		ContainerTypeInferenceServer,
 		ContainerTypeStorageInitializer,
+	}
+}
+
+// ContentSafetyLevel - Specifies the current safety level for content safety.
+type ContentSafetyLevel string
+
+const (
+	ContentSafetyLevelBlocking ContentSafetyLevel = "Blocking"
+	ContentSafetyLevelDeferred ContentSafetyLevel = "Deferred"
+)
+
+// PossibleContentSafetyLevelValues returns the possible values for the ContentSafetyLevel const type.
+func PossibleContentSafetyLevelValues() []ContentSafetyLevel {
+	return []ContentSafetyLevel{
+		ContentSafetyLevelBlocking,
+		ContentSafetyLevelDeferred,
 	}
 }
 
@@ -1039,6 +1170,51 @@ func PossibleDataCollectionModeValues() []DataCollectionMode {
 	}
 }
 
+// DataGenerationTaskType - Enum to determine the type of Data Generation Task.
+type DataGenerationTaskType string
+
+const (
+	// DataGenerationTaskTypeConversation - Generate conversational data (multi/single turn)
+	DataGenerationTaskTypeConversation DataGenerationTaskType = "Conversation"
+	// DataGenerationTaskTypeMath - Generate Math data for numerical responses
+	DataGenerationTaskTypeMath DataGenerationTaskType = "Math"
+	// DataGenerationTaskTypeNli - Generate Natural Language Inference data
+	DataGenerationTaskTypeNli DataGenerationTaskType = "Nli"
+	// DataGenerationTaskTypeNluQa - Generate Natural Language Understanding data for Question Answering data
+	DataGenerationTaskTypeNluQa DataGenerationTaskType = "NluQa"
+	// DataGenerationTaskTypeSummarization - Generate Key Summary for an Article
+	DataGenerationTaskTypeSummarization DataGenerationTaskType = "Summarization"
+)
+
+// PossibleDataGenerationTaskTypeValues returns the possible values for the DataGenerationTaskType const type.
+func PossibleDataGenerationTaskTypeValues() []DataGenerationTaskType {
+	return []DataGenerationTaskType{
+		DataGenerationTaskTypeConversation,
+		DataGenerationTaskTypeMath,
+		DataGenerationTaskTypeNli,
+		DataGenerationTaskTypeNluQa,
+		DataGenerationTaskTypeSummarization,
+	}
+}
+
+// DataGenerationType - Enum to determine the type of Data Generation.
+type DataGenerationType string
+
+const (
+	// DataGenerationTypeDataGeneration - Synthetic Data Generation
+	DataGenerationTypeDataGeneration DataGenerationType = "DataGeneration"
+	// DataGenerationTypeLabelGeneration - Label Generation by Teacher Model Inferencing
+	DataGenerationTypeLabelGeneration DataGenerationType = "LabelGeneration"
+)
+
+// PossibleDataGenerationTypeValues returns the possible values for the DataGenerationType const type.
+func PossibleDataGenerationTypeValues() []DataGenerationType {
+	return []DataGenerationType{
+		DataGenerationTypeDataGeneration,
+		DataGenerationTypeLabelGeneration,
+	}
+}
+
 // DataReferenceCredentialType - Enum to determine the DataReference credentials type.
 type DataReferenceCredentialType string
 
@@ -1096,6 +1272,70 @@ func PossibleDatastoreTypeValues() []DatastoreType {
 		DatastoreTypeAzureDataLakeGen2,
 		DatastoreTypeAzureFile,
 		DatastoreTypeOneLake,
+	}
+}
+
+type DefaultActionType string
+
+const (
+	DefaultActionTypeAllow DefaultActionType = "Allow"
+	DefaultActionTypeDeny  DefaultActionType = "Deny"
+)
+
+// PossibleDefaultActionTypeValues returns the possible values for the DefaultActionType const type.
+func PossibleDefaultActionTypeValues() []DefaultActionType {
+	return []DefaultActionType{
+		DefaultActionTypeAllow,
+		DefaultActionTypeDeny,
+	}
+}
+
+type DefaultResourceProvisioningState string
+
+const (
+	DefaultResourceProvisioningStateAccepted   DefaultResourceProvisioningState = "Accepted"
+	DefaultResourceProvisioningStateCanceled   DefaultResourceProvisioningState = "Canceled"
+	DefaultResourceProvisioningStateCreating   DefaultResourceProvisioningState = "Creating"
+	DefaultResourceProvisioningStateDeleting   DefaultResourceProvisioningState = "Deleting"
+	DefaultResourceProvisioningStateDisabled   DefaultResourceProvisioningState = "Disabled"
+	DefaultResourceProvisioningStateFailed     DefaultResourceProvisioningState = "Failed"
+	DefaultResourceProvisioningStateNotStarted DefaultResourceProvisioningState = "NotStarted"
+	DefaultResourceProvisioningStateScaling    DefaultResourceProvisioningState = "Scaling"
+	DefaultResourceProvisioningStateSucceeded  DefaultResourceProvisioningState = "Succeeded"
+	DefaultResourceProvisioningStateUpdating   DefaultResourceProvisioningState = "Updating"
+)
+
+// PossibleDefaultResourceProvisioningStateValues returns the possible values for the DefaultResourceProvisioningState const type.
+func PossibleDefaultResourceProvisioningStateValues() []DefaultResourceProvisioningState {
+	return []DefaultResourceProvisioningState{
+		DefaultResourceProvisioningStateAccepted,
+		DefaultResourceProvisioningStateCanceled,
+		DefaultResourceProvisioningStateCreating,
+		DefaultResourceProvisioningStateDeleting,
+		DefaultResourceProvisioningStateDisabled,
+		DefaultResourceProvisioningStateFailed,
+		DefaultResourceProvisioningStateNotStarted,
+		DefaultResourceProvisioningStateScaling,
+		DefaultResourceProvisioningStateSucceeded,
+		DefaultResourceProvisioningStateUpdating,
+	}
+}
+
+// DeploymentModelVersionUpgradeOption - Deployment model version upgrade option.
+type DeploymentModelVersionUpgradeOption string
+
+const (
+	DeploymentModelVersionUpgradeOptionNoAutoUpgrade                  DeploymentModelVersionUpgradeOption = "NoAutoUpgrade"
+	DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired      DeploymentModelVersionUpgradeOption = "OnceCurrentVersionExpired"
+	DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable DeploymentModelVersionUpgradeOption = "OnceNewDefaultVersionAvailable"
+)
+
+// PossibleDeploymentModelVersionUpgradeOptionValues returns the possible values for the DeploymentModelVersionUpgradeOption const type.
+func PossibleDeploymentModelVersionUpgradeOptionValues() []DeploymentModelVersionUpgradeOption {
+	return []DeploymentModelVersionUpgradeOption{
+		DeploymentModelVersionUpgradeOptionNoAutoUpgrade,
+		DeploymentModelVersionUpgradeOptionOnceCurrentVersionExpired,
+		DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable,
 	}
 }
 
@@ -1296,6 +1536,7 @@ const (
 	EndpointServiceConnectionStatusDisconnected EndpointServiceConnectionStatus = "Disconnected"
 	EndpointServiceConnectionStatusPending      EndpointServiceConnectionStatus = "Pending"
 	EndpointServiceConnectionStatusRejected     EndpointServiceConnectionStatus = "Rejected"
+	EndpointServiceConnectionStatusTimeout      EndpointServiceConnectionStatus = "Timeout"
 )
 
 // PossibleEndpointServiceConnectionStatusValues returns the possible values for the EndpointServiceConnectionStatus const type.
@@ -1305,6 +1546,31 @@ func PossibleEndpointServiceConnectionStatusValues() []EndpointServiceConnection
 		EndpointServiceConnectionStatusDisconnected,
 		EndpointServiceConnectionStatusPending,
 		EndpointServiceConnectionStatusRejected,
+		EndpointServiceConnectionStatusTimeout,
+	}
+}
+
+// EndpointType - Type of the endpoint.
+type EndpointType string
+
+const (
+	EndpointTypeAzureContentSafety    EndpointType = "Azure.ContentSafety"
+	EndpointTypeAzureLlama            EndpointType = "Azure.Llama"
+	EndpointTypeAzureOpenAI           EndpointType = "Azure.OpenAI"
+	EndpointTypeAzureSpeech           EndpointType = "Azure.Speech"
+	EndpointTypeManagedOnlineEndpoint EndpointType = "managedOnlineEndpoint"
+	EndpointTypeServerlessEndpoint    EndpointType = "serverlessEndpoint"
+)
+
+// PossibleEndpointTypeValues returns the possible values for the EndpointType const type.
+func PossibleEndpointTypeValues() []EndpointType {
+	return []EndpointType{
+		EndpointTypeAzureContentSafety,
+		EndpointTypeAzureLlama,
+		EndpointTypeAzureOpenAI,
+		EndpointTypeAzureSpeech,
+		EndpointTypeManagedOnlineEndpoint,
+		EndpointTypeServerlessEndpoint,
 	}
 }
 
@@ -1436,6 +1702,55 @@ func PossibleFeaturizationModeValues() []FeaturizationMode {
 	}
 }
 
+type FineTuningTaskType string
+
+const (
+	FineTuningTaskTypeChatCompletion            FineTuningTaskType = "ChatCompletion"
+	FineTuningTaskTypeImageClassification       FineTuningTaskType = "ImageClassification"
+	FineTuningTaskTypeImageInstanceSegmentation FineTuningTaskType = "ImageInstanceSegmentation"
+	FineTuningTaskTypeImageObjectDetection      FineTuningTaskType = "ImageObjectDetection"
+	FineTuningTaskTypeQuestionAnswering         FineTuningTaskType = "QuestionAnswering"
+	FineTuningTaskTypeTextClassification        FineTuningTaskType = "TextClassification"
+	FineTuningTaskTypeTextCompletion            FineTuningTaskType = "TextCompletion"
+	FineTuningTaskTypeTextSummarization         FineTuningTaskType = "TextSummarization"
+	FineTuningTaskTypeTextTranslation           FineTuningTaskType = "TextTranslation"
+	FineTuningTaskTypeTokenClassification       FineTuningTaskType = "TokenClassification"
+	FineTuningTaskTypeVideoMultiObjectTracking  FineTuningTaskType = "VideoMultiObjectTracking"
+)
+
+// PossibleFineTuningTaskTypeValues returns the possible values for the FineTuningTaskType const type.
+func PossibleFineTuningTaskTypeValues() []FineTuningTaskType {
+	return []FineTuningTaskType{
+		FineTuningTaskTypeChatCompletion,
+		FineTuningTaskTypeImageClassification,
+		FineTuningTaskTypeImageInstanceSegmentation,
+		FineTuningTaskTypeImageObjectDetection,
+		FineTuningTaskTypeQuestionAnswering,
+		FineTuningTaskTypeTextClassification,
+		FineTuningTaskTypeTextCompletion,
+		FineTuningTaskTypeTextSummarization,
+		FineTuningTaskTypeTextTranslation,
+		FineTuningTaskTypeTokenClassification,
+		FineTuningTaskTypeVideoMultiObjectTracking,
+	}
+}
+
+// FirewallSKU - Firewall Sku used for FQDN Rules
+type FirewallSKU string
+
+const (
+	FirewallSKUBasic    FirewallSKU = "Basic"
+	FirewallSKUStandard FirewallSKU = "Standard"
+)
+
+// PossibleFirewallSKUValues returns the possible values for the FirewallSKU const type.
+func PossibleFirewallSKUValues() []FirewallSKU {
+	return []FirewallSKU{
+		FirewallSKUBasic,
+		FirewallSKUStandard,
+	}
+}
+
 // ForecastHorizonMode - Enum to determine forecast horizon selection mode.
 type ForecastHorizonMode string
 
@@ -1505,7 +1820,7 @@ const (
 	// to missing data and shifts in the trend, and typically handles outliers well.
 	ForecastingModelsProphet ForecastingModels = "Prophet"
 	// ForecastingModelsRandomForest - Random forest is a supervised learning algorithm.
-	// The "forest" it builds, is an ensemble of decision trees, usually trained with the “bagging” method.
+	// The "forest" it builds, is an ensemble of decision trees, usually trained with the "bagging" method.
 	// The general idea of the bagging method is that a combination of learning models increases the overall result.
 	ForecastingModelsRandomForest ForecastingModels = "RandomForest"
 	// ForecastingModelsSGD - SGD: Stochastic gradient descent is an optimization algorithm often used in machine learning applications
@@ -1613,7 +1928,8 @@ func PossibleIdentityConfigurationTypeValues() []IdentityConfigurationType {
 	}
 }
 
-// ImageType - Type of the image. Possible values are: docker - For docker images. azureml - For AzureML images
+// ImageType - Type of the image. Possible values are: docker - For docker images. azureml - For AzureML Environment images
+// (custom and curated)
 type ImageType string
 
 const (
@@ -1837,11 +2153,13 @@ func PossibleJobTierValues() []JobTier {
 type JobType string
 
 const (
-	JobTypeAutoML   JobType = "AutoML"
-	JobTypeCommand  JobType = "Command"
-	JobTypePipeline JobType = "Pipeline"
-	JobTypeSpark    JobType = "Spark"
-	JobTypeSweep    JobType = "Sweep"
+	JobTypeAutoML       JobType = "AutoML"
+	JobTypeCommand      JobType = "Command"
+	JobTypeDistillation JobType = "Distillation"
+	JobTypeFineTuning   JobType = "FineTuning"
+	JobTypePipeline     JobType = "Pipeline"
+	JobTypeSpark        JobType = "Spark"
+	JobTypeSweep        JobType = "Sweep"
 )
 
 // PossibleJobTypeValues returns the possible values for the JobType const type.
@@ -1849,6 +2167,8 @@ func PossibleJobTypeValues() []JobType {
 	return []JobType{
 		JobTypeAutoML,
 		JobTypeCommand,
+		JobTypeDistillation,
+		JobTypeFineTuning,
 		JobTypePipeline,
 		JobTypeSpark,
 		JobTypeSweep,
@@ -1954,6 +2274,46 @@ func PossibleLogVerbosityValues() []LogVerbosity {
 	}
 }
 
+// ManagedNetworkKind - The Kind of the managed network. Users can switch from V1 to V2 for granular access controls, but
+// cannot switch back to V1 once V2 is enabled.
+type ManagedNetworkKind string
+
+const (
+	ManagedNetworkKindV1 ManagedNetworkKind = "V1"
+	ManagedNetworkKindV2 ManagedNetworkKind = "V2"
+)
+
+// PossibleManagedNetworkKindValues returns the possible values for the ManagedNetworkKind const type.
+func PossibleManagedNetworkKindValues() []ManagedNetworkKind {
+	return []ManagedNetworkKind{
+		ManagedNetworkKindV1,
+		ManagedNetworkKindV2,
+	}
+}
+
+type ManagedNetworkProvisioningState string
+
+const (
+	ManagedNetworkProvisioningStateDeferred  ManagedNetworkProvisioningState = "Deferred"
+	ManagedNetworkProvisioningStateDeleted   ManagedNetworkProvisioningState = "Deleted"
+	ManagedNetworkProvisioningStateDeleting  ManagedNetworkProvisioningState = "Deleting"
+	ManagedNetworkProvisioningStateFailed    ManagedNetworkProvisioningState = "Failed"
+	ManagedNetworkProvisioningStateSucceeded ManagedNetworkProvisioningState = "Succeeded"
+	ManagedNetworkProvisioningStateUpdating  ManagedNetworkProvisioningState = "Updating"
+)
+
+// PossibleManagedNetworkProvisioningStateValues returns the possible values for the ManagedNetworkProvisioningState const type.
+func PossibleManagedNetworkProvisioningStateValues() []ManagedNetworkProvisioningState {
+	return []ManagedNetworkProvisioningState{
+		ManagedNetworkProvisioningStateDeferred,
+		ManagedNetworkProvisioningStateDeleted,
+		ManagedNetworkProvisioningStateDeleting,
+		ManagedNetworkProvisioningStateFailed,
+		ManagedNetworkProvisioningStateSucceeded,
+		ManagedNetworkProvisioningStateUpdating,
+	}
+}
+
 // ManagedNetworkStatus - Status for the managed network of a machine learning workspace.
 type ManagedNetworkStatus string
 
@@ -1967,6 +2327,40 @@ func PossibleManagedNetworkStatusValues() []ManagedNetworkStatus {
 	return []ManagedNetworkStatus{
 		ManagedNetworkStatusActive,
 		ManagedNetworkStatusInactive,
+	}
+}
+
+type ManagedPERequirement string
+
+const (
+	ManagedPERequirementNotApplicable ManagedPERequirement = "NotApplicable"
+	ManagedPERequirementNotRequired   ManagedPERequirement = "NotRequired"
+	ManagedPERequirementRequired      ManagedPERequirement = "Required"
+)
+
+// PossibleManagedPERequirementValues returns the possible values for the ManagedPERequirement const type.
+func PossibleManagedPERequirementValues() []ManagedPERequirement {
+	return []ManagedPERequirement{
+		ManagedPERequirementNotApplicable,
+		ManagedPERequirementNotRequired,
+		ManagedPERequirementRequired,
+	}
+}
+
+type ManagedPEStatus string
+
+const (
+	ManagedPEStatusActive        ManagedPEStatus = "Active"
+	ManagedPEStatusInactive      ManagedPEStatus = "Inactive"
+	ManagedPEStatusNotApplicable ManagedPEStatus = "NotApplicable"
+)
+
+// PossibleManagedPEStatusValues returns the possible values for the ManagedPEStatus const type.
+func PossibleManagedPEStatusValues() []ManagedPEStatus {
+	return []ManagedPEStatus{
+		ManagedPEStatusActive,
+		ManagedPEStatusInactive,
+		ManagedPEStatusNotApplicable,
 	}
 }
 
@@ -2059,6 +2453,56 @@ func PossibleMaterializationStoreTypeValues() []MaterializationStoreType {
 		MaterializationStoreTypeOffline,
 		MaterializationStoreTypeOnline,
 		MaterializationStoreTypeOnlineAndOffline,
+	}
+}
+
+// MlflowAutologger - Indicates whether mlflow autologger is enabled for notebooks.
+type MlflowAutologger string
+
+const (
+	MlflowAutologgerDisabled MlflowAutologger = "Disabled"
+	MlflowAutologgerEnabled  MlflowAutologger = "Enabled"
+)
+
+// PossibleMlflowAutologgerValues returns the possible values for the MlflowAutologger const type.
+func PossibleMlflowAutologgerValues() []MlflowAutologger {
+	return []MlflowAutologger{
+		MlflowAutologgerDisabled,
+		MlflowAutologgerEnabled,
+	}
+}
+
+// ModelLifecycleStatus - Model lifecycle status.
+type ModelLifecycleStatus string
+
+const (
+	ModelLifecycleStatusGenerallyAvailable ModelLifecycleStatus = "GenerallyAvailable"
+	ModelLifecycleStatusPreview            ModelLifecycleStatus = "Preview"
+)
+
+// PossibleModelLifecycleStatusValues returns the possible values for the ModelLifecycleStatus const type.
+func PossibleModelLifecycleStatusValues() []ModelLifecycleStatus {
+	return []ModelLifecycleStatus{
+		ModelLifecycleStatusGenerallyAvailable,
+		ModelLifecycleStatusPreview,
+	}
+}
+
+// ModelProvider - Enum to determine the type of fine tuning.
+type ModelProvider string
+
+const (
+	// ModelProviderAzureOpenAI - Fine tuning using Azure Open AI model.
+	ModelProviderAzureOpenAI ModelProvider = "AzureOpenAI"
+	// ModelProviderCustom - Fine tuning using custom model.
+	ModelProviderCustom ModelProvider = "Custom"
+)
+
+// PossibleModelProviderValues returns the possible values for the ModelProvider const type.
+func PossibleModelProviderValues() []ModelProvider {
+	return []ModelProvider{
+		ModelProviderAzureOpenAI,
+		ModelProviderCustom,
 	}
 }
 
@@ -2255,6 +2699,22 @@ func PossibleMountActionValues() []MountAction {
 	}
 }
 
+// MountMode - Mount Mode.
+type MountMode string
+
+const (
+	MountModeReadOnly  MountMode = "ReadOnly"
+	MountModeReadWrite MountMode = "ReadWrite"
+)
+
+// PossibleMountModeValues returns the possible values for the MountMode const type.
+func PossibleMountModeValues() []MountMode {
+	return []MountMode{
+		MountModeReadOnly,
+		MountModeReadWrite,
+	}
+}
+
 // MountState - Mount state.
 type MountState string
 
@@ -2361,7 +2821,7 @@ const (
 	NumericalDataDriftMetricNormalizedWassersteinDistance NumericalDataDriftMetric = "NormalizedWassersteinDistance"
 	// NumericalDataDriftMetricPopulationStabilityIndex - The Population Stability Index (PSI) metric.
 	NumericalDataDriftMetricPopulationStabilityIndex NumericalDataDriftMetric = "PopulationStabilityIndex"
-	// NumericalDataDriftMetricTwoSampleKolmogorovSmirnovTest - The Two Sample Kolmogorov-Smirnov Test (two-sample K–S) metric.
+	// NumericalDataDriftMetricTwoSampleKolmogorovSmirnovTest - The Two Sample Kolmogorov-Smirnov Test (two-sample Kâ€“S) metric.
 	NumericalDataDriftMetricTwoSampleKolmogorovSmirnovTest NumericalDataDriftMetric = "TwoSampleKolmogorovSmirnovTest"
 )
 
@@ -2404,7 +2864,7 @@ const (
 	NumericalPredictionDriftMetricNormalizedWassersteinDistance NumericalPredictionDriftMetric = "NormalizedWassersteinDistance"
 	// NumericalPredictionDriftMetricPopulationStabilityIndex - The Population Stability Index (PSI) metric.
 	NumericalPredictionDriftMetricPopulationStabilityIndex NumericalPredictionDriftMetric = "PopulationStabilityIndex"
-	// NumericalPredictionDriftMetricTwoSampleKolmogorovSmirnovTest - The Two Sample Kolmogorov-Smirnov Test (two-sample K–S)
+	// NumericalPredictionDriftMetricTwoSampleKolmogorovSmirnovTest - The Two Sample Kolmogorov-Smirnov Test (two-sample Kâ€“S)
 	// metric.
 	NumericalPredictionDriftMetricTwoSampleKolmogorovSmirnovTest NumericalPredictionDriftMetric = "TwoSampleKolmogorovSmirnovTest"
 )
@@ -2472,6 +2932,7 @@ const (
 	OperationNameCreate  OperationName = "Create"
 	OperationNameDelete  OperationName = "Delete"
 	OperationNameReimage OperationName = "Reimage"
+	OperationNameResize  OperationName = "Resize"
 	OperationNameRestart OperationName = "Restart"
 	OperationNameStart   OperationName = "Start"
 	OperationNameStop    OperationName = "Stop"
@@ -2483,6 +2944,7 @@ func PossibleOperationNameValues() []OperationName {
 		OperationNameCreate,
 		OperationNameDelete,
 		OperationNameReimage,
+		OperationNameResize,
 		OperationNameRestart,
 		OperationNameStart,
 		OperationNameStop,
@@ -2497,6 +2959,7 @@ const (
 	OperationStatusDeleteFailed  OperationStatus = "DeleteFailed"
 	OperationStatusInProgress    OperationStatus = "InProgress"
 	OperationStatusReimageFailed OperationStatus = "ReimageFailed"
+	OperationStatusResizeFailed  OperationStatus = "ResizeFailed"
 	OperationStatusRestartFailed OperationStatus = "RestartFailed"
 	OperationStatusStartFailed   OperationStatus = "StartFailed"
 	OperationStatusStopFailed    OperationStatus = "StopFailed"
@@ -2510,6 +2973,7 @@ func PossibleOperationStatusValues() []OperationStatus {
 		OperationStatusDeleteFailed,
 		OperationStatusInProgress,
 		OperationStatusReimageFailed,
+		OperationStatusResizeFailed,
 		OperationStatusRestartFailed,
 		OperationStatusStartFailed,
 		OperationStatusStopFailed,
@@ -2607,6 +3071,28 @@ func PossibleOutputDeliveryModeValues() []OutputDeliveryMode {
 	}
 }
 
+// PatchStatus - The os patching status.
+type PatchStatus string
+
+const (
+	PatchStatusCompletedWithWarnings PatchStatus = "CompletedWithWarnings"
+	PatchStatusFailed                PatchStatus = "Failed"
+	PatchStatusInProgress            PatchStatus = "InProgress"
+	PatchStatusSucceeded             PatchStatus = "Succeeded"
+	PatchStatusUnknown               PatchStatus = "Unknown"
+)
+
+// PossiblePatchStatusValues returns the possible values for the PatchStatus const type.
+func PossiblePatchStatusValues() []PatchStatus {
+	return []PatchStatus{
+		PatchStatusCompletedWithWarnings,
+		PatchStatusFailed,
+		PatchStatusInProgress,
+		PatchStatusSucceeded,
+		PatchStatusUnknown,
+	}
+}
+
 // PendingUploadCredentialType - Enum to determine the PendingUpload credentials type.
 type PendingUploadCredentialType string
 
@@ -2637,6 +3123,30 @@ func PossiblePendingUploadTypeValues() []PendingUploadType {
 	}
 }
 
+// PoolProvisioningState - State of pool related resources provisioning.
+type PoolProvisioningState string
+
+const (
+	PoolProvisioningStateCanceled  PoolProvisioningState = "Canceled"
+	PoolProvisioningStateCreating  PoolProvisioningState = "Creating"
+	PoolProvisioningStateDeleting  PoolProvisioningState = "Deleting"
+	PoolProvisioningStateFailed    PoolProvisioningState = "Failed"
+	PoolProvisioningStateSucceeded PoolProvisioningState = "Succeeded"
+	PoolProvisioningStateUpdating  PoolProvisioningState = "Updating"
+)
+
+// PossiblePoolProvisioningStateValues returns the possible values for the PoolProvisioningState const type.
+func PossiblePoolProvisioningStateValues() []PoolProvisioningState {
+	return []PoolProvisioningState{
+		PoolProvisioningStateCanceled,
+		PoolProvisioningStateCreating,
+		PoolProvisioningStateDeleting,
+		PoolProvisioningStateFailed,
+		PoolProvisioningStateSucceeded,
+		PoolProvisioningStateUpdating,
+	}
+}
+
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -2654,28 +3164,6 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 		PrivateEndpointConnectionProvisioningStateDeleting,
 		PrivateEndpointConnectionProvisioningStateFailed,
 		PrivateEndpointConnectionProvisioningStateSucceeded,
-	}
-}
-
-// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
-type PrivateEndpointServiceConnectionStatus string
-
-const (
-	PrivateEndpointServiceConnectionStatusApproved     PrivateEndpointServiceConnectionStatus = "Approved"
-	PrivateEndpointServiceConnectionStatusDisconnected PrivateEndpointServiceConnectionStatus = "Disconnected"
-	PrivateEndpointServiceConnectionStatusPending      PrivateEndpointServiceConnectionStatus = "Pending"
-	PrivateEndpointServiceConnectionStatusRejected     PrivateEndpointServiceConnectionStatus = "Rejected"
-	PrivateEndpointServiceConnectionStatusTimeout      PrivateEndpointServiceConnectionStatus = "Timeout"
-)
-
-// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
-func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
-	return []PrivateEndpointServiceConnectionStatus{
-		PrivateEndpointServiceConnectionStatusApproved,
-		PrivateEndpointServiceConnectionStatusDisconnected,
-		PrivateEndpointServiceConnectionStatusPending,
-		PrivateEndpointServiceConnectionStatusRejected,
-		PrivateEndpointServiceConnectionStatusTimeout,
 	}
 }
 
@@ -2697,8 +3185,8 @@ func PossibleProtocolValues() []Protocol {
 	}
 }
 
-// ProvisioningState - The current deployment state of workspace resource. The provisioningState is to indicate states for
-// resource provisioning.
+// ProvisioningState - The provision state of the cluster. Valid values are Unknown, Updating, Provisioning, Succeeded, and
+// Failed.
 type ProvisioningState string
 
 const (
@@ -2742,22 +3230,6 @@ func PossibleProvisioningStatusValues() []ProvisioningStatus {
 	}
 }
 
-// PublicNetworkAccess - Whether requests from Public Network are allowed.
-type PublicNetworkAccess string
-
-const (
-	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	PublicNetworkAccessEnabled  PublicNetworkAccess = "Enabled"
-)
-
-// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
-func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{
-		PublicNetworkAccessDisabled,
-		PublicNetworkAccessEnabled,
-	}
-}
-
 // PublicNetworkAccessType - Enum to determine whether PublicNetworkAccess is Enabled or Disabled.
 type PublicNetworkAccessType string
 
@@ -2785,6 +3257,56 @@ const (
 func PossibleQuotaUnitValues() []QuotaUnit {
 	return []QuotaUnit{
 		QuotaUnitCount,
+	}
+}
+
+// RaiPolicyContentSource - Content source to apply the Content Filters.
+type RaiPolicyContentSource string
+
+const (
+	RaiPolicyContentSourceCompletion RaiPolicyContentSource = "Completion"
+	RaiPolicyContentSourcePrompt     RaiPolicyContentSource = "Prompt"
+)
+
+// PossibleRaiPolicyContentSourceValues returns the possible values for the RaiPolicyContentSource const type.
+func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
+	return []RaiPolicyContentSource{
+		RaiPolicyContentSourceCompletion,
+		RaiPolicyContentSourcePrompt,
+	}
+}
+
+// RaiPolicyMode - Content Filters mode.
+type RaiPolicyMode string
+
+const (
+	RaiPolicyModeBlocking RaiPolicyMode = "Blocking"
+	RaiPolicyModeDefault  RaiPolicyMode = "Default"
+	RaiPolicyModeDeferred RaiPolicyMode = "Deferred"
+)
+
+// PossibleRaiPolicyModeValues returns the possible values for the RaiPolicyMode const type.
+func PossibleRaiPolicyModeValues() []RaiPolicyMode {
+	return []RaiPolicyMode{
+		RaiPolicyModeBlocking,
+		RaiPolicyModeDefault,
+		RaiPolicyModeDeferred,
+	}
+}
+
+// RaiPolicyType - Content Filters policy type.
+type RaiPolicyType string
+
+const (
+	RaiPolicyTypeSystemManaged RaiPolicyType = "SystemManaged"
+	RaiPolicyTypeUserManaged   RaiPolicyType = "UserManaged"
+)
+
+// PossibleRaiPolicyTypeValues returns the possible values for the RaiPolicyType const type.
+func PossibleRaiPolicyTypeValues() []RaiPolicyType {
+	return []RaiPolicyType{
+		RaiPolicyTypeSystemManaged,
+		RaiPolicyTypeUserManaged,
 	}
 }
 
@@ -2877,7 +3399,7 @@ const (
 	// RegressionModelsLightGBM - LightGBM is a gradient boosting framework that uses tree based learning algorithms.
 	RegressionModelsLightGBM RegressionModels = "LightGBM"
 	// RegressionModelsRandomForest - Random forest is a supervised learning algorithm.
-	// The "forest" it builds, is an ensemble of decision trees, usually trained with the “bagging” method.
+	// The "forest" it builds, is an ensemble of decision trees, usually trained with the "bagging" method.
 	// The general idea of the bagging method is that a combination of learning models increases the overall result.
 	RegressionModelsRandomForest RegressionModels = "RandomForest"
 	// RegressionModelsSGD - SGD: Stochastic gradient descent is an optimization algorithm often used in machine learning applications
@@ -3016,15 +3538,21 @@ func PossibleRuleCategoryValues() []RuleCategory {
 type RuleStatus string
 
 const (
-	RuleStatusActive   RuleStatus = "Active"
-	RuleStatusInactive RuleStatus = "Inactive"
+	RuleStatusActive       RuleStatus = "Active"
+	RuleStatusDeleting     RuleStatus = "Deleting"
+	RuleStatusFailed       RuleStatus = "Failed"
+	RuleStatusInactive     RuleStatus = "Inactive"
+	RuleStatusProvisioning RuleStatus = "Provisioning"
 )
 
 // PossibleRuleStatusValues returns the possible values for the RuleStatus const type.
 func PossibleRuleStatusValues() []RuleStatus {
 	return []RuleStatus{
 		RuleStatusActive,
+		RuleStatusDeleting,
+		RuleStatusFailed,
 		RuleStatusInactive,
+		RuleStatusProvisioning,
 	}
 }
 
@@ -3318,13 +3846,32 @@ func PossibleServerlessEndpointStateValues() []ServerlessEndpointState {
 type ServerlessInferenceEndpointAuthMode string
 
 const (
-	ServerlessInferenceEndpointAuthModeKey ServerlessInferenceEndpointAuthMode = "Key"
+	ServerlessInferenceEndpointAuthModeAAD       ServerlessInferenceEndpointAuthMode = "AAD"
+	ServerlessInferenceEndpointAuthModeKey       ServerlessInferenceEndpointAuthMode = "Key"
+	ServerlessInferenceEndpointAuthModeKeyAndAAD ServerlessInferenceEndpointAuthMode = "KeyAndAAD"
 )
 
 // PossibleServerlessInferenceEndpointAuthModeValues returns the possible values for the ServerlessInferenceEndpointAuthMode const type.
 func PossibleServerlessInferenceEndpointAuthModeValues() []ServerlessInferenceEndpointAuthMode {
 	return []ServerlessInferenceEndpointAuthMode{
+		ServerlessInferenceEndpointAuthModeAAD,
 		ServerlessInferenceEndpointAuthModeKey,
+		ServerlessInferenceEndpointAuthModeKeyAndAAD,
+	}
+}
+
+type ServiceAccountKeyName string
+
+const (
+	ServiceAccountKeyNameKey1 ServiceAccountKeyName = "Key1"
+	ServiceAccountKeyNameKey2 ServiceAccountKeyName = "Key2"
+)
+
+// PossibleServiceAccountKeyNameValues returns the possible values for the ServiceAccountKeyName const type.
+func PossibleServiceAccountKeyNameValues() []ServiceAccountKeyName {
+	return []ServiceAccountKeyName{
+		ServiceAccountKeyNameKey1,
+		ServiceAccountKeyNameKey2,
 	}
 }
 
@@ -3511,6 +4058,24 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return []StorageAccountType{
 		StorageAccountTypePremiumLRS,
 		StorageAccountTypeStandardLRS,
+	}
+}
+
+// SystemDatastoresAuthMode - The auth mode used for accessing the system datastores of the workspace.
+type SystemDatastoresAuthMode string
+
+const (
+	SystemDatastoresAuthModeAccessKey         SystemDatastoresAuthMode = "AccessKey"
+	SystemDatastoresAuthModeIdentity          SystemDatastoresAuthMode = "Identity"
+	SystemDatastoresAuthModeUserDelegationSAS SystemDatastoresAuthMode = "UserDelegationSAS"
+)
+
+// PossibleSystemDatastoresAuthModeValues returns the possible values for the SystemDatastoresAuthMode const type.
+func PossibleSystemDatastoresAuthModeValues() []SystemDatastoresAuthMode {
+	return []SystemDatastoresAuthMode{
+		SystemDatastoresAuthModeAccessKey,
+		SystemDatastoresAuthModeIdentity,
+		SystemDatastoresAuthModeUserDelegationSAS,
 	}
 }
 
@@ -3783,20 +4348,6 @@ func PossibleValidationMetricTypeValues() []ValidationMetricType {
 	}
 }
 
-// ValueFormat - format for the workspace connection value
-type ValueFormat string
-
-const (
-	ValueFormatJSON ValueFormat = "JSON"
-)
-
-// PossibleValueFormatValues returns the possible values for the ValueFormat const type.
-func PossibleValueFormatValues() []ValueFormat {
-	return []ValueFormat{
-		ValueFormatJSON,
-	}
-}
-
 // VolumeDefinitionType - Type of Volume Definition. Possible Values: bind,volume,tmpfs,npipe
 type VolumeDefinitionType string
 
@@ -3814,6 +4365,27 @@ func PossibleVolumeDefinitionTypeValues() []VolumeDefinitionType {
 		VolumeDefinitionTypeNpipe,
 		VolumeDefinitionTypeTmpfs,
 		VolumeDefinitionTypeVolume,
+	}
+}
+
+type VulnerabilityRisk string
+
+const (
+	VulnerabilityRiskCRITICAL VulnerabilityRisk = "CRITICAL"
+	VulnerabilityRiskHIGH     VulnerabilityRisk = "HIGH"
+	VulnerabilityRiskLOW      VulnerabilityRisk = "LOW"
+	VulnerabilityRiskMEDIUM   VulnerabilityRisk = "MEDIUM"
+	VulnerabilityRiskUNKNOWN  VulnerabilityRisk = "UNKNOWN"
+)
+
+// PossibleVulnerabilityRiskValues returns the possible values for the VulnerabilityRisk const type.
+func PossibleVulnerabilityRiskValues() []VulnerabilityRisk {
+	return []VulnerabilityRisk{
+		VulnerabilityRiskCRITICAL,
+		VulnerabilityRiskHIGH,
+		VulnerabilityRiskLOW,
+		VulnerabilityRiskMEDIUM,
+		VulnerabilityRiskUNKNOWN,
 	}
 }
 

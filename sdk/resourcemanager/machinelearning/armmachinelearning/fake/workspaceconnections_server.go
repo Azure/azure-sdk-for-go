@@ -13,17 +13,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v5"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
+	"strconv"
 )
 
 // WorkspaceConnectionsServer is a fake server for instances of the armmachinelearning.WorkspaceConnectionsClient type.
 type WorkspaceConnectionsServer struct {
 	// Create is the fake for method WorkspaceConnectionsClient.Create
 	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, parameters armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource, options *armmachinelearning.WorkspaceConnectionsClientCreateOptions) (resp azfake.Responder[armmachinelearning.WorkspaceConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
+	Create func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *armmachinelearning.WorkspaceConnectionsClientCreateOptions) (resp azfake.Responder[armmachinelearning.WorkspaceConnectionsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method WorkspaceConnectionsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -40,6 +42,14 @@ type WorkspaceConnectionsServer struct {
 	// ListSecrets is the fake for method WorkspaceConnectionsClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecrets func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *armmachinelearning.WorkspaceConnectionsClientListSecretsOptions) (resp azfake.Responder[armmachinelearning.WorkspaceConnectionsClientListSecretsResponse], errResp azfake.ErrorResponder)
+
+	// BeginTestConnection is the fake for method WorkspaceConnectionsClient.BeginTestConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginTestConnection func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse], errResp azfake.ErrorResponder)
+
+	// Update is the fake for method WorkspaceConnectionsClient.Update
+	// HTTP status codes to indicate success: http.StatusOK
+	Update func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *armmachinelearning.WorkspaceConnectionsClientUpdateOptions) (resp azfake.Responder[armmachinelearning.WorkspaceConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkspaceConnectionsServerTransport creates a new instance of WorkspaceConnectionsServerTransport with the provided implementation.
@@ -47,16 +57,18 @@ type WorkspaceConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkspaceConnectionsServerTransport(srv *WorkspaceConnectionsServer) *WorkspaceConnectionsServerTransport {
 	return &WorkspaceConnectionsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]](),
+		srv:                 srv,
+		newListPager:        newTracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]](),
+		beginTestConnection: newTracker[azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse]](),
 	}
 }
 
 // WorkspaceConnectionsServerTransport connects instances of armmachinelearning.WorkspaceConnectionsClient to instances of WorkspaceConnectionsServer.
 // Don't use this type directly, use NewWorkspaceConnectionsServerTransport instead.
 type WorkspaceConnectionsServerTransport struct {
-	srv          *WorkspaceConnectionsServer
-	newListPager *tracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]]
+	srv                 *WorkspaceConnectionsServer
+	newListPager        *tracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]]
+	beginTestConnection *tracker[azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkspaceConnectionsServerTransport.
@@ -67,29 +79,52 @@ func (w *WorkspaceConnectionsServerTransport) Do(req *http.Request) (*http.Respo
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return w.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "WorkspaceConnectionsClient.Create":
-		resp, err = w.dispatchCreate(req)
-	case "WorkspaceConnectionsClient.Delete":
-		resp, err = w.dispatchDelete(req)
-	case "WorkspaceConnectionsClient.Get":
-		resp, err = w.dispatchGet(req)
-	case "WorkspaceConnectionsClient.NewListPager":
-		resp, err = w.dispatchNewListPager(req)
-	case "WorkspaceConnectionsClient.ListSecrets":
-		resp, err = w.dispatchListSecrets(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (w *WorkspaceConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if workspaceConnectionsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = workspaceConnectionsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "WorkspaceConnectionsClient.Create":
+				res.resp, res.err = w.dispatchCreate(req)
+			case "WorkspaceConnectionsClient.Delete":
+				res.resp, res.err = w.dispatchDelete(req)
+			case "WorkspaceConnectionsClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WorkspaceConnectionsClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
+			case "WorkspaceConnectionsClient.ListSecrets":
+				res.resp, res.err = w.dispatchListSecrets(req)
+			case "WorkspaceConnectionsClient.BeginTestConnection":
+				res.resp, res.err = w.dispatchBeginTestConnection(req)
+			case "WorkspaceConnectionsClient.Update":
+				res.resp, res.err = w.dispatchUpdate(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (w *WorkspaceConnectionsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
@@ -99,7 +134,7 @@ func (w *WorkspaceConnectionsServerTransport) dispatchCreate(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource](req)
@@ -118,7 +153,13 @@ func (w *WorkspaceConnectionsServerTransport) dispatchCreate(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := w.srv.Create(req.Context(), resourceGroupNameParam, workspaceNameParam, connectionNameParam, body, nil)
+	var options *armmachinelearning.WorkspaceConnectionsClientCreateOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armmachinelearning.WorkspaceConnectionsClientCreateOptions{
+			Body: &body,
+		}
+	}
+	respr, errRespr := w.srv.Create(req.Context(), resourceGroupNameParam, workspaceNameParam, connectionNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -140,7 +181,7 @@ func (w *WorkspaceConnectionsServerTransport) dispatchDelete(req *http.Request) 
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -177,7 +218,7 @@ func (w *WorkspaceConnectionsServerTransport) dispatchGet(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -216,7 +257,7 @@ func (w *WorkspaceConnectionsServerTransport) dispatchNewListPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -238,11 +279,20 @@ func (w *WorkspaceConnectionsServerTransport) dispatchNewListPager(req *http.Req
 			return nil, err
 		}
 		categoryParam := getOptional(categoryUnescaped)
+		includeAllUnescaped, err := url.QueryUnescape(qp.Get("includeAll"))
+		if err != nil {
+			return nil, err
+		}
+		includeAllParam, err := parseOptional(includeAllUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
 		var options *armmachinelearning.WorkspaceConnectionsClientListOptions
-		if targetParam != nil || categoryParam != nil {
+		if targetParam != nil || categoryParam != nil || includeAllParam != nil {
 			options = &armmachinelearning.WorkspaceConnectionsClientListOptions{
-				Target:   targetParam,
-				Category: categoryParam,
+				Target:     targetParam,
+				Category:   categoryParam,
+				IncludeAll: includeAllParam,
 			}
 		}
 		resp := w.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
@@ -273,7 +323,7 @@ func (w *WorkspaceConnectionsServerTransport) dispatchListSecrets(req *http.Requ
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listsecrets`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -301,4 +351,115 @@ func (w *WorkspaceConnectionsServerTransport) dispatchListSecrets(req *http.Requ
 		return nil, err
 	}
 	return resp, nil
+}
+
+func (w *WorkspaceConnectionsServerTransport) dispatchBeginTestConnection(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginTestConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginTestConnection not implemented")}
+	}
+	beginTestConnection := w.beginTestConnection.get(req)
+	if beginTestConnection == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testconnection`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := w.srv.BeginTestConnection(req.Context(), resourceGroupNameParam, workspaceNameParam, connectionNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginTestConnection = &respr
+		w.beginTestConnection.add(req, beginTestConnection)
+	}
+
+	resp, err := server.PollerResponderNext(beginTestConnection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginTestConnection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginTestConnection) {
+		w.beginTestConnection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WorkspaceConnectionsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
+	if w.srv.Update == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.WorkspaceConnectionUpdateParameter](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armmachinelearning.WorkspaceConnectionsClientUpdateOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armmachinelearning.WorkspaceConnectionsClientUpdateOptions{
+			Body: &body,
+		}
+	}
+	respr, errRespr := w.srv.Update(req.Context(), resourceGroupNameParam, workspaceNameParam, connectionNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkspaceConnectionPropertiesV2BasicResource, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to WorkspaceConnectionsServerTransport
+var workspaceConnectionsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -27,7 +27,7 @@ type ManagedNetworkProvisionsClient struct {
 // NewManagedNetworkProvisionsClient creates a new instance of ManagedNetworkProvisionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedNetworkProvisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedNetworkProvisionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +43,9 @@ func NewManagedNetworkProvisionsClient(subscriptionID string, credential azcore.
 // BeginProvisionManagedNetwork - Provisions the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - workspaceName - Azure Machine Learning Workspace Name
 //   - options - ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions contains the optional parameters for the ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork
 //     method.
 func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*runtime.Poller[ManagedNetworkProvisionsClientProvisionManagedNetworkResponse], error) {
@@ -69,7 +69,7 @@ func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx c
 // ProvisionManagedNetwork - Provisions the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2025-10-01-preview
 func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork"
@@ -111,7 +111,7 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

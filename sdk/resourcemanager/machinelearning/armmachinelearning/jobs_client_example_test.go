@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/AutoMLJob/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/AutoMLJob/list.json
 func ExampleJobsClient_NewListPager_listAutoMlJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleJobsClient_NewListPager_listAutoMlJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/CommandJob/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/CommandJob/list.json
 func ExampleJobsClient_NewListPager_listCommandJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,6 +186,7 @@ func ExampleJobsClient_NewListPager_listCommandJob() {
 		// 					IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
 		// 				},
 		// 				JobType: to.Ptr(armmachinelearning.JobTypeCommand),
+		// 				ParentJobName: to.Ptr("ParentRun"),
 		// 				Services: map[string]*armmachinelearning.JobService{
 		// 					"string": &armmachinelearning.JobService{
 		// 						Endpoint: to.Ptr("string"),
@@ -247,7 +248,212 @@ func ExampleJobsClient_NewListPager_listCommandJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/PipelineJob/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/DistillationJob/list.json
+func ExampleJobsClient_NewListPager_listDistillationJob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewJobsClient().NewListPager("test-rg", "my-aml-workspace", &armmachinelearning.JobsClientListOptions{Skip: nil,
+		JobType:      to.Ptr("string"),
+		Tag:          to.Ptr("string"),
+		ListViewType: to.Ptr(armmachinelearning.ListViewTypeAll),
+		Properties:   nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.JobBaseResourceArmPaginatedResult = armmachinelearning.JobBaseResourceArmPaginatedResult{
+		// 	Value: []*armmachinelearning.JobBase{
+		// 		{
+		// 			Name: to.Ptr("string"),
+		// 			Type: to.Ptr("string"),
+		// 			ID: to.Ptr("string"),
+		// 			SystemData: &armmachinelearning.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T12:12:56.999Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T12:12:56.999Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+		// 			},
+		// 			Properties: &armmachinelearning.DistillationJob{
+		// 				Description: to.Ptr("string"),
+		// 				Properties: map[string]*string{
+		// 					"string": to.Ptr("string"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"string": to.Ptr("string"),
+		// 				},
+		// 				ComponentID: to.Ptr("string"),
+		// 				ComputeID: to.Ptr("string"),
+		// 				DisplayName: to.Ptr("string"),
+		// 				ExperimentName: to.Ptr("string"),
+		// 				Identity: &armmachinelearning.AmlToken{
+		// 					IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
+		// 				},
+		// 				IsArchived: to.Ptr(false),
+		// 				JobType: to.Ptr(armmachinelearning.JobTypeDistillation),
+		// 				NotificationSetting: &armmachinelearning.NotificationSetting{
+		// 					EmailOn: []*armmachinelearning.EmailNotificationEnableType{
+		// 						to.Ptr(armmachinelearning.EmailNotificationEnableTypeJobFailed)},
+		// 						Emails: []*string{
+		// 							to.Ptr("string")},
+		// 						},
+		// 						Status: to.Ptr(armmachinelearning.JobStatus("Created")),
+		// 						DataGenerationDetails: &armmachinelearning.LabelGeneration{
+		// 							DataGenerationTaskType: to.Ptr(armmachinelearning.DataGenerationTaskTypeConversation),
+		// 							DataGenerationType: to.Ptr(armmachinelearning.DataGenerationTypeLabelGeneration),
+		// 							TeacherModelEndpoint: &armmachinelearning.TeacherModelEndpoint{
+		// 								EndpointName: to.Ptr("newfinetuneinttesting-jbuob"),
+		// 							},
+		// 							TrainingData: &armmachinelearning.URIFileJobInput{
+		// 								Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+		// 								URI: to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+		// 								JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+		// 							},
+		// 						},
+		// 						FinetuningDetails: &armmachinelearning.FinetuningDetails{
+		// 							StudentModel: &armmachinelearning.MLFlowModelJobInput{
+		// 								Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+		// 								URI: to.Ptr("azureml://registries/azureml-meta/models/Meta-Llama-3.1-8B-Instruct/versions/1"),
+		// 								JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+		// 							},
+		// 						},
+		// 						Outputs: map[string]armmachinelearning.JobOutputClassification{
+		// 							"string": &armmachinelearning.MLFlowModelJobOutput{
+		// 								Mode: to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+		// 								URI: to.Ptr("string"),
+		// 								Description: to.Ptr("string"),
+		// 								JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+		// 							},
+		// 						},
+		// 						QueueSettings: &armmachinelearning.QueueSettings{
+		// 							JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+		// 						},
+		// 						Resources: &armmachinelearning.JobResources{
+		// 							InstanceTypes: []*string{
+		// 								to.Ptr("Standard_NC6")},
+		// 							},
+		// 						},
+		// 				}},
+		// 			}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/FineTuningJob/list.json
+func ExampleJobsClient_NewListPager_listFineTuningJob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewJobsClient().NewListPager("test-rg", "my-aml-workspace", &armmachinelearning.JobsClientListOptions{Skip: nil,
+		JobType:      to.Ptr("string"),
+		Tag:          to.Ptr("string"),
+		ListViewType: to.Ptr(armmachinelearning.ListViewTypeAll),
+		Properties:   nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.JobBaseResourceArmPaginatedResult = armmachinelearning.JobBaseResourceArmPaginatedResult{
+		// 	Value: []*armmachinelearning.JobBase{
+		// 		{
+		// 			Name: to.Ptr("string"),
+		// 			Type: to.Ptr("string"),
+		// 			ID: to.Ptr("string"),
+		// 			SystemData: &armmachinelearning.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:12:56.999Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:12:56.999Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+		// 			},
+		// 			Properties: &armmachinelearning.FineTuningJob{
+		// 				Description: to.Ptr("string"),
+		// 				Properties: map[string]*string{
+		// 					"string": to.Ptr("string"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"string": to.Ptr("string"),
+		// 				},
+		// 				ComponentID: to.Ptr("string"),
+		// 				ComputeID: to.Ptr("string"),
+		// 				DisplayName: to.Ptr("string"),
+		// 				ExperimentName: to.Ptr("string"),
+		// 				Identity: &armmachinelearning.AmlToken{
+		// 					IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
+		// 				},
+		// 				IsArchived: to.Ptr(false),
+		// 				JobType: to.Ptr(armmachinelearning.JobTypeFineTuning),
+		// 				NotificationSetting: &armmachinelearning.NotificationSetting{
+		// 					EmailOn: []*armmachinelearning.EmailNotificationEnableType{
+		// 						to.Ptr(armmachinelearning.EmailNotificationEnableTypeJobFailed)},
+		// 						Emails: []*string{
+		// 							to.Ptr("string")},
+		// 						},
+		// 						Status: to.Ptr(armmachinelearning.JobStatus("Created")),
+		// 						FineTuningDetails: &armmachinelearning.CustomModelFineTuning{
+		// 							Model: &armmachinelearning.MLFlowModelJobInput{
+		// 								Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+		// 								URI: to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+		// 								JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+		// 							},
+		// 							ModelProvider: to.Ptr(armmachinelearning.ModelProviderCustom),
+		// 							TaskType: to.Ptr(armmachinelearning.FineTuningTaskTypeTextCompletion),
+		// 							TrainingData: &armmachinelearning.URIFileJobInput{
+		// 								Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+		// 								URI: to.Ptr("azureml://datastores/workspaceblobstore/paths/UI/2023-06-06_175927_UTC/small_train.jsonl"),
+		// 								JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+		// 							},
+		// 						},
+		// 						Outputs: map[string]armmachinelearning.JobOutputClassification{
+		// 							"string": &armmachinelearning.MLFlowModelJobOutput{
+		// 								Mode: to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+		// 								URI: to.Ptr("string"),
+		// 								Description: to.Ptr("string"),
+		// 								JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+		// 							},
+		// 						},
+		// 						QueueSettings: &armmachinelearning.QueueSettings{
+		// 							JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+		// 						},
+		// 						Resources: &armmachinelearning.JobResources{
+		// 							InstanceTypes: []*string{
+		// 								to.Ptr("Standard_NC6")},
+		// 							},
+		// 						},
+		// 				}},
+		// 			}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/PipelineJob/list.json
 func ExampleJobsClient_NewListPager_listPipelineJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +542,7 @@ func ExampleJobsClient_NewListPager_listPipelineJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/SweepJob/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/SweepJob/list.json
 func ExampleJobsClient_NewListPager_listSweepJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +657,7 @@ func ExampleJobsClient_NewListPager_listSweepJob() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/delete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -472,7 +678,7 @@ func ExampleJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/AutoMLJob/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/AutoMLJob/get.json
 func ExampleJobsClient_Get_getAutoMlJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -574,7 +780,7 @@ func ExampleJobsClient_Get_getAutoMlJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/CommandJob/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/CommandJob/get.json
 func ExampleJobsClient_Get_getCommandJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -619,6 +825,7 @@ func ExampleJobsClient_Get_getCommandJob() {
 	// 			IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
 	// 		},
 	// 		JobType: to.Ptr(armmachinelearning.JobTypeCommand),
+	// 		ParentJobName: to.Ptr("ParentRun"),
 	// 		Services: map[string]*armmachinelearning.JobService{
 	// 			"string": &armmachinelearning.JobService{
 	// 				Endpoint: to.Ptr("string"),
@@ -678,7 +885,186 @@ func ExampleJobsClient_Get_getCommandJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/PipelineJob/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/DistillationJob/get.json
+func ExampleJobsClient_Get_getDistillationJob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobsClient().Get(ctx, "test-rg", "my-aml-workspace", "string", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.JobBase = armmachinelearning.JobBase{
+	// 	Name: to.Ptr("string"),
+	// 	Type: to.Ptr("string"),
+	// 	ID: to.Ptr("string"),
+	// 	SystemData: &armmachinelearning.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T12:12:56.999Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T12:12:56.999Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+	// 	},
+	// 	Properties: &armmachinelearning.DistillationJob{
+	// 		Description: to.Ptr("string"),
+	// 		Properties: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		ComponentID: to.Ptr("string"),
+	// 		ComputeID: to.Ptr("string"),
+	// 		DisplayName: to.Ptr("string"),
+	// 		ExperimentName: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.AmlToken{
+	// 			IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
+	// 		},
+	// 		IsArchived: to.Ptr(false),
+	// 		JobType: to.Ptr(armmachinelearning.JobTypeDistillation),
+	// 		NotificationSetting: &armmachinelearning.NotificationSetting{
+	// 			EmailOn: []*armmachinelearning.EmailNotificationEnableType{
+	// 				to.Ptr(armmachinelearning.EmailNotificationEnableTypeJobFailed)},
+	// 				Emails: []*string{
+	// 					to.Ptr("string")},
+	// 				},
+	// 				Status: to.Ptr(armmachinelearning.JobStatus("Created")),
+	// 				DataGenerationDetails: &armmachinelearning.LabelGeneration{
+	// 					DataGenerationTaskType: to.Ptr(armmachinelearning.DataGenerationTaskTypeConversation),
+	// 					DataGenerationType: to.Ptr(armmachinelearning.DataGenerationTypeLabelGeneration),
+	// 					TeacherModelEndpoint: &armmachinelearning.TeacherModelEndpoint{
+	// 						EndpointName: to.Ptr("newfinetuneinttesting-jbuob"),
+	// 					},
+	// 					TrainingData: &armmachinelearning.URIFileJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+	// 					},
+	// 				},
+	// 				FinetuningDetails: &armmachinelearning.FinetuningDetails{
+	// 					StudentModel: &armmachinelearning.MLFlowModelJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://registries/azureml-meta/models/Meta-Llama-3.1-8B-Instruct/versions/1"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+	// 					},
+	// 				},
+	// 				Outputs: map[string]armmachinelearning.JobOutputClassification{
+	// 					"string": &armmachinelearning.MLFlowModelJobOutput{
+	// 						Mode: to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+	// 						URI: to.Ptr("string"),
+	// 						Description: to.Ptr("string"),
+	// 						JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+	// 					},
+	// 				},
+	// 				QueueSettings: &armmachinelearning.QueueSettings{
+	// 					JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+	// 				},
+	// 				Resources: &armmachinelearning.JobResources{
+	// 					InstanceTypes: []*string{
+	// 						to.Ptr("Standard_NC6")},
+	// 					},
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/FineTuningJob/get.json
+func ExampleJobsClient_Get_getFineTuningJob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobsClient().Get(ctx, "test-rg", "my-aml-workspace", "string", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.JobBase = armmachinelearning.JobBase{
+	// 	Name: to.Ptr("string"),
+	// 	Type: to.Ptr("string"),
+	// 	ID: to.Ptr("string"),
+	// 	SystemData: &armmachinelearning.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:12:56.999Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:12:56.999Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+	// 	},
+	// 	Properties: &armmachinelearning.FineTuningJob{
+	// 		Description: to.Ptr("string"),
+	// 		Properties: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		ComponentID: to.Ptr("string"),
+	// 		ComputeID: to.Ptr("string"),
+	// 		DisplayName: to.Ptr("string"),
+	// 		ExperimentName: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.AmlToken{
+	// 			IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
+	// 		},
+	// 		IsArchived: to.Ptr(false),
+	// 		JobType: to.Ptr(armmachinelearning.JobTypeFineTuning),
+	// 		NotificationSetting: &armmachinelearning.NotificationSetting{
+	// 			EmailOn: []*armmachinelearning.EmailNotificationEnableType{
+	// 				to.Ptr(armmachinelearning.EmailNotificationEnableTypeJobFailed)},
+	// 				Emails: []*string{
+	// 					to.Ptr("string")},
+	// 				},
+	// 				Status: to.Ptr(armmachinelearning.JobStatus("Created")),
+	// 				FineTuningDetails: &armmachinelearning.CustomModelFineTuning{
+	// 					Model: &armmachinelearning.MLFlowModelJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+	// 					},
+	// 					ModelProvider: to.Ptr(armmachinelearning.ModelProviderCustom),
+	// 					TaskType: to.Ptr(armmachinelearning.FineTuningTaskTypeTextCompletion),
+	// 					TrainingData: &armmachinelearning.URIFileJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://datastores/workspaceblobstore/paths/UI/2023-06-06_175927_UTC/small_train.jsonl"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+	// 					},
+	// 				},
+	// 				Outputs: map[string]armmachinelearning.JobOutputClassification{
+	// 					"string": &armmachinelearning.MLFlowModelJobOutput{
+	// 						Mode: to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+	// 						URI: to.Ptr("string"),
+	// 						Description: to.Ptr("string"),
+	// 						JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+	// 					},
+	// 				},
+	// 				QueueSettings: &armmachinelearning.QueueSettings{
+	// 					JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+	// 				},
+	// 				Resources: &armmachinelearning.JobResources{
+	// 					InstanceTypes: []*string{
+	// 						to.Ptr("Standard_NC6")},
+	// 					},
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/PipelineJob/get.json
 func ExampleJobsClient_Get_getPipelineJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -754,7 +1140,7 @@ func ExampleJobsClient_Get_getPipelineJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/SweepJob/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/SweepJob/get.json
 func ExampleJobsClient_Get_getSweepJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -856,7 +1242,7 @@ func ExampleJobsClient_Get_getSweepJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/AutoMLJob/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/AutoMLJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateAutoMlJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1025,7 +1411,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateAutoMlJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/CommandJob/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/CommandJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1051,7 +1437,8 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJob() {
 			Identity: &armmachinelearning.AmlToken{
 				IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
 			},
-			JobType: to.Ptr(armmachinelearning.JobTypeCommand),
+			JobType:       to.Ptr(armmachinelearning.JobTypeCommand),
+			ParentJobName: to.Ptr("ParentRun"),
 			Services: map[string]*armmachinelearning.JobService{
 				"string": {
 					Endpoint:       to.Ptr("string"),
@@ -1136,6 +1523,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJob() {
 	// 			IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
 	// 		},
 	// 		JobType: to.Ptr(armmachinelearning.JobTypeCommand),
+	// 		ParentJobName: to.Ptr("ParentRun"),
 	// 		Services: map[string]*armmachinelearning.JobService{
 	// 			"string": &armmachinelearning.JobService{
 	// 				Endpoint: to.Ptr("string"),
@@ -1195,7 +1583,261 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/PipelineJob/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/DistillationJob/createOrUpdate.json
+func ExampleJobsClient_CreateOrUpdate_createOrUpdateDistillationJob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobsClient().CreateOrUpdate(ctx, "test-rg", "my-aml-workspace", "string", armmachinelearning.JobBase{
+		Properties: &armmachinelearning.DistillationJob{
+			ComputeID:      to.Ptr("gpu-compute"),
+			ExperimentName: to.Ptr("llm-finetuning"),
+			JobType:        to.Ptr(armmachinelearning.JobTypeDistillation),
+			DataGenerationDetails: &armmachinelearning.LabelGeneration{
+				DataGenerationTaskType: to.Ptr(armmachinelearning.DataGenerationTaskTypeConversation),
+				DataGenerationType:     to.Ptr(armmachinelearning.DataGenerationTypeLabelGeneration),
+				TeacherModelEndpoint: &armmachinelearning.TeacherModelEndpoint{
+					EndpointName: to.Ptr("newfinetuneinttesting-jbuob"),
+				},
+				TrainingData: &armmachinelearning.URIFileJobInput{
+					Mode:         to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+					URI:          to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+					JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+				},
+			},
+			FinetuningDetails: &armmachinelearning.FinetuningDetails{
+				StudentModel: &armmachinelearning.MLFlowModelJobInput{
+					Mode:         to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+					URI:          to.Ptr("azureml://registries/azureml-meta/models/Meta-Llama-3.1-8B-Instruct/versions/1"),
+					JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+				},
+			},
+			Outputs: map[string]armmachinelearning.JobOutputClassification{
+				"string": &armmachinelearning.MLFlowModelJobOutput{
+					Mode:          to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+					URI:           to.Ptr("string"),
+					Description:   to.Ptr("string"),
+					JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+				},
+			},
+			QueueSettings: &armmachinelearning.QueueSettings{
+				JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+			},
+			Resources: &armmachinelearning.JobResources{
+				InstanceTypes: []*string{
+					to.Ptr("Standard_NC6")},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.JobBase = armmachinelearning.JobBase{
+	// 	Name: to.Ptr("string"),
+	// 	Type: to.Ptr("string"),
+	// 	ID: to.Ptr("string"),
+	// 	SystemData: &armmachinelearning.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T12:12:56.999Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T12:12:56.999Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+	// 	},
+	// 	Properties: &armmachinelearning.DistillationJob{
+	// 		Description: to.Ptr("string"),
+	// 		Properties: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		ComponentID: to.Ptr("string"),
+	// 		ComputeID: to.Ptr("string"),
+	// 		DisplayName: to.Ptr("string"),
+	// 		ExperimentName: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.AmlToken{
+	// 			IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
+	// 		},
+	// 		IsArchived: to.Ptr(false),
+	// 		JobType: to.Ptr(armmachinelearning.JobTypeDistillation),
+	// 		NotificationSetting: &armmachinelearning.NotificationSetting{
+	// 			EmailOn: []*armmachinelearning.EmailNotificationEnableType{
+	// 				to.Ptr(armmachinelearning.EmailNotificationEnableTypeJobFailed)},
+	// 				Emails: []*string{
+	// 					to.Ptr("string")},
+	// 				},
+	// 				Status: to.Ptr(armmachinelearning.JobStatus("Created")),
+	// 				DataGenerationDetails: &armmachinelearning.LabelGeneration{
+	// 					DataGenerationTaskType: to.Ptr(armmachinelearning.DataGenerationTaskTypeConversation),
+	// 					DataGenerationType: to.Ptr(armmachinelearning.DataGenerationTypeLabelGeneration),
+	// 					TeacherModelEndpoint: &armmachinelearning.TeacherModelEndpoint{
+	// 						EndpointName: to.Ptr("newfinetuneinttesting-jbuob"),
+	// 					},
+	// 					TrainingData: &armmachinelearning.URIFileJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+	// 					},
+	// 				},
+	// 				FinetuningDetails: &armmachinelearning.FinetuningDetails{
+	// 					StudentModel: &armmachinelearning.MLFlowModelJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://registries/azureml-meta/models/Meta-Llama-3.1-8B-Instruct/versions/1"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+	// 					},
+	// 				},
+	// 				Outputs: map[string]armmachinelearning.JobOutputClassification{
+	// 					"string": &armmachinelearning.MLFlowModelJobOutput{
+	// 						Mode: to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+	// 						URI: to.Ptr("string"),
+	// 						Description: to.Ptr("string"),
+	// 						JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+	// 					},
+	// 				},
+	// 				QueueSettings: &armmachinelearning.QueueSettings{
+	// 					JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+	// 				},
+	// 				Resources: &armmachinelearning.JobResources{
+	// 					InstanceTypes: []*string{
+	// 						to.Ptr("Standard_NC6")},
+	// 					},
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/FineTuningJob/createOrUpdate.json
+func ExampleJobsClient_CreateOrUpdate_createOrUpdateFineTuningJob() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewJobsClient().CreateOrUpdate(ctx, "test-rg", "my-aml-workspace", "string", armmachinelearning.JobBase{
+		Properties: &armmachinelearning.FineTuningJob{
+			ComputeID:      to.Ptr("gpu-compute"),
+			ExperimentName: to.Ptr("llm-finetuning"),
+			JobType:        to.Ptr(armmachinelearning.JobTypeFineTuning),
+			FineTuningDetails: &armmachinelearning.CustomModelFineTuning{
+				Model: &armmachinelearning.MLFlowModelJobInput{
+					Mode:         to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+					URI:          to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+					JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+				},
+				ModelProvider: to.Ptr(armmachinelearning.ModelProviderCustom),
+				TaskType:      to.Ptr(armmachinelearning.FineTuningTaskTypeTextCompletion),
+				TrainingData: &armmachinelearning.URIFileJobInput{
+					Mode:         to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+					URI:          to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+					JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+				},
+			},
+			Outputs: map[string]armmachinelearning.JobOutputClassification{
+				"string": &armmachinelearning.MLFlowModelJobOutput{
+					Mode:          to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+					URI:           to.Ptr("string"),
+					Description:   to.Ptr("string"),
+					JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+				},
+			},
+			QueueSettings: &armmachinelearning.QueueSettings{
+				JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+			},
+			Resources: &armmachinelearning.JobResources{
+				InstanceTypes: []*string{
+					to.Ptr("Standard_NC6")},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.JobBase = armmachinelearning.JobBase{
+	// 	Name: to.Ptr("string"),
+	// 	Type: to.Ptr("string"),
+	// 	ID: to.Ptr("string"),
+	// 	SystemData: &armmachinelearning.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:12:56.999Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:12:56.999Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+	// 	},
+	// 	Properties: &armmachinelearning.FineTuningJob{
+	// 		Description: to.Ptr("string"),
+	// 		Properties: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"string": to.Ptr("string"),
+	// 		},
+	// 		ComponentID: to.Ptr("string"),
+	// 		ComputeID: to.Ptr("string"),
+	// 		DisplayName: to.Ptr("string"),
+	// 		ExperimentName: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.AmlToken{
+	// 			IdentityType: to.Ptr(armmachinelearning.IdentityConfigurationTypeAMLToken),
+	// 		},
+	// 		IsArchived: to.Ptr(false),
+	// 		JobType: to.Ptr(armmachinelearning.JobTypeFineTuning),
+	// 		NotificationSetting: &armmachinelearning.NotificationSetting{
+	// 			EmailOn: []*armmachinelearning.EmailNotificationEnableType{
+	// 				to.Ptr(armmachinelearning.EmailNotificationEnableTypeJobFailed)},
+	// 				Emails: []*string{
+	// 					to.Ptr("string")},
+	// 				},
+	// 				Status: to.Ptr(armmachinelearning.JobStatus("Created")),
+	// 				FineTuningDetails: &armmachinelearning.CustomModelFineTuning{
+	// 					Model: &armmachinelearning.MLFlowModelJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://registries/azureml-meta/models/Llama-2-7b/versions/11"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeMlflowModel),
+	// 					},
+	// 					ModelProvider: to.Ptr(armmachinelearning.ModelProviderCustom),
+	// 					TaskType: to.Ptr(armmachinelearning.FineTuningTaskTypeTextCompletion),
+	// 					TrainingData: &armmachinelearning.URIFileJobInput{
+	// 						Mode: to.Ptr(armmachinelearning.InputDeliveryModeReadOnlyMount),
+	// 						URI: to.Ptr("azureml://datastores/workspaceblobstore/paths/UI/2023-06-06_175927_UTC/small_train.jsonl"),
+	// 						JobInputType: to.Ptr(armmachinelearning.JobInputTypeURIFile),
+	// 					},
+	// 				},
+	// 				Outputs: map[string]armmachinelearning.JobOutputClassification{
+	// 					"string": &armmachinelearning.MLFlowModelJobOutput{
+	// 						Mode: to.Ptr(armmachinelearning.OutputDeliveryModeReadWriteMount),
+	// 						URI: to.Ptr("string"),
+	// 						Description: to.Ptr("string"),
+	// 						JobOutputType: to.Ptr(armmachinelearning.JobOutputTypeMlflowModel),
+	// 					},
+	// 				},
+	// 				QueueSettings: &armmachinelearning.QueueSettings{
+	// 					JobTier: to.Ptr(armmachinelearning.JobTierStandard),
+	// 				},
+	// 				Resources: &armmachinelearning.JobResources{
+	// 					InstanceTypes: []*string{
+	// 						to.Ptr("Standard_NC6")},
+	// 					},
+	// 				},
+	// 			}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/PipelineJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdatePipelineJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1311,7 +1953,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdatePipelineJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/SweepJob/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/SweepJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateSweepJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1479,7 +2121,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateSweepJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/Job/cancel.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/Job/cancel.json
 func ExampleJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

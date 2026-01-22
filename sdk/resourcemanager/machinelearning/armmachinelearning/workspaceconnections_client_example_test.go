@@ -10,13 +10,15 @@ import (
 	"context"
 	"log"
 
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/WorkspaceConnection/create.json
-func ExampleWorkspaceConnectionsClient_Create() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/list.json
+func ExampleWorkspaceConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -26,32 +28,65 @@ func ExampleWorkspaceConnectionsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewWorkspaceConnectionsClient().Create(ctx, "resourceGroup-1", "workspace-1", "connection-1", armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
-		Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
-			AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
-			Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-			Target:   to.Ptr("www.facebook.com"),
-		},
-	}, nil)
+	pager := clientFactory.NewWorkspaceConnectionsClient().NewListPager("resourceGroup-1", "workspace-1", &armmachinelearning.WorkspaceConnectionsClientListOptions{Target: to.Ptr("www.facebook.com"),
+		Category:   to.Ptr("ContainerRegistry"),
+		IncludeAll: nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult = armmachinelearning.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult{
+		// 	Value: []*armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
+		// 		{
+		// 			Name: to.Ptr("connection-1"),
+		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/linkedWorkspaces/connection-1"),
+		// 			Properties: &armmachinelearning.PATAuthTypeWorkspaceConnectionProperties{
+		// 				AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypePAT),
+		// 				Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
+		// 				ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00.000Z"); return t}()),
+		// 				Target: to.Ptr("www.facebook.com"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("connection-2"),
+		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
+		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/linkedWorkspaces/connection-2"),
+		// 			Properties: &armmachinelearning.PATAuthTypeWorkspaceConnectionProperties{
+		// 				AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypePAT),
+		// 				Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
+		// 				Target: to.Ptr("www.facebook.com"),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/delete.json
+func ExampleWorkspaceConnectionsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewWorkspaceConnectionsClient().Delete(ctx, "resourceGroup-1", "workspace-1", "connection-1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.WorkspaceConnectionPropertiesV2BasicResource = armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
-	// 	Name: to.Ptr("connection-1"),
-	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
-	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
-	// 	Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
-	// 		AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
-	// 		Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-	// 		Target: to.Ptr("www.facebook.com"),
-	// 	},
-	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/WorkspaceConnection/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/get.json
 func ExampleWorkspaceConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,13 +111,14 @@ func ExampleWorkspaceConnectionsClient_Get() {
 	// 	Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
 	// 		AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
 	// 		Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
+	// 		ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00.000Z"); return t}()),
 	// 		Target: to.Ptr("www.facebook.com"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/WorkspaceConnection/delete.json
-func ExampleWorkspaceConnectionsClient_Delete() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/update.json
+func ExampleWorkspaceConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -92,14 +128,51 @@ func ExampleWorkspaceConnectionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewWorkspaceConnectionsClient().Delete(ctx, "resourceGroup-1", "workspace-1", "connection-1", nil)
+	res, err := clientFactory.NewWorkspaceConnectionsClient().Update(ctx, "test-rg", "workspace-1", "connection-1", &armmachinelearning.WorkspaceConnectionsClientUpdateOptions{Body: &armmachinelearning.WorkspaceConnectionUpdateParameter{
+		Properties: &armmachinelearning.AccessKeyAuthTypeWorkspaceConnectionProperties{
+			AuthType:   to.Ptr(armmachinelearning.ConnectionAuthTypeAccessKey),
+			Category:   to.Ptr(armmachinelearning.ConnectionCategoryADLSGen2),
+			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t }()),
+			Metadata:   map[string]*string{},
+			Target:     to.Ptr("some_string"),
+			Credentials: &armmachinelearning.WorkspaceConnectionAccessKey{
+				AccessKeyID:     to.Ptr("some_string"),
+				SecretAccessKey: to.Ptr("some_string"),
+			},
+		},
+	},
+	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkspaceConnectionPropertiesV2BasicResource = armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
+	// 	Name: to.Ptr("connection-1"),
+	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
+	// 	SystemData: &armmachinelearning.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t}()),
+	// 		CreatedBy: to.Ptr("some_string"),
+	// 		CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("some_string"),
+	// 		LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
+	// 	},
+	// 	Properties: &armmachinelearning.AccessKeyAuthTypeWorkspaceConnectionProperties{
+	// 		AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeAccessKey),
+	// 		Category: to.Ptr(armmachinelearning.ConnectionCategoryADLSGen2),
+	// 		ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00.000Z"); return t}()),
+	// 		Metadata: map[string]*string{
+	// 		},
+	// 		Target: to.Ptr("some_string"),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/WorkspaceConnection/list.json
-func ExampleWorkspaceConnectionsClient_NewListPager() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/create.json
+func ExampleWorkspaceConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -109,46 +182,35 @@ func ExampleWorkspaceConnectionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewWorkspaceConnectionsClient().NewListPager("resourceGroup-1", "workspace-1", &armmachinelearning.WorkspaceConnectionsClientListOptions{Target: to.Ptr("www.facebook.com"),
-		Category: to.Ptr("ContainerRegistry"),
+	res, err := clientFactory.NewWorkspaceConnectionsClient().Create(ctx, "resourceGroup-1", "workspace-1", "connection-1", &armmachinelearning.WorkspaceConnectionsClientCreateOptions{Body: &armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
+		Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
+			AuthType:   to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
+			Category:   to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
+			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00.000Z"); return t }()),
+			Target:     to.Ptr("www.facebook.com"),
+		},
+	},
 	})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult = armmachinelearning.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult{
-		// 	Value: []*armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
-		// 		{
-		// 			Name: to.Ptr("connection-1"),
-		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/linkedWorkspaces/connection-1"),
-		// 			Properties: &armmachinelearning.PATAuthTypeWorkspaceConnectionProperties{
-		// 				AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypePAT),
-		// 				Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-		// 				Target: to.Ptr("www.facebook.com"),
-		// 			},
-		// 		},
-		// 		{
-		// 			Name: to.Ptr("connection-2"),
-		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
-		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/linkedWorkspaces/connection-2"),
-		// 			Properties: &armmachinelearning.PATAuthTypeWorkspaceConnectionProperties{
-		// 				AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypePAT),
-		// 				Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-		// 				Target: to.Ptr("www.facebook.com"),
-		// 			},
-		// 	}},
-		// }
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.WorkspaceConnectionPropertiesV2BasicResource = armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
+	// 	Name: to.Ptr("connection-1"),
+	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/connections"),
+	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
+	// 	Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
+	// 		AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
+	// 		Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
+	// 		ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00.000Z"); return t}()),
+	// 		Target: to.Ptr("www.facebook.com"),
+	// 	},
+	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/WorkspaceConnection/listSecrets.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/listSecrets.json
 func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,4 +253,33 @@ func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/WorkspaceConnection/testConnection.json
+func ExampleWorkspaceConnectionsClient_BeginTestConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspaceConnectionsClient().BeginTestConnection(ctx, "resourceGroup-1", "workspace-1", "connection-1", &armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions{Body: &armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
+		Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
+			AuthType:   to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
+			Category:   to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
+			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00.000Z"); return t }()),
+			Target:     to.Ptr("target_url"),
+		},
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
 }

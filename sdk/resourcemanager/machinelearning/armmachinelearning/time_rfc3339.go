@@ -57,6 +57,9 @@ func (t *dateTimeRFC3339) UnmarshalJSON(data []byte) error {
 }
 
 func (t *dateTimeRFC3339) UnmarshalText(data []byte) error {
+	if len(data) == 0 {
+		return nil
+	}
 	tzOffset := tzOffsetRegex.Match(data)
 	hasT := strings.Contains(string(data), "T") || strings.Contains(string(data), "t")
 	var layout string

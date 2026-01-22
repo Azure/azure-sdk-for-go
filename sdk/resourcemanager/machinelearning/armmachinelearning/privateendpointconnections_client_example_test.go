@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/PrivateEndpointConnection/list.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/PrivateEndpointConnection/list.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,13 +44,13 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/privateEndpointConnections"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace/privateEndpointConnections/{privateEndpointConnectionName}"),
 		// 			Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
-		// 				PrivateEndpoint: &armmachinelearning.PrivateEndpoint{
+		// 				PrivateEndpoint: &armmachinelearning.WorkspacePrivateEndpointResource{
 		// 					ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.Network/privateEndpoints/petest01"),
 		// 				},
 		// 				PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
 		// 					Description: to.Ptr("Auto-Approved"),
 		// 					ActionsRequired: to.Ptr("None"),
-		// 					Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
+		// 					Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armmachinelearning.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 			},
@@ -60,13 +60,13 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 			Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/privateEndpointConnections"),
 		// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace/privateEndpointConnections/{privateEndpointConnectionName}"),
 		// 			Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
-		// 				PrivateEndpoint: &armmachinelearning.PrivateEndpoint{
+		// 				PrivateEndpoint: &armmachinelearning.WorkspacePrivateEndpointResource{
 		// 					ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.Network/privateEndpoints/petest01"),
 		// 				},
 		// 				PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
 		// 					Description: to.Ptr("Auto-Approved"),
 		// 					ActionsRequired: to.Ptr("None"),
-		// 					Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
+		// 					Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
 		// 				},
 		// 				ProvisioningState: to.Ptr(armmachinelearning.PrivateEndpointConnectionProvisioningStateSucceeded),
 		// 			},
@@ -75,7 +75,24 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/PrivateEndpointConnection/get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/PrivateEndpointConnection/delete.json
+func ExamplePrivateEndpointConnectionsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewPrivateEndpointConnectionsClient().Delete(ctx, "rg-1234", "testworkspace", "{privateEndpointConnectionName}", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/PrivateEndpointConnection/get.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,20 +115,20 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
-	// 		PrivateEndpoint: &armmachinelearning.PrivateEndpoint{
+	// 		PrivateEndpoint: &armmachinelearning.WorkspacePrivateEndpointResource{
 	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.Network/privateEndpoints/petest01"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
 	// 			Description: to.Ptr("Auto-Approved"),
 	// 			ActionsRequired: to.Ptr("None"),
-	// 			Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
+	// 			Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmachinelearning.PrivateEndpointConnectionProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/PrivateEndpointConnection/createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b98ebeb5250e9af1846b14884677ac71aeb2be53/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2025-10-01-preview/examples/PrivateEndpointConnection/createOrUpdate.json
 func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,7 +143,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 		Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
 				Description: to.Ptr("Auto-Approved"),
-				Status:      to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
+				Status:      to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
 			},
 		},
 	}, nil)
@@ -141,32 +158,15 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	// 	Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/privateEndpointConnections"),
 	// 	ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.MachineLearningServices/workspaces/testworkspace/privateEndpointConnections/{privateEndpointConnectionName}"),
 	// 	Properties: &armmachinelearning.PrivateEndpointConnectionProperties{
-	// 		PrivateEndpoint: &armmachinelearning.PrivateEndpoint{
+	// 		PrivateEndpoint: &armmachinelearning.WorkspacePrivateEndpointResource{
 	// 			ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg-1234/providers/Microsoft.Network/privateEndpoints/petest01"),
 	// 		},
 	// 		PrivateLinkServiceConnectionState: &armmachinelearning.PrivateLinkServiceConnectionState{
 	// 			Description: to.Ptr("Auto-Approved"),
 	// 			ActionsRequired: to.Ptr("None"),
-	// 			Status: to.Ptr(armmachinelearning.PrivateEndpointServiceConnectionStatusApproved),
+	// 			Status: to.Ptr(armmachinelearning.EndpointServiceConnectionStatusApproved),
 	// 		},
 	// 		ProvisioningState: to.Ptr(armmachinelearning.PrivateEndpointConnectionProvisioningStateSucceeded),
 	// 	},
 	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9778042723206fbc582306dcb407bddbd73df005/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/examples/PrivateEndpointConnection/delete.json
-func ExamplePrivateEndpointConnectionsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewPrivateEndpointConnectionsClient().Delete(ctx, "rg-1234", "testworkspace", "{privateEndpointConnectionName}", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
 }

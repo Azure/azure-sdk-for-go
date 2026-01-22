@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Workspace/get.json
@@ -52,41 +52,41 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		"testworkspace",
 		armmachinelearningservices.Workspace{
 			Identity: &armmachinelearningservices.Identity{
-				Type: to.Ptr(armmachinelearningservices.ResourceIdentityTypeSystemAssignedUserAssigned),
+				Type:	to.Ptr(armmachinelearningservices.ResourceIdentityTypeSystemAssignedUserAssigned),
 				UserAssignedIdentities: map[string]*armmachinelearningservices.UserAssignedIdentity{
 					"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai": {},
 				},
 			},
-			Location: to.Ptr("eastus2euap"),
+			Location:	to.Ptr("eastus2euap"),
 			Properties: &armmachinelearningservices.WorkspaceProperties{
-				Description:         to.Ptr("test description"),
-				ApplicationInsights: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
-				ContainerRegistry:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
+				Description:		to.Ptr("test description"),
+				ApplicationInsights:	to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/microsoft.insights/components/testinsights"),
+				ContainerRegistry:	to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ContainerRegistry/registries/testRegistry"),
 				Encryption: &armmachinelearningservices.EncryptionProperty{
 					Identity: &armmachinelearningservices.IdentityForCmk{
 						UserAssignedIdentity: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testuai"),
 					},
 					KeyVaultProperties: &armmachinelearningservices.KeyVaultProperties{
-						IdentityClientID: to.Ptr(""),
-						KeyIdentifier:    to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
-						KeyVaultArmID:    to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+						IdentityClientID:	to.Ptr(""),
+						KeyIdentifier:		to.Ptr("https://testkv.vault.azure.net/keys/testkey/aabbccddee112233445566778899aabb"),
+						KeyVaultArmID:		to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
 					},
-					Status: to.Ptr(armmachinelearningservices.EncryptionStatusEnabled),
+					Status:	to.Ptr(armmachinelearningservices.EncryptionStatusEnabled),
 				},
-				FriendlyName: to.Ptr("HelloName"),
-				HbiWorkspace: to.Ptr(false),
-				KeyVault:     to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
+				FriendlyName:	to.Ptr("HelloName"),
+				HbiWorkspace:	to.Ptr(false),
+				KeyVault:	to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.KeyVault/vaults/testkv"),
 				SharedPrivateLinkResources: []*armmachinelearningservices.SharedPrivateLinkResource{
 					{
-						Name: to.Ptr("testdbresource"),
+						Name:	to.Ptr("testdbresource"),
 						Properties: &armmachinelearningservices.SharedPrivateLinkResourceProperty{
-							GroupID:               to.Ptr("Sql"),
-							PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql"),
-							RequestMessage:        to.Ptr("Please approve"),
-							Status:                to.Ptr(armmachinelearningservices.PrivateEndpointServiceConnectionStatusApproved),
+							GroupID:		to.Ptr("Sql"),
+							PrivateLinkResourceID:	to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testdbresource/privateLinkResources/Sql"),
+							RequestMessage:		to.Ptr("Please approve"),
+							Status:			to.Ptr(armmachinelearningservices.PrivateEndpointServiceConnectionStatusApproved),
 						},
 					}},
-				StorageAccount: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
+				StorageAccount:	to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/accountcrud-1234/providers/Microsoft.Storage/storageAccounts/testStorageAccount"),
 			},
 		},
 		nil)
@@ -141,9 +141,9 @@ func ExampleWorkspacesClient_Update() {
 		"testworkspace",
 		armmachinelearningservices.WorkspaceUpdateParameters{
 			Properties: &armmachinelearningservices.WorkspacePropertiesUpdateParameters{
-				Description:         to.Ptr("new description"),
-				FriendlyName:        to.Ptr("New friendly name"),
-				PublicNetworkAccess: to.Ptr(armmachinelearningservices.PublicNetworkAccessDisabled),
+				Description:		to.Ptr("new description"),
+				FriendlyName:		to.Ptr("New friendly name"),
+				PublicNetworkAccess:	to.Ptr(armmachinelearningservices.PublicNetworkAccessDisabled),
 			},
 		},
 		nil)
@@ -195,15 +195,15 @@ func ExampleWorkspacesClient_BeginDiagnose() {
 		"testworkspace",
 		&armmachinelearningservices.WorkspacesClientBeginDiagnoseOptions{Parameters: &armmachinelearningservices.DiagnoseWorkspaceParameters{
 			Value: &armmachinelearningservices.DiagnoseRequestProperties{
-				ApplicationInsights: map[string]interface{}{},
-				ContainerRegistry:   map[string]interface{}{},
-				DNSResolution:       map[string]interface{}{},
-				KeyVault:            map[string]interface{}{},
-				Nsg:                 map[string]interface{}{},
-				Others:              map[string]interface{}{},
-				ResourceLock:        map[string]interface{}{},
-				StorageAccount:      map[string]interface{}{},
-				Udr:                 map[string]interface{}{},
+				ApplicationInsights:	map[string]interface{}{},
+				ContainerRegistry:	map[string]interface{}{},
+				DNSResolution:		map[string]interface{}{},
+				KeyVault:		map[string]interface{}{},
+				Nsg:			map[string]interface{}{},
+				Others:			map[string]interface{}{},
+				ResourceLock:		map[string]interface{}{},
+				StorageAccount:		map[string]interface{}{},
+				Udr:			map[string]interface{}{},
 			},
 		},
 		})

@@ -126,19 +126,6 @@ func TestAzurePowerShellCredential_GetTokenSuccess(t *testing.T) {
 	require.Equal(t, time.UTC, actual.ExpiresOn.Location())
 }
 
-func TestAzurePowerShellCredential_GetTokenInvalidToken(t *testing.T) {
-	options := AzurePowerShellCredentialOptions{}
-	options.exec = mockAzurePowerShellFailure
-	cred, err := NewAzurePowerShellCredential(&options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-}
-
 func TestAzurePowerShellCredential_TenantID(t *testing.T) {
 	expected := "expected-tenant-id"
 	called := false

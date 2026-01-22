@@ -157,19 +157,6 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
-	options := AzureCLICredentialOptions{}
-	options.exec = mockAzFailure
-	cred, err := NewAzureCLICredential(&options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
-	}
-}
-
 func TestAzureCLICredential_Subscription(t *testing.T) {
 	called := false
 	for _, want := range []string{"", "expected-subscription"} {

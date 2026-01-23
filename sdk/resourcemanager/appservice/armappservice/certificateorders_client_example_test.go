@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f4cb2884f1948b879ecfb3f410e8cbc8805c213/specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/stable/2024-11-01/examples/ListAppServiceCertificateOrdersBySubscription.json
@@ -127,23 +127,23 @@ func ExampleCertificateOrdersClient_ValidatePurchaseInformation() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	_, err = clientFactory.NewCertificateOrdersClient().ValidatePurchaseInformation(ctx, armappservice.CertificateOrder{
-		Location: to.Ptr("Global"),
+		Location:	to.Ptr("Global"),
 		Properties: &armappservice.CertificateOrderProperties{
-			AutoRenew: to.Ptr(true),
+			AutoRenew:	to.Ptr(true),
 			Certificates: map[string]*armappservice.Certificate{
 				"SampleCertName1": {
-					KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-					KeyVaultSecretName: to.Ptr("SampleSecretName1"),
+					KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+					KeyVaultSecretName:	to.Ptr("SampleSecretName1"),
 				},
 				"SampleCertName2": {
-					KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-					KeyVaultSecretName: to.Ptr("SampleSecretName2"),
+					KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+					KeyVaultSecretName:	to.Ptr("SampleSecretName2"),
 				},
 			},
-			DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
-			KeySize:           to.Ptr[int32](2048),
-			ProductType:       to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
-			ValidityInYears:   to.Ptr[int32](2),
+			DistinguishedName:	to.Ptr("CN=SampleCustomDomain.com"),
+			KeySize:		to.Ptr[int32](2048),
+			ProductType:		to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
+			ValidityInYears:	to.Ptr[int32](2),
 		},
 	}, nil)
 	if err != nil {
@@ -355,23 +355,23 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCertificateOrdersClient().BeginCreateOrUpdate(ctx, "testrg123", "SampleCertificateOrderName", armappservice.CertificateOrder{
-		Location: to.Ptr("Global"),
+		Location:	to.Ptr("Global"),
 		Properties: &armappservice.CertificateOrderProperties{
-			AutoRenew: to.Ptr(true),
+			AutoRenew:	to.Ptr(true),
 			Certificates: map[string]*armappservice.Certificate{
 				"SampleCertName1": {
-					KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-					KeyVaultSecretName: to.Ptr("SampleSecretName1"),
+					KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+					KeyVaultSecretName:	to.Ptr("SampleSecretName1"),
 				},
 				"SampleCertName2": {
-					KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-					KeyVaultSecretName: to.Ptr("SampleSecretName2"),
+					KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+					KeyVaultSecretName:	to.Ptr("SampleSecretName2"),
 				},
 			},
-			DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
-			KeySize:           to.Ptr[int32](2048),
-			ProductType:       to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
-			ValidityInYears:   to.Ptr[int32](2),
+			DistinguishedName:	to.Ptr("CN=SampleCustomDomain.com"),
+			KeySize:		to.Ptr[int32](2048),
+			ProductType:		to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
+			ValidityInYears:	to.Ptr[int32](2),
 		},
 	}, nil)
 	if err != nil {
@@ -488,21 +488,21 @@ func ExampleCertificateOrdersClient_Update() {
 	}
 	res, err := clientFactory.NewCertificateOrdersClient().Update(ctx, "testrg123", "SampleCertificateOrderName", armappservice.CertificateOrderPatchResource{
 		Properties: &armappservice.CertificateOrderPatchResourceProperties{
-			AutoRenew: to.Ptr(true),
+			AutoRenew:	to.Ptr(true),
 			Certificates: map[string]*armappservice.Certificate{
 				"SampleCertName1": {
-					KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-					KeyVaultSecretName: to.Ptr("SampleSecretName1"),
+					KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+					KeyVaultSecretName:	to.Ptr("SampleSecretName1"),
 				},
 				"SampleCertName2": {
-					KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-					KeyVaultSecretName: to.Ptr("SampleSecretName2"),
+					KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+					KeyVaultSecretName:	to.Ptr("SampleSecretName2"),
 				},
 			},
-			DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
-			KeySize:           to.Ptr[int32](2048),
-			ProductType:       to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
-			ValidityInYears:   to.Ptr[int32](2),
+			DistinguishedName:	to.Ptr("CN=SampleCustomDomain.com"),
+			KeySize:		to.Ptr[int32](2048),
+			ProductType:		to.Ptr(armappservice.CertificateProductTypeStandardDomainValidatedSSL),
+			ValidityInYears:	to.Ptr[int32](2),
 		},
 	}, nil)
 	if err != nil {
@@ -678,10 +678,10 @@ func ExampleCertificateOrdersClient_BeginCreateOrUpdateCertificate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCertificateOrdersClient().BeginCreateOrUpdateCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", armappservice.CertificateResource{
-		Location: to.Ptr("Global"),
+		Location:	to.Ptr("Global"),
 		Properties: &armappservice.Certificate{
-			KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-			KeyVaultSecretName: to.Ptr("SampleSecretName1"),
+			KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+			KeyVaultSecretName:	to.Ptr("SampleSecretName1"),
 		},
 	}, nil)
 	if err != nil {
@@ -737,8 +737,8 @@ func ExampleCertificateOrdersClient_UpdateCertificate() {
 	}
 	res, err := clientFactory.NewCertificateOrdersClient().UpdateCertificate(ctx, "testrg123", "SampleCertificateOrderName", "SampleCertName1", armappservice.CertificatePatchResource{
 		Properties: &armappservice.Certificate{
-			KeyVaultID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-			KeyVaultSecretName: to.Ptr("SampleSecretName1"),
+			KeyVaultID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+			KeyVaultSecretName:	to.Ptr("SampleSecretName1"),
 		},
 	}, nil)
 	if err != nil {
@@ -773,10 +773,10 @@ func ExampleCertificateOrdersClient_Reissue() {
 	}
 	_, err = clientFactory.NewCertificateOrdersClient().Reissue(ctx, "testrg123", "SampleCertificateOrderName", armappservice.ReissueCertificateOrderRequest{
 		Properties: &armappservice.ReissueCertificateOrderRequestProperties{
-			Csr:                        to.Ptr("CSR1223238Value"),
-			DelayExistingRevokeInHours: to.Ptr[int32](2),
-			IsPrivateKeyExternal:       to.Ptr(false),
-			KeySize:                    to.Ptr[int32](2048),
+			Csr:				to.Ptr("CSR1223238Value"),
+			DelayExistingRevokeInHours:	to.Ptr[int32](2),
+			IsPrivateKeyExternal:		to.Ptr(false),
+			KeySize:			to.Ptr[int32](2048),
 		},
 	}, nil)
 	if err != nil {
@@ -797,9 +797,9 @@ func ExampleCertificateOrdersClient_Renew() {
 	}
 	_, err = clientFactory.NewCertificateOrdersClient().Renew(ctx, "testrg123", "SampleCertificateOrderName", armappservice.RenewCertificateOrderRequest{
 		Properties: &armappservice.RenewCertificateOrderRequestProperties{
-			Csr:                  to.Ptr("CSR1223238Value"),
-			IsPrivateKeyExternal: to.Ptr(false),
-			KeySize:              to.Ptr[int32](2048),
+			Csr:			to.Ptr("CSR1223238Value"),
+			IsPrivateKeyExternal:	to.Ptr(false),
+			KeySize:		to.Ptr[int32](2048),
 		},
 	}, nil)
 	if err != nil {
@@ -855,8 +855,8 @@ func ExampleCertificateOrdersClient_RetrieveSiteSeal() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewCertificateOrdersClient().RetrieveSiteSeal(ctx, "testrg123", "SampleCertOrder", armappservice.SiteSealRequest{
-		LightTheme: to.Ptr(true),
-		Locale:     to.Ptr("en-us"),
+		LightTheme:	to.Ptr(true),
+		Locale:		to.Ptr("en-us"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

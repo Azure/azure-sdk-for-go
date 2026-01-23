@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9f4cb2884f1948b879ecfb3f410e8cbc8805c213/specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/ListCustomHostNameSites.json
@@ -198,9 +198,9 @@ func ExampleWebSiteManagementClient_VerifyHostingEnvironmentVnet() {
 	}
 	res, err := clientFactory.NewWebSiteManagementClient().VerifyHostingEnvironmentVnet(ctx, armappservice.VnetParameters{
 		Properties: &armappservice.VnetParametersProperties{
-			VnetName:          to.Ptr("vNet123"),
-			VnetResourceGroup: to.Ptr("vNet123rg"),
-			VnetSubnetName:    to.Ptr("vNet123SubNet"),
+			VnetName:		to.Ptr("vNet123"),
+			VnetResourceGroup:	to.Ptr("vNet123rg"),
+			VnetSubnetName:		to.Ptr("vNet123SubNet"),
 		},
 	}, nil)
 	if err != nil {

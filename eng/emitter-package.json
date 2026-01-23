@@ -1,7 +1,7 @@
 {
   "main": "dist/src/index.js",
   "dependencies": {
-    "@azure-tools/typespec-go": "0.9.1"
+    "@azure-tools/typespec-go": "/mnt/vss/_work/1/s/autorest.go/packages/typespec-go/azure-tools-typespec-go-0.9.2.tgz"
   },
   "devDependencies": {
     "@azure-tools/typespec-autorest": "0.64.0",

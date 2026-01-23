@@ -1,5 +1,78 @@
 # Release History
 
+## 2.0.0 (2026-01-23)
+### Breaking Changes
+
+- Function `*ClientFactory.NewMachinePoolsClient` has been removed
+- Function `*ClientFactory.NewSecretsClient` has been removed
+- Function `*ClientFactory.NewSyncIdentityProvidersClient` has been removed
+- Function `*ClientFactory.NewSyncSetsClient` has been removed
+- Function `NewMachinePoolsClient` has been removed
+- Function `*MachinePoolsClient.CreateOrUpdate` has been removed
+- Function `*MachinePoolsClient.Delete` has been removed
+- Function `*MachinePoolsClient.Get` has been removed
+- Function `*MachinePoolsClient.NewListPager` has been removed
+- Function `*MachinePoolsClient.Update` has been removed
+- Function `NewSecretsClient` has been removed
+- Function `*SecretsClient.CreateOrUpdate` has been removed
+- Function `*SecretsClient.Delete` has been removed
+- Function `*SecretsClient.Get` has been removed
+- Function `*SecretsClient.NewListPager` has been removed
+- Function `*SecretsClient.Update` has been removed
+- Function `NewSyncIdentityProvidersClient` has been removed
+- Function `*SyncIdentityProvidersClient.CreateOrUpdate` has been removed
+- Function `*SyncIdentityProvidersClient.Delete` has been removed
+- Function `*SyncIdentityProvidersClient.Get` has been removed
+- Function `*SyncIdentityProvidersClient.NewListPager` has been removed
+- Function `*SyncIdentityProvidersClient.Update` has been removed
+- Function `NewSyncSetsClient` has been removed
+- Function `*SyncSetsClient.CreateOrUpdate` has been removed
+- Function `*SyncSetsClient.Delete` has been removed
+- Function `*SyncSetsClient.Get` has been removed
+- Function `*SyncSetsClient.NewListPager` has been removed
+- Function `*SyncSetsClient.Update` has been removed
+- Struct `MachinePool` has been removed
+- Struct `MachinePoolList` has been removed
+- Struct `MachinePoolProperties` has been removed
+- Struct `MachinePoolUpdate` has been removed
+- Struct `Secret` has been removed
+- Struct `SecretList` has been removed
+- Struct `SecretProperties` has been removed
+- Struct `SecretUpdate` has been removed
+- Struct `SyncIdentityProvider` has been removed
+- Struct `SyncIdentityProviderList` has been removed
+- Struct `SyncIdentityProviderProperties` has been removed
+- Struct `SyncIdentityProviderUpdate` has been removed
+- Struct `SyncSet` has been removed
+- Struct `SyncSetList` has been removed
+- Struct `SyncSetProperties` has been removed
+- Struct `SyncSetUpdate` has been removed
+- Field `SystemData` of struct `OpenShiftClusterUpdate` has been removed
+
+### Features Added
+
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New function `*ClientFactory.NewPlatformWorkloadIdentityRoleSetClient() *PlatformWorkloadIdentityRoleSetClient`
+- New function `*ClientFactory.NewPlatformWorkloadIdentityRoleSetsClient() *PlatformWorkloadIdentityRoleSetsClient`
+- New function `*OpenShiftVersionsClient.Get(ctx context.Context, location string, openShiftVersion string, options *OpenShiftVersionsClientGetOptions) (OpenShiftVersionsClientGetResponse, error)`
+- New function `NewPlatformWorkloadIdentityRoleSetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlatformWorkloadIdentityRoleSetClient, error)`
+- New function `*PlatformWorkloadIdentityRoleSetClient.Get(ctx context.Context, location string, openShiftMinorVersion string, options *PlatformWorkloadIdentityRoleSetClientGetOptions) (PlatformWorkloadIdentityRoleSetClientGetResponse, error)`
+- New function `NewPlatformWorkloadIdentityRoleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlatformWorkloadIdentityRoleSetsClient, error)`
+- New function `*PlatformWorkloadIdentityRoleSetsClient.NewListPager(location string, options *PlatformWorkloadIdentityRoleSetsClientListOptions) *runtime.Pager[PlatformWorkloadIdentityRoleSetsClientListResponse]`
+- New struct `ManagedServiceIdentity`
+- New struct `PlatformWorkloadIdentity`
+- New struct `PlatformWorkloadIdentityProfile`
+- New struct `PlatformWorkloadIdentityRole`
+- New struct `PlatformWorkloadIdentityRoleSet`
+- New struct `PlatformWorkloadIdentityRoleSetList`
+- New struct `PlatformWorkloadIdentityRoleSetProperties`
+- New struct `UserAssignedIdentity`
+- New field `OidcIssuer` in struct `ClusterProfile`
+- New field `Identity` in struct `OpenShiftCluster`
+- New field `PlatformWorkloadIdentityProfile` in struct `OpenShiftClusterProperties`
+- New field `Identity` in struct `OpenShiftClusterUpdate`
+
+
 ## 1.6.0 (2024-07-26)
 ### Features Added
 

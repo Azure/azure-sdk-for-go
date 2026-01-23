@@ -13,7 +13,7 @@ Azure File Shares Management client library for Go (`armfileshares`) provides ma
 ### Install the package
 
 ```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/storage/armfileshares
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fileshares/armfileshares
 ```
 
 ### Authentication
@@ -41,7 +41,7 @@ import (
     "log"
     
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-    "github.com/Azure/azure-sdk-for-go/sdk/storage/armfileshares"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fileshares/armfileshares"
 )
 
 func main() {
@@ -99,7 +99,7 @@ Security issues and bugs should be reported privately, via email, to the Microso
 
 ### License
 
-Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/storage/armfileshares/LICENSE.txt) license.
+Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/fileshares/armfileshares/LICENSE.txt) license.
 
 <!-- LINKS -->
 [azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md

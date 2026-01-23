@@ -20,7 +20,7 @@ pr:
     - release/*
   paths:
     include:
-    - sdk/storage/armfileshares/
+    - sdk/resourcemanager/fileshares/armfileshares/
     - eng/
 
 parameters:
@@ -37,6 +37,6 @@ extends:
   template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
-    ServiceDirectory: 'storage/armfileshares'
+    ServiceDirectory: 'resourcemanager/fileshares/armfileshares'
     TriggeringPaths:
     - /eng/

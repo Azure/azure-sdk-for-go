@@ -9,7 +9,9 @@ import (
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AsyncOperationResult.
@@ -76,12 +78,12 @@ func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	populateByteArray(objectMap, "certificate", c.Certificate, func() any {
 		return runtime.EncodeByteArray(c.Certificate, runtime.Base64StdFormat)
 	})
-	populateDateTimeRFC1123(objectMap, "created", c.Created)
-	populateDateTimeRFC1123(objectMap, "expiry", c.Expiry)
+	populateTime[datetime.RFC1123](objectMap, "created", c.Created)
+	populateTime[datetime.RFC1123](objectMap, "expiry", c.Expiry)
 	populate(objectMap, "isVerified", c.IsVerified)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateDateTimeRFC1123(objectMap, "updated", c.Updated)
+	populateTime[datetime.RFC1123](objectMap, "updated", c.Updated)
 	return json.Marshal(objectMap)
 }
 
@@ -100,10 +102,10 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			}
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateDateTimeRFC1123(val, "Created", &c.Created)
+			err = unpopulateTime[datetime.RFC1123](val, "Created", &c.Created)
 			delete(rawMsg, key)
 		case "expiry":
-			err = unpopulateDateTimeRFC1123(val, "Expiry", &c.Expiry)
+			err = unpopulateTime[datetime.RFC1123](val, "Expiry", &c.Expiry)
 			delete(rawMsg, key)
 		case "isVerified":
 			err = unpopulate(val, "IsVerified", &c.IsVerified)
@@ -115,7 +117,7 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
 			delete(rawMsg, key)
 		case "updated":
-			err = unpopulateDateTimeRFC1123(val, "Updated", &c.Updated)
+			err = unpopulateTime[datetime.RFC1123](val, "Updated", &c.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1110,10 +1112,10 @@ func (s *SharedAccessSignatureAuthorizationRuleListResult) UnmarshalJSON(data []
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateDateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1129,7 +1131,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			err = unpopulateDateTimeRFC3339(val, "CreatedAt", &s.CreatedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedAt", &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, "CreatedBy", &s.CreatedBy)
@@ -1138,7 +1140,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "CreatedByType", &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			err = unpopulateDateTimeRFC3339(val, "LastModifiedAt", &s.LastModifiedAt)
+			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedAt", &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, "LastModifiedBy", &s.LastModifiedBy)
@@ -1351,6 +1353,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func populateByteArray[T any](m map[string]any, k string, b []T, convert func() any) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
@@ -1369,4 +1382,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

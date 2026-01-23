@@ -45,18 +45,21 @@ Write-Host "##[group]Building container"
 $image = "$($DeploymentOutputs['AZIDENTITY_ACR_LOGIN_SERVER'])/azidentity-managed-id-test"
 Set-Content -Path "$PSScriptRoot/Dockerfile" -Value @"
 FROM mcr.microsoft.com/oss/go/microsoft/golang:latest AS builder
-ENV GOARCH=amd64 GOWORK=off
+ENV CGO_ENABLED=0 GOARCH=amd64
 COPY . /azidentity
 WORKDIR /azidentity/testdata/managed-id-test
 RUN go mod tidy
-RUN go build -o /build/managed-id-test .
-RUN GOOS=windows go build -o /build/managed-id-test.exe .
+RUN go build \
+  -a -ldflags '-extldflags "-static" -w -s' \
+  -trimpath -o /build/test .
+RUN GOOS=windows go build -o /build/windows.exe .
 
-FROM mcr.microsoft.com/mirror/docker/library/alpine:3.16
-RUN apk add gcompat
-COPY --from=builder /build/* .
-RUN chmod +x managed-id-test
-CMD ["./managed-id-test"]
+FROM scratch AS windows
+COPY --from=builder /build/windows.exe .
+
+FROM scratch
+COPY --from=builder /build/test .
+CMD ["./test"]
 "@
 # build from sdk/azidentity because we need that dir in the context (because the test app uses local azidentity)
 docker build -t $image "$PSScriptRoot"
@@ -112,8 +115,10 @@ Write-Host "##[endgroup]"
 
 # Azure Functions deployment: copy the Windows binary from the Docker image, deploy it in a zip
 Write-Host "##[group]Deploying to Azure Functions"
-$container = docker create $image
-docker cp ${container}:managed-id-test.exe "$PSScriptRoot/testdata/managed-id-test/"
+$windowsImage = "windows"
+docker build --target windows -t windows .
+$container = docker create $windowsImage .
+docker cp ${container}:windows.exe "$PSScriptRoot/testdata/managed-id-test/"
 docker rm -v $container
 Compress-Archive -Path "$PSScriptRoot/testdata/managed-id-test/*" -DestinationPath func.zip -Force
 az functionapp deploy -g $rg -n $DeploymentOutputs['AZIDENTITY_FUNCTION_NAME'] --src-path func.zip --type zip

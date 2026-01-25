@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Adds support for float 16 datatype for vector embedding policy. See [PR 25707](https://github.com/Azure/azure-sdk-for-go/pull/25707)
+
 ### Breaking Changes
 
 ### Bugs Fixed

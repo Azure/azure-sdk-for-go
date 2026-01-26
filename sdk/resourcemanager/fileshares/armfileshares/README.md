@@ -62,7 +62,7 @@ func main() {
 
 ## Troubleshooting
 
-For troubleshooting information, please refer to the [Azure SDK for Go troubleshooting guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/TROUBLESHOOTING.md).
+For troubleshooting information, please refer to the [Azure SDK for Go troubleshooting guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/TROUBLESHOOTING.md).
 
 ## Next steps
 

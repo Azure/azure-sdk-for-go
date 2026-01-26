@@ -8,9 +8,10 @@ package generated
 import (
 	"encoding/xml"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 type additionalProperties map[string]*string

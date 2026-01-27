@@ -22,11 +22,11 @@ import (
 type PrivateLinkResourcesServer struct {
 	// Get is the fake for method PrivateLinkResourcesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, options *armappconfiguration.PrivateLinkResourcesClientGetOptions) (resp azfake.Responder[armappconfiguration.PrivateLinkResourcesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, configStoreName string, groupName string, options *armappconfiguration.PrivateLinkResourcesClientGetOptions) (resp azfake.Responder[armappconfiguration.PrivateLinkResourcesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByConfigurationStorePager is the fake for method PrivateLinkResourcesClient.NewListByConfigurationStorePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByConfigurationStorePager	func(resourceGroupName string, configStoreName string, options *armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreResponse])
+	NewListByConfigurationStorePager func(resourceGroupName string, configStoreName string, options *armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreResponse])
 }
 
 // NewPrivateLinkResourcesServerTransport creates a new instance of PrivateLinkResourcesServerTransport with the provided implementation.
@@ -34,16 +34,16 @@ type PrivateLinkResourcesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateLinkResourcesServerTransport(srv *PrivateLinkResourcesServer) *PrivateLinkResourcesServerTransport {
 	return &PrivateLinkResourcesServerTransport{
-		srv:					srv,
-		newListByConfigurationStorePager:	newTracker[azfake.PagerResponder[armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreResponse]](),
+		srv:                              srv,
+		newListByConfigurationStorePager: newTracker[azfake.PagerResponder[armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreResponse]](),
 	}
 }
 
 // PrivateLinkResourcesServerTransport connects instances of armappconfiguration.PrivateLinkResourcesClient to instances of PrivateLinkResourcesServer.
 // Don't use this type directly, use NewPrivateLinkResourcesServerTransport instead.
 type PrivateLinkResourcesServerTransport struct {
-	srv					*PrivateLinkResourcesServer
-	newListByConfigurationStorePager	*tracker[azfake.PagerResponder[armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreResponse]]
+	srv                              *PrivateLinkResourcesServer
+	newListByConfigurationStorePager *tracker[azfake.PagerResponder[armappconfiguration.PrivateLinkResourcesClientListByConfigurationStoreResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateLinkResourcesServerTransport.

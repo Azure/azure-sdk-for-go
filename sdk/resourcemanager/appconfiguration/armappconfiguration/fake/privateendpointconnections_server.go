@@ -22,19 +22,19 @@ import (
 type PrivateEndpointConnectionsServer struct {
 	// BeginCreateOrUpdate is the fake for method PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, configStoreName string, privateEndpointConnectionName string, privateEndpointConnection armappconfiguration.PrivateEndpointConnection, options *armappconfiguration.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, privateEndpointConnectionName string, privateEndpointConnection armappconfiguration.PrivateEndpointConnection, options *armappconfiguration.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, configStoreName string, privateEndpointConnectionName string, options *armappconfiguration.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, configStoreName string, privateEndpointConnectionName string, options *armappconfiguration.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, configStoreName string, privateEndpointConnectionName string, options *armappconfiguration.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armappconfiguration.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, configStoreName string, privateEndpointConnectionName string, options *armappconfiguration.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armappconfiguration.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByConfigurationStorePager is the fake for method PrivateEndpointConnectionsClient.NewListByConfigurationStorePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByConfigurationStorePager	func(resourceGroupName string, configStoreName string, options *armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreResponse])
+	NewListByConfigurationStorePager func(resourceGroupName string, configStoreName string, options *armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreResponse])
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type PrivateEndpointConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
 	return &PrivateEndpointConnectionsServerTransport{
-		srv:					srv,
-		beginCreateOrUpdate:			newTracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientCreateOrUpdateResponse]](),
-		beginDelete:				newTracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientDeleteResponse]](),
-		newListByConfigurationStorePager:	newTracker[azfake.PagerResponder[armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreResponse]](),
+		srv:                              srv,
+		beginCreateOrUpdate:              newTracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:                      newTracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientDeleteResponse]](),
+		newListByConfigurationStorePager: newTracker[azfake.PagerResponder[armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreResponse]](),
 	}
 }
 
 // PrivateEndpointConnectionsServerTransport connects instances of armappconfiguration.PrivateEndpointConnectionsClient to instances of PrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
-	srv					*PrivateEndpointConnectionsServer
-	beginCreateOrUpdate			*tracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientCreateOrUpdateResponse]]
-	beginDelete				*tracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientDeleteResponse]]
-	newListByConfigurationStorePager	*tracker[azfake.PagerResponder[armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreResponse]]
+	srv                              *PrivateEndpointConnectionsServer
+	beginCreateOrUpdate              *tracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientCreateOrUpdateResponse]]
+	beginDelete                      *tracker[azfake.PollerResponder[armappconfiguration.PrivateEndpointConnectionsClientDeleteResponse]]
+	newListByConfigurationStorePager *tracker[azfake.PagerResponder[armappconfiguration.PrivateEndpointConnectionsClientListByConfigurationStoreResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.

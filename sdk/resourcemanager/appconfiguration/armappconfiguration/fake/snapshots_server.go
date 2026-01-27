@@ -21,11 +21,11 @@ import (
 type SnapshotsServer struct {
 	// BeginCreate is the fake for method SnapshotsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, body armappconfiguration.Snapshot, options *armappconfiguration.SnapshotsClientBeginCreateOptions) (resp azfake.PollerResponder[armappconfiguration.SnapshotsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, body armappconfiguration.Snapshot, options *armappconfiguration.SnapshotsClientBeginCreateOptions) (resp azfake.PollerResponder[armappconfiguration.SnapshotsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SnapshotsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, options *armappconfiguration.SnapshotsClientGetOptions) (resp azfake.Responder[armappconfiguration.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, configStoreName string, snapshotName string, options *armappconfiguration.SnapshotsClientGetOptions) (resp azfake.Responder[armappconfiguration.SnapshotsClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
@@ -33,16 +33,16 @@ type SnapshotsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport {
 	return &SnapshotsServerTransport{
-		srv:		srv,
-		beginCreate:	newTracker[azfake.PollerResponder[armappconfiguration.SnapshotsClientCreateResponse]](),
+		srv:         srv,
+		beginCreate: newTracker[azfake.PollerResponder[armappconfiguration.SnapshotsClientCreateResponse]](),
 	}
 }
 
 // SnapshotsServerTransport connects instances of armappconfiguration.SnapshotsClient to instances of SnapshotsServer.
 // Don't use this type directly, use NewSnapshotsServerTransport instead.
 type SnapshotsServerTransport struct {
-	srv		*SnapshotsServer
-	beginCreate	*tracker[azfake.PollerResponder[armappconfiguration.SnapshotsClientCreateResponse]]
+	srv         *SnapshotsServer
+	beginCreate *tracker[azfake.PollerResponder[armappconfiguration.SnapshotsClientCreateResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.

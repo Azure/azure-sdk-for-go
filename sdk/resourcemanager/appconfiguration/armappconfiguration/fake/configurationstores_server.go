@@ -22,47 +22,47 @@ import (
 type ConfigurationStoresServer struct {
 	// BeginCreate is the fake for method ConfigurationStoresClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters armappconfiguration.ConfigurationStore, options *armappconfiguration.ConfigurationStoresClientBeginCreateOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, configStoreName string, configStoreCreationParameters armappconfiguration.ConfigurationStore, options *armappconfiguration.ConfigurationStoresClientBeginCreateOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ConfigurationStoresClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ConfigurationStoresClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientGetOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientGetOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetDeleted is the fake for method ConfigurationStoresClient.GetDeleted
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeleted	func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientGetDeletedOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientGetDeletedResponse], errResp azfake.ErrorResponder)
+	GetDeleted func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientGetDeletedOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientGetDeletedResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ConfigurationStoresClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armappconfiguration.ConfigurationStoresClientListOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse])
+	NewListPager func(options *armappconfiguration.ConfigurationStoresClientListOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ConfigurationStoresClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armappconfiguration.ConfigurationStoresClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappconfiguration.ConfigurationStoresClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse])
 
 	// NewListDeletedPager is the fake for method ConfigurationStoresClient.NewListDeletedPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListDeletedPager	func(options *armappconfiguration.ConfigurationStoresClientListDeletedOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse])
+	NewListDeletedPager func(options *armappconfiguration.ConfigurationStoresClientListDeletedOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse])
 
 	// NewListKeysPager is the fake for method ConfigurationStoresClient.NewListKeysPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListKeysPager	func(resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientListKeysOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse])
+	NewListKeysPager func(resourceGroupName string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientListKeysOptions) (resp azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse])
 
 	// BeginPurgeDeleted is the fake for method ConfigurationStoresClient.BeginPurgeDeleted
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginPurgeDeleted	func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
+	BeginPurgeDeleted func(ctx context.Context, location string, configStoreName string, options *armappconfiguration.ConfigurationStoresClientBeginPurgeDeletedOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateKey is the fake for method ConfigurationStoresClient.RegenerateKey
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateKey	func(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters armappconfiguration.RegenerateKeyParameters, options *armappconfiguration.ConfigurationStoresClientRegenerateKeyOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
+	RegenerateKey func(ctx context.Context, resourceGroupName string, configStoreName string, regenerateKeyParameters armappconfiguration.RegenerateKeyParameters, options *armappconfiguration.ConfigurationStoresClientRegenerateKeyOptions) (resp azfake.Responder[armappconfiguration.ConfigurationStoresClientRegenerateKeyResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method ConfigurationStoresClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters armappconfiguration.ConfigurationStoreUpdateParameters, options *armappconfiguration.ConfigurationStoresClientBeginUpdateOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, configStoreUpdateParameters armappconfiguration.ConfigurationStoreUpdateParameters, options *armappconfiguration.ConfigurationStoresClientBeginUpdateOptions) (resp azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigurationStoresServerTransport creates a new instance of ConfigurationStoresServerTransport with the provided implementation.
@@ -70,30 +70,30 @@ type ConfigurationStoresServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewConfigurationStoresServerTransport(srv *ConfigurationStoresServer) *ConfigurationStoresServerTransport {
 	return &ConfigurationStoresServerTransport{
-		srv:				srv,
-		beginCreate:			newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse]](),
-		newListPager:			newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse]](),
-		newListDeletedPager:		newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse]](),
-		newListKeysPager:		newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse]](),
-		beginPurgeDeleted:		newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]](),
-		beginUpdate:			newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]](),
+		srv:                         srv,
+		beginCreate:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse]](),
+		newListDeletedPager:         newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse]](),
+		newListKeysPager:            newTracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse]](),
+		beginPurgeDeleted:           newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]](),
 	}
 }
 
 // ConfigurationStoresServerTransport connects instances of armappconfiguration.ConfigurationStoresClient to instances of ConfigurationStoresServer.
 // Don't use this type directly, use NewConfigurationStoresServerTransport instead.
 type ConfigurationStoresServerTransport struct {
-	srv				*ConfigurationStoresServer
-	beginCreate			*tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse]]
-	newListPager			*tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse]]
-	newListDeletedPager		*tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse]]
-	newListKeysPager		*tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse]]
-	beginPurgeDeleted		*tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]]
-	beginUpdate			*tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]]
+	srv                         *ConfigurationStoresServer
+	beginCreate                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientCreateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientDeleteResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse]]
+	newListDeletedPager         *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListDeletedResponse]]
+	newListKeysPager            *tracker[azfake.PagerResponder[armappconfiguration.ConfigurationStoresClientListKeysResponse]]
+	beginPurgeDeleted           *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armappconfiguration.ConfigurationStoresClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigurationStoresServerTransport.

@@ -24,8 +24,8 @@ func ExampleOperationsClient_CheckNameAvailability_configurationStoresCheckNameA
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewOperationsClient().CheckNameAvailability(ctx, armappconfiguration.CheckNameAvailabilityParameters{
-		Name:	to.Ptr("contoso"),
-		Type:	to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
+		Name: to.Ptr("contoso"),
+		Type: to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -53,8 +53,8 @@ func ExampleOperationsClient_CheckNameAvailability_configurationStoresCheckNameN
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewOperationsClient().CheckNameAvailability(ctx, armappconfiguration.CheckNameAvailabilityParameters{
-		Name:	to.Ptr("contoso"),
-		Type:	to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
+		Name: to.Ptr("contoso"),
+		Type: to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -515,8 +515,8 @@ func ExampleOperationsClient_RegionalCheckNameAvailability_configurationStoresCh
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewOperationsClient().RegionalCheckNameAvailability(ctx, "westus", armappconfiguration.CheckNameAvailabilityParameters{
-		Name:	to.Ptr("contoso"),
-		Type:	to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
+		Name: to.Ptr("contoso"),
+		Type: to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -544,8 +544,8 @@ func ExampleOperationsClient_RegionalCheckNameAvailability_configurationStoresCh
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewOperationsClient().RegionalCheckNameAvailability(ctx, "westus", armappconfiguration.CheckNameAvailabilityParameters{
-		Name:	to.Ptr("contoso"),
-		Type:	to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
+		Name: to.Ptr("contoso"),
+		Type: to.Ptr(armappconfiguration.ConfigurationResourceTypeMicrosoftAppConfigurationConfigurationStores),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

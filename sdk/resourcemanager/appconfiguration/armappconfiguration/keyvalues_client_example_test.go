@@ -26,10 +26,10 @@ func ExampleKeyValuesClient_CreateOrUpdate() {
 	res, err := clientFactory.NewKeyValuesClient().CreateOrUpdate(ctx, "myResourceGroup", "contoso", "myKey$myLabel", armappconfiguration.KeyValue{
 		Properties: &armappconfiguration.KeyValueProperties{
 			Tags: map[string]*string{
-				"tag1":	to.Ptr("tagValue1"),
-				"tag2":	to.Ptr("tagValue2"),
+				"tag1": to.Ptr("tagValue1"),
+				"tag2": to.Ptr("tagValue2"),
 			},
-			Value:	to.Ptr("myValue"),
+			Value: to.Ptr("myValue"),
 		},
 	}, nil)
 	if err != nil {

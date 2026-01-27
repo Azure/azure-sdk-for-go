@@ -22,15 +22,15 @@ import (
 type OperationsServer struct {
 	// CheckNameAvailability is the fake for method OperationsClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability	func(ctx context.Context, checkNameAvailabilityParameters armappconfiguration.CheckNameAvailabilityParameters, options *armappconfiguration.OperationsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappconfiguration.OperationsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, checkNameAvailabilityParameters armappconfiguration.CheckNameAvailabilityParameters, options *armappconfiguration.OperationsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappconfiguration.OperationsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method OperationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armappconfiguration.OperationsClientListOptions) (resp azfake.PagerResponder[armappconfiguration.OperationsClientListResponse])
+	NewListPager func(options *armappconfiguration.OperationsClientListOptions) (resp azfake.PagerResponder[armappconfiguration.OperationsClientListResponse])
 
 	// RegionalCheckNameAvailability is the fake for method OperationsClient.RegionalCheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	RegionalCheckNameAvailability	func(ctx context.Context, location string, checkNameAvailabilityParameters armappconfiguration.CheckNameAvailabilityParameters, options *armappconfiguration.OperationsClientRegionalCheckNameAvailabilityOptions) (resp azfake.Responder[armappconfiguration.OperationsClientRegionalCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	RegionalCheckNameAvailability func(ctx context.Context, location string, checkNameAvailabilityParameters armappconfiguration.CheckNameAvailabilityParameters, options *armappconfiguration.OperationsClientRegionalCheckNameAvailabilityOptions) (resp azfake.Responder[armappconfiguration.OperationsClientRegionalCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOperationsServerTransport creates a new instance of OperationsServerTransport with the provided implementation.
@@ -38,16 +38,16 @@ type OperationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOperationsServerTransport(srv *OperationsServer) *OperationsServerTransport {
 	return &OperationsServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armappconfiguration.OperationsClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armappconfiguration.OperationsClientListResponse]](),
 	}
 }
 
 // OperationsServerTransport connects instances of armappconfiguration.OperationsClient to instances of OperationsServer.
 // Don't use this type directly, use NewOperationsServerTransport instead.
 type OperationsServerTransport struct {
-	srv		*OperationsServer
-	newListPager	*tracker[azfake.PagerResponder[armappconfiguration.OperationsClientListResponse]]
+	srv          *OperationsServer
+	newListPager *tracker[azfake.PagerResponder[armappconfiguration.OperationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for OperationsServerTransport.

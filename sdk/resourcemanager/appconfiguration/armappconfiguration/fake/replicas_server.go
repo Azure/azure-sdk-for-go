@@ -22,19 +22,19 @@ import (
 type ReplicasServer struct {
 	// BeginCreate is the fake for method ReplicasClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, replicaCreationParameters armappconfiguration.Replica, options *armappconfiguration.ReplicasClientBeginCreateOptions) (resp azfake.PollerResponder[armappconfiguration.ReplicasClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, replicaCreationParameters armappconfiguration.Replica, options *armappconfiguration.ReplicasClientBeginCreateOptions) (resp azfake.PollerResponder[armappconfiguration.ReplicasClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ReplicasClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, options *armappconfiguration.ReplicasClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.ReplicasClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, options *armappconfiguration.ReplicasClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.ReplicasClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ReplicasClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, options *armappconfiguration.ReplicasClientGetOptions) (resp azfake.Responder[armappconfiguration.ReplicasClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, configStoreName string, replicaName string, options *armappconfiguration.ReplicasClientGetOptions) (resp azfake.Responder[armappconfiguration.ReplicasClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByConfigurationStorePager is the fake for method ReplicasClient.NewListByConfigurationStorePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByConfigurationStorePager	func(resourceGroupName string, configStoreName string, options *armappconfiguration.ReplicasClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.ReplicasClientListByConfigurationStoreResponse])
+	NewListByConfigurationStorePager func(resourceGroupName string, configStoreName string, options *armappconfiguration.ReplicasClientListByConfigurationStoreOptions) (resp azfake.PagerResponder[armappconfiguration.ReplicasClientListByConfigurationStoreResponse])
 }
 
 // NewReplicasServerTransport creates a new instance of ReplicasServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type ReplicasServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewReplicasServerTransport(srv *ReplicasServer) *ReplicasServerTransport {
 	return &ReplicasServerTransport{
-		srv:					srv,
-		beginCreate:				newTracker[azfake.PollerResponder[armappconfiguration.ReplicasClientCreateResponse]](),
-		beginDelete:				newTracker[azfake.PollerResponder[armappconfiguration.ReplicasClientDeleteResponse]](),
-		newListByConfigurationStorePager:	newTracker[azfake.PagerResponder[armappconfiguration.ReplicasClientListByConfigurationStoreResponse]](),
+		srv:                              srv,
+		beginCreate:                      newTracker[azfake.PollerResponder[armappconfiguration.ReplicasClientCreateResponse]](),
+		beginDelete:                      newTracker[azfake.PollerResponder[armappconfiguration.ReplicasClientDeleteResponse]](),
+		newListByConfigurationStorePager: newTracker[azfake.PagerResponder[armappconfiguration.ReplicasClientListByConfigurationStoreResponse]](),
 	}
 }
 
 // ReplicasServerTransport connects instances of armappconfiguration.ReplicasClient to instances of ReplicasServer.
 // Don't use this type directly, use NewReplicasServerTransport instead.
 type ReplicasServerTransport struct {
-	srv					*ReplicasServer
-	beginCreate				*tracker[azfake.PollerResponder[armappconfiguration.ReplicasClientCreateResponse]]
-	beginDelete				*tracker[azfake.PollerResponder[armappconfiguration.ReplicasClientDeleteResponse]]
-	newListByConfigurationStorePager	*tracker[azfake.PagerResponder[armappconfiguration.ReplicasClientListByConfigurationStoreResponse]]
+	srv                              *ReplicasServer
+	beginCreate                      *tracker[azfake.PollerResponder[armappconfiguration.ReplicasClientCreateResponse]]
+	beginDelete                      *tracker[azfake.PollerResponder[armappconfiguration.ReplicasClientDeleteResponse]]
+	newListByConfigurationStorePager *tracker[azfake.PagerResponder[armappconfiguration.ReplicasClientListByConfigurationStoreResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicasServerTransport.

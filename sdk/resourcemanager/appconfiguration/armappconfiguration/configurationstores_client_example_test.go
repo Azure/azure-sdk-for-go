@@ -24,7 +24,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		SKU: &armappconfiguration.SKU{
 			Name: to.Ptr("Standard"),
 		},
@@ -97,7 +97,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithA
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		SKU: &armappconfiguration.SKU{
 			Name: to.Ptr("Standard"),
 		},
@@ -177,11 +177,11 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithD
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Properties: &armappconfiguration.ConfigurationStoreProperties{
 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-				AuthenticationMode:	to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-				PrivateLinkDelegation:	to.Ptr(armappconfiguration.PrivateLinkDelegationEnabled),
+				AuthenticationMode:    to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationEnabled),
 			},
 		},
 		SKU: &armappconfiguration.SKU{
@@ -250,12 +250,12 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithI
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
 		Identity: &armappconfiguration.ResourceIdentity{
-			Type:	to.Ptr(armappconfiguration.IdentityTypeSystemAssignedUserAssigned),
+			Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armappconfiguration.UserIdentity{
 				"/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourcegroups/myResourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity2": {},
 			},
 		},
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		SKU: &armappconfiguration.SKU{
 			Name: to.Ptr("Standard"),
 		},
@@ -339,13 +339,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithL
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Properties: &armappconfiguration.ConfigurationStoreProperties{
 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-				AuthenticationMode:	to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-				PrivateLinkDelegation:	to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
+				AuthenticationMode:    to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
 			},
-			DisableLocalAuth:	to.Ptr(true),
+			DisableLocalAuth: to.Ptr(true),
 		},
 		SKU: &armappconfiguration.SKU{
 			Name: to.Ptr("Standard"),
@@ -415,7 +415,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithT
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginCreate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStore{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Properties: &armappconfiguration.ConfigurationStoreProperties{
 			Telemetry: &armappconfiguration.TelemetryProperties{
 				ResourceID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/microsoft.insights/components/appInsightsName"),
@@ -1164,7 +1164,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithI
 	}
 	poller, err := clientFactory.NewConfigurationStoresClient().BeginUpdate(ctx, "myResourceGroup", "contoso", armappconfiguration.ConfigurationStoreUpdateParameters{
 		Identity: &armappconfiguration.ResourceIdentity{
-			Type:	to.Ptr(armappconfiguration.IdentityTypeSystemAssignedUserAssigned),
+			Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armappconfiguration.UserIdentity{
 				"/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourcegroups/myResourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity2": {},
 			},

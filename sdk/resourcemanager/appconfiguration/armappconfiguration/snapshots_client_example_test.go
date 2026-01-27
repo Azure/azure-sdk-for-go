@@ -27,11 +27,11 @@ func ExampleSnapshotsClient_BeginCreate() {
 		Properties: &armappconfiguration.SnapshotProperties{
 			Filters: []*armappconfiguration.KeyValueFilter{
 				{
-					Key:	to.Ptr("app1/*"),
-					Label:	to.Ptr("Production"),
+					Key:   to.Ptr("app1/*"),
+					Label: to.Ptr("Production"),
 				},
 			},
-			RetentionPeriod:	to.Ptr[int64](3600),
+			RetentionPeriod: to.Ptr[int64](3600),
 		},
 	}, nil)
 	if err != nil {

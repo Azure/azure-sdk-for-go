@@ -21,15 +21,15 @@ import (
 type KeyValuesServer struct {
 	// CreateOrUpdate is the fake for method KeyValuesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, keyValueParameters armappconfiguration.KeyValue, options *armappconfiguration.KeyValuesClientCreateOrUpdateOptions) (resp azfake.Responder[armappconfiguration.KeyValuesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, keyValueParameters armappconfiguration.KeyValue, options *armappconfiguration.KeyValuesClientCreateOrUpdateOptions) (resp azfake.Responder[armappconfiguration.KeyValuesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method KeyValuesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *armappconfiguration.KeyValuesClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *armappconfiguration.KeyValuesClientBeginDeleteOptions) (resp azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method KeyValuesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *armappconfiguration.KeyValuesClientGetOptions) (resp azfake.Responder[armappconfiguration.KeyValuesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, configStoreName string, keyValueName string, options *armappconfiguration.KeyValuesClientGetOptions) (resp azfake.Responder[armappconfiguration.KeyValuesClientGetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewKeyValuesServerTransport creates a new instance of KeyValuesServerTransport with the provided implementation.
@@ -37,16 +37,16 @@ type KeyValuesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewKeyValuesServerTransport(srv *KeyValuesServer) *KeyValuesServerTransport {
 	return &KeyValuesServerTransport{
-		srv:		srv,
-		beginDelete:	newTracker[azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse]](),
+		srv:         srv,
+		beginDelete: newTracker[azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse]](),
 	}
 }
 
 // KeyValuesServerTransport connects instances of armappconfiguration.KeyValuesClient to instances of KeyValuesServer.
 // Don't use this type directly, use NewKeyValuesServerTransport instead.
 type KeyValuesServerTransport struct {
-	srv		*KeyValuesServer
-	beginDelete	*tracker[azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse]]
+	srv         *KeyValuesServer
+	beginDelete *tracker[azfake.PollerResponder[armappconfiguration.KeyValuesClientDeleteResponse]]
 }
 
 // Do implements the policy.Transporter interface for KeyValuesServerTransport.

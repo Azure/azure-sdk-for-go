@@ -1,11 +1,12 @@
 # Release History
 
-## 0.4.4 (Unreleased)
+## 0.4.4 (2026-01-28)
 
 ### Bugs Fixed
 
 - Fixed `version` command to skip CHANGELOG.md update when the file doesn't exist and `--sdkversion` is specified.
 - Updated `version` command to only update the version in the latest CHANGELOG.md entry (not regenerate changelog content) when `--sdkversion` is specified.
+- Use `format.Node` instead of `printer.Fprint` to keep the format aligned with gofmt.
 
 ## 0.4.3 (2025-12-17)
 

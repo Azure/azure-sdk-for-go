@@ -184,3 +184,24 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessEnabled,
 	}
 }
+
+// SKUTier - The tier of the SKU.
+type SKUTier string
+
+const (
+	// SKUTierBasic - Basic tier.
+	SKUTierBasic SKUTier = "Basic"
+	// SKUTierFree - Free tier.
+	SKUTierFree SKUTier = "Free"
+	// SKUTierStandard - Standard tier.
+	SKUTierStandard SKUTier = "Standard"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierBasic,
+		SKUTierFree,
+		SKUTierStandard,
+	}
+}

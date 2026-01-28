@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0 (2026-01-27)
+### Features Added
+
+- New enum type `SKUTier` with values `SKUTierBasic`, `SKUTierFree`, `SKUTierStandard`
+- New struct `SKU`
+- New struct `SKUUpdate`
+- New field `SKU` in struct `DeidService`
+- New field `SKU` in struct `DeidUpdate`
+
+
 ## 1.0.0 (2024-11-20)
 ### Breaking Changes
 

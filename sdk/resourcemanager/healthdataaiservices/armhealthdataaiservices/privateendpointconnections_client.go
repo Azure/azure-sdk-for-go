@@ -42,7 +42,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginCreate - Create a Private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -69,7 +69,7 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 // Create - Create a Private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, resourceGroupName string, deidServiceName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreate"
@@ -115,7 +115,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -128,7 +128,7 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 // BeginDelete - Delete the private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -154,7 +154,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 // Delete - Delete the private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, deidServiceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -200,7 +200,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Get a specific private connection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -260,7 +260,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 
 // NewListByDeidServicePager - List private endpoint connections on the given resource
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - options - PrivateEndpointConnectionsClientListByDeidServiceOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByDeidServicePager
@@ -325,7 +325,7 @@ func (client *PrivateEndpointConnectionsClient) listByDeidServiceCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -23,6 +23,9 @@ type DeidService struct {
 	// The resource-specific properties for this resource.
 	Properties *DeidServiceProperties
 
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *SKU
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -70,6 +73,9 @@ type DeidUpdate struct {
 
 	// RP-specific properties
 	Properties *DeidPropertiesUpdate
+
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *SKUUpdate
 
 	// Resource tags.
 	Tags map[string]*string
@@ -267,6 +273,30 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// SKU - The SKU (Stock Keeping Unit) assigned to this resource.
+type SKU struct {
+	// REQUIRED; The name of the SKU.
+	Name *string
+
+	// The capacity of the SKU.
+	Capacity *int32
+
+	// The tier of the SKU.
+	Tier *SKUTier
+}
+
+// SKUUpdate - The SKU (Stock Keeping Unit) update model for PATCH operations.
+type SKUUpdate struct {
+	// The capacity of the SKU.
+	Capacity *int32
+
+	// The name of the SKU.
+	Name *string
+
+	// The tier of the SKU.
+	Tier *SKUTier
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

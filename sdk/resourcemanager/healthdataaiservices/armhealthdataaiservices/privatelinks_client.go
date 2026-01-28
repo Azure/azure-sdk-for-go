@@ -41,7 +41,7 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListByDeidServicePager - List private links on the given resource
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - options - PrivateLinksClientListByDeidServiceOptions contains the optional parameters for the PrivateLinksClient.NewListByDeidServicePager
@@ -89,7 +89,7 @@ func (client *PrivateLinksClient) listByDeidServiceCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

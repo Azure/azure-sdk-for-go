@@ -42,7 +42,7 @@ func NewDeidServicesClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreate - Create a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - resource - Resource create parameters.
@@ -68,7 +68,7 @@ func (client *DeidServicesClient) BeginCreate(ctx context.Context, resourceGroup
 // Create - Create a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 func (client *DeidServicesClient) create(ctx context.Context, resourceGroupName string, deidServiceName string, resource DeidService, options *DeidServicesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeidServicesClient.BeginCreate"
@@ -110,7 +110,7 @@ func (client *DeidServicesClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-01-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *DeidServicesClient) createCreateRequest(ctx context.Context, resou
 // BeginDelete - Delete a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - options - DeidServicesClientBeginDeleteOptions contains the optional parameters for the DeidServicesClient.BeginDelete
@@ -148,7 +148,7 @@ func (client *DeidServicesClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Delete a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 func (client *DeidServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, deidServiceName string, options *DeidServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeidServicesClient.BeginDelete"
@@ -190,7 +190,7 @@ func (client *DeidServicesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-01-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -198,7 +198,7 @@ func (client *DeidServicesClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Get a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - options - DeidServicesClientGetOptions contains the optional parameters for the DeidServicesClient.Get method.
@@ -244,7 +244,7 @@ func (client *DeidServicesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-01-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -261,7 +261,7 @@ func (client *DeidServicesClient) getHandleResponse(resp *http.Response) (DeidSe
 
 // NewListByResourceGroupPager - List DeidService resources by resource group
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DeidServicesClientListByResourceGroupOptions contains the optional parameters for the DeidServicesClient.NewListByResourceGroupPager
 //     method.
@@ -304,7 +304,7 @@ func (client *DeidServicesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-01-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,7 +321,7 @@ func (client *DeidServicesClient) listByResourceGroupHandleResponse(resp *http.R
 
 // NewListBySubscriptionPager - List DeidService resources by subscription ID
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 //   - options - DeidServicesClientListBySubscriptionOptions contains the optional parameters for the DeidServicesClient.NewListBySubscriptionPager
 //     method.
 func (client *DeidServicesClient) NewListBySubscriptionPager(options *DeidServicesClientListBySubscriptionOptions) *runtime.Pager[DeidServicesClientListBySubscriptionResponse] {
@@ -359,7 +359,7 @@ func (client *DeidServicesClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-01-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -377,7 +377,7 @@ func (client *DeidServicesClient) listBySubscriptionHandleResponse(resp *http.Re
 // BeginUpdate - Update a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deidServiceName - The name of the deid service
 //   - properties - The resource properties to be updated.
@@ -403,7 +403,7 @@ func (client *DeidServicesClient) BeginUpdate(ctx context.Context, resourceGroup
 // Update - Update a DeidService
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-20
+// Generated from API version 2026-01-27-preview
 func (client *DeidServicesClient) update(ctx context.Context, resourceGroupName string, deidServiceName string, properties DeidUpdate, options *DeidServicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeidServicesClient.BeginUpdate"
@@ -445,7 +445,7 @@ func (client *DeidServicesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-20")
+	reqQP.Set("api-version", "2026-01-27-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

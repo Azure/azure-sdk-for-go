@@ -76,16 +76,30 @@ func TestStructuredMessageResponseReader_ValidStructuredMessage(t *testing.T) {
 
 	// Calculate segments
 	segmentSize := int64(structuredmsg.MaxSegmentSize)
-	numSegments := uint32((int64(len(originalData)) + segmentSize - 1) / segmentSize)
+	numSegments := uint16((int64(len(originalData)) + segmentSize - 1) / segmentSize)
 
-	// Write header
-	if err := writer.WriteHeader(numSegments); err != nil {
+	// Calculate message length
+	messageLength := uint64(structuredmsg.HeaderSize)
+	offset := int64(0)
+	for i := uint16(0); i < numSegments; i++ {
+		remaining := int64(len(originalData)) - offset
+		chunkSize := segmentSize
+		if remaining < chunkSize {
+			chunkSize = remaining
+		}
+		messageLength += uint64(structuredmsg.SegmentHeaderSize) + uint64(chunkSize) + uint64(structuredmsg.SegmentCRC64Size)
+		offset += chunkSize
+	}
+	messageLength += uint64(structuredmsg.TrailerSize)
+
+	// Write header (CRC64 enabled for transfer validation)
+	if err := writer.WriteHeader(numSegments, messageLength, true); err != nil {
 		t.Fatalf("failed to write header: %v", err)
 	}
 
 	// Write segments
-	offset := int64(0)
-	for i := uint32(0); i < numSegments; i++ {
+	offset = 0
+	for i := uint16(0); i < numSegments; i++ {
 		remaining := int64(len(originalData)) - offset
 		chunkSize := segmentSize
 		if remaining < chunkSize {
@@ -130,6 +144,88 @@ func TestStructuredMessageResponseReader_ValidStructuredMessage(t *testing.T) {
 	}
 }
 
+func TestStructuredMessageResponseReader_ValidStructuredMessage_PropertiesFormat(t *testing.T) {
+	// Test that "XSM/1.0;properties=crc64" format is also accepted
+	originalData := make([]byte, 5*1024*1024) // 5MB
+	for i := range originalData {
+		originalData[i] = byte(i % 256)
+	}
+
+	// Write structured message
+	var structuredBuffer bytes.Buffer
+	writer := structuredmsg.NewStructuredMessageWriter(&structuredBuffer)
+
+	// Calculate segments
+	segmentSize := int64(structuredmsg.MaxSegmentSize)
+	numSegments := uint16((int64(len(originalData)) + segmentSize - 1) / segmentSize)
+
+	// Calculate message length
+	messageLength := uint64(structuredmsg.HeaderSize)
+	offset := int64(0)
+	for i := uint16(0); i < numSegments; i++ {
+		remaining := int64(len(originalData)) - offset
+		chunkSize := segmentSize
+		if remaining < chunkSize {
+			chunkSize = remaining
+		}
+		messageLength += uint64(structuredmsg.SegmentHeaderSize) + uint64(chunkSize) + uint64(structuredmsg.SegmentCRC64Size)
+		offset += chunkSize
+	}
+	messageLength += uint64(structuredmsg.TrailerSize)
+
+	// Write header (CRC64 enabled for transfer validation)
+	if err := writer.WriteHeader(numSegments, messageLength, true); err != nil {
+		t.Fatalf("failed to write header: %v", err)
+	}
+
+	// Write segments
+	offset = 0
+	for i := uint16(0); i < numSegments; i++ {
+		remaining := int64(len(originalData)) - offset
+		chunkSize := segmentSize
+		if remaining < chunkSize {
+			chunkSize = remaining
+		}
+
+		segmentData := originalData[offset : offset+chunkSize]
+		if err := writer.WriteSegment(segmentData); err != nil {
+			t.Fatalf("failed to write segment: %v", err)
+		}
+
+		offset += chunkSize
+	}
+
+	// Write trailer
+	if err := writer.WriteTrailer(); err != nil {
+		t.Fatalf("failed to write trailer: %v", err)
+	}
+
+	// Test with "properties=crc64" format (case-insensitive)
+	structuredBodyType := "XSM/1.0;properties=crc64"
+	body := streaming.NopCloser(bytes.NewReader(structuredBuffer.Bytes()))
+
+	// Create reader
+	reader, err := NewStructuredMessageResponseReader(body, &structuredBodyType)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Read all data
+	readData, err := io.ReadAll(reader)
+	if err != nil {
+		t.Fatalf("unexpected error reading: %v", err)
+	}
+
+	// Verify data matches
+	if len(readData) != len(originalData) {
+		t.Errorf("expected length %d, got %d", len(originalData), len(readData))
+	}
+
+	if !bytes.Equal(readData, originalData) {
+		t.Error("read data does not match original data")
+	}
+}
+
 func TestStructuredMessageResponseReader_CRC64Mismatch(t *testing.T) {
 	// Create a structured message with corrupted data
 	originalData := make([]byte, 1024*1024) // 1MB
@@ -141,8 +237,13 @@ func TestStructuredMessageResponseReader_CRC64Mismatch(t *testing.T) {
 	var structuredBuffer bytes.Buffer
 	writer := structuredmsg.NewStructuredMessageWriter(&structuredBuffer)
 
-	// Write header
-	if err := writer.WriteHeader(1); err != nil {
+	// Calculate message length
+	messageLength := uint64(structuredmsg.HeaderSize) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(originalData)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.TrailerSize)
+
+	// Write header (CRC64 enabled for transfer validation)
+	if err := writer.WriteHeader(1, messageLength, true); err != nil {
 		t.Fatalf("failed to write header: %v", err)
 	}
 
@@ -155,15 +256,11 @@ func TestStructuredMessageResponseReader_CRC64Mismatch(t *testing.T) {
 	// First, get the correct trailer from the writer
 	correctCRC64 := writer.GetTotalCRC64()
 
-	// Now write a corrupted trailer
+	// Now write a corrupted trailer (trailer is only 8 bytes: CRC64)
 	trailerBytes := make([]byte, structuredmsg.TrailerSize)
-	trailerBytes[0] = structuredmsg.MessageVersion
-	trailerBytes[1] = structuredmsg.FlagNone
-	// Set properties to PropCRC64
-	binary.LittleEndian.PutUint16(trailerBytes[2:], structuredmsg.PropCRC64)
 	// Set invalid CRC64 (different from correct one)
 	invalidCRC64 := correctCRC64 + 1
-	binary.LittleEndian.PutUint64(trailerBytes[4:], invalidCRC64)
+	binary.LittleEndian.PutUint64(trailerBytes[0:8], invalidCRC64)
 	structuredBuffer.Write(trailerBytes)
 
 	structuredBodyType := "XSM/1.0;CRC64"
@@ -196,21 +293,38 @@ func TestStructuredMessageResponseReader_CRC64Mismatch(t *testing.T) {
 func TestStructuredMessageResponseReader_InvalidFormat(t *testing.T) {
 	// Test that reader returns body as-is for unrecognized format
 	data := []byte("test data")
-	body := streaming.NopCloser(bytes.NewReader(data))
-	structuredBodyType := "UNKNOWN/1.0"
 
-	reader, err := NewStructuredMessageResponseReader(body, &structuredBodyType)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+	invalidFormats := []string{
+		"UNKNOWN/1.0",                // Different prefix
+		"XSM/1.0",                    // Missing semicolon and property
+		"XSM/1.0;",                   // Missing property
+		"XSM/1.0;UNKNOWN",            // Unknown property
+		"XSM/1.0;CRC64EXTRA",         // Malformed (no space/semicolon after CRC64)
+		"XSM/1.0;CRC64;EXTRA",        // Extra content after CRC64
+		"XSM/1.0;CRC65",              // Typo in property name
+		"XSM/1.0;properties=unknown", // Unknown property value
+		"XSM/1.0;properties=CRC65",   // Typo in property value
 	}
 
-	readData, err := io.ReadAll(reader)
-	if err != nil {
-		t.Fatalf("unexpected error reading: %v", err)
-	}
+	for _, invalidFormat := range invalidFormats {
+		t.Run(invalidFormat, func(t *testing.T) {
+			body := streaming.NopCloser(bytes.NewReader(data))
+			structuredBodyType := invalidFormat
 
-	if !bytes.Equal(readData, data) {
-		t.Errorf("expected %v, got %v", data, readData)
+			reader, err := NewStructuredMessageResponseReader(body, &structuredBodyType)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			readData, err := io.ReadAll(reader)
+			if err != nil {
+				t.Fatalf("unexpected error reading: %v", err)
+			}
+
+			if !bytes.Equal(readData, data) {
+				t.Errorf("expected %v, got %v", data, readData)
+			}
+		})
 	}
 }
 
@@ -226,14 +340,28 @@ func TestStructuredMessageResponseReader_PartialRead(t *testing.T) {
 	writer := structuredmsg.NewStructuredMessageWriter(&structuredBuffer)
 
 	segmentSize := int64(structuredmsg.MaxSegmentSize)
-	numSegments := uint32((int64(len(originalData)) + segmentSize - 1) / segmentSize)
+	numSegments := uint16((int64(len(originalData)) + segmentSize - 1) / segmentSize)
 
-	if err := writer.WriteHeader(numSegments); err != nil {
+	// Calculate message length
+	messageLength := uint64(structuredmsg.HeaderSize)
+	offset := int64(0)
+	for i := uint16(0); i < numSegments; i++ {
+		remaining := int64(len(originalData)) - offset
+		chunkSize := segmentSize
+		if remaining < chunkSize {
+			chunkSize = remaining
+		}
+		messageLength += uint64(structuredmsg.SegmentHeaderSize) + uint64(chunkSize) + uint64(structuredmsg.SegmentCRC64Size)
+		offset += chunkSize
+	}
+	messageLength += uint64(structuredmsg.TrailerSize)
+
+	if err := writer.WriteHeader(numSegments, messageLength); err != nil {
 		t.Fatalf("failed to write header: %v", err)
 	}
 
-	offset := int64(0)
-	for i := uint32(0); i < numSegments; i++ {
+	offset = 0
+	for i := uint16(0); i < numSegments; i++ {
 		remaining := int64(len(originalData)) - offset
 		chunkSize := segmentSize
 		if remaining < chunkSize {

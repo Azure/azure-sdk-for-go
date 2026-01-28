@@ -6145,3 +6145,174 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() 
 	_require.NotNil(gResp.ContentLength)
 	_require.Equal(fileSize, *gResp.ContentLength)
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithStructuredMessage_Small() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Small upload (<4MB) - should use simple CRC64 header
+	contentSize := 2 * 1024 * 1024 // 2MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	uploadOptions := &blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	uploadResp, err := bbClient.Upload(context.Background(), body, uploadOptions)
+	_require.NoError(err)
+	_require.NotNil(uploadResp)
+
+	// Download and verify data integrity
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithStructuredMessage_Large() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Large upload (≥4MB) - should use structured message format
+	contentSize := 5 * 1024 * 1024 // 5MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	uploadOptions := &blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	uploadResp, err := bbClient.Upload(context.Background(), body, uploadOptions)
+	_require.NoError(err)
+	_require.NotNil(uploadResp)
+
+	// Download and verify data integrity
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobWithStructuredMessage_Boundary() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Exactly 4MB - should use structured message format (≥4MB)
+	contentSize := 4 * 1024 * 1024 // Exactly 4MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	uploadOptions := &blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	uploadResp, err := bbClient.Upload(context.Background(), body, uploadOptions)
+	_require.NoError(err)
+	_require.NotNil(uploadResp)
+
+	// Download and verify
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadStreamWithStructuredMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 5 * 1024 * 1024 // 5MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	body := bytes.NewReader(content)
+
+	uploadOptions := &blockblob.UploadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	_, err = bbClient.UploadStream(context.Background(), body, uploadOptions)
+	_require.NoError(err)
+
+	// Download and verify
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithStructuredMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 5 * 1024 * 1024 // 5MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	stageOptions := &blockblob.StageBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	_, err = bbClient.StageBlock(context.Background(), blockID, body, stageOptions)
+	_require.NoError(err)
+
+	// Commit block list
+	_, err = bbClient.CommitBlockList(context.Background(), []string{blockID}, nil)
+	_require.NoError(err)
+
+	// Download and verify
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}

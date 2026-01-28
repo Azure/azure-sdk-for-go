@@ -35,10 +35,8 @@ func NewStructuredMessageResponseReader(body io.ReadCloser, structuredBodyType *
 		return body, nil
 	}
 
-	// Check if it's a structured message format we support
-	// Format: "XSM/1.0;CRC64" or "XSM/1.0;properties=crc64"
-	bodyType := strings.ToUpper(*structuredBodyType)
-	if !strings.HasPrefix(bodyType, "XSM/1.0") {
+	// Structured body type is not supported, return body as-is
+	if !isSupportedStructuredBody(structuredBodyType) {
 		return body, nil
 	}
 
@@ -54,6 +52,35 @@ func NewStructuredMessageResponseReader(body io.ReadCloser, structuredBodyType *
 	}, nil
 }
 
+func isSupportedStructuredBody(structuredBodyType *string) bool {
+
+	// Check if it's a structured message format we support
+	// Format: "XSM/1.0;CRC64" or "XSM/1.0;properties=crc64"
+	bodyType := strings.ToUpper(strings.TrimSpace(*structuredBodyType))
+
+	// Verify it's one of the supported formats
+	// Must have semicolon and either "CRC64" or "PROPERTIES=CRC64"
+	if !strings.Contains(bodyType, ";") {
+		return false
+	}
+
+	// Extract the part after the semicolon
+	parts := strings.SplitN(bodyType, ";", 2)
+	if len(parts) != 2 {
+		return false
+	}
+
+	if strings.TrimSpace(parts[0]) != "XSM/1.0" {
+		return false
+	}
+	propertyPart := strings.TrimSpace(parts[1])
+	// Check for exact "CRC64" or "PROPERTIES=CRC64" format
+	if propertyPart != "CRC64" && propertyPart != "PROPERTIES=CRC64" {
+		return false
+	}
+	return true
+}
+
 // Read implements io.Reader. It reads data from structured message segments,
 // validates CRC64, and returns only the data (stripping framing).
 func (r *StructuredMessageResponseReader) Read(p []byte) (int, error) {
@@ -64,10 +91,9 @@ func (r *StructuredMessageResponseReader) Read(p []byte) (int, error) {
 	// Read header on first read
 	if !r.headerRead {
 		_, err := r.reader.ReadHeader()
-		if err != nil {
-			if err == io.EOF {
-				return 0, io.EOF
-			}
+		if errors.Is(err, io.EOF) {
+			return 0, err
+		} else if err != nil {
 			// Map structured message errors to blob errors
 			if errors.Is(err, structuredmsg.ErrInvalidVersion) {
 				return 0, fmt.Errorf("invalid structured message version: %w", err)

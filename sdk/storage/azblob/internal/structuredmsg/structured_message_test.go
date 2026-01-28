@@ -18,38 +18,60 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// calculateMessageLength calculates the total message length for given segments
+// enableCRC64: if true, includes SegmentCRC64Size for each segment and TrailerSize
+func calculateMessageLength(segmentSizes []int, enableCRC64 bool) uint64 {
+	messageLength := uint64(HeaderSize)
+	for _, size := range segmentSizes {
+		messageLength += uint64(SegmentHeaderSize) + uint64(size)
+		if enableCRC64 {
+			messageLength += uint64(SegmentCRC64Size)
+		}
+	}
+	if enableCRC64 {
+		messageLength += uint64(TrailerSize)
+	}
+	return messageLength
+}
+
 func TestStructuredMessageWriter_WriteHeader(t *testing.T) {
 	tests := []struct {
-		name         string
-		numSegments  uint32
-		expectError  bool
-		errorMessage string
+		name          string
+		numSegments   uint16
+		messageLength uint64
+		expectError   bool
+		errorMessage  string
 	}{
 		{
-			name:        "Valid single segment",
-			numSegments: 1,
-			expectError: false,
+			name:          "Valid single segment",
+			numSegments:   1,
+			messageLength: calculateMessageLength([]int{100}, true),
+			expectError:   false,
 		},
 		{
-			name:        "Valid multiple segments",
-			numSegments: 5,
-			expectError: false,
+			name:          "Valid multiple segments",
+			numSegments:   5,
+			messageLength: calculateMessageLength([]int{100, 200, 300, 400, 500}, true),
+			expectError:   false,
 		},
 		{
-			name:        "Valid maximum segments",
-			numSegments: MaxSegments,
-			expectError: false,
+			name:          "Valid maximum segments",
+			numSegments:   MaxSegments,
+			messageLength: calculateMessageLength([]int{100}, true), // Just a placeholder
+			expectError:   false,
 		},
 		{
-			name:         "Zero segments",
-			numSegments:  0,
-			expectError:  true,
-			errorMessage: "invalid segment count",
+			name:          "Zero segments",
+			numSegments:   0,
+			messageLength: 0,
+			expectError:   true,
+			errorMessage:  "invalid segment count",
 		},
 		{
-			name:        "Too many segments",
-			numSegments: MaxSegments,
-			expectError: false, // MaxSegments should be valid
+			name:          "Too many segments",
+			numSegments:   MaxSegments,
+			messageLength: calculateMessageLength([]int{100}, true),
+			expectError:   false, // MaxSegments should be valid
 		},
 	}
 
@@ -58,7 +80,8 @@ func TestStructuredMessageWriter_WriteHeader(t *testing.T) {
 			var buf bytes.Buffer
 			writer := NewStructuredMessageWriter(&buf)
 
-			err := writer.WriteHeader(tt.numSegments)
+			// Default to CRC64 enabled for tests
+			err := writer.WriteHeader(tt.numSegments, tt.messageLength, true)
 
 			if tt.expectError {
 				require.Error(t, err)
@@ -70,9 +93,9 @@ func TestStructuredMessageWriter_WriteHeader(t *testing.T) {
 				// Verify header content
 				headerBytes := buf.Bytes()
 				assert.Equal(t, uint8(MessageVersion), headerBytes[0])
-				assert.Equal(t, uint8(FlagNone), headerBytes[1])
-				assert.Equal(t, uint16(PropCRC64), binary.LittleEndian.Uint16(headerBytes[2:]))
-				assert.Equal(t, tt.numSegments, binary.LittleEndian.Uint32(headerBytes[4:]))
+				assert.Equal(t, tt.messageLength, binary.LittleEndian.Uint64(headerBytes[1:9]))
+				assert.Equal(t, uint16(PropCRC64), binary.LittleEndian.Uint16(headerBytes[9:11]))
+				assert.Equal(t, tt.numSegments, binary.LittleEndian.Uint16(headerBytes[11:13]))
 			}
 		})
 	}
@@ -114,7 +137,8 @@ func TestStructuredMessageWriter_WriteSegment(t *testing.T) {
 			writer := NewStructuredMessageWriter(&buf)
 
 			// Write header first
-			err := writer.WriteHeader(1)
+			messageLength := calculateMessageLength([]int{len(tt.data)}, true)
+			err := writer.WriteHeader(1, messageLength, true)
 			require.NoError(t, err)
 
 			// Write segment
@@ -127,27 +151,29 @@ func TestStructuredMessageWriter_WriteSegment(t *testing.T) {
 				require.NoError(t, err)
 
 				// Verify segment was written correctly
-				expectedSize := HeaderSize + SegmentHeaderSize + len(tt.data)
+				expectedSize := HeaderSize + SegmentHeaderSize + len(tt.data) + SegmentCRC64Size
 				require.Equal(t, expectedSize, buf.Len())
 
 				// Verify segment header
 				segmentHeaderStart := HeaderSize
 				segmentHeaderBytes := buf.Bytes()[segmentHeaderStart : segmentHeaderStart+SegmentHeaderSize]
-				segmentNum := binary.LittleEndian.Uint32(segmentHeaderBytes[0:])
-				dataLength := binary.LittleEndian.Uint32(segmentHeaderBytes[4:])
-				segmentCRC64 := binary.LittleEndian.Uint64(segmentHeaderBytes[8:])
+				segmentNum := binary.LittleEndian.Uint16(segmentHeaderBytes[0:2])
+				dataLength := binary.LittleEndian.Uint64(segmentHeaderBytes[2:10])
 
-				assert.Equal(t, uint32(0), segmentNum)
-				assert.Equal(t, uint32(len(tt.data)), dataLength)
-
-				// Verify CRC64
-				expectedCRC64 := crc64.Checksum(tt.data, shared.CRC64Table)
-				assert.Equal(t, expectedCRC64, segmentCRC64)
+				assert.Equal(t, uint16(1), segmentNum) // Segments are 1-indexed
+				assert.Equal(t, uint64(len(tt.data)), dataLength)
 
 				// Verify data
 				dataStart := segmentHeaderStart + SegmentHeaderSize
 				actualData := buf.Bytes()[dataStart : dataStart+len(tt.data)]
 				assert.Equal(t, tt.data, actualData)
+
+				// Verify CRC64 (after data)
+				crcStart := dataStart + len(tt.data)
+				crcBytes := buf.Bytes()[crcStart : crcStart+SegmentCRC64Size]
+				segmentCRC64 := binary.LittleEndian.Uint64(crcBytes)
+				expectedCRC64 := crc64.Checksum(tt.data, shared.CRC64Table)
+				assert.Equal(t, expectedCRC64, segmentCRC64)
 			}
 		})
 	}
@@ -157,12 +183,13 @@ func TestStructuredMessageWriter_WriteTrailer(t *testing.T) {
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
 
-	// Write header and segments
-	err := writer.WriteHeader(2)
-	require.NoError(t, err)
-
 	data1 := []byte("hello")
 	data2 := []byte("world")
+
+	// Write header and segments
+	messageLength := calculateMessageLength([]int{len(data1), len(data2)}, true)
+	err := writer.WriteHeader(2, messageLength, true)
+	require.NoError(t, err)
 
 	err = writer.WriteSegment(data1)
 	require.NoError(t, err)
@@ -175,19 +202,14 @@ func TestStructuredMessageWriter_WriteTrailer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Verify trailer
-	expectedSize := HeaderSize + (SegmentHeaderSize + len(data1)) + (SegmentHeaderSize + len(data2)) + TrailerSize
+	expectedSize := HeaderSize + (SegmentHeaderSize + len(data1) + SegmentCRC64Size) + (SegmentHeaderSize + len(data2) + SegmentCRC64Size) + TrailerSize
 	require.Equal(t, expectedSize, buf.Len())
 
-	// Verify trailer content
+	// Verify trailer content (trailer is ONLY 8 bytes: message-crc64)
 	trailerStart := expectedSize - TrailerSize
 	trailerBytes := buf.Bytes()[trailerStart:]
 
-	// Verify trailer header
-	assert.Equal(t, uint8(MessageVersion), trailerBytes[0])
-	assert.Equal(t, uint8(FlagNone), trailerBytes[1])
-	assert.Equal(t, uint16(PropCRC64), binary.LittleEndian.Uint16(trailerBytes[2:]))
-
-	expectedCRC64 := binary.LittleEndian.Uint64(trailerBytes[4:])
+	expectedCRC64 := binary.LittleEndian.Uint64(trailerBytes[0:8])
 
 	// Calculate expected cumulative CRC64
 	allData := append(data1, data2...)
@@ -197,6 +219,16 @@ func TestStructuredMessageWriter_WriteTrailer(t *testing.T) {
 }
 
 func TestStructuredMessageReader_ReadHeader(t *testing.T) {
+	// Helper to create valid 13-byte header
+	createHeader := func(version uint8, messageLength uint64, flags uint16, numSegments uint16) []byte {
+		header := make([]byte, HeaderSize)
+		header[0] = version
+		binary.LittleEndian.PutUint64(header[1:9], messageLength)
+		binary.LittleEndian.PutUint16(header[9:11], flags)
+		binary.LittleEndian.PutUint16(header[11:13], numSegments)
+		return header
+	}
+
 	tests := []struct {
 		name         string
 		headerBytes  []byte
@@ -205,35 +237,35 @@ func TestStructuredMessageReader_ReadHeader(t *testing.T) {
 	}{
 		{
 			name:        "Valid header",
-			headerBytes: []byte{MessageVersion, FlagNone, 0x01, 0x00, 1, 0, 0, 0}, // version=1, flags=0, properties=PropCRC64, numSegments=1
+			headerBytes: createHeader(MessageVersion, 100, PropCRC64, 1),
 			expectError: false,
 		},
 		{
 			name:         "Invalid version",
-			headerBytes:  []byte{2, FlagNone, 0x01, 0x00, 1, 0, 0, 0}, // version=2
+			headerBytes:  createHeader(2, 100, PropCRC64, 1), // version=2
 			expectError:  true,
 			errorMessage: "invalid message version",
 		},
 		{
 			name:         "Zero segments",
-			headerBytes:  []byte{MessageVersion, FlagNone, 0x01, 0x00, 0, 0, 0, 0}, // numSegments=0
+			headerBytes:  createHeader(MessageVersion, 100, PropCRC64, 0), // numSegments=0
 			expectError:  true,
 			errorMessage: "invalid segment count",
 		},
 		{
 			name:         "Missing CRC64 property",
-			headerBytes:  []byte{MessageVersion, FlagNone, 0x00, 0x00, 1, 0, 0, 0}, // properties=0
+			headerBytes:  createHeader(MessageVersion, 100, 0, 1), // flags=0 (no CRC64)
 			expectError:  true,
 			errorMessage: "CRC64 property not set",
 		},
 		{
 			name:        "Maximum segments",
-			headerBytes: []byte{MessageVersion, FlagNone, 0x01, 0x00, 0xFF, 0xFF, 0xFF, 0xFF}, // numSegments=MaxUint32
-			expectError: false,                                                                // MaxUint32 should be valid
+			headerBytes: createHeader(MessageVersion, 100, PropCRC64, MaxSegments),
+			expectError: false,
 		},
 		{
 			name:         "Incomplete header",
-			headerBytes:  []byte{MessageVersion, FlagNone, 0x01, 0x00, 1, 0, 0}, // missing 1 byte
+			headerBytes:  []byte{MessageVersion, 0, 0, 0, 0, 0, 0, 0, 0, 0x01, 0x00, 1}, // missing 1 byte
 			expectError:  true,
 			errorMessage: "unexpected EOF",
 		},
@@ -253,12 +285,10 @@ func TestStructuredMessageReader_ReadHeader(t *testing.T) {
 				require.NoError(t, err)
 				require.NotNil(t, header)
 				assert.Equal(t, uint8(MessageVersion), header.Version)
-				assert.Equal(t, uint8(FlagNone), header.Flags)
-				assert.Equal(t, uint16(PropCRC64), header.Properties)
 				if tt.name == "Maximum segments" {
-					assert.Equal(t, uint32(0xFFFFFFFF), header.NumSegments)
+					assert.Equal(t, uint16(MaxSegments), header.NumSegments)
 				} else {
-					assert.Equal(t, uint32(1), header.NumSegments)
+					assert.Equal(t, uint16(1), header.NumSegments)
 				}
 			}
 		})
@@ -273,7 +303,8 @@ func TestStructuredMessageReader_ReadSegment(t *testing.T) {
 	// Create structured message
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(2)
+	messageLength := calculateMessageLength([]int{len(data1), len(data2)}, true)
+	writer.WriteHeader(2, messageLength, true)
 	writer.WriteSegment(data1)
 	writer.WriteSegment(data2)
 	writer.WriteTrailer()
@@ -303,15 +334,18 @@ func TestStructuredMessageReader_ReadSegment_CRC64Mismatch(t *testing.T) {
 	// Create structured message
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(1)
+	messageLength := calculateMessageLength([]int{len(data)}, true)
+	writer.WriteHeader(1, messageLength, true)
 	writer.WriteSegment(data)
 	writer.WriteTrailer()
 
-	// Corrupt the CRC64 in the segment header
+	// Corrupt the CRC64 after the segment data
 	bufBytes := buf.Bytes()
 	segmentHeaderStart := HeaderSize
-	crc64Offset := segmentHeaderStart + 8 // CRC64 is at offset 8 in segment header
-	bufBytes[crc64Offset] ^= 0xFF         // Flip some bits
+	dataStart := segmentHeaderStart + SegmentHeaderSize
+	dataEnd := dataStart + len(data)
+	crc64Offset := dataEnd        // CRC64 is after the data
+	bufBytes[crc64Offset] ^= 0xFF // Flip some bits
 
 	// Test reading with corrupted CRC64
 	reader := NewStructuredMessageReader(bytes.NewReader(bufBytes))
@@ -330,7 +364,8 @@ func TestStructuredMessageReader_ReadAllSegments(t *testing.T) {
 	// Create structured message
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(3)
+	messageLength := calculateMessageLength([]int{len(data1), len(data2), len(data3)}, true)
+	writer.WriteHeader(3, messageLength, true)
 	writer.WriteSegment(data1)
 	writer.WriteSegment(data2)
 	writer.WriteSegment(data3)
@@ -354,7 +389,8 @@ func TestStructuredMessageReader_ReadTrailer(t *testing.T) {
 	// Create structured message
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(2)
+	messageLength := calculateMessageLength([]int{len(data1), len(data2)}, true)
+	writer.WriteHeader(2, messageLength, true)
 	writer.WriteSegment(data1)
 	writer.WriteSegment(data2)
 	writer.WriteTrailer()
@@ -384,15 +420,16 @@ func TestStructuredMessageReader_ReadTrailer_CRC64Mismatch(t *testing.T) {
 	// Create structured message
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(1)
+	messageLength := calculateMessageLength([]int{len(data)}, true)
+	writer.WriteHeader(1, messageLength, true)
 	writer.WriteSegment(data)
 	writer.WriteTrailer()
 
 	// Corrupt the trailer CRC64
 	bufBytes := buf.Bytes()
 	trailerStart := len(bufBytes) - TrailerSize
-	crc64Offset := trailerStart + 4 // CRC64 is at offset 4 in trailer
-	bufBytes[crc64Offset] ^= 0xFF   // Flip some bits in CRC64
+	crc64Offset := trailerStart   // CRC64 is at offset 0 in trailer (trailer is only CRC64)
+	bufBytes[crc64Offset] ^= 0xFF // Flip some bits in CRC64
 
 	// Test reading with corrupted trailer
 	reader := NewStructuredMessageReader(bytes.NewReader(bufBytes))
@@ -437,7 +474,8 @@ func TestStructuredMessageWriter_GetTotalCRC64(t *testing.T) {
 	assert.Equal(t, uint64(0), writer.GetTotalCRC64())
 
 	// Write segments
-	writer.WriteHeader(2)
+	messageLength := calculateMessageLength([]int{5, 5}, true)
+	writer.WriteHeader(2, messageLength, true)
 	writer.WriteSegment([]byte("hello"))
 	writer.WriteSegment([]byte("world"))
 
@@ -455,7 +493,8 @@ func TestStructuredMessageReader_GetTotalCRC64(t *testing.T) {
 	// Create structured message
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(2)
+	messageLength := calculateMessageLength([]int{len(data1), len(data2)}, true)
+	writer.WriteHeader(2, messageLength, true)
 	writer.WriteSegment(data1)
 	writer.WriteSegment(data2)
 	writer.WriteTrailer()
@@ -494,7 +533,13 @@ func TestStructuredMessage_EndToEnd(t *testing.T) {
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
 
-	err := writer.WriteHeader(uint32(len(testData)))
+	// Calculate message length
+	segmentSizes := make([]int, len(testData))
+	for i, data := range testData {
+		segmentSizes[i] = len(data)
+	}
+	messageLength := calculateMessageLength(segmentSizes, true)
+	err := writer.WriteHeader(uint16(len(testData)), messageLength, true)
 	require.NoError(t, err)
 
 	for _, data := range testData {
@@ -511,7 +556,7 @@ func TestStructuredMessage_EndToEnd(t *testing.T) {
 	// Read header
 	header, err := reader.ReadHeader()
 	require.NoError(t, err)
-	assert.Equal(t, uint32(len(testData)), header.NumSegments)
+	assert.Equal(t, uint16(len(testData)), header.NumSegments)
 
 	// Read all segments
 	allData, err := reader.ReadAllSegments()
@@ -547,7 +592,13 @@ func TestStructuredMessage_EmptySegments(t *testing.T) {
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
 
-	err := writer.WriteHeader(uint32(len(testData)))
+	// Calculate message length
+	segmentSizes := make([]int, len(testData))
+	for i, data := range testData {
+		segmentSizes[i] = len(data)
+	}
+	messageLength := calculateMessageLength(segmentSizes, true)
+	err := writer.WriteHeader(uint16(len(testData)), messageLength, true)
 	require.NoError(t, err)
 
 	for _, data := range testData {
@@ -588,7 +639,8 @@ func TestStructuredMessage_LargeData(t *testing.T) {
 	var buf bytes.Buffer
 	writer := NewStructuredMessageWriter(&buf)
 
-	err := writer.WriteHeader(1)
+	messageLength := calculateMessageLength([]int{len(largeData)}, true)
+	err := writer.WriteHeader(1, messageLength, true)
 	require.NoError(t, err)
 
 	err = writer.WriteSegment(largeData)

@@ -5061,3 +5061,72 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {
 	_, err = pbClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesWithStructuredMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := containerClient.NewPageBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = pbClient.Create(context.Background(), 5*1024*1024, nil) // 5MB page blob
+	_require.NoError(err)
+
+	contentSize := 5 * 1024 * 1024 // 5MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	body := streaming.NopCloser(bytes.NewReader(content))
+	uploadOptions := &pageblob.UploadPagesOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	_, err = pbClient.UploadPages(context.Background(), body, blob.HTTPRange{Offset: 0, Count: int64(contentSize)}, uploadOptions)
+	_require.NoError(err)
+
+	// Download and verify
+	downloadResp, err := pbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesWithStructuredMessage_Small() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	pbClient := containerClient.NewPageBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = pbClient.Create(context.Background(), 2*1024*1024, nil) // 2MB page blob
+	_require.NoError(err)
+
+	// Small upload (<4MB) - should use simple CRC64 header
+	contentSize := 2 * 1024 * 1024 // 2MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	body := streaming.NopCloser(bytes.NewReader(content))
+	uploadOptions := &pageblob.UploadPagesOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	_, err = pbClient.UploadPages(context.Background(), body, blob.HTTPRange{Offset: 0, Count: int64(contentSize)}, uploadOptions)
+	_require.NoError(err)
+
+	// Download and verify
+	downloadResp, err := pbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}

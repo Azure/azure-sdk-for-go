@@ -27,8 +27,15 @@ func ExampleStructuredMessageWriter() {
 	data2 := []byte("World!")
 	data3 := []byte(" This is a test.")
 
-	// Write the message header (specify number of segments)
-	err := writer.WriteHeader(3)
+	// Calculate message length
+	messageLength := uint64(structuredmsg.HeaderSize) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data1)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data2)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data3)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.TrailerSize)
+
+	// Write the message header (specify number of segments and message length)
+	err := writer.WriteHeader(3, messageLength, true)
 	if err != nil {
 		panic(err)
 	}
@@ -71,7 +78,12 @@ func ExampleStructuredMessageReader() {
 	// First, create a structured message
 	var buf bytes.Buffer
 	writer := structuredmsg.NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(3)
+	messageLength := uint64(structuredmsg.HeaderSize) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data1)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data2)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data3)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.TrailerSize)
+	writer.WriteHeader(3, messageLength, true)
 	writer.WriteSegment(data1)
 	writer.WriteSegment(data2)
 	writer.WriteSegment(data3)
@@ -113,7 +125,12 @@ func ExampleStructuredMessageReader_readSegmentBySegment() {
 	// First, create a structured message
 	var buf bytes.Buffer
 	writer := structuredmsg.NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(3)
+	messageLength := uint64(structuredmsg.HeaderSize) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data1)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data2)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data3)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.TrailerSize)
+	writer.WriteHeader(3, messageLength, true)
 	writer.WriteSegment(data1)
 	writer.WriteSegment(data2)
 	writer.WriteSegment(data3)
@@ -165,15 +182,20 @@ func ExampleStructuredMessageReader_errorHandling() {
 	data := []byte("test data")
 	var buf bytes.Buffer
 	writer := structuredmsg.NewStructuredMessageWriter(&buf)
-	writer.WriteHeader(1)
+	messageLength := uint64(structuredmsg.HeaderSize) +
+		uint64(structuredmsg.SegmentHeaderSize) + uint64(len(data)) + uint64(structuredmsg.SegmentCRC64Size) +
+		uint64(structuredmsg.TrailerSize)
+	writer.WriteHeader(1, messageLength, true)
 	writer.WriteSegment(data)
 	writer.WriteTrailer()
 
-	// Corrupt the CRC64 in the segment header
+	// Corrupt the CRC64 after the segment data
 	bufBytes := buf.Bytes()
-	segmentHeaderStart := 6               // HeaderSize
-	crc64Offset := segmentHeaderStart + 8 // CRC64 is at offset 8 in segment header
-	bufBytes[crc64Offset] ^= 0xFF         // Flip some bits
+	segmentHeaderStart := structuredmsg.HeaderSize
+	dataStart := segmentHeaderStart + structuredmsg.SegmentHeaderSize
+	dataEnd := dataStart + len(data)
+	crc64Offset := dataEnd        // CRC64 is after the data
+	bufBytes[crc64Offset] ^= 0xFF // Flip some bits
 
 	// Try to read the corrupted data
 	reader2 := structuredmsg.NewStructuredMessageReader(bytes.NewReader(bufBytes))

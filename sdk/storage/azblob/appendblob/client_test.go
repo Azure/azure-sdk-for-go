@@ -3708,3 +3708,73 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlobClientCustomAudience() {
 	_, err = abClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithStructuredMessage() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Large append (≥4MB) - should use structured message format
+	contentSize := 5 * 1024 * 1024 // 5MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	body := streaming.NopCloser(bytes.NewReader(content))
+	appendOptions := &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	_, err = abClient.AppendBlock(context.Background(), body, appendOptions)
+	_require.NoError(err)
+
+	// Download and verify
+	downloadResp, err := abClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithStructuredMessage_Small() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, testcommon.GenerateContainerName(testName), svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = abClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Small append (<4MB) - should use simple CRC64 header
+	contentSize := 2 * 1024 * 1024 // 2MB
+	content := make([]byte, contentSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+
+	body := streaming.NopCloser(bytes.NewReader(content))
+	appendOptions := &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeStructuredMessage(),
+	}
+	_, err = abClient.AppendBlock(context.Background(), body, appendOptions)
+	_require.NoError(err)
+
+	// Download and verify
+	downloadResp, err := abClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.Equal(content, downloadedData)
+	_require.NoError(downloadResp.Body.Close())
+}

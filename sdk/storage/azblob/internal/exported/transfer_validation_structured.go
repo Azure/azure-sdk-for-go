@@ -47,20 +47,35 @@ func wrapInStructuredMessage(data []byte, cfg generated.TransactionalContentSett
 
 	// Calculate segment count (max 4MB per segment)
 	segmentSize := int64(structuredmsg.MaxSegmentSize)
-	numSegments := uint32((dataSize + segmentSize - 1) / segmentSize)
+	numSegments := uint16((dataSize + segmentSize - 1) / segmentSize)
 
-	// Create a buffer to hold the structured message
+	// Calculate total message length with CRC64 (required for transfer validation):
+	// HeaderSize + sum of (SegmentHeaderSize + dataLength + SegmentCRC64Size for each segment) + TrailerSize
+	messageLength := uint64(structuredmsg.HeaderSize) // Header
+	offset := int64(0)
+	for i := uint16(0); i < numSegments; i++ {
+		remaining := dataSize - offset
+		chunkSize := segmentSize
+		if remaining < chunkSize {
+			chunkSize = remaining
+		}
+		messageLength += uint64(structuredmsg.SegmentHeaderSize) + uint64(chunkSize) + uint64(structuredmsg.SegmentCRC64Size)
+		offset += chunkSize
+	}
+	messageLength += uint64(structuredmsg.TrailerSize) // Trailer
+
+	// Buffer to hold the structured message
 	var structuredBuffer bytes.Buffer
 	writer := structuredmsg.NewStructuredMessageWriter(&structuredBuffer)
 
-	// Write header
-	if err := writer.WriteHeader(numSegments); err != nil {
+	// Write header with CRC64 enabled (required for transfer validation)
+	if err := writer.WriteHeader(numSegments, messageLength, true); err != nil {
 		return nil, err
 	}
 
 	// Write segments
-	offset := int64(0)
-	for i := uint32(0); i < numSegments; i++ {
+	offset = 0
+	for i := uint16(0); i < numSegments; i++ {
 		remaining := dataSize - offset
 		chunkSize := segmentSize
 		if remaining < chunkSize {

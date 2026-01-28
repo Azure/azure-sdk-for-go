@@ -30,23 +30,21 @@ const (
 	// MessageVersion is the Message format version
 	MessageVersion = 1
 
-	// HeaderSize is the Header size in bytes: version(1) + flags(1) + properties(2) + numSegments(4) = 8 bytes
-	HeaderSize = 8
+	// HeaderSize is the Header size in bytes: version(1) + message-length(8) + message-flags(2) + num-segments(2) = 13 bytes
+	HeaderSize = 13
 
-	// TrailerHeaderSize is the Trailer header size in bytes: version(1) + flags(1) + properties(2) = 4 bytes
-	TrailerHeaderSize = 4
+	// TrailerSize is the Total trailer size in bytes: message-crc64(8) = 8 bytes
+	TrailerSize = 8
 
-	// TrailerCRC64Size is the Trailer CRC64 size in bytes: cumulativeCRC64(8) = 8 bytes
-	TrailerCRC64Size = 8
+	// SegmentHeaderSize is segment-num(2) + data-length(8) = 10 bytes
+	// Note: segment-crc64(8) comes AFTER the data, not in the header
+	SegmentHeaderSize = 10
 
-	// TrailerSize is the Total trailer size in bytes: header(4) + crc64(8) = 12 bytes
-	TrailerSize = TrailerHeaderSize + TrailerCRC64Size
+	// SegmentCRC64Size is the size of segment CRC64 in bytes
+	SegmentCRC64Size = 8
 
-	// SegmentHeaderSize is segmentNum(4) + dataLength(4) + segmentCRC64(8) = 16 bytes
-	SegmentHeaderSize = 16
-
-	// MaxSegments is Maximum number of segments allowed
-	MaxSegments = math.MaxUint32
+	// MaxSegments is Maximum number of segments allowed (uint16 max)
+	MaxSegments = math.MaxUint16
 
 	// MaxSegmentSize Maximum segment size (4MB)
 	MaxSegmentSize = 4 * 1024 * 1024
@@ -74,10 +72,11 @@ var (
 
 // StructuredMessageWriter encodes data into the binary message format
 type StructuredMessageWriter struct {
-	writer     io.Writer
-	crc64Table *crc64.Table
-	segmentNum uint32
-	totalCRC64 uint64
+	writer      io.Writer
+	crc64Table  *crc64.Table
+	segmentNum  uint16
+	totalCRC64  uint64
+	enableCRC64 bool // Whether CRC64 is enabled (flags = 1) or disabled (flags = 0)
 }
 
 // NewStructuredMessageWriter creates a new StructuredMessageWriter
@@ -85,41 +84,57 @@ func NewStructuredMessageWriter(writer io.Writer) *StructuredMessageWriter {
 	return &StructuredMessageWriter{
 		writer:     writer,
 		crc64Table: shared.CRC64Table,
-		segmentNum: 0,
+		segmentNum: 1, // Segments are 1-indexed
 		totalCRC64: 0,
 	}
 }
 
 // WriteHeader writes the message header
-func (w *StructuredMessageWriter) WriteHeader(numSegments uint32) error {
+// messageLength is the total size of the structured message in bytes:
+//   - With CRC64: HeaderSize + sum of (SegmentHeaderSize + dataLength + SegmentCRC64Size for each segment) + TrailerSize
+//   - Without CRC64: HeaderSize + sum of (SegmentHeaderSize + dataLength for each segment)
+//
+// enableCRC64: if true, flags = 1 (PropCRC64), segments and trailer include CRC64; if false, flags = 0, no CRC64
+func (w *StructuredMessageWriter) WriteHeader(numSegments uint16, messageLength uint64, enableCRC64 bool) error {
 	if numSegments == 0 || numSegments > MaxSegments {
 		return ErrInvalidSegmentCount
 	}
 
+	w.enableCRC64 = enableCRC64
+
 	header := make([]byte, HeaderSize)
-	header[0] = MessageVersion
-	header[1] = FlagNone
-	binary.LittleEndian.PutUint16(header[2:], PropCRC64)
-	binary.LittleEndian.PutUint32(header[4:], numSegments)
+	header[0] = MessageVersion                                // byte 0: version (1 byte)
+	binary.LittleEndian.PutUint64(header[1:9], messageLength) // bytes 1-8: message-length (8 bytes)
+
+	var flags uint16
+	if enableCRC64 {
+		flags = PropCRC64 // flags = 1 if CRC64 is included
+	} else {
+		flags = FlagNone // flags = 0 if CRC64 is excluded
+	}
+	binary.LittleEndian.PutUint16(header[9:11], flags)        // bytes 9-10: message-flags (2 bytes)
+	binary.LittleEndian.PutUint16(header[11:13], numSegments) // bytes 11-12: num-segments (2 bytes)
 
 	_, err := w.writer.Write(header)
 	return err
 }
 
-// WriteSegment writes a segment with its data and CRC64
+// WriteSegment writes a segment with its data and optionally CRC64
 func (w *StructuredMessageWriter) WriteSegment(data []byte) error {
 	if len(data) > MaxSegmentSize {
 		return ErrSegmentTooLarge
 	}
 
-	// Calculate segment CRC64
-	segmentCRC64 := crc64.Checksum(data, w.crc64Table)
+	// Calculate segment CRC64 if enabled
+	var segmentCRC64 uint64
+	if w.enableCRC64 {
+		segmentCRC64 = crc64.Checksum(data, w.crc64Table)
+	}
 
-	// Write segment header
+	// Write segment header (segment-num + data-length)
 	header := make([]byte, SegmentHeaderSize)
-	binary.LittleEndian.PutUint32(header[0:4], w.segmentNum)
-	binary.LittleEndian.PutUint32(header[4:8], uint32(len(data)))
-	binary.LittleEndian.PutUint64(header[8:16], segmentCRC64)
+	binary.LittleEndian.PutUint16(header[0:2], w.segmentNum)       // bytes 0-1: segment-num (2 bytes)
+	binary.LittleEndian.PutUint64(header[2:10], uint64(len(data))) // bytes 2-9: data-length (8 bytes)
 
 	if _, err := w.writer.Write(header); err != nil {
 		return err
@@ -130,20 +145,35 @@ func (w *StructuredMessageWriter) WriteSegment(data []byte) error {
 		return err
 	}
 
-	// Update cumulative CRC64
-	w.totalCRC64 = crc64.Update(w.totalCRC64, w.crc64Table, data)
+	// Write segment CRC64 AFTER the data (8 bytes) only if CRC64 is enabled
+	if w.enableCRC64 {
+		crcBytes := make([]byte, SegmentCRC64Size)
+		binary.LittleEndian.PutUint64(crcBytes, segmentCRC64)
+		if _, err := w.writer.Write(crcBytes); err != nil {
+			return err
+		}
+	}
+
+	// Update cumulative CRC64 if enabled
+	if w.enableCRC64 {
+		w.totalCRC64 = crc64.Update(w.totalCRC64, w.crc64Table, data)
+	}
 	w.segmentNum++
 
 	return nil
 }
 
-// WriteTrailer writes the message trailer with cumulative CRC64
+// WriteTrailer writes the message trailer with cumulative CRC64 (if CRC64 is enabled)
+// If CRC64 is enabled: Trailer is 8 bytes (message-crc64)
+// If CRC64 is disabled: No trailer is written
 func (w *StructuredMessageWriter) WriteTrailer() error {
+	if !w.enableCRC64 {
+		// No trailer when CRC64 is disabled
+		return nil
+	}
+
 	trailer := make([]byte, TrailerSize)
-	trailer[0] = MessageVersion
-	trailer[1] = FlagNone
-	binary.LittleEndian.PutUint16(trailer[2:], PropCRC64)
-	binary.LittleEndian.PutUint64(trailer[4:], w.totalCRC64)
+	binary.LittleEndian.PutUint64(trailer[0:8], w.totalCRC64)
 	_, err := w.writer.Write(trailer)
 	return err
 }
@@ -158,17 +188,17 @@ type StructuredMessageReader struct {
 	reader     io.Reader
 	crc64Table *crc64.Table
 	header     *MessageHeader
-	segmentNum uint32
+	segmentNum uint16
 	totalCRC64 uint64
 	closed     bool
 }
 
 // MessageHeader represents the message header
 type MessageHeader struct {
-	Version     uint8
-	Flags       uint8
-	Properties  uint16
-	NumSegments uint32
+	Version       uint8
+	MessageLength uint64 // 8 bytes - total SM length
+	MessageFlags  uint16 // 2 bytes - bitmask (CRC64 = 0x0001)
+	NumSegments   uint16 // 2 bytes - number of segments
 }
 
 // NewStructuredMessageReader creates a new StructuredMessageReader
@@ -176,7 +206,7 @@ func NewStructuredMessageReader(reader io.Reader) *StructuredMessageReader {
 	return &StructuredMessageReader{
 		reader:     reader,
 		crc64Table: shared.CRC64Table,
-		segmentNum: 0,
+		segmentNum: 1, // Segments are 1-indexed
 		totalCRC64: 0,
 		closed:     false,
 	}
@@ -201,19 +231,18 @@ func (r *StructuredMessageReader) ReadHeader() (*MessageHeader, error) {
 	}
 
 	header := &MessageHeader{
-		Version:     headerBytes[0],
-		Flags:       headerBytes[1],
-		Properties:  binary.LittleEndian.Uint16(headerBytes[2:]),
-		NumSegments: binary.LittleEndian.Uint32(headerBytes[4:]),
+		Version:       headerBytes[0],
+		MessageLength: binary.LittleEndian.Uint64(headerBytes[1:9]),
+		MessageFlags:  binary.LittleEndian.Uint16(headerBytes[9:11]),
+		NumSegments:   binary.LittleEndian.Uint16(headerBytes[11:13]),
 	}
 
 	if header.Version != MessageVersion {
 		return nil, ErrInvalidVersion
 	}
 
-	if header.Properties&PropCRC64 == 0 {
-		return nil, errors.New("CRC64 property not set")
-	}
+	// Flags can be 0 (CRC64 disabled) or 1 (CRC64 enabled)
+	// Both are valid, so we don't require PropCRC64 to be set
 
 	if header.NumSegments == 0 || header.NumSegments > MaxSegments {
 		return nil, ErrInvalidSegmentCount
@@ -235,11 +264,11 @@ func (r *StructuredMessageReader) ReadSegment() ([]byte, error) {
 		}
 	}
 
-	if r.segmentNum >= r.header.NumSegments {
+	if r.segmentNum > r.header.NumSegments {
 		return nil, io.EOF
 	}
 
-	// Read segment header
+	// Read segment header (segment-num + data-length)
 	headerBytes := make([]byte, SegmentHeaderSize)
 	n, err := io.ReadFull(r.reader, headerBytes)
 	if err != nil {
@@ -252,9 +281,8 @@ func (r *StructuredMessageReader) ReadSegment() ([]byte, error) {
 		return nil, ErrUnexpectedEOF
 	}
 
-	segmentNum := binary.LittleEndian.Uint32(headerBytes[0:])
-	dataLength := binary.LittleEndian.Uint32(headerBytes[4:])
-	expectedCRC64 := binary.LittleEndian.Uint64(headerBytes[8:])
+	segmentNum := binary.LittleEndian.Uint16(headerBytes[0:2])
+	dataLength := binary.LittleEndian.Uint64(headerBytes[2:10])
 
 	if segmentNum != r.segmentNum {
 		return nil, ErrInvalidSegmentNumber
@@ -277,14 +305,32 @@ func (r *StructuredMessageReader) ReadSegment() ([]byte, error) {
 		return nil, ErrUnexpectedEOF
 	}
 
-	// Validate segment CRC64
-	actualCRC64 := crc64.Checksum(data, r.crc64Table)
-	if actualCRC64 != expectedCRC64 {
-		return nil, ErrCRC64Mismatch
+	// Read and validate segment CRC64 (8 bytes AFTER the data) only if CRC64 is enabled
+	enableCRC64 := (r.header.MessageFlags & PropCRC64) != 0
+	if enableCRC64 {
+		crcBytes := make([]byte, SegmentCRC64Size)
+		n, err = io.ReadFull(r.reader, crcBytes)
+		if err != nil {
+			if err == io.EOF {
+				return nil, ErrUnexpectedEOF
+			}
+			return nil, err
+		}
+		if n != SegmentCRC64Size {
+			return nil, ErrUnexpectedEOF
+		}
+		expectedCRC64 := binary.LittleEndian.Uint64(crcBytes)
+
+		// Validate segment CRC64
+		actualCRC64 := crc64.Checksum(data, r.crc64Table)
+		if actualCRC64 != expectedCRC64 {
+			return nil, ErrCRC64Mismatch
+		}
+
+		// Update cumulative CRC64
+		r.totalCRC64 = crc64.Update(r.totalCRC64, r.crc64Table, data)
 	}
 
-	// Update cumulative CRC64
-	r.totalCRC64 = crc64.Update(r.totalCRC64, r.crc64Table, data)
 	r.segmentNum++
 
 	return data, nil
@@ -315,10 +361,20 @@ func (r *StructuredMessageReader) ReadTrailer() (uint64, error) {
 	}
 
 	// Validate segment count before reading trailer
-	if r.segmentNum != r.header.NumSegments {
+	// With 1-indexed segments, after reading all segments, segmentNum = NumSegments + 1
+	if r.segmentNum != r.header.NumSegments+1 {
 		return 0, ErrInvalidSegmentCount
 	}
 
+	// Check if CRC64 is enabled
+	enableCRC64 := (r.header.MessageFlags & PropCRC64) != 0
+	if !enableCRC64 {
+		// No trailer when CRC64 is disabled
+		r.closed = true
+		return 0, nil
+	}
+
+	// Trailer is ONLY 8 bytes: message-crc64
 	trailerBytes := make([]byte, TrailerSize)
 	n, err := io.ReadFull(r.reader, trailerBytes)
 	if err != nil {
@@ -331,19 +387,7 @@ func (r *StructuredMessageReader) ReadTrailer() (uint64, error) {
 		return 0, ErrUnexpectedEOF
 	}
 
-	// Validate trailer header
-	if trailerBytes[0] != MessageVersion {
-		return 0, ErrInvalidVersion
-	}
-	if trailerBytes[1] != FlagNone {
-		return 0, errors.New("invalid trailer flags")
-	}
-	properties := binary.LittleEndian.Uint16(trailerBytes[2:])
-	if properties&PropCRC64 == 0 {
-		return 0, errors.New("CRC64 property not set in trailer")
-	}
-
-	expectedCRC64 := binary.LittleEndian.Uint64(trailerBytes[4:])
+	expectedCRC64 := binary.LittleEndian.Uint64(trailerBytes[0:8])
 	if expectedCRC64 != r.totalCRC64 {
 		return 0, ErrCRC64Mismatch
 	}

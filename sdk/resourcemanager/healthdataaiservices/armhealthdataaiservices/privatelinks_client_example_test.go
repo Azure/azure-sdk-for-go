@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/PrivateLinks_ListByDeidService_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/PrivateLinks_ListByDeidService_MaximumSet_Gen.json
 func ExamplePrivateLinksClient_NewListByDeidServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

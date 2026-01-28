@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/PrivateEndpointConnections_Create_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/PrivateEndpointConnections_Create_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/PrivateEndpointConnections_Delete_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/PrivateEndpointConnections_Get_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/PrivateEndpointConnections_ListByDeidService_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/PrivateEndpointConnections_ListByDeidService_MaximumSet_Gen.json
 func ExamplePrivateEndpointConnectionsClient_NewListByDeidServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

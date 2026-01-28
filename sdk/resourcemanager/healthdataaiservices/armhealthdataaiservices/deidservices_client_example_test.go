@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/DeidServices_Create_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Create_MaximumSet_Gen.json
 func ExampleDeidServicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,11 +30,6 @@ func ExampleDeidServicesClient_BeginCreate() {
 		Identity: &armhealthdataaiservices.ManagedServiceIdentity{
 			Type:                   to.Ptr(armhealthdataaiservices.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{},
-		},
-		SKU: &armhealthdataaiservices.SKU{
-			Name:     to.Ptr("Standard"),
-			Tier:     to.Ptr(armhealthdataaiservices.SKUTierStandard),
-			Capacity: to.Ptr[int32](1),
 		},
 		Tags:     map[string]*string{},
 		Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -92,11 +87,6 @@ func ExampleDeidServicesClient_BeginCreate() {
 	// 			PrincipalID: to.Ptr("a82361f4-5320-4a26-8d1b-45832d2164dd"),
 	// 			TenantID: to.Ptr("53a6a686-ae15-4a1d-badf-3e7947918893"),
 	// 		},
-	// 		SKU: &armhealthdataaiservices.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Tier: to.Ptr(armhealthdataaiservices.SKUTierStandard),
-	// 			Capacity: to.Ptr[int32](1),
-	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -115,7 +105,7 @@ func ExampleDeidServicesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/DeidServices_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Delete_MaximumSet_Gen.json
 func ExampleDeidServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +126,7 @@ func ExampleDeidServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/DeidServices_Get_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Get_MaximumSet_Gen.json
 func ExampleDeidServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,11 +187,6 @@ func ExampleDeidServicesClient_Get() {
 	// 			PrincipalID: to.Ptr("a82361f4-5320-4a26-8d1b-45832d2164dd"),
 	// 			TenantID: to.Ptr("53a6a686-ae15-4a1d-badf-3e7947918893"),
 	// 		},
-	// 		SKU: &armhealthdataaiservices.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Tier: to.Ptr(armhealthdataaiservices.SKUTierStandard),
-	// 			Capacity: to.Ptr[int32](1),
-	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -220,7 +205,7 @@ func ExampleDeidServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/DeidServices_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleDeidServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,11 +272,6 @@ func ExampleDeidServicesClient_NewListByResourceGroupPager() {
 		// 					UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{
 		// 					},
 		// 				},
-		// 				SKU: &armhealthdataaiservices.SKU{
-		// 					Name: to.Ptr("Standard"),
-		// 					Tier: to.Ptr(armhealthdataaiservices.SKUTierStandard),
-		// 					Capacity: to.Ptr[int32](1),
-		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
 		// 				Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -314,7 +294,7 @@ func ExampleDeidServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/DeidServices_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_ListBySubscription_MaximumSet_Gen.json
 func ExampleDeidServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -381,11 +361,6 @@ func ExampleDeidServicesClient_NewListBySubscriptionPager() {
 		// 					UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{
 		// 					},
 		// 				},
-		// 				SKU: &armhealthdataaiservices.SKU{
-		// 					Name: to.Ptr("Standard"),
-		// 					Tier: to.Ptr(armhealthdataaiservices.SKUTierStandard),
-		// 					Capacity: to.Ptr[int32](1),
-		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
 		// 				Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -408,7 +383,7 @@ func ExampleDeidServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/DeidServices_Update_MaximumSet_Gen.json
+// Generated from example definition: 2024-09-20/DeidServices_Update_MaximumSet_Gen.json
 func ExampleDeidServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,11 +398,6 @@ func ExampleDeidServicesClient_BeginUpdate() {
 		Identity: &armhealthdataaiservices.ManagedServiceIdentityUpdate{
 			Type:                   to.Ptr(armhealthdataaiservices.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{},
-		},
-		SKU: &armhealthdataaiservices.SKU{
-			Name:     to.Ptr("Standard"),
-			Tier:     to.Ptr(armhealthdataaiservices.SKUTierStandard),
-			Capacity: to.Ptr[int32](1),
 		},
 		Tags: map[string]*string{},
 		Properties: &armhealthdataaiservices.DeidPropertiesUpdate{
@@ -486,11 +456,6 @@ func ExampleDeidServicesClient_BeginUpdate() {
 	// 			},
 	// 			PrincipalID: to.Ptr("a82361f4-5320-4a26-8d1b-45832d2164dd"),
 	// 			TenantID: to.Ptr("53a6a686-ae15-4a1d-badf-3e7947918893"),
-	// 		},
-	// 		SKU: &armhealthdataaiservices.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 			Tier: to.Ptr(armhealthdataaiservices.SKUTierStandard),
-	// 			Capacity: to.Ptr[int32](1),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},

@@ -75,7 +75,7 @@ type DeidUpdate struct {
 	Properties *DeidPropertiesUpdate
 
 	// The SKU (Stock Keeping Unit) assigned to this resource.
-	SKU *SKUUpdate
+	SKU *SKU
 
 	// Resource tags.
 	Tags map[string]*string
@@ -275,27 +275,23 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
-// SKU - The SKU (Stock Keeping Unit) assigned to this resource.
+// SKU - The resource model definition representing SKU
 type SKU struct {
-	// REQUIRED; The name of the SKU.
+	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
 	Name *string
 
-	// The capacity of the SKU.
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
 	Capacity *int32
 
-	// The tier of the SKU.
-	Tier *SKUTier
-}
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string
 
-// SKUUpdate - The SKU (Stock Keeping Unit) update model for PATCH operations.
-type SKUUpdate struct {
-	// The capacity of the SKU.
-	Capacity *int32
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string
 
-	// The name of the SKU.
-	Name *string
-
-	// The tier of the SKU.
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
 	Tier *SKUTier
 }
 

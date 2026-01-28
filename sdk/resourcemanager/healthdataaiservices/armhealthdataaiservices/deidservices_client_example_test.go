@@ -424,7 +424,7 @@ func ExampleDeidServicesClient_BeginUpdate() {
 			Type:                   to.Ptr(armhealthdataaiservices.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{},
 		},
-		SKU: &armhealthdataaiservices.SKUUpdate{
+		SKU: &armhealthdataaiservices.SKU{
 			Name:     to.Ptr("Standard"),
 			Tier:     to.Ptr(armhealthdataaiservices.SKUTierStandard),
 			Capacity: to.Ptr[int32](1),

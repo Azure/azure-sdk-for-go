@@ -185,15 +185,18 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// SKUTier - The tier of the SKU.
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
 type SKUTier string
 
 const (
-	// SKUTierBasic - Basic tier.
+	// SKUTierBasic - The Basic service tier.
 	SKUTierBasic SKUTier = "Basic"
-	// SKUTierFree - Free tier.
+	// SKUTierFree - The Free service tier.
 	SKUTierFree SKUTier = "Free"
-	// SKUTierStandard - Standard tier.
+	// SKUTierPremium - The Premium service tier.
+	SKUTierPremium SKUTier = "Premium"
+	// SKUTierStandard - The Standard service tier.
 	SKUTierStandard SKUTier = "Standard"
 )
 
@@ -202,6 +205,7 @@ func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierBasic,
 		SKUTierFree,
+		SKUTierPremium,
 		SKUTierStandard,
 	}
 }

@@ -1,5 +1,66 @@
 # Release History
 
+## 9.0.0 (2026-02-19)
+### Breaking Changes
+
+- `FirewallPolicyIntrusionDetectionProfileTypeAdvanced`, `FirewallPolicyIntrusionDetectionProfileTypeBasic`, `FirewallPolicyIntrusionDetectionProfileTypeStandard` from enum `FirewallPolicyIntrusionDetectionProfileType` has been removed
+
+### Features Added
+
+- New value `ActionTypeCAPTCHA` added to enum type `ActionType`
+- New value `FirewallPolicyIntrusionDetectionProfileTypeCore`, `FirewallPolicyIntrusionDetectionProfileTypeEmerging`, `FirewallPolicyIntrusionDetectionProfileTypeOff` added to enum type `FirewallPolicyIntrusionDetectionProfileType`
+- New value `WebApplicationFirewallActionCAPTCHA` added to enum type `WebApplicationFirewallAction`
+- New enum type `AddressUpdateAction` with values `AddressUpdateActionFullUpdate`, `AddressUpdateActionPartialUpdate`
+- New enum type `ServiceGatewaySKUName` with values `ServiceGatewaySKUNameStandard`
+- New enum type `ServiceGatewaySKUTier` with values `ServiceGatewaySKUTierRegional`
+- New enum type `ServiceType` with values `ServiceTypeInbound`, `ServiceTypeInboundOutbound`, `ServiceTypeOutbound`
+- New enum type `ServiceUpdateAction` with values `ServiceUpdateActionFullUpdate`, `ServiceUpdateActionPartialUpdate`
+- New enum type `UpdateAction` with values `UpdateActionFullUpdate`, `UpdateActionPartialUpdate`
+- New function `*ClientFactory.NewServiceGatewaysClient() *ServiceGatewaysClient`
+- New function `*ClientFactory.NewVirtualNetworkAppliancesClient() *VirtualNetworkAppliancesClient`
+- New function `NewServiceGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceGatewaysClient, error)`
+- New function `*ServiceGatewaysClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGateway, options *ServiceGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServiceGatewaysClientCreateOrUpdateResponse], error)`
+- New function `*ServiceGatewaysClient.BeginDelete(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*runtime.Poller[ServiceGatewaysClientDeleteResponse], error)`
+- New function `*ServiceGatewaysClient.Get(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientGetOptions) (ServiceGatewaysClientGetResponse, error)`
+- New function `*ServiceGatewaysClient.NewGetAddressLocationsPager(resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientGetAddressLocationsOptions) *runtime.Pager[ServiceGatewaysClientGetAddressLocationsResponse]`
+- New function `*ServiceGatewaysClient.NewGetServicesPager(resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientGetServicesOptions) *runtime.Pager[ServiceGatewaysClientGetServicesResponse]`
+- New function `*ServiceGatewaysClient.NewListAllPager(options *ServiceGatewaysClientListAllOptions) *runtime.Pager[ServiceGatewaysClientListAllResponse]`
+- New function `*ServiceGatewaysClient.NewListPager(resourceGroupName string, options *ServiceGatewaysClientListOptions) *runtime.Pager[ServiceGatewaysClientListResponse]`
+- New function `*ServiceGatewaysClient.BeginUpdateAddressLocations(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, options *ServiceGatewaysClientBeginUpdateAddressLocationsOptions) (*runtime.Poller[ServiceGatewaysClientUpdateAddressLocationsResponse], error)`
+- New function `*ServiceGatewaysClient.BeginUpdateServices(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, options *ServiceGatewaysClientBeginUpdateServicesOptions) (*runtime.Poller[ServiceGatewaysClientUpdateServicesResponse], error)`
+- New function `*ServiceGatewaysClient.UpdateTags(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters TagsObject, options *ServiceGatewaysClientUpdateTagsOptions) (ServiceGatewaysClientUpdateTagsResponse, error)`
+- New function `NewVirtualNetworkAppliancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkAppliancesClient, error)`
+- New function `*VirtualNetworkAppliancesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, parameters VirtualNetworkAppliance, options *VirtualNetworkAppliancesClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworkAppliancesClientCreateOrUpdateResponse], error)`
+- New function `*VirtualNetworkAppliancesClient.BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkAppliancesClientDeleteResponse], error)`
+- New function `*VirtualNetworkAppliancesClient.Get(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientGetOptions) (VirtualNetworkAppliancesClientGetResponse, error)`
+- New function `*VirtualNetworkAppliancesClient.NewListAllPager(options *VirtualNetworkAppliancesClientListAllOptions) *runtime.Pager[VirtualNetworkAppliancesClientListAllResponse]`
+- New function `*VirtualNetworkAppliancesClient.NewListPager(resourceGroupName string, options *VirtualNetworkAppliancesClientListOptions) *runtime.Pager[VirtualNetworkAppliancesClientListResponse]`
+- New function `*VirtualNetworkAppliancesClient.UpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, parameters TagsObject, options *VirtualNetworkAppliancesClientUpdateTagsOptions) (VirtualNetworkAppliancesClientUpdateTagsResponse, error)`
+- New struct `GetServiceGatewayAddressLocationsResult`
+- New struct `GetServiceGatewayServicesResult`
+- New struct `RouteTargetAddressPropertiesFormat`
+- New struct `ServiceGateway`
+- New struct `ServiceGatewayAddress`
+- New struct `ServiceGatewayAddressLocation`
+- New struct `ServiceGatewayAddressLocationResponse`
+- New struct `ServiceGatewayListResult`
+- New struct `ServiceGatewayPropertiesFormat`
+- New struct `ServiceGatewaySKU`
+- New struct `ServiceGatewayService`
+- New struct `ServiceGatewayServicePropertiesFormat`
+- New struct `ServiceGatewayServiceRequest`
+- New struct `ServiceGatewayUpdateAddressLocationsRequest`
+- New struct `ServiceGatewayUpdateServicesRequest`
+- New struct `VirtualNetworkAppliance`
+- New struct `VirtualNetworkApplianceIPConfiguration`
+- New struct `VirtualNetworkApplianceIPConfigurationProperties`
+- New struct `VirtualNetworkApplianceListResult`
+- New struct `VirtualNetworkAppliancePropertiesFormat`
+- New field `ServiceGateway` in struct `NatGatewayPropertiesFormat`
+- New field `CaptchaCookieExpirationInMins` in struct `PolicySettings`
+- New field `ServiceGateway` in struct `SubnetPropertiesFormat`
+
+
 ## 8.0.0 (2025-12-25)
 ### Breaking Changes
 

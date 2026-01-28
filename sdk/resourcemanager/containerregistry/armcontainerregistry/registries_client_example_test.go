@@ -25,8 +25,8 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() 
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewRegistriesClient().CheckNameAvailability(ctx, armcontainerregistry.RegistryNameCheckRequest{
-		Name:	to.Ptr("myRegistry"),
-		Type:	to.Ptr(armcontainerregistry.ResourceTypeMicrosoftContainerRegistryRegistries),
+		Name: to.Ptr("myRegistry"),
+		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -53,8 +53,8 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewRegistriesClient().CheckNameAvailability(ctx, armcontainerregistry.RegistryNameCheckRequest{
-		Name:	to.Ptr("myRegistry"),
-		Type:	to.Ptr(armcontainerregistry.ResourceTypeMicrosoftContainerRegistryRegistries),
+		Name: to.Ptr("myRegistry"),
+		Type: to.Ptr("Microsoft.ContainerRegistry/registries"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -83,7 +83,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.Registry{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
@@ -178,7 +178,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.Registry{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
@@ -270,7 +270,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.Registry{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
@@ -391,8 +391,8 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginGenerateCredentials(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.GenerateCredentialsParameters{
-		TokenID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
-		Expiry:		to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t }()),
+		TokenID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/myToken"),
+		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-31T15:59:59.0707808Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -553,8 +553,8 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginImportImage(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.ImportImageParameters{
 		Source: &armcontainerregistry.ImportSource{
-			ResourceID:	to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry"),
-			SourceImage:	to.Ptr("sourceRepository@sha256:0000000000000000000000000000000000000000000000000000000000000000"),
+			ResourceID:  to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry"),
+			SourceImage: to.Ptr("sourceRepository@sha256:0000000000000000000000000000000000000000000000000000000000000000"),
 		},
 		TargetTags: []*string{
 			to.Ptr("targetRepository:targetTag"),
@@ -562,7 +562,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 		UntaggedTargetRepositories: []*string{
 			to.Ptr("targetRepository1"),
 		},
-		Mode:	to.Ptr(armcontainerregistry.ImportModeForce),
+		Mode: to.Ptr(armcontainerregistry.ImportModeForce),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -591,8 +591,8 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginImportImage(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.ImportImageParameters{
 		Source: &armcontainerregistry.ImportSource{
-			ResourceID:	to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry"),
-			SourceImage:	to.Ptr("sourceRepository:sourceTag"),
+			ResourceID:  to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry"),
+			SourceImage: to.Ptr("sourceRepository:sourceTag"),
 		},
 		TargetTags: []*string{
 			to.Ptr("targetRepository:targetTag"),
@@ -600,7 +600,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 		UntaggedTargetRepositories: []*string{
 			to.Ptr("targetRepository1"),
 		},
-		Mode:	to.Ptr(armcontainerregistry.ImportModeForce),
+		Mode: to.Ptr(armcontainerregistry.ImportModeForce),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -629,8 +629,8 @@ func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	}
 	poller, err := clientFactory.NewRegistriesClient().BeginImportImage(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.ImportImageParameters{
 		Source: &armcontainerregistry.ImportSource{
-			RegistryURI:	to.Ptr("registry.hub.docker.com"),
-			SourceImage:	to.Ptr("library/hello-world"),
+			RegistryURI: to.Ptr("registry.hub.docker.com"),
+			SourceImage: to.Ptr("library/hello-world"),
 		},
 		TargetTags: []*string{
 			to.Ptr("targetRepository:targetTag"),
@@ -638,7 +638,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 		UntaggedTargetRepositories: []*string{
 			to.Ptr("targetRepository1"),
 		},
-		Mode:	to.Ptr(armcontainerregistry.ImportModeForce),
+		Mode: to.Ptr(armcontainerregistry.ImportModeForce),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1007,8 +1007,8 @@ func ExampleRegistriesClient_BeginUpdate() {
 			Name: to.Ptr(armcontainerregistry.SKUNameStandard),
 		},
 		Properties: &armcontainerregistry.RegistryPropertiesUpdateParameters{
-			AdminUserEnabled:	to.Ptr(true),
-			RoleAssignmentMode:	to.Ptr(armcontainerregistry.RoleAssignmentModeAbacRepositoryPermissions),
+			AdminUserEnabled:   to.Ptr(true),
+			RoleAssignmentMode: to.Ptr(armcontainerregistry.RoleAssignmentModeAbacRepositoryPermissions),
 		},
 	}, nil)
 	if err != nil {

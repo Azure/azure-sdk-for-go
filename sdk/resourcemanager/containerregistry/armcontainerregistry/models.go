@@ -804,8 +804,9 @@ type RegistryNameCheckRequest struct {
 	// REQUIRED; The name of the container registry.
 	Name *string
 
-	// REQUIRED; The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
-	Type *ResourceType
+	// CONSTANT; The resource type of the container registry. This field must be set to 'Microsoft.ContainerRegistry/registries'.
+	// Field has constant value "Microsoft.ContainerRegistry/registries", any specified value is ignored.
+	Type *string
 }
 
 // RegistryNameStatus - The result of a request to check the availability of a container registry name.

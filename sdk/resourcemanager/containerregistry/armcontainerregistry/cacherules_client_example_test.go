@@ -25,9 +25,9 @@ func ExampleCacheRulesClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewCacheRulesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRule{
 		Properties: &armcontainerregistry.CacheRuleProperties{
-			SourceRepository:		to.Ptr("docker.io/library/hello-world"),
-			TargetRepository:		to.Ptr("cached-docker-hub/hello-world"),
-			CredentialSetResourceID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet"),
+			SourceRepository:        to.Ptr("docker.io/library/hello-world"),
+			TargetRepository:        to.Ptr("cached-docker-hub/hello-world"),
+			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet"),
 		},
 	}, nil)
 	if err != nil {

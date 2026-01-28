@@ -24,7 +24,7 @@ func ExampleReplicationsClient_BeginCreate_replicationCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewReplicationsClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myReplication", armcontainerregistry.Replication{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
@@ -74,13 +74,13 @@ func ExampleReplicationsClient_BeginCreate_replicationCreateZoneRedundant() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewReplicationsClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myReplication", armcontainerregistry.Replication{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
 		Properties: &armcontainerregistry.ReplicationProperties{
-			RegionEndpointEnabled:	to.Ptr(true),
-			ZoneRedundancy:		to.Ptr(armcontainerregistry.ZoneRedundancyEnabled),
+			RegionEndpointEnabled: to.Ptr(true),
+			ZoneRedundancy:        to.Ptr(armcontainerregistry.ZoneRedundancyEnabled),
 		},
 	}, nil)
 	if err != nil {

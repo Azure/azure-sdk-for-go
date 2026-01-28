@@ -22,35 +22,35 @@ import (
 type WebhooksServer struct {
 	// BeginCreate is the fake for method WebhooksClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters armcontainerregistry.WebhookCreateParameters, options *armcontainerregistry.WebhooksClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookCreateParameters armcontainerregistry.WebhookCreateParameters, options *armcontainerregistry.WebhooksClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method WebhooksClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WebhooksClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientGetOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientGetOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetCallbackConfig is the fake for method WebhooksClient.GetCallbackConfig
 	// HTTP status codes to indicate success: http.StatusOK
-	GetCallbackConfig	func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientGetCallbackConfigOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientGetCallbackConfigResponse], errResp azfake.ErrorResponder)
+	GetCallbackConfig func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientGetCallbackConfigOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientGetCallbackConfigResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WebhooksClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, registryName string, options *armcontainerregistry.WebhooksClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse])
+	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.WebhooksClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse])
 
 	// NewListEventsPager is the fake for method WebhooksClient.NewListEventsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListEventsPager	func(resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientListEventsOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse])
+	NewListEventsPager func(resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientListEventsOptions) (resp azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse])
 
 	// Ping is the fake for method WebhooksClient.Ping
 	// HTTP status codes to indicate success: http.StatusOK
-	Ping	func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientPingOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientPingResponse], errResp azfake.ErrorResponder)
+	Ping func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, options *armcontainerregistry.WebhooksClientPingOptions) (resp azfake.Responder[armcontainerregistry.WebhooksClientPingResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method WebhooksClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters armcontainerregistry.WebhookUpdateParameters, options *armcontainerregistry.WebhooksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, webhookName string, webhookUpdateParameters armcontainerregistry.WebhookUpdateParameters, options *armcontainerregistry.WebhooksClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWebhooksServerTransport creates a new instance of WebhooksServerTransport with the provided implementation.
@@ -58,24 +58,24 @@ type WebhooksServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebhooksServerTransport(srv *WebhooksServer) *WebhooksServerTransport {
 	return &WebhooksServerTransport{
-		srv:			srv,
-		beginCreate:		newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
-		newListEventsPager:	newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]](),
-		beginUpdate:		newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]](),
+		srv:                srv,
+		beginCreate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]](),
+		beginDelete:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]](),
+		newListPager:       newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]](),
+		newListEventsPager: newTracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]](),
+		beginUpdate:        newTracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]](),
 	}
 }
 
 // WebhooksServerTransport connects instances of armcontainerregistry.WebhooksClient to instances of WebhooksServer.
 // Don't use this type directly, use NewWebhooksServerTransport instead.
 type WebhooksServerTransport struct {
-	srv			*WebhooksServer
-	beginCreate		*tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
-	newListEventsPager	*tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]]
-	beginUpdate		*tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]]
+	srv                *WebhooksServer
+	beginCreate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientCreateResponse]]
+	beginDelete        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientDeleteResponse]]
+	newListPager       *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListResponse]]
+	newListEventsPager *tracker[azfake.PagerResponder[armcontainerregistry.WebhooksClientListEventsResponse]]
+	beginUpdate        *tracker[azfake.PollerResponder[armcontainerregistry.WebhooksClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebhooksServerTransport.

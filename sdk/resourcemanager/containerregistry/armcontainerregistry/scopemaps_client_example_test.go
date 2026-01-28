@@ -25,7 +25,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewScopeMapsClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myScopeMap", armcontainerregistry.ScopeMap{
 		Properties: &armcontainerregistry.ScopeMapProperties{
-			Description:	to.Ptr("Developer Scopes"),
+			Description: to.Ptr("Developer Scopes"),
 			Actions: []*string{
 				to.Ptr("repositories/myrepository/contentWrite"),
 				to.Ptr("repositories/myrepository/delete"),
@@ -180,7 +180,7 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewScopeMapsClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myScopeMap", armcontainerregistry.ScopeMapUpdateParameters{
 		Properties: &armcontainerregistry.ScopeMapPropertiesUpdateParameters{
-			Description:	to.Ptr("Developer Scopes"),
+			Description: to.Ptr("Developer Scopes"),
 			Actions: []*string{
 				to.Ptr("repositories/myrepository/contentWrite"),
 				to.Ptr("repositories/myrepository/contentRead"),

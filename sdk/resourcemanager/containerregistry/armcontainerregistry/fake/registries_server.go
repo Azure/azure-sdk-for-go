@@ -22,59 +22,59 @@ import (
 type RegistriesServer struct {
 	// CheckNameAvailability is the fake for method RegistriesClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability	func(ctx context.Context, registryNameCheckRequest armcontainerregistry.RegistryNameCheckRequest, options *armcontainerregistry.RegistriesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, registryNameCheckRequest armcontainerregistry.RegistryNameCheckRequest, options *armcontainerregistry.RegistriesClientCheckNameAvailabilityOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreate is the fake for method RegistriesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, registryName string, registry armcontainerregistry.Registry, options *armcontainerregistry.RegistriesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, registry armcontainerregistry.Registry, options *armcontainerregistry.RegistriesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method RegistriesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// BeginGenerateCredentials is the fake for method RegistriesClient.BeginGenerateCredentials
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGenerateCredentials	func(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters armcontainerregistry.GenerateCredentialsParameters, options *armcontainerregistry.RegistriesClientBeginGenerateCredentialsOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse], errResp azfake.ErrorResponder)
+	BeginGenerateCredentials func(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters armcontainerregistry.GenerateCredentialsParameters, options *armcontainerregistry.RegistriesClientBeginGenerateCredentialsOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method RegistriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientGetOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientGetOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateLinkResource is the fake for method RegistriesClient.GetPrivateLinkResource
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateLinkResource	func(ctx context.Context, resourceGroupName string, registryName string, groupName string, options *armcontainerregistry.RegistriesClientGetPrivateLinkResourceOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientGetPrivateLinkResourceResponse], errResp azfake.ErrorResponder)
+	GetPrivateLinkResource func(ctx context.Context, resourceGroupName string, registryName string, groupName string, options *armcontainerregistry.RegistriesClientGetPrivateLinkResourceOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientGetPrivateLinkResourceResponse], errResp azfake.ErrorResponder)
 
 	// BeginImportImage is the fake for method RegistriesClient.BeginImportImage
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginImportImage	func(ctx context.Context, resourceGroupName string, registryName string, parameters armcontainerregistry.ImportImageParameters, options *armcontainerregistry.RegistriesClientBeginImportImageOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse], errResp azfake.ErrorResponder)
+	BeginImportImage func(ctx context.Context, resourceGroupName string, registryName string, parameters armcontainerregistry.ImportImageParameters, options *armcontainerregistry.RegistriesClientBeginImportImageOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method RegistriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armcontainerregistry.RegistriesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse])
+	NewListPager func(options *armcontainerregistry.RegistriesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method RegistriesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armcontainerregistry.RegistriesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerregistry.RegistriesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse])
 
 	// ListCredentials is the fake for method RegistriesClient.ListCredentials
 	// HTTP status codes to indicate success: http.StatusOK
-	ListCredentials	func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListCredentialsOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientListCredentialsResponse], errResp azfake.ErrorResponder)
+	ListCredentials func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListCredentialsOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientListCredentialsResponse], errResp azfake.ErrorResponder)
 
 	// NewListPrivateLinkResourcesPager is the fake for method RegistriesClient.NewListPrivateLinkResourcesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPrivateLinkResourcesPager	func(resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListPrivateLinkResourcesOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse])
+	NewListPrivateLinkResourcesPager func(resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListPrivateLinkResourcesOptions) (resp azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse])
 
 	// ListUsages is the fake for method RegistriesClient.ListUsages
 	// HTTP status codes to indicate success: http.StatusOK
-	ListUsages	func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListUsagesOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientListUsagesResponse], errResp azfake.ErrorResponder)
+	ListUsages func(ctx context.Context, resourceGroupName string, registryName string, options *armcontainerregistry.RegistriesClientListUsagesOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientListUsagesResponse], errResp azfake.ErrorResponder)
 
 	// RegenerateCredential is the fake for method RegistriesClient.RegenerateCredential
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateCredential	func(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters armcontainerregistry.RegenerateCredentialParameters, options *armcontainerregistry.RegistriesClientRegenerateCredentialOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientRegenerateCredentialResponse], errResp azfake.ErrorResponder)
+	RegenerateCredential func(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters armcontainerregistry.RegenerateCredentialParameters, options *armcontainerregistry.RegistriesClientRegenerateCredentialOptions) (resp azfake.Responder[armcontainerregistry.RegistriesClientRegenerateCredentialResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method RegistriesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters armcontainerregistry.RegistryUpdateParameters, options *armcontainerregistry.RegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters armcontainerregistry.RegistryUpdateParameters, options *armcontainerregistry.RegistriesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRegistriesServerTransport creates a new instance of RegistriesServerTransport with the provided implementation.
@@ -82,30 +82,30 @@ type RegistriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRegistriesServerTransport(srv *RegistriesServer) *RegistriesServerTransport {
 	return &RegistriesServerTransport{
-		srv:					srv,
-		beginCreate:				newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse]](),
-		beginDelete:				newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse]](),
-		beginGenerateCredentials:		newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse]](),
-		beginImportImage:			newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse]](),
-		newListPager:				newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]](),
-		newListByResourceGroupPager:		newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]](),
-		newListPrivateLinkResourcesPager:	newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]](),
-		beginUpdate:				newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]](),
+		srv:                              srv,
+		beginCreate:                      newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse]](),
+		beginDelete:                      newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse]](),
+		beginGenerateCredentials:         newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse]](),
+		beginImportImage:                 newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse]](),
+		newListPager:                     newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]](),
+		newListByResourceGroupPager:      newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]](),
+		newListPrivateLinkResourcesPager: newTracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]](),
+		beginUpdate:                      newTracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]](),
 	}
 }
 
 // RegistriesServerTransport connects instances of armcontainerregistry.RegistriesClient to instances of RegistriesServer.
 // Don't use this type directly, use NewRegistriesServerTransport instead.
 type RegistriesServerTransport struct {
-	srv					*RegistriesServer
-	beginCreate				*tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse]]
-	beginDelete				*tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse]]
-	beginGenerateCredentials		*tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse]]
-	beginImportImage			*tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse]]
-	newListPager				*tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]]
-	newListByResourceGroupPager		*tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]]
-	newListPrivateLinkResourcesPager	*tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]]
-	beginUpdate				*tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]]
+	srv                              *RegistriesServer
+	beginCreate                      *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientCreateResponse]]
+	beginDelete                      *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientDeleteResponse]]
+	beginGenerateCredentials         *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientGenerateCredentialsResponse]]
+	beginImportImage                 *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientImportImageResponse]]
+	newListPager                     *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListResponse]]
+	newListByResourceGroupPager      *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListByResourceGroupResponse]]
+	newListPrivateLinkResourcesPager *tracker[azfake.PagerResponder[armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse]]
+	beginUpdate                      *tracker[azfake.PollerResponder[armcontainerregistry.RegistriesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for RegistriesServerTransport.

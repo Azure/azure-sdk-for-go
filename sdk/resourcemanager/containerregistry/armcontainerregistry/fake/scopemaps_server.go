@@ -22,23 +22,23 @@ import (
 type ScopeMapsServer struct {
 	// BeginCreate is the fake for method ScopeMapsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters armcontainerregistry.ScopeMap, options *armcontainerregistry.ScopeMapsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters armcontainerregistry.ScopeMap, options *armcontainerregistry.ScopeMapsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ScopeMapsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *armcontainerregistry.ScopeMapsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *armcontainerregistry.ScopeMapsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ScopeMapsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *armcontainerregistry.ScopeMapsClientGetOptions) (resp azfake.Responder[armcontainerregistry.ScopeMapsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *armcontainerregistry.ScopeMapsClientGetOptions) (resp azfake.Responder[armcontainerregistry.ScopeMapsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ScopeMapsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, registryName string, options *armcontainerregistry.ScopeMapsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse])
+	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.ScopeMapsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse])
 
 	// BeginUpdate is the fake for method ScopeMapsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters armcontainerregistry.ScopeMapUpdateParameters, options *armcontainerregistry.ScopeMapsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters armcontainerregistry.ScopeMapUpdateParameters, options *armcontainerregistry.ScopeMapsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewScopeMapsServerTransport creates a new instance of ScopeMapsServerTransport with the provided implementation.
@@ -46,22 +46,22 @@ type ScopeMapsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewScopeMapsServerTransport(srv *ScopeMapsServer) *ScopeMapsServerTransport {
 	return &ScopeMapsServerTransport{
-		srv:		srv,
-		beginCreate:	newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]](),
-		beginDelete:	newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]](),
-		newListPager:	newTracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]](),
-		beginUpdate:	newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]](),
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]](),
 	}
 }
 
 // ScopeMapsServerTransport connects instances of armcontainerregistry.ScopeMapsClient to instances of ScopeMapsServer.
 // Don't use this type directly, use NewScopeMapsServerTransport instead.
 type ScopeMapsServerTransport struct {
-	srv		*ScopeMapsServer
-	beginCreate	*tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]]
-	beginDelete	*tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]]
-	newListPager	*tracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]]
-	beginUpdate	*tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]]
+	srv          *ScopeMapsServer
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ScopeMapsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.ScopeMapsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ScopeMapsServerTransport.

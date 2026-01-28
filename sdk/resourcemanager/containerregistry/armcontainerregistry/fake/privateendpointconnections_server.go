@@ -22,19 +22,19 @@ import (
 type PrivateEndpointConnectionsServer struct {
 	// BeginCreateOrUpdate is the fake for method PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, privateEndpointConnection armcontainerregistry.PrivateEndpointConnection, options *armcontainerregistry.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, privateEndpointConnection armcontainerregistry.PrivateEndpointConnection, options *armcontainerregistry.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, options *armcontainerregistry.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, options *armcontainerregistry.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, options *armcontainerregistry.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armcontainerregistry.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, registryName string, privateEndpointConnectionName string, options *armcontainerregistry.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armcontainerregistry.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method PrivateEndpointConnectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, registryName string, options *armcontainerregistry.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.PrivateEndpointConnectionsClientListResponse])
+	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.PrivateEndpointConnectionsClientListResponse])
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -42,20 +42,20 @@ type PrivateEndpointConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewPrivateEndpointConnectionsServerTransport(srv *PrivateEndpointConnectionsServer) *PrivateEndpointConnectionsServerTransport {
 	return &PrivateEndpointConnectionsServerTransport{
-		srv:			srv,
-		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse]](),
-		beginDelete:		newTracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientDeleteResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armcontainerregistry.PrivateEndpointConnectionsClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armcontainerregistry.PrivateEndpointConnectionsClientListResponse]](),
 	}
 }
 
 // PrivateEndpointConnectionsServerTransport connects instances of armcontainerregistry.PrivateEndpointConnectionsClient to instances of PrivateEndpointConnectionsServer.
 // Don't use this type directly, use NewPrivateEndpointConnectionsServerTransport instead.
 type PrivateEndpointConnectionsServerTransport struct {
-	srv			*PrivateEndpointConnectionsServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse]]
-	beginDelete		*tracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientDeleteResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armcontainerregistry.PrivateEndpointConnectionsClientListResponse]]
+	srv                 *PrivateEndpointConnectionsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armcontainerregistry.PrivateEndpointConnectionsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armcontainerregistry.PrivateEndpointConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PrivateEndpointConnectionsServerTransport.

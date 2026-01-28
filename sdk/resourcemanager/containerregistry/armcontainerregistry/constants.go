@@ -421,20 +421,6 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	}
 }
 
-// ResourceType - The resource type for Container Registry.
-type ResourceType string
-
-const (
-	ResourceTypeMicrosoftContainerRegistryRegistries ResourceType = "Microsoft.ContainerRegistry/registries"
-)
-
-// PossibleResourceTypeValues returns the possible values for the ResourceType const type.
-func PossibleResourceTypeValues() []ResourceType {
-	return []ResourceType{
-		ResourceTypeMicrosoftContainerRegistryRegistries,
-	}
-}
-
 // RoleAssignmentMode - Determines registry role assignment mode.
 type RoleAssignmentMode string
 

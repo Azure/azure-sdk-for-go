@@ -22,23 +22,23 @@ import (
 type CacheRulesServer struct {
 	// BeginCreate is the fake for method CacheRulesClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleCreateParameters armcontainerregistry.CacheRule, options *armcontainerregistry.CacheRulesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleCreateParameters armcontainerregistry.CacheRule, options *armcontainerregistry.CacheRulesClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method CacheRulesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *armcontainerregistry.CacheRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *armcontainerregistry.CacheRulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CacheRulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *armcontainerregistry.CacheRulesClientGetOptions) (resp azfake.Responder[armcontainerregistry.CacheRulesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, options *armcontainerregistry.CacheRulesClientGetOptions) (resp azfake.Responder[armcontainerregistry.CacheRulesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CacheRulesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, registryName string, options *armcontainerregistry.CacheRulesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse])
+	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.CacheRulesClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse])
 
 	// BeginUpdate is the fake for method CacheRulesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleUpdateParameters armcontainerregistry.CacheRuleUpdateParameters, options *armcontainerregistry.CacheRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, cacheRuleName string, cacheRuleUpdateParameters armcontainerregistry.CacheRuleUpdateParameters, options *armcontainerregistry.CacheRulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCacheRulesServerTransport creates a new instance of CacheRulesServerTransport with the provided implementation.
@@ -46,22 +46,22 @@ type CacheRulesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCacheRulesServerTransport(srv *CacheRulesServer) *CacheRulesServerTransport {
 	return &CacheRulesServerTransport{
-		srv:		srv,
-		beginCreate:	newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]](),
-		beginDelete:	newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]](),
-		newListPager:	newTracker[azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse]](),
-		beginUpdate:	newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]](),
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]](),
 	}
 }
 
 // CacheRulesServerTransport connects instances of armcontainerregistry.CacheRulesClient to instances of CacheRulesServer.
 // Don't use this type directly, use NewCacheRulesServerTransport instead.
 type CacheRulesServerTransport struct {
-	srv		*CacheRulesServer
-	beginCreate	*tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]]
-	beginDelete	*tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]]
-	newListPager	*tracker[azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse]]
-	beginUpdate	*tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]]
+	srv          *CacheRulesServer
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.CacheRulesClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.CacheRulesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CacheRulesServerTransport.

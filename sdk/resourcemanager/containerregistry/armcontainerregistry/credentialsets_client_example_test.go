@@ -25,12 +25,12 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewCredentialSetsClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myCredentialSet", armcontainerregistry.CredentialSet{
 		Properties: &armcontainerregistry.CredentialSetProperties{
-			LoginServer:	to.Ptr("docker.io"),
+			LoginServer: to.Ptr("docker.io"),
 			AuthCredentials: []*armcontainerregistry.AuthCredential{
 				{
-					Name:				to.Ptr(armcontainerregistry.CredentialNameCredential1),
-					UsernameSecretIdentifier:	to.Ptr("https://myvault.vault.azure.net/secrets/username"),
-					PasswordSecretIdentifier:	to.Ptr("https://myvault.vault.azure.net/secrets/password"),
+					Name:                     to.Ptr(armcontainerregistry.CredentialNameCredential1),
+					UsernameSecretIdentifier: to.Ptr("https://myvault.vault.azure.net/secrets/username"),
+					PasswordSecretIdentifier: to.Ptr("https://myvault.vault.azure.net/secrets/password"),
 				},
 			},
 		},
@@ -216,9 +216,9 @@ func ExampleCredentialSetsClient_BeginUpdate() {
 		Properties: &armcontainerregistry.CredentialSetUpdateProperties{
 			AuthCredentials: []*armcontainerregistry.AuthCredential{
 				{
-					Name:				to.Ptr(armcontainerregistry.CredentialNameCredential1),
-					UsernameSecretIdentifier:	to.Ptr("https://myvault.vault.azure.net/secrets/username2"),
-					PasswordSecretIdentifier:	to.Ptr("https://myvault.vault.azure.net/secrets/password2"),
+					Name:                     to.Ptr(armcontainerregistry.CredentialNameCredential1),
+					UsernameSecretIdentifier: to.Ptr("https://myvault.vault.azure.net/secrets/username2"),
+					PasswordSecretIdentifier: to.Ptr("https://myvault.vault.azure.net/secrets/password2"),
 				},
 			},
 		},

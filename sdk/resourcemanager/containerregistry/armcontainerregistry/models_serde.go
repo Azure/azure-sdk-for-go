@@ -2250,7 +2250,7 @@ func (r *RegistryListResult) UnmarshalJSON(data []byte) error {
 func (r RegistryNameCheckRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "name", r.Name)
-	populate(objectMap, "type", r.Type)
+	objectMap["type"] = "Microsoft.ContainerRegistry/registries"
 	return json.Marshal(objectMap)
 }
 

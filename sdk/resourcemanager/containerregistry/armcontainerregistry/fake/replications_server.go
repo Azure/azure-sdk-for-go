@@ -22,23 +22,23 @@ import (
 type ReplicationsServer struct {
 	// BeginCreate is the fake for method ReplicationsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreate	func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication armcontainerregistry.Replication, options *armcontainerregistry.ReplicationsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.ReplicationsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replication armcontainerregistry.Replication, options *armcontainerregistry.ReplicationsClientBeginCreateOptions) (resp azfake.PollerResponder[armcontainerregistry.ReplicationsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ReplicationsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *armcontainerregistry.ReplicationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.ReplicationsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *armcontainerregistry.ReplicationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerregistry.ReplicationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ReplicationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *armcontainerregistry.ReplicationsClientGetOptions) (resp azfake.Responder[armcontainerregistry.ReplicationsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, options *armcontainerregistry.ReplicationsClientGetOptions) (resp azfake.Responder[armcontainerregistry.ReplicationsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ReplicationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, registryName string, options *armcontainerregistry.ReplicationsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ReplicationsClientListResponse])
+	NewListPager func(resourceGroupName string, registryName string, options *armcontainerregistry.ReplicationsClientListOptions) (resp azfake.PagerResponder[armcontainerregistry.ReplicationsClientListResponse])
 
 	// BeginUpdate is the fake for method ReplicationsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginUpdate	func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters armcontainerregistry.ReplicationUpdateParameters, options *armcontainerregistry.ReplicationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ReplicationsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, registryName string, replicationName string, replicationUpdateParameters armcontainerregistry.ReplicationUpdateParameters, options *armcontainerregistry.ReplicationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerregistry.ReplicationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewReplicationsServerTransport creates a new instance of ReplicationsServerTransport with the provided implementation.
@@ -46,22 +46,22 @@ type ReplicationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewReplicationsServerTransport(srv *ReplicationsServer) *ReplicationsServerTransport {
 	return &ReplicationsServerTransport{
-		srv:		srv,
-		beginCreate:	newTracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientCreateResponse]](),
-		beginDelete:	newTracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientDeleteResponse]](),
-		newListPager:	newTracker[azfake.PagerResponder[armcontainerregistry.ReplicationsClientListResponse]](),
-		beginUpdate:	newTracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientUpdateResponse]](),
+		srv:          srv,
+		beginCreate:  newTracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientCreateResponse]](),
+		beginDelete:  newTracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientDeleteResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcontainerregistry.ReplicationsClientListResponse]](),
+		beginUpdate:  newTracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientUpdateResponse]](),
 	}
 }
 
 // ReplicationsServerTransport connects instances of armcontainerregistry.ReplicationsClient to instances of ReplicationsServer.
 // Don't use this type directly, use NewReplicationsServerTransport instead.
 type ReplicationsServerTransport struct {
-	srv		*ReplicationsServer
-	beginCreate	*tracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientCreateResponse]]
-	beginDelete	*tracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientDeleteResponse]]
-	newListPager	*tracker[azfake.PagerResponder[armcontainerregistry.ReplicationsClientListResponse]]
-	beginUpdate	*tracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientUpdateResponse]]
+	srv          *ReplicationsServer
+	beginCreate  *tracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientCreateResponse]]
+	beginDelete  *tracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientDeleteResponse]]
+	newListPager *tracker[azfake.PagerResponder[armcontainerregistry.ReplicationsClientListResponse]]
+	beginUpdate  *tracker[azfake.PollerResponder[armcontainerregistry.ReplicationsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicationsServerTransport.

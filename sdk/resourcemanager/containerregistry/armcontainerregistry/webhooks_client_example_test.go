@@ -24,17 +24,17 @@ func ExampleWebhooksClient_BeginCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebhooksClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myWebhook", armcontainerregistry.WebhookCreateParameters{
-		Location:	to.Ptr("westus"),
+		Location: to.Ptr("westus"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
 		Properties: &armcontainerregistry.WebhookPropertiesCreateParameters{
-			ServiceURI:	to.Ptr("http://myservice.com"),
+			ServiceURI: to.Ptr("http://myservice.com"),
 			CustomHeaders: map[string]*string{
 				"Authorization": to.Ptr("******"),
 			},
-			Status:	to.Ptr(armcontainerregistry.WebhookStatusEnabled),
-			Scope:	to.Ptr("myRepository"),
+			Status: to.Ptr(armcontainerregistry.WebhookStatusEnabled),
+			Scope:  to.Ptr("myRepository"),
 			Actions: []*armcontainerregistry.WebhookAction{
 				to.Ptr(armcontainerregistry.WebhookActionPush),
 			},
@@ -331,12 +331,12 @@ func ExampleWebhooksClient_BeginUpdate() {
 			"key": to.Ptr("value"),
 		},
 		Properties: &armcontainerregistry.WebhookPropertiesUpdateParameters{
-			ServiceURI:	to.Ptr("http://myservice.com"),
+			ServiceURI: to.Ptr("http://myservice.com"),
 			CustomHeaders: map[string]*string{
 				"Authorization": to.Ptr("******"),
 			},
-			Status:	to.Ptr(armcontainerregistry.WebhookStatusEnabled),
-			Scope:	to.Ptr("myRepository"),
+			Status: to.Ptr(armcontainerregistry.WebhookStatusEnabled),
+			Scope:  to.Ptr("myRepository"),
 			Actions: []*armcontainerregistry.WebhookAction{
 				to.Ptr(armcontainerregistry.WebhookActionPush),
 			},

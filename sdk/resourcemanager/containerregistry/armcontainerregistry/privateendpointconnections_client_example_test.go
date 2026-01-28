@@ -26,8 +26,8 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewPrivateEndpointConnectionsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myRegistry", "myConnection", armcontainerregistry.PrivateEndpointConnection{
 		Properties: &armcontainerregistry.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armcontainerregistry.PrivateLinkServiceConnectionState{
-				Status:		to.Ptr(armcontainerregistry.ConnectionStatusApproved),
-				Description:	to.Ptr("Auto-Approved"),
+				Status:      to.Ptr(armcontainerregistry.ConnectionStatusApproved),
+				Description: to.Ptr("Auto-Approved"),
 			},
 		},
 	}, nil)

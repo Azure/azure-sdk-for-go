@@ -25,13 +25,13 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewConnectedRegistriesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myConnectedRegistry", armcontainerregistry.ConnectedRegistry{
 		Properties: &armcontainerregistry.ConnectedRegistryProperties{
-			Mode:	to.Ptr(armcontainerregistry.ConnectedRegistryModeReadWrite),
+			Mode: to.Ptr(armcontainerregistry.ConnectedRegistryModeReadWrite),
 			Parent: &armcontainerregistry.ParentProperties{
 				SyncProperties: &armcontainerregistry.SyncProperties{
-					TokenID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/syncToken"),
-					Schedule:	to.Ptr("0 9 * * *"),
-					MessageTTL:	to.Ptr("P2D"),
-					SyncWindow:	to.Ptr("PT3H"),
+					TokenID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/syncToken"),
+					Schedule:   to.Ptr("0 9 * * *"),
+					MessageTTL: to.Ptr("P2D"),
+					SyncWindow: to.Ptr("PT3H"),
 				},
 			},
 			ClientTokenIDs: []*string{
@@ -42,8 +42,8 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 				to.Ptr("sample/repo/*:1.0:*"),
 			},
 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
-				Enabled:	to.Ptr(true),
-				Schedule:	to.Ptr("0 5 * * *"),
+				Enabled:  to.Ptr(true),
+				Schedule: to.Ptr("0 5 * * *"),
 			},
 		},
 	}, nil)
@@ -282,13 +282,13 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 	poller, err := clientFactory.NewConnectedRegistriesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myScopeMap", armcontainerregistry.ConnectedRegistryUpdateParameters{
 		Properties: &armcontainerregistry.ConnectedRegistryUpdateProperties{
 			SyncProperties: &armcontainerregistry.SyncUpdateProperties{
-				Schedule:	to.Ptr("0 0 */10 * *"),
-				MessageTTL:	to.Ptr("P30D"),
-				SyncWindow:	to.Ptr("P2D"),
+				Schedule:   to.Ptr("0 0 */10 * *"),
+				MessageTTL: to.Ptr("P30D"),
+				SyncWindow: to.Ptr("P2D"),
 			},
 			Logging: &armcontainerregistry.LoggingProperties{
-				LogLevel:	to.Ptr(armcontainerregistry.LogLevelDebug),
-				AuditLogStatus:	to.Ptr(armcontainerregistry.AuditLogStatusEnabled),
+				LogLevel:       to.Ptr(armcontainerregistry.LogLevelDebug),
+				AuditLogStatus: to.Ptr(armcontainerregistry.AuditLogStatusEnabled),
 			},
 			ClientTokenIDs: []*string{
 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tokens/client1Token"),
@@ -299,8 +299,8 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 				to.Ptr("sample/repo/*:1.0:*"),
 			},
 			GarbageCollection: &armcontainerregistry.GarbageCollectionProperties{
-				Enabled:	to.Ptr(true),
-				Schedule:	to.Ptr("0 5 * * *"),
+				Enabled:  to.Ptr(true),
+				Schedule: to.Ptr("0 5 * * *"),
 			},
 		},
 	}, nil)

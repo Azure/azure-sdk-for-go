@@ -23,23 +23,23 @@ import (
 type WhatIfResultsAtSubscriptionServer struct {
 	// BeginCreateOrUpdate is the fake for method WhatIfResultsAtSubscriptionClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, deploymentStacksWhatIfResultName string, resource armdeploymentstacks.WhatIfResult, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, deploymentStacksWhatIfResultName string, resource armdeploymentstacks.WhatIfResult, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method WhatIfResultsAtSubscriptionClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete	func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WhatIfResultsAtSubscriptionClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientGetOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientGetOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WhatIfResultsAtSubscriptionClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientListOptions) (resp azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse])
+	NewListPager func(options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientListOptions) (resp azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse])
 
 	// BeginWhatIf is the fake for method WhatIfResultsAtSubscriptionClient.BeginWhatIf
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIf	func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse], errResp azfake.ErrorResponder)
+	BeginWhatIf func(ctx context.Context, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWhatIfResultsAtSubscriptionServerTransport creates a new instance of WhatIfResultsAtSubscriptionServerTransport with the provided implementation.
@@ -47,20 +47,20 @@ type WhatIfResultsAtSubscriptionServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWhatIfResultsAtSubscriptionServerTransport(srv *WhatIfResultsAtSubscriptionServer) *WhatIfResultsAtSubscriptionServerTransport {
 	return &WhatIfResultsAtSubscriptionServerTransport{
-		srv:			srv,
-		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse]](),
-		newListPager:		newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]](),
-		beginWhatIf:		newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]](),
+		beginWhatIf:         newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse]](),
 	}
 }
 
 // WhatIfResultsAtSubscriptionServerTransport connects instances of armdeploymentstacks.WhatIfResultsAtSubscriptionClient to instances of WhatIfResultsAtSubscriptionServer.
 // Don't use this type directly, use NewWhatIfResultsAtSubscriptionServerTransport instead.
 type WhatIfResultsAtSubscriptionServerTransport struct {
-	srv			*WhatIfResultsAtSubscriptionServer
-	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse]]
-	newListPager		*tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]]
-	beginWhatIf		*tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse]]
+	srv                 *WhatIfResultsAtSubscriptionServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientCreateOrUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientListResponse]]
+	beginWhatIf         *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtSubscriptionClientWhatIfResponse]]
 }
 
 // Do implements the policy.Transporter interface for WhatIfResultsAtSubscriptionServerTransport.
@@ -205,11 +205,11 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchDelete(req *http.Re
 	var options *armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteOptions
 	if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || unmanageActionResourcesWithoutDeleteSupportParam != nil || bypassStackOutOfSyncErrorParam != nil {
 		options = &armdeploymentstacks.WhatIfResultsAtSubscriptionClientDeleteOptions{
-			UnmanageActionResources:			unmanageActionResourcesParam,
-			UnmanageActionResourceGroups:			unmanageActionResourceGroupsParam,
-			UnmanageActionManagementGroups:			unmanageActionManagementGroupsParam,
-			UnmanageActionResourcesWithoutDeleteSupport:	unmanageActionResourcesWithoutDeleteSupportParam,
-			BypassStackOutOfSyncError:			bypassStackOutOfSyncErrorParam,
+			UnmanageActionResources:                     unmanageActionResourcesParam,
+			UnmanageActionResourceGroups:                unmanageActionResourceGroupsParam,
+			UnmanageActionManagementGroups:              unmanageActionManagementGroupsParam,
+			UnmanageActionResourcesWithoutDeleteSupport: unmanageActionResourcesWithoutDeleteSupportParam,
+			BypassStackOutOfSyncError:                   bypassStackOutOfSyncErrorParam,
 		}
 	}
 	respr, errRespr := w.srv.Delete(req.Context(), deploymentStacksWhatIfResultNameParam, options)

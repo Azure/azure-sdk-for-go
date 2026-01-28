@@ -24,22 +24,22 @@ func ExampleWhatIfResultsAtResourceGroupClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWhatIfResultsAtResourceGroupClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "simpleDeploymentStackWhatIfResult", armdeploymentstacks.WhatIfResult{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Properties: &armdeploymentstacks.WhatIfResultProperties{
-			DeploymentStackResourceID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
-			RetentionInterval:		to.Ptr("P7D"),
+			DeploymentStackResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
+			RetentionInterval:         to.Ptr("P7D"),
 			TemplateLink: &armdeploymentstacks.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
-			Parameters:	map[string]*armdeploymentstacks.DeploymentParameter{},
+			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{},
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
+				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:			to.Ptr(armdeploymentstacks.DenySettingsModeNone),
-				ApplyToChildScopes:	to.Ptr(false),
+				Mode:               to.Ptr(armdeploymentstacks.DenySettingsModeNone),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			ExtensionConfigs: map[string]*armdeploymentstacks.DeploymentExtensionConfig{
 				"contoso": {

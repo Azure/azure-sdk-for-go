@@ -1,0 +1,4 @@
+directory: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/PreviewAlertRule
+commit: b12f65a879083174d4d09a641a68c7aeee0a912b
+repo: i-specs
+additionalDirectories: 

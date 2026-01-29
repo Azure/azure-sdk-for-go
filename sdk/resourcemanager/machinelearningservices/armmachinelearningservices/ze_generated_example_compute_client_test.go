@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Compute/list.json
@@ -80,31 +80,31 @@ func ExampleComputeClient_BeginCreateOrUpdate() {
 		"compute123",
 		armmachinelearningservices.ComputeResource{
 			Properties: &armmachinelearningservices.Kubernetes{
-				Description: to.Ptr("some compute"),
-				ComputeType: to.Ptr(armmachinelearningservices.ComputeTypeKubernetes),
-				ResourceID:  to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
+				Description:	to.Ptr("some compute"),
+				ComputeType:	to.Ptr(armmachinelearningservices.ComputeTypeKubernetes),
+				ResourceID:	to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
 				Properties: &armmachinelearningservices.KubernetesProperties{
-					DefaultInstanceType: to.Ptr("defaultInstanceType"),
+					DefaultInstanceType:	to.Ptr("defaultInstanceType"),
 					InstanceTypes: map[string]*armmachinelearningservices.InstanceTypeSchema{
 						"defaultInstanceType": {
 							Resources: &armmachinelearningservices.InstanceTypeSchemaResources{
 								Limits: map[string]*string{
-									"cpu":            to.Ptr("1"),
-									"memory":         to.Ptr("4Gi"),
-									"nvidia.com/gpu": nil,
+									"cpu":			to.Ptr("1"),
+									"memory":		to.Ptr("4Gi"),
+									"nvidia.com/gpu":	nil,
 								},
 								Requests: map[string]*string{
-									"cpu":            to.Ptr("1"),
-									"memory":         to.Ptr("4Gi"),
-									"nvidia.com/gpu": nil,
+									"cpu":			to.Ptr("1"),
+									"memory":		to.Ptr("4Gi"),
+									"nvidia.com/gpu":	nil,
 								},
 							},
 						},
 					},
-					Namespace: to.Ptr("default"),
+					Namespace:	to.Ptr("default"),
 				},
 			},
-			Location: to.Ptr("eastus"),
+			Location:	to.Ptr("eastus"),
 		},
 		nil)
 	if err != nil {
@@ -137,9 +137,9 @@ func ExampleComputeClient_BeginUpdate() {
 			Properties: &armmachinelearningservices.ClusterUpdateProperties{
 				Properties: &armmachinelearningservices.ScaleSettingsInformation{
 					ScaleSettings: &armmachinelearningservices.ScaleSettings{
-						MaxNodeCount:                to.Ptr[int32](4),
-						MinNodeCount:                to.Ptr[int32](4),
-						NodeIdleTimeBeforeScaleDown: to.Ptr("PT5M"),
+						MaxNodeCount:			to.Ptr[int32](4),
+						MinNodeCount:			to.Ptr[int32](4),
+						NodeIdleTimeBeforeScaleDown:	to.Ptr("PT5M"),
 					},
 				},
 			},

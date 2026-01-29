@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearningservices/armmachinelearningservices/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2021-07-01/examples/Quota/update.json
@@ -30,16 +30,16 @@ func ExampleQuotasClient_Update() {
 		armmachinelearningservices.QuotaUpdateParameters{
 			Value: []*armmachinelearningservices.QuotaBaseProperties{
 				{
-					Type:  to.Ptr("Microsoft.MachineLearningServices/workspaces/quotas"),
-					ID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace1/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs"),
-					Limit: to.Ptr[int64](100),
-					Unit:  to.Ptr(armmachinelearningservices.QuotaUnitCount),
+					Type:	to.Ptr("Microsoft.MachineLearningServices/workspaces/quotas"),
+					ID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace1/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs"),
+					Limit:	to.Ptr[int64](100),
+					Unit:	to.Ptr(armmachinelearningservices.QuotaUnitCount),
 				},
 				{
-					Type:  to.Ptr("Microsoft.MachineLearningServices/workspaces/quotas"),
-					ID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace2/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs"),
-					Limit: to.Ptr[int64](200),
-					Unit:  to.Ptr(armmachinelearningservices.QuotaUnitCount),
+					Type:	to.Ptr("Microsoft.MachineLearningServices/workspaces/quotas"),
+					ID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.MachineLearningServices/workspaces/demo_workspace2/quotas/Standard_DSv2_Family_Cluster_Dedicated_vCPUs"),
+					Limit:	to.Ptr[int64](200),
+					Unit:	to.Ptr(armmachinelearningservices.QuotaUnitCount),
 				}},
 		},
 		nil)

@@ -1,0 +1,4 @@
+directory: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/TenantActivityLogAlerts
+commit: 3dd5967824250b457416b6811ceaee2002abcf11
+repo: i-specs
+additionalDirectories: 

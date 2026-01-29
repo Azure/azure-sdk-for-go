@@ -23,6 +23,9 @@ type DeidService struct {
 	// The resource-specific properties for this resource.
 	Properties *DeidServiceProperties
 
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *SKU
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -267,6 +270,26 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
 	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// SKU - The resource model definition representing SKU
+type SKU struct {
+	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
+	Name *string
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string
+
+	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
+	// on a PUT.
+	Tier *SKUTier
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

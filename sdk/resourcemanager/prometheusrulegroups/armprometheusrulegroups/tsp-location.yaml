@@ -1,0 +1,4 @@
+directory: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/PrometheusRuleGroups
+commit: 5b1f05775f3085a850c111cbac58106213c6f2ee
+repo: i-specs
+additionalDirectories: 

@@ -11,10 +11,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redhatopenshift/armredhatopenshift/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c1cea38fb7e5cec9afe223a2ed15cbe2fbeecbdb/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters/stable/2023-11-22/examples/OpenShiftVersions_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6e34caed36815fc876c8e8c0371db76f809e52e8/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/OpenShiftClusters/stable/2025-07-25/examples/OpenShiftVersions_List.json
 func ExampleOpenShiftVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,11 +39,41 @@ func ExampleOpenShiftVersionsClient_NewListPager() {
 		// page.OpenShiftVersionList = armredhatopenshift.OpenShiftVersionList{
 		// 	Value: []*armredhatopenshift.OpenShiftVersion{
 		// 		{
-		// 			ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 			Name: to.Ptr("4.10.20"),
+		// 			Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftVersion"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/resourceProviderNamespace/resourceType/resourceName"),
 		// 			Properties: &armredhatopenshift.OpenShiftVersionProperties{
 		// 				Version: to.Ptr("4.10.20"),
 		// 			},
 		// 	}},
 		// }
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6e34caed36815fc876c8e8c0371db76f809e52e8/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/OpenShiftClusters/stable/2025-07-25/examples/OpenShiftVersions_Get.json
+func ExampleOpenShiftVersionsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armredhatopenshift.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOpenShiftVersionsClient().Get(ctx, "location", "4.14.40", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.OpenShiftVersion = armredhatopenshift.OpenShiftVersion{
+	// 	Name: to.Ptr("4.10.20"),
+	// 	Type: to.Ptr("Microsoft.RedHatOpenShift/OpenShiftVersion"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/resourceProviderNamespace/resourceType/resourceName"),
+	// 	Properties: &armredhatopenshift.OpenShiftVersionProperties{
+	// 		Version: to.Ptr("4.10.20"),
+	// 	},
+	// }
 }

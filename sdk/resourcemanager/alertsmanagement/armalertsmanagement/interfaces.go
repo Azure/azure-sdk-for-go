@@ -5,13 +5,13 @@
 
 package armalertsmanagement
 
-// ActionClassification provides polymorphic access to related types.
-// Call the interface's GetAction() method to access the common type.
+// AlertEnrichmentItemClassification provides polymorphic access to related types.
+// Call the interface's GetAlertEnrichmentItem() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *Action, *AddActionGroups, *RemoveAllActionGroups
-type ActionClassification interface {
-	// GetAction returns the Action content of the underlying type.
-	GetAction() *Action
+// - *AlertEnrichmentItem, *PrometheusEnrichmentItem, *PrometheusInstantQuery, *PrometheusRangeQuery
+type AlertEnrichmentItemClassification interface {
+	// GetAlertEnrichmentItem returns the AlertEnrichmentItem content of the underlying type.
+	GetAlertEnrichmentItem() *AlertEnrichmentItem
 }
 
 // AlertsMetaDataPropertiesClassification provides polymorphic access to related types.
@@ -23,11 +23,21 @@ type AlertsMetaDataPropertiesClassification interface {
 	GetAlertsMetaDataProperties() *AlertsMetaDataProperties
 }
 
-// RecurrenceClassification provides polymorphic access to related types.
-// Call the interface's GetRecurrence() method to access the common type.
+// BaseDetailsClassification provides polymorphic access to related types.
+// Call the interface's GetBaseDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *DailyRecurrence, *MonthlyRecurrence, *Recurrence, *WeeklyRecurrence
-type RecurrenceClassification interface {
-	// GetRecurrence returns the Recurrence content of the underlying type.
-	GetRecurrence() *Recurrence
+// - *ActionSuppressedDetails, *ActionTriggeredDetails, *BaseDetails, *PropertyChangeDetails
+type BaseDetailsClassification interface {
+	// GetBaseDetails returns the BaseDetails content of the underlying type.
+	GetBaseDetails() *BaseDetails
+}
+
+// PrometheusEnrichmentItemClassification provides polymorphic access to related types.
+// Call the interface's GetPrometheusEnrichmentItem() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *PrometheusEnrichmentItem, *PrometheusInstantQuery, *PrometheusRangeQuery
+type PrometheusEnrichmentItemClassification interface {
+	AlertEnrichmentItemClassification
+	// GetPrometheusEnrichmentItem returns the PrometheusEnrichmentItem content of the underlying type.
+	GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem
 }

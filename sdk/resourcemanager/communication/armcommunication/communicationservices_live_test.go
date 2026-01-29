@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,15 +20,15 @@ import (
 type CommunicationServicesTestSuite struct {
 	suite.Suite
 
-	ctx                      context.Context
-	cred                     azcore.TokenCredential
-	options                  *arm.ClientOptions
-	clientFactory            *armcommunication.ClientFactory
-	armEndpoint              string
-	communicationServiceName string
-	location                 string
-	resourceGroupName        string
-	subscriptionId           string
+	ctx				context.Context
+	cred				azcore.TokenCredential
+	options				*arm.ClientOptions
+	clientFactory			*armcommunication.ClientFactory
+	armEndpoint			string
+	communicationServiceName	string
+	location			string
+	resourceGroupName		string
+	subscriptionId			string
 }
 
 func (testsuite *CommunicationServicesTestSuite) SetupSuite() {
@@ -79,15 +79,15 @@ func (testsuite *CommunicationServicesTestSuite) TestCommunicationServices() {
 	fmt.Println("Call operation: CommunicationServices_CheckNameAvailability")
 	servicesClient := testsuite.clientFactory.NewServicesClient()
 	_, err = servicesClient.CheckNameAvailability(testsuite.ctx, armcommunication.NameAvailabilityParameters{
-		Name: to.Ptr("MyCommunicationService"),
-		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
+		Name:	to.Ptr("MyCommunicationService"),
+		Type:	to.Ptr("Microsoft.Communication/CommunicationServices"),
 	}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step CommunicationServices_CreateOrUpdate
 	fmt.Println("Call operation: CommunicationServices_CreateOrUpdate")
 	servicesClientCreateOrUpdateResponsePoller, err := servicesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.communicationServiceName, armcommunication.ServiceResource{
-		Location: to.Ptr("Global"),
+		Location:	to.Ptr("Global"),
 		Properties: &armcommunication.ServiceProperties{
 			DataLocation: to.Ptr("United States"),
 		},

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,17 +20,17 @@ import (
 type EmailServicesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	clientFactory     *armcommunication.ClientFactory
-	armEndpoint       string
-	domainName        string
-	emailServiceName  string
-	senderUsername    string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	clientFactory		*armcommunication.ClientFactory
+	armEndpoint		string
+	domainName		string
+	emailServiceName	string
+	senderUsername		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *EmailServicesTestSuite) SetupSuite() {
@@ -72,7 +72,7 @@ func (testsuite *EmailServicesTestSuite) Prepare() {
 	fmt.Println("Call operation: EmailServices_CreateOrUpdate")
 	emailServicesClient := testsuite.clientFactory.NewEmailServicesClient()
 	emailServicesClientCreateOrUpdateResponsePoller, err := emailServicesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.emailServiceName, armcommunication.EmailServiceResource{
-		Location: to.Ptr("Global"),
+		Location:	to.Ptr("Global"),
 		Properties: &armcommunication.EmailServiceProperties{
 			DataLocation: to.Ptr("United States"),
 		},
@@ -85,7 +85,7 @@ func (testsuite *EmailServicesTestSuite) Prepare() {
 	fmt.Println("Call operation: Domains_CreateOrUpdate")
 	domainsClient := testsuite.clientFactory.NewDomainsClient()
 	domainsClientCreateOrUpdateResponsePoller, err := domainsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.emailServiceName, testsuite.domainName, armcommunication.DomainResource{
-		Location: to.Ptr("Global"),
+		Location:	to.Ptr("Global"),
 		Properties: &armcommunication.DomainProperties{
 			DomainManagement: to.Ptr(armcommunication.DomainManagementCustomerManaged),
 		},
@@ -190,8 +190,8 @@ func (testsuite *EmailServicesTestSuite) TestSenderUsernames() {
 	senderUsernamesClient := testsuite.clientFactory.NewSenderUsernamesClient()
 	_, err = senderUsernamesClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.emailServiceName, testsuite.domainName, testsuite.senderUsername, armcommunication.SenderUsernameResource{
 		Properties: &armcommunication.SenderUsernameProperties{
-			DisplayName: to.Ptr("Contoso News Alerts"),
-			Username:    to.Ptr(testsuite.senderUsername),
+			DisplayName:	to.Ptr("Contoso News Alerts"),
+			Username:	to.Ptr(testsuite.senderUsername),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

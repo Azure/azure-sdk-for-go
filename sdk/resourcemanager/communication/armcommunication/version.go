@@ -6,5 +6,5 @@ package armcommunication
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/communication/armcommunication"
-	moduleVersion = "v2.3.0"
+	moduleVersion = "v3.0.0"
 )

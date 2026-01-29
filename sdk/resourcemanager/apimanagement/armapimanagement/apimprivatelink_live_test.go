@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
@@ -21,16 +21,16 @@ import (
 type ApimprivatelinkTestSuite struct {
 	suite.Suite
 
-	ctx                           context.Context
-	cred                          azcore.TokenCredential
-	options                       *arm.ClientOptions
-	apimId                        string
-	privateEndpointConnectionName string
-	serviceName                   string
-	virtualNetworksName           string
-	location                      string
-	resourceGroupName             string
-	subscriptionId                string
+	ctx				context.Context
+	cred				azcore.TokenCredential
+	options				*arm.ClientOptions
+	apimId				string
+	privateEndpointConnectionName	string
+	serviceName			string
+	virtualNetworksName		string
+	location			string
+	resourceGroupName		string
+	subscriptionId			string
 }
 
 func (testsuite *ApimprivatelinkTestSuite) SetupSuite() {
@@ -68,17 +68,17 @@ func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -89,74 +89,74 @@ func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 
 	// From step PrivateEndpoint_Create
 	template := map[string]interface{}{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"parameters": map[string]interface{}{
 			"apimId": map[string]interface{}{
-				"type":         "string",
-				"defaultValue": "$(apimId)",
+				"type":		"string",
+				"defaultValue":	"$(apimId)",
 			},
 			"location": map[string]interface{}{
-				"type":         "string",
-				"defaultValue": "$(location)",
+				"type":		"string",
+				"defaultValue":	"$(location)",
 			},
 			"privateEndpointConnectionName": map[string]interface{}{
-				"type":         "string",
-				"defaultValue": "$(privateEndpointConnectionName)",
+				"type":		"string",
+				"defaultValue":	"$(privateEndpointConnectionName)",
 			},
 			"virtualNetworksName": map[string]interface{}{
-				"type":         "string",
-				"defaultValue": "$(virtualNetworksName)",
+				"type":		"string",
+				"defaultValue":	"$(virtualNetworksName)",
 			},
 		},
 		"resources": []interface{}{
 			map[string]interface{}{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2020-11-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]interface{}{
 					"addressSpace": map[string]interface{}{
 						"addressPrefixes": []interface{}{
 							"10.0.0.0/16",
 						},
 					},
-					"enableDdosProtection": false,
+					"enableDdosProtection":	false,
 					"subnets": []interface{}{
 						map[string]interface{}{
-							"name": "default",
+							"name":	"default",
 							"properties": map[string]interface{}{
-								"addressPrefix":                     "10.0.0.0/24",
-								"delegations":                       []interface{}{},
-								"privateEndpointNetworkPolicies":    "Disabled",
-								"privateLinkServiceNetworkPolicies": "Enabled",
+								"addressPrefix":			"10.0.0.0/24",
+								"delegations":				[]interface{}{},
+								"privateEndpointNetworkPolicies":	"Disabled",
+								"privateLinkServiceNetworkPolicies":	"Enabled",
 							},
 						},
 					},
-					"virtualNetworkPeerings": []interface{}{},
+					"virtualNetworkPeerings":	[]interface{}{},
 				},
 			},
 			map[string]interface{}{
-				"name":       "[concat(parameters('privateEndpointConnectionName'), '-nic')]",
-				"type":       "Microsoft.Network/networkInterfaces",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('privateEndpointConnectionName'), '-nic')]",
+				"type":		"Microsoft.Network/networkInterfaces",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []interface{}{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]interface{}{
 					"dnsSettings": map[string]interface{}{
 						"dnsServers": []interface{}{},
 					},
-					"enableIPForwarding": false,
+					"enableIPForwarding":	false,
 					"ipConfigurations": []interface{}{
 						map[string]interface{}{
-							"name": "privateEndpointIpConfig",
+							"name":	"privateEndpointIpConfig",
 							"properties": map[string]interface{}{
-								"primary":                   true,
-								"privateIPAddress":          "10.0.0.4",
-								"privateIPAddressVersion":   "IPv4",
-								"privateIPAllocationMethod": "Dynamic",
+								"primary":			true,
+								"privateIPAddress":		"10.0.0.4",
+								"privateIPAddressVersion":	"IPv4",
+								"privateIPAllocationMethod":	"Dynamic",
 								"subnet": map[string]interface{}{
 									"id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 								},
@@ -166,29 +166,29 @@ func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 				},
 			},
 			map[string]interface{}{
-				"name":       "[parameters('privateEndpointConnectionName')]",
-				"type":       "Microsoft.Network/privateEndpoints",
-				"apiVersion": "2020-11-01",
+				"name":		"[parameters('privateEndpointConnectionName')]",
+				"type":		"Microsoft.Network/privateEndpoints",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []interface{}{
 					"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), 'default')]",
 				},
-				"location": "[parameters('location')]",
+				"location":	"[parameters('location')]",
 				"properties": map[string]interface{}{
-					"customDnsConfigs":                    []interface{}{},
-					"manualPrivateLinkServiceConnections": []interface{}{},
+					"customDnsConfigs":			[]interface{}{},
+					"manualPrivateLinkServiceConnections":	[]interface{}{},
 					"privateLinkServiceConnections": []interface{}{
 						map[string]interface{}{
-							"name": "[parameters('privateEndpointConnectionName')]",
+							"name":	"[parameters('privateEndpointConnectionName')]",
 							"properties": map[string]interface{}{
 								"groupIds": []interface{}{
 									"Gateway",
 								},
 								"privateLinkServiceConnectionState": map[string]interface{}{
-									"description":     "Auto-Approved",
-									"actionsRequired": "None",
-									"status":          "Approved",
+									"description":		"Auto-Approved",
+									"actionsRequired":	"None",
+									"status":		"Approved",
 								},
-								"privateLinkServiceId": "[parameters('apimId')]",
+								"privateLinkServiceId":	"[parameters('apimId')]",
 							},
 						},
 					},
@@ -198,33 +198,33 @@ func (testsuite *ApimprivatelinkTestSuite) Prepare() {
 				},
 			},
 			map[string]interface{}{
-				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
-				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"name":		"[concat(parameters('virtualNetworksName'), '/default')]",
+				"type":		"Microsoft.Network/virtualNetworks/subnets",
+				"apiVersion":	"2020-11-01",
 				"dependsOn": []interface{}{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]interface{}{
-					"addressPrefix":                     "10.0.0.0/24",
-					"delegations":                       []interface{}{},
-					"privateEndpointNetworkPolicies":    "Disabled",
-					"privateLinkServiceNetworkPolicies": "Enabled",
+					"addressPrefix":			"10.0.0.0/24",
+					"delegations":				[]interface{}{},
+					"privateEndpointNetworkPolicies":	"Disabled",
+					"privateLinkServiceNetworkPolicies":	"Enabled",
 				},
 			},
 		},
-		"variables": map[string]interface{}{},
+		"variables":	map[string]interface{}{},
 	}
 	params := map[string]interface{}{
-		"apimId":                        map[string]interface{}{"value": testsuite.apimId},
-		"location":                      map[string]interface{}{"value": testsuite.location},
-		"privateEndpointConnectionName": map[string]interface{}{"value": testsuite.privateEndpointConnectionName},
-		"virtualNetworksName":           map[string]interface{}{"value": testsuite.virtualNetworksName},
+		"apimId":				map[string]interface{}{"value": testsuite.apimId},
+		"location":				map[string]interface{}{"value": testsuite.location},
+		"privateEndpointConnectionName":	map[string]interface{}{"value": testsuite.privateEndpointConnectionName},
+		"virtualNetworksName":			map[string]interface{}{"value": testsuite.virtualNetworksName},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template:   template,
-			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Parameters:	params,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "PrivateEndpoint_Create", &deployment)
@@ -239,11 +239,11 @@ func (testsuite *ApimprivatelinkTestSuite) TestPrivateendpointconnection() {
 	privateEndpointConnectionClient, err := armapimanagement.NewPrivateEndpointConnectionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	privateEndpointConnectionClientCreateOrUpdateResponsePoller, err := privateEndpointConnectionClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.privateEndpointConnectionName, armapimanagement.PrivateEndpointConnectionRequest{
-		ID: to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/privateEndpointConnections/" + testsuite.privateEndpointConnectionName),
+		ID:	to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ApiManagement/service/" + testsuite.serviceName + "/privateEndpointConnections/" + testsuite.privateEndpointConnectionName),
 		Properties: &armapimanagement.PrivateEndpointConnectionRequestProperties{
 			PrivateLinkServiceConnectionState: &armapimanagement.PrivateLinkServiceConnectionState{
-				Description: to.Ptr("The Private Endpoint Connection is approved."),
-				Status:      to.Ptr(armapimanagement.PrivateEndpointServiceConnectionStatusRejected),
+				Description:	to.Ptr("The Private Endpoint Connection is approved."),
+				Status:		to.Ptr(armapimanagement.PrivateEndpointServiceConnectionStatusRejected),
 			},
 		},
 	}, nil)

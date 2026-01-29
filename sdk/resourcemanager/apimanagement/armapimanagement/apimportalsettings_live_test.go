@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,13 +20,13 @@ import (
 type ApimportalsettingsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	serviceName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	serviceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimportalsettingsTestSuite) SetupSuite() {
@@ -62,17 +62,17 @@ func (testsuite *ApimportalsettingsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -134,11 +134,11 @@ func (testsuite *ApimportalsettingsTestSuite) TestSignupsettings() {
 	testsuite.Require().NoError(err)
 	_, err = signUpSettingsClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.PortalSignupSettings{
 		Properties: &armapimanagement.PortalSignupSettingsProperties{
-			Enabled: to.Ptr(true),
+			Enabled:	to.Ptr(true),
 			TermsOfService: &armapimanagement.TermsOfServiceProperties{
-				ConsentRequired: to.Ptr(true),
-				Enabled:         to.Ptr(true),
-				Text:            to.Ptr("Terms of service text."),
+				ConsentRequired:	to.Ptr(true),
+				Enabled:		to.Ptr(true),
+				Text:			to.Ptr("Terms of service text."),
 			},
 		},
 	}, &armapimanagement.SignUpSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})
@@ -158,11 +158,11 @@ func (testsuite *ApimportalsettingsTestSuite) TestSignupsettings() {
 	fmt.Println("Call operation: SignUpSettings_Update")
 	_, err = signUpSettingsClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, "*", armapimanagement.PortalSignupSettings{
 		Properties: &armapimanagement.PortalSignupSettingsProperties{
-			Enabled: to.Ptr(true),
+			Enabled:	to.Ptr(true),
 			TermsOfService: &armapimanagement.TermsOfServiceProperties{
-				ConsentRequired: to.Ptr(true),
-				Enabled:         to.Ptr(true),
-				Text:            to.Ptr("Terms of service text."),
+				ConsentRequired:	to.Ptr(true),
+				Enabled:		to.Ptr(true),
+				Text:			to.Ptr("Terms of service text."),
 			},
 		},
 	}, nil)

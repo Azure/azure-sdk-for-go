@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListNamedValues.json
@@ -27,9 +27,9 @@ func ExampleNamedValueClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewNamedValueClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.NamedValueClientListByServiceOptions{Filter: nil,
-		Top:                     nil,
-		Skip:                    nil,
-		IsKeyVaultRefreshFailed: nil,
+		Top:				nil,
+		Skip:				nil,
+		IsKeyVaultRefreshFailed:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -181,12 +181,12 @@ func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValue()
 	}
 	poller, err := clientFactory.NewNamedValueClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "testprop2", armapimanagement.NamedValueCreateContract{
 		Properties: &armapimanagement.NamedValueCreateContractProperties{
-			Secret: to.Ptr(false),
+			Secret:	to.Ptr(false),
 			Tags: []*string{
 				to.Ptr("foo"),
 				to.Ptr("bar")},
-			DisplayName: to.Ptr("prop3name"),
-			Value:       to.Ptr("propValue"),
+			DisplayName:	to.Ptr("prop3name"),
+			Value:		to.Ptr("propValue"),
 		},
 	}, &armapimanagement.NamedValueClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -228,14 +228,14 @@ func ExampleNamedValueClient_BeginCreateOrUpdate_apiManagementCreateNamedValueWi
 	}
 	poller, err := clientFactory.NewNamedValueClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "testprop6", armapimanagement.NamedValueCreateContract{
 		Properties: &armapimanagement.NamedValueCreateContractProperties{
-			Secret: to.Ptr(true),
+			Secret:	to.Ptr(true),
 			Tags: []*string{
 				to.Ptr("foo"),
 				to.Ptr("bar")},
-			DisplayName: to.Ptr("prop6namekv"),
+			DisplayName:	to.Ptr("prop6namekv"),
 			KeyVault: &armapimanagement.KeyVaultContractCreateProperties{
-				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
-				SecretIdentifier: to.Ptr("https://contoso.vault.azure.net/secrets/aadSecret"),
+				IdentityClientID:	to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
+				SecretIdentifier:	to.Ptr("https://contoso.vault.azure.net/secrets/aadSecret"),
 			},
 		},
 	}, &armapimanagement.NamedValueClientBeginCreateOrUpdateOptions{IfMatch: nil})
@@ -285,12 +285,12 @@ func ExampleNamedValueClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewNamedValueClient().BeginUpdate(ctx, "rg1", "apimService1", "testprop2", "*", armapimanagement.NamedValueUpdateParameters{
 		Properties: &armapimanagement.NamedValueUpdateParameterProperties{
-			Secret: to.Ptr(false),
+			Secret:	to.Ptr(false),
 			Tags: []*string{
 				to.Ptr("foo"),
 				to.Ptr("bar2")},
-			DisplayName: to.Ptr("prop3name"),
-			Value:       to.Ptr("propValue"),
+			DisplayName:	to.Ptr("prop3name"),
+			Value:		to.Ptr("propValue"),
 		},
 	}, nil)
 	if err != nil {

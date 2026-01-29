@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceSubscriptions.json
@@ -27,8 +27,8 @@ func ExampleWorkspaceSubscriptionClient_NewListPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceSubscriptionClient().NewListPager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceSubscriptionClientListOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -147,13 +147,13 @@ func ExampleWorkspaceSubscriptionClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewWorkspaceSubscriptionClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "testsub", armapimanagement.SubscriptionCreateParameters{
 		Properties: &armapimanagement.SubscriptionCreateParameterProperties{
-			DisplayName: to.Ptr("testsub"),
-			OwnerID:     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7"),
-			Scope:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/products/5600b59475ff190048060002"),
+			DisplayName:	to.Ptr("testsub"),
+			OwnerID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7"),
+			Scope:		to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/products/5600b59475ff190048060002"),
 		},
 	}, &armapimanagement.WorkspaceSubscriptionClientCreateOrUpdateOptions{Notify: nil,
-		IfMatch: nil,
-		AppType: nil,
+		IfMatch:	nil,
+		AppType:	nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -191,7 +191,7 @@ func ExampleWorkspaceSubscriptionClient_Update() {
 			DisplayName: to.Ptr("testsub"),
 		},
 	}, &armapimanagement.WorkspaceSubscriptionClientUpdateOptions{Notify: nil,
-		AppType: nil,
+		AppType:	nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

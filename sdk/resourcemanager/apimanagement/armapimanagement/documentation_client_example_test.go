@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListDocumentations.json
@@ -27,8 +27,8 @@ func ExampleDocumentationClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewDocumentationClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.DocumentationClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -132,8 +132,8 @@ func ExampleDocumentationClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewDocumentationClient().CreateOrUpdate(ctx, "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", armapimanagement.DocumentationContract{
 		Properties: &armapimanagement.DocumentationContractProperties{
-			Content: to.Ptr("content"),
-			Title:   to.Ptr("Title"),
+			Content:	to.Ptr("content"),
+			Title:		to.Ptr("Title"),
 		},
 	}, &armapimanagement.DocumentationClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -166,8 +166,8 @@ func ExampleDocumentationClient_Update() {
 	}
 	res, err := clientFactory.NewDocumentationClient().Update(ctx, "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "<if-match>", armapimanagement.DocumentationUpdateContract{
 		Properties: &armapimanagement.DocumentationContractProperties{
-			Content: to.Ptr("content updated"),
-			Title:   to.Ptr("Title updated"),
+			Content:	to.Ptr("content updated"),
+			Title:		to.Ptr("Title updated"),
 		},
 	}, nil)
 	if err != nil {

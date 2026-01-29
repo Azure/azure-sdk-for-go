@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementRestoreWithAccessKey.json
@@ -27,11 +27,11 @@ func ExampleServiceClient_BeginRestore() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginRestore(ctx, "rg1", "apimService1", armapimanagement.ServiceBackupRestoreParameters{
-		AccessKey:      to.Ptr("**************************************************"),
-		AccessType:     to.Ptr(armapimanagement.AccessTypeAccessKey),
-		BackupName:     to.Ptr("apimService1backup_2017_03_19"),
-		ContainerName:  to.Ptr("backupContainer"),
-		StorageAccount: to.Ptr("teststorageaccount"),
+		AccessKey:	to.Ptr("**************************************************"),
+		AccessType:	to.Ptr(armapimanagement.AccessTypeAccessKey),
+		BackupName:	to.Ptr("apimService1backup_2017_03_19"),
+		ContainerName:	to.Ptr("backupContainer"),
+		StorageAccount:	to.Ptr("teststorageaccount"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -167,11 +167,11 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithAccessKey() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginBackup(ctx, "rg1", "apimService1", armapimanagement.ServiceBackupRestoreParameters{
-		AccessKey:      to.Ptr("**************************************************"),
-		AccessType:     to.Ptr(armapimanagement.AccessTypeAccessKey),
-		BackupName:     to.Ptr("apimService1backup_2017_03_19"),
-		ContainerName:  to.Ptr("backupContainer"),
-		StorageAccount: to.Ptr("teststorageaccount"),
+		AccessKey:	to.Ptr("**************************************************"),
+		AccessType:	to.Ptr(armapimanagement.AccessTypeAccessKey),
+		BackupName:	to.Ptr("apimService1backup_2017_03_19"),
+		ContainerName:	to.Ptr("backupContainer"),
+		StorageAccount:	to.Ptr("teststorageaccount"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -307,10 +307,10 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithSystemManagedIdenti
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginBackup(ctx, "rg1", "apimService1", armapimanagement.ServiceBackupRestoreParameters{
-		AccessType:     to.Ptr(armapimanagement.AccessTypeSystemAssignedManagedIdentity),
-		BackupName:     to.Ptr("backup5"),
-		ContainerName:  to.Ptr("apim-backups"),
-		StorageAccount: to.Ptr("contosorpstorage"),
+		AccessType:	to.Ptr(armapimanagement.AccessTypeSystemAssignedManagedIdentity),
+		BackupName:	to.Ptr("backup5"),
+		ContainerName:	to.Ptr("apim-backups"),
+		StorageAccount:	to.Ptr("contosorpstorage"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -408,11 +408,11 @@ func ExampleServiceClient_BeginBackup_apiManagementBackupWithUserAssignedManaged
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginBackup(ctx, "rg1", "apimService1", armapimanagement.ServiceBackupRestoreParameters{
-		AccessType:     to.Ptr(armapimanagement.AccessTypeUserAssignedManagedIdentity),
-		BackupName:     to.Ptr("backup5"),
-		ClientID:       to.Ptr("XXXXX-a154-4830-XXXX-46a12da1a1e2"),
-		ContainerName:  to.Ptr("apim-backups"),
-		StorageAccount: to.Ptr("contosorpstorage"),
+		AccessType:	to.Ptr(armapimanagement.AccessTypeUserAssignedManagedIdentity),
+		BackupName:	to.Ptr("backup5"),
+		ClientID:	to.Ptr("XXXXX-a154-4830-XXXX-46a12da1a1e2"),
+		ContainerName:	to.Ptr("apim-backups"),
+		StorageAccount:	to.Ptr("contosorpstorage"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -511,19 +511,19 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateMultiRegionServ
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
-		Location: to.Ptr("West US"),
+		Location:	to.Ptr("West US"),
 		Properties: &armapimanagement.ServiceProperties{
 			AdditionalLocations: []*armapimanagement.AdditionalLocation{
 				{
-					DisableGateway: to.Ptr(true),
-					Location:       to.Ptr("East US"),
+					DisableGateway:	to.Ptr(true),
+					Location:	to.Ptr("East US"),
 					SKU: &armapimanagement.ServiceSKUProperties{
-						Name:     to.Ptr(armapimanagement.SKUTypePremium),
-						Capacity: to.Ptr[int32](1),
+						Name:		to.Ptr(armapimanagement.SKUTypePremium),
+						Capacity:	to.Ptr[int32](1),
 					},
 				}},
 			APIVersionConstraint: &armapimanagement.APIVersionConstraint{
@@ -531,37 +531,37 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateMultiRegionServ
 			},
 			HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
 				{
-					Type:                to.Ptr(armapimanagement.HostnameTypeProxy),
-					CertificatePassword: to.Ptr("Password"),
-					DefaultSSLBinding:   to.Ptr(true),
-					EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
-					HostName:            to.Ptr("gateway1.msitesting.net"),
+					Type:			to.Ptr(armapimanagement.HostnameTypeProxy),
+					CertificatePassword:	to.Ptr("Password"),
+					DefaultSSLBinding:	to.Ptr(true),
+					EncodedCertificate:	to.Ptr("****** Base 64 Encoded Certificate ************"),
+					HostName:		to.Ptr("gateway1.msitesting.net"),
 				},
 				{
-					Type:                to.Ptr(armapimanagement.HostnameTypeManagement),
-					CertificatePassword: to.Ptr("Password"),
-					EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
-					HostName:            to.Ptr("mgmt.msitesting.net"),
+					Type:			to.Ptr(armapimanagement.HostnameTypeManagement),
+					CertificatePassword:	to.Ptr("Password"),
+					EncodedCertificate:	to.Ptr("****** Base 64 Encoded Certificate ************"),
+					HostName:		to.Ptr("mgmt.msitesting.net"),
 				},
 				{
-					Type:                to.Ptr(armapimanagement.HostnameTypePortal),
-					CertificatePassword: to.Ptr("Password"),
-					EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
-					HostName:            to.Ptr("portal1.msitesting.net"),
+					Type:			to.Ptr(armapimanagement.HostnameTypePortal),
+					CertificatePassword:	to.Ptr("Password"),
+					EncodedCertificate:	to.Ptr("****** Base 64 Encoded Certificate ************"),
+					HostName:		to.Ptr("portal1.msitesting.net"),
 				},
 				{
-					Type:                to.Ptr(armapimanagement.HostnameTypeConfigurationAPI),
-					CertificatePassword: to.Ptr("Password"),
-					EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
-					HostName:            to.Ptr("configuration-api.msitesting.net"),
+					Type:			to.Ptr(armapimanagement.HostnameTypeConfigurationAPI),
+					CertificatePassword:	to.Ptr("Password"),
+					EncodedCertificate:	to.Ptr("****** Base 64 Encoded Certificate ************"),
+					HostName:		to.Ptr("configuration-api.msitesting.net"),
 				}},
-			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeNone),
-			PublisherEmail:     to.Ptr("apim@autorestsdk.com"),
-			PublisherName:      to.Ptr("autorestsdk"),
+			VirtualNetworkType:	to.Ptr(armapimanagement.VirtualNetworkTypeNone),
+			PublisherEmail:		to.Ptr("apim@autorestsdk.com"),
+			PublisherName:		to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -699,17 +699,17 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateService() {
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr("South Central US"),
+		Location:	to.Ptr("South Central US"),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeDeveloper),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeDeveloper),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -797,21 +797,21 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceHavingMs
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
 		Identity: &armapimanagement.ServiceIdentity{
 			Type: to.Ptr(armapimanagement.ApimIdentityTypeSystemAssigned),
 		},
-		Location: to.Ptr("West US"),
+		Location:	to.Ptr("West US"),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("apim@autorestsdk.com"),
-			PublisherName:  to.Ptr("autorestsdk"),
+			PublisherEmail:	to.Ptr("apim@autorestsdk.com"),
+			PublisherName:	to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeConsumption),
-			Capacity: to.Ptr[int32](0),
+			Name:		to.Ptr(armapimanagement.SKUTypeConsumption),
+			Capacity:	to.Ptr[int32](0),
 		},
 	}, nil)
 	if err != nil {
@@ -888,23 +888,23 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceInVnetWi
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
-		Location: to.Ptr("East US 2 EUAP"),
+		Location:	to.Ptr("East US 2 EUAP"),
 		Properties: &armapimanagement.ServiceProperties{
-			PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/publicIPAddresses/apimazvnet"),
+			PublicIPAddressID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/publicIPAddresses/apimazvnet"),
 			VirtualNetworkConfiguration: &armapimanagement.VirtualNetworkConfiguration{
 				SubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/apimcus/subnets/tenant"),
 			},
-			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
-			PublisherEmail:     to.Ptr("apim@autorestsdk.com"),
-			PublisherName:      to.Ptr("autorestsdk"),
+			VirtualNetworkType:	to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
+			PublisherEmail:		to.Ptr("apim@autorestsdk.com"),
+			PublisherName:		to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](2),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](2),
 		},
 		Zones: []*string{
 			to.Ptr("1"),
@@ -1002,18 +1002,18 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceInZones(
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
-		Location: to.Ptr("North europe"),
+		Location:	to.Ptr("North europe"),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("apim@autorestsdk.com"),
-			PublisherName:  to.Ptr("autorestsdk"),
+			PublisherEmail:	to.Ptr("apim@autorestsdk.com"),
+			PublisherName:	to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](2),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](2),
 		},
 		Zones: []*string{
 			to.Ptr("1"),
@@ -1107,21 +1107,21 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceSkuv2Ser
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
 		Identity: &armapimanagement.ServiceIdentity{
 			Type: to.Ptr(armapimanagement.ApimIdentityTypeSystemAssigned),
 		},
-		Location: to.Ptr("West US"),
+		Location:	to.Ptr("West US"),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("apim@autorestsdk.com"),
-			PublisherName:  to.Ptr("autorestsdk"),
+			PublisherEmail:	to.Ptr("apim@autorestsdk.com"),
+			PublisherName:	to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandardV2),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandardV2),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -1205,54 +1205,54 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithCust
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
 		Identity: &armapimanagement.ServiceIdentity{
-			Type: to.Ptr(armapimanagement.ApimIdentityTypeUserAssigned),
+			Type:	to.Ptr(armapimanagement.ApimIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": {},
 			},
 		},
-		Location: to.Ptr("North Europe"),
+		Location:	to.Ptr("North Europe"),
 		Properties: &armapimanagement.ServiceProperties{
 			APIVersionConstraint: &armapimanagement.APIVersionConstraint{
 				MinAPIVersion: to.Ptr("2019-01-01"),
 			},
 			HostnameConfigurations: []*armapimanagement.HostnameConfiguration{
 				{
-					Type:              to.Ptr(armapimanagement.HostnameTypeProxy),
-					DefaultSSLBinding: to.Ptr(true),
-					HostName:          to.Ptr("gateway1.msitesting.net"),
-					IdentityClientID:  to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
-					KeyVaultID:        to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
+					Type:			to.Ptr(armapimanagement.HostnameTypeProxy),
+					DefaultSSLBinding:	to.Ptr(true),
+					HostName:		to.Ptr("gateway1.msitesting.net"),
+					IdentityClientID:	to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
+					KeyVaultID:		to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
 				},
 				{
-					Type:             to.Ptr(armapimanagement.HostnameTypeManagement),
-					HostName:         to.Ptr("mgmt.msitesting.net"),
-					IdentityClientID: to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
-					KeyVaultID:       to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
+					Type:			to.Ptr(armapimanagement.HostnameTypeManagement),
+					HostName:		to.Ptr("mgmt.msitesting.net"),
+					IdentityClientID:	to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
+					KeyVaultID:		to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
 				},
 				{
-					Type:             to.Ptr(armapimanagement.HostnameTypePortal),
-					HostName:         to.Ptr("portal1.msitesting.net"),
-					IdentityClientID: to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
-					KeyVaultID:       to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
+					Type:			to.Ptr(armapimanagement.HostnameTypePortal),
+					HostName:		to.Ptr("portal1.msitesting.net"),
+					IdentityClientID:	to.Ptr("329419bc-adec-4dce-9568-25a6d486e468"),
+					KeyVaultID:		to.Ptr("https://rpbvtkeyvaultintegration.vault.azure.net/secrets/msitestingCert"),
 				},
 				{
-					Type:                to.Ptr(armapimanagement.HostnameTypeConfigurationAPI),
-					CertificatePassword: to.Ptr("Password"),
-					EncodedCertificate:  to.Ptr("****** Base 64 Encoded Certificate ************"),
-					HostName:            to.Ptr("configuration-api.msitesting.net"),
+					Type:			to.Ptr(armapimanagement.HostnameTypeConfigurationAPI),
+					CertificatePassword:	to.Ptr("Password"),
+					EncodedCertificate:	to.Ptr("****** Base 64 Encoded Certificate ************"),
+					HostName:		to.Ptr("configuration-api.msitesting.net"),
 				}},
-			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeNone),
-			PublisherEmail:     to.Ptr("apim@autorestsdk.com"),
-			PublisherName:      to.Ptr("autorestsdk"),
+			VirtualNetworkType:	to.Ptr(armapimanagement.VirtualNetworkTypeNone),
+			PublisherEmail:		to.Ptr("apim@autorestsdk.com"),
+			PublisherName:		to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -1407,18 +1407,18 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithDeve
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr("South Central US"),
+		Location:	to.Ptr("South Central US"),
 		Properties: &armapimanagement.ServiceProperties{
-			DeveloperPortalStatus: to.Ptr(armapimanagement.DeveloperPortalStatusEnabled),
-			PublisherEmail:        to.Ptr("foo@contoso.com"),
-			PublisherName:         to.Ptr("foo"),
+			DeveloperPortalStatus:	to.Ptr(armapimanagement.DeveloperPortalStatusEnabled),
+			PublisherEmail:		to.Ptr("foo@contoso.com"),
+			PublisherName:		to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeDeveloper),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeDeveloper),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -1506,19 +1506,19 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithNatG
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
-		Location: to.Ptr("East US"),
+		Location:	to.Ptr("East US"),
 		Properties: &armapimanagement.ServiceProperties{
-			NatGatewayState: to.Ptr(armapimanagement.NatGatewayStateEnabled),
-			PublisherEmail:  to.Ptr("apim@autorestsdk.com"),
-			PublisherName:   to.Ptr("autorestsdk"),
+			NatGatewayState:	to.Ptr(armapimanagement.NatGatewayStateEnabled),
+			PublisherEmail:		to.Ptr("apim@autorestsdk.com"),
+			PublisherName:		to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -1611,24 +1611,24 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithSyst
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
-		Location: to.Ptr("Central US"),
+		Location:	to.Ptr("Central US"),
 		Properties: &armapimanagement.ServiceProperties{
 			Certificates: []*armapimanagement.CertificateConfiguration{
 				{
-					CertificatePassword: to.Ptr("Password"),
-					EncodedCertificate:  to.Ptr("*******Base64 encoded Certificate******************"),
-					StoreName:           to.Ptr(armapimanagement.CertificateConfigurationStoreNameCertificateAuthority),
+					CertificatePassword:	to.Ptr("Password"),
+					EncodedCertificate:	to.Ptr("*******Base64 encoded Certificate******************"),
+					StoreName:		to.Ptr(armapimanagement.CertificateConfigurationStoreNameCertificateAuthority),
 				}},
-			PublisherEmail: to.Ptr("apim@autorestsdk.com"),
-			PublisherName:  to.Ptr("autorestsdk"),
+			PublisherEmail:	to.Ptr("apim@autorestsdk.com"),
+			PublisherName:	to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeBasic),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeBasic),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -1728,24 +1728,24 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithUser
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
 		Identity: &armapimanagement.ServiceIdentity{
-			Type: to.Ptr(armapimanagement.ApimIdentityTypeUserAssigned),
+			Type:	to.Ptr(armapimanagement.ApimIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armapimanagement.UserIdentityProperties{
 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1": {},
 			},
 		},
-		Location: to.Ptr("West US"),
+		Location:	to.Ptr("West US"),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("apim@autorestsdk.com"),
-			PublisherName:  to.Ptr("autorestsdk"),
+			PublisherEmail:	to.Ptr("apim@autorestsdk.com"),
+			PublisherName:	to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeConsumption),
-			Capacity: to.Ptr[int32](0),
+			Name:		to.Ptr(armapimanagement.SKUTypeConsumption),
+			Capacity:	to.Ptr[int32](0),
 		},
 	}, nil)
 	if err != nil {
@@ -1835,21 +1835,21 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementCreateServiceWithoutL
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"tag1": to.Ptr("value1"),
-			"tag2": to.Ptr("value2"),
-			"tag3": to.Ptr("value3"),
+			"tag1":	to.Ptr("value1"),
+			"tag2":	to.Ptr("value2"),
+			"tag3":	to.Ptr("value3"),
 		},
-		Location: to.Ptr("Central US"),
+		Location:	to.Ptr("Central US"),
 		Properties: &armapimanagement.ServiceProperties{
 			ConfigurationAPI: &armapimanagement.ConfigurationAPI{
 				LegacyAPI: to.Ptr(armapimanagement.LegacyAPIStateDisabled),
 			},
-			PublisherEmail: to.Ptr("apim@autorestsdk.com"),
-			PublisherName:  to.Ptr("autorestsdk"),
+			PublisherEmail:	to.Ptr("apim@autorestsdk.com"),
+			PublisherName:	to.Ptr("autorestsdk"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeBasic),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeBasic),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -1944,15 +1944,15 @@ func ExampleServiceClient_BeginCreateOrUpdate_apiManagementUndelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceResource{
-		Location: to.Ptr("South Central US"),
+		Location:	to.Ptr("South Central US"),
 		Properties: &armapimanagement.ServiceProperties{
-			Restore:        to.Ptr(true),
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			Restore:	to.Ptr(true),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeDeveloper),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeDeveloper),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -2097,8 +2097,8 @@ func ExampleServiceClient_BeginUpdate_apiManagementUpdateServicePublisherDetails
 	}
 	poller, err := clientFactory.NewServiceClient().BeginUpdate(ctx, "rg1", "apimService1", armapimanagement.ServiceUpdateParameters{
 		Properties: &armapimanagement.ServiceUpdateProperties{
-			PublisherEmail: to.Ptr("foobar@live.com"),
-			PublisherName:  to.Ptr("Contoso Vnext"),
+			PublisherEmail:	to.Ptr("foobar@live.com"),
+			PublisherName:	to.Ptr("Contoso Vnext"),
 		},
 	}, nil)
 	if err != nil {
@@ -2167,11 +2167,11 @@ func ExampleServiceClient_BeginUpdate_apiManagementUpdateServiceToNewVnetAndAvai
 		Properties: &armapimanagement.ServiceUpdateProperties{
 			AdditionalLocations: []*armapimanagement.AdditionalLocation{
 				{
-					Location:          to.Ptr("Australia East"),
-					PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip"),
+					Location:		to.Ptr("Australia East"),
+					PublicIPAddressID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip"),
 					SKU: &armapimanagement.ServiceSKUProperties{
-						Name:     to.Ptr(armapimanagement.SKUTypePremium),
-						Capacity: to.Ptr[int32](3),
+						Name:		to.Ptr(armapimanagement.SKUTypePremium),
+						Capacity:	to.Ptr[int32](3),
 					},
 					VirtualNetworkConfiguration: &armapimanagement.VirtualNetworkConfiguration{
 						SubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"),
@@ -2181,15 +2181,15 @@ func ExampleServiceClient_BeginUpdate_apiManagementUpdateServiceToNewVnetAndAvai
 						to.Ptr("2"),
 						to.Ptr("3")},
 				}},
-			PublicIPAddressID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east"),
+			PublicIPAddressID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east"),
 			VirtualNetworkConfiguration: &armapimanagement.VirtualNetworkConfiguration{
 				SubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"),
 			},
-			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
+			VirtualNetworkType:	to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](3),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](3),
 		},
 		Zones: []*string{
 			to.Ptr("1"),

@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -22,15 +22,15 @@ import (
 type ApimgatewaysTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	gatewayId         string
-	hcId              string
-	serviceName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	gatewayId		string
+	hcId			string
+	serviceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimgatewaysTestSuite) SetupSuite() {
@@ -68,17 +68,17 @@ func (testsuite *ApimgatewaysTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypePremium),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypePremium),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -95,7 +95,7 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	testsuite.Require().NoError(err)
 	_, err = gatewayClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, armapimanagement.GatewayContract{
 		Properties: &armapimanagement.GatewayContractProperties{
-			Description: to.Ptr("my gateway 1"),
+			Description:	to.Ptr("my gateway 1"),
 			LocationData: &armapimanagement.ResourceLocationDataContract{
 				Name: to.Ptr("my location"),
 			},
@@ -111,8 +111,8 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	// From step Gateway_ListByService
 	fmt.Println("Call operation: Gateway_ListByService")
 	gatewayClientNewListByServicePager := gatewayClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.GatewayClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for gatewayClientNewListByServicePager.More() {
 		_, err := gatewayClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -129,7 +129,7 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	fmt.Println("Call operation: Gateway_Update")
 	_, err = gatewayClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, "*", armapimanagement.GatewayContract{
 		Properties: &armapimanagement.GatewayContractProperties{
-			Description: to.Ptr("my gateway 1"),
+			Description:	to.Ptr("my gateway 1"),
 			LocationData: &armapimanagement.ResourceLocationDataContract{
 				Name: to.Ptr("my location"),
 			},
@@ -152,8 +152,8 @@ func (testsuite *ApimgatewaysTestSuite) TestGateway() {
 	// From step Gateway_GenerateToken
 	fmt.Println("Call operation: Gateway_GenerateToken")
 	_, err = gatewayClient.GenerateToken(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.gatewayId, armapimanagement.GatewayTokenRequestContract{
-		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.2845269Z"); return t }()),
-		KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
+		Expiry:		to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.2845269Z"); return t }()),
+		KeyType:	to.Ptr(armapimanagement.KeyTypePrimary),
 	}, nil)
 	testsuite.Require().NoError(err)
 

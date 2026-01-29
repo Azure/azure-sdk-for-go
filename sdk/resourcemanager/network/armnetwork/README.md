@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Network module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v8
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v9
 ```
 
 ## Authorization

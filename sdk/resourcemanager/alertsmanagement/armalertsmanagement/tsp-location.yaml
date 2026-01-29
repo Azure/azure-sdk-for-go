@@ -1,0 +1,4 @@
+directory: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement
+commit: e399dabac9306d57b602e37a5720f1d7b44c0f45
+repo: i-specs
+additionalDirectories: 

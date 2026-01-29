@@ -28,7 +28,7 @@ type AuthorizationProviderClient struct {
 // NewAuthorizationProviderClient creates a new instance of AuthorizationProviderClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthorizationProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationProviderClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAuthorizationProviderClient(subscriptionID string, credential azcore.Tok
 // CreateOrUpdate - Creates or updates authorization provider.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - authorizationProviderID - Identifier of the authorization provider.
@@ -97,7 +97,7 @@ func (client *AuthorizationProviderClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -124,7 +124,7 @@ func (client *AuthorizationProviderClient) createOrUpdateHandleResponse(resp *ht
 // Delete - Deletes specific authorization provider from the API Management service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - authorizationProviderID - Identifier of the authorization provider.
@@ -177,7 +177,7 @@ func (client *AuthorizationProviderClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -187,7 +187,7 @@ func (client *AuthorizationProviderClient) deleteCreateRequest(ctx context.Conte
 // Get - Gets the details of the authorization provider specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - authorizationProviderID - Identifier of the authorization provider.
@@ -239,7 +239,7 @@ func (client *AuthorizationProviderClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,7 +259,7 @@ func (client *AuthorizationProviderClient) getHandleResponse(resp *http.Response
 
 // NewListByServicePager - Lists a collection of authorization providers defined within a service instance.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - AuthorizationProviderClientListByServiceOptions contains the optional parameters for the AuthorizationProviderClient.NewListByServicePager
@@ -316,7 +316,7 @@ func (client *AuthorizationProviderClient) listByServiceCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,6 +327,79 @@ func (client *AuthorizationProviderClient) listByServiceHandleResponse(resp *htt
 	result := AuthorizationProviderClientListByServiceResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationProviderCollection); err != nil {
 		return AuthorizationProviderClientListByServiceResponse{}, err
+	}
+	return result, nil
+}
+
+// RefreshSecret - Refreshes the Key Vault reference secret for the specified authorization provider.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serviceName - The name of the API Management service.
+//   - authorizationProviderID - Identifier of the authorization provider.
+//   - options - AuthorizationProviderClientRefreshSecretOptions contains the optional parameters for the AuthorizationProviderClient.RefreshSecret
+//     method.
+func (client *AuthorizationProviderClient) RefreshSecret(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationProviderClientRefreshSecretOptions) (AuthorizationProviderClientRefreshSecretResponse, error) {
+	var err error
+	const operationName = "AuthorizationProviderClient.RefreshSecret"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.refreshSecretCreateRequest(ctx, resourceGroupName, serviceName, authorizationProviderID, options)
+	if err != nil {
+		return AuthorizationProviderClientRefreshSecretResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AuthorizationProviderClientRefreshSecretResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AuthorizationProviderClientRefreshSecretResponse{}, err
+	}
+	resp, err := client.refreshSecretHandleResponse(httpResp)
+	return resp, err
+}
+
+// refreshSecretCreateRequest creates the RefreshSecret request.
+func (client *AuthorizationProviderClient) refreshSecretCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, _ *AuthorizationProviderClientRefreshSecretOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/refreshSecret"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	if authorizationProviderID == "" {
+		return nil, errors.New("parameter authorizationProviderID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationProviderId}", url.PathEscape(authorizationProviderID))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// refreshSecretHandleResponse handles the RefreshSecret response.
+func (client *AuthorizationProviderClient) refreshSecretHandleResponse(resp *http.Response) (AuthorizationProviderClientRefreshSecretResponse, error) {
+	result := AuthorizationProviderClientRefreshSecretResponse{}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = &val
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationProviderContract); err != nil {
+		return AuthorizationProviderClientRefreshSecretResponse{}, err
 	}
 	return result, nil
 }

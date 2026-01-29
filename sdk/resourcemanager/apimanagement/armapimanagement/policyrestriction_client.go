@@ -27,7 +27,7 @@ type PolicyRestrictionClient struct {
 // NewPolicyRestrictionClient creates a new instance of PolicyRestrictionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyRestrictionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyRestrictionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPolicyRestrictionClient(subscriptionID string, credential azcore.TokenCr
 // CreateOrUpdate - Creates or updates the policy restriction configuration of the Api Management service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - policyRestrictionID - Policy restrictions after an entity level
@@ -96,7 +96,7 @@ func (client *PolicyRestrictionClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -123,7 +123,7 @@ func (client *PolicyRestrictionClient) createOrUpdateHandleResponse(resp *http.R
 // Delete - Deletes the policy restriction configuration of the Api Management Service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - policyRestrictionID - Policy restrictions after an entity level
@@ -174,7 +174,7 @@ func (client *PolicyRestrictionClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -186,7 +186,7 @@ func (client *PolicyRestrictionClient) deleteCreateRequest(ctx context.Context, 
 // Get - Get the policy restriction of the Api Management service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - policyRestrictionID - Policy restrictions after an entity level
@@ -237,7 +237,7 @@ func (client *PolicyRestrictionClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -257,7 +257,7 @@ func (client *PolicyRestrictionClient) getHandleResponse(resp *http.Response) (P
 
 // GetEntityTag - Gets the entity state (Etag) version of the policy restriction in the Api Management service.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - policyRestrictionID - Policy restrictions after an entity level
@@ -309,7 +309,7 @@ func (client *PolicyRestrictionClient) getEntityTagCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -326,7 +326,7 @@ func (client *PolicyRestrictionClient) getEntityTagHandleResponse(resp *http.Res
 
 // NewListByServicePager - Gets all policy restrictions of API Management services.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - PolicyRestrictionClientListByServiceOptions contains the optional parameters for the PolicyRestrictionClient.NewListByServicePager
@@ -374,7 +374,7 @@ func (client *PolicyRestrictionClient) listByServiceCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -392,7 +392,7 @@ func (client *PolicyRestrictionClient) listByServiceHandleResponse(resp *http.Re
 // Update - Updates the policy restriction configuration of the Api Management service.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - policyRestrictionID - Policy restrictions after an entity level
@@ -447,7 +447,7 @@ func (client *PolicyRestrictionClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}

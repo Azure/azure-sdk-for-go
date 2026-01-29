@@ -23,6 +23,12 @@ type PrivateStoreClientAdminRequestApprovalsListResponse struct {
 	AdminRequestApprovalsList
 }
 
+// PrivateStoreClientAnyExistingOffersInTheCollectionsResponse contains the response from method PrivateStoreClient.AnyExistingOffersInTheCollections.
+type PrivateStoreClientAnyExistingOffersInTheCollectionsResponse struct {
+	// Response object of query if are there existing offers in the collections.
+	AnyExistingOffersInTheCollectionsResponse
+}
+
 // PrivateStoreClientBillingAccountsResponse contains the response from method PrivateStoreClient.BillingAccounts.
 type PrivateStoreClientBillingAccountsResponse struct {
 	// Billing accounts response object
@@ -137,6 +143,12 @@ type PrivateStoreClientQueryRequestApprovalResponse struct {
 	QueryRequestApproval
 }
 
+// PrivateStoreClientQueryUserOffersResponse contains the response from method PrivateStoreClient.QueryUserOffers.
+type PrivateStoreClientQueryUserOffersResponse struct {
+	// List of offers
+	QueryOffers
+}
+
 // PrivateStoreClientUpdateAdminRequestApprovalResponse contains the response from method PrivateStoreClient.UpdateAdminRequestApproval.
 type PrivateStoreClientUpdateAdminRequestApprovalResponse struct {
 	// Admin request approval resource.
@@ -148,6 +160,12 @@ type PrivateStoreClientWithdrawPlanResponse struct {
 	// placeholder for future response values
 }
 
+// PrivateStoreCollectionClientApproveAllItemsResponse contains the response from method PrivateStoreCollectionClient.ApproveAllItems.
+type PrivateStoreCollectionClientApproveAllItemsResponse struct {
+	// The Collection data structure.
+	Collection
+}
+
 // PrivateStoreCollectionClientCreateOrUpdateResponse contains the response from method PrivateStoreCollectionClient.CreateOrUpdate.
 type PrivateStoreCollectionClientCreateOrUpdateResponse struct {
 	// The Collection data structure.
@@ -157,6 +175,12 @@ type PrivateStoreCollectionClientCreateOrUpdateResponse struct {
 // PrivateStoreCollectionClientDeleteResponse contains the response from method PrivateStoreCollectionClient.Delete.
 type PrivateStoreCollectionClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// PrivateStoreCollectionClientDisableApproveAllItemsResponse contains the response from method PrivateStoreCollectionClient.DisableApproveAllItems.
+type PrivateStoreCollectionClientDisableApproveAllItemsResponse struct {
+	// The Collection data structure.
+	Collection
 }
 
 // PrivateStoreCollectionClientGetResponse contains the response from method PrivateStoreCollectionClient.Get.
@@ -182,6 +206,12 @@ type PrivateStoreCollectionClientTransferOffersResponse struct {
 	TransferOffersResponse
 }
 
+// PrivateStoreCollectionOfferClientContextsViewResponse contains the response from method PrivateStoreCollectionOfferClient.ContextsView.
+type PrivateStoreCollectionOfferClientContextsViewResponse struct {
+	// The privateStore offer data structure.
+	Offer
+}
+
 // PrivateStoreCollectionOfferClientCreateOrUpdateResponse contains the response from method PrivateStoreCollectionOfferClient.CreateOrUpdate.
 type PrivateStoreCollectionOfferClientCreateOrUpdateResponse struct {
 	// The privateStore offer data structure.
@@ -199,6 +229,12 @@ type PrivateStoreCollectionOfferClientGetResponse struct {
 	Offer
 }
 
+// PrivateStoreCollectionOfferClientListByContextsResponse contains the response from method PrivateStoreCollectionOfferClient.NewListByContextsPager.
+type PrivateStoreCollectionOfferClientListByContextsResponse struct {
+	// List of objects which describes offers per context. An empty GUID is a public context.
+	CollectionOffersByContextList
+}
+
 // PrivateStoreCollectionOfferClientListResponse contains the response from method PrivateStoreCollectionOfferClient.NewListPager.
 type PrivateStoreCollectionOfferClientListResponse struct {
 	OfferListResponse
@@ -206,5 +242,26 @@ type PrivateStoreCollectionOfferClientListResponse struct {
 
 // PrivateStoreCollectionOfferClientPostResponse contains the response from method PrivateStoreCollectionOfferClient.Post.
 type PrivateStoreCollectionOfferClientPostResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse contains the response from method PrivateStoreCollectionOfferClient.UpsertOfferWithMultiContext.
+type PrivateStoreCollectionOfferClientUpsertOfferWithMultiContextResponse struct {
+	// The privateStore offer data structure.
+	Offer
+}
+
+// RPServiceClientQueryRulesResponse contains the response from method RPServiceClient.QueryRules.
+type RPServiceClientQueryRulesResponse struct {
+	RuleListResponse
+}
+
+// RPServiceClientQueryUserRulesResponse contains the response from method RPServiceClient.QueryUserRules.
+type RPServiceClientQueryUserRulesResponse struct {
+	RuleListResponse
+}
+
+// RPServiceClientSetCollectionRulesResponse contains the response from method RPServiceClient.SetCollectionRules.
+type RPServiceClientSetCollectionRulesResponse struct {
 	// placeholder for future response values
 }

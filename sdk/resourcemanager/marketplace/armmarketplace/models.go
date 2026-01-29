@@ -57,6 +57,9 @@ type AdminRequestApprovalProperties struct {
 	// READ-ONLY; Gets display name
 	DisplayName *string
 
+	// READ-ONLY; The offer icon url.
+	Icon *string
+
 	// READ-ONLY; Gets list of plans with requesters details
 	Plans []*PlanRequesterDetails
 }
@@ -85,6 +88,12 @@ type AdminRequestApprovalsResource struct {
 
 	// READ-ONLY; The type of the resource.
 	Type *string
+}
+
+// AnyExistingOffersInTheCollectionsResponse - Response object of query if are there existing offers in the collections.
+type AnyExistingOffersInTheCollectionsResponse struct {
+	// Boolean answer, true if exists at least a single offer in an enabled collection, otherwise, false.
+	Value *bool
 }
 
 // BillingAccountsResponse - Billing accounts response object
@@ -136,6 +145,41 @@ type Collection struct {
 	Type *string
 }
 
+// CollectionOffersByAllContextsPayload - Suggested subscription list
+type CollectionOffersByAllContextsPayload struct {
+	// Subscriptions ids list
+	Properties *CollectionOffersByAllContextsProperties
+}
+
+// CollectionOffersByAllContextsProperties - Suggested subscription list
+type CollectionOffersByAllContextsProperties struct {
+	// Subscription ids list
+	SubscriptionIDs []*string
+}
+
+// CollectionOffersByContext - List of offers and plans that restricted to the context
+type CollectionOffersByContext struct {
+	// List of offers
+	Offers *CollectionOffersByContextOffers
+
+	// READ-ONLY; Offer's context, e.g. subscription ID, tenant ID.
+	Context *string
+}
+
+// CollectionOffersByContextList - List of objects which describes offers per context. An empty GUID is a public context.
+type CollectionOffersByContextList struct {
+	// URL to get the next set of offer list per context results if there are any.
+	NextLink *string
+
+	// READ-ONLY
+	Value []*CollectionOffersByContext
+}
+
+// CollectionOffersByContextOffers - List of offers
+type CollectionOffersByContextOffers struct {
+	Value []*OfferProperties
+}
+
 // CollectionProperties - The collection details
 type CollectionProperties struct {
 	// Indicating whether all subscriptions are selected (=true) or not (=false).
@@ -154,6 +198,15 @@ type CollectionProperties struct {
 	// explicit list indicates the explicit selected subscriptions. On insert, null
 	// is considered as bad request
 	SubscriptionsList []*string
+
+	// READ-ONLY; Gets list of collection rules
+	AppliedRules []*Rule
+
+	// READ-ONLY; Indicating whether all items are approved for this collection (=true) or not (=false).
+	ApproveAllItems *bool
+
+	// READ-ONLY; Gets the modified date of all items approved.
+	ApproveAllItemsModifiedAt *time.Time
 
 	// READ-ONLY; Gets collection Id.
 	CollectionID *string
@@ -204,6 +257,15 @@ type CollectionsToSubscriptionsMappingResponse struct {
 	Details map[string]*CollectionsSubscriptionsMappingDetails
 }
 
+// ContextAndPlansDetails - Object of plans per context.
+type ContextAndPlansDetails struct {
+	// Plan's context, e.g. subscription ID, tenant ID.
+	Context *string
+
+	// List of plan IDs.
+	PlanIDs []*string
+}
+
 // ErrorResponse - Error response indicates Microsoft.Marketplace service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
@@ -218,6 +280,22 @@ type ErrorResponseError struct {
 
 	// READ-ONLY; Error message indicating why the operation failed.
 	Message *string
+}
+
+// MultiContextAndPlansPayload - Payload object for upsert offer with multiple context and plans.
+type MultiContextAndPlansPayload struct {
+	// Object describes multiple context and plans.
+	Properties *MultiContextAndPlansProperties
+}
+
+// MultiContextAndPlansProperties - Object describes multiple context and plans.
+type MultiContextAndPlansProperties struct {
+	// The offer's eTag.
+	ETag *string
+
+	// The offer ID which contains the plans.
+	OfferID      *string
+	PlansContext []*ContextAndPlansDetails
 }
 
 // NewNotifications - New plans notification details
@@ -299,6 +377,9 @@ type OfferProperties struct {
 	// READ-ONLY; Private store offer creation date
 	CreatedAt *string
 
+	// READ-ONLY; Indicating whether the offer is stop sell or not.
+	IsStopSell *bool
+
 	// READ-ONLY; Private store offer modification date
 	ModifiedAt *string
 
@@ -331,6 +412,9 @@ type Plan struct {
 
 	// READ-ONLY; Alternative stack type
 	AltStackReference *string
+
+	// READ-ONLY; Indicating whether the plan is stop sell or not.
+	IsStopSell *bool
 
 	// READ-ONLY; Friendly name for the plan for display in the marketplace
 	PlanDisplayName *string
@@ -456,6 +540,9 @@ type QueryApprovedPlans struct {
 
 	// Offer plan ids
 	PlanIDs []*string
+
+	// List of subscription IDs
+	SubscriptionIDs []*string
 }
 
 // QueryApprovedPlansDetails - Query approved plans response
@@ -511,6 +598,33 @@ type QueryRequestApproval struct {
 type QueryRequestApprovalProperties struct {
 	// The details to get the request plans statuses
 	Properties *RequestDetails
+}
+
+// QueryUserOffersDetails - List of offers IDs and list of user's subscriptions IDs to query the user's approved offers
+type QueryUserOffersDetails struct {
+	// List of offer IDs
+	OfferIDs []*string
+
+	// List of subscription IDs
+	SubscriptionIDs []*string
+}
+
+// QueryUserOffersProperties - Query user's offers properties
+type QueryUserOffersProperties struct {
+	// Query user's offers details
+	Properties *QueryUserOffersDetails
+}
+
+// QueryUserRulesDetails - List of subscriptions IDs to query the user's rules
+type QueryUserRulesDetails struct {
+	// List of subscription IDs
+	SubscriptionIDs []*string
+}
+
+// QueryUserRulesProperties - Query user's rules properties
+type QueryUserRulesProperties struct {
+	// Query user's rules details
+	Properties *QueryUserRulesDetails
 }
 
 // Recipient - Describes the json payload for a notified recipient for new requests
@@ -620,10 +734,33 @@ type Resource struct {
 	Type *string
 }
 
+type Rule struct {
+	// Rule type
+	Type  *RuleType
+	Value []*string
+}
+
+type RuleListResponse struct {
+	// URL to get the next set of rules list results if there are any.
+	NextLink *string
+
+	// READ-ONLY
+	Value []*Rule
+}
+
+type SetRulesRequest struct {
+	// URL to get the next set of rules list results if there are any.
+	NextLink *string
+	Value    []*Rule
+}
+
 // SingleOperation - Microsoft.Marketplace REST API operation
 type SingleOperation struct {
 	// The object that represents the operation.
 	Display *SingleOperationDisplay
+
+	// Operation ID
+	ID *string
 
 	// Indicates whether the operation is a data action
 	IsDataAction *bool

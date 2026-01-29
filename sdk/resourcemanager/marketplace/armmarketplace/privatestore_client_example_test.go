@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetPrivateStores.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/GetPrivateStores.json
 func ExamplePrivateStoreClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExamplePrivateStoreClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetPrivateStore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/GetPrivateStore.json
 func ExamplePrivateStoreClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExamplePrivateStoreClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/PrivateStores_update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/PrivateStores_update.json
 func ExamplePrivateStoreClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExamplePrivateStoreClient_CreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/DeletePrivateStore.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/DeletePrivateStore.json
 func ExamplePrivateStoreClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,30 @@ func ExamplePrivateStoreClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/QueryOffers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/AnyExistingOffersInTheCollections.json
+func ExamplePrivateStoreClient_AnyExistingOffersInTheCollections() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmarketplace.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPrivateStoreClient().AnyExistingOffersInTheCollections(ctx, "a0e28e55-90c4-41d8-8e34-bb7ef7775406", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AnyExistingOffersInTheCollectionsResponse = armmarketplace.AnyExistingOffersInTheCollectionsResponse{
+	// 	Value: to.Ptr(true),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/QueryOffers.json
 func ExamplePrivateStoreClient_QueryOffers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +240,62 @@ func ExamplePrivateStoreClient_QueryOffers() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/BillingAccounts.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/QueryUserOffers.json
+func ExamplePrivateStoreClient_QueryUserOffers() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmarketplace.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPrivateStoreClient().QueryUserOffers(ctx, "a0e28e55-90c4-41d8-8e34-bb7ef7775406", &armmarketplace.PrivateStoreClientQueryUserOffersOptions{Payload: &armmarketplace.QueryUserOffersProperties{
+		Properties: &armmarketplace.QueryUserOffersDetails{
+			OfferIDs: []*string{
+				to.Ptr("contoso.logger"),
+				to.Ptr("contoso.monitor")},
+			SubscriptionIDs: []*string{
+				to.Ptr("b340914e-353d-453a-85fb-8f9b65b51f91")},
+		},
+	},
+	})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.QueryOffers = armmarketplace.QueryOffers{
+	// 	Value: []*armmarketplace.OfferProperties{
+	// 		{
+	// 			CreatedAt: to.Ptr("2022-03-05T13:55:33.351Z"),
+	// 			ETag: to.Ptr("\"9301f4fd-0000-0100-0000-5e248b350000\""),
+	// 			IconFileUris: map[string]*string{
+	// 				"small": to.Ptr("https://some-images.contoso.com/image/apps.12345678-7654"),
+	// 			},
+	// 			ModifiedAt: to.Ptr("2021-04-22T14:17:41.8520203Z"),
+	// 			OfferDisplayName: to.Ptr("Contoso Log4All"),
+	// 			Plans: []*armmarketplace.Plan{
+	// 				{
+	// 					Accessibility: to.Ptr(armmarketplace.AccessibilityPublic),
+	// 					PlanDisplayName: to.Ptr("Log4J"),
+	// 					PlanID: to.Ptr("log4j"),
+	// 					SKUID: to.Ptr("001"),
+	// 					StackType: to.Ptr("arm"),
+	// 			}},
+	// 			PrivateStoreID: to.Ptr("a0e28e55-90c4-41d8-8e34-bb7ef7775406"),
+	// 			PublisherDisplayName: to.Ptr("Contoso"),
+	// 			SpecificPlanIDsLimitation: []*string{
+	// 				to.Ptr("0002")},
+	// 				UniqueOfferID: to.Ptr("contoso.logger"),
+	// 				UpdateSuppressedDueIdempotence: to.Ptr(true),
+	// 		}},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/BillingAccounts.json
 func ExamplePrivateStoreClient_BillingAccounts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +320,7 @@ func ExamplePrivateStoreClient_BillingAccounts() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/CollectionsToSubscriptionsMapping.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/CollectionsToSubscriptionsMapping.json
 func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +360,7 @@ func ExamplePrivateStoreClient_CollectionsToSubscriptionsMapping() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/QueryApprovedPlans.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/QueryApprovedPlans.json
 func ExamplePrivateStoreClient_QueryApprovedPlans() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,6 +378,9 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 				to.Ptr("testPlanA"),
 				to.Ptr("testPlanB"),
 				to.Ptr("testPlanC")},
+			SubscriptionIDs: []*string{
+				to.Ptr("85e3e079-c718-4e4c-abbe-f72fceba8305"),
+				to.Ptr("7752d461-4bf1-4185-8b56-8a3f11486ac6")},
 		},
 	},
 	})
@@ -333,7 +414,7 @@ func ExamplePrivateStoreClient_QueryApprovedPlans() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/BulkCollectionsAction.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/BulkCollectionsAction.json
 func ExamplePrivateStoreClient_BulkCollectionsAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +454,7 @@ func ExamplePrivateStoreClient_BulkCollectionsAction() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetApprovalRequestsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/GetApprovalRequestsList.json
 func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +514,7 @@ func ExamplePrivateStoreClient_GetApprovalRequestsList() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetRequestApproval.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/GetRequestApproval.json
 func ExamplePrivateStoreClient_GetRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +571,7 @@ func ExamplePrivateStoreClient_GetRequestApproval() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/CreateApprovalRequest.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/CreateApprovalRequest.json
 func ExamplePrivateStoreClient_CreateApprovalRequest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -547,7 +628,7 @@ func ExamplePrivateStoreClient_CreateApprovalRequest() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/QueryRequestApproval.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/QueryRequestApproval.json
 func ExamplePrivateStoreClient_QueryRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -602,7 +683,7 @@ func ExamplePrivateStoreClient_QueryRequestApproval() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/AdminRequestApprovalsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/AdminRequestApprovalsList.json
 func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -639,6 +720,7 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	// 				CollectionIDs: []*string{
 	// 				},
 	// 				DisplayName: to.Ptr("Offer display name"),
+	// 				Icon: to.Ptr("https://some-images.someDomail.com/image/apps.12345678-4321"),
 	// 				OfferID: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 				Plans: []*armmarketplace.PlanRequesterDetails{
 	// 					{
@@ -671,7 +753,7 @@ func ExamplePrivateStoreClient_AdminRequestApprovalsList() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/GetAdminRequestApproval.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/GetAdminRequestApproval.json
 func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,6 +788,7 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	// 		CollectionIDs: []*string{
 	// 		},
 	// 		DisplayName: to.Ptr("Offer display name"),
+	// 		Icon: to.Ptr("https://some-images.someDomail.com/image/apps.12345678-4321"),
 	// 		OfferID: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 		Plans: []*armmarketplace.PlanRequesterDetails{
 	// 			{
@@ -737,7 +820,7 @@ func ExamplePrivateStoreClient_GetAdminRequestApproval() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/UpdateAdminRequestApproval.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/UpdateAdminRequestApproval.json
 func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -789,13 +872,14 @@ func ExamplePrivateStoreClient_UpdateAdminRequestApproval() {
 	// 				to.Ptr("39246ad6-c521-4fed-8de7-77dede2e873f")},
 	// 				Comment: to.Ptr("I'm ok with that"),
 	// 				DisplayName: to.Ptr("Offer display name"),
+	// 				Icon: to.Ptr("https://some-images.someDomail.com/image/apps.12345678-4321"),
 	// 				OfferID: to.Ptr("marketplacetestthirdparty.md-test-third-party-2"),
 	// 				PublisherID: to.Ptr("marketplacetestthirdparty"),
 	// 			},
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/NotificationsState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/NotificationsState.json
 func ExamplePrivateStoreClient_QueryNotificationsState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -867,7 +951,7 @@ func ExamplePrivateStoreClient_QueryNotificationsState() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/AcknowledgeNotification.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/AcknowledgeNotification.json
 func ExamplePrivateStoreClient_AcknowledgeOfferNotification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -893,7 +977,7 @@ func ExamplePrivateStoreClient_AcknowledgeOfferNotification() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/WithdrawPlan.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/WithdrawPlan.json
 func ExamplePrivateStoreClient_WithdrawPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +1000,7 @@ func ExamplePrivateStoreClient_WithdrawPlan() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/FetchAllSubscriptionsInTenant.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/FetchAllSubscriptionsInTenant.json
 func ExamplePrivateStoreClient_FetchAllSubscriptionsInTenant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -946,7 +1030,7 @@ func ExamplePrivateStoreClient_FetchAllSubscriptionsInTenant() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/ListNewPlansNotifications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/ListNewPlansNotifications.json
 func ExamplePrivateStoreClient_ListNewPlansNotifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -981,7 +1065,7 @@ func ExamplePrivateStoreClient_ListNewPlansNotifications() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/ListStopSellOffersPlansNotifications.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/ListStopSellOffersPlansNotifications.json
 func ExamplePrivateStoreClient_ListStopSellOffersPlansNotifications() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1019,7 +1103,7 @@ func ExamplePrivateStoreClient_ListStopSellOffersPlansNotifications() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d55b8005f05b040b852c15e74a0f3e36494a15e1/specification/marketplace/resource-manager/Microsoft.Marketplace/stable/2021-12-01/examples/ListSubscriptionsContext.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/74172b879dd046192dcf4f9efa1f8f0c561eba95/specification/marketplace/resource-manager/Microsoft.Marketplace/Marketplace/stable/2025-01-01/examples/ListSubscriptionsContext.json
 func ExamplePrivateStoreClient_ListSubscriptionsContext() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -29,6 +29,10 @@ type PrivateStoreServer struct {
 	// AdminRequestApprovalsList is the fake for method PrivateStoreClient.AdminRequestApprovalsList
 	// HTTP status codes to indicate success: http.StatusOK
 	AdminRequestApprovalsList func(ctx context.Context, privateStoreID string, options *armmarketplace.PrivateStoreClientAdminRequestApprovalsListOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientAdminRequestApprovalsListResponse], errResp azfake.ErrorResponder)
+
+	// AnyExistingOffersInTheCollections is the fake for method PrivateStoreClient.AnyExistingOffersInTheCollections
+	// HTTP status codes to indicate success: http.StatusOK
+	AnyExistingOffersInTheCollections func(ctx context.Context, privateStoreID string, options *armmarketplace.PrivateStoreClientAnyExistingOffersInTheCollectionsOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientAnyExistingOffersInTheCollectionsResponse], errResp azfake.ErrorResponder)
 
 	// BillingAccounts is the fake for method PrivateStoreClient.BillingAccounts
 	// HTTP status codes to indicate success: http.StatusOK
@@ -106,6 +110,10 @@ type PrivateStoreServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	QueryRequestApproval func(ctx context.Context, privateStoreID string, requestApprovalID string, options *armmarketplace.PrivateStoreClientQueryRequestApprovalOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientQueryRequestApprovalResponse], errResp azfake.ErrorResponder)
 
+	// QueryUserOffers is the fake for method PrivateStoreClient.QueryUserOffers
+	// HTTP status codes to indicate success: http.StatusOK
+	QueryUserOffers func(ctx context.Context, privateStoreID string, options *armmarketplace.PrivateStoreClientQueryUserOffersOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientQueryUserOffersResponse], errResp azfake.ErrorResponder)
+
 	// UpdateAdminRequestApproval is the fake for method PrivateStoreClient.UpdateAdminRequestApproval
 	// HTTP status codes to indicate success: http.StatusOK
 	UpdateAdminRequestApproval func(ctx context.Context, privateStoreID string, adminRequestApprovalID string, options *armmarketplace.PrivateStoreClientUpdateAdminRequestApprovalOptions) (resp azfake.Responder[armmarketplace.PrivateStoreClientUpdateAdminRequestApprovalResponse], errResp azfake.ErrorResponder)
@@ -140,65 +148,88 @@ func (p *PrivateStoreServerTransport) Do(req *http.Request) (*http.Response, err
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return p.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "PrivateStoreClient.AcknowledgeOfferNotification":
-		resp, err = p.dispatchAcknowledgeOfferNotification(req)
-	case "PrivateStoreClient.AdminRequestApprovalsList":
-		resp, err = p.dispatchAdminRequestApprovalsList(req)
-	case "PrivateStoreClient.BillingAccounts":
-		resp, err = p.dispatchBillingAccounts(req)
-	case "PrivateStoreClient.BulkCollectionsAction":
-		resp, err = p.dispatchBulkCollectionsAction(req)
-	case "PrivateStoreClient.CollectionsToSubscriptionsMapping":
-		resp, err = p.dispatchCollectionsToSubscriptionsMapping(req)
-	case "PrivateStoreClient.CreateApprovalRequest":
-		resp, err = p.dispatchCreateApprovalRequest(req)
-	case "PrivateStoreClient.CreateOrUpdate":
-		resp, err = p.dispatchCreateOrUpdate(req)
-	case "PrivateStoreClient.Delete":
-		resp, err = p.dispatchDelete(req)
-	case "PrivateStoreClient.FetchAllSubscriptionsInTenant":
-		resp, err = p.dispatchFetchAllSubscriptionsInTenant(req)
-	case "PrivateStoreClient.Get":
-		resp, err = p.dispatchGet(req)
-	case "PrivateStoreClient.GetAdminRequestApproval":
-		resp, err = p.dispatchGetAdminRequestApproval(req)
-	case "PrivateStoreClient.GetApprovalRequestsList":
-		resp, err = p.dispatchGetApprovalRequestsList(req)
-	case "PrivateStoreClient.GetRequestApproval":
-		resp, err = p.dispatchGetRequestApproval(req)
-	case "PrivateStoreClient.NewListPager":
-		resp, err = p.dispatchNewListPager(req)
-	case "PrivateStoreClient.ListNewPlansNotifications":
-		resp, err = p.dispatchListNewPlansNotifications(req)
-	case "PrivateStoreClient.ListStopSellOffersPlansNotifications":
-		resp, err = p.dispatchListStopSellOffersPlansNotifications(req)
-	case "PrivateStoreClient.ListSubscriptionsContext":
-		resp, err = p.dispatchListSubscriptionsContext(req)
-	case "PrivateStoreClient.QueryApprovedPlans":
-		resp, err = p.dispatchQueryApprovedPlans(req)
-	case "PrivateStoreClient.QueryNotificationsState":
-		resp, err = p.dispatchQueryNotificationsState(req)
-	case "PrivateStoreClient.QueryOffers":
-		resp, err = p.dispatchQueryOffers(req)
-	case "PrivateStoreClient.QueryRequestApproval":
-		resp, err = p.dispatchQueryRequestApproval(req)
-	case "PrivateStoreClient.UpdateAdminRequestApproval":
-		resp, err = p.dispatchUpdateAdminRequestApproval(req)
-	case "PrivateStoreClient.WithdrawPlan":
-		resp, err = p.dispatchWithdrawPlan(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (p *PrivateStoreServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if privateStoreServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = privateStoreServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "PrivateStoreClient.AcknowledgeOfferNotification":
+				res.resp, res.err = p.dispatchAcknowledgeOfferNotification(req)
+			case "PrivateStoreClient.AdminRequestApprovalsList":
+				res.resp, res.err = p.dispatchAdminRequestApprovalsList(req)
+			case "PrivateStoreClient.AnyExistingOffersInTheCollections":
+				res.resp, res.err = p.dispatchAnyExistingOffersInTheCollections(req)
+			case "PrivateStoreClient.BillingAccounts":
+				res.resp, res.err = p.dispatchBillingAccounts(req)
+			case "PrivateStoreClient.BulkCollectionsAction":
+				res.resp, res.err = p.dispatchBulkCollectionsAction(req)
+			case "PrivateStoreClient.CollectionsToSubscriptionsMapping":
+				res.resp, res.err = p.dispatchCollectionsToSubscriptionsMapping(req)
+			case "PrivateStoreClient.CreateApprovalRequest":
+				res.resp, res.err = p.dispatchCreateApprovalRequest(req)
+			case "PrivateStoreClient.CreateOrUpdate":
+				res.resp, res.err = p.dispatchCreateOrUpdate(req)
+			case "PrivateStoreClient.Delete":
+				res.resp, res.err = p.dispatchDelete(req)
+			case "PrivateStoreClient.FetchAllSubscriptionsInTenant":
+				res.resp, res.err = p.dispatchFetchAllSubscriptionsInTenant(req)
+			case "PrivateStoreClient.Get":
+				res.resp, res.err = p.dispatchGet(req)
+			case "PrivateStoreClient.GetAdminRequestApproval":
+				res.resp, res.err = p.dispatchGetAdminRequestApproval(req)
+			case "PrivateStoreClient.GetApprovalRequestsList":
+				res.resp, res.err = p.dispatchGetApprovalRequestsList(req)
+			case "PrivateStoreClient.GetRequestApproval":
+				res.resp, res.err = p.dispatchGetRequestApproval(req)
+			case "PrivateStoreClient.NewListPager":
+				res.resp, res.err = p.dispatchNewListPager(req)
+			case "PrivateStoreClient.ListNewPlansNotifications":
+				res.resp, res.err = p.dispatchListNewPlansNotifications(req)
+			case "PrivateStoreClient.ListStopSellOffersPlansNotifications":
+				res.resp, res.err = p.dispatchListStopSellOffersPlansNotifications(req)
+			case "PrivateStoreClient.ListSubscriptionsContext":
+				res.resp, res.err = p.dispatchListSubscriptionsContext(req)
+			case "PrivateStoreClient.QueryApprovedPlans":
+				res.resp, res.err = p.dispatchQueryApprovedPlans(req)
+			case "PrivateStoreClient.QueryNotificationsState":
+				res.resp, res.err = p.dispatchQueryNotificationsState(req)
+			case "PrivateStoreClient.QueryOffers":
+				res.resp, res.err = p.dispatchQueryOffers(req)
+			case "PrivateStoreClient.QueryRequestApproval":
+				res.resp, res.err = p.dispatchQueryRequestApproval(req)
+			case "PrivateStoreClient.QueryUserOffers":
+				res.resp, res.err = p.dispatchQueryUserOffers(req)
+			case "PrivateStoreClient.UpdateAdminRequestApproval":
+				res.resp, res.err = p.dispatchUpdateAdminRequestApproval(req)
+			case "PrivateStoreClient.WithdrawPlan":
+				res.resp, res.err = p.dispatchWithdrawPlan(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (p *PrivateStoreServerTransport) dispatchAcknowledgeOfferNotification(req *http.Request) (*http.Response, error) {
@@ -208,7 +239,7 @@ func (p *PrivateStoreServerTransport) dispatchAcknowledgeOfferNotification(req *
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/offers/(?P<offerId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/acknowledgeNotification`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.AcknowledgeOfferNotificationProperties](req)
@@ -251,7 +282,7 @@ func (p *PrivateStoreServerTransport) dispatchAdminRequestApprovalsList(req *htt
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adminRequestApprovals`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -273,6 +304,35 @@ func (p *PrivateStoreServerTransport) dispatchAdminRequestApprovalsList(req *htt
 	return resp, nil
 }
 
+func (p *PrivateStoreServerTransport) dispatchAnyExistingOffersInTheCollections(req *http.Request) (*http.Response, error) {
+	if p.srv.AnyExistingOffersInTheCollections == nil {
+		return nil, &nonRetriableError{errors.New("fake for method AnyExistingOffersInTheCollections not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/anyExistingOffersInTheCollections`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.AnyExistingOffersInTheCollections(req.Context(), privateStoreIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AnyExistingOffersInTheCollectionsResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PrivateStoreServerTransport) dispatchBillingAccounts(req *http.Request) (*http.Response, error) {
 	if p.srv.BillingAccounts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BillingAccounts not implemented")}
@@ -280,7 +340,7 @@ func (p *PrivateStoreServerTransport) dispatchBillingAccounts(req *http.Request)
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingAccounts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -309,7 +369,7 @@ func (p *PrivateStoreServerTransport) dispatchBulkCollectionsAction(req *http.Re
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bulkCollectionsAction`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.BulkCollectionsPayload](req)
@@ -348,7 +408,7 @@ func (p *PrivateStoreServerTransport) dispatchCollectionsToSubscriptionsMapping(
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collectionsToSubscriptionsMapping`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.CollectionsToSubscriptionsMappingPayload](req)
@@ -387,7 +447,7 @@ func (p *PrivateStoreServerTransport) dispatchCreateApprovalRequest(req *http.Re
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.RequestApprovalResource](req)
@@ -430,7 +490,7 @@ func (p *PrivateStoreServerTransport) dispatchCreateOrUpdate(req *http.Request) 
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.PrivateStore](req)
@@ -469,7 +529,7 @@ func (p *PrivateStoreServerTransport) dispatchDelete(req *http.Request) (*http.R
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -498,7 +558,7 @@ func (p *PrivateStoreServerTransport) dispatchFetchAllSubscriptionsInTenant(req 
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fetchAllSubscriptionsInTenant`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -534,7 +594,7 @@ func (p *PrivateStoreServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -563,7 +623,7 @@ func (p *PrivateStoreServerTransport) dispatchGetAdminRequestApproval(req *http.
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adminRequestApprovals/(?P<adminRequestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -601,7 +661,7 @@ func (p *PrivateStoreServerTransport) dispatchGetApprovalRequestsList(req *http.
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -630,7 +690,7 @@ func (p *PrivateStoreServerTransport) dispatchGetRequestApproval(req *http.Reque
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -702,7 +762,7 @@ func (p *PrivateStoreServerTransport) dispatchListNewPlansNotifications(req *htt
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNewPlansNotifications`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -731,7 +791,7 @@ func (p *PrivateStoreServerTransport) dispatchListStopSellOffersPlansNotificatio
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listStopSellOffersPlansNotifications`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.StopSellSubscriptions](req)
@@ -770,7 +830,7 @@ func (p *PrivateStoreServerTransport) dispatchListSubscriptionsContext(req *http
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listSubscriptionsContext`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -799,7 +859,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryApprovedPlans(req *http.Reque
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryApprovedPlans`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.QueryApprovedPlansPayload](req)
@@ -838,7 +898,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryNotificationsState(req *http.
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryNotificationsState`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -867,7 +927,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryOffers(req *http.Request) (*h
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryOffers`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
@@ -896,7 +956,7 @@ func (p *PrivateStoreServerTransport) dispatchQueryRequestApproval(req *http.Req
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/query`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.QueryRequestApprovalProperties](req)
@@ -932,6 +992,45 @@ func (p *PrivateStoreServerTransport) dispatchQueryRequestApproval(req *http.Req
 	return resp, nil
 }
 
+func (p *PrivateStoreServerTransport) dispatchQueryUserOffers(req *http.Request) (*http.Response, error) {
+	if p.srv.QueryUserOffers == nil {
+		return nil, &nonRetriableError{errors.New("fake for method QueryUserOffers not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryUserOffers`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmarketplace.QueryUserOffersProperties](req)
+	if err != nil {
+		return nil, err
+	}
+	privateStoreIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("privateStoreId")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armmarketplace.PrivateStoreClientQueryUserOffersOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armmarketplace.PrivateStoreClientQueryUserOffersOptions{
+			Payload: &body,
+		}
+	}
+	respr, errRespr := p.srv.QueryUserOffers(req.Context(), privateStoreIDParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).QueryOffers, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PrivateStoreServerTransport) dispatchUpdateAdminRequestApproval(req *http.Request) (*http.Response, error) {
 	if p.srv.UpdateAdminRequestApproval == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateAdminRequestApproval not implemented")}
@@ -939,7 +1038,7 @@ func (p *PrivateStoreServerTransport) dispatchUpdateAdminRequestApproval(req *ht
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adminRequestApprovals/(?P<adminRequestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.AdminRequestApprovalsResource](req)
@@ -982,7 +1081,7 @@ func (p *PrivateStoreServerTransport) dispatchWithdrawPlan(req *http.Request) (*
 	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/requestApprovals/(?P<requestApprovalId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/withdrawPlan`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armmarketplace.WithdrawProperties](req)
@@ -1016,4 +1115,10 @@ func (p *PrivateStoreServerTransport) dispatchWithdrawPlan(req *http.Request) (*
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to PrivateStoreServerTransport
+var privateStoreServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

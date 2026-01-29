@@ -5,11 +5,6 @@
 
 package armmarketplace
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
-	moduleVersion = "v1.2.0"
-)
-
 // Accessibility - Plan accessibility
 type Accessibility string
 
@@ -99,6 +94,22 @@ func PossibleOperationValues() []Operation {
 		OperationDeletePrivateStoreCollectionOffer,
 		OperationDeletePrivateStoreOffer,
 		OperationPing,
+	}
+}
+
+// RuleType - Rule type
+type RuleType string
+
+const (
+	RuleTypePrivateProducts   RuleType = "PrivateProducts"
+	RuleTypeTermsAndCondition RuleType = "TermsAndCondition"
+)
+
+// PossibleRuleTypeValues returns the possible values for the RuleType const type.
+func PossibleRuleTypeValues() []RuleType {
+	return []RuleType{
+		RuleTypePrivateProducts,
+		RuleTypeTermsAndCondition,
 	}
 }
 

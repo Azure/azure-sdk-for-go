@@ -13,17 +13,14 @@ import (
 	"sync"
 )
 
-// ServerFactory is a fake server for instances of the armalertsmanagement.ClientFactory type.
+// ServerFactory is a fake server for instances of the armpreviewalertrule.ClientFactory type.
 type ServerFactory struct {
-	// AlertsServer contains the fakes for client AlertsClient
-	AlertsServer AlertsServer
-
-	// OperationsServer contains the fakes for client OperationsClient
-	OperationsServer OperationsServer
+	// Server contains the fakes for client Client
+	Server Server
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
-// The returned ServerFactoryTransport instance is connected to an instance of armalertsmanagement.ClientFactory via the
+// The returned ServerFactoryTransport instance is connected to an instance of armpreviewalertrule.ClientFactory via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 	return &ServerFactoryTransport{
@@ -31,13 +28,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 	}
 }
 
-// ServerFactoryTransport connects instances of armalertsmanagement.ClientFactory to instances of ServerFactory.
+// ServerFactoryTransport connects instances of armpreviewalertrule.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                *ServerFactory
-	trMu               sync.Mutex
-	trAlertsServer     *AlertsServerTransport
-	trOperationsServer *OperationsServerTransport
+	srv      *ServerFactory
+	trMu     sync.Mutex
+	trServer *ServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -53,12 +49,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AlertsClient":
-		initServer(s, &s.trAlertsServer, func() *AlertsServerTransport { return NewAlertsServerTransport(&s.srv.AlertsServer) })
-		resp, err = s.trAlertsServer.Do(req)
-	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
-		resp, err = s.trOperationsServer.Do(req)
+	case "Client":
+		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		resp, err = s.trServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

@@ -6,5 +6,5 @@ package armhealthdataaiservices
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthdataaiservices/armhealthdataaiservices"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v1.1.0"
 )

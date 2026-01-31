@@ -23,6 +23,9 @@ type DeidService struct {
 	// The resource-specific properties for this resource.
 	Properties *DeidServiceProperties
 
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *DeidServiceSKU
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -63,6 +66,25 @@ type DeidServiceProperties struct {
 	ServiceURL *string
 }
 
+// DeidServiceSKU - The SKU for the DeidService resource.
+type DeidServiceSKU struct {
+	// REQUIRED; The name of the SKU. Ex - Free, Basic, Standard.
+	Name *DeidServiceSKUName
+
+	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
+	// resource this may be omitted.
+	Capacity *int32
+
+	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
+	Family *string
+
+	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
+	Size *string
+
+	// The SKU tier. This is based on the SKU name.
+	Tier *SKUTier
+}
+
 // DeidUpdate - Patch request body for DeidService
 type DeidUpdate struct {
 	// Updatable managed service identity
@@ -70,6 +92,9 @@ type DeidUpdate struct {
 
 	// RP-specific properties
 	Properties *DeidPropertiesUpdate
+
+	// The SKU (Stock Keeping Unit) assigned to this resource.
+	SKU *DeidServiceSKU
 
 	// Resource tags.
 	Tags map[string]*string

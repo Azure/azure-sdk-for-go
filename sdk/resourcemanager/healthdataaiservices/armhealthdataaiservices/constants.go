@@ -43,6 +43,27 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// DeidServiceSKUName - The SKU name for the DeidService resource.
+type DeidServiceSKUName string
+
+const (
+	// DeidServiceSKUNameBasic - Basic tier with standard capabilities.
+	DeidServiceSKUNameBasic DeidServiceSKUName = "Basic"
+	// DeidServiceSKUNameFree - Free tier with limited capabilities.
+	DeidServiceSKUNameFree DeidServiceSKUName = "Free"
+	// DeidServiceSKUNameStandard - Standard tier with full capabilities.
+	DeidServiceSKUNameStandard DeidServiceSKUName = "Standard"
+)
+
+// PossibleDeidServiceSKUNameValues returns the possible values for the DeidServiceSKUName const type.
+func PossibleDeidServiceSKUNameValues() []DeidServiceSKUName {
+	return []DeidServiceSKUName{
+		DeidServiceSKUNameBasic,
+		DeidServiceSKUNameFree,
+		DeidServiceSKUNameStandard,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -182,5 +203,30 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return []PublicNetworkAccess{
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
+	}
+}
+
+// SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
+// is not required on a PUT.
+type SKUTier string
+
+const (
+	// SKUTierBasic - The Basic service tier.
+	SKUTierBasic SKUTier = "Basic"
+	// SKUTierFree - The Free service tier.
+	SKUTierFree SKUTier = "Free"
+	// SKUTierPremium - The Premium service tier.
+	SKUTierPremium SKUTier = "Premium"
+	// SKUTierStandard - The Standard service tier.
+	SKUTierStandard SKUTier = "Standard"
+)
+
+// PossibleSKUTierValues returns the possible values for the SKUTier const type.
+func PossibleSKUTierValues() []SKUTier {
+	return []SKUTier{
+		SKUTierBasic,
+		SKUTierFree,
+		SKUTierPremium,
+		SKUTierStandard,
 	}
 }

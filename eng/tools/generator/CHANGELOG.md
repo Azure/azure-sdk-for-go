@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.5 (2026-02-02)
+
+### Bugs Fixed
+
+- Fixed `FindSDKRoot` to support git worktree workspaces where `.git` is a file instead of a directory.
+
 ## 0.4.4 (2026-01-28)
 
 ### Bugs Fixed

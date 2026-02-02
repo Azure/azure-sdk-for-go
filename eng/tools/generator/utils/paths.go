@@ -12,16 +12,19 @@ import (
 )
 
 // FindSDKRoot finds the SDK repository root by walking up the directory tree
-// until it finds a .git directory
+// until it finds a .git directory or file (for worktree support)
 func FindSDKRoot(packagePath string) (string, error) {
 	path := packagePath
 	maxLevel := 10 // Prevent infinite loops
 
 	for i := 0; i < maxLevel; i++ {
-		// Check if .git directory exists at this level
+		// Check if .git exists at this level (can be a directory or file for worktrees)
 		gitPath := filepath.Join(path, ".git")
-		if info, err := os.Stat(gitPath); err == nil && info.IsDir() {
-			return path, nil
+		if info, err := os.Stat(gitPath); err == nil {
+			// .git can be a directory (regular repo) or a file (worktree)
+			if info.IsDir() || info.Mode().IsRegular() {
+				return path, nil
+			}
 		}
 
 		// Move up one directory
@@ -33,7 +36,7 @@ func FindSDKRoot(packagePath string) (string, error) {
 		path = parent
 	}
 
-	return "", fmt.Errorf("could not find SDK root (no .git directory found) starting from '%s'", packagePath)
+	return "", fmt.Errorf("could not find SDK root (no .git directory or file found) starting from '%s'", packagePath)
 }
 
 // GetRelativePath returns the path of 'path' relative to the SDK repository root

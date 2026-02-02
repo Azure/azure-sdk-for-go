@@ -6,5 +6,5 @@ package armcontainerregistry
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
-	moduleVersion = "v3.0.0-beta.1"
+	moduleVersion = "v3.0.0"
 )

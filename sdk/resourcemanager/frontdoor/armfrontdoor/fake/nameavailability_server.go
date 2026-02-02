@@ -44,21 +44,40 @@ func (n *NameAvailabilityServerTransport) Do(req *http.Request) (*http.Response,
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return n.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "NameAvailabilityClient.Check":
-		resp, err = n.dispatchCheck(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (n *NameAvailabilityServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if nameAvailabilityServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = nameAvailabilityServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "NameAvailabilityClient.Check":
+				res.resp, res.err = n.dispatchCheck(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (n *NameAvailabilityServerTransport) dispatchCheck(req *http.Request) (*http.Response, error) {
@@ -82,4 +101,10 @@ func (n *NameAvailabilityServerTransport) dispatchCheck(req *http.Request) (*htt
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to NameAvailabilityServerTransport
+var nameAvailabilityServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

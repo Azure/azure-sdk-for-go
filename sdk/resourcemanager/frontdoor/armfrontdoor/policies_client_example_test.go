@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafListPolicies.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/WafListPolicies.json
 func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExamplePoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafListPoliciesUnderSubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/WafListPoliciesUnderSubscription.json
 func ExamplePoliciesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExamplePoliciesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/WafPolicyGet.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,6 +397,21 @@ func ExamplePoliciesClient_Get() {
 	// 									RuleSetAction: to.Ptr(armfrontdoor.ManagedRuleSetActionTypeBlock),
 	// 									RuleSetType: to.Ptr("DefaultRuleSet"),
 	// 									RuleSetVersion: to.Ptr("1.0"),
+	// 								},
+	// 								{
+	// 									RuleGroupOverrides: []*armfrontdoor.ManagedRuleGroupOverride{
+	// 										{
+	// 											RuleGroupName: to.Ptr("ExcessiveRequests"),
+	// 											Rules: []*armfrontdoor.ManagedRuleOverride{
+	// 												{
+	// 													Action: to.Ptr(armfrontdoor.ActionTypeBlock),
+	// 													EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
+	// 													RuleID: to.Ptr("500100"),
+	// 													Sensitivity: to.Ptr(armfrontdoor.SensitivityTypeHigh),
+	// 											}},
+	// 									}},
+	// 									RuleSetType: to.Ptr("Microsoft_HTTPDDoSRuleSet"),
+	// 									RuleSetVersion: to.Ptr("1.0"),
 	// 							}},
 	// 						},
 	// 						PolicySettings: &armfrontdoor.PolicySettings{
@@ -418,7 +433,7 @@ func ExamplePoliciesClient_Get() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyCreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/WafPolicyCreateOrUpdate.json
 func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,6 +485,21 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 							}},
 						Priority: to.Ptr[int32](2),
 						RuleType: to.Ptr(armfrontdoor.RuleTypeMatchRule),
+					},
+					{
+						Name:   to.Ptr("Rule3"),
+						Action: to.Ptr(armfrontdoor.ActionTypeCAPTCHA),
+						MatchConditions: []*armfrontdoor.MatchCondition{
+							{
+								MatchValue: []*string{
+									to.Ptr("AzureBackup"),
+									to.Ptr("AzureBotService")},
+								MatchVariable: to.Ptr(armfrontdoor.MatchVariableRemoteAddr),
+								Operator:      to.Ptr(armfrontdoor.OperatorServiceTagMatch),
+							}},
+						Priority:           to.Ptr[int32](1),
+						RateLimitThreshold: to.Ptr[int32](1000),
+						RuleType:           to.Ptr(armfrontdoor.RuleTypeRateLimitRule),
 					}},
 			},
 			ManagedRules: &armfrontdoor.ManagedRuleSetList{
@@ -510,9 +540,25 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 						RuleSetAction:  to.Ptr(armfrontdoor.ManagedRuleSetActionTypeBlock),
 						RuleSetType:    to.Ptr("DefaultRuleSet"),
 						RuleSetVersion: to.Ptr("1.0"),
+					},
+					{
+						RuleGroupOverrides: []*armfrontdoor.ManagedRuleGroupOverride{
+							{
+								RuleGroupName: to.Ptr("ExcessiveRequests"),
+								Rules: []*armfrontdoor.ManagedRuleOverride{
+									{
+										Action:       to.Ptr(armfrontdoor.ActionTypeBlock),
+										EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
+										RuleID:       to.Ptr("500100"),
+										Sensitivity:  to.Ptr(armfrontdoor.SensitivityTypeHigh),
+									}},
+							}},
+						RuleSetType:    to.Ptr("Microsoft_HTTPDDoSRuleSet"),
+						RuleSetVersion: to.Ptr("1.0"),
 					}},
 			},
 			PolicySettings: &armfrontdoor.PolicySettings{
+				CaptchaExpirationInMinutes:             to.Ptr[int32](30),
 				CustomBlockResponseBody:                to.Ptr("PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="),
 				CustomBlockResponseStatusCode:          to.Ptr[int32](429),
 				EnabledState:                           to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
@@ -603,80 +649,113 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	// 									RateLimitDurationInMinutes: to.Ptr[int32](0),
 	// 									RateLimitThreshold: to.Ptr[int32](0),
 	// 									RuleType: to.Ptr(armfrontdoor.RuleTypeMatchRule),
-	// 							}},
-	// 						},
-	// 						FrontendEndpointLinks: []*armfrontdoor.FrontendEndpointLink{
-	// 						},
-	// 						ManagedRules: &armfrontdoor.ManagedRuleSetList{
-	// 							ManagedRuleSets: []*armfrontdoor.ManagedRuleSet{
+	// 								},
 	// 								{
-	// 									Exclusions: []*armfrontdoor.ManagedRuleExclusion{
+	// 									Name: to.Ptr("rule3"),
+	// 									Action: to.Ptr(armfrontdoor.ActionTypeCAPTCHA),
+	// 									MatchConditions: []*armfrontdoor.MatchCondition{
 	// 										{
-	// 											MatchVariable: to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableRequestHeaderNames),
-	// 											Selector: to.Ptr("User-Agent"),
-	// 											SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorEquals),
-	// 									}},
-	// 									RuleGroupOverrides: []*armfrontdoor.ManagedRuleGroupOverride{
-	// 										{
-	// 											Exclusions: []*armfrontdoor.ManagedRuleExclusion{
-	// 												{
-	// 													MatchVariable: to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableRequestCookieNames),
-	// 													Selector: to.Ptr("token"),
-	// 													SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorStartsWith),
-	// 											}},
-	// 											RuleGroupName: to.Ptr("SQLI"),
-	// 											Rules: []*armfrontdoor.ManagedRuleOverride{
-	// 												{
-	// 													Action: to.Ptr(armfrontdoor.ActionTypeRedirect),
-	// 													EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
-	// 													Exclusions: []*armfrontdoor.ManagedRuleExclusion{
-	// 														{
-	// 															MatchVariable: to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableQueryStringArgNames),
-	// 															Selector: to.Ptr("query"),
-	// 															SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorEquals),
-	// 													}},
-	// 													RuleID: to.Ptr("942100"),
+	// 											MatchValue: []*string{
+	// 												to.Ptr("AzureBackup"),
+	// 												to.Ptr("AzureBotService")},
+	// 												MatchVariable: to.Ptr(armfrontdoor.MatchVariableRemoteAddr),
+	// 												NegateCondition: to.Ptr(false),
+	// 												Operator: to.Ptr(armfrontdoor.OperatorServiceTagMatch),
+	// 												Transforms: []*armfrontdoor.TransformType{
 	// 												},
-	// 												{
-	// 													EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateDisabled),
-	// 													RuleID: to.Ptr("942110"),
-	// 											}},
-	// 									}},
-	// 									RuleSetAction: to.Ptr(armfrontdoor.ManagedRuleSetActionTypeBlock),
-	// 									RuleSetType: to.Ptr("DefaultRuleSet"),
-	// 									RuleSetVersion: to.Ptr("1.0"),
-	// 							}},
-	// 						},
-	// 						PolicySettings: &armfrontdoor.PolicySettings{
-	// 							CustomBlockResponseBody: to.Ptr("PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="),
-	// 							CustomBlockResponseStatusCode: to.Ptr[int32](429),
-	// 							EnabledState: to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
-	// 							JavascriptChallengeExpirationInMinutes: to.Ptr[int32](30),
-	// 							LogScrubbing: &armfrontdoor.PolicySettingsLogScrubbing{
-	// 								ScrubbingRules: []*armfrontdoor.WebApplicationFirewallScrubbingRules{
-	// 									{
-	// 										MatchVariable: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchVariableRequestIPAddress),
-	// 										SelectorMatchOperator: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchOperatorEqualsAny),
-	// 										State: to.Ptr(armfrontdoor.ScrubbingRuleEntryStateEnabled),
+	// 										}},
+	// 										Priority: to.Ptr[int32](1),
+	// 										RateLimitThreshold: to.Ptr[int32](1000),
+	// 										RuleType: to.Ptr(armfrontdoor.RuleTypeRateLimitRule),
 	// 								}},
-	// 								State: to.Ptr(armfrontdoor.WebApplicationFirewallScrubbingStateEnabled),
 	// 							},
-	// 							Mode: to.Ptr(armfrontdoor.PolicyModePrevention),
-	// 							RedirectURL: to.Ptr("http://www.bing.com"),
-	// 							RequestBodyCheck: to.Ptr(armfrontdoor.PolicyRequestBodyCheckDisabled),
+	// 							FrontendEndpointLinks: []*armfrontdoor.FrontendEndpointLink{
+	// 							},
+	// 							ManagedRules: &armfrontdoor.ManagedRuleSetList{
+	// 								ManagedRuleSets: []*armfrontdoor.ManagedRuleSet{
+	// 									{
+	// 										Exclusions: []*armfrontdoor.ManagedRuleExclusion{
+	// 											{
+	// 												MatchVariable: to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableRequestHeaderNames),
+	// 												Selector: to.Ptr("User-Agent"),
+	// 												SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorEquals),
+	// 										}},
+	// 										RuleGroupOverrides: []*armfrontdoor.ManagedRuleGroupOverride{
+	// 											{
+	// 												Exclusions: []*armfrontdoor.ManagedRuleExclusion{
+	// 													{
+	// 														MatchVariable: to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableRequestCookieNames),
+	// 														Selector: to.Ptr("token"),
+	// 														SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorStartsWith),
+	// 												}},
+	// 												RuleGroupName: to.Ptr("SQLI"),
+	// 												Rules: []*armfrontdoor.ManagedRuleOverride{
+	// 													{
+	// 														Action: to.Ptr(armfrontdoor.ActionTypeRedirect),
+	// 														EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
+	// 														Exclusions: []*armfrontdoor.ManagedRuleExclusion{
+	// 															{
+	// 																MatchVariable: to.Ptr(armfrontdoor.ManagedRuleExclusionMatchVariableQueryStringArgNames),
+	// 																Selector: to.Ptr("query"),
+	// 																SelectorMatchOperator: to.Ptr(armfrontdoor.ManagedRuleExclusionSelectorMatchOperatorEquals),
+	// 														}},
+	// 														RuleID: to.Ptr("942100"),
+	// 													},
+	// 													{
+	// 														EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateDisabled),
+	// 														RuleID: to.Ptr("942110"),
+	// 												}},
+	// 										}},
+	// 										RuleSetAction: to.Ptr(armfrontdoor.ManagedRuleSetActionTypeBlock),
+	// 										RuleSetType: to.Ptr("DefaultRuleSet"),
+	// 										RuleSetVersion: to.Ptr("1.0"),
+	// 									},
+	// 									{
+	// 										RuleGroupOverrides: []*armfrontdoor.ManagedRuleGroupOverride{
+	// 											{
+	// 												RuleGroupName: to.Ptr("ExcessiveRequests"),
+	// 												Rules: []*armfrontdoor.ManagedRuleOverride{
+	// 													{
+	// 														Action: to.Ptr(armfrontdoor.ActionTypeBlock),
+	// 														EnabledState: to.Ptr(armfrontdoor.ManagedRuleEnabledStateEnabled),
+	// 														RuleID: to.Ptr("500100"),
+	// 														Sensitivity: to.Ptr(armfrontdoor.SensitivityTypeHigh),
+	// 												}},
+	// 										}},
+	// 										RuleSetType: to.Ptr("Microsoft_HTTPDDoSRuleSet"),
+	// 										RuleSetVersion: to.Ptr("1.0"),
+	// 								}},
+	// 							},
+	// 							PolicySettings: &armfrontdoor.PolicySettings{
+	// 								CustomBlockResponseBody: to.Ptr("PGh0bWw+CjxoZWFkZXI+PHRpdGxlPkhlbGxvPC90aXRsZT48L2hlYWRlcj4KPGJvZHk+CkhlbGxvIHdvcmxkCjwvYm9keT4KPC9odG1sPg=="),
+	// 								CustomBlockResponseStatusCode: to.Ptr[int32](429),
+	// 								EnabledState: to.Ptr(armfrontdoor.PolicyEnabledStateEnabled),
+	// 								JavascriptChallengeExpirationInMinutes: to.Ptr[int32](30),
+	// 								LogScrubbing: &armfrontdoor.PolicySettingsLogScrubbing{
+	// 									ScrubbingRules: []*armfrontdoor.WebApplicationFirewallScrubbingRules{
+	// 										{
+	// 											MatchVariable: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchVariableRequestIPAddress),
+	// 											SelectorMatchOperator: to.Ptr(armfrontdoor.ScrubbingRuleEntryMatchOperatorEqualsAny),
+	// 											State: to.Ptr(armfrontdoor.ScrubbingRuleEntryStateEnabled),
+	// 									}},
+	// 									State: to.Ptr(armfrontdoor.WebApplicationFirewallScrubbingStateEnabled),
+	// 								},
+	// 								Mode: to.Ptr(armfrontdoor.PolicyModePrevention),
+	// 								RedirectURL: to.Ptr("http://www.bing.com"),
+	// 								RequestBodyCheck: to.Ptr(armfrontdoor.PolicyRequestBodyCheckDisabled),
+	// 							},
+	// 							ProvisioningState: to.Ptr("Succeeded"),
+	// 							ResourceState: to.Ptr(armfrontdoor.PolicyResourceStateEnabled),
+	// 							SecurityPolicyLinks: []*armfrontdoor.SecurityPolicyLink{
+	// 							},
 	// 						},
-	// 						ProvisioningState: to.Ptr("Succeeded"),
-	// 						ResourceState: to.Ptr(armfrontdoor.PolicyResourceStateEnabled),
-	// 						SecurityPolicyLinks: []*armfrontdoor.SecurityPolicyLink{
+	// 						SKU: &armfrontdoor.SKU{
+	// 							Name: to.Ptr(armfrontdoor.SKUNamePremiumAzureFrontDoor),
 	// 						},
-	// 					},
-	// 					SKU: &armfrontdoor.SKU{
-	// 						Name: to.Ptr(armfrontdoor.SKUNamePremiumAzureFrontDoor),
-	// 					},
-	// 				}
+	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/WafPolicyPatch.json
 func ExamplePoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -824,7 +903,7 @@ func ExamplePoliciesClient_BeginUpdate() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/WafPolicyDelete.json
 func ExamplePoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

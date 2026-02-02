@@ -28,7 +28,7 @@ type PreconfiguredEndpointsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPreconfiguredEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PreconfiguredEndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewPreconfiguredEndpointsClient(subscriptionID string, credential azcore.To
 
 // NewListPager - Gets a list of Preconfigured Endpoints
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - options - PreconfiguredEndpointsClientListOptions contains the optional parameters for the PreconfiguredEndpointsClient.NewListPager
@@ -72,7 +72,7 @@ func (client *PreconfiguredEndpointsClient) NewListPager(resourceGroupName strin
 }
 
 // listCreateRequest creates the List request.
-func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *PreconfiguredEndpointsClientListOptions) (*policy.Request, error) {
+func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *PreconfiguredEndpointsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/PreconfiguredEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -91,7 +91,7 @@ func (client *PreconfiguredEndpointsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

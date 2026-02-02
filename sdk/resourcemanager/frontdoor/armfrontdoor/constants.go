@@ -5,11 +5,6 @@
 
 package armfrontdoor
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
-	moduleVersion = "v1.4.0"
-)
-
 // ActionType - Defines the action to take on rule match.
 type ActionType string
 
@@ -17,6 +12,7 @@ const (
 	ActionTypeAllow          ActionType = "Allow"
 	ActionTypeAnomalyScoring ActionType = "AnomalyScoring"
 	ActionTypeBlock          ActionType = "Block"
+	ActionTypeCAPTCHA        ActionType = "CAPTCHA"
 	ActionTypeJSChallenge    ActionType = "JSChallenge"
 	ActionTypeLog            ActionType = "Log"
 	ActionTypeRedirect       ActionType = "Redirect"
@@ -28,6 +24,7 @@ func PossibleActionTypeValues() []ActionType {
 		ActionTypeAllow,
 		ActionTypeAnomalyScoring,
 		ActionTypeBlock,
+		ActionTypeCAPTCHA,
 		ActionTypeJSChallenge,
 		ActionTypeLog,
 		ActionTypeRedirect,
@@ -654,6 +651,7 @@ const (
 	OperatorLessThan           Operator = "LessThan"
 	OperatorLessThanOrEqual    Operator = "LessThanOrEqual"
 	OperatorRegEx              Operator = "RegEx"
+	OperatorServiceTagMatch    Operator = "ServiceTagMatch"
 )
 
 // PossibleOperatorValues returns the possible values for the Operator const type.
@@ -671,6 +669,7 @@ func PossibleOperatorValues() []Operator {
 		OperatorLessThan,
 		OperatorLessThanOrEqual,
 		OperatorRegEx,
+		OperatorServiceTagMatch,
 	}
 }
 
@@ -960,6 +959,27 @@ func PossibleScrubbingRuleEntryStateValues() []ScrubbingRuleEntryState {
 	return []ScrubbingRuleEntryState{
 		ScrubbingRuleEntryStateDisabled,
 		ScrubbingRuleEntryStateEnabled,
+	}
+}
+
+// SensitivityType - Defines the sensitivity for the rule.
+type SensitivityType string
+
+const (
+	// SensitivityTypeHigh - High Sensitivity - triggers the rule by smaller spikes in traffic
+	SensitivityTypeHigh SensitivityType = "High"
+	// SensitivityTypeLow - Low Sensitivity - triggers the rule by larger spikes in traffic
+	SensitivityTypeLow SensitivityType = "Low"
+	// SensitivityTypeMedium - Medium Sensitivity - triggers the rule by moderate spikes in traffic
+	SensitivityTypeMedium SensitivityType = "Medium"
+)
+
+// PossibleSensitivityTypeValues returns the possible values for the SensitivityType const type.
+func PossibleSensitivityTypeValues() []SensitivityType {
+	return []SensitivityType{
+		SensitivityTypeHigh,
+		SensitivityTypeLow,
+		SensitivityTypeMedium,
 	}
 }
 

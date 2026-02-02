@@ -721,6 +721,9 @@ type ManagedRuleDefinition struct {
 	// READ-ONLY; Describes the default action to be applied when the managed rule matches.
 	DefaultAction *ActionType
 
+	// READ-ONLY; Describes the default sensitivity to be applied when the managed rule matches.
+	DefaultSensitivity *SensitivityType
+
 	// READ-ONLY; Describes the default state for the managed rule.
 	DefaultState *ManagedRuleEnabledState
 
@@ -781,6 +784,9 @@ type ManagedRuleOverride struct {
 
 	// Describes the exclusions that are applied to this specific rule.
 	Exclusions []*ManagedRuleExclusion
+
+	// Describes the override sensitivity to be applied when rule matches.
+	Sensitivity *SensitivityType
 }
 
 // ManagedRuleSet - Defines a managed rule set.
@@ -878,6 +884,10 @@ type MatchCondition struct {
 
 // PolicySettings - Defines top-level WebApplicationFirewallPolicy configuration settings.
 type PolicySettings struct {
+	// Defines the Captcha cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value
+	// must be an integer between 5 and 1440 with the default value being 30.
+	CaptchaExpirationInMinutes *int32
+
 	// If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
 	CustomBlockResponseBody *string
 

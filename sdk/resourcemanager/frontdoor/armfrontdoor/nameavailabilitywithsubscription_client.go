@@ -28,7 +28,7 @@ type NameAvailabilityWithSubscriptionClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNameAvailabilityWithSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NameAvailabilityWithSubscriptionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewNameAvailabilityWithSubscriptionClient(subscriptionID string, credential
 // Check - Check the availability of a Front Door subdomain.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - checkFrontDoorNameAvailabilityInput - Input to check.
 //   - options - NameAvailabilityWithSubscriptionClientCheckOptions contains the optional parameters for the NameAvailabilityWithSubscriptionClient.Check
 //     method.
@@ -71,7 +71,7 @@ func (client *NameAvailabilityWithSubscriptionClient) Check(ctx context.Context,
 }
 
 // checkCreateRequest creates the Check request.
-func (client *NameAvailabilityWithSubscriptionClient) checkCreateRequest(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, options *NameAvailabilityWithSubscriptionClientCheckOptions) (*policy.Request, error) {
+func (client *NameAvailabilityWithSubscriptionClient) checkCreateRequest(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, _ *NameAvailabilityWithSubscriptionClientCheckOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/checkFrontDoorNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -82,7 +82,7 @@ func (client *NameAvailabilityWithSubscriptionClient) checkCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput); err != nil {

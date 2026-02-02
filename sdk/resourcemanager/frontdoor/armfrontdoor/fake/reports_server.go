@@ -51,23 +51,42 @@ func (r *ReportsServerTransport) Do(req *http.Request) (*http.Response, error) {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return r.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "ReportsClient.GetLatencyScorecards":
-		resp, err = r.dispatchGetLatencyScorecards(req)
-	case "ReportsClient.GetTimeseries":
-		resp, err = r.dispatchGetTimeseries(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (r *ReportsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if reportsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = reportsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "ReportsClient.GetLatencyScorecards":
+				res.resp, res.err = r.dispatchGetLatencyScorecards(req)
+			case "ReportsClient.GetTimeseries":
+				res.resp, res.err = r.dispatchGetTimeseries(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (r *ReportsServerTransport) dispatchGetLatencyScorecards(req *http.Request) (*http.Response, error) {
@@ -77,7 +96,7 @@ func (r *ReportsServerTransport) dispatchGetLatencyScorecards(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/NetworkExperimentProfiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/Experiments/(?P<experimentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/LatencyScorecard`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -142,7 +161,7 @@ func (r *ReportsServerTransport) dispatchGetTimeseries(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/NetworkExperimentProfiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/Experiments/(?P<experimentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/Timeseries`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -224,4 +243,10 @@ func (r *ReportsServerTransport) dispatchGetTimeseries(req *http.Request) (*http
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to ReportsServerTransport
+var reportsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

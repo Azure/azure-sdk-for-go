@@ -1,5 +1,16 @@
 # Release History
 
+## 1.5.0 (2026-02-02)
+### Features Added
+
+- New value `ActionTypeCAPTCHA` added to enum type `ActionType`
+- New value `OperatorServiceTagMatch` added to enum type `Operator`
+- New enum type `SensitivityType` with values `SensitivityTypeHigh`, `SensitivityTypeLow`, `SensitivityTypeMedium`
+- New field `DefaultSensitivity` in struct `ManagedRuleDefinition`
+- New field `Sensitivity` in struct `ManagedRuleOverride`
+- New field `CaptchaExpirationInMinutes` in struct `PolicySettings`
+
+
 ## 1.4.0 (2024-04-26)
 ### Features Added
 

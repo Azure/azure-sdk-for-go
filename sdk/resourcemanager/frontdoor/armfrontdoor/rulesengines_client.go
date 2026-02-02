@@ -28,7 +28,7 @@ type RulesEnginesClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRulesEnginesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RulesEnginesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewRulesEnginesClient(subscriptionID string, credential azcore.TokenCredent
 // BeginCreateOrUpdate - Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - rulesEngineName - Name of the Rules Engine which is unique within the Front Door.
@@ -72,7 +72,7 @@ func (client *RulesEnginesClient) BeginCreateOrUpdate(ctx context.Context, resou
 // CreateOrUpdate - Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 func (client *RulesEnginesClient) createOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, options *RulesEnginesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RulesEnginesClient.BeginCreateOrUpdate"
@@ -95,7 +95,7 @@ func (client *RulesEnginesClient) createOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RulesEnginesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, options *RulesEnginesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RulesEnginesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, _ *RulesEnginesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -118,7 +118,7 @@ func (client *RulesEnginesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, rulesEngineParameters); err != nil {
@@ -130,7 +130,7 @@ func (client *RulesEnginesClient) createOrUpdateCreateRequest(ctx context.Contex
 // BeginDelete - Deletes an existing Rules Engine Configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - rulesEngineName - Name of the Rules Engine which is unique within the Front Door.
@@ -157,7 +157,7 @@ func (client *RulesEnginesClient) BeginDelete(ctx context.Context, resourceGroup
 // Delete - Deletes an existing Rules Engine Configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 func (client *RulesEnginesClient) deleteOperation(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RulesEnginesClient.BeginDelete"
@@ -180,7 +180,7 @@ func (client *RulesEnginesClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RulesEnginesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RulesEnginesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, _ *RulesEnginesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -203,7 +203,7 @@ func (client *RulesEnginesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -212,7 +212,7 @@ func (client *RulesEnginesClient) deleteCreateRequest(ctx context.Context, resou
 // Get - Gets a Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - rulesEngineName - Name of the Rules Engine which is unique within the Front Door.
@@ -240,7 +240,7 @@ func (client *RulesEnginesClient) Get(ctx context.Context, resourceGroupName str
 }
 
 // getCreateRequest creates the Get request.
-func (client *RulesEnginesClient) getCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientGetOptions) (*policy.Request, error) {
+func (client *RulesEnginesClient) getCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, _ *RulesEnginesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -263,7 +263,7 @@ func (client *RulesEnginesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *RulesEnginesClient) getHandleResponse(resp *http.Response) (RulesE
 
 // NewListByFrontDoorPager - Lists all of the Rules Engine Configurations within a Front Door.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - RulesEnginesClientListByFrontDoorOptions contains the optional parameters for the RulesEnginesClient.NewListByFrontDoorPager
@@ -309,7 +309,7 @@ func (client *RulesEnginesClient) NewListByFrontDoorPager(resourceGroupName stri
 }
 
 // listByFrontDoorCreateRequest creates the ListByFrontDoor request.
-func (client *RulesEnginesClient) listByFrontDoorCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, options *RulesEnginesClientListByFrontDoorOptions) (*policy.Request, error) {
+func (client *RulesEnginesClient) listByFrontDoorCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, _ *RulesEnginesClientListByFrontDoorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -328,7 +328,7 @@ func (client *RulesEnginesClient) listByFrontDoorCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

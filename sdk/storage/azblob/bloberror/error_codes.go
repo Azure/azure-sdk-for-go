@@ -68,7 +68,7 @@ const (
 	FeatureVersionMismatch                            Code = "FeatureVersionMismatch"
 	ImmutabilityPolicyDeleteOnLockedPolicy            Code = "ImmutabilityPolicyDeleteOnLockedPolicy"
 	IncrementalCopyBlobMismatch                       Code = "IncrementalCopyBlobMismatch"
-	IncrementalCopyOfEralierVersionSnapshotNotAllowed Code = "IncrementalCopyOfEralierVersionSnapshotNotAllowed" // Deprecated: Please use INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED instead.
+	IncrementalCopyOfEralierVersionSnapshotNotAllowed Code = "IncrementalCopyOfEralierVersionSnapshotNotAllowed" // Deprecated: Please use IncrementalCopyOfEarlierSnapshotNotAllowed instead.
 	IncrementalCopyOfEarlierSnapshotNotAllowed        Code = "IncrementalCopyOfEarlierSnapshotNotAllowed"
 	IncrementalCopySourceMustBeSnapshot               Code = "IncrementalCopySourceMustBeSnapshot"
 	InfiniteLeaseDurationRequired                     Code = "InfiniteLeaseDurationRequired"

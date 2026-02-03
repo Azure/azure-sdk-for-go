@@ -89,7 +89,7 @@ const (
 	EmptyMetadataKey                                  StorageErrorCode = "EmptyMetadataKey"
 	FeatureVersionMismatch                            StorageErrorCode = "FeatureVersionMismatch"
 	IncrementalCopyPathMismatch                       StorageErrorCode = "IncrementalCopyPathMismatch"
-	IncrementalCopyOfEarlierVersionSnapshotNotAllowed StorageErrorCode = "IncrementalCopyOfEarlierVersionSnapshotNotAllowed" // Deprecated: Please use INCREMENTAL_COPY_OF_EARLIER_SNAPSHOT_NOT_ALLOWED instead.
+	IncrementalCopyOfEarlierVersionSnapshotNotAllowed StorageErrorCode = "IncrementalCopyOfEarlierVersionSnapshotNotAllowed" // Deprecated: Please use IncrementalCopyOfEarlierSnapshotNotAllowed instead.
 	IncrementalCopyOfEarlierSnapshotNotAllowed        StorageErrorCode = "IncrementalCopyOfEarlierSnapshotNotAllowed"
 	IncrementalCopySourceMustBeSnapshot               StorageErrorCode = "IncrementalCopySourceMustBeSnapshot"
 	InfiniteLeaseDurationRequired                     StorageErrorCode = "InfiniteLeaseDurationRequired"

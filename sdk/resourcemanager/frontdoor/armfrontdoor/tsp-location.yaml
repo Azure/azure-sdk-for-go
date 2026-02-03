@@ -1,0 +1,4 @@
+directory: specification/frontdoor/FrontDoor.Management
+commit: bf7d3b445f8b39e1c8376fa011c5a9853fc62aa7
+repo: i-specs
+additionalDirectories: 

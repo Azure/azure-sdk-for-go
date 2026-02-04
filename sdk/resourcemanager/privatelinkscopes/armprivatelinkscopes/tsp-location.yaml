@@ -1,0 +1,4 @@
+directory: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/privateLinkScopes
+commit: 3c9c39855fd52e54edd045e86b368064e323aff0
+repo: i-specs
+additionalDirectories: 

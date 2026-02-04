@@ -9,12 +9,17 @@
 
 /sdk/                                                              @chlowell @richardpark-msft @rickwinter
 
-# PRLabel: %OpenAI
-/sdk/ai                                                            @achauhan-scc @chlowell @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
+/sdk/samples/                                                      @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
 
-# AzureSdkOwners:                                                  @richardpark-msft
-# ServiceLabel: %OpenAI
-# ServiceOwners:                                                   @achauhan-scc @chlowell @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
+# PRLabel: %App Configuration
+/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820
+
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %App Configuration
+# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+
+# ServiceLabel: %App Configuration
+# ServiceOwners:                                                   @avanigupta @shenmuxiaosen
 
 # PRLabel: %Azure.Core
 /sdk/azcore/                                                       @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
@@ -30,16 +35,6 @@
 # ServiceLabel: %Azure.Identity
 # ServiceOwners:                                                   @Azure/azure-sdk-write-identity @chlowell @jhendrixMSFT @rickwinter
 
-# PRLabel: %App Configuration
-/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820
-
-# AzureSdkOwners:                                                  @jhendrixMSFT
-# ServiceLabel: %App Configuration
-# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
-
-# ServiceLabel: %App Configuration
-# ServiceOwners:                                                   @avanigupta @shenmuxiaosen
-
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
 
@@ -50,38 +45,12 @@
 # ServiceLabel: %Cosmos
 # ServiceOwners:                                                   @MehaKaushik @Pilchie @Wmengmsft
 
-# PRLabel: %Tables
-/sdk/data/aztables/                                                @jhendrixMSFT @richardpark-msft
+# PRLabel: %EngSys
+/sdk/template/                                                     @benbp @weshaggard
 
-# AzureSdkOwners:                                                  @jhendrixMSFT
-# ServiceLabel: %Tables
-# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft
-
-# ServiceLabel: %Tables
-# ServiceOwners:                                                   @klaaslanghout
-
-# PRLabel: %Internal
-/sdk/internal/                                                     @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
-
-# AzureSdkOwners:                                                  @jhendrixMSFT
-# ServiceLabel: %Internal
-# ServiceOwners:                                                   @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
-
-# PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak
-
-# ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @sjkwak
-
-# PRLabel: %Service Bus
-/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft
-
-# PRLabel: %WebPubSub
-/sdk/messaging/azwebpubsub/                                        @chenkennt @jhendrixMSFT @vicancy
-
-# AzureSdkOwners:                                                  @vicancy
-# ServiceLabel: %WebPubSub
-# ServiceOwners:                                                   @chenkennt @jhendrixMSFT @vicancy
+# AzureSdkOwners:                                                  @benbp
+# ServiceLabel: %EngSys
+# ServiceOwners:                                                   @benbp @weshaggard
 
 # PRLabel: %Event Grid
 /sdk/messaging/eventgrid/                                          @rajeshka @shankarsama
@@ -90,11 +59,24 @@
 # ServiceLabel: %Event Grid
 # ServiceOwners:                                                   @rajeshka @shankarsama
 
-# PRLabel: %Service Bus
-/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft
+# PRLabel: %Event Hubs
+/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak
 
-# ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
+# ServiceLabel: %Event Hubs
+# ServiceOwners:                                                   @axisc @hmlam @sjkwak
+
+# PRLabel: %Internal
+/sdk/internal/                                                     @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
+
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %Internal
+# ServiceOwners:                                                   @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
+
+# PRLabel: %KeyVault
+/sdk/security/keyvault/                                            @Azure/azure-sdk-write-keyvault
+
+# ServiceLabel: %KeyVault
+# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault @chen-karen
 
 # PRLabel: %Monitor
 /sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @chlowell @gracewilcox @jhendrixMSFT
@@ -109,13 +91,28 @@
 # ServiceLabel: %Monitor
 # ServiceOwners:                                                   @AzmonActionG @AzmonAlerts @AzMonEssential @AzmonLogA @dadunl @SameergMS
 
-/sdk/samples/                                                      @chlowell @jhendrixMSFT @richardpark-msft @rickwinter
+# PRLabel: %OpenAI
+/sdk/ai                                                            @achauhan-scc @chlowell @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
 
-# PRLabel: %KeyVault
-/sdk/security/keyvault/                                            @Azure/azure-sdk-write-keyvault
+# AzureSdkOwners:                                                  @richardpark-msft
+# ServiceLabel: %OpenAI
+# ServiceOwners:                                                   @achauhan-scc @chlowell @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
 
-# ServiceLabel: %KeyVault
-# ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault @chen-karen
+# PRLabel: %OpenTelemetry
+/sdk/tracing/azotel                                                @jhendrixMSFT @rickwinter
+
+# AzureSdkOwners:                                                  @jhendrixMSFT
+# ServiceLabel: %OpenTelemetry
+# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+
+# PRLabel: %Service Bus
+/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft
+
+# PRLabel: %Service Bus
+/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft
+
+# ServiceLabel: %Service Bus
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
 
 # PRLabel: %Storage
 /sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft @vibhansa-msft
@@ -127,19 +124,22 @@
 # ServiceLabel: %Storage
 # ServiceOwners:                                                   @xgithubtriage
 
-# PRLabel: %EngSys
-/sdk/template/                                                     @benbp @weshaggard
-
-# AzureSdkOwners:                                                  @benbp
-# ServiceLabel: %EngSys
-# ServiceOwners:                                                   @benbp @weshaggard
-
-# PRLabel: %OpenTelemetry
-/sdk/tracing/azotel                                                @jhendrixMSFT @rickwinter
+# PRLabel: %Tables
+/sdk/data/aztables/                                                @jhendrixMSFT @richardpark-msft
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
-# ServiceLabel: %OpenTelemetry
-# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+# ServiceLabel: %Tables
+# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft
+
+# ServiceLabel: %Tables
+# ServiceOwners:                                                   @klaaslanghout
+
+# PRLabel: %WebPubSub
+/sdk/messaging/azwebpubsub/                                        @chenkennt @jhendrixMSFT @vicancy
+
+# AzureSdkOwners:                                                  @vicancy
+# ServiceLabel: %WebPubSub
+# ServiceOwners:                                                   @chenkennt @jhendrixMSFT @vicancy
 
 # ServiceLabel: %AAD
 # ServiceOwners:                                                   @adamedx

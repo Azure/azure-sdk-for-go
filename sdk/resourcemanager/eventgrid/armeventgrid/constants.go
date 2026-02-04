@@ -5,11 +5,6 @@
 
 package armeventgrid
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid"
-	moduleVersion = "v2.4.0-beta.1"
-)
-
 // AdvancedFilterOperatorType - The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
 type AdvancedFilterOperatorType string
 
@@ -242,6 +237,25 @@ func PossibleClientStateValues() []ClientState {
 	return []ClientState{
 		ClientStateDisabled,
 		ClientStateEnabled,
+	}
+}
+
+// ConfidentialComputeMode - This property specifies the mode of the Azure Confidential Compute configuration. Possible values
+// are 'Disabled' or 'Enabled'. This is an immutable property set at the time of resource creation and
+// cannot be modified later. Enabling this property ensures that messages are processed and stored in a Azure Confidential
+// Compute environment.
+type ConfidentialComputeMode string
+
+const (
+	ConfidentialComputeModeDisabled ConfidentialComputeMode = "Disabled"
+	ConfidentialComputeModeEnabled  ConfidentialComputeMode = "Enabled"
+)
+
+// PossibleConfidentialComputeModeValues returns the possible values for the ConfidentialComputeMode const type.
+func PossibleConfidentialComputeModeValues() []ConfidentialComputeMode {
+	return []ConfidentialComputeMode{
+		ConfidentialComputeModeDisabled,
+		ConfidentialComputeModeEnabled,
 	}
 }
 
@@ -692,6 +706,42 @@ const (
 func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 	return []InputSchemaMappingType{
 		InputSchemaMappingTypeJSON,
+	}
+}
+
+// KeyEncryptionIdentityType - The type of managed identity used. Only UserAssigned or SystemAssigned Identity are supported.
+type KeyEncryptionIdentityType string
+
+const (
+	KeyEncryptionIdentityTypeSystemAssigned KeyEncryptionIdentityType = "SystemAssigned"
+	KeyEncryptionIdentityTypeUserAssigned   KeyEncryptionIdentityType = "UserAssigned"
+)
+
+// PossibleKeyEncryptionIdentityTypeValues returns the possible values for the KeyEncryptionIdentityType const type.
+func PossibleKeyEncryptionIdentityTypeValues() []KeyEncryptionIdentityType {
+	return []KeyEncryptionIdentityType{
+		KeyEncryptionIdentityTypeSystemAssigned,
+		KeyEncryptionIdentityTypeUserAssigned,
+	}
+}
+
+// KeyEncryptionKeyStatus - The state of the Customer Managed Key (CMK) encryption. This is a read-only property which determines
+// if the associated key is active and valid and used actively by runtime as expected. When the
+// associated CMK becomes invalid (e.g., if it is deleted, or if versioned CMK is not current anymore), Event Grid Service
+// will set this state to disabled to indicate that this key is not valid anymore
+// and requires action from user.
+type KeyEncryptionKeyStatus string
+
+const (
+	KeyEncryptionKeyStatusActive  KeyEncryptionKeyStatus = "Active"
+	KeyEncryptionKeyStatusRevoked KeyEncryptionKeyStatus = "Revoked"
+)
+
+// PossibleKeyEncryptionKeyStatusValues returns the possible values for the KeyEncryptionKeyStatus const type.
+func PossibleKeyEncryptionKeyStatusValues() []KeyEncryptionKeyStatus {
+	return []KeyEncryptionKeyStatus{
+		KeyEncryptionKeyStatusActive,
+		KeyEncryptionKeyStatusRevoked,
 	}
 }
 

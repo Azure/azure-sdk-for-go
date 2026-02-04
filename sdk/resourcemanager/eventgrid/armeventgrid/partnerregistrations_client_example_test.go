@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerRegistrations_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerRegistrations_Get.json
 func ExamplePartnerRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExamplePartnerRegistrationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerRegistrations_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerRegistrations_CreateOrUpdate.json
 func ExamplePartnerRegistrationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExamplePartnerRegistrationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerRegistrations_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerRegistrations_Delete.json
 func ExamplePartnerRegistrationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExamplePartnerRegistrationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerRegistrations_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerRegistrations_Update.json
 func ExamplePartnerRegistrationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExamplePartnerRegistrationsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerRegistrations_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerRegistrations_ListBySubscription.json
 func ExamplePartnerRegistrationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExamplePartnerRegistrationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerRegistrations_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerRegistrations_ListByResourceGroup.json
 func ExamplePartnerRegistrationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -29,7 +29,7 @@ type PartnerConfigurationsClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPartnerConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PartnerConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewPartnerConfigurationsClient(subscriptionID string, credential azcore.Tok
 // AuthorizePartner - Authorize a single partner either by partner registration immutable Id or by partner name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerInfo - The information of the partner to be authorized.
 //   - options - PartnerConfigurationsClientAuthorizePartnerOptions contains the optional parameters for the PartnerConfigurationsClient.AuthorizePartner
@@ -88,7 +88,7 @@ func (client *PartnerConfigurationsClient) authorizePartnerCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, partnerInfo); err != nil {
@@ -109,7 +109,7 @@ func (client *PartnerConfigurationsClient) authorizePartnerHandleResponse(resp *
 // BeginCreateOrUpdate - Synchronously creates or updates a partner configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerConfigurationInfo - Partner configuration information.
 //   - options - PartnerConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerConfigurationsClient.BeginCreateOrUpdate
@@ -134,7 +134,7 @@ func (client *PartnerConfigurationsClient) BeginCreateOrUpdate(ctx context.Conte
 // CreateOrUpdate - Synchronously creates or updates a partner configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *PartnerConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, partnerConfigurationInfo PartnerConfiguration, options *PartnerConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerConfigurationsClient.BeginCreateOrUpdate"
@@ -172,7 +172,7 @@ func (client *PartnerConfigurationsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, partnerConfigurationInfo); err != nil {
@@ -184,7 +184,7 @@ func (client *PartnerConfigurationsClient) createOrUpdateCreateRequest(ctx conte
 // BeginDelete - Delete existing partner configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - options - PartnerConfigurationsClientBeginDeleteOptions contains the optional parameters for the PartnerConfigurationsClient.BeginDelete
 //     method.
@@ -208,7 +208,7 @@ func (client *PartnerConfigurationsClient) BeginDelete(ctx context.Context, reso
 // Delete - Delete existing partner configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *PartnerConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, options *PartnerConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerConfigurationsClient.BeginDelete"
@@ -246,7 +246,7 @@ func (client *PartnerConfigurationsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -254,7 +254,7 @@ func (client *PartnerConfigurationsClient) deleteCreateRequest(ctx context.Conte
 // Get - Get properties of a partner configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - options - PartnerConfigurationsClientGetOptions contains the optional parameters for the PartnerConfigurationsClient.Get
 //     method.
@@ -296,7 +296,7 @@ func (client *PartnerConfigurationsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -313,7 +313,7 @@ func (client *PartnerConfigurationsClient) getHandleResponse(resp *http.Response
 
 // NewListByResourceGroupPager - List all the partner configurations under a resource group.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - options - PartnerConfigurationsClientListByResourceGroupOptions contains the optional parameters for the PartnerConfigurationsClient.NewListByResourceGroupPager
 //     method.
@@ -357,7 +357,7 @@ func (client *PartnerConfigurationsClient) listByResourceGroupCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -374,7 +374,7 @@ func (client *PartnerConfigurationsClient) listByResourceGroupHandleResponse(res
 
 // NewListBySubscriptionPager - List all the partner configurations under an Azure subscription.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - options - PartnerConfigurationsClientListBySubscriptionOptions contains the optional parameters for the PartnerConfigurationsClient.NewListBySubscriptionPager
 //     method.
 func (client *PartnerConfigurationsClient) NewListBySubscriptionPager(options *PartnerConfigurationsClientListBySubscriptionOptions) *runtime.Pager[PartnerConfigurationsClientListBySubscriptionResponse] {
@@ -418,7 +418,7 @@ func (client *PartnerConfigurationsClient) listBySubscriptionCreateRequest(ctx c
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -436,7 +436,7 @@ func (client *PartnerConfigurationsClient) listBySubscriptionHandleResponse(resp
 // UnauthorizePartner - Unauthorize a single partner either by partner registration immutable Id or by partner name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerInfo - The information of the partner to be unauthorized.
 //   - options - PartnerConfigurationsClientUnauthorizePartnerOptions contains the optional parameters for the PartnerConfigurationsClient.UnauthorizePartner
@@ -479,7 +479,7 @@ func (client *PartnerConfigurationsClient) unauthorizePartnerCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, partnerInfo); err != nil {
@@ -500,7 +500,7 @@ func (client *PartnerConfigurationsClient) unauthorizePartnerHandleResponse(resp
 // BeginUpdate - Synchronously updates a partner configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - partnerConfigurationUpdateParameters - Partner configuration update information.
 //   - options - PartnerConfigurationsClientBeginUpdateOptions contains the optional parameters for the PartnerConfigurationsClient.BeginUpdate
@@ -525,7 +525,7 @@ func (client *PartnerConfigurationsClient) BeginUpdate(ctx context.Context, reso
 // Update - Synchronously updates a partner configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *PartnerConfigurationsClient) update(ctx context.Context, resourceGroupName string, partnerConfigurationUpdateParameters PartnerConfigurationUpdateParameters, options *PartnerConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerConfigurationsClient.BeginUpdate"
@@ -563,7 +563,7 @@ func (client *PartnerConfigurationsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, partnerConfigurationUpdateParameters); err != nil {

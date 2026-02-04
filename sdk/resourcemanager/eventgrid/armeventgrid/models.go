@@ -349,6 +349,15 @@ type ClientsListResult struct {
 	Value []*Client
 }
 
+// ConfidentialCompute - Azure Confidential Compute properties of the resource.
+type ConfidentialCompute struct {
+	// REQUIRED; This property specifies the mode of the Azure Confidential Compute configuration. Possible values are 'Disabled'
+	// or 'Enabled'. This is an immutable property set at the time of resource creation and
+	// cannot be modified later. Enabling this property ensures that messages are processed and stored in a Azure Confidential
+	// Compute environment.
+	Mode *ConfidentialComputeMode
+}
+
 // ConnectionState information.
 type ConnectionState struct {
 	// Actions required (if any).
@@ -438,6 +447,34 @@ type CustomWebhookAuthenticationManagedIdentity struct {
 
 	// The user identity associated with the resource.
 	UserAssignedIdentity *string
+}
+
+// CustomerManagedKeyEncryption - All Customer-managed key encryption properties for the resource.
+type CustomerManagedKeyEncryption struct {
+	// REQUIRED; Key encryption key URL. This URL can be either versioned (e.g., https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78),
+	// or unversioned (e.g.,
+	// https://contosovault.vault.azure.net/keys/contosokek. When versioned URL is used, this version of the key will be used
+	// by Event Grid Runtime even if it is rotated. It is user responsibility to update
+	// the URL with the new version by updating the namespace resource. When URL without version is used, Event Grid will query
+	// and get latest version and will be used automatically.
+	KeyEncryptionKeyURL *string
+
+	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
+	// This is an optional property. When not specified, the SystemAssigned identity
+	// will be used.
+	KeyEncryptionKeyIdentity *KeyEncryptionKeyIdentity
+
+	// READ-ONLY; The state of the Customer Managed Key (CMK) encryption. This is a read-only property which determines if the
+	// associated key is active and valid and used actively by runtime as expected. When the
+	// associated CMK becomes invalid (e.g., if it is deleted, or if versioned CMK is not current anymore), Event Grid Service
+	// will set this state to disabled to indicate that this key is not valid anymore
+	// and requires action from user.
+	KeyEncryptionKeyStatus *KeyEncryptionKeyStatus
+
+	// READ-ONLY; Friendly description about the Customer Managed Key (CMK) encryption state. This is a read-only property which
+	// determines why the associated key is revoked which will help user to mitigate the issue
+	// and re-enable the CMK key.
+	KeyEncryptionKeyStatusFriendlyDescription *string
 }
 
 // DeadLetterDestination - Information about the dead letter destination for an event subscription. To configure a deadletter
@@ -1317,6 +1354,23 @@ type JSONInputSchemaMappingProperties struct {
 
 	// The mapping information for the Topic property of the Event Grid Event.
 	Topic *JSONField
+}
+
+// KeyEncryption - Properties of the Encryption settings.
+type KeyEncryption struct {
+	// REQUIRED; List of all customer-managed key encryption properties for the resource. However only one key is supported at
+	// a time.
+	CustomerManagedKeyEncryption []*CustomerManagedKeyEncryption
+}
+
+type KeyEncryptionKeyIdentity struct {
+	// REQUIRED; The type of managed identity used. Only UserAssigned or SystemAssigned Identity are supported.
+	Type *KeyEncryptionIdentityType
+
+	// Azure Resource fully qualified Id for the user-assigned identity associated with the resource. The resource Id takes the
+	// following format:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentityResourceID *string
 }
 
 // MonitorAlertEventSubscriptionDestination - Information about the Monitor Alert destination for an event subscription.
@@ -2609,6 +2663,12 @@ type PermissionBindingsListResult struct {
 	Value []*PermissionBinding
 }
 
+// PlatformCapabilities - Platform capabilities properties of the resource.
+type PlatformCapabilities struct {
+	// Represents the Azure Confidential Compute properties of the resource.
+	ConfidentialCompute *ConfidentialCompute
+}
+
 // PrivateEndpoint information.
 type PrivateEndpoint struct {
 	// The ARM identifier for Private Endpoint.
@@ -3430,6 +3490,13 @@ type SystemTopic struct {
 
 // SystemTopicProperties - Properties of the System Topic.
 type SystemTopicProperties struct {
+	// Key encryption configuration properties of the system topic resource. This is an optional property. When not specified,
+	// no key encryption is used.
+	Encryption *KeyEncryption
+
+	// Represents the platform capabilities of the resource, including Azure Confidential Compute related properties.
+	PlatformCapabilities *PlatformCapabilities
+
 	// Source for the system topic.
 	Source *string
 
@@ -3507,6 +3574,10 @@ type TopicProperties struct {
 	// to the topic.
 	DisableLocalAuth *bool
 
+	// Key encryption configuration properties of the topic resource. This is an optional property. When not specified, no key
+	// encryption is used.
+	Encryption *KeyEncryption
+
 	// Event Type Information for the user topic. This information is provided by the publisher and can be used by the subscriber
 	// to view different types of events that are published.
 	EventTypeInfo *EventTypeInfo
@@ -3524,6 +3595,9 @@ type TopicProperties struct {
 
 	// Minimum TLS version of the publisher allowed to publish to this topic
 	MinimumTLSVersionAllowed *TLSVersion
+
+	// Represents the platform capabilities of the resource, including Azure Confidential Compute related properties.
+	PlatformCapabilities *PlatformCapabilities
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring

@@ -25,7 +25,7 @@ type ExtensionTopicsClient struct {
 
 // NewExtensionTopicsClient creates a new instance of ExtensionTopicsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionTopicsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,7 +40,7 @@ func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.Cl
 // Get - Get the properties of an extension topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - scope - The identifier of the resource to which extension topic is queried. The scope can be a subscription, or a resource
 //     group, or a top level resource belonging to a resource provider namespace. For
 //     example, use '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
@@ -82,7 +82,7 @@ func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

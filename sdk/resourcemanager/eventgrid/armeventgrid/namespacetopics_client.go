@@ -29,7 +29,7 @@ type NamespaceTopicsClient struct {
 //   - subscriptionID - Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNamespaceTopicsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespaceTopicsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewNamespaceTopicsClient(subscriptionID string, credential azcore.TokenCred
 // BeginCreateOrUpdate - Asynchronously creates a new namespace topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -73,7 +73,7 @@ func (client *NamespaceTopicsClient) BeginCreateOrUpdate(ctx context.Context, re
 // CreateOrUpdate - Asynchronously creates a new namespace topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, namespaceTopicInfo NamespaceTopic, options *NamespaceTopicsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicsClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *NamespaceTopicsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, namespaceTopicInfo); err != nil {
@@ -131,7 +131,7 @@ func (client *NamespaceTopicsClient) createOrUpdateCreateRequest(ctx context.Con
 // BeginDelete - Delete existing namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the topic.
@@ -158,7 +158,7 @@ func (client *NamespaceTopicsClient) BeginDelete(ctx context.Context, resourceGr
 // Delete - Delete existing namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *NamespaceTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicsClient.BeginDelete"
@@ -204,7 +204,7 @@ func (client *NamespaceTopicsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -213,7 +213,7 @@ func (client *NamespaceTopicsClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get properties of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -264,7 +264,7 @@ func (client *NamespaceTopicsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -281,7 +281,7 @@ func (client *NamespaceTopicsClient) getHandleResponse(resp *http.Response) (Nam
 
 // NewListByNamespacePager - List all the namespace topics under a namespace.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - options - NamespaceTopicsClientListByNamespaceOptions contains the optional parameters for the NamespaceTopicsClient.NewListByNamespacePager
@@ -335,7 +335,7 @@ func (client *NamespaceTopicsClient) listByNamespaceCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -353,7 +353,7 @@ func (client *NamespaceTopicsClient) listByNamespaceHandleResponse(resp *http.Re
 // ListSharedAccessKeys - List the two keys used to publish to a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the topic.
@@ -405,7 +405,7 @@ func (client *NamespaceTopicsClient) listSharedAccessKeysCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -423,7 +423,7 @@ func (client *NamespaceTopicsClient) listSharedAccessKeysHandleResponse(resp *ht
 // BeginRegenerateKey - Regenerate a shared access key for a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the topic.
@@ -451,7 +451,7 @@ func (client *NamespaceTopicsClient) BeginRegenerateKey(ctx context.Context, res
 // RegenerateKey - Regenerate a shared access key for a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicsClient) regenerateKey(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *NamespaceTopicsClientBeginRegenerateKeyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicsClient.BeginRegenerateKey"
@@ -497,7 +497,7 @@ func (client *NamespaceTopicsClient) regenerateKeyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, regenerateKeyRequest); err != nil {
@@ -509,7 +509,7 @@ func (client *NamespaceTopicsClient) regenerateKeyCreateRequest(ctx context.Cont
 // BeginUpdate - Asynchronously updates a namespace topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group within the user's subscription.
 //   - namespaceName - Name of the namespace.
 //   - topicName - Name of the namespace topic.
@@ -537,7 +537,7 @@ func (client *NamespaceTopicsClient) BeginUpdate(ctx context.Context, resourceGr
 // Update - Asynchronously updates a namespace topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 func (client *NamespaceTopicsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, namespaceTopicUpdateParameters NamespaceTopicUpdateParameters, options *NamespaceTopicsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicsClient.BeginUpdate"
@@ -583,7 +583,7 @@ func (client *NamespaceTopicsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, namespaceTopicUpdateParameters); err != nil {

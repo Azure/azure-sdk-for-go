@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_Get.json
 func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_CreateOrUpdate.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_Delete.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_Update.json
 func ExamplePartnerTopicEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_GetFullUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_GetFullUrl.json
 func ExamplePartnerTopicEventSubscriptionsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_GetFullURL() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_ListByPartnerTopic.json
 func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExamplePartnerTopicEventSubscriptionsClient_NewListByPartnerTopicPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
 func ExamplePartnerTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

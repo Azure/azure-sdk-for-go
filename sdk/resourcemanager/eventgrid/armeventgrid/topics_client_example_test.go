@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_Get.json
 func ExampleTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,14 +42,40 @@ func ExampleTopicsClient_Get() {
 	// 		"tag1": to.Ptr("value1"),
 	// 		"tag2": to.Ptr("value2"),
 	// 	},
+	// 	Identity: &armeventgrid.IdentityInfo{
+	// 		Type: to.Ptr(armeventgrid.IdentityTypeUserAssigned),
+	// 		UserAssignedIdentities: map[string]*armeventgrid.UserIdentityProperties{
+	// 			"/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id": &armeventgrid.UserIdentityProperties{
+	// 				ClientID: to.Ptr("11af827c-d951-4766-9c41-15565fa13157"),
+	// 				PrincipalID: to.Ptr("a5435982-c82d-453b-b244-3115b7c8789c"),
+	// 			},
+	// 		},
+	// 	},
 	// 	Properties: &armeventgrid.TopicProperties{
+	// 		Encryption: &armeventgrid.KeyEncryption{
+	// 			CustomerManagedKeyEncryption: []*armeventgrid.CustomerManagedKeyEncryption{
+	// 				{
+	// 					KeyEncryptionKeyIdentity: &armeventgrid.KeyEncryptionKeyIdentity{
+	// 						Type: to.Ptr(armeventgrid.KeyEncryptionIdentityTypeUserAssigned),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id"),
+	// 					},
+	// 					KeyEncryptionKeyStatus: to.Ptr(armeventgrid.KeyEncryptionKeyStatusActive),
+	// 					KeyEncryptionKeyStatusFriendlyDescription: to.Ptr("Customer Managed Key (CMK) Encryption is 'Active' and running normally."),
+	// 					KeyEncryptionKeyURL: to.Ptr("https://ege2ekeyvault.vault.azure.net/keys/ValidKey1"),
+	// 			}},
+	// 		},
 	// 		Endpoint: to.Ptr("https://exampletopic2.westcentralus-1.eventgrid.azure.net/api/events"),
+	// 		PlatformCapabilities: &armeventgrid.PlatformCapabilities{
+	// 			ConfidentialCompute: &armeventgrid.ConfidentialCompute{
+	// 				Mode: to.Ptr(armeventgrid.ConfidentialComputeModeEnabled),
+	// 			},
+	// 		},
 	// 		ProvisioningState: to.Ptr(armeventgrid.TopicProvisioningStateSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_CreateOrUpdate.json
 func ExampleTopicsClient_BeginCreateOrUpdate_topicsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,17 +92,28 @@ func ExampleTopicsClient_BeginCreateOrUpdate_topicsCreateOrUpdate() {
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
 		},
+		Identity: &armeventgrid.IdentityInfo{
+			Type: to.Ptr(armeventgrid.IdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armeventgrid.UserIdentityProperties{
+				"/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id": {},
+			},
+		},
 		Properties: &armeventgrid.TopicProperties{
-			InboundIPRules: []*armeventgrid.InboundIPRule{
-				{
-					Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-					IPMask: to.Ptr("12.18.30.15"),
+			Encryption: &armeventgrid.KeyEncryption{
+				CustomerManagedKeyEncryption: []*armeventgrid.CustomerManagedKeyEncryption{
+					{
+						KeyEncryptionKeyIdentity: &armeventgrid.KeyEncryptionKeyIdentity{
+							Type:                           to.Ptr(armeventgrid.KeyEncryptionIdentityTypeUserAssigned),
+							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/azureeventgridrunnerrgcentraluseuap/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-assigned-id"),
+						},
+						KeyEncryptionKeyURL: to.Ptr("https://ege2ekeyvault.vault.azure.net/keys/ValidKey1"),
+					}},
+			},
+			PlatformCapabilities: &armeventgrid.PlatformCapabilities{
+				ConfidentialCompute: &armeventgrid.ConfidentialCompute{
+					Mode: to.Ptr(armeventgrid.ConfidentialComputeModeEnabled),
 				},
-				{
-					Action: to.Ptr(armeventgrid.IPActionTypeAllow),
-					IPMask: to.Ptr("12.18.176.1"),
-				}},
-			PublicNetworkAccess: to.Ptr(armeventgrid.PublicNetworkAccessEnabled),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -88,7 +125,7 @@ func ExampleTopicsClient_BeginCreateOrUpdate_topicsCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_CreateOrUpdateForAzureArc.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_CreateOrUpdateForAzureArc.json
 func ExampleTopicsClient_BeginCreateOrUpdate_topicsCreateOrUpdateForAzureArc() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +160,7 @@ func ExampleTopicsClient_BeginCreateOrUpdate_topicsCreateOrUpdateForAzureArc() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_Delete.json
 func ExampleTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +181,7 @@ func ExampleTopicsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_Update.json
 func ExampleTopicsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +219,7 @@ func ExampleTopicsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_ListBySubscription.json
 func ExampleTopicsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +277,7 @@ func ExampleTopicsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_ListByResourceGroup.json
 func ExampleTopicsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +335,7 @@ func ExampleTopicsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_ListSharedAccessKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_ListSharedAccessKeys.json
 func ExampleTopicsClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +359,7 @@ func ExampleTopicsClient_ListSharedAccessKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_RegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_RegenerateKey.json
 func ExampleTopicsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +389,7 @@ func ExampleTopicsClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/9549e9fff6f7a4e4232370865bfb6fc771a1f4ac/specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_ListEventTypes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid/preview/2025-07-15-preview/examples/Topics_ListEventTypes.json
 func ExampleTopicsClient_NewListEventTypesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

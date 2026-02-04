@@ -211,7 +211,7 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginCreateOrUpdate(req *htt
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armeventgrid.EventSubscription](req)
@@ -259,7 +259,7 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginDelete(req *http.Reques
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -301,7 +301,7 @@ func (e *EventSubscriptionsServerTransport) dispatchGet(req *http.Request) (*htt
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -334,7 +334,7 @@ func (e *EventSubscriptionsServerTransport) dispatchGetDeliveryAttributes(req *h
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getDeliveryAttributes`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -367,7 +367,7 @@ func (e *EventSubscriptionsServerTransport) dispatchGetFullURL(req *http.Request
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFullUrl`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -402,7 +402,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByDomainTopicPager(re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/domains/(?P<domainName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topics/(?P<topicName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -474,7 +474,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByResourcePager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -550,7 +550,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -614,7 +614,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -682,7 +682,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionP
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -742,7 +742,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionF
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -806,7 +806,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -874,7 +874,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -946,7 +946,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1010,7 +1010,7 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/topicTypes/(?P<topicTypeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -1078,7 +1078,7 @@ func (e *EventSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Reques
 		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventGrid/eventSubscriptions/(?P<eventSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armeventgrid.EventSubscriptionUpdateParameters](req)

@@ -17,22 +17,6 @@ import (
 // cliTimeout is the default timeout for authentication attempts via CLI tools
 const cliTimeout = 10 * time.Second
 
-// parseAzdErrorMessage attempts to parse azd's JSON error output and extract clean error messages.
-// azd writes structured JSON to stderr like: {"type":"consoleMessage","timestamp":"...","data":{"message":"..."}}
-// This function extracts the .data.message field, trimming whitespace.
-// If parsing fails, it returns the original message.
-func parseAzdErrorMessage(msg string) string {
-	var obj struct {
-		Data struct {
-			Message string `json:"message"`
-		} `json:"data"`
-	}
-	if err := json.Unmarshal([]byte(msg), &obj); err == nil && obj.Data.Message != "" {
-		return strings.TrimSpace(obj.Data.Message)
-	}
-	return msg
-}
-
 // executor runs a command and returns its output or an error
 type executor func(ctx context.Context, credName, command string) ([]byte, error)
 
@@ -66,7 +50,16 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		}
 		switch credName {
 		case credNameAzureDeveloperCLI:
-			msg = parseAzdErrorMessage(msg)
+			// azd writes JSON error messages to stderr: {"type":"consoleMessage","data":{"message":"..."}}
+			// Try to extract the message field for cleaner errors
+			var obj struct {
+				Data struct {
+					Message string `json:"message"`
+				} `json:"data"`
+			}
+			if err := json.Unmarshal([]byte(msg), &obj); err == nil && obj.Data.Message != "" {
+				msg = strings.TrimSpace(obj.Data.Message)
+			}
 		case credNameAzurePowerShell:
 			if strings.Contains(msg, "Connect-AzAccount") {
 				msg = `Please run "Connect-AzAccount" to set up an account`

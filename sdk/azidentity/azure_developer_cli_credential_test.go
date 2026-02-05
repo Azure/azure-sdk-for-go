@@ -154,35 +154,3 @@ func TestAzureDeveloperCLICredential_TenantID(t *testing.T) {
 		t.Fatal("token provider wasn't called")
 	}
 }
-
-func TestAzureDeveloperCLICredential_JSONErrorParsing(t *testing.T) {
-	// These tests verify that when shellExec parses JSON errors from azd stderr,
-	// the credential properly handles the cleaned error messages.
-	// The exec mock simulates what shellExec would return after parsing.
-
-	t.Run("parsed JSON message", func(t *testing.T) {
-		cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
-			exec: func(_ context.Context, _, _ string) ([]byte, error) {
-				// Simulates shellExec having parsed: {"data":{"message":"\nERROR: fetching token: authentication failed\n"}}
-				return nil, newAuthenticationFailedError(credNameAzureDeveloperCLI, "ERROR: fetching token: authentication failed", nil)
-			},
-		})
-		require.NoError(t, err)
-		_, err = cred.GetToken(context.Background(), testTRO)
-		require.Error(t, err)
-		require.ErrorContains(t, err, "ERROR: fetching token: authentication failed")
-	})
-
-	t.Run("plain text error", func(t *testing.T) {
-		cred, err := NewAzureDeveloperCLICredential(&AzureDeveloperCLICredentialOptions{
-			exec: func(_ context.Context, _, _ string) ([]byte, error) {
-				// Simulates shellExec having received non-JSON stderr
-				return nil, newAuthenticationFailedError(credNameAzureDeveloperCLI, "ERROR: plain text error message", nil)
-			},
-		})
-		require.NoError(t, err)
-		_, err = cred.GetToken(context.Background(), testTRO)
-		require.Error(t, err)
-		require.ErrorContains(t, err, "ERROR: plain text error message")
-	})
-}

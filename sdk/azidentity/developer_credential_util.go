@@ -6,6 +6,7 @@ package azidentity
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	"os"
 	"os/exec"
@@ -15,6 +16,33 @@ import (
 
 // cliTimeout is the default timeout for authentication attempts via CLI tools
 const cliTimeout = 10 * time.Second
+
+// parseAzdErrorMessage attempts to parse azd's JSON error output and extract clean error messages.
+// azd writes structured JSON to stderr like: {"type":"consoleMessage","timestamp":"...","data":{"message":"..."}}
+// This function extracts and concatenates all .data.message fields, trimming whitespace.
+// If parsing fails, it returns the original message.
+func parseAzdErrorMessage(msg string) string {
+	var messages []string
+	for _, line := range strings.Split(msg, "\n") {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		var obj struct {
+			Type string `json:"type"`
+			Data struct {
+				Message string `json:"message"`
+			} `json:"data"`
+		}
+		if err := json.Unmarshal([]byte(line), &obj); err == nil && obj.Type == "consoleMessage" && obj.Data.Message != "" {
+			messages = append(messages, strings.TrimSpace(obj.Data.Message))
+		}
+	}
+	if len(messages) > 0 {
+		return strings.Join(messages, " ")
+	}
+	return msg
+}
 
 // executor runs a command and returns its output or an error
 type executor func(ctx context.Context, credName, command string) ([]byte, error)
@@ -46,6 +74,9 @@ var shellExec = func(ctx context.Context, credName, command string) ([]byte, err
 		var exErr *exec.ExitError
 		if errors.As(err, &exErr) && exErr.ExitCode() == 127 || strings.Contains(msg, "' is not recognized") {
 			return nil, newCredentialUnavailableError(credName, "executable not found on path")
+		}
+		if credName == credNameAzureDeveloperCLI {
+			msg = parseAzdErrorMessage(msg)
 		}
 		if credName == credNameAzurePowerShell {
 			if strings.Contains(msg, "Connect-AzAccount") {

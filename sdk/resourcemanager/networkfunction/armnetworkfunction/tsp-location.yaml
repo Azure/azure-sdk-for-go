@@ -1,0 +1,4 @@
+directory: specification/networkfunction/NetworkFunction.Management
+commit: 6a5f7191c9584aff4ade064a8c1aa1a9bf78f4d3
+repo: i-specs
+additionalDirectories: 

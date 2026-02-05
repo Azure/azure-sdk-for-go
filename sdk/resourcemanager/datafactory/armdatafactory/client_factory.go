@@ -105,6 +105,14 @@ func (c *ClientFactory) NewGlobalParametersClient() *GlobalParametersClient {
 	}
 }
 
+// NewIntegrationRuntimeClient creates a new instance of IntegrationRuntimeClient.
+func (c *ClientFactory) NewIntegrationRuntimeClient() *IntegrationRuntimeClient {
+	return &IntegrationRuntimeClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewIntegrationRuntimeNodesClient creates a new instance of IntegrationRuntimeNodesClient.
 func (c *ClientFactory) NewIntegrationRuntimeNodesClient() *IntegrationRuntimeNodesClient {
 	return &IntegrationRuntimeNodesClient{

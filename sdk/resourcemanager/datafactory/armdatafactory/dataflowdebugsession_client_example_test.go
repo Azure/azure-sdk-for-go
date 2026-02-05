@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v10"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
 func ExampleDataFlowDebugSessionClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleDataFlowDebugSessionClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_QueryByFactory.json
 func ExampleDataFlowDebugSessionClient_NewQueryByFactoryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleDataFlowDebugSessionClient_NewQueryByFactoryPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
 func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,88 +113,96 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewDataFlowDebugSessionClient().AddDataFlow(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DataFlowDebugPackage{
-		DataFlow: &armdatafactory.DataFlowDebugResource{
-			Name: to.Ptr("dataflow1"),
-			Properties: &armdatafactory.MappingDataFlow{
-				Type: to.Ptr("MappingDataFlow"),
-				TypeProperties: &armdatafactory.MappingDataFlowTypeProperties{
-					Script: to.Ptr("\n\nsource(output(\n		Column_1 as string\n	),\n	allowSchemaDrift: true,\n	validateSchema: false) ~> source1"),
-					Sinks:  []*armdatafactory.DataFlowSink{},
-					Sources: []*armdatafactory.DataFlowSource{
-						{
-							Name: to.Ptr("source1"),
-							Dataset: &armdatafactory.DatasetReference{
-								Type:          to.Ptr(armdatafactory.DatasetReferenceTypeDatasetReference),
-								ReferenceName: to.Ptr("DelimitedText2"),
+		AdditionalProperties: map[string]any{
+			"properties": map[string]any{
+				"dataFlow": map[string]any{
+					"name": "dataflow1",
+					"properties": map[string]any{
+						"type": "MappingDataFlow",
+						"typeProperties": map[string]any{
+							"script": "\n\nsource(output(\n		Column_1 as string\n	),\n	allowSchemaDrift: true,\n	validateSchema: false) ~> source1",
+							"sinks":  []any{},
+							"sources": []any{
+								map[string]any{
+									"name": "source1",
+									"dataset": map[string]any{
+										"type":          "DatasetReference",
+										"referenceName": "DelimitedText2",
+									},
+								},
 							},
-						}},
-					Transformations: []*armdatafactory.Transformation{},
+							"transformations": []any{},
+						},
+					},
 				},
-			},
-		},
-		Datasets: []*armdatafactory.DatasetDebugResource{
-			{
-				Name: to.Ptr("dataset1"),
-				Properties: &armdatafactory.DelimitedTextDataset{
-					Type: to.Ptr("DelimitedText"),
-					Schema: []any{
+				"datasets": []any{
+					map[string]any{
+						"name": "dataset1",
+						"properties": map[string]any{
+							"type": "DelimitedText",
+							"schema": []any{
+								map[string]any{
+									"type": "String",
+								},
+							},
+							"annotations": []any{},
+							"linkedServiceName": map[string]any{
+								"type":          "LinkedServiceReference",
+								"referenceName": "linkedService5",
+							},
+							"typeProperties": map[string]any{
+								"columnDelimiter":  ",",
+								"escapeChar":       "\\",
+								"firstRowAsHeader": true,
+								"location": map[string]any{
+									"type":      "AzureBlobStorageLocation",
+									"container": "dataflow-sample-data",
+									"fileName":  "Ansiencoding.csv",
+								},
+								"quoteChar": "\"",
+							},
+						},
+					},
+				},
+				"debugSettings": map[string]any{
+					"datasetParameters": map[string]any{
+						"Movies": map[string]any{
+							"path": "abc",
+						},
+						"Output": map[string]any{
+							"time": "def",
+						},
+					},
+					"parameters": map[string]any{
+						"sourcePath": "Toy",
+					},
+					"sourceSettings": []any{
 						map[string]any{
-							"type": "String",
+							"rowLimit":   float64(1000),
+							"sourceName": "source1",
+						},
+						map[string]any{
+							"rowLimit":   float64(222),
+							"sourceName": "source2",
 						},
 					},
-					Annotations: []any{},
-					LinkedServiceName: &armdatafactory.LinkedServiceReference{
-						Type:          to.Ptr(armdatafactory.LinkedServiceReferenceTypeLinkedServiceReference),
-						ReferenceName: to.Ptr("linkedService5"),
-					},
-					TypeProperties: &armdatafactory.DelimitedTextDatasetTypeProperties{
-						ColumnDelimiter:  ",",
-						EscapeChar:       "\\",
-						FirstRowAsHeader: true,
-						Location: &armdatafactory.AzureBlobStorageLocation{
-							Type:      to.Ptr("AzureBlobStorageLocation"),
-							FileName:  "Ansiencoding.csv",
-							Container: "dataflow-sample-data",
+				},
+				"linkedServices": []any{
+					map[string]any{
+						"name": "linkedService1",
+						"properties": map[string]any{
+							"type":        "AzureBlobStorage",
+							"annotations": []any{},
+							"typeProperties": map[string]any{
+								"connectionString":    "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;",
+								"encryptedCredential": "<credential>",
+							},
 						},
-						QuoteChar: "\"",
 					},
 				},
-			}},
-		DebugSettings: &armdatafactory.DataFlowDebugPackageDebugSettings{
-			DatasetParameters: map[string]any{
-				"Movies": map[string]any{
-					"path": "abc",
-				},
-				"Output": map[string]any{
-					"time": "def",
-				},
+				"sessionId": "f06ed247-9d07-49b2-b05e-2cb4a2fc871e",
 			},
-			Parameters: map[string]any{
-				"sourcePath": "Toy",
-			},
-			SourceSettings: []*armdatafactory.DataFlowSourceSetting{
-				{
-					RowLimit:   to.Ptr[int32](1000),
-					SourceName: to.Ptr("source1"),
-				},
-				{
-					RowLimit:   to.Ptr[int32](222),
-					SourceName: to.Ptr("source2"),
-				}},
 		},
-		LinkedServices: []*armdatafactory.LinkedServiceDebugResource{
-			{
-				Name: to.Ptr("linkedService1"),
-				Properties: &armdatafactory.AzureBlobStorageLinkedService{
-					Type:        to.Ptr("AzureBlobStorage"),
-					Annotations: []any{},
-					TypeProperties: &armdatafactory.AzureBlobStorageLinkedServiceTypeProperties{
-						ConnectionString:    "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;",
-						EncryptedCredential: to.Ptr("<credential>"),
-					},
-				},
-			}},
-		SessionID: to.Ptr("f06ed247-9d07-49b2-b05e-2cb4a2fc871e"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -207,7 +215,7 @@ func ExampleDataFlowDebugSessionClient_AddDataFlow() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Delete.json
 func ExampleDataFlowDebugSessionClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,7 +234,7 @@ func ExampleDataFlowDebugSessionClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/8eb3f7a4f66d408152c32b9d647e59147172d533/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/2daa450f8eaef939165415ce90178334568eacfd/specification/datafactory/resource-manager/Microsoft.DataFactory/DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_ExecuteCommand.json
 func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

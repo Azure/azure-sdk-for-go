@@ -1,5 +1,52 @@
 # Release History
 
+## 11.0.0 (2026-02-05)
+### Breaking Changes
+
+- Type of `JiraObjectDataset.TypeProperties` has been changed from `*GenericDatasetTypeProperties` to `*JiraTableDatasetTypeProperties`
+
+### Features Added
+
+- Type of `ExpressionV2.Value` has been changed from `*string` to `any`
+- New enum type `AmazonRdsForOracleAuthenticationType` with values `AmazonRdsForOracleAuthenticationTypeBasic`
+- New enum type `HDInsightClusterAuthenticationType` with values `HDInsightClusterAuthenticationTypeBasicAuth`, `HDInsightClusterAuthenticationTypeSystemAssignedManagedIdentity`, `HDInsightClusterAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `HDInsightOndemandClusterResourceGroupAuthenticationType` with values `HDInsightOndemandClusterResourceGroupAuthenticationTypeServicePrincipalKey`, `HDInsightOndemandClusterResourceGroupAuthenticationTypeSystemAssignedManagedIdentity`, `HDInsightOndemandClusterResourceGroupAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `ImpalaThriftTransportProtocol` with values `ImpalaThriftTransportProtocolBinary`, `ImpalaThriftTransportProtocolHTTP`
+- New enum type `InteractiveCapabilityStatus` with values `InteractiveCapabilityStatusDisabled`, `InteractiveCapabilityStatusDisabling`, `InteractiveCapabilityStatusEnabled`, `InteractiveCapabilityStatusEnabling`
+- New enum type `LakehouseAuthenticationType` with values `LakehouseAuthenticationTypeServicePrincipal`, `LakehouseAuthenticationTypeSystemAssignedManagedIdentity`, `LakehouseAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `NetezzaSecurityLevelType` with values `NetezzaSecurityLevelTypeOnlyUnSecured`, `NetezzaSecurityLevelTypePreferredUnSecured`
+- New enum type `WarehouseAuthenticationType` with values `WarehouseAuthenticationTypeServicePrincipal`, `WarehouseAuthenticationTypeSystemAssignedManagedIdentity`, `WarehouseAuthenticationTypeUserAssignedManagedIdentity`
+- New function `*ClientFactory.NewIntegrationRuntimeClient() *IntegrationRuntimeClient`
+- New function `*DatabricksJobActivity.GetActivity() *Activity`
+- New function `*DatabricksJobActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `NewIntegrationRuntimeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeClient, error)`
+- New function `*IntegrationRuntimeClient.BeginDisableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeClientBeginDisableInteractiveQueryOptions) (*runtime.Poller[IntegrationRuntimeClientDisableInteractiveQueryResponse], error)`
+- New function `*IntegrationRuntimeClient.BeginEnableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryRequest EnableInteractiveQueryRequest, options *IntegrationRuntimeClientBeginEnableInteractiveQueryOptions) (*runtime.Poller[IntegrationRuntimeClientEnableInteractiveQueryResponse], error)`
+- New struct `DatabricksJobActivity`
+- New struct `DatabricksJobActivityTypeProperties`
+- New struct `EnableInteractiveQueryRequest`
+- New struct `InteractiveQueryProperties`
+- New struct `JiraTableDatasetTypeProperties`
+- New field `AuthenticationType`, `CryptoChecksumClient`, `CryptoChecksumTypesClient`, `EnableBulkLoad`, `EncryptionClient`, `EncryptionTypesClient`, `FetchSize`, `FetchTswtzAsTimestamp`, `InitialLobFetchSize`, `InitializationString`, `Server`, `StatementCacheSize`, `SupportV1DataTypes`, `Username` in struct `AmazonRdsForLinkedServiceTypeProperties`
+- New field `NumberPrecision`, `NumberScale` in struct `AmazonRdsForOracleSource`
+- New field `DataSecurityMode` in struct `AzureDatabricksLinkedServiceTypeProperties`
+- New field `ClusterAuthType`, `Credential` in struct `HDInsightLinkedServiceTypeProperties`
+- New field `ClusterResourceGroupAuthType` in struct `HDInsightOnDemandLinkedServiceTypeProperties`
+- New field `EnableServerCertificateValidation` in struct `HiveLinkedServiceTypeProperties`
+- New field `EnableServerCertificateValidation`, `ThriftTransportProtocol` in struct `ImpalaLinkedServiceTypeProperties`
+- New field `AuthenticationType`, `Credential` in struct `LakeHouseLinkedServiceTypeProperties`
+- New field `TreatDecimalAsString` in struct `LookupActivityTypeProperties`
+- New field `InteractiveQuery` in struct `ManagedIntegrationRuntimeTypeProperties`
+- New field `Database`, `Port`, `SecurityLevel`, `Server`, `UID` in struct `NetezzaLinkedServiceTypeProperties`
+- New field `NumberPrecision`, `NumberScale` in struct `OracleSource`
+- New field `RefreshToken` in struct `QuickBooksLinkedServiceTypeProperties`
+- New field `PartitionOption` in struct `SalesforceV2Source`
+- New field `TreatDecimalAsString` in struct `ScriptActivityTypeProperties`
+- New field `UseUTCTimestamps` in struct `SnowflakeLinkedV2ServiceTypeProperties`
+- New field `EnableServerCertificateValidation` in struct `SparkLinkedServiceTypeProperties`
+- New field `AuthenticationType`, `Credential` in struct `WarehouseLinkedServiceTypeProperties`
+
+
 ## 10.0.0 (2025-04-24)
 ### Breaking Changes
 

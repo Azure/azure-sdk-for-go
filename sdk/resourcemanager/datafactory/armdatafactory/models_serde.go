@@ -641,9 +641,23 @@ func (a *AmazonMWSSource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AmazonRdsForLinkedServiceTypeProperties.
 func (a AmazonRdsForLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
 	populateAny(objectMap, "connectionString", a.ConnectionString)
+	populateAny(objectMap, "cryptoChecksumClient", a.CryptoChecksumClient)
+	populateAny(objectMap, "cryptoChecksumTypesClient", a.CryptoChecksumTypesClient)
+	populateAny(objectMap, "enableBulkLoad", a.EnableBulkLoad)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populateAny(objectMap, "encryptionClient", a.EncryptionClient)
+	populateAny(objectMap, "encryptionTypesClient", a.EncryptionTypesClient)
+	populateAny(objectMap, "fetchSize", a.FetchSize)
+	populateAny(objectMap, "fetchTswtzAsTimestamp", a.FetchTswtzAsTimestamp)
+	populateAny(objectMap, "initialLobFetchSize", a.InitialLobFetchSize)
+	populateAny(objectMap, "initializationString", a.InitializationString)
 	populate(objectMap, "password", a.Password)
+	populateAny(objectMap, "server", a.Server)
+	populateAny(objectMap, "statementCacheSize", a.StatementCacheSize)
+	populateAny(objectMap, "supportV1DataTypes", a.SupportV1DataTypes)
+	populateAny(objectMap, "username", a.Username)
 	return json.Marshal(objectMap)
 }
 
@@ -656,14 +670,56 @@ func (a *AmazonRdsForLinkedServiceTypeProperties) UnmarshalJSON(data []byte) err
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &a.ConnectionString)
+			delete(rawMsg, key)
+		case "cryptoChecksumClient":
+			err = unpopulate(val, "CryptoChecksumClient", &a.CryptoChecksumClient)
+			delete(rawMsg, key)
+		case "cryptoChecksumTypesClient":
+			err = unpopulate(val, "CryptoChecksumTypesClient", &a.CryptoChecksumTypesClient)
+			delete(rawMsg, key)
+		case "enableBulkLoad":
+			err = unpopulate(val, "EnableBulkLoad", &a.EnableBulkLoad)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &a.EncryptedCredential)
 			delete(rawMsg, key)
+		case "encryptionClient":
+			err = unpopulate(val, "EncryptionClient", &a.EncryptionClient)
+			delete(rawMsg, key)
+		case "encryptionTypesClient":
+			err = unpopulate(val, "EncryptionTypesClient", &a.EncryptionTypesClient)
+			delete(rawMsg, key)
+		case "fetchSize":
+			err = unpopulate(val, "FetchSize", &a.FetchSize)
+			delete(rawMsg, key)
+		case "fetchTswtzAsTimestamp":
+			err = unpopulate(val, "FetchTswtzAsTimestamp", &a.FetchTswtzAsTimestamp)
+			delete(rawMsg, key)
+		case "initialLobFetchSize":
+			err = unpopulate(val, "InitialLobFetchSize", &a.InitialLobFetchSize)
+			delete(rawMsg, key)
+		case "initializationString":
+			err = unpopulate(val, "InitializationString", &a.InitializationString)
+			delete(rawMsg, key)
 		case "password":
 			a.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &a.Server)
+			delete(rawMsg, key)
+		case "statementCacheSize":
+			err = unpopulate(val, "StatementCacheSize", &a.StatementCacheSize)
+			delete(rawMsg, key)
+		case "supportV1DataTypes":
+			err = unpopulate(val, "SupportV1DataTypes", &a.SupportV1DataTypes)
+			delete(rawMsg, key)
+		case "username":
+			err = unpopulate(val, "Username", &a.Username)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -784,6 +840,8 @@ func (a AmazonRdsForOracleSource) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "additionalColumns", a.AdditionalColumns)
 	populateAny(objectMap, "disableMetricsCollection", a.DisableMetricsCollection)
 	populateAny(objectMap, "maxConcurrentConnections", a.MaxConcurrentConnections)
+	populateAny(objectMap, "numberPrecision", a.NumberPrecision)
+	populateAny(objectMap, "numberScale", a.NumberScale)
 	populateAny(objectMap, "oracleReaderQuery", a.OracleReaderQuery)
 	populateAny(objectMap, "partitionOption", a.PartitionOption)
 	populate(objectMap, "partitionSettings", a.PartitionSettings)
@@ -816,6 +874,12 @@ func (a *AmazonRdsForOracleSource) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "maxConcurrentConnections":
 			err = unpopulate(val, "MaxConcurrentConnections", &a.MaxConcurrentConnections)
+			delete(rawMsg, key)
+		case "numberPrecision":
+			err = unpopulate(val, "NumberPrecision", &a.NumberPrecision)
+			delete(rawMsg, key)
+		case "numberScale":
+			err = unpopulate(val, "NumberScale", &a.NumberScale)
 			delete(rawMsg, key)
 		case "oracleReaderQuery":
 			err = unpopulate(val, "OracleReaderQuery", &a.OracleReaderQuery)
@@ -5932,6 +5996,7 @@ func (a AzureDatabricksLinkedServiceTypeProperties) MarshalJSON() ([]byte, error
 	populate(objectMap, "accessToken", a.AccessToken)
 	populateAny(objectMap, "authentication", a.Authentication)
 	populate(objectMap, "credential", a.Credential)
+	populateAny(objectMap, "dataSecurityMode", a.DataSecurityMode)
 	populateAny(objectMap, "domain", a.Domain)
 	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
 	populateAny(objectMap, "existingClusterId", a.ExistingClusterID)
@@ -5968,6 +6033,9 @@ func (a *AzureDatabricksLinkedServiceTypeProperties) UnmarshalJSON(data []byte) 
 			delete(rawMsg, key)
 		case "credential":
 			err = unpopulate(val, "Credential", &a.Credential)
+			delete(rawMsg, key)
+		case "dataSecurityMode":
+			err = unpopulate(val, "DataSecurityMode", &a.DataSecurityMode)
 			delete(rawMsg, key)
 		case "domain":
 			err = unpopulate(val, "Domain", &a.Domain)
@@ -15690,6 +15758,115 @@ func (d *DataMapperMapping) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DatabricksJobActivity.
+func (d DatabricksJobActivity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "dependsOn", d.DependsOn)
+	populate(objectMap, "description", d.Description)
+	populate(objectMap, "linkedServiceName", d.LinkedServiceName)
+	populate(objectMap, "name", d.Name)
+	populate(objectMap, "onInactiveMarkAs", d.OnInactiveMarkAs)
+	populate(objectMap, "policy", d.Policy)
+	populate(objectMap, "state", d.State)
+	objectMap["type"] = "DatabricksJob"
+	populate(objectMap, "typeProperties", d.TypeProperties)
+	populate(objectMap, "userProperties", d.UserProperties)
+	if d.AdditionalProperties != nil {
+		for key, val := range d.AdditionalProperties {
+			objectMap[key] = val
+		}
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DatabricksJobActivity.
+func (d *DatabricksJobActivity) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "dependsOn":
+			err = unpopulate(val, "DependsOn", &d.DependsOn)
+			delete(rawMsg, key)
+		case "description":
+			err = unpopulate(val, "Description", &d.Description)
+			delete(rawMsg, key)
+		case "linkedServiceName":
+			err = unpopulate(val, "LinkedServiceName", &d.LinkedServiceName)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &d.Name)
+			delete(rawMsg, key)
+		case "onInactiveMarkAs":
+			err = unpopulate(val, "OnInactiveMarkAs", &d.OnInactiveMarkAs)
+			delete(rawMsg, key)
+		case "policy":
+			err = unpopulate(val, "Policy", &d.Policy)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &d.State)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &d.Type)
+			delete(rawMsg, key)
+		case "typeProperties":
+			err = unpopulate(val, "TypeProperties", &d.TypeProperties)
+			delete(rawMsg, key)
+		case "userProperties":
+			err = unpopulate(val, "UserProperties", &d.UserProperties)
+			delete(rawMsg, key)
+		default:
+			if d.AdditionalProperties == nil {
+				d.AdditionalProperties = map[string]any{}
+			}
+			if val != nil {
+				var aux any
+				err = json.Unmarshal(val, &aux)
+				d.AdditionalProperties[key] = aux
+			}
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DatabricksJobActivityTypeProperties.
+func (d DatabricksJobActivityTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateAny(objectMap, "jobId", d.JobID)
+	populate(objectMap, "jobParameters", d.JobParameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DatabricksJobActivityTypeProperties.
+func (d *DatabricksJobActivityTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "jobId":
+			err = unpopulate(val, "JobID", &d.JobID)
+			delete(rawMsg, key)
+		case "jobParameters":
+			err = unpopulate(val, "JobParameters", &d.JobParameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type DatabricksNotebookActivity.
 func (d DatabricksNotebookActivity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -19290,6 +19467,33 @@ func (e *EloquaSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EnableInteractiveQueryRequest.
+func (e EnableInteractiveQueryRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "autoTerminationMinutes", e.AutoTerminationMinutes)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EnableInteractiveQueryRequest.
+func (e *EnableInteractiveQueryRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "autoTerminationMinutes":
+			err = unpopulate(val, "AutoTerminationMinutes", &e.AutoTerminationMinutes)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", e, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type EncryptionConfiguration.
 func (e EncryptionConfiguration) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -20491,7 +20695,7 @@ func (e ExpressionV2) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "operands", e.Operands)
 	populate(objectMap, "operators", e.Operators)
 	populate(objectMap, "type", e.Type)
-	populate(objectMap, "value", e.Value)
+	populateAny(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -24706,7 +24910,9 @@ func (h *HDInsightLinkedService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HDInsightLinkedServiceTypeProperties.
 func (h HDInsightLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "clusterAuthType", h.ClusterAuthType)
 	populateAny(objectMap, "clusterUri", h.ClusterURI)
+	populate(objectMap, "credential", h.Credential)
 	populate(objectMap, "encryptedCredential", h.EncryptedCredential)
 	populateAny(objectMap, "fileSystem", h.FileSystem)
 	populate(objectMap, "hcatalogLinkedServiceName", h.HcatalogLinkedServiceName)
@@ -24726,8 +24932,14 @@ func (h *HDInsightLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "clusterAuthType":
+			err = unpopulate(val, "ClusterAuthType", &h.ClusterAuthType)
+			delete(rawMsg, key)
 		case "clusterUri":
 			err = unpopulate(val, "ClusterURI", &h.ClusterURI)
+			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &h.Credential)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &h.EncryptedCredential)
@@ -24964,6 +25176,7 @@ func (h HDInsightOnDemandLinkedServiceTypeProperties) MarshalJSON() ([]byte, err
 	populateAny(objectMap, "clusterNamePrefix", h.ClusterNamePrefix)
 	populate(objectMap, "clusterPassword", h.ClusterPassword)
 	populateAny(objectMap, "clusterResourceGroup", h.ClusterResourceGroup)
+	populate(objectMap, "clusterResourceGroupAuthType", h.ClusterResourceGroupAuthType)
 	populate(objectMap, "clusterSshPassword", h.ClusterSSHPassword)
 	populateAny(objectMap, "clusterSshUserName", h.ClusterSSHUserName)
 	populateAny(objectMap, "clusterSize", h.ClusterSize)
@@ -25017,6 +25230,9 @@ func (h *HDInsightOnDemandLinkedServiceTypeProperties) UnmarshalJSON(data []byte
 			delete(rawMsg, key)
 		case "clusterResourceGroup":
 			err = unpopulate(val, "ClusterResourceGroup", &h.ClusterResourceGroup)
+			delete(rawMsg, key)
+		case "clusterResourceGroupAuthType":
+			err = unpopulate(val, "ClusterResourceGroupAuthType", &h.ClusterResourceGroupAuthType)
 			delete(rawMsg, key)
 		case "clusterSshPassword":
 			h.ClusterSSHPassword, err = unmarshalSecretBaseClassification(val)
@@ -26378,6 +26594,7 @@ func (h HiveLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "allowSelfSignedServerCert", h.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", h.AuthenticationType)
 	populateAny(objectMap, "enableSsl", h.EnableSSL)
+	populateAny(objectMap, "enableServerCertificateValidation", h.EnableServerCertificateValidation)
 	populate(objectMap, "encryptedCredential", h.EncryptedCredential)
 	populateAny(objectMap, "httpPath", h.HTTPPath)
 	populateAny(objectMap, "host", h.Host)
@@ -26414,6 +26631,9 @@ func (h *HiveLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enableSsl":
 			err = unpopulate(val, "EnableSSL", &h.EnableSSL)
+			delete(rawMsg, key)
+		case "enableServerCertificateValidation":
+			err = unpopulate(val, "EnableServerCertificateValidation", &h.EnableServerCertificateValidation)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &h.EncryptedCredential)
@@ -27301,10 +27521,12 @@ func (i ImpalaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "allowSelfSignedServerCert", i.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", i.AuthenticationType)
 	populateAny(objectMap, "enableSsl", i.EnableSSL)
+	populateAny(objectMap, "enableServerCertificateValidation", i.EnableServerCertificateValidation)
 	populate(objectMap, "encryptedCredential", i.EncryptedCredential)
 	populateAny(objectMap, "host", i.Host)
 	populate(objectMap, "password", i.Password)
 	populateAny(objectMap, "port", i.Port)
+	populate(objectMap, "thriftTransportProtocol", i.ThriftTransportProtocol)
 	populateAny(objectMap, "trustedCertPath", i.TrustedCertPath)
 	populateAny(objectMap, "useSystemTrustStore", i.UseSystemTrustStore)
 	populateAny(objectMap, "username", i.Username)
@@ -27332,6 +27554,9 @@ func (i *ImpalaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 		case "enableSsl":
 			err = unpopulate(val, "EnableSSL", &i.EnableSSL)
 			delete(rawMsg, key)
+		case "enableServerCertificateValidation":
+			err = unpopulate(val, "EnableServerCertificateValidation", &i.EnableServerCertificateValidation)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &i.EncryptedCredential)
 			delete(rawMsg, key)
@@ -27343,6 +27568,9 @@ func (i *ImpalaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "port":
 			err = unpopulate(val, "Port", &i.Port)
+			delete(rawMsg, key)
+		case "thriftTransportProtocol":
+			err = unpopulate(val, "ThriftTransportProtocol", &i.ThriftTransportProtocol)
 			delete(rawMsg, key)
 		case "trustedCertPath":
 			err = unpopulate(val, "TrustedCertPath", &i.TrustedCertPath)
@@ -28966,6 +29194,37 @@ func (i *IntegrationRuntimeVNetProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type InteractiveQueryProperties.
+func (i InteractiveQueryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "autoTerminationMinutes", i.AutoTerminationMinutes)
+	populate(objectMap, "status", i.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type InteractiveQueryProperties.
+func (i *InteractiveQueryProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", i, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "autoTerminationMinutes":
+			err = unpopulate(val, "AutoTerminationMinutes", &i.AutoTerminationMinutes)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, "Status", &i.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", i, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type JSONDataset.
 func (j JSONDataset) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -29646,6 +29905,41 @@ func (j *JiraSource) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type JiraTableDatasetTypeProperties.
+func (j JiraTableDatasetTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateAny(objectMap, "schema", j.Schema)
+	populateAny(objectMap, "table", j.Table)
+	populateAny(objectMap, "tableName", j.TableName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type JiraTableDatasetTypeProperties.
+func (j *JiraTableDatasetTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", j, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "schema":
+			err = unpopulate(val, "Schema", &j.Schema)
+			delete(rawMsg, key)
+		case "table":
+			err = unpopulate(val, "Table", &j.Table)
+			delete(rawMsg, key)
+		case "tableName":
+			err = unpopulate(val, "TableName", &j.TableName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", j, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type LakeHouseLinkedService.
 func (l LakeHouseLinkedService) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -29716,6 +30010,8 @@ func (l *LakeHouseLinkedService) UnmarshalJSON(data []byte) error {
 func (l LakeHouseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "artifactId", l.ArtifactID)
+	populate(objectMap, "authenticationType", l.AuthenticationType)
+	populate(objectMap, "credential", l.Credential)
 	populate(objectMap, "encryptedCredential", l.EncryptedCredential)
 	populate(objectMap, "servicePrincipalCredential", l.ServicePrincipalCredential)
 	populateAny(objectMap, "servicePrincipalCredentialType", l.ServicePrincipalCredentialType)
@@ -29737,6 +30033,12 @@ func (l *LakeHouseLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 		switch key {
 		case "artifactId":
 			err = unpopulate(val, "ArtifactID", &l.ArtifactID)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &l.AuthenticationType)
+			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &l.Credential)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &l.EncryptedCredential)
@@ -30814,6 +31116,7 @@ func (l LookupActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dataset", l.Dataset)
 	populateAny(objectMap, "firstRowOnly", l.FirstRowOnly)
 	populate(objectMap, "source", l.Source)
+	populateAny(objectMap, "treatDecimalAsString", l.TreatDecimalAsString)
 	return json.Marshal(objectMap)
 }
 
@@ -30834,6 +31137,9 @@ func (l *LookupActivityTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "source":
 			l.Source, err = unmarshalCopySourceClassification(val)
+			delete(rawMsg, key)
+		case "treatDecimalAsString":
+			err = unpopulate(val, "TreatDecimalAsString", &l.TreatDecimalAsString)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -31503,6 +31809,7 @@ func (m ManagedIntegrationRuntimeTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "computeProperties", m.ComputeProperties)
 	populate(objectMap, "customerVirtualNetwork", m.CustomerVirtualNetwork)
+	populate(objectMap, "interactiveQuery", m.InteractiveQuery)
 	populate(objectMap, "ssisProperties", m.SsisProperties)
 	return json.Marshal(objectMap)
 }
@@ -31521,6 +31828,9 @@ func (m *ManagedIntegrationRuntimeTypeProperties) UnmarshalJSON(data []byte) err
 			delete(rawMsg, key)
 		case "customerVirtualNetwork":
 			err = unpopulate(val, "CustomerVirtualNetwork", &m.CustomerVirtualNetwork)
+			delete(rawMsg, key)
+		case "interactiveQuery":
+			err = unpopulate(val, "InteractiveQuery", &m.InteractiveQuery)
 			delete(rawMsg, key)
 		case "ssisProperties":
 			err = unpopulate(val, "SsisProperties", &m.SsisProperties)
@@ -34762,8 +35072,13 @@ func (n *NetezzaLinkedService) UnmarshalJSON(data []byte) error {
 func (n NetezzaLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "connectionString", n.ConnectionString)
+	populateAny(objectMap, "database", n.Database)
 	populate(objectMap, "encryptedCredential", n.EncryptedCredential)
+	populateAny(objectMap, "port", n.Port)
 	populate(objectMap, "pwd", n.Pwd)
+	populate(objectMap, "securityLevel", n.SecurityLevel)
+	populateAny(objectMap, "server", n.Server)
+	populateAny(objectMap, "uid", n.UID)
 	return json.Marshal(objectMap)
 }
 
@@ -34779,11 +35094,26 @@ func (n *NetezzaLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &n.ConnectionString)
 			delete(rawMsg, key)
+		case "database":
+			err = unpopulate(val, "Database", &n.Database)
+			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &n.EncryptedCredential)
 			delete(rawMsg, key)
+		case "port":
+			err = unpopulate(val, "Port", &n.Port)
+			delete(rawMsg, key)
 		case "pwd":
 			err = unpopulate(val, "Pwd", &n.Pwd)
+			delete(rawMsg, key)
+		case "securityLevel":
+			err = unpopulate(val, "SecurityLevel", &n.SecurityLevel)
+			delete(rawMsg, key)
+		case "server":
+			err = unpopulate(val, "Server", &n.Server)
+			delete(rawMsg, key)
+		case "uid":
+			err = unpopulate(val, "UID", &n.UID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -37141,6 +37471,8 @@ func (o OracleSource) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "additionalColumns", o.AdditionalColumns)
 	populateAny(objectMap, "disableMetricsCollection", o.DisableMetricsCollection)
 	populateAny(objectMap, "maxConcurrentConnections", o.MaxConcurrentConnections)
+	populateAny(objectMap, "numberPrecision", o.NumberPrecision)
+	populateAny(objectMap, "numberScale", o.NumberScale)
 	populateAny(objectMap, "oracleReaderQuery", o.OracleReaderQuery)
 	populateAny(objectMap, "partitionOption", o.PartitionOption)
 	populate(objectMap, "partitionSettings", o.PartitionSettings)
@@ -37173,6 +37505,12 @@ func (o *OracleSource) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "maxConcurrentConnections":
 			err = unpopulate(val, "MaxConcurrentConnections", &o.MaxConcurrentConnections)
+			delete(rawMsg, key)
+		case "numberPrecision":
+			err = unpopulate(val, "NumberPrecision", &o.NumberPrecision)
+			delete(rawMsg, key)
+		case "numberScale":
+			err = unpopulate(val, "NumberScale", &o.NumberScale)
 			delete(rawMsg, key)
 		case "oracleReaderQuery":
 			err = unpopulate(val, "OracleReaderQuery", &o.OracleReaderQuery)
@@ -40807,6 +41145,7 @@ func (q QuickBooksLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "consumerSecret", q.ConsumerSecret)
 	populate(objectMap, "encryptedCredential", q.EncryptedCredential)
 	populateAny(objectMap, "endpoint", q.Endpoint)
+	populate(objectMap, "refreshToken", q.RefreshToken)
 	populateAny(objectMap, "useEncryptedEndpoints", q.UseEncryptedEndpoints)
 	return json.Marshal(objectMap)
 }
@@ -40843,6 +41182,9 @@ func (q *QuickBooksLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "endpoint":
 			err = unpopulate(val, "Endpoint", &q.Endpoint)
+			delete(rawMsg, key)
+		case "refreshToken":
+			q.RefreshToken, err = unmarshalSecretBaseClassification(val)
 			delete(rawMsg, key)
 		case "useEncryptedEndpoints":
 			err = unpopulate(val, "UseEncryptedEndpoints", &q.UseEncryptedEndpoints)
@@ -45760,6 +46102,7 @@ func (s SalesforceV2Source) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "includeDeletedObjects", s.IncludeDeletedObjects)
 	populateAny(objectMap, "maxConcurrentConnections", s.MaxConcurrentConnections)
 	populateAny(objectMap, "pageSize", s.PageSize)
+	populateAny(objectMap, "partitionOption", s.PartitionOption)
 	populateAny(objectMap, "query", s.Query)
 	populateAny(objectMap, "queryTimeout", s.QueryTimeout)
 	populateAny(objectMap, "SOQLQuery", s.SOQLQuery)
@@ -45797,6 +46140,9 @@ func (s *SalesforceV2Source) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "pageSize":
 			err = unpopulate(val, "PageSize", &s.PageSize)
+			delete(rawMsg, key)
+		case "partitionOption":
+			err = unpopulate(val, "PartitionOption", &s.PartitionOption)
 			delete(rawMsg, key)
 		case "query":
 			err = unpopulate(val, "Query", &s.Query)
@@ -48468,6 +48814,7 @@ func (s ScriptActivityTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "returnMultistatementResult", s.ReturnMultistatementResult)
 	populateAny(objectMap, "scriptBlockExecutionTimeout", s.ScriptBlockExecutionTimeout)
 	populate(objectMap, "scripts", s.Scripts)
+	populateAny(objectMap, "treatDecimalAsString", s.TreatDecimalAsString)
 	return json.Marshal(objectMap)
 }
 
@@ -48491,6 +48838,9 @@ func (s *ScriptActivityTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "scripts":
 			err = unpopulate(val, "Scripts", &s.Scripts)
+			delete(rawMsg, key)
+		case "treatDecimalAsString":
+			err = unpopulate(val, "TreatDecimalAsString", &s.TreatDecimalAsString)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -51105,6 +51455,7 @@ func (s SnowflakeLinkedV2ServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "schema", s.Schema)
 	populateAny(objectMap, "scope", s.Scope)
 	populateAny(objectMap, "tenantId", s.TenantID)
+	populateAny(objectMap, "useUtcTimestamps", s.UseUTCTimestamps)
 	populateAny(objectMap, "user", s.User)
 	populateAny(objectMap, "warehouse", s.Warehouse)
 	return json.Marshal(objectMap)
@@ -51160,6 +51511,9 @@ func (s *SnowflakeLinkedV2ServiceTypeProperties) UnmarshalJSON(data []byte) erro
 			delete(rawMsg, key)
 		case "tenantId":
 			err = unpopulate(val, "TenantID", &s.TenantID)
+			delete(rawMsg, key)
+		case "useUtcTimestamps":
+			err = unpopulate(val, "UseUTCTimestamps", &s.UseUTCTimestamps)
 			delete(rawMsg, key)
 		case "user":
 			err = unpopulate(val, "User", &s.User)
@@ -51734,6 +52088,7 @@ func (s SparkLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	populateAny(objectMap, "allowSelfSignedServerCert", s.AllowSelfSignedServerCert)
 	populate(objectMap, "authenticationType", s.AuthenticationType)
 	populateAny(objectMap, "enableSsl", s.EnableSSL)
+	populateAny(objectMap, "enableServerCertificateValidation", s.EnableServerCertificateValidation)
 	populate(objectMap, "encryptedCredential", s.EncryptedCredential)
 	populateAny(objectMap, "httpPath", s.HTTPPath)
 	populateAny(objectMap, "host", s.Host)
@@ -51767,6 +52122,9 @@ func (s *SparkLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "enableSsl":
 			err = unpopulate(val, "EnableSSL", &s.EnableSSL)
+			delete(rawMsg, key)
+		case "enableServerCertificateValidation":
+			err = unpopulate(val, "EnableServerCertificateValidation", &s.EnableServerCertificateValidation)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &s.EncryptedCredential)
@@ -56026,6 +56384,8 @@ func (w *WarehouseLinkedService) UnmarshalJSON(data []byte) error {
 func (w WarehouseLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateAny(objectMap, "artifactId", w.ArtifactID)
+	populate(objectMap, "authenticationType", w.AuthenticationType)
+	populate(objectMap, "credential", w.Credential)
 	populate(objectMap, "encryptedCredential", w.EncryptedCredential)
 	populateAny(objectMap, "endpoint", w.Endpoint)
 	populate(objectMap, "servicePrincipalCredential", w.ServicePrincipalCredential)
@@ -56048,6 +56408,12 @@ func (w *WarehouseLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error 
 		switch key {
 		case "artifactId":
 			err = unpopulate(val, "ArtifactID", &w.ArtifactID)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &w.AuthenticationType)
+			delete(rawMsg, key)
+		case "credential":
+			err = unpopulate(val, "Credential", &w.Credential)
 			delete(rawMsg, key)
 		case "encryptedCredential":
 			err = unpopulate(val, "EncryptedCredential", &w.EncryptedCredential)

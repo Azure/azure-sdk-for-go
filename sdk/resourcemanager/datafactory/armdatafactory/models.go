@@ -328,18 +328,78 @@ func (a *AmazonMWSSource) GetTabularSource() *TabularSource {
 
 // AmazonRdsForLinkedServiceTypeProperties - AmazonRdsForOracle database linked service properties.
 type AmazonRdsForLinkedServiceTypeProperties struct {
-	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	// Authentication type for connecting to the AmazonRdsForOracle database. Only used for Version 2.0.
+	AuthenticationType *AmazonRdsForOracleAuthenticationType
+
+	// The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Only used for Version 1.0.
 	ConnectionString any
+
+	// Specifies the desired data integrity behavior when this client connects to a server. Supported values are accepted, rejected,
+	// requested or required, default value is required. Type: string. Only used
+	// for Version 2.0.
+	CryptoChecksumClient any
+
+	// Specifies the crypto-checksum algorithms that client can use. Supported values are SHA1, SHA256, SHA384, SHA512, default
+	// value is (SHA512). Type: string. Only used for Version 2.0.
+	CryptoChecksumTypesClient any
+
+	// Specifies whether to use bulk copy or batch insert when loading data into the database, default value is true. Type: boolean.
+	// Only used for Version 2.0.
+	EnableBulkLoad any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// Specifies the encryption client behavior. Supported values are accepted, rejected, requested or required, default value
+	// is required. Type: string. Only used for Version 2.0.
+	EncryptionClient any
+
+	// Specifies the encryption algorithms that client can use. Supported values are AES128, AES192, AES256, 3DES112, 3DES168,
+	// default value is (AES256). Type: string. Only used for Version 2.0.
+	EncryptionTypesClient any
+
+	// Specifies the number of bytes that the driver allocates to fetch the data in one database round-trip, default value is
+	// 10485760. Type: integer. Only used for Version 2.0.
+	FetchSize any
+
+	// Specifies whether the driver returns column value with the TIMESTAMP WITH TIME ZONE data type as DateTime or string. This
+	// setting is ignored if supportV1DataTypes is not true, default value is true.
+	// Type: boolean. Only used for Version 2.0.
+	FetchTswtzAsTimestamp any
+
+	// Specifies the amount that the source initially fetches for LOB columns, default value is 0. Type: integer. Only used for
+	// Version 2.0.
+	InitialLobFetchSize any
+
+	// Specifies a command that is issued immediately after connecting to the database to manage session settings. Type: string.
+	// Only used for Version 2.0.
+	InitializationString any
+
 	// The Azure key vault secret reference of password in connection string.
 	Password SecretBaseClassification
+
+	// The location of AmazonRdsForOracle database you want to connect to, the supported forms include connector descriptor, Easy
+	// Connect (Plus) Naming and Oracle Net Services Name (Only self-hosted IR).
+	// Type: string. Only used for Version 2.0.
+	Server any
+
+	// Specifies the number of cursors or statements to be cached for each database connection, default value is 0. Type: integer.
+	// Only used for Version 2.0.
+	StatementCacheSize any
+
+	// Specifies whether to use the Version 1.0 data type mappings. Do not set this to true unless you want to keep backward compatibility
+	// with Version 1.0's data type mappings, default value is false. Type:
+	// boolean. Only used for Version 2.0.
+	SupportV1DataTypes any
+
+	// The AmazonRdsForOracle database username. Type: string. Only used for Version 2.0.
+	Username any
 }
 
-// AmazonRdsForOracleLinkedService - AmazonRdsForOracle database.
+// AmazonRdsForOracleLinkedService - AmazonRdsForOracle database. This linked service has supported version property. The
+// Version 1.0 is scheduled for deprecation while your pipeline will continue to run after EOL but without any bug fix
+// or new features.
 type AmazonRdsForOracleLinkedService struct {
 	// REQUIRED; Type of linked service.
 	Type *string
@@ -414,6 +474,16 @@ type AmazonRdsForOracleSource struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
+
+	// The decimal precision used to represent Oracle NUMBER type without precision and scale. The range is 1 to 256 and default
+	// value is 256 if not specified. Type: integer (or Expression with resultType
+	// integer). Only used for Version 2.0.
+	NumberPrecision any
+
+	// The decimal scale used to represent Oracle NUMBER type without precision and scale. The range is 0 to 130 and default value
+	// is 130 if not specified. Type: integer (or Expression with resultType
+	// integer). Only used for Version 2.0.
+	NumberScale any
 
 	// AmazonRdsForOracle reader query. Type: string (or Expression with resultType string).
 	OracleReaderQuery any
@@ -3502,6 +3572,9 @@ type AzureDatabricksLinkedServiceTypeProperties struct {
 
 	// The credential reference containing authentication information.
 	Credential *CredentialReference
+
+	// The data security mode for the Databricks Cluster. Type: string (or Expression with resultType string).
+	DataSecurityMode any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -9274,6 +9347,83 @@ type DataMapperMapping struct {
 	TargetEntityName *string
 }
 
+// DatabricksJobActivity - Databricks Job activity.
+type DatabricksJobActivity struct {
+	// REQUIRED; Activity name.
+	Name *string
+
+	// REQUIRED; Type of activity.
+	Type *string
+
+	// REQUIRED; Databricks Job activity properties.
+	TypeProperties *DatabricksJobActivityTypeProperties
+
+	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
+	AdditionalProperties map[string]any
+
+	// Activity depends on condition.
+	DependsOn []*ActivityDependency
+
+	// Activity description.
+	Description *string
+
+	// Linked service reference.
+	LinkedServiceName *LinkedServiceReference
+
+	// Status result of the activity when the state is set to Inactive. This is an optional property and if not provided when
+	// the activity is inactive, the status will be Succeeded by default.
+	OnInactiveMarkAs *ActivityOnInactiveMarkAs
+
+	// Activity policy.
+	Policy *ActivityPolicy
+
+	// Activity state. This is an optional property and if not provided, the state will be Active by default.
+	State *ActivityState
+
+	// Activity user properties.
+	UserProperties []*UserProperty
+}
+
+// GetActivity implements the ActivityClassification interface for type DatabricksJobActivity.
+func (d *DatabricksJobActivity) GetActivity() *Activity {
+	return &Activity{
+		AdditionalProperties: d.AdditionalProperties,
+		DependsOn:            d.DependsOn,
+		Description:          d.Description,
+		Name:                 d.Name,
+		OnInactiveMarkAs:     d.OnInactiveMarkAs,
+		State:                d.State,
+		Type:                 d.Type,
+		UserProperties:       d.UserProperties,
+	}
+}
+
+// GetExecutionActivity implements the ExecutionActivityClassification interface for type DatabricksJobActivity.
+func (d *DatabricksJobActivity) GetExecutionActivity() *ExecutionActivity {
+	return &ExecutionActivity{
+		AdditionalProperties: d.AdditionalProperties,
+		DependsOn:            d.DependsOn,
+		Description:          d.Description,
+		LinkedServiceName:    d.LinkedServiceName,
+		Name:                 d.Name,
+		OnInactiveMarkAs:     d.OnInactiveMarkAs,
+		Policy:               d.Policy,
+		State:                d.State,
+		Type:                 d.Type,
+		UserProperties:       d.UserProperties,
+	}
+}
+
+// DatabricksJobActivityTypeProperties - Databricks Job activity properties.
+type DatabricksJobActivityTypeProperties struct {
+	// REQUIRED; The Id of the Databricks Job to be executed. Type: string (or Expression with resultType string).
+	JobID any
+
+	// Job parameters to be used for each run of this job. If the job takes a parameter that is not specified, the default value
+	// from the job will be used.
+	JobParameters map[string]any
+}
+
 // DatabricksNotebookActivity - DatabricksNotebook activity.
 type DatabricksNotebookActivity struct {
 	// REQUIRED; Activity name.
@@ -11434,6 +11584,12 @@ func (e *EloquaSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// EnableInteractiveQueryRequest - The enable the interactive authoring information.
+type EnableInteractiveQueryRequest struct {
+	// The allowed idle time for interactive authoring.
+	AutoTerminationMinutes *int32
+}
+
 // EncryptionConfiguration - Definition of CMK for the factory.
 type EncryptionConfiguration struct {
 	// REQUIRED; The name of the key in Azure Key Vault to use as Customer Managed Key.
@@ -12100,8 +12256,8 @@ type ExpressionV2 struct {
 	// Type of expressions supported by the system. Type: string.
 	Type *ExpressionV2Type
 
-	// Value for Constant/Field Type: string.
-	Value *string
+	// Value for Constant/Field Type: object.
+	Value any
 }
 
 // Factory resource type.
@@ -14579,6 +14735,12 @@ type HDInsightLinkedServiceTypeProperties struct {
 	// REQUIRED; HDInsight cluster URI. Type: string (or Expression with resultType string).
 	ClusterURI any
 
+	// HDInsight cluster authentication type.
+	ClusterAuthType *HDInsightClusterAuthenticationType
+
+	// The credential reference containing MI authentication information for the HDInsight cluster.
+	Credential *CredentialReference
+
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
@@ -14771,6 +14933,9 @@ type HDInsightOnDemandLinkedServiceTypeProperties struct {
 
 	// The password to access the cluster.
 	ClusterPassword SecretBaseClassification
+
+	// HDInsight On-demand cluster resource group authentication type.
+	ClusterResourceGroupAuthType *HDInsightOndemandClusterResourceGroupAuthenticationType
 
 	// The password to SSH remotely connect cluster’s node (for Linux).
 	ClusterSSHPassword SecretBaseClassification
@@ -15653,6 +15818,10 @@ type HiveLinkedServiceTypeProperties struct {
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
 	EnableSSL any
 
+	// Specifies whether the connections to the server will validate server certificate, the default value is True. Only used
+	// for Version 2.0
+	EnableServerCertificateValidation any
+
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
@@ -16239,6 +16408,10 @@ type ImpalaLinkedServiceTypeProperties struct {
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
 	EnableSSL any
 
+	// Specify whether to enable server SSL certificate validation when you connect.Always use System Trust Store (for V2 only).
+	// The default value is true.
+	EnableServerCertificateValidation any
+
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
@@ -16248,6 +16421,9 @@ type ImpalaLinkedServiceTypeProperties struct {
 
 	// The TCP port that the Impala server uses to listen for client connections. The default value is 21050.
 	Port any
+
+	// The transport protocol to use in the Thrift layer (for V2 only). Default value is Binary.
+	ThriftTransportProtocol *ImpalaThriftTransportProtocol
 
 	// The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This
 	// property can only be set when using SSL on self-hosted IR. The default value
@@ -16966,6 +17142,16 @@ type IntegrationRuntimeVNetProperties struct {
 	VNetID *string
 }
 
+// InteractiveQueryProperties - Interactive authoring capability type properties.
+type InteractiveQueryProperties struct {
+	// READ-ONLY; The allowed idle time for interactive authoring.
+	AutoTerminationMinutes *int32
+
+	// READ-ONLY; The interactive authoring capability status. Must be one of InteractiveCapabilityStatus. The default value is
+	// 'Enabling'.
+	Status *InteractiveCapabilityStatus
+}
+
 // JSONDataset - Json dataset.
 type JSONDataset struct {
 	// REQUIRED; Linked service reference.
@@ -17311,7 +17497,7 @@ type JiraObjectDataset struct {
 	Structure any
 
 	// Properties specific to this dataset type.
-	TypeProperties *GenericDatasetTypeProperties
+	TypeProperties *JiraTableDatasetTypeProperties
 }
 
 // GetDataset implements the DatasetClassification interface for type JiraObjectDataset.
@@ -17386,6 +17572,18 @@ func (j *JiraSource) GetTabularSource() *TabularSource {
 	}
 }
 
+// JiraTableDatasetTypeProperties - Jira dataset properties.
+type JiraTableDatasetTypeProperties struct {
+	// The schema name of the Jira, applies only for Jira V2 dataset. Type: string (or Expression with resultType string).
+	Schema any
+
+	// The table name of the Jira, applies only for Jira V2 dataset. Type: string (or Expression with resultType string).
+	Table any
+
+	// This property is only supported in Jira V1 Dataset, please consider upgrading to V2 dataset.
+	TableName any
+}
+
 // LakeHouseLinkedService - Microsoft Fabric Lakehouse linked service.
 type LakeHouseLinkedService struct {
 	// REQUIRED; Type of linked service.
@@ -17430,6 +17628,12 @@ func (l *LakeHouseLinkedService) GetLinkedService() *LinkedService {
 type LakeHouseLinkedServiceTypeProperties struct {
 	// The ID of Microsoft Fabric Lakehouse artifact. Type: string (or Expression with resultType string).
 	ArtifactID any
+
+	// The authentication type to use.
+	AuthenticationType *LakehouseAuthenticationType
+
+	// The credential reference containing authentication information.
+	Credential *CredentialReference
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -17996,6 +18200,10 @@ type LookupActivityTypeProperties struct {
 
 	// Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType boolean).
 	FirstRowOnly any
+
+	// Indicates whether to treat decimal values as strings to avoid value overflow issue. This option is enabled for SnowflakeV2
+	// connector only. Type: boolean (or Expression with resultType boolean).
+	TreatDecimalAsString any
 }
 
 // MagentoLinkedService - Magento server linked service.
@@ -18338,6 +18546,9 @@ type ManagedIntegrationRuntimeTypeProperties struct {
 
 	// The name of virtual network to which Azure-SSIS integration runtime will join
 	CustomerVirtualNetwork *IntegrationRuntimeCustomerVirtualNetwork
+
+	// Interactive authoring capability reference.
+	InteractiveQuery *InteractiveQueryProperties
 
 	// SSIS properties for managed integration runtime.
 	SsisProperties *IntegrationRuntimeSsisProperties
@@ -20097,12 +20308,29 @@ type NetezzaLinkedServiceTypeProperties struct {
 	// An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
 	ConnectionString any
 
+	// Database name for connection. Type: string.
+	Database any
+
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
 	EncryptedCredential *string
 
+	// The port for the connection. Type: integer.
+	Port any
+
 	// The Azure key vault secret reference of password in connection string.
 	Pwd *AzureKeyVaultSecretReference
+
+	// Specifies the security level for the driver connection to the data store. PreferredUnSecured : prefer unsecured, allow
+	// fallback to secured connection if required. OnlyUnSecured : strictly unsecured,
+	// no fallback.
+	SecurityLevel *NetezzaSecurityLevelType
+
+	// Server name for connection. Type: string.
+	Server any
+
+	// Username for authentication. Type: string.
+	UID any
 }
 
 // NetezzaPartitionSettings - The settings that will be leveraged for Netezza source partitioning.
@@ -21488,6 +21716,16 @@ type OracleSource struct {
 
 	// The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
 	MaxConcurrentConnections any
+
+	// The decimal precision used to represent Oracle NUMBER type without precision and scale. The range is 1 to 256 and default
+	// value is 256 if not specified. Type: integer (or Expression with resultType
+	// integer). Only used for Version 2.0.
+	NumberPrecision any
+
+	// The decimal scale used to represent Oracle NUMBER type without precision and scale. The range is 0 to 130 and default value
+	// is 130 if not specified. Type: integer (or Expression with resultType
+	// integer). Only used for Version 2.0.
+	NumberScale any
 
 	// Oracle reader query. Type: string (or Expression with resultType string).
 	OracleReaderQuery any
@@ -23394,7 +23632,9 @@ type QueryDataFlowDebugSessionsResponse struct {
 	Value []*DataFlowDebugSessionInfo
 }
 
-// QuickBooksLinkedService - QuickBooks server linked service.
+// QuickBooksLinkedService - QuickBooks server linked service. This linked service has supported version property. The Version
+// 1.0 is scheduled for deprecation while your pipeline will continue to run after EOL but without any
+// bug fix or new features.
 type QuickBooksLinkedService struct {
 	// REQUIRED; Type of linked service.
 	Type *string
@@ -23436,10 +23676,10 @@ func (q *QuickBooksLinkedService) GetLinkedService() *LinkedService {
 
 // QuickBooksLinkedServiceTypeProperties - QuickBooks server linked service properties.
 type QuickBooksLinkedServiceTypeProperties struct {
-	// The access token for OAuth 1.0 authentication.
+	// The access token for OAuth 2.0 authentication.
 	AccessToken SecretBaseClassification
 
-	// The access token secret for OAuth 1.0 authentication.
+	// The access token secret is deprecated for OAuth 1.0 authentication. Only used for version 1.0.
 	AccessTokenSecret SecretBaseClassification
 
 	// The company ID of the QuickBooks company to authorize.
@@ -23449,10 +23689,10 @@ type QuickBooksLinkedServiceTypeProperties struct {
 	// object.
 	ConnectionProperties any
 
-	// The consumer key for OAuth 1.0 authentication.
+	// The consumer key for OAuth 2.0 authentication.
 	ConsumerKey any
 
-	// The consumer secret for OAuth 1.0 authentication.
+	// The consumer secret for OAuth 2.0 authentication.
 	ConsumerSecret SecretBaseClassification
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
@@ -23462,7 +23702,11 @@ type QuickBooksLinkedServiceTypeProperties struct {
 	// The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com)
 	Endpoint any
 
-	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
+	// The refresh token for OAuth 2.0 authentication.
+	RefreshToken SecretBaseClassification
+
+	// Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Only used for version
+	// 1.0.
 	UseEncryptedEndpoints any
 }
 
@@ -26483,6 +26727,10 @@ type SalesforceV2Source struct {
 	// with resultType integer).
 	PageSize any
 
+	// Partition option for the SalesforceV2 connector in copy activity, AutoDetect or None. Type: string (or Expression with
+	// resultType string).
+	PartitionOption any
+
 	// You can only use Salesforce Object Query Language (SOQL) query with limitations. For SOQL limitations, see this article:
 	// https://developer.salesforce.com/docs/atlas.en-us.apiasynch.meta/api
 	// asynch/queries.htm#SOQL%20Considerations. If query is not specified, all the data of the Salesforce object specified in
@@ -28203,6 +28451,10 @@ type ScriptActivityTypeProperties struct {
 
 	// Array of script blocks. Type: array.
 	Scripts []*ScriptActivityScriptBlock
+
+	// Indicates whether to treat decimal values as strings to avoid value overflow issue. This option is enabled for SnowflakeV2
+	// connector only. Type: boolean (or Expression with resultType boolean).
+	TreatDecimalAsString any
 }
 
 // ScriptActivityTypePropertiesLogSettings - Log settings of script activity.
@@ -29759,6 +30011,9 @@ type SnowflakeLinkedV2ServiceTypeProperties struct {
 	// The tenant ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
 	TenantID any
 
+	// Indicates whether to use UTC timezone for timestamp data types. Type: boolean.
+	UseUTCTimestamps any
+
 	// The name of the Snowflake user.
 	User any
 }
@@ -30105,6 +30360,10 @@ type SparkLinkedServiceTypeProperties struct {
 
 	// Specifies whether the connections to the server are encrypted using SSL. The default value is false.
 	EnableSSL any
+
+	// Specifies whether the connections to the server will validate server certificate, the default value is True. Only used
+	// for Version 2.0
+	EnableServerCertificateValidation any
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.
@@ -32565,6 +32824,12 @@ type WarehouseLinkedServiceTypeProperties struct {
 
 	// REQUIRED; The endpoint of Microsoft Fabric Warehouse server. Type: string (or Expression with resultType string).
 	Endpoint any
+
+	// The authentication type to use.
+	AuthenticationType *WarehouseAuthenticationType
+
+	// The credential reference containing authentication information.
+	Credential *CredentialReference
 
 	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager.
 	// Type: string.

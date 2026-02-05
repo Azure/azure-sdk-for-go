@@ -43,6 +43,9 @@ type ServerFactory struct {
 	// GlobalParametersServer contains the fakes for client GlobalParametersClient
 	GlobalParametersServer GlobalParametersServer
 
+	// IntegrationRuntimeServer contains the fakes for client IntegrationRuntimeClient
+	IntegrationRuntimeServer IntegrationRuntimeServer
+
 	// IntegrationRuntimeNodesServer contains the fakes for client IntegrationRuntimeNodesClient
 	IntegrationRuntimeNodesServer IntegrationRuntimeNodesServer
 
@@ -109,6 +112,7 @@ type ServerFactoryTransport struct {
 	trExposureControlServer                  *ExposureControlServerTransport
 	trFactoriesServer                        *FactoriesServerTransport
 	trGlobalParametersServer                 *GlobalParametersServerTransport
+	trIntegrationRuntimeServer               *IntegrationRuntimeServerTransport
 	trIntegrationRuntimeNodesServer          *IntegrationRuntimeNodesServerTransport
 	trIntegrationRuntimeObjectMetadataServer *IntegrationRuntimeObjectMetadataServerTransport
 	trIntegrationRuntimesServer              *IntegrationRuntimesServerTransport
@@ -175,6 +179,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGlobalParametersServerTransport(&s.srv.GlobalParametersServer)
 		})
 		resp, err = s.trGlobalParametersServer.Do(req)
+	case "IntegrationRuntimeClient":
+		initServer(s, &s.trIntegrationRuntimeServer, func() *IntegrationRuntimeServerTransport {
+			return NewIntegrationRuntimeServerTransport(&s.srv.IntegrationRuntimeServer)
+		})
+		resp, err = s.trIntegrationRuntimeServer.Do(req)
 	case "IntegrationRuntimeNodesClient":
 		initServer(s, &s.trIntegrationRuntimeNodesServer, func() *IntegrationRuntimeNodesServerTransport {
 			return NewIntegrationRuntimeNodesServerTransport(&s.srv.IntegrationRuntimeNodesServer)

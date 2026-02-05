@@ -27,7 +27,7 @@ type ChangeDataCaptureClient struct {
 // NewChangeDataCaptureClient creates a new instance of ChangeDataCaptureClient with the specified values.
 //   - subscriptionID - The subscription identifier.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewChangeDataCaptureClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChangeDataCaptureClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

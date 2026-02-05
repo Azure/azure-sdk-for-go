@@ -249,6 +249,20 @@ type GlobalParametersClientListByFactoryOptions struct {
 	// placeholder for future optional parameters
 }
 
+// IntegrationRuntimeClientBeginDisableInteractiveQueryOptions contains the optional parameters for the IntegrationRuntimeClient.BeginDisableInteractiveQuery
+// method.
+type IntegrationRuntimeClientBeginDisableInteractiveQueryOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// IntegrationRuntimeClientBeginEnableInteractiveQueryOptions contains the optional parameters for the IntegrationRuntimeClient.BeginEnableInteractiveQuery
+// method.
+type IntegrationRuntimeClientBeginEnableInteractiveQueryOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // IntegrationRuntimeNodesClientDeleteOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Delete
 // method.
 type IntegrationRuntimeNodesClientDeleteOptions struct {

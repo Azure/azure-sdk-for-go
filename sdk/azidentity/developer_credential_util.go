@@ -19,27 +19,16 @@ const cliTimeout = 10 * time.Second
 
 // parseAzdErrorMessage attempts to parse azd's JSON error output and extract clean error messages.
 // azd writes structured JSON to stderr like: {"type":"consoleMessage","timestamp":"...","data":{"message":"..."}}
-// This function extracts and concatenates all .data.message fields, trimming whitespace.
+// This function extracts the .data.message field, trimming whitespace.
 // If parsing fails, it returns the original message.
 func parseAzdErrorMessage(msg string) string {
-	var messages []string
-	for _, line := range strings.Split(msg, "\n") {
-		line = strings.TrimSpace(line)
-		if line == "" {
-			continue
-		}
-		var obj struct {
-			Type string `json:"type"`
-			Data struct {
-				Message string `json:"message"`
-			} `json:"data"`
-		}
-		if err := json.Unmarshal([]byte(line), &obj); err == nil && obj.Type == "consoleMessage" && obj.Data.Message != "" {
-			messages = append(messages, strings.TrimSpace(obj.Data.Message))
-		}
+	var obj struct {
+		Data struct {
+			Message string `json:"message"`
+		} `json:"data"`
 	}
-	if len(messages) > 0 {
-		return strings.Join(messages, " ")
+	if err := json.Unmarshal([]byte(msg), &obj); err == nil && obj.Data.Message != "" {
+		return strings.TrimSpace(obj.Data.Message)
 	}
 	return msg
 }

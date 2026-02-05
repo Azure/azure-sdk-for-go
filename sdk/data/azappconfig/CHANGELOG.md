@@ -1,14 +1,10 @@
 # Release History
 
-## 2.0.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.0.1 (2026-02-04)
 
 ### Other Changes
+
+* Added internal pipeline policy to handle audience error and surface up an improved error message. [#25795](https://github.com/Azure/azure-sdk-for-go/pull/25795)
 
 ## 2.0.0 (2025-10-15)
 

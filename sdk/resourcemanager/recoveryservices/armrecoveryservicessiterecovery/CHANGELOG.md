@@ -1,5 +1,44 @@
 # Release History
 
+## 2.5.0 (2026-02-06)
+### Features Added
+
+- New value `AgentUpgradeBlockedReasonReInstallRequired` added to enum type `AgentUpgradeBlockedReason`
+- New enum type `AgentReinstallBlockedReason` with values `AgentReinstallBlockedReasonAgentNoHeartbeat`, `AgentReinstallBlockedReasonDistroNotSupported`, `AgentReinstallBlockedReasonUnknown`
+- New enum type `MobilityAgentReinstallType` with values `MobilityAgentReinstallTypeAutoTriggered`, `MobilityAgentReinstallTypeUserTriggered`
+- New function `*ReplicationProtectedItemsClient.BeginReinstallMobilityService(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateMobilityServiceRequest ReinstallMobilityServiceRequest, options *ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions) (*runtime.Poller[ReplicationProtectedItemsClientReinstallMobilityServiceResponse], error)`
+- New struct `A2AAgentReinstallBlockingErrorDetails`
+- New struct `InMageRcmAgentReinstallBlockingErrorDetails`
+- New struct `ReinstallMobilityServiceRequest`
+- New struct `ReinstallMobilityServiceRequestProperties`
+- New field `PlatformFaultDomain` in struct `A2AEnableProtectionInput`
+- New field `AgentReinstallAttemptToVersion`, `AutoAgentUpgradeRetryCount`, `DistroName`, `DistroNameForWhichAgentIsInstalled`, `IsAgentReinstallRequired`, `IsAgentUpgradeInProgress`, `IsAgentUpgradeRetryThresholdExhausted`, `IsAgentUpgradeable`, `OSFamilyName`, `PlatformFaultDomain`, `ReasonsBlockingReInstall`, `ReasonsBlockingReinstallDetails` in struct `A2AReplicationDetails`
+- New field `PlatformFaultDomain` in struct `A2ASwitchProtectionInput`
+- New field `PlatformFaultDomain`, `RecoveryAvailabilityZone` in struct `A2AUpdateReplicationProtectedItemInput`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `HyperVReplicaAzureDiskInputDetails`
+- New field `TargetCapacityReservationGroupID` in struct `HyperVReplicaAzureEnableProtectionInput`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `HyperVReplicaAzureManagedDiskDetails`
+- New field `TargetCapacityReservationGroupID` in struct `HyperVReplicaAzurePlannedFailoverProviderInput`
+- New field `TargetCapacityReservationGroupID` in struct `HyperVReplicaAzureReplicationDetails`
+- New field `TargetCapacityReservationGroupID` in struct `HyperVReplicaAzureUpdateReplicationProtectedItemInput`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `InMageRcmDiskInput`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `InMageRcmDisksDefaultInput`
+- New field `TargetCapacityReservationGroupID` in struct `InMageRcmEnableProtectionInput`
+- New field `AgentReinstallAttemptToVersion`, `AgentReinstallJobID`, `AgentReinstallState`, `DistroName`, `DistroNameForWhichAgentIsInstalled`, `IsAgentReinstallRequired`, `IsAgentUpgradeable`, `IsLastReinstallSuccessful`, `LastAgentReinstallType`, `OSFamilyName`, `ReasonsBlockingReinstall`, `ReasonsBlockingReinstallDetails` in struct `InMageRcmMobilityAgentDetails`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `InMageRcmProtectedDiskDetails`
+- New field `TargetCapacityReservationGroupID` in struct `InMageRcmReplicationDetails`
+- New field `TargetCapacityReservationGroupID` in struct `InMageRcmUnplannedFailoverInput`
+- New field `TargetCapacityReservationGroupID`, `VMDisks` in struct `InMageRcmUpdateReplicationProtectedItemInput`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `UpdateDiskInput`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `VMwareCbtDiskInput`
+- New field `TargetCapacityReservationGroupID` in struct `VMwareCbtEnableMigrationInput`
+- New field `TargetCapacityReservationGroupID` in struct `VMwareCbtMigrateInput`
+- New field `TargetCapacityReservationGroupID` in struct `VMwareCbtMigrationDetails`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `VMwareCbtProtectedDiskDetails`
+- New field `DiskSizeInGB`, `Iops`, `ThroughputInMbps` in struct `VMwareCbtUpdateDiskInput`
+- New field `TargetCapacityReservationGroupID` in struct `VMwareCbtUpdateMigrationItemInput`
+
+
 ## 2.4.0 (2025-04-25)
 ### Features Added
 

@@ -27,7 +27,7 @@ type SupportedOperatingSystemsClient struct {
 // NewSupportedOperatingSystemsClient creates a new instance of SupportedOperatingSystemsClient with the specified values.
 //   - subscriptionID - The subscription Id.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSupportedOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SupportedOperatingSystemsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSupportedOperatingSystemsClient(subscriptionID string, credential azcore
 // Get - Gets the data of supported operating systems by SRS.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - options - SupportedOperatingSystemsClientGetOptions contains the optional parameters for the SupportedOperatingSystemsClient.Get
@@ -90,7 +90,7 @@ func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.InstanceType != nil {
 		reqQP.Set("instanceType", *options.InstanceType)
 	}

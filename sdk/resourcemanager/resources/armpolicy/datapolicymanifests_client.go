@@ -25,7 +25,7 @@ type DataPolicyManifestsClient struct {
 
 // NewDataPolicyManifestsClient creates a new instance of DataPolicyManifestsClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataPolicyManifestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DataPolicyManifestsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {

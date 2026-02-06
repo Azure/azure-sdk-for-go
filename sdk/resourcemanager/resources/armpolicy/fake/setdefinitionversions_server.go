@@ -171,7 +171,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchCreateOrUpdate(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpolicy.SetDefinitionVersion](req)
@@ -208,7 +208,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchCreateOrUpdateAtManagemen
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpolicy.SetDefinitionVersion](req)
@@ -249,7 +249,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchDelete(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	policySetDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("policySetDefinitionName")])
@@ -282,7 +282,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchDeleteAtManagementGroup(r
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	managementGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupName")])
@@ -319,7 +319,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchGet(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -364,7 +364,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchGetAtManagementGroup(req 
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -413,7 +413,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchGetBuiltIn(req *http.Requ
 	const regexStr = `/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<policyDefinitionVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -460,7 +460,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchNewListPager(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -522,7 +522,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchListAll(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/listPolicySetDefinitionVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := s.srv.ListAll(req.Context(), nil)
@@ -547,7 +547,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchListAllAtManagementGroup(
 	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/listPolicySetDefinitionVersions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	managementGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupName")])
@@ -597,7 +597,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchNewListBuiltInPager(req *
 		const regexStr = `/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -661,7 +661,7 @@ func (s *SetDefinitionVersionsServerTransport) dispatchNewListByManagementGroupP
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policySetDefinitions/(?P<policySetDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()

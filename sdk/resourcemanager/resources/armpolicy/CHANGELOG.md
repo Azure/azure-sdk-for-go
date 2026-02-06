@@ -1,5 +1,61 @@
 # Release History
 
+## 0.11.0 (2026-02-06)
+### Breaking Changes
+
+- Function `*ClientFactory.NewVariableValuesClient` has been removed
+- Function `*ClientFactory.NewVariablesClient` has been removed
+- Function `NewVariableValuesClient` has been removed
+- Function `*VariableValuesClient.CreateOrUpdate` has been removed
+- Function `*VariableValuesClient.CreateOrUpdateAtManagementGroup` has been removed
+- Function `*VariableValuesClient.Delete` has been removed
+- Function `*VariableValuesClient.DeleteAtManagementGroup` has been removed
+- Function `*VariableValuesClient.Get` has been removed
+- Function `*VariableValuesClient.GetAtManagementGroup` has been removed
+- Function `*VariableValuesClient.NewListForManagementGroupPager` has been removed
+- Function `*VariableValuesClient.NewListPager` has been removed
+- Function `NewVariablesClient` has been removed
+- Function `*VariablesClient.CreateOrUpdate` has been removed
+- Function `*VariablesClient.CreateOrUpdateAtManagementGroup` has been removed
+- Function `*VariablesClient.Delete` has been removed
+- Function `*VariablesClient.DeleteAtManagementGroup` has been removed
+- Function `*VariablesClient.Get` has been removed
+- Function `*VariablesClient.GetAtManagementGroup` has been removed
+- Function `*VariablesClient.NewListForManagementGroupPager` has been removed
+- Function `*VariablesClient.NewListPager` has been removed
+- Struct `Variable` has been removed
+- Struct `VariableColumn` has been removed
+- Struct `VariableListResult` has been removed
+- Struct `VariableProperties` has been removed
+- Struct `VariableValue` has been removed
+- Struct `VariableValueColumnValue` has been removed
+- Struct `VariableValueListResult` has been removed
+- Struct `VariableValueProperties` has been removed
+- Field `Expand` of struct `AssignmentsClientGetByIDOptions` has been removed
+
+### Features Added
+
+- New value `EnforcementModeEnroll` added to enum type `EnforcementMode`
+- New value `OverrideKindDefinitionVersion` added to enum type `OverrideKind`
+- New enum type `AssignmentType` with values `AssignmentTypeCustom`, `AssignmentTypeNotSpecified`, `AssignmentTypeSystem`, `AssignmentTypeSystemHidden`
+- New enum type `ExternalEndpointResult` with values `ExternalEndpointResultFailed`, `ExternalEndpointResultSucceeded`
+- New enum type `PolicyTokenResult` with values `PolicyTokenResultFailed`, `PolicyTokenResultSucceeded`
+- New function `*ClientFactory.NewTokensClient() *TokensClient`
+- New function `NewTokensClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TokensClient, error)`
+- New function `*TokensClient.Acquire(ctx context.Context, parameters TokenRequest, options *TokensClientAcquireOptions) (TokensClientAcquireResponse, error)`
+- New function `*TokensClient.AcquireAtManagementGroup(ctx context.Context, managementGroupName string, parameters TokenRequest, options *TokensClientAcquireAtManagementGroupOptions) (TokensClientAcquireAtManagementGroupResponse, error)`
+- New struct `ExternalEvaluationEndpointInvocationResult`
+- New struct `ExternalEvaluationEndpointSettings`
+- New struct `ExternalEvaluationEnforcementSettings`
+- New struct `LogInfo`
+- New struct `TokenOperation`
+- New struct `TokenRequest`
+- New struct `TokenResponse`
+- New field `AssignmentType`, `InstanceID` in struct `AssignmentProperties`
+- New field `ExternalEvaluationEnforcementSettings` in struct `DefinitionProperties`
+- New field `ExternalEvaluationEnforcementSettings` in struct `DefinitionVersionProperties`
+
+
 ## 0.10.0 (2025-03-18)
 ### Features Added
 

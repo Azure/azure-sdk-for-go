@@ -28,7 +28,7 @@ type DefinitionVersionsClient struct {
 // NewDefinitionVersionsClient creates a new instance of DefinitionVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDefinitionVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefinitionVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewDefinitionVersionsClient(subscriptionID string, credential azcore.TokenC
 // CreateOrUpdate - This operation creates or updates a policy definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
 //     the minor version number, and z is the patch number
@@ -93,7 +93,7 @@ func (client *DefinitionVersionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -115,7 +115,7 @@ func (client *DefinitionVersionsClient) createOrUpdateHandleResponse(resp *http.
 // group with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - managementGroupName - The name of the management group. The name is case insensitive.
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
@@ -165,7 +165,7 @@ func (client *DefinitionVersionsClient) createOrUpdateAtManagementGroupCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -186,7 +186,7 @@ func (client *DefinitionVersionsClient) createOrUpdateAtManagementGroupHandleRes
 // Delete - This operation deletes the policy definition version in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
 //     the minor version number, and z is the patch number
@@ -233,7 +233,7 @@ func (client *DefinitionVersionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -242,7 +242,7 @@ func (client *DefinitionVersionsClient) deleteCreateRequest(ctx context.Context,
 // DeleteAtManagementGroup - This operation deletes the policy definition in the given management group with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - managementGroupName - The name of the management group. The name is case insensitive.
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
@@ -290,7 +290,7 @@ func (client *DefinitionVersionsClient) deleteAtManagementGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *DefinitionVersionsClient) deleteAtManagementGroupCreateRequest(ctx
 // Get - This operation retrieves the policy definition version in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
 //     the minor version number, and z is the patch number
@@ -346,7 +346,7 @@ func (client *DefinitionVersionsClient) getCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -365,7 +365,7 @@ func (client *DefinitionVersionsClient) getHandleResponse(resp *http.Response) (
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - managementGroupName - The name of the management group. The name is case insensitive.
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
@@ -414,7 +414,7 @@ func (client *DefinitionVersionsClient) getAtManagementGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -432,7 +432,7 @@ func (client *DefinitionVersionsClient) getAtManagementGroupHandleResponse(resp 
 // GetBuiltIn - This operation retrieves the built-in policy definition version with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - policyDefinitionName - The name of the policy definition.
 //   - policyDefinitionVersion - The policy definition version. The format is x.y.z where x is the major version number, y is
 //     the minor version number, and z is the patch number
@@ -476,7 +476,7 @@ func (client *DefinitionVersionsClient) getBuiltInCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -493,7 +493,7 @@ func (client *DefinitionVersionsClient) getBuiltInHandleResponse(resp *http.Resp
 
 // NewListPager - This operation retrieves a list of all the policy definition versions for the given policy definition.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - policyDefinitionName - The name of the policy definition.
 //   - options - DefinitionVersionsClientListOptions contains the optional parameters for the DefinitionVersionsClient.NewListPager
 //     method.
@@ -539,7 +539,7 @@ func (client *DefinitionVersionsClient) listCreateRequest(ctx context.Context, p
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -557,7 +557,7 @@ func (client *DefinitionVersionsClient) listHandleResponse(resp *http.Response) 
 // ListAll - This operation lists all the policy definition versions for all policy definitions within a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - options - DefinitionVersionsClientListAllOptions contains the optional parameters for the DefinitionVersionsClient.ListAll
 //     method.
 func (client *DefinitionVersionsClient) ListAll(ctx context.Context, options *DefinitionVersionsClientListAllOptions) (DefinitionVersionsClientListAllResponse, error) {
@@ -594,7 +594,7 @@ func (client *DefinitionVersionsClient) listAllCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -613,7 +613,7 @@ func (client *DefinitionVersionsClient) listAllHandleResponse(resp *http.Respons
 // group scope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - managementGroupName - The name of the management group. The name is case insensitive.
 //   - options - DefinitionVersionsClientListAllAtManagementGroupOptions contains the optional parameters for the DefinitionVersionsClient.ListAllAtManagementGroup
 //     method.
@@ -651,7 +651,7 @@ func (client *DefinitionVersionsClient) listAllAtManagementGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -669,7 +669,7 @@ func (client *DefinitionVersionsClient) listAllAtManagementGroupHandleResponse(r
 // ListAllBuiltins - This operation lists all the built-in policy definition versions for all built-in policy definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - options - DefinitionVersionsClientListAllBuiltinsOptions contains the optional parameters for the DefinitionVersionsClient.ListAllBuiltins
 //     method.
 func (client *DefinitionVersionsClient) ListAllBuiltins(ctx context.Context, options *DefinitionVersionsClientListAllBuiltinsOptions) (DefinitionVersionsClientListAllBuiltinsResponse, error) {
@@ -702,7 +702,7 @@ func (client *DefinitionVersionsClient) listAllBuiltinsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -720,7 +720,7 @@ func (client *DefinitionVersionsClient) listAllBuiltinsHandleResponse(resp *http
 // NewListBuiltInPager - This operation retrieves a list of all the built-in policy definition versions for the given policy
 // definition.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - policyDefinitionName - The name of the policy definition.
 //   - options - DefinitionVersionsClientListBuiltInOptions contains the optional parameters for the DefinitionVersionsClient.NewListBuiltInPager
 //     method.
@@ -762,7 +762,7 @@ func (client *DefinitionVersionsClient) listBuiltInCreateRequest(ctx context.Con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -780,7 +780,7 @@ func (client *DefinitionVersionsClient) listBuiltInHandleResponse(resp *http.Res
 // NewListByManagementGroupPager - This operation retrieves a list of all the policy definition versions for the given policy
 // definition in the given management group.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-03-01
 //   - managementGroupName - The name of the management group. The name is case insensitive.
 //   - policyDefinitionName - The name of the policy definition.
 //   - options - DefinitionVersionsClientListByManagementGroupOptions contains the optional parameters for the DefinitionVersionsClient.NewListByManagementGroupPager
@@ -827,7 +827,7 @@ func (client *DefinitionVersionsClient) listByManagementGroupCreateRequest(ctx c
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

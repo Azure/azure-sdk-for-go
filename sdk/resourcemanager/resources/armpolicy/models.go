@@ -98,6 +98,9 @@ type AssignmentListResult struct {
 
 // AssignmentProperties - The policy assignment properties.
 type AssignmentProperties struct {
+	// The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
+	AssignmentType *AssignmentType
+
 	// The version of the policy definition to use.
 	DefinitionVersion *string
 
@@ -107,7 +110,7 @@ type AssignmentProperties struct {
 	// The display name of the policy assignment.
 	DisplayName *string
 
-	// The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
+	// The policy assignment enforcement mode. Possible values are Default, DoNotEnforce, and Enroll
 	EnforcementMode *EnforcementMode
 
 	// The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
@@ -134,6 +137,10 @@ type AssignmentProperties struct {
 	// READ-ONLY; The effective version of the policy definition in use. This is only present if requested via the $expand query
 	// parameter.
 	EffectiveDefinitionVersion *string
+
+	// READ-ONLY; The instance ID of the policy assignment. This ID only and always changes when the assignment is deleted and
+	// recreated.
+	InstanceID *string
 
 	// READ-ONLY; The latest version of the policy definition available. This is only present if requested via the $expand query
 	// parameter.
@@ -300,6 +307,9 @@ type DefinitionProperties struct {
 	// The display name of the policy definition.
 	DisplayName *string
 
+	// The details of the source of external evaluation results required by the policy during enforcement evaluation.
+	ExternalEvaluationEnforcementSettings *ExternalEvaluationEnforcementSettings
+
 	// The policy definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
 	Metadata any
 
@@ -382,6 +392,9 @@ type DefinitionVersionProperties struct {
 
 	// The display name of the policy definition.
 	DisplayName *string
+
+	// The details of the source of external evaluation results required by the policy during enforcement evaluation.
+	ExternalEvaluationEnforcementSettings *ExternalEvaluationEnforcementSettings
 
 	// The policy definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
 	Metadata any
@@ -474,6 +487,54 @@ type ExemptionUpdateProperties struct {
 	ResourceSelectors []*ResourceSelector
 }
 
+// ExternalEvaluationEndpointInvocationResult - The external evaluation endpoint invocation results.
+type ExternalEvaluationEndpointInvocationResult struct {
+	// The set of claims that will be attached to the policy token as an attestation for the result of the endpoint invocation.
+	Claims any
+
+	// The expiration of the results.
+	Expiration *time.Time
+
+	// The status message with additional details about the invocation result.
+	Message *string
+
+	// The details of the policy requiring the external endpoint invocation.
+	PolicyInfo *LogInfo
+
+	// The result of the external endpoint. Possible values are Succeeded and Failed.
+	Result *ExternalEndpointResult
+
+	// The date and time after which a failed endpoint invocation can be retried.
+	RetryAfter *time.Time
+}
+
+// ExternalEvaluationEndpointSettings - The settings of an external endpoint providing evaluation results.
+type ExternalEvaluationEndpointSettings struct {
+	// The details of the endpoint.
+	Details any
+
+	// The kind of the endpoint.
+	Kind *string
+}
+
+// ExternalEvaluationEnforcementSettings - The details of the source of external evaluation results required by the policy
+// during enforcement evaluation.
+type ExternalEvaluationEnforcementSettings struct {
+	// The settings of an external endpoint providing evaluation results.
+	EndpointSettings *ExternalEvaluationEndpointSettings
+
+	// What to do when evaluating an enforcement policy that requires an external evaluation and the token is missing. Possible
+	// values are Audit and Deny and language expressions are supported.
+	MissingTokenAction *string
+
+	// The lifespan of the endpoint invocation result after which it's no longer valid. Value is expected to follow the ISO 8601
+	// duration format and language expressions are supported.
+	ResultLifespan *string
+
+	// An array of the role definition Ids the assignment's MSI will need in order to invoke the endpoint.
+	RoleDefinitionIDs []*string
+}
+
 // Identity for the resource. Policy assignments support a maximum of one identity. That is either a system assigned identity
 // or a single user assigned identity.
 type Identity struct {
@@ -490,6 +551,72 @@ type Identity struct {
 
 	// READ-ONLY; The tenant ID of the resource identity. This property will only be provided for a system assigned identity
 	TenantID *string
+}
+
+// LogInfo - The policy log info.
+type LogInfo struct {
+	// The management group ancestors.
+	Ancestors *string
+
+	// The policy compliance reason code.
+	ComplianceReasonCode *string
+
+	// The policy assignment display name.
+	PolicyAssignmentDisplayName *string
+
+	// The policy assignment Id.
+	PolicyAssignmentID *string
+
+	// The policy assignment name.
+	PolicyAssignmentName *string
+
+	// The policy assignment scope.
+	PolicyAssignmentScope *string
+
+	// The policy assignment version.
+	PolicyAssignmentVersion *string
+
+	// The policy definition display name.
+	PolicyDefinitionDisplayName *string
+
+	// The policy definition action.
+	PolicyDefinitionEffect *string
+
+	// An array of policy definition group names.
+	PolicyDefinitionGroupNames []*string
+
+	// The policy definition Id.
+	PolicyDefinitionID *string
+
+	// The policy definition name.
+	PolicyDefinitionName *string
+
+	// The policy definition instance Id inside a policy set.
+	PolicyDefinitionReferenceID *string
+
+	// The policy definition version.
+	PolicyDefinitionVersion *string
+
+	// An array of policy exemption Ids.
+	PolicyExemptionIDs []*string
+
+	// The policy set definition category.
+	PolicySetDefinitionCategory *string
+
+	// The policy set definition display name.
+	PolicySetDefinitionDisplayName *string
+
+	// The policy set definition Id.
+	PolicySetDefinitionID *string
+
+	// The policy set definition name.
+	PolicySetDefinitionName *string
+
+	// The policy set definition version.
+	PolicySetDefinitionVersion *string
+
+	// The resource location.
+	ResourceLocation *string
 }
 
 // NonComplianceMessage - A message that describes why a resource is non-compliant with the policy. This is shown in 'deny'
@@ -726,91 +853,58 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TokenOperation - The resource operation to acquire a token for.
+type TokenOperation struct {
+	// REQUIRED; The http method of the resource operation.
+	HTTPMethod *string
+
+	// REQUIRED; The request URI of the resource operation.
+	URI *string
+
+	// The payload of the resource operation.
+	Content any
+}
+
+// TokenRequest - The policy token request properties.
+type TokenRequest struct {
+	// REQUIRED; The resource operation to acquire a token for.
+	Operation *TokenOperation
+
+	// The change reference.
+	ChangeReference *string
+}
+
+// TokenResponse - The policy token response properties.
+type TokenResponse struct {
+	// The change reference associated with the operation for which the token is acquired.
+	ChangeReference *string
+
+	// The expiration of the policy token.
+	Expiration *time.Time
+
+	// Status message with additional details about the token acquisition operation result.
+	Message *string
+
+	// The result of the completed token acquisition operation. Possible values are Succeeded and Failed.
+	Result *PolicyTokenResult
+
+	// An array of external evaluation endpoint invocation results.
+	Results []*ExternalEvaluationEndpointInvocationResult
+
+	// The date and time after which the client can try to acquire a token again in the case of retry-able failures.
+	RetryAfter *time.Time
+
+	// The issued policy token.
+	Token *string
+
+	// The unique Id assigned to the policy token.
+	TokenID *string
+}
+
 type UserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
-}
-
-// Variable - The variable.
-type Variable struct {
-	// REQUIRED; Properties for the variable.
-	Properties *VariableProperties
-
-	// READ-ONLY; The ID of the variable.
-	ID *string
-
-	// READ-ONLY; The name of the variable.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource (Microsoft.Authorization/variables).
-	Type *string
-}
-
-// VariableColumn - The variable column.
-type VariableColumn struct {
-	// REQUIRED; The name of this policy variable column.
-	ColumnName *string
-}
-
-// VariableListResult - List of variables.
-type VariableListResult struct {
-	// An array of variables.
-	Value []*Variable
-
-	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string
-}
-
-// VariableProperties - The variable properties.
-type VariableProperties struct {
-	// REQUIRED; Variable column definitions.
-	Columns []*VariableColumn
-}
-
-// VariableValue - The variable value.
-type VariableValue struct {
-	// REQUIRED; Properties for the variable value.
-	Properties *VariableValueProperties
-
-	// READ-ONLY; The ID of the variable.
-	ID *string
-
-	// READ-ONLY; The name of the variable.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource (Microsoft.Authorization/variables/values).
-	Type *string
-}
-
-// VariableValueColumnValue - The name value tuple for this variable value column.
-type VariableValueColumnValue struct {
-	// REQUIRED; Column name for the variable value
-	ColumnName *string
-
-	// REQUIRED; Column value for the variable value; this can be an integer, double, boolean, null or a string.
-	ColumnValue any
-}
-
-// VariableValueListResult - List of variable values.
-type VariableValueListResult struct {
-	// An array of variable values.
-	Value []*VariableValue
-
-	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string
-}
-
-// VariableValueProperties - The variable value properties.
-type VariableValueProperties struct {
-	// REQUIRED; Variable value column value array.
-	Values []*VariableValueColumnValue
 }

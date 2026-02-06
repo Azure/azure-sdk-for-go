@@ -1,6 +1,10 @@
 # Release History
 
-## 2.0.1 (2026-02-04)
+## 2.1.0 (2026-02-06)
+
+### Features Added
+
+* Added support for sovereign clouds. [#25795](https://github.com/Azure/azure-sdk-for-go/pull/25795)
 
 ### Other Changes
 

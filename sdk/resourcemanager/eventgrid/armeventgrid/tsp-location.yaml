@@ -1,0 +1,4 @@
+directory: specification/eventgrid/resource-manager/Microsoft.EventGrid/EventGrid
+commit: 14d986ab9cc3b1c5645224dacbcab66d120bea63
+repo: i-specs
+additionalDirectories: 

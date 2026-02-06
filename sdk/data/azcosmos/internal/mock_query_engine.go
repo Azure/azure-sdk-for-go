@@ -109,9 +109,9 @@ func (m *MockReadManyPipeline) Run() (*queryengine.PipelineResult, error) {
 	requests := make([]queryengine.QueryRequest, 0, len(m.items))
 	for i := range m.items {
 		pk := m.items[i].PartitionKeyValue
-		create_query := fmt.Sprintf("Select * from c where c.id = '%s' and c.pk = '%s'", m.items[i].ID, pk)
+		createQuery := fmt.Sprintf("Select * from c where c.id = '%s' and c.pk = '%s'", m.items[i].ID, pk)
 		requests = append(requests, queryengine.QueryRequest{
-			Query: create_query,
+			Query: createQuery,
 		})
 	}
 
@@ -316,28 +316,35 @@ func (m *MockQueryPipeline) ProvideData(data []queryengine.QueryResult) error {
 		return fmt.Errorf("pipeline is closed")
 	}
 
-	// Parse the items
-	var payload documentPayload[MockItem]
-	if err := json.Unmarshal(data[0].Data, &payload); err != nil {
-		return fmt.Errorf("failed to unmarshal items: %w", err)
-	}
+	for _, d := range data {
+		// Parse the items
+		var payload documentPayload[MockItem]
+		if err := json.Unmarshal(d.Data, &payload); err != nil {
+			return fmt.Errorf("failed to unmarshal items: %w", err)
+		}
 
-	// Find the partition state for the given partition key range ID and insert the items.
-	for i := range m.partitionState {
-		if m.partitionState[i].ID == data[0].PartitionKeyRangeID {
-			// Validate request ordering: the provided result must match the expected nextIndex.
-			if m.partitionState[i].nextIndex != data[0].RequestId {
-				return fmt.Errorf("out of order data provided for partition key range %s: expected index %d, got %d", data[0].PartitionKeyRangeID, m.partitionState[i].nextIndex, data[0].RequestId)
+		// Find the partition state for the given partition key range ID and insert the items.
+		found := false
+		for i := range m.partitionState {
+			if m.partitionState[i].ID == d.PartitionKeyRangeID {
+				// Validate request ordering: the provided result must match the expected nextIndex.
+				if m.partitionState[i].nextIndex != d.RequestId {
+					return fmt.Errorf("out of order data provided for partition key range %s: expected index %d, got %d", d.PartitionKeyRangeID, m.partitionState[i].nextIndex, d.RequestId)
+				}
+				// advance expected index for next request
+				m.partitionState[i].nextIndex++
+				m.partitionState[i].ProvideData(payload.Documents, d.NextContinuation)
+				found = true
+				break
 			}
-			// advance expected index for next request
-			m.partitionState[i].nextIndex++
-			m.partitionState[i].ProvideData(payload.Documents, data[0].NextContinuation)
-			return nil
+		}
+
+		if !found {
+			return fmt.Errorf("no partition found with ID %s", d.PartitionKeyRangeID)
 		}
 	}
 
-	// If we didn't find the partition key range ID, return an error.
-	return fmt.Errorf("no partition found with ID %s", data[0].PartitionKeyRangeID)
+	return nil
 }
 
 func (m *MockQueryPipeline) Query() string {

@@ -6,5 +6,5 @@ package armpolicy
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
-	moduleVersion = "v0.11.0"
+	moduleVersion = "v1.0.0"
 )

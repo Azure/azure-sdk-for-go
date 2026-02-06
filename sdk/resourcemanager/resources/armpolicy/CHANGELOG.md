@@ -1,6 +1,6 @@
 # Release History
 
-## 0.11.0 (2026-02-06)
+## 1.0.0 (2026-02-06)
 ### Breaking Changes
 
 - Function `*ClientFactory.NewVariableValuesClient` has been removed

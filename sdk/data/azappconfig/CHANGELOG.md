@@ -4,7 +4,7 @@
 
 ### Features Added
 
-* Added support for sovereign clouds. [#25795](https://github.com/Azure/azure-sdk-for-go/pull/25795) 
+* Added support for sovereign clouds. [#25795](https://github.com/Azure/azure-sdk-for-go/pull/25795)
 
 ### Other Changes
 

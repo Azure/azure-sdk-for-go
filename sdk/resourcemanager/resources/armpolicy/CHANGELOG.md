@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-02-05)
+## 1.0.0 (2026-02-06)
 ### Breaking Changes
 
 - Enum `AliasPathAttributes` has been removed
@@ -9,10 +9,6 @@
 - Enum `AliasType` has been removed
 - Enum `AssignmentScopeValidation` has been removed
 - Enum `ExemptionCategory` has been removed
-- Function `*AssignmentsClient.CreateByID` has been removed
-- Function `*AssignmentsClient.DeleteByID` has been removed
-- Function `*AssignmentsClient.GetByID` has been removed
-- Function `*AssignmentsClient.UpdateByID` has been removed
 - Function `*ClientFactory.NewDataPolicyManifestsClient` has been removed
 - Function `*ClientFactory.NewExemptionsClient` has been removed
 - Function `*ClientFactory.NewVariableValuesClient` has been removed
@@ -71,6 +67,7 @@
 - Struct `VariableValueColumnValue` has been removed
 - Struct `VariableValueListResult` has been removed
 - Struct `VariableValueProperties` has been removed
+- Field `Expand` of struct `AssignmentsClientGetByIDOptions` has been removed
 
 ### Features Added
 

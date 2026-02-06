@@ -4,14 +4,32 @@
 
 package armpolicy
 
+// AssignmentsClientCreateByIDResponse contains the response from method AssignmentsClient.CreateByID.
+type AssignmentsClientCreateByIDResponse struct {
+	// The policy assignment.
+	Assignment
+}
+
 // AssignmentsClientCreateResponse contains the response from method AssignmentsClient.Create.
 type AssignmentsClientCreateResponse struct {
 	// The policy assignment.
 	Assignment
 }
 
+// AssignmentsClientDeleteByIDResponse contains the response from method AssignmentsClient.DeleteByID.
+type AssignmentsClientDeleteByIDResponse struct {
+	// The policy assignment.
+	Assignment
+}
+
 // AssignmentsClientDeleteResponse contains the response from method AssignmentsClient.Delete.
 type AssignmentsClientDeleteResponse struct {
+	// The policy assignment.
+	Assignment
+}
+
+// AssignmentsClientGetByIDResponse contains the response from method AssignmentsClient.GetByID.
+type AssignmentsClientGetByIDResponse struct {
 	// The policy assignment.
 	Assignment
 }
@@ -44,6 +62,12 @@ type AssignmentsClientListForResourceResponse struct {
 type AssignmentsClientListResponse struct {
 	// The response of a PolicyAssignment list operation.
 	AssignmentListResult
+}
+
+// AssignmentsClientUpdateByIDResponse contains the response from method AssignmentsClient.UpdateByID.
+type AssignmentsClientUpdateByIDResponse struct {
+	// The policy assignment.
+	Assignment
 }
 
 // AssignmentsClientUpdateResponse contains the response from method AssignmentsClient.Update.

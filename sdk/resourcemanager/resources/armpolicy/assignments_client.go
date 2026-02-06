@@ -107,6 +107,73 @@ func (client *AssignmentsClient) createHandleResponse(resp *http.Response) (Assi
 	return result, nil
 }
 
+// CreateByID - Creates or updates a policy assignment.
+//
+// This operation creates or updates the policy assignment with the given ID. Policy assignments made on a scope apply to
+// all resources contained in that scope. For example, when you assign a policy to a resource group that policy applies to
+// all resources in the group. Policy assignment IDs have this format: '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+// Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+// (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
+// or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01
+//   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+//   - parameters - Parameters for policy assignment.
+//   - options - AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
+func (client *AssignmentsClient) CreateByID(ctx context.Context, policyAssignmentID string, parameters Assignment, options *AssignmentsClientCreateByIDOptions) (AssignmentsClientCreateByIDResponse, error) {
+	var err error
+	const operationName = "AssignmentsClient.CreateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createByIDCreateRequest(ctx, policyAssignmentID, parameters, options)
+	if err != nil {
+		return AssignmentsClientCreateByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AssignmentsClientCreateByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return AssignmentsClientCreateByIDResponse{}, err
+	}
+	resp, err := client.createByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// createByIDCreateRequest creates the CreateByID request.
+func (client *AssignmentsClient) createByIDCreateRequest(ctx context.Context, policyAssignmentID string, parameters Assignment, _ *AssignmentsClientCreateByIDOptions) (*policy.Request, error) {
+	urlPath := "/{policyAssignmentId}"
+	if policyAssignmentID == "" {
+		return nil, errors.New("parameter policyAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createByIDHandleResponse handles the CreateByID response.
+func (client *AssignmentsClient) createByIDHandleResponse(resp *http.Response) (AssignmentsClientCreateByIDResponse, error) {
+	result := AssignmentsClientCreateByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
+		return AssignmentsClientCreateByIDResponse{}, err
+	}
+	return result, nil
+}
+
 // Delete - This operation deletes a policy assignment, given its name and the scope it was created in. The scope of a policy
 // assignment is the part of its ID preceding '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -164,6 +231,67 @@ func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (Assi
 	result := AssignmentsClientDeleteResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientDeleteResponse{}, err
+	}
+	return result, nil
+}
+
+// DeleteByID - Deletes a policy assignment.
+//
+// This operation deletes the policy with the given ID. Policy assignment IDs have this format: '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+// Valid formats for {scope} are: '/providers/Microsoft.Management/managementGroups/{managementGroup}' (management group),
+// '/subscriptions/{subscriptionId}' (subscription), '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
+// (resource group), or '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+// (resource).
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01
+//   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+//   - options - AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
+func (client *AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientDeleteByIDOptions) (AssignmentsClientDeleteByIDResponse, error) {
+	var err error
+	const operationName = "AssignmentsClient.DeleteByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteByIDCreateRequest(ctx, policyAssignmentID, options)
+	if err != nil {
+		return AssignmentsClientDeleteByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AssignmentsClientDeleteByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return AssignmentsClientDeleteByIDResponse{}, err
+	}
+	resp, err := client.deleteByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// deleteByIDCreateRequest creates the DeleteByID request.
+func (client *AssignmentsClient) deleteByIDCreateRequest(ctx context.Context, policyAssignmentID string, _ *AssignmentsClientDeleteByIDOptions) (*policy.Request, error) {
+	urlPath := "/{policyAssignmentId}"
+	if policyAssignmentID == "" {
+		return nil, errors.New("parameter policyAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// deleteByIDHandleResponse handles the DeleteByID response.
+func (client *AssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (AssignmentsClientDeleteByIDResponse, error) {
+	result := AssignmentsClientDeleteByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
+		return AssignmentsClientDeleteByIDResponse{}, err
 	}
 	return result, nil
 }
@@ -227,6 +355,66 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 	result := AssignmentsClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByID - Retrieves the policy assignment with the given ID.
+//
+// The operation retrieves the policy assignment with the given ID. Policy assignment IDs have this format: '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+// Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+// (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
+// or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01
+//   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+//   - options - AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
+func (client *AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientGetByIDOptions) (AssignmentsClientGetByIDResponse, error) {
+	var err error
+	const operationName = "AssignmentsClient.GetByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByIDCreateRequest(ctx, policyAssignmentID, options)
+	if err != nil {
+		return AssignmentsClientGetByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AssignmentsClientGetByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AssignmentsClientGetByIDResponse{}, err
+	}
+	resp, err := client.getByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// getByIDCreateRequest creates the GetByID request.
+func (client *AssignmentsClient) getByIDCreateRequest(ctx context.Context, policyAssignmentID string, _ *AssignmentsClientGetByIDOptions) (*policy.Request, error) {
+	urlPath := "/{policyAssignmentId}"
+	if policyAssignmentID == "" {
+		return nil, errors.New("parameter policyAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByIDHandleResponse handles the GetByID response.
+func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (AssignmentsClientGetByIDResponse, error) {
+	result := AssignmentsClientGetByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
+		return AssignmentsClientGetByIDResponse{}, err
 	}
 	return result, nil
 }
@@ -624,6 +812,73 @@ func (client *AssignmentsClient) updateHandleResponse(resp *http.Response) (Assi
 	result := AssignmentsClientUpdateResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientUpdateResponse{}, err
+	}
+	return result, nil
+}
+
+// UpdateByID - Updates a policy assignment.
+//
+// This operation updates the policy assignment with the given ID. Policy assignments made on a scope apply to all resources
+// contained in that scope. For example, when you assign a policy to a resource group that policy applies to all resources
+// in the group. Policy assignment IDs have this format: '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+// Valid scopes are: management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+// (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
+// or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-03-01
+//   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+//   - parameters - Parameters for policy assignment patch request.
+//   - options - AssignmentsClientUpdateByIDOptions contains the optional parameters for the AssignmentsClient.UpdateByID method.
+func (client *AssignmentsClient) UpdateByID(ctx context.Context, policyAssignmentID string, parameters AssignmentUpdate, options *AssignmentsClientUpdateByIDOptions) (AssignmentsClientUpdateByIDResponse, error) {
+	var err error
+	const operationName = "AssignmentsClient.UpdateByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateByIDCreateRequest(ctx, policyAssignmentID, parameters, options)
+	if err != nil {
+		return AssignmentsClientUpdateByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AssignmentsClientUpdateByIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AssignmentsClientUpdateByIDResponse{}, err
+	}
+	resp, err := client.updateByIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// updateByIDCreateRequest creates the UpdateByID request.
+func (client *AssignmentsClient) updateByIDCreateRequest(ctx context.Context, policyAssignmentID string, parameters AssignmentUpdate, _ *AssignmentsClientUpdateByIDOptions) (*policy.Request, error) {
+	urlPath := "/{policyAssignmentId}"
+	if policyAssignmentID == "" {
+		return nil, errors.New("parameter policyAssignmentID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{policyAssignmentId}", policyAssignmentID)
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateByIDHandleResponse handles the UpdateByID response.
+func (client *AssignmentsClient) updateByIDHandleResponse(resp *http.Response) (AssignmentsClientUpdateByIDResponse, error) {
+	result := AssignmentsClientUpdateByIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
+		return AssignmentsClientUpdateByIDResponse{}, err
 	}
 	return result, nil
 }

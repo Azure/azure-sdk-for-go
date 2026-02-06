@@ -4,13 +4,28 @@
 
 package armpolicy
 
+// AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
+type AssignmentsClientCreateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssignmentsClientCreateOptions contains the optional parameters for the AssignmentsClient.Create method.
 type AssignmentsClientCreateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
+type AssignmentsClientDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
 type AssignmentsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
+type AssignmentsClientGetByIDOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -94,6 +109,11 @@ type AssignmentsClientListOptions struct {
 
 	// Maximum number of records to return. When the $top filter is not provided, it will return 500 records.
 	Top *int32
+}
+
+// AssignmentsClientUpdateByIDOptions contains the optional parameters for the AssignmentsClient.UpdateByID method.
+type AssignmentsClientUpdateByIDOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AssignmentsClientUpdateOptions contains the optional parameters for the AssignmentsClient.Update method.

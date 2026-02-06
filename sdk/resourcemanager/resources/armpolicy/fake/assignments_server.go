@@ -25,13 +25,25 @@ type AssignmentsServer struct {
 	// HTTP status codes to indicate success: http.StatusCreated
 	Create func(ctx context.Context, scope string, policyAssignmentName string, parameters armpolicy.Assignment, options *armpolicy.AssignmentsClientCreateOptions) (resp azfake.Responder[armpolicy.AssignmentsClientCreateResponse], errResp azfake.ErrorResponder)
 
+	// CreateByID is the fake for method AssignmentsClient.CreateByID
+	// HTTP status codes to indicate success: http.StatusCreated
+	CreateByID func(ctx context.Context, policyAssignmentID string, parameters armpolicy.Assignment, options *armpolicy.AssignmentsClientCreateByIDOptions) (resp azfake.Responder[armpolicy.AssignmentsClientCreateByIDResponse], errResp azfake.ErrorResponder)
+
 	// Delete is the fake for method AssignmentsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, scope string, policyAssignmentName string, options *armpolicy.AssignmentsClientDeleteOptions) (resp azfake.Responder[armpolicy.AssignmentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// DeleteByID is the fake for method AssignmentsClient.DeleteByID
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
+	DeleteByID func(ctx context.Context, policyAssignmentID string, options *armpolicy.AssignmentsClientDeleteByIDOptions) (resp azfake.Responder[armpolicy.AssignmentsClientDeleteByIDResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method AssignmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, scope string, policyAssignmentName string, options *armpolicy.AssignmentsClientGetOptions) (resp azfake.Responder[armpolicy.AssignmentsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetByID is the fake for method AssignmentsClient.GetByID
+	// HTTP status codes to indicate success: http.StatusOK
+	GetByID func(ctx context.Context, policyAssignmentID string, options *armpolicy.AssignmentsClientGetByIDOptions) (resp azfake.Responder[armpolicy.AssignmentsClientGetByIDResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method AssignmentsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,6 +64,10 @@ type AssignmentsServer struct {
 	// Update is the fake for method AssignmentsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, scope string, policyAssignmentName string, parameters armpolicy.AssignmentUpdate, options *armpolicy.AssignmentsClientUpdateOptions) (resp azfake.Responder[armpolicy.AssignmentsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// UpdateByID is the fake for method AssignmentsClient.UpdateByID
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateByID func(ctx context.Context, policyAssignmentID string, parameters armpolicy.AssignmentUpdate, options *armpolicy.AssignmentsClientUpdateByIDOptions) (resp azfake.Responder[armpolicy.AssignmentsClientUpdateByIDResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAssignmentsServerTransport creates a new instance of AssignmentsServerTransport with the provided implementation.
@@ -102,10 +118,16 @@ func (a *AssignmentsServerTransport) dispatchToMethodFake(req *http.Request, met
 			switch method {
 			case "AssignmentsClient.Create":
 				res.resp, res.err = a.dispatchCreate(req)
+			case "AssignmentsClient.CreateByID":
+				res.resp, res.err = a.dispatchCreateByID(req)
 			case "AssignmentsClient.Delete":
 				res.resp, res.err = a.dispatchDelete(req)
+			case "AssignmentsClient.DeleteByID":
+				res.resp, res.err = a.dispatchDeleteByID(req)
 			case "AssignmentsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
+			case "AssignmentsClient.GetByID":
+				res.resp, res.err = a.dispatchGetByID(req)
 			case "AssignmentsClient.NewListPager":
 				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AssignmentsClient.NewListForManagementGroupPager":
@@ -116,6 +138,8 @@ func (a *AssignmentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = a.dispatchNewListForResourceGroupPager(req)
 			case "AssignmentsClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
+			case "AssignmentsClient.UpdateByID":
+				res.resp, res.err = a.dispatchUpdateByID(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -172,6 +196,39 @@ func (a *AssignmentsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (a *AssignmentsServerTransport) dispatchCreateByID(req *http.Request) (*http.Response, error) {
+	if a.srv.CreateByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateByID not implemented")}
+	}
+	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpolicy.Assignment](req)
+	if err != nil {
+		return nil, err
+	}
+	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CreateByID(req.Context(), policyAssignmentIDParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusCreated}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusCreated", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Assignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (a *AssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
@@ -191,6 +248,35 @@ func (a *AssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 		return nil, err
 	}
 	respr, errRespr := a.srv.Delete(req.Context(), scopeParam, policyAssignmentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Assignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AssignmentsServerTransport) dispatchDeleteByID(req *http.Request) (*http.Response, error) {
+	if a.srv.DeleteByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteByID not implemented")}
+	}
+	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.DeleteByID(req.Context(), policyAssignmentIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -236,6 +322,35 @@ func (a *AssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 		}
 	}
 	respr, errRespr := a.srv.Get(req.Context(), scopeParam, policyAssignmentNameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Assignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AssignmentsServerTransport) dispatchGetByID(req *http.Request) (*http.Response, error) {
+	if a.srv.GetByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetByID not implemented")}
+	}
+	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GetByID(req.Context(), policyAssignmentIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -565,6 +680,39 @@ func (a *AssignmentsServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 		return nil, err
 	}
 	respr, errRespr := a.srv.Update(req.Context(), scopeParam, policyAssignmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Assignment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AssignmentsServerTransport) dispatchUpdateByID(req *http.Request) (*http.Response, error) {
+	if a.srv.UpdateByID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateByID not implemented")}
+	}
+	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpolicy.AssignmentUpdate](req)
+	if err != nil {
+		return nil, err
+	}
+	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.UpdateByID(req.Context(), policyAssignmentIDParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

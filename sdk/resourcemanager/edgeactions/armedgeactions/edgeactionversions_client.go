@@ -169,7 +169,7 @@ func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -360,7 +360,7 @@ func (client *EdgeActionVersionsClient) getHandleResponse(resp *http.Response) (
 	return result, nil
 }
 
-// BeginGetVersionCode - A long-running resource action.
+// BeginGetVersionCode - Get the version code for the edge action version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview
@@ -386,7 +386,7 @@ func (client *EdgeActionVersionsClient) BeginGetVersionCode(ctx context.Context,
 	}
 }
 
-// GetVersionCode - A long-running resource action.
+// GetVersionCode - Get the version code for the edge action version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview
@@ -506,7 +506,7 @@ func (client *EdgeActionVersionsClient) listByEdgeActionHandleResponse(resp *htt
 	return result, nil
 }
 
-// BeginSwapDefault - A long-running resource action.
+// BeginSwapDefault - Swap the default version for the edge action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview
@@ -532,7 +532,7 @@ func (client *EdgeActionVersionsClient) BeginSwapDefault(ctx context.Context, re
 	}
 }
 
-// SwapDefault - A long-running resource action.
+// SwapDefault - Swap the default version for the edge action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-12-01-preview

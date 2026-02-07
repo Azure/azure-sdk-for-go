@@ -73,10 +73,15 @@ func ExampleEdgeActionExecutionFiltersClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armedgeactions.EdgeActionExecutionFiltersClientDeleteResponse{
+	// }
 }
 
 // Generated from example definition: 2025-12-01-preview/EdgeActionExecutionFilters_Get.json

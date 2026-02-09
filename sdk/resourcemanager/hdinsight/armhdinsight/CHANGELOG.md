@@ -1,5 +1,30 @@
 # Release History
 
+## 1.3.0-beta.4 (2026-02-09)
+### Breaking Changes
+
+- Function `*ConfigurationsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters map[string]*string, options *ConfigurationsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, parameters ClusterConfiguration, options *ConfigurationsClientBeginUpdateOptions)`
+- Type of `ClusterConfigurations.Configurations` has been changed from `map[string]map[string]*string` to `map[string]*ClusterConfiguration`
+- Type of `ClusterDefinition.Configurations` has been changed from `any` to `*ClusterDefinitionConfigurations`
+- Type of `ClusterGetProperties.ProvisioningState` has been changed from `*HDInsightClusterProvisioningState` to `*ClusterProvisioningState`
+- Enum `HDInsightClusterProvisioningState` has been removed
+- Operation `*PrivateLinkResourcesClient.ListByCluster` has supported pagination, use `*PrivateLinkResourcesClient.NewListByClusterPager` instead.
+- Struct `ClusterListPersistedScriptActionsResult` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ScriptActionPersistedGetResponseSpec` has been removed
+- Struct `TrackedResource` has been removed
+- Field `Value` of struct `ConfigurationsClientGetResponse` has been removed
+
+### Features Added
+
+- New enum type `ClusterProvisioningState` with values `ClusterProvisioningStateCanceled`, `ClusterProvisioningStateDeleting`, `ClusterProvisioningStateFailed`, `ClusterProvisioningStateInProgress`, `ClusterProvisioningStateSucceeded`
+- New struct `ClusterConfiguration`
+- New struct `ClusterDefinitionConfigurations`
+- New anonymous field `ClusterConfiguration` in struct `ConfigurationsClientGetResponse`
+
+
 ## 1.3.0-beta.3 (2025-10-23)
 ### Features Added
 

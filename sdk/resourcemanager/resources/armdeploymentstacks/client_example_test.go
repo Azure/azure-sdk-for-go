@@ -24,25 +24,25 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtManagementGroup(ctx, "myMg", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"tagkey": to.Ptr("tagVal"),
 		},
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
+				Resources:        to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:	to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 				ExcludedPrincipals: []*string{
 					to.Ptr("principal"),
 				},
 				ExcludedActions: []*string{
 					to.Ptr("action"),
 				},
-				ApplyToChildScopes:	to.Ptr(false),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 				"parameter1": {
@@ -130,25 +130,25 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtResourceGroup(ctx, "deploymentStacksRG", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"tagkey": to.Ptr("tagVal"),
 		},
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
+				Resources:        to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:	to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 				ExcludedPrincipals: []*string{
 					to.Ptr("principal"),
 				},
 				ExcludedActions: []*string{
 					to.Ptr("action"),
 				},
-				ApplyToChildScopes:	to.Ptr(false),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 				"parameter1": {
@@ -236,25 +236,25 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdateAtSubscription(ctx, "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"tagkey": to.Ptr("tagVal"),
 		},
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
+				Resources:        to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:	to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 				ExcludedPrincipals: []*string{
 					to.Ptr("principal"),
 				},
 				ExcludedActions: []*string{
 					to.Ptr("action"),
 				},
-				ApplyToChildScopes:	to.Ptr(false),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 				"parameter1": {
@@ -1290,25 +1290,25 @@ func ExampleClient_BeginValidateStackAtManagementGroup() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginValidateStackAtManagementGroup(ctx, "myMg", "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"tagkey": to.Ptr("tagVal"),
 		},
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDetach),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDetach),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
+				Resources:        to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDetach),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDetach),
+				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:	to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 				ExcludedPrincipals: []*string{
 					to.Ptr("principal"),
 				},
 				ExcludedActions: []*string{
 					to.Ptr("action"),
 				},
-				ApplyToChildScopes:	to.Ptr(false),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			TemplateLink: &armdeploymentstacks.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
@@ -1382,19 +1382,19 @@ func ExampleClient_BeginValidateStackAtResourceGroup() {
 		},
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDelete),
+				Resources:        to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDelete),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:	to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 				ExcludedPrincipals: []*string{
 					to.Ptr("principal"),
 				},
 				ExcludedActions: []*string{
 					to.Ptr("action"),
 				},
-				ApplyToChildScopes:	to.Ptr(false),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			TemplateLink: &armdeploymentstacks.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
@@ -1466,25 +1466,25 @@ func ExampleClient_BeginValidateStackAtSubscription() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginValidateStackAtSubscription(ctx, "simpleDeploymentStack", armdeploymentstacks.DeploymentStack{
-		Location:	to.Ptr("eastus"),
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"tagkey": to.Ptr("tagVal"),
 		},
 		Properties: &armdeploymentstacks.DeploymentStackProperties{
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
-				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
-				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDelete),
+				Resources:        to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+				ResourceGroups:   to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDelete),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:	to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
+				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeDenyDelete),
 				ExcludedPrincipals: []*string{
 					to.Ptr("principal"),
 				},
 				ExcludedActions: []*string{
 					to.Ptr("action"),
 				},
-				ApplyToChildScopes:	to.Ptr(false),
+				ApplyToChildScopes: to.Ptr(false),
 			},
 			TemplateLink: &armdeploymentstacks.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),

@@ -1,6 +1,6 @@
-# Azure Computebulkactions Module for Go
+# Azure Compute Bulkactions Module for Go
 
-The `armcomputebulkactions` module provides operations for working with Azure Computebulkactions.
+The `armcomputebulkactions` module provides operations for working with Azure Compute Bulkactions.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/computebulkactions/armcomputebulkactions)
 
@@ -15,7 +15,7 @@ The `armcomputebulkactions` module provides operations for working with Azure Co
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Computebulkactions module:
+Install the Azure Compute Bulkactions module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computebulkactions/armcomputebulkactions
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computebulkactions/
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Computebulkactions.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Compute Bulkactions.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Computebulkactions module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Compute Bulkactions module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcomputebulkactions.NewClientFactory(<subscription ID>, cred, nil)

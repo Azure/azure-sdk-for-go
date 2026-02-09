@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Small performance optimizations to API's using query engine. See [PR 25669](https://github.com/Azure/azure-sdk-for-go/pull/25669)
 
 ## 1.5.0-beta.4 (2025-11-24)
 

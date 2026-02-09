@@ -5,6 +5,7 @@ package blob
 
 import (
 	"context"
+	"errors"
 	"io"
 	"os"
 	"sync"
@@ -148,6 +149,9 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (b *Client) Delete(ctx context.Context, o *DeleteOptions) (DeleteResponse, error) {
+	if o != nil && o.AccessTierIfModifiedSince != nil && o.AccessTierIfUnmodifiedSince != nil {
+		return DeleteResponse{}, errors.New("AccessTierIfModifiedSince and AccessTierIfUnmodifiedSince cannot both be set")
+	}
 	deleteOptions, leaseInfo, accessConditions := o.format()
 	resp, err := b.generated().Delete(ctx, deleteOptions, leaseInfo, accessConditions)
 	return resp, err

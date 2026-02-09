@@ -199,6 +199,12 @@ type DeleteOptions struct {
 	// with caution.
 	// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob
 	BlobDeleteType *DeleteType
+
+	// Specify this header value to operate only on a blob if the access-tier has been modified since the specified date/time.
+	AccessTierIfModifiedSince *time.Time
+
+	// Specify this header value to operate only on a blob if the access-tier has not been modified since the specified date/time.
+	AccessTierIfUnmodifiedSince *time.Time
 }
 
 func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -207,8 +213,10 @@ func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated
 	}
 
 	basics := generated.BlobClientDeleteOptions{
-		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType, // None by default
+		DeleteSnapshots:             o.DeleteSnapshots,
+		DeleteType:                  o.BlobDeleteType, // None by default
+		AccessTierIfModifiedSince:   o.AccessTierIfModifiedSince,
+		AccessTierIfUnmodifiedSince: o.AccessTierIfUnmodifiedSince,
 	}
 
 	if o.AccessConditions == nil {

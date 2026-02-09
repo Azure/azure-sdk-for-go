@@ -8,20 +8,17 @@ import "time"
 
 // ActionOnUnmanage - Defines the behavior of resources that are no longer managed after the stack is updated or deleted.
 type ActionOnUnmanage struct {
-	// REQUIRED; Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
-	// will leave the resource in it's current state.
-	Resources *DeploymentStacksDeleteDetachEnum
+	// REQUIRED; Specifies an action for a newly unmanaged resource.
+	Resources *UnmanageActionResourceMode
 
-	// Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will
-	// leave the resource in it's current state.
-	ManagementGroups *DeploymentStacksDeleteDetachEnum
+	// Specifies an action for a newly unmanaged resource management group.
+	ManagementGroups *UnmanageActionManagementGroupMode
 
-	// Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach will
-	// leave the resource in it's current state.
-	ResourceGroups *DeploymentStacksDeleteDetachEnum
+	// Specifies an action for a newly unmanaged resource group.
+	ResourceGroups *UnmanageActionResourceGroupMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	ResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	ResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // ChangeBase - Base model for properties with the before-and-after property values.
@@ -222,9 +219,6 @@ type DeploymentStackProperties struct {
 	// Deployment stack description. Max length of 4096 characters.
 	Description *string
 
-	// The error detail.
-	Error *ErrorDetail
-
 	// The deployment extension configs. Keys of this object are extension aliases as defined in the deployment template.
 	ExtensionConfigs map[string]*DeploymentExtensionConfig
 
@@ -275,6 +269,9 @@ type DeploymentStackProperties struct {
 
 	// READ-ONLY; The duration of the last successful Deployment stack update.
 	Duration *string
+
+	// READ-ONLY; The error detail.
+	Error *ErrorDetail
 
 	// READ-ONLY; An array of resources that failed to reach goal state during the most recent update. Each resourceId is accompanied
 	// by an error message.
@@ -336,11 +333,11 @@ type DeploymentStackValidateProperties struct {
 
 // DeploymentStackValidateResult - The Deployment stack validation result.
 type DeploymentStackValidateResult struct {
-	// The error detail.
-	Error *ErrorDetail
-
 	// The validation result details.
 	Properties *DeploymentStackValidateProperties
+
+	// READ-ONLY; The error detail.
+	Error *ErrorDetail
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
 	ID *string
@@ -472,11 +469,11 @@ type ResourceReference struct {
 // ResourceReferenceExtended - The resourceId extended model. This is used to document failed resources with a resourceId
 // and a corresponding error.
 type ResourceReferenceExtended struct {
-	// The error detail.
-	Error *ErrorDetail
-
 	// READ-ONLY; The API version the resource was deployed with
 	APIVersion *string
+
+	// READ-ONLY; The error detail.
+	Error *ErrorDetail
 
 	// READ-ONLY; The extension the resource was deployed with.
 	Extension *DeploymentExtension
@@ -663,9 +660,6 @@ type WhatIfResultProperties struct {
 	// Deployment stack description. Max length of 4096 characters.
 	Description *string
 
-	// The error detail.
-	Error *ErrorDetail
-
 	// The deployment extension configs. Keys of this object are extension aliases as defined in the deployment template.
 	ExtensionConfigs map[string]*DeploymentExtensionConfig
 
@@ -708,6 +702,9 @@ type WhatIfResultProperties struct {
 
 	// READ-ONLY; List of resource diagnostics detected by What-If operation.
 	Diagnostics []*Diagnostic
+
+	// READ-ONLY; The error detail.
+	Error *ErrorDetail
 
 	// READ-ONLY; State of the deployment stack.
 	ProvisioningState *DeploymentStackProvisioningState

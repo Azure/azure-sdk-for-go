@@ -41,7 +41,7 @@ func NewWhatIfResultsAtManagementGroupClient(credential azcore.TokenCredential, 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - resource - Resource create parameters.
 //   - options - WhatIfResultsAtManagementGroupClientBeginCreateOrUpdateOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.BeginCreateOrUpdate
@@ -119,7 +119,7 @@ func (client *WhatIfResultsAtManagementGroupClient) createOrUpdateCreateRequest(
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - options - WhatIfResultsAtManagementGroupClientDeleteOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.Delete
 //     method.
@@ -184,7 +184,7 @@ func (client *WhatIfResultsAtManagementGroupClient) deleteCreateRequest(ctx cont
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - options - WhatIfResultsAtManagementGroupClientGetOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.Get
 //     method.
@@ -244,7 +244,7 @@ func (client *WhatIfResultsAtManagementGroupClient) getHandleResponse(resp *http
 // NewListPager - Lists Deployment stacks at the specified scope.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - options - WhatIfResultsAtManagementGroupClientListOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.NewListPager
 //     method.
 func (client *WhatIfResultsAtManagementGroupClient) NewListPager(managementGroupID string, options *WhatIfResultsAtManagementGroupClientListOptions) *runtime.Pager[WhatIfResultsAtManagementGroupClientListResponse] {
@@ -301,7 +301,7 @@ func (client *WhatIfResultsAtManagementGroupClient) listHandleResponse(resp *htt
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStacksWhatIfResultName - Name of the deployment stack what-if result.
 //   - options - WhatIfResultsAtManagementGroupClientBeginWhatIfOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.BeginWhatIf
 //     method.

@@ -23,23 +23,23 @@ import (
 type WhatIfResultsAtManagementGroupServer struct {
 	// BeginCreateOrUpdate is the fake for method WhatIfResultsAtManagementGroupClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, resource armdeploymentstacks.WhatIfResult, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate	func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, resource armdeploymentstacks.WhatIfResult, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method WhatIfResultsAtManagementGroupClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientDeleteOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete	func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientDeleteOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WhatIfResultsAtManagementGroupClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientGetOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientGetResponse], errResp azfake.ErrorResponder)
+	Get	func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientGetOptions) (resp azfake.Responder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WhatIfResultsAtManagementGroupClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(managementGroupID string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientListOptions) (resp azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientListResponse])
+	NewListPager	func(managementGroupID string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientListOptions) (resp azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientListResponse])
 
 	// BeginWhatIf is the fake for method WhatIfResultsAtManagementGroupClient.BeginWhatIf
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIf func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientWhatIfResponse], errResp azfake.ErrorResponder)
+	BeginWhatIf	func(ctx context.Context, managementGroupID string, deploymentStacksWhatIfResultName string, options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientWhatIfResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWhatIfResultsAtManagementGroupServerTransport creates a new instance of WhatIfResultsAtManagementGroupServerTransport with the provided implementation.
@@ -47,20 +47,20 @@ type WhatIfResultsAtManagementGroupServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWhatIfResultsAtManagementGroupServerTransport(srv *WhatIfResultsAtManagementGroupServer) *WhatIfResultsAtManagementGroupServerTransport {
 	return &WhatIfResultsAtManagementGroupServerTransport{
-		srv:                 srv,
-		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientCreateOrUpdateResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientListResponse]](),
-		beginWhatIf:         newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientWhatIfResponse]](),
+		srv:			srv,
+		beginCreateOrUpdate:	newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientCreateOrUpdateResponse]](),
+		newListPager:		newTracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientListResponse]](),
+		beginWhatIf:		newTracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientWhatIfResponse]](),
 	}
 }
 
 // WhatIfResultsAtManagementGroupServerTransport connects instances of armdeploymentstacks.WhatIfResultsAtManagementGroupClient to instances of WhatIfResultsAtManagementGroupServer.
 // Don't use this type directly, use NewWhatIfResultsAtManagementGroupServerTransport instead.
 type WhatIfResultsAtManagementGroupServerTransport struct {
-	srv                 *WhatIfResultsAtManagementGroupServer
-	beginCreateOrUpdate *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientCreateOrUpdateResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientListResponse]]
-	beginWhatIf         *tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientWhatIfResponse]]
+	srv			*WhatIfResultsAtManagementGroupServer
+	beginCreateOrUpdate	*tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientCreateOrUpdateResponse]]
+	newListPager		*tracker[azfake.PagerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientListResponse]]
+	beginWhatIf		*tracker[azfake.PollerResponder[armdeploymentstacks.WhatIfResultsAtManagementGroupClientWhatIfResponse]]
 }
 
 // Do implements the policy.Transporter interface for WhatIfResultsAtManagementGroupServerTransport.
@@ -186,22 +186,22 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchDelete(req *http
 	if err != nil {
 		return nil, err
 	}
-	unmanageActionResourcesParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourcesUnescaped))
+	unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
 	unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
 	if err != nil {
 		return nil, err
 	}
-	unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourceGroupsUnescaped))
+	unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
 	unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
 	if err != nil {
 		return nil, err
 	}
-	unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionManagementGroupsUnescaped))
+	unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
 	unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
 	if err != nil {
 		return nil, err
 	}
-	unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.DeploymentStacksResourcesWithoutDeleteSupportEnum(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+	unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
 	bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
 	if err != nil {
 		return nil, err
@@ -213,11 +213,11 @@ func (w *WhatIfResultsAtManagementGroupServerTransport) dispatchDelete(req *http
 	var options *armdeploymentstacks.WhatIfResultsAtManagementGroupClientDeleteOptions
 	if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || unmanageActionResourcesWithoutDeleteSupportParam != nil || bypassStackOutOfSyncErrorParam != nil {
 		options = &armdeploymentstacks.WhatIfResultsAtManagementGroupClientDeleteOptions{
-			UnmanageActionResources:                     unmanageActionResourcesParam,
-			UnmanageActionResourceGroups:                unmanageActionResourceGroupsParam,
-			UnmanageActionManagementGroups:              unmanageActionManagementGroupsParam,
-			UnmanageActionResourcesWithoutDeleteSupport: unmanageActionResourcesWithoutDeleteSupportParam,
-			BypassStackOutOfSyncError:                   bypassStackOutOfSyncErrorParam,
+			UnmanageActionResources:			unmanageActionResourcesParam,
+			UnmanageActionResourceGroups:			unmanageActionResourceGroupsParam,
+			UnmanageActionManagementGroups:			unmanageActionManagementGroupsParam,
+			UnmanageActionResourcesWithoutDeleteSupport:	unmanageActionResourcesWithoutDeleteSupportParam,
+			BypassStackOutOfSyncError:			bypassStackOutOfSyncErrorParam,
 		}
 	}
 	respr, errRespr := w.srv.Delete(req.Context(), managementGroupIDParam, deploymentStacksWhatIfResultNameParam, options)

@@ -44,7 +44,7 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStackName - Name of the deployment stack.
 //   - deploymentStack - Resource create parameters.
 //   - options - ClientBeginCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the Client.BeginCreateOrUpdateAtManagementGroup
@@ -279,7 +279,7 @@ func (client *Client) createOrUpdateAtSubscriptionCreateRequest(ctx context.Cont
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientBeginDeleteAtManagementGroupOptions contains the optional parameters for the Client.BeginDeleteAtManagementGroup
 //     method.
@@ -545,7 +545,7 @@ func (client *Client) deleteAtSubscriptionCreateRequest(ctx context.Context, dep
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientExportTemplateAtManagementGroupOptions contains the optional parameters for the Client.ExportTemplateAtManagementGroup
 //     method.
@@ -731,7 +731,7 @@ func (client *Client) exportTemplateAtSubscriptionHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStackName - Name of the deployment stack.
 //   - options - ClientGetAtManagementGroupOptions contains the optional parameters for the Client.GetAtManagementGroup method.
 func (client *Client) GetAtManagementGroup(ctx context.Context, managementGroupID string, deploymentStackName string, options *ClientGetAtManagementGroupOptions) (ClientGetAtManagementGroupResponse, error) {
@@ -913,7 +913,7 @@ func (client *Client) getAtSubscriptionHandleResponse(resp *http.Response) (Clie
 // NewListAtManagementGroupPager - Lists Deployment stacks at the specified scope.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - options - ClientListAtManagementGroupOptions contains the optional parameters for the Client.NewListAtManagementGroupPager
 //     method.
 func (client *Client) NewListAtManagementGroupPager(managementGroupID string, options *ClientListAtManagementGroupOptions) *runtime.Pager[ClientListAtManagementGroupResponse] {
@@ -1085,7 +1085,7 @@ func (client *Client) listAtSubscriptionHandleResponse(resp *http.Response) (Cli
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-07-01
-//   - managementGroupID - The name of the management group. The name is case insensitive.
+//   - managementGroupID - The management group ID.
 //   - deploymentStackName - Name of the deployment stack.
 //   - deploymentStack - The content of the action request
 //   - options - ClientBeginValidateStackAtManagementGroupOptions contains the optional parameters for the Client.BeginValidateStackAtManagementGroup

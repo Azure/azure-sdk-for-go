@@ -134,25 +134,6 @@ func PossibleDeploymentStackProvisioningStateValues() []DeploymentStackProvision
 	}
 }
 
-// DeploymentStacksDeleteDetachEnum - Specifies an action for a newly unmanaged resource. Delete will attempt to delete the
-// resource from Azure. Detach will leave the resource in it's current state.
-type DeploymentStacksDeleteDetachEnum string
-
-const (
-	// DeploymentStacksDeleteDetachEnumDelete - Delete the specified resources from Azure
-	DeploymentStacksDeleteDetachEnumDelete DeploymentStacksDeleteDetachEnum = "delete"
-	// DeploymentStacksDeleteDetachEnumDetach - Keep the specified resources in Azure
-	DeploymentStacksDeleteDetachEnumDetach DeploymentStacksDeleteDetachEnum = "detach"
-)
-
-// PossibleDeploymentStacksDeleteDetachEnumValues returns the possible values for the DeploymentStacksDeleteDetachEnum const type.
-func PossibleDeploymentStacksDeleteDetachEnumValues() []DeploymentStacksDeleteDetachEnum {
-	return []DeploymentStacksDeleteDetachEnum{
-		DeploymentStacksDeleteDetachEnumDelete,
-		DeploymentStacksDeleteDetachEnumDetach,
-	}
-}
-
 // DeploymentStacksDiagnosticLevel - Denotes the additional response level.
 type DeploymentStacksDiagnosticLevel string
 
@@ -192,25 +173,6 @@ func PossibleDeploymentStacksManagementStatusValues() []DeploymentStacksManageme
 		DeploymentStacksManagementStatusManaged,
 		DeploymentStacksManagementStatusUnknown,
 		DeploymentStacksManagementStatusUnmanaged,
-	}
-}
-
-// DeploymentStacksResourcesWithoutDeleteSupportEnum - Specifies an action for resources that do not support deletion.
-type DeploymentStacksResourcesWithoutDeleteSupportEnum string
-
-const (
-	// DeploymentStacksResourcesWithoutDeleteSupportEnumDetach - Detach the specified resources from the deployment stack and
-	// continue
-	DeploymentStacksResourcesWithoutDeleteSupportEnumDetach DeploymentStacksResourcesWithoutDeleteSupportEnum = "detach"
-	// DeploymentStacksResourcesWithoutDeleteSupportEnumFail - Fail the deployment stack if resources cannot be deleted
-	DeploymentStacksResourcesWithoutDeleteSupportEnumFail DeploymentStacksResourcesWithoutDeleteSupportEnum = "fail"
-)
-
-// PossibleDeploymentStacksResourcesWithoutDeleteSupportEnumValues returns the possible values for the DeploymentStacksResourcesWithoutDeleteSupportEnum const type.
-func PossibleDeploymentStacksResourcesWithoutDeleteSupportEnumValues() []DeploymentStacksResourcesWithoutDeleteSupportEnum {
-	return []DeploymentStacksResourcesWithoutDeleteSupportEnum{
-		DeploymentStacksResourcesWithoutDeleteSupportEnumDetach,
-		DeploymentStacksResourcesWithoutDeleteSupportEnumFail,
 	}
 }
 
@@ -316,6 +278,78 @@ func PossibleResourceStatusModeValues() []ResourceStatusMode {
 		ResourceStatusModeDeleteFailed,
 		ResourceStatusModeManaged,
 		ResourceStatusModeRemoveDenyFailed,
+	}
+}
+
+// ResourcesWithoutDeleteSupportAction - Specifies an action for resources that do not support deletion.
+type ResourcesWithoutDeleteSupportAction string
+
+const (
+	// ResourcesWithoutDeleteSupportActionDetach - Detach the specified resources from the deployment stack and continue.
+	ResourcesWithoutDeleteSupportActionDetach ResourcesWithoutDeleteSupportAction = "detach"
+	// ResourcesWithoutDeleteSupportActionFail - Fail the deployment stack if resources cannot be deleted.
+	ResourcesWithoutDeleteSupportActionFail ResourcesWithoutDeleteSupportAction = "fail"
+)
+
+// PossibleResourcesWithoutDeleteSupportActionValues returns the possible values for the ResourcesWithoutDeleteSupportAction const type.
+func PossibleResourcesWithoutDeleteSupportActionValues() []ResourcesWithoutDeleteSupportAction {
+	return []ResourcesWithoutDeleteSupportAction{
+		ResourcesWithoutDeleteSupportActionDetach,
+		ResourcesWithoutDeleteSupportActionFail,
+	}
+}
+
+// UnmanageActionManagementGroupMode - Specifies an action for a newly unmanaged resource.
+type UnmanageActionManagementGroupMode string
+
+const (
+	// UnmanageActionManagementGroupModeDelete - Delete the management groups from Azure.
+	UnmanageActionManagementGroupModeDelete UnmanageActionManagementGroupMode = "delete"
+	// UnmanageActionManagementGroupModeDetach - Keep the management groups in Azure.
+	UnmanageActionManagementGroupModeDetach UnmanageActionManagementGroupMode = "detach"
+)
+
+// PossibleUnmanageActionManagementGroupModeValues returns the possible values for the UnmanageActionManagementGroupMode const type.
+func PossibleUnmanageActionManagementGroupModeValues() []UnmanageActionManagementGroupMode {
+	return []UnmanageActionManagementGroupMode{
+		UnmanageActionManagementGroupModeDelete,
+		UnmanageActionManagementGroupModeDetach,
+	}
+}
+
+// UnmanageActionResourceGroupMode - Specifies an action for a newly unmanaged resource group.
+type UnmanageActionResourceGroupMode string
+
+const (
+	// UnmanageActionResourceGroupModeDelete - Delete the resource groups from Azure.
+	UnmanageActionResourceGroupModeDelete UnmanageActionResourceGroupMode = "delete"
+	// UnmanageActionResourceGroupModeDetach - Keep the resource groups in Azure.
+	UnmanageActionResourceGroupModeDetach UnmanageActionResourceGroupMode = "detach"
+)
+
+// PossibleUnmanageActionResourceGroupModeValues returns the possible values for the UnmanageActionResourceGroupMode const type.
+func PossibleUnmanageActionResourceGroupModeValues() []UnmanageActionResourceGroupMode {
+	return []UnmanageActionResourceGroupMode{
+		UnmanageActionResourceGroupModeDelete,
+		UnmanageActionResourceGroupModeDetach,
+	}
+}
+
+// UnmanageActionResourceMode - Specifies an action for a newly unmanaged resource.
+type UnmanageActionResourceMode string
+
+const (
+	// UnmanageActionResourceModeDelete - Delete the resources from Azure
+	UnmanageActionResourceModeDelete UnmanageActionResourceMode = "delete"
+	// UnmanageActionResourceModeDetach - Keep the resources in Azure
+	UnmanageActionResourceModeDetach UnmanageActionResourceMode = "detach"
+)
+
+// PossibleUnmanageActionResourceModeValues returns the possible values for the UnmanageActionResourceMode const type.
+func PossibleUnmanageActionResourceModeValues() []UnmanageActionResourceMode {
+	return []UnmanageActionResourceMode{
+		UnmanageActionResourceModeDelete,
+		UnmanageActionResourceModeDetach,
 	}
 }
 

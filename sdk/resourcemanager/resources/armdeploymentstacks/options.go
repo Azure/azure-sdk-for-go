@@ -35,16 +35,16 @@ type ClientBeginDeleteAtManagementGroupOptions struct {
 	ResumeToken string
 
 	// Flag to indicate delete rather than detach for unmanaged management groups.
-	UnmanageActionManagementGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resource groups.
-	UnmanageActionResourceGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resources.
-	UnmanageActionResources *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResources *UnmanageActionResourceMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	UnmanageActionResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	UnmanageActionResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // ClientBeginDeleteAtResourceGroupOptions contains the optional parameters for the Client.BeginDeleteAtResourceGroup method.
@@ -56,16 +56,16 @@ type ClientBeginDeleteAtResourceGroupOptions struct {
 	ResumeToken string
 
 	// Flag to indicate delete rather than detach for unmanaged management groups.
-	UnmanageActionManagementGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resource groups.
-	UnmanageActionResourceGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resources.
-	UnmanageActionResources *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResources *UnmanageActionResourceMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	UnmanageActionResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	UnmanageActionResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // ClientBeginDeleteAtSubscriptionOptions contains the optional parameters for the Client.BeginDeleteAtSubscription method.
@@ -77,16 +77,16 @@ type ClientBeginDeleteAtSubscriptionOptions struct {
 	ResumeToken string
 
 	// Flag to indicate delete rather than detach for unmanaged management groups.
-	UnmanageActionManagementGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resource groups.
-	UnmanageActionResourceGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resources.
-	UnmanageActionResources *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResources *UnmanageActionResourceMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	UnmanageActionResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	UnmanageActionResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // ClientBeginValidateStackAtManagementGroupOptions contains the optional parameters for the Client.BeginValidateStackAtManagementGroup
@@ -179,16 +179,16 @@ type WhatIfResultsAtManagementGroupClientDeleteOptions struct {
 	BypassStackOutOfSyncError *bool
 
 	// Flag to indicate delete rather than detach for unmanaged management groups.
-	UnmanageActionManagementGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resource groups.
-	UnmanageActionResourceGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resources.
-	UnmanageActionResources *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResources *UnmanageActionResourceMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	UnmanageActionResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	UnmanageActionResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // WhatIfResultsAtManagementGroupClientGetOptions contains the optional parameters for the WhatIfResultsAtManagementGroupClient.Get
@@ -224,16 +224,16 @@ type WhatIfResultsAtResourceGroupClientDeleteOptions struct {
 	BypassStackOutOfSyncError *bool
 
 	// Flag to indicate delete rather than detach for unmanaged management groups.
-	UnmanageActionManagementGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resource groups.
-	UnmanageActionResourceGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resources.
-	UnmanageActionResources *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResources *UnmanageActionResourceMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	UnmanageActionResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	UnmanageActionResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // WhatIfResultsAtResourceGroupClientGetOptions contains the optional parameters for the WhatIfResultsAtResourceGroupClient.Get
@@ -269,16 +269,16 @@ type WhatIfResultsAtSubscriptionClientDeleteOptions struct {
 	BypassStackOutOfSyncError *bool
 
 	// Flag to indicate delete rather than detach for unmanaged management groups.
-	UnmanageActionManagementGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionManagementGroups *UnmanageActionManagementGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resource groups.
-	UnmanageActionResourceGroups *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResourceGroups *UnmanageActionResourceGroupMode
 
 	// Flag to indicate delete rather than detach for unmanaged resources.
-	UnmanageActionResources *DeploymentStacksDeleteDetachEnum
+	UnmanageActionResources *UnmanageActionResourceMode
 
 	// Some resources do not support deletion. This flag will denote how the stack should handle those resources.
-	UnmanageActionResourcesWithoutDeleteSupport *DeploymentStacksResourcesWithoutDeleteSupportEnum
+	UnmanageActionResourcesWithoutDeleteSupport *ResourcesWithoutDeleteSupportAction
 }
 
 // WhatIfResultsAtSubscriptionClientGetOptions contains the optional parameters for the WhatIfResultsAtSubscriptionClient.Get

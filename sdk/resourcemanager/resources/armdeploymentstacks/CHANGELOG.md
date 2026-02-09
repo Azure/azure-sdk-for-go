@@ -1,20 +1,12 @@
 # Release History
 
-## 2.0.0 (2026-01-27)
+## 2.0.0 (2026-02-09)
 ### Breaking Changes
 
-- Type of `ClientBeginDeleteAtManagementGroupOptions.UnmanageActionManagementGroups` has been changed from `*UnmanageActionManagementGroupMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtManagementGroupOptions.UnmanageActionResourceGroups` has been changed from `*UnmanageActionResourceGroupMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtManagementGroupOptions.UnmanageActionResources` has been changed from `*UnmanageActionResourceMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtResourceGroupOptions.UnmanageActionManagementGroups` has been changed from `*UnmanageActionManagementGroupMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtResourceGroupOptions.UnmanageActionResourceGroups` has been changed from `*UnmanageActionResourceGroupMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtResourceGroupOptions.UnmanageActionResources` has been changed from `*UnmanageActionResourceMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtSubscriptionOptions.UnmanageActionManagementGroups` has been changed from `*UnmanageActionManagementGroupMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtSubscriptionOptions.UnmanageActionResourceGroups` has been changed from `*UnmanageActionResourceGroupMode` to `*DeploymentStacksDeleteDetachEnum`
-- Type of `ClientBeginDeleteAtSubscriptionOptions.UnmanageActionResources` has been changed from `*UnmanageActionResourceMode` to `*DeploymentStacksDeleteDetachEnum`
-- Enum `UnmanageActionManagementGroupMode` has been removed
-- Enum `UnmanageActionResourceGroupMode` has been removed
-- Enum `UnmanageActionResourceMode` has been removed
+- Type of `ActionOnUnmanage.ManagementGroups` has been changed from `*DeploymentStacksDeleteDetachEnum` to `*UnmanageActionManagementGroupMode`
+- Type of `ActionOnUnmanage.ResourceGroups` has been changed from `*DeploymentStacksDeleteDetachEnum` to `*UnmanageActionResourceGroupMode`
+- Type of `ActionOnUnmanage.Resources` has been changed from `*DeploymentStacksDeleteDetachEnum` to `*UnmanageActionResourceMode`
+- Enum `DeploymentStacksDeleteDetachEnum` has been removed
 
 ### Features Added
 
@@ -22,10 +14,10 @@
 - New value `DeploymentStackProvisioningStateInitializing`, `DeploymentStackProvisioningStateRunning` added to enum type `DeploymentStackProvisioningState`
 - New enum type `DeploymentStacksDiagnosticLevel` with values `DeploymentStacksDiagnosticLevelError`, `DeploymentStacksDiagnosticLevelInfo`, `DeploymentStacksDiagnosticLevelWarning`
 - New enum type `DeploymentStacksManagementStatus` with values `DeploymentStacksManagementStatusManaged`, `DeploymentStacksManagementStatusUnknown`, `DeploymentStacksManagementStatusUnmanaged`
-- New enum type `DeploymentStacksResourcesWithoutDeleteSupportEnum` with values `DeploymentStacksResourcesWithoutDeleteSupportEnumDetach`, `DeploymentStacksResourcesWithoutDeleteSupportEnumFail`
 - New enum type `DeploymentStacksWhatIfChangeCertainty` with values `DeploymentStacksWhatIfChangeCertaintyDefinite`, `DeploymentStacksWhatIfChangeCertaintyPotential`
 - New enum type `DeploymentStacksWhatIfChangeType` with values `DeploymentStacksWhatIfChangeTypeCreate`, `DeploymentStacksWhatIfChangeTypeDelete`, `DeploymentStacksWhatIfChangeTypeDetach`, `DeploymentStacksWhatIfChangeTypeModify`, `DeploymentStacksWhatIfChangeTypeNoChange`, `DeploymentStacksWhatIfChangeTypeUnsupported`
 - New enum type `DeploymentStacksWhatIfPropertyChangeType` with values `DeploymentStacksWhatIfPropertyChangeTypeArray`, `DeploymentStacksWhatIfPropertyChangeTypeCreate`, `DeploymentStacksWhatIfPropertyChangeTypeDelete`, `DeploymentStacksWhatIfPropertyChangeTypeModify`, `DeploymentStacksWhatIfPropertyChangeTypeNoEffect`
+- New enum type `ResourcesWithoutDeleteSupportAction` with values `ResourcesWithoutDeleteSupportActionDetach`, `ResourcesWithoutDeleteSupportActionFail`
 - New enum type `ValidationLevel` with values `ValidationLevelProvider`, `ValidationLevelProviderNoRbac`, `ValidationLevelTemplate`
 - New function `*ClientFactory.NewWhatIfResultsAtManagementGroupClient() *WhatIfResultsAtManagementGroupClient`
 - New function `*ClientFactory.NewWhatIfResultsAtResourceGroupClient() *WhatIfResultsAtResourceGroupClient`

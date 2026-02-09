@@ -23,75 +23,75 @@ import (
 type Server struct {
 	// BeginCreateOrUpdateAtManagementGroup is the fake for method Client.BeginCreateOrUpdateAtManagementGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtManagementGroup func(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginCreateOrUpdateAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtManagementGroupResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtManagementGroup	func(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginCreateOrUpdateAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtManagementGroupResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdateAtResourceGroup is the fake for method Client.BeginCreateOrUpdateAtResourceGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtResourceGroup func(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginCreateOrUpdateAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtResourceGroupResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtResourceGroup	func(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginCreateOrUpdateAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtResourceGroupResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdateAtSubscription is the fake for method Client.BeginCreateOrUpdateAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtSubscription func(ctx context.Context, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginCreateOrUpdateAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtSubscriptionResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateAtSubscription	func(ctx context.Context, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginCreateOrUpdateAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtSubscriptionResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeleteAtManagementGroup is the fake for method Client.BeginDeleteAtManagementGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtManagementGroup func(ctx context.Context, managementGroupID string, deploymentStackName string, options *armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtManagementGroupResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtManagementGroup	func(ctx context.Context, managementGroupID string, deploymentStackName string, options *armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtManagementGroupResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeleteAtResourceGroup is the fake for method Client.BeginDeleteAtResourceGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtResourceGroup func(ctx context.Context, resourceGroupName string, deploymentStackName string, options *armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtResourceGroupResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtResourceGroup	func(ctx context.Context, resourceGroupName string, deploymentStackName string, options *armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtResourceGroupResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeleteAtSubscription is the fake for method Client.BeginDeleteAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtSubscription func(ctx context.Context, deploymentStackName string, options *armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtSubscriptionResponse], errResp azfake.ErrorResponder)
+	BeginDeleteAtSubscription	func(ctx context.Context, deploymentStackName string, options *armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtSubscriptionResponse], errResp azfake.ErrorResponder)
 
 	// ExportTemplateAtManagementGroup is the fake for method Client.ExportTemplateAtManagementGroup
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtManagementGroup func(ctx context.Context, managementGroupID string, deploymentStackName string, options *armdeploymentstacks.ClientExportTemplateAtManagementGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientExportTemplateAtManagementGroupResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtManagementGroup	func(ctx context.Context, managementGroupID string, deploymentStackName string, options *armdeploymentstacks.ClientExportTemplateAtManagementGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientExportTemplateAtManagementGroupResponse], errResp azfake.ErrorResponder)
 
 	// ExportTemplateAtResourceGroup is the fake for method Client.ExportTemplateAtResourceGroup
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtResourceGroup func(ctx context.Context, resourceGroupName string, deploymentStackName string, options *armdeploymentstacks.ClientExportTemplateAtResourceGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientExportTemplateAtResourceGroupResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtResourceGroup	func(ctx context.Context, resourceGroupName string, deploymentStackName string, options *armdeploymentstacks.ClientExportTemplateAtResourceGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientExportTemplateAtResourceGroupResponse], errResp azfake.ErrorResponder)
 
 	// ExportTemplateAtSubscription is the fake for method Client.ExportTemplateAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK
-	ExportTemplateAtSubscription func(ctx context.Context, deploymentStackName string, options *armdeploymentstacks.ClientExportTemplateAtSubscriptionOptions) (resp azfake.Responder[armdeploymentstacks.ClientExportTemplateAtSubscriptionResponse], errResp azfake.ErrorResponder)
+	ExportTemplateAtSubscription	func(ctx context.Context, deploymentStackName string, options *armdeploymentstacks.ClientExportTemplateAtSubscriptionOptions) (resp azfake.Responder[armdeploymentstacks.ClientExportTemplateAtSubscriptionResponse], errResp azfake.ErrorResponder)
 
 	// GetAtManagementGroup is the fake for method Client.GetAtManagementGroup
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtManagementGroup func(ctx context.Context, managementGroupID string, deploymentStackName string, options *armdeploymentstacks.ClientGetAtManagementGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientGetAtManagementGroupResponse], errResp azfake.ErrorResponder)
+	GetAtManagementGroup	func(ctx context.Context, managementGroupID string, deploymentStackName string, options *armdeploymentstacks.ClientGetAtManagementGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientGetAtManagementGroupResponse], errResp azfake.ErrorResponder)
 
 	// GetAtResourceGroup is the fake for method Client.GetAtResourceGroup
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtResourceGroup func(ctx context.Context, resourceGroupName string, deploymentStackName string, options *armdeploymentstacks.ClientGetAtResourceGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientGetAtResourceGroupResponse], errResp azfake.ErrorResponder)
+	GetAtResourceGroup	func(ctx context.Context, resourceGroupName string, deploymentStackName string, options *armdeploymentstacks.ClientGetAtResourceGroupOptions) (resp azfake.Responder[armdeploymentstacks.ClientGetAtResourceGroupResponse], errResp azfake.ErrorResponder)
 
 	// GetAtSubscription is the fake for method Client.GetAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAtSubscription func(ctx context.Context, deploymentStackName string, options *armdeploymentstacks.ClientGetAtSubscriptionOptions) (resp azfake.Responder[armdeploymentstacks.ClientGetAtSubscriptionResponse], errResp azfake.ErrorResponder)
+	GetAtSubscription	func(ctx context.Context, deploymentStackName string, options *armdeploymentstacks.ClientGetAtSubscriptionOptions) (resp azfake.Responder[armdeploymentstacks.ClientGetAtSubscriptionResponse], errResp azfake.ErrorResponder)
 
 	// NewListAtManagementGroupPager is the fake for method Client.NewListAtManagementGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtManagementGroupPager func(managementGroupID string, options *armdeploymentstacks.ClientListAtManagementGroupOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse])
+	NewListAtManagementGroupPager	func(managementGroupID string, options *armdeploymentstacks.ClientListAtManagementGroupOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse])
 
 	// NewListAtResourceGroupPager is the fake for method Client.NewListAtResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtResourceGroupPager func(resourceGroupName string, options *armdeploymentstacks.ClientListAtResourceGroupOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse])
+	NewListAtResourceGroupPager	func(resourceGroupName string, options *armdeploymentstacks.ClientListAtResourceGroupOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse])
 
 	// NewListAtSubscriptionPager is the fake for method Client.NewListAtSubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAtSubscriptionPager func(options *armdeploymentstacks.ClientListAtSubscriptionOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse])
+	NewListAtSubscriptionPager	func(options *armdeploymentstacks.ClientListAtSubscriptionOptions) (resp azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse])
 
 	// BeginValidateStackAtManagementGroup is the fake for method Client.BeginValidateStackAtManagementGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateStackAtManagementGroup func(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse], errResp azfake.ErrorResponder)
+	BeginValidateStackAtManagementGroup	func(ctx context.Context, managementGroupID string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtManagementGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse], errResp azfake.ErrorResponder)
 
 	// BeginValidateStackAtResourceGroup is the fake for method Client.BeginValidateStackAtResourceGroup
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateStackAtResourceGroup func(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse], errResp azfake.ErrorResponder)
+	BeginValidateStackAtResourceGroup	func(ctx context.Context, resourceGroupName string, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtResourceGroupOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse], errResp azfake.ErrorResponder)
 
 	// BeginValidateStackAtSubscription is the fake for method Client.BeginValidateStackAtSubscription
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateStackAtSubscription func(ctx context.Context, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse], errResp azfake.ErrorResponder)
+	BeginValidateStackAtSubscription	func(ctx context.Context, deploymentStackName string, deploymentStack armdeploymentstacks.DeploymentStack, options *armdeploymentstacks.ClientBeginValidateStackAtSubscriptionOptions) (resp azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -99,38 +99,38 @@ type Server struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
-		srv:                                  srv,
-		beginCreateOrUpdateAtManagementGroup: newTracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtManagementGroupResponse]](),
-		beginCreateOrUpdateAtResourceGroup:   newTracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtResourceGroupResponse]](),
-		beginCreateOrUpdateAtSubscription:    newTracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtSubscriptionResponse]](),
-		beginDeleteAtManagementGroup:         newTracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtManagementGroupResponse]](),
-		beginDeleteAtResourceGroup:           newTracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtResourceGroupResponse]](),
-		beginDeleteAtSubscription:            newTracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtSubscriptionResponse]](),
-		newListAtManagementGroupPager:        newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse]](),
-		newListAtResourceGroupPager:          newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse]](),
-		newListAtSubscriptionPager:           newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse]](),
-		beginValidateStackAtManagementGroup:  newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse]](),
-		beginValidateStackAtResourceGroup:    newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse]](),
-		beginValidateStackAtSubscription:     newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse]](),
+		srv:					srv,
+		beginCreateOrUpdateAtManagementGroup:	newTracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtManagementGroupResponse]](),
+		beginCreateOrUpdateAtResourceGroup:	newTracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtResourceGroupResponse]](),
+		beginCreateOrUpdateAtSubscription:	newTracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtSubscriptionResponse]](),
+		beginDeleteAtManagementGroup:		newTracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtManagementGroupResponse]](),
+		beginDeleteAtResourceGroup:		newTracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtResourceGroupResponse]](),
+		beginDeleteAtSubscription:		newTracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtSubscriptionResponse]](),
+		newListAtManagementGroupPager:		newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse]](),
+		newListAtResourceGroupPager:		newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse]](),
+		newListAtSubscriptionPager:		newTracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse]](),
+		beginValidateStackAtManagementGroup:	newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse]](),
+		beginValidateStackAtResourceGroup:	newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse]](),
+		beginValidateStackAtSubscription:	newTracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse]](),
 	}
 }
 
 // ServerTransport connects instances of armdeploymentstacks.Client to instances of Server.
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
-	srv                                  *Server
-	beginCreateOrUpdateAtManagementGroup *tracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtManagementGroupResponse]]
-	beginCreateOrUpdateAtResourceGroup   *tracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtResourceGroupResponse]]
-	beginCreateOrUpdateAtSubscription    *tracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtSubscriptionResponse]]
-	beginDeleteAtManagementGroup         *tracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtManagementGroupResponse]]
-	beginDeleteAtResourceGroup           *tracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtResourceGroupResponse]]
-	beginDeleteAtSubscription            *tracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtSubscriptionResponse]]
-	newListAtManagementGroupPager        *tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse]]
-	newListAtResourceGroupPager          *tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse]]
-	newListAtSubscriptionPager           *tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse]]
-	beginValidateStackAtManagementGroup  *tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse]]
-	beginValidateStackAtResourceGroup    *tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse]]
-	beginValidateStackAtSubscription     *tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse]]
+	srv					*Server
+	beginCreateOrUpdateAtManagementGroup	*tracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtManagementGroupResponse]]
+	beginCreateOrUpdateAtResourceGroup	*tracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtResourceGroupResponse]]
+	beginCreateOrUpdateAtSubscription	*tracker[azfake.PollerResponder[armdeploymentstacks.ClientCreateOrUpdateAtSubscriptionResponse]]
+	beginDeleteAtManagementGroup		*tracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtManagementGroupResponse]]
+	beginDeleteAtResourceGroup		*tracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtResourceGroupResponse]]
+	beginDeleteAtSubscription		*tracker[azfake.PollerResponder[armdeploymentstacks.ClientDeleteAtSubscriptionResponse]]
+	newListAtManagementGroupPager		*tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtManagementGroupResponse]]
+	newListAtResourceGroupPager		*tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtResourceGroupResponse]]
+	newListAtSubscriptionPager		*tracker[azfake.PagerResponder[armdeploymentstacks.ClientListAtSubscriptionResponse]]
+	beginValidateStackAtManagementGroup	*tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtManagementGroupResponse]]
+	beginValidateStackAtResourceGroup	*tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtResourceGroupResponse]]
+	beginValidateStackAtSubscription	*tracker[azfake.PollerResponder[armdeploymentstacks.ClientValidateStackAtSubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -376,22 +376,22 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroup(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourcesUnescaped))
+		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
 		unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourceGroupsUnescaped))
+		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
 		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionManagementGroupsUnescaped))
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
 		unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.DeploymentStacksResourcesWithoutDeleteSupportEnum(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
 		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
 		if err != nil {
 			return nil, err
@@ -403,11 +403,11 @@ func (s *ServerTransport) dispatchBeginDeleteAtManagementGroup(req *http.Request
 		var options *armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions
 		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || unmanageActionResourcesWithoutDeleteSupportParam != nil || bypassStackOutOfSyncErrorParam != nil {
 			options = &armdeploymentstacks.ClientBeginDeleteAtManagementGroupOptions{
-				UnmanageActionResources:                     unmanageActionResourcesParam,
-				UnmanageActionResourceGroups:                unmanageActionResourceGroupsParam,
-				UnmanageActionManagementGroups:              unmanageActionManagementGroupsParam,
-				UnmanageActionResourcesWithoutDeleteSupport: unmanageActionResourcesWithoutDeleteSupportParam,
-				BypassStackOutOfSyncError:                   bypassStackOutOfSyncErrorParam,
+				UnmanageActionResources:			unmanageActionResourcesParam,
+				UnmanageActionResourceGroups:			unmanageActionResourceGroupsParam,
+				UnmanageActionManagementGroups:			unmanageActionManagementGroupsParam,
+				UnmanageActionResourcesWithoutDeleteSupport:	unmanageActionResourcesWithoutDeleteSupportParam,
+				BypassStackOutOfSyncError:			bypassStackOutOfSyncErrorParam,
 			}
 		}
 		respr, errRespr := s.srv.BeginDeleteAtManagementGroup(req.Context(), managementGroupIDParam, deploymentStackNameParam, options)
@@ -459,22 +459,22 @@ func (s *ServerTransport) dispatchBeginDeleteAtResourceGroup(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourcesUnescaped))
+		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
 		unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourceGroupsUnescaped))
+		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
 		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionManagementGroupsUnescaped))
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
 		unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.DeploymentStacksResourcesWithoutDeleteSupportEnum(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
 		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
 		if err != nil {
 			return nil, err
@@ -486,11 +486,11 @@ func (s *ServerTransport) dispatchBeginDeleteAtResourceGroup(req *http.Request) 
 		var options *armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions
 		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || unmanageActionResourcesWithoutDeleteSupportParam != nil || bypassStackOutOfSyncErrorParam != nil {
 			options = &armdeploymentstacks.ClientBeginDeleteAtResourceGroupOptions{
-				UnmanageActionResources:                     unmanageActionResourcesParam,
-				UnmanageActionResourceGroups:                unmanageActionResourceGroupsParam,
-				UnmanageActionManagementGroups:              unmanageActionManagementGroupsParam,
-				UnmanageActionResourcesWithoutDeleteSupport: unmanageActionResourcesWithoutDeleteSupportParam,
-				BypassStackOutOfSyncError:                   bypassStackOutOfSyncErrorParam,
+				UnmanageActionResources:			unmanageActionResourcesParam,
+				UnmanageActionResourceGroups:			unmanageActionResourceGroupsParam,
+				UnmanageActionManagementGroups:			unmanageActionManagementGroupsParam,
+				UnmanageActionResourcesWithoutDeleteSupport:	unmanageActionResourcesWithoutDeleteSupportParam,
+				BypassStackOutOfSyncError:			bypassStackOutOfSyncErrorParam,
 			}
 		}
 		respr, errRespr := s.srv.BeginDeleteAtResourceGroup(req.Context(), resourceGroupNameParam, deploymentStackNameParam, options)
@@ -538,22 +538,22 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscription(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourcesUnescaped))
+		unmanageActionResourcesParam := getOptional(armdeploymentstacks.UnmanageActionResourceMode(unmanageActionResourcesUnescaped))
 		unmanageActionResourceGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourceGroups"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionResourceGroupsUnescaped))
+		unmanageActionResourceGroupsParam := getOptional(armdeploymentstacks.UnmanageActionResourceGroupMode(unmanageActionResourceGroupsUnescaped))
 		unmanageActionManagementGroupsUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ManagementGroups"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.DeploymentStacksDeleteDetachEnum(unmanageActionManagementGroupsUnescaped))
+		unmanageActionManagementGroupsParam := getOptional(armdeploymentstacks.UnmanageActionManagementGroupMode(unmanageActionManagementGroupsUnescaped))
 		unmanageActionResourcesWithoutDeleteSupportUnescaped, err := url.QueryUnescape(qp.Get("unmanageAction.ResourcesWithoutDeleteSupport"))
 		if err != nil {
 			return nil, err
 		}
-		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.DeploymentStacksResourcesWithoutDeleteSupportEnum(unmanageActionResourcesWithoutDeleteSupportUnescaped))
+		unmanageActionResourcesWithoutDeleteSupportParam := getOptional(armdeploymentstacks.ResourcesWithoutDeleteSupportAction(unmanageActionResourcesWithoutDeleteSupportUnescaped))
 		bypassStackOutOfSyncErrorUnescaped, err := url.QueryUnescape(qp.Get("bypassStackOutOfSyncError"))
 		if err != nil {
 			return nil, err
@@ -565,11 +565,11 @@ func (s *ServerTransport) dispatchBeginDeleteAtSubscription(req *http.Request) (
 		var options *armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions
 		if unmanageActionResourcesParam != nil || unmanageActionResourceGroupsParam != nil || unmanageActionManagementGroupsParam != nil || unmanageActionResourcesWithoutDeleteSupportParam != nil || bypassStackOutOfSyncErrorParam != nil {
 			options = &armdeploymentstacks.ClientBeginDeleteAtSubscriptionOptions{
-				UnmanageActionResources:                     unmanageActionResourcesParam,
-				UnmanageActionResourceGroups:                unmanageActionResourceGroupsParam,
-				UnmanageActionManagementGroups:              unmanageActionManagementGroupsParam,
-				UnmanageActionResourcesWithoutDeleteSupport: unmanageActionResourcesWithoutDeleteSupportParam,
-				BypassStackOutOfSyncError:                   bypassStackOutOfSyncErrorParam,
+				UnmanageActionResources:			unmanageActionResourcesParam,
+				UnmanageActionResourceGroups:			unmanageActionResourceGroupsParam,
+				UnmanageActionManagementGroups:			unmanageActionManagementGroupsParam,
+				UnmanageActionResourcesWithoutDeleteSupport:	unmanageActionResourcesWithoutDeleteSupportParam,
+				BypassStackOutOfSyncError:			bypassStackOutOfSyncErrorParam,
 			}
 		}
 		respr, errRespr := s.srv.BeginDeleteAtSubscription(req.Context(), deploymentStackNameParam, options)

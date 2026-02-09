@@ -24,22 +24,22 @@ func ExampleWhatIfResultsAtManagementGroupClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWhatIfResultsAtManagementGroupClient().BeginCreateOrUpdate(ctx, "myMg", "simpleDeploymentStackWhatIfResult", armdeploymentstacks.WhatIfResult{
-		Location: to.Ptr("eastus"),
+		Location:	to.Ptr("eastus"),
 		Properties: &armdeploymentstacks.WhatIfResultProperties{
-			DeploymentStackResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
-			RetentionInterval:         to.Ptr("P7D"),
+			DeploymentStackResourceID:	to.Ptr("/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
+			RetentionInterval:		to.Ptr("P7D"),
 			TemplateLink: &armdeploymentstacks.TemplateLink{
 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 			},
-			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{},
+			Parameters:	map[string]*armdeploymentstacks.DeploymentParameter{},
 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-				Resources:        to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-				ResourceGroups:   to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+				Resources:		to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+				ResourceGroups:		to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+				ManagementGroups:	to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 			},
 			DenySettings: &armdeploymentstacks.DenySettings{
-				Mode:               to.Ptr(armdeploymentstacks.DenySettingsModeNone),
-				ApplyToChildScopes: to.Ptr(false),
+				Mode:			to.Ptr(armdeploymentstacks.DenySettingsModeNone),
+				ApplyToChildScopes:	to.Ptr(false),
 			},
 			ExtensionConfigs: map[string]*armdeploymentstacks.DeploymentExtensionConfig{
 				"contoso": {
@@ -90,9 +90,9 @@ func ExampleWhatIfResultsAtManagementGroupClient_BeginCreateOrUpdate() {
 	// 			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 	// 			},
 	// 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-	// 				Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-	// 				ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-	// 				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+	// 				Resources: to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+	// 				ResourceGroups: to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+	// 				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 	// 			},
 	// 			DenySettings: &armdeploymentstacks.DenySettings{
 	// 				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeNone),
@@ -169,9 +169,9 @@ func ExampleWhatIfResultsAtManagementGroupClient_Get() {
 	// 			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 	// 			},
 	// 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-	// 				Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-	// 				ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-	// 				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+	// 				Resources: to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+	// 				ResourceGroups: to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+	// 				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 	// 			},
 	// 			DenySettings: &armdeploymentstacks.DenySettings{
 	// 				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeNone),
@@ -267,9 +267,9 @@ func ExampleWhatIfResultsAtManagementGroupClient_NewListPager() {
 		// 					Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 		// 					},
 		// 					ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-		// 						Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-		// 						ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-		// 						ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+		// 						Resources: to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+		// 						ResourceGroups: to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+		// 						ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 		// 					},
 		// 					DenySettings: &armdeploymentstacks.DenySettings{
 		// 						Mode: to.Ptr(armdeploymentstacks.DenySettingsModeNone),
@@ -337,9 +337,9 @@ func ExampleWhatIfResultsAtManagementGroupClient_NewListPager() {
 		// 					Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 		// 					},
 		// 					ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-		// 						Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-		// 						ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-		// 						ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+		// 						Resources: to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+		// 						ResourceGroups: to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+		// 						ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 		// 					},
 		// 					DenySettings: &armdeploymentstacks.DenySettings{
 		// 						Mode: to.Ptr(armdeploymentstacks.DenySettingsModeNone),
@@ -443,9 +443,9 @@ func ExampleWhatIfResultsAtManagementGroupClient_BeginWhatIf() {
 	// 			Parameters: map[string]*armdeploymentstacks.DeploymentParameter{
 	// 			},
 	// 			ActionOnUnmanage: &armdeploymentstacks.ActionOnUnmanage{
-	// 				Resources: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-	// 				ResourceGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDelete),
-	// 				ManagementGroups: to.Ptr(armdeploymentstacks.DeploymentStacksDeleteDetachEnumDetach),
+	// 				Resources: to.Ptr(armdeploymentstacks.UnmanageActionResourceModeDelete),
+	// 				ResourceGroups: to.Ptr(armdeploymentstacks.UnmanageActionResourceGroupModeDelete),
+	// 				ManagementGroups: to.Ptr(armdeploymentstacks.UnmanageActionManagementGroupModeDetach),
 	// 			},
 	// 			DenySettings: &armdeploymentstacks.DenySettings{
 	// 				Mode: to.Ptr(armdeploymentstacks.DenySettingsModeNone),

@@ -1,17 +1,15 @@
 # Release History
 
-## 1.14.0-beta.3 (Unreleased)
-
-### Features Added
+## 1.14.0-beta.3 (2026-02-10)
 
 ### Breaking Changes
 
 > These changes affect only code written against a beta version such as v1.14.0-beta.2
 - Renamed `WorkloadIdentityCredentialOptions.EnableAzureTokenProxy` to `EnableAzureProxy`
 
-### Bugs Fixed
-
 ### Other Changes
+
+- Removed extraneous JSON from `AzureDeveloperCLICredential` errors
 
 ## 1.14.0-beta.2 (2025-11-10)
 

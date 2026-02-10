@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Cosmos DB module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v3
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4
 ```
 
 ## Authorization

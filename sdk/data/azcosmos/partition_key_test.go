@@ -9,8 +9,6 @@ import (
 	"math"
 	"os"
 	"reflect"
-	"strconv"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -134,65 +132,51 @@ type epkBaselineOutput struct {
 }
 
 // parsePartitionKeyValue converts the XML PartitionKeyValue string into a
-// PartitionKey. The format varies by test file category:
-//   - Singletons: "UNDEFINED", "null", "true", "false"
-//   - Numbers: numeric literals (e.g. "0", "-1", "5E-324")
-//   - Strings: JSON-quoted strings (e.g. `"asdf"`)
-//   - Lists: JSON arrays of strings (e.g. `["/path1","/path2"]`)
-func parsePartitionKeyValue(raw string, category string) PartitionKey {
-	switch category {
-	case "Singletons":
-		switch raw {
-		case "UNDEFINED":
-			return NewPartitionKey()
-		case "null":
-			return NullPartitionKey
-		case "true":
-			return NewPartitionKeyBool(true)
-		case "false":
-			return NewPartitionKeyBool(false)
+// PartitionKey. The input is either the special string "UNDEFINED" or a valid
+// JSON value (null, bool, number, string, or array of strings for hierarchical PKs).
+// Post-unmarshal, the magic strings "NaN", "-Infinity", and "Infinity" are
+// converted to their float64 equivalents.
+func parsePartitionKeyValue(raw string) PartitionKey {
+	if raw == "UNDEFINED" {
+		return NewPartitionKey()
+	}
+
+	var v interface{}
+	if err := json.Unmarshal([]byte(raw), &v); err != nil {
+		panic("failed to parse partition key value: " + raw + ": " + err.Error())
+	}
+
+	switch val := v.(type) {
+	case nil:
+		return NullPartitionKey
+	case bool:
+		return NewPartitionKeyBool(val)
+	case float64:
+		return NewPartitionKeyNumber(val)
+	case string:
+		// Convert magic number strings to actual float64 values
+		switch val {
+		case "NaN":
+			return NewPartitionKeyNumber(math.NaN())
+		case "-Infinity":
+			return NewPartitionKeyNumber(math.Inf(-1))
+		case "Infinity":
+			return NewPartitionKeyNumber(math.Inf(1))
 		default:
-			panic("unknown singleton value: " + raw)
+			return NewPartitionKeyString(val)
 		}
-
-	case "Numbers":
-		// Some "number" test cases are actually quoted strings (NaN, Infinity)
-		if strings.HasPrefix(raw, "\"") {
-			var s string
-			if err := json.Unmarshal([]byte(raw), &s); err != nil {
-				panic("failed to parse quoted number value: " + raw)
-			}
-			return NewPartitionKeyString(s)
-		}
-		if raw == "-0" {
-			return NewPartitionKeyNumber(math.Copysign(0, -1))
-		}
-		n, err := strconv.ParseFloat(raw, 64)
-		if err != nil {
-			panic("failed to parse number: " + raw + ": " + err.Error())
-		}
-		return NewPartitionKeyNumber(n)
-
-	case "Strings":
-		var s string
-		if err := json.Unmarshal([]byte(raw), &s); err != nil {
-			panic("failed to parse string value: " + raw)
-		}
-		return NewPartitionKeyString(s)
-
-	case "Lists":
-		var paths []string
-		if err := json.Unmarshal([]byte(raw), &paths); err != nil {
-			panic("failed to parse list value: " + raw)
-		}
+	case []interface{}:
 		pk := NewPartitionKey()
-		for _, p := range paths {
-			pk = pk.AppendString(p)
+		for _, elem := range val {
+			s, ok := elem.(string)
+			if !ok {
+				panic("non-string element in list partition key value: " + raw)
+			}
+			pk = pk.AppendString(s)
 		}
 		return pk
-
 	default:
-		panic("unknown category: " + category)
+		panic("unexpected JSON type in partition key value: " + raw)
 	}
 }
 
@@ -228,7 +212,7 @@ func TestComputeEffectivePartitionKey_Baseline(t *testing.T) {
 		kind := partitionKeyKindForCategory(category)
 
 		for _, tc := range baseline.Results {
-			pk := parsePartitionKeyValue(tc.Input.PartitionKeyValue, category)
+			pk := parsePartitionKeyValue(tc.Input.PartitionKeyValue)
 
 			// Test V1 hash
 			t.Run(category+"/V1/"+tc.Input.Description, func(t *testing.T) {

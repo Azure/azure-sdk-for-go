@@ -470,7 +470,7 @@ func createDeployment(ctx context.Context, subscriptionId string, cred azcore.To
 	if err != nil {
 		return nil, err
 	}
-	res, err :=  testutil.PollForTest(ctx, poller)
+	res, err := testutil.PollForTest(ctx, poller)
 	if err != nil {
 		return nil, err
 	}

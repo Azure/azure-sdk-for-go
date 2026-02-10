@@ -120,8 +120,7 @@ func (testsuite *AppconfigurationTestSuite) TestOperations() {
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}
-func (testsuite *AppconfigurationTestSuite) TTestConfigurationStores() {
-	// disable this test for failure
+func (testsuite *AppconfigurationTestSuite) TestConfigurationStores() {
 	var keyId string
 	var err error
 	// From step ConfigurationStores_List
@@ -169,17 +168,19 @@ func (testsuite *AppconfigurationTestSuite) TTestConfigurationStores() {
 	for configurationStoresClientNewListKeysPager.More() {
 		nextResult, err := configurationStoresClientNewListKeysPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
-
-		keyId = *nextResult.Value[0].ID
-		break
+		if len(nextResult.Value) > 0 {
+			keyId = *nextResult.Value[0].ID
+			break
+		}
 	}
-
-	// From step ConfigurationStores_RegenerateKey
-	fmt.Println("Call operation: ConfigurationStores_RegenerateKey")
-	_, err = configurationStoresClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, armappconfiguration.RegenerateKeyParameters{
-		ID: to.Ptr(keyId),
-	}, nil)
-	testsuite.Require().NoError(err)
+	if keyId != "" {
+		// From step ConfigurationStores_RegenerateKey
+		fmt.Println("Call operation: ConfigurationStores_RegenerateKey")
+		_, err = configurationStoresClient.RegenerateKey(testsuite.ctx, testsuite.resourceGroupName, testsuite.configStoreName, armappconfiguration.RegenerateKeyParameters{
+			ID: to.Ptr(keyId),
+		}, nil)
+		testsuite.Require().NoError(err)
+	}
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}
@@ -219,7 +220,7 @@ func (testsuite *AppconfigurationTestSuite) TestReplicas() {
 }
 
 // Microsoft.AppConfiguration/configurationStores/{configStoreName}/privateEndpointConnections/{privateEndpointConnectionName}
-func (testsuite *AppconfigurationTestSuite) TTestPrivateEndpointConnections() {
+func (testsuite *AppconfigurationTestSuite) TestPrivateEndpointConnections() {
 	var privateEndpointConnectionName string
 	var err error
 	// From step Create_PrivateEndpoint

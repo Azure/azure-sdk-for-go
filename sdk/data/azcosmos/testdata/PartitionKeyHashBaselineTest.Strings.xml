@@ -1,0 +1,62 @@
+﻿<Results>
+  <Result>
+    <Input>
+      <Description>Empty String</Description>
+      <PartitionKeyValue>""</PartitionKeyValue>
+    </Input>
+    <Output>
+      <PartitionKeyHashV1>00-00-00-00-00-00-00-00-00-00-00-00-20-36-BC-C7</PartitionKeyHashV1>
+      <PartitionKeyHashV2>6A-63-D2-CF-33-E5-2B-DB-DF-A3-A1-B7-1A-F6-E0-7E</PartitionKeyHashV2>
+    </Output>
+  </Result>
+  <Result>
+    <Input>
+      <Description>short string</Description>
+      <PartitionKeyValue>"asdf"</PartitionKeyValue>
+    </Input>
+    <Output>
+      <PartitionKeyHashV1>00-00-00-00-00-00-00-00-00-00-00-00-FA-36-E7-90</PartitionKeyHashV1>
+      <PartitionKeyHashV2>49-8D-89-FE-39-4B-06-8D-05-EE-6E-B1-49-D8-39-08</PartitionKeyHashV2>
+    </Output>
+  </Result>
+  <Result>
+    <Input>
+      <Description>99 byte string</Description>
+      <PartitionKeyValue>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"</PartitionKeyValue>
+    </Input>
+    <Output>
+      <PartitionKeyHashV1>00-00-00-00-00-00-00-00-00-00-00-00-A3-6F-6B-FE</PartitionKeyHashV1>
+      <PartitionKeyHashV2>83-A5-59-26-5D-27-2A-0B-08-97-D5-DA-B8-49-7A-67</PartitionKeyHashV2>
+    </Output>
+  </Result>
+  <Result>
+    <Input>
+      <Description>100 byte string</Description>
+      <PartitionKeyValue>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"</PartitionKeyValue>
+    </Input>
+    <Output>
+      <PartitionKeyHashV1>00-00-00-00-00-00-00-00-00-00-00-00-0D-64-E3-25</PartitionKeyHashV1>
+      <PartitionKeyHashV2>A9-28-8C-FB-BD-29-36-CE-26-ED-98-C2-72-50-5B-4E</PartitionKeyHashV2>
+    </Output>
+  </Result>
+  <Result>
+    <Input>
+      <Description>101 byte string</Description>
+      <PartitionKeyValue>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"</PartitionKeyValue>
+    </Input>
+    <Output>
+      <PartitionKeyHashV1>00-00-00-00-00-00-00-00-00-00-00-00-0D-64-E3-25</PartitionKeyHashV1>
+      <PartitionKeyHashV2>43-46-A8-E3-F5-0B-E7-81-D8-E0-72-65-1D-39-8E-AE</PartitionKeyHashV2>
+    </Output>
+  </Result>
+  <Result>
+    <Input>
+      <Description>2kb byte string</Description>
+      <PartitionKeyValue>"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"</PartitionKeyValue>
+    </Input>
+    <Output>
+      <PartitionKeyHashV1>00-00-00-00-00-00-00-00-00-00-00-00-0D-64-E3-25</PartitionKeyHashV1>
+      <PartitionKeyHashV2>CE-CA-B7-5F-2B-22-0F-61-42-08-0A-FA-1C-FB-6C-D6</PartitionKeyHashV2>
+    </Output>
+  </Result>
+</Results>

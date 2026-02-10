@@ -101,3 +101,22 @@ func (pk *PartitionKey) toJsonString() (string, error) {
 	fmt.Fprint(&completeJson, "]")
 	return completeJson.String(), nil
 }
+
+// effectivePartitionKey holds the computed EPK hash for a partition key value.
+// The EPK is a hex-encoded string that determines which physical partition range
+// a logical partition key maps to.
+type effectivePartitionKey struct {
+	// epk is the hex-encoded effective partition key hash string, comparable
+	// against partitionKeyRange.minInclusive / maxExclusive boundaries.
+	epk string
+}
+
+// computeEffectivePartitionKey computes the effective partition key hash for
+// this partition key value using the Cosmos DB V2 MurmurHash-based algorithm.
+// The result can be compared against physical partition key range boundaries
+// (minInclusive / maxExclusive) to determine which physical range owns this key.
+//
+// This is not yet implemented — it will panic if called.
+func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) effectivePartitionKey {
+	panic("azcosmos: computeEffectivePartitionKey is not yet implemented")
+}

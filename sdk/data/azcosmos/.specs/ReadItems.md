@@ -62,7 +62,7 @@ The query is sent with the `x-ms-documentdb-partitionkeyrangeid` header set to t
 
 #### 1.6 Result Assembly
 
-- Returned items are re-sorted into the original input order.
+- Returned items are re-sorted into the original input order. *(Note: the Go SDK does **not** replicate this guarantee — see §3.2 step 7.)*
 - Missing items (404s and non-matching query results) are silently omitted.
 - The aggregate `x-ms-request-charge` is returned.
 
@@ -150,8 +150,9 @@ ReadManyItems(ctx, items, opts)
    - Each goroutine sends a `sendQueryRequest` with `x-ms-documentdb-partitionkeyrangeid` header targeting the physical range.
    - Paginate via continuation token until exhausted.
 7. **Collect results:**
-   - Match returned `id` fields back to original indices.
-   - Sort by original index.
+   - Gather all returned items from all chunks.
+   - **No ordering guarantee:** the order of items in the response is unspecified and callers must not rely on it matching the input order. This is an explicit API contract difference from the Python SDK.
+   - Missing items (not found by any query) are silently omitted.
    - Sum `x-ms-request-charge`.
 8. **Return `ReadManyItemsResponse`.**
 
@@ -228,14 +229,12 @@ Implementation details:
   - `x-ms-documentdb-query-enablecrosspartition: true` when the query spans multiple PKs within a physical range (the OR-of-conjunctions case).
   - `x-ms-documentdb-partitionkeyrangeid` header for physical-range-scoped routing when EPK hashing is available.
 - Handles continuation tokens (pagination) for each query.
-- Re-sorts results into original input order.
-- Returns aggregated `ReadManyItemsResponse`.
+- Returns aggregated `ReadManyItemsResponse`. **No ordering guarantee** — items may appear in any order.
 
 Internal helper types:
 
 ```go
 type indexedItem struct {
-    originalIndex int
     id            string
     pk            PartitionKey
 }
@@ -319,7 +318,7 @@ Reuse the existing `determineConcurrency` function and the goroutine-pool patter
 
 ### 6.4 Result Matching
 
-Query results are matched back to the original input by the `id` field in the returned JSON document. The `originalIndex` is used to restore input order.
+Query results are collected from all concurrent chunk responses. There is **no guarantee** that the returned items appear in the same order as the input `ItemIdentity` slice. Callers who need a specific order must sort the results themselves (e.g., by matching the `id` field in the returned JSON).
 
 ### 6.5 RU Cost Benefit
 
@@ -331,5 +330,5 @@ Per the Cosmos DB pricing model, a query returning N items costs less than N ind
 
 1. **V1 routing strategy:** Should V1 use `x-ms-documentdb-partitionkey` (simpler, no EPK hashing needed, but one query per logical PK) or invest in EPK hashing upfront (one query per physical range, matching Python)?
 2. **Duplicate item IDs:** If the same `(id, pk)` appears twice in the input, should the output contain one or two copies?
-3. **Order guarantee:** The Python SDK preserves input order. Should Go do the same? (Recommendation: yes.)
+3. **Order guarantee:** The Python SDK preserves input order. The Go SDK explicitly does **not** guarantee order — this is a documented API contract. *(Resolved.)*
 4. **Max items per query:** Is 1000 the correct limit for Go, or should it be configurable?

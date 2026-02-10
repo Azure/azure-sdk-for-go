@@ -10,7 +10,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v3"
@@ -456,16 +455,6 @@ func (testsuite *AppconfigurationTestSuite) Cleanup() {
 // CreateDeployment will create a resource using arm template.
 // It will return the deployment result entity.
 func createDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, deployment *armdeployments.Deployment) (*armdeployments.DeploymentExtended, error) {
-	// options.ClientOptions = policy.ClientOptions{
-	// 	Logging: policy.LogOptions{
-	// 		// include HTTP body for log
-	// 		IncludeBody: true,
-	// 	},
-	// }
-	options.ClientOptions.Logging = policy.LogOptions{
-			// include HTTP body for log
-			IncludeBody: true,
-		}
 	deployClient, err := armdeployments.NewDeploymentsClient(subscriptionId, cred, options)
 	if err != nil {
 		return nil, err

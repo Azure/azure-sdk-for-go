@@ -8,11 +8,11 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments v1.0.0
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.2.0
 	github.com/stretchr/testify v1.11.1
 )
 
 require (
+	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect

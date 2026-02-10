@@ -10,11 +10,12 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -354,13 +355,13 @@ func (testsuite *AppconfigurationTestSuite) TestPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
-	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
+	_, err = createDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnections_ListByConfigurationStore
@@ -450,4 +451,39 @@ func (testsuite *AppconfigurationTestSuite) Cleanup() {
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, configurationStoresClientPurgeDeletedResponsePoller)
 	testsuite.Require().NoError(err)
+}
+
+// CreateDeployment will create a resource using arm template.
+// It will return the deployment result entity.
+func createDeployment(ctx context.Context, subscriptionId string, cred azcore.TokenCredential, options *arm.ClientOptions, resourceGroupName, deploymentName string, deployment *armdeployments.Deployment) (*armdeployments.DeploymentExtended, error) {
+	// options.ClientOptions = policy.ClientOptions{
+	// 	Logging: policy.LogOptions{
+	// 		// include HTTP body for log
+	// 		IncludeBody: true,
+	// 	},
+	// }
+	options.ClientOptions.Logging = policy.LogOptions{
+			// include HTTP body for log
+			IncludeBody: true,
+		}
+	deployClient, err := armdeployments.NewDeploymentsClient(subscriptionId, cred, options)
+	if err != nil {
+		return nil, err
+	}
+
+	poller, err := deployClient.BeginCreateOrUpdate(
+		ctx,
+		resourceGroupName,
+		deploymentName,
+		*deployment,
+		&armdeployments.DeploymentsClientBeginCreateOrUpdateOptions{},
+	)
+	if err != nil {
+		return nil, err
+	}
+	res, err :=  testutil.PollForTest(ctx, poller)
+	if err != nil {
+		return nil, err
+	}
+	return &res.DeploymentExtended, nil
 }

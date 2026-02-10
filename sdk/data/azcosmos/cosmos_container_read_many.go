@@ -98,93 +98,87 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 
 const maxItemsPerQuery = 1000
 
-// executeReadManyWithQueries groups items by logical partition key, builds
-// parameterized SQL queries (one per PK group, chunked at maxItemsPerQuery),
-// and executes them concurrently. This replaces the previous per-item point-read
-// strategy with far fewer HTTP round-trips.
-//
-// V1 routes each query using the x-ms-documentdb-partitionkey header (one query
-// per logical PK group). A future V2 can add EPK hashing to coalesce groups that
-// map to the same physical partition range into a single OR-of-conjunctions query.
-func (c *ContainerClient) executeReadManyWithQueries(
-	ctx context.Context,
-	items []ItemIdentity,
-	readManyOptions *ReadManyOptions,
-	operationContext pipelineRequestOptions,
-) (ReadManyItemsResponse, error) {
-	// 1. Fetch container properties → PartitionKeyDefinition
-	containerResp, err := c.Read(ctx, nil)
-	if err != nil {
-		return ReadManyItemsResponse{}, err
-	}
-	pkDef := containerResp.ContainerProperties.PartitionKeyDefinition
+// queryChunk is a single parameterized query targeting one logical partition key group.
+type queryChunk struct {
+	query  string
+	params []QueryParameter
+	pk     PartitionKey // used for x-ms-documentdb-partitionkey header routing
+}
 
-	// 2. Group items by logical partition key value.
-	type pkGroup struct {
-		pk    PartitionKey
-		pkJSON string
-		items []indexedItem
-	}
-	groupOrder := make([]string, 0)            // preserves first-seen order
-	groupMap := make(map[string]*pkGroup)       // pkJSON → group
+// chunkResult holds the outcome of executing a single queryChunk.
+type chunkResult struct {
+	items         [][]byte
+	requestCharge float32
+	err           error
+}
+
+// groupItemsByLogicalPK groups ItemIdentity values by their serialised partition
+// key. It returns the groups in first-seen order.
+func groupItemsByLogicalPK(items []ItemIdentity) ([]PartitionKey, map[string][]indexedItem, error) {
+	order := make([]string, 0)
+	pkForJSON := make(map[string]PartitionKey)
+	groups := make(map[string][]indexedItem)
 
 	for _, item := range items {
-		pkJSON, jsonErr := item.PartitionKey.toJsonString()
-		if jsonErr != nil {
-			return ReadManyItemsResponse{}, jsonErr
+		pkJSON, err := item.PartitionKey.toJsonString()
+		if err != nil {
+			return nil, nil, err
 		}
-		g, exists := groupMap[pkJSON]
-		if !exists {
-			g = &pkGroup{pk: item.PartitionKey, pkJSON: pkJSON}
-			groupMap[pkJSON] = g
-			groupOrder = append(groupOrder, pkJSON)
+		if _, exists := groups[pkJSON]; !exists {
+			order = append(order, pkJSON)
+			pkForJSON[pkJSON] = item.PartitionKey
 		}
-		g.items = append(g.items, indexedItem{
+		groups[pkJSON] = append(groups[pkJSON], indexedItem{
 			id: item.ID,
 			pk: item.PartitionKey,
 		})
 	}
 
-	// 3. Build chunks (≤ maxItemsPerQuery) and corresponding queries.
-	type queryChunk struct {
-		query  string
-		params []QueryParameter
-		pk     PartitionKey // used for x-ms-documentdb-partitionkey header
+	// Build ordered PK list
+	pks := make([]PartitionKey, len(order))
+	for i, j := range order {
+		pks[i] = pkForJSON[j]
 	}
+	return pks, groups, nil
+}
 
+// buildQueryChunks creates queryChunk values by splitting each logical PK group
+// into slices of at most maxItemsPerQuery and building parameterized SQL for each.
+func buildQueryChunks(orderedPKs []PartitionKey, groups map[string][]indexedItem, pkDef PartitionKeyDefinition) ([]queryChunk, error) {
 	qb := queryBuilder{}
 	var chunks []queryChunk
 
-	for _, pkJSON := range groupOrder {
-		g := groupMap[pkJSON]
-		for start := 0; start < len(g.items); start += maxItemsPerQuery {
+	for _, pk := range orderedPKs {
+		pkJSON, err := pk.toJsonString()
+		if err != nil {
+			return nil, err
+		}
+		items := groups[pkJSON]
+		for start := 0; start < len(items); start += maxItemsPerQuery {
 			end := start + maxItemsPerQuery
-			if end > len(g.items) {
-				end = len(g.items)
+			if end > len(items) {
+				end = len(items)
 			}
-			slice := g.items[start:end]
-
-			q, params := qb.buildParameterizedQueryForItems(slice, pkDef)
+			q, params := qb.buildParameterizedQueryForItems(items[start:end], pkDef)
 			chunks = append(chunks, queryChunk{
 				query:  q,
 				params: params,
-				pk:     g.pk,
+				pk:     pk,
 			})
 		}
 	}
+	return chunks, nil
+}
 
-	// 4. Execute chunks concurrently.
-	concurrency := determineConcurrency(nil)
-	if readManyOptions != nil {
-		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
-	}
-
-	type chunkResult struct {
-		items         [][]byte
-		requestCharge float32
-		err           error
-	}
-
+// executeQueryChunks runs the provided query chunks concurrently using a
+// goroutine pool and returns the per-chunk results.
+func (c *ContainerClient) executeQueryChunks(
+	ctx context.Context,
+	chunks []queryChunk,
+	queryOpts *QueryOptions,
+	operationContext pipelineRequestOptions,
+	concurrency int,
+) []chunkResult {
 	results := make([]chunkResult, len(chunks))
 	jobs := make(chan int, len(chunks))
 	done := make(chan struct{})
@@ -198,18 +192,7 @@ func (c *ContainerClient) executeReadManyWithQueries(
 		workerCount = 1
 	}
 
-	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
-	if err != nil {
-		return ReadManyItemsResponse{}, err
-	}
-
-	// Build query options from ReadManyOptions
-	queryOpts := &QueryOptions{}
-	if readManyOptions != nil {
-		queryOpts.ConsistencyLevel = readManyOptions.ConsistencyLevel
-		queryOpts.SessionToken = readManyOptions.SessionToken
-		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
-	}
+	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 
 	for w := 0; w < workerCount; w++ {
 		wg.Add(1)
@@ -224,12 +207,9 @@ func (c *ContainerClient) executeReadManyWithQueries(
 				default:
 				}
 
-				chunk := chunks[idx]
-
-				// Use the partition key header for routing
-				pkHeader, jsonErr := chunk.pk.toJsonString()
-				if jsonErr != nil {
-					results[idx].err = jsonErr
+				items, charge, err := c.executeOneChunk(ctx, chunks[idx], queryOpts, operationContext, path, done)
+				results[idx] = chunkResult{items: items, requestCharge: charge, err: err}
+				if err != nil {
 					select {
 					case <-done:
 					default:
@@ -237,63 +217,6 @@ func (c *ContainerClient) executeReadManyWithQueries(
 					}
 					return
 				}
-
-				// Paginate through continuation tokens
-				var allItems [][]byte
-				var totalCharge float32
-				continuation := ""
-
-				for {
-					localOpts := *queryOpts
-					if continuation != "" {
-						localOpts.ContinuationToken = &continuation
-					}
-
-					pkHeaderCopy := pkHeader
-					azResponse, qErr := c.database.client.sendQueryRequest(
-						path,
-						ctx,
-						chunk.query,
-						chunk.params,
-						operationContext,
-						&localOpts,
-						func(req *policy.Request) {
-							req.Raw().Header.Set(cosmosHeaderPartitionKey, pkHeaderCopy)
-						},
-					)
-					if qErr != nil {
-						results[idx].err = qErr
-						select {
-						case <-done:
-						default:
-							close(done)
-						}
-						return
-					}
-
-					qResp, qErr := newQueryResponse(azResponse)
-					if qErr != nil {
-						results[idx].err = qErr
-						select {
-						case <-done:
-						default:
-							close(done)
-						}
-						return
-					}
-
-					totalCharge += qResp.RequestCharge
-					allItems = append(allItems, qResp.Items...)
-
-					ct := azResponse.Header.Get(cosmosHeaderContinuationToken)
-					if ct == "" {
-						break
-					}
-					continuation = ct
-				}
-
-				results[idx].items = allItems
-				results[idx].requestCharge = totalCharge
 			}
 		}()
 	}
@@ -313,20 +236,125 @@ func (c *ContainerClient) executeReadManyWithQueries(
 	}()
 
 	wg.Wait()
+	return results
+}
 
-	// 5. Collect results — no ordering guarantee.
-	var totalRequestCharge float32
+// executeOneChunk sends a single parameterized query for a chunk, paging
+// through continuation tokens until all results are collected.
+func (c *ContainerClient) executeOneChunk(
+	ctx context.Context,
+	chunk queryChunk,
+	queryOpts *QueryOptions,
+	operationContext pipelineRequestOptions,
+	path string,
+	done <-chan struct{},
+) ([][]byte, float32, error) {
+	pkHeader, err := chunk.pk.toJsonString()
+	if err != nil {
+		return nil, 0, err
+	}
+
+	var allItems [][]byte
+	var totalCharge float32
+	continuation := ""
+
+	for {
+		localOpts := *queryOpts
+		if continuation != "" {
+			localOpts.ContinuationToken = &continuation
+		}
+
+		pkHeaderCopy := pkHeader
+		azResponse, err := c.database.client.sendQueryRequest(
+			path,
+			ctx,
+			chunk.query,
+			chunk.params,
+			operationContext,
+			&localOpts,
+			func(req *policy.Request) {
+				req.Raw().Header.Set(cosmosHeaderPartitionKey, pkHeaderCopy)
+			},
+		)
+		if err != nil {
+			return nil, totalCharge, err
+		}
+
+		qResp, err := newQueryResponse(azResponse)
+		if err != nil {
+			return nil, totalCharge, err
+		}
+
+		totalCharge += qResp.RequestCharge
+		allItems = append(allItems, qResp.Items...)
+
+		ct := azResponse.Header.Get(cosmosHeaderContinuationToken)
+		if ct == "" {
+			break
+		}
+		continuation = ct
+	}
+
+	return allItems, totalCharge, nil
+}
+
+// collectChunkResults merges per-chunk results into a single ReadManyItemsResponse.
+// Returns the first error encountered, if any.
+func collectChunkResults(results []chunkResult) (ReadManyItemsResponse, error) {
+	var totalCharge float32
 	var allItems [][]byte
 	for _, res := range results {
 		if res.err != nil {
 			return ReadManyItemsResponse{}, res.err
 		}
-		totalRequestCharge += res.requestCharge
+		totalCharge += res.requestCharge
 		allItems = append(allItems, res.items...)
 	}
+	return ReadManyItemsResponse{RequestCharge: totalCharge, Items: allItems}, nil
+}
 
-	return ReadManyItemsResponse{
-		RequestCharge: totalRequestCharge,
-		Items:         allItems,
-	}, nil
+// executeReadManyWithQueries groups items by logical partition key, builds
+// parameterized SQL queries (one per PK group, chunked at maxItemsPerQuery),
+// and executes them concurrently. This replaces the previous per-item point-read
+// strategy with far fewer HTTP round-trips.
+//
+// V1 routes each query using the x-ms-documentdb-partitionkey header (one query
+// per logical PK group). A future V2 can add EPK hashing to coalesce groups that
+// map to the same physical partition range into a single OR-of-conjunctions query.
+func (c *ContainerClient) executeReadManyWithQueries(
+	ctx context.Context,
+	items []ItemIdentity,
+	readManyOptions *ReadManyOptions,
+	operationContext pipelineRequestOptions,
+) (ReadManyItemsResponse, error) {
+	containerResp, err := c.Read(ctx, nil)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+	pkDef := containerResp.ContainerProperties.PartitionKeyDefinition
+
+	orderedPKs, groups, err := groupItemsByLogicalPK(items)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	chunks, err := buildQueryChunks(orderedPKs, groups, pkDef)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	concurrency := determineConcurrency(nil)
+	if readManyOptions != nil {
+		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
+	}
+
+	queryOpts := &QueryOptions{}
+	if readManyOptions != nil {
+		queryOpts.ConsistencyLevel = readManyOptions.ConsistencyLevel
+		queryOpts.SessionToken = readManyOptions.SessionToken
+		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
+	}
+
+	results := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
+	return collectChunkResults(results)
 }

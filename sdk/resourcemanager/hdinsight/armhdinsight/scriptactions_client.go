@@ -25,10 +25,9 @@ type ScriptActionsClient struct {
 }
 
 // NewScriptActionsClient creates a new instance of ScriptActionsClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptActionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +44,7 @@ func NewScriptActionsClient(subscriptionID string, credential azcore.TokenCreden
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - scriptName - The name of the script.
 //   - options - ScriptActionsClientDeleteOptions contains the optional parameters for the ScriptActionsClient.Delete method.
@@ -104,7 +103,7 @@ func (client *ScriptActionsClient) deleteCreateRequest(ctx context.Context, reso
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - operationID - The long running operation id.
 //   - options - ScriptActionsClientGetExecutionAsyncOperationStatusOptions contains the optional parameters for the ScriptActionsClient.GetExecutionAsyncOperationStatus
@@ -174,7 +173,7 @@ func (client *ScriptActionsClient) getExecutionAsyncOperationStatusHandleRespons
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - scriptExecutionID - The script execution Id
 //   - options - ScriptActionsClientGetExecutionDetailOptions contains the optional parameters for the ScriptActionsClient.GetExecutionDetail
@@ -243,7 +242,7 @@ func (client *ScriptActionsClient) getExecutionDetailHandleResponse(resp *http.R
 // NewListByClusterPager - Lists all the persisted script actions for the specified cluster.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ScriptActionsClientListByClusterOptions contains the optional parameters for the ScriptActionsClient.NewListByClusterPager
 //     method.

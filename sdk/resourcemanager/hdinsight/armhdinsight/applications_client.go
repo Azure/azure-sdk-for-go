@@ -25,10 +25,9 @@ type ApplicationsClient struct {
 }
 
 // NewApplicationsClient creates a new instance of ApplicationsClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +44,7 @@ func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredent
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
 //   - parameters - The application create request.
@@ -131,7 +130,7 @@ func (client *ApplicationsClient) createCreateRequest(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
 //   - options - ApplicationsClientBeginDeleteOptions contains the optional parameters for the ApplicationsClient.BeginDelete
@@ -213,7 +212,7 @@ func (client *ApplicationsClient) deleteCreateRequest(ctx context.Context, resou
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
 //   - options - ApplicationsClientGetOptions contains the optional parameters for the ApplicationsClient.Get method.
@@ -282,7 +281,7 @@ func (client *ApplicationsClient) getHandleResponse(resp *http.Response) (Applic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - applicationName - The constant value for the application name.
 //   - operationID - The long running operation id.
@@ -356,7 +355,7 @@ func (client *ApplicationsClient) getAzureAsyncOperationStatusHandleResponse(res
 // NewListByClusterPager - Lists all of the applications for the HDInsight cluster.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ApplicationsClientListByClusterOptions contains the optional parameters for the ApplicationsClient.NewListByClusterPager
 //     method.

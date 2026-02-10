@@ -25,10 +25,9 @@ type ClustersClient struct {
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +44,7 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster create request.
 //   - options - ClustersClientBeginCreateOptions contains the optional parameters for the ClustersClient.BeginCreate method.
@@ -125,7 +124,7 @@ func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceG
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error) {
@@ -201,7 +200,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The parameters for executing script actions.
 //   - options - ClustersClientBeginExecuteScriptActionsOptions contains the optional parameters for the ClustersClient.BeginExecuteScriptActions
@@ -282,7 +281,7 @@ func (client *ClustersClient) executeScriptActionsCreateRequest(ctx context.Cont
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
 func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error) {
@@ -346,7 +345,7 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - operationID - The long running operation id.
 //   - options - ClustersClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the ClustersClient.GetAzureAsyncOperationStatus
@@ -416,7 +415,7 @@ func (client *ClustersClient) getAzureAsyncOperationStatusHandleResponse(resp *h
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ClustersClientGetGatewaySettingsOptions contains the optional parameters for the ClustersClient.GetGatewaySettings
 //     method.
@@ -534,7 +533,7 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 // NewListByResourceGroupPager - Lists the HDInsight clusters in a resource group.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 //     method.
 func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
@@ -595,7 +594,7 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The constant value for the roleName
 //   - parameters - The parameters for the resize operation.
@@ -680,7 +679,7 @@ func (client *ClustersClient) resizeCreateRequest(ctx context.Context, resourceG
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The parameters for the disk encryption operation.
 //   - options - ClustersClientBeginRotateDiskEncryptionKeyOptions contains the optional parameters for the ClustersClient.BeginRotateDiskEncryptionKey
@@ -761,7 +760,7 @@ func (client *ClustersClient) rotateDiskEncryptionKeyCreateRequest(ctx context.C
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster patch request.
 //   - options - ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
@@ -829,7 +828,7 @@ func (client *ClustersClient) updateHandleResponse(resp *http.Response) (Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - roleName - The constant value for the roleName
 //   - parameters - The parameters for the update autoscale configuration operation.
@@ -915,7 +914,7 @@ func (client *ClustersClient) updateAutoScaleConfigurationCreateRequest(ctx cont
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster configurations.
 //   - options - ClustersClientBeginUpdateGatewaySettingsOptions contains the optional parameters for the ClustersClient.BeginUpdateGatewaySettings
@@ -996,7 +995,7 @@ func (client *ClustersClient) updateGatewaySettingsCreateRequest(ctx context.Con
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The cluster configurations.
 //   - options - ClustersClientBeginUpdateIdentityCertificateOptions contains the optional parameters for the ClustersClient.BeginUpdateIdentityCertificate

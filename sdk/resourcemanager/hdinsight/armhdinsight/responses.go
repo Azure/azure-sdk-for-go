@@ -30,8 +30,7 @@ type ApplicationsClientGetResponse struct {
 
 // ApplicationsClientListByClusterResponse contains the response from method ApplicationsClient.NewListByClusterPager.
 type ApplicationsClientListByClusterResponse struct {
-	// Result of the request to list cluster Applications. It contains a list of operations and a URL link to get the next set
-	// of results.
+	// The response of a Application list operation.
 	ApplicationListResult
 }
 
@@ -71,13 +70,13 @@ type ClustersClientGetResponse struct {
 
 // ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
-	// The List Cluster operation response.
+	// The response of a Cluster list operation.
 	ClusterListResult
 }
 
 // ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
-	// The List Cluster operation response.
+	// The response of a Cluster list operation.
 	ClusterListResult
 }
 
@@ -261,7 +260,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 
 // PrivateEndpointConnectionsClientListByClusterResponse contains the response from method PrivateEndpointConnectionsClient.NewListByClusterPager.
 type PrivateEndpointConnectionsClientListByClusterResponse struct {
-	// The list private endpoint connections response.
+	// The response of a PrivateEndpointConnection list operation.
 	PrivateEndpointConnectionListResult
 }
 
@@ -319,7 +318,7 @@ type VirtualMachinesClientGetAsyncOperationStatusResponse struct {
 
 // VirtualMachinesClientListHostsResponse contains the response from method VirtualMachinesClient.ListHosts.
 type VirtualMachinesClientListHostsResponse struct {
-	// Result of the request to list cluster hosts
+	// Array of HostInfo
 	HostInfoArray []*HostInfo
 }
 

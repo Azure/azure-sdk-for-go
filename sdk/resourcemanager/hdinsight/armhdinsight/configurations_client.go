@@ -25,10 +25,9 @@ type ConfigurationsClient struct {
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -46,7 +45,7 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
 //   - options - ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
@@ -115,7 +114,7 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
 func (client *ConfigurationsClient) List(ctx context.Context, resourceGroupName string, clusterName string, options *ConfigurationsClientListOptions) (ConfigurationsClientListResponse, error) {
@@ -180,7 +179,7 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - configurationName - The name of the cluster configuration.
 //   - parameters - The cluster configurations.

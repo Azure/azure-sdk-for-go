@@ -5,10 +5,12 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/hdinsight/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/8a9dbb28e788355a47dc5bad3ea5f8da212b4bf6/specification/hdinsight/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/6312b1c8676b0973f86f078c1177dcb7510158df/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsight/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/6312b1c8676b0973f86f078c1177dcb7510158df/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsight/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.3.0-beta.3
+module-version: 1.3.0-beta.4
+modelerfour:
+  lenient-model-deduplication: true
 directive:
 - from: cluster.json
   where: $.definitions.Resource

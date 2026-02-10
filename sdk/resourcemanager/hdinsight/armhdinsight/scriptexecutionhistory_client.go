@@ -25,10 +25,9 @@ type ScriptExecutionHistoryClient struct {
 }
 
 // NewScriptExecutionHistoryClient creates a new instance of ScriptExecutionHistoryClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptExecutionHistoryClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +43,7 @@ func NewScriptExecutionHistoryClient(subscriptionID string, credential azcore.To
 // NewListByClusterPager - Lists all scripts' execution history for the specified cluster.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.NewListByClusterPager
 //     method.
@@ -110,7 +109,7 @@ func (client *ScriptExecutionHistoryClient) listByClusterHandleResponse(resp *ht
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - scriptExecutionID - The script execution Id
 //   - options - ScriptExecutionHistoryClientPromoteOptions contains the optional parameters for the ScriptExecutionHistoryClient.Promote

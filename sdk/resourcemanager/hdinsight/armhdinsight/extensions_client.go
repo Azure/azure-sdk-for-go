@@ -25,10 +25,9 @@ type ExtensionsClient struct {
 }
 
 // NewExtensionsClient creates a new instance of ExtensionsClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtensionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +44,7 @@ func NewExtensionsClient(subscriptionID string, credential azcore.TokenCredentia
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
 //   - parameters - The cluster extensions create request.
@@ -130,7 +129,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
 //   - options - ExtensionsClientBeginDeleteOptions contains the optional parameters for the ExtensionsClient.BeginDelete method.
@@ -211,7 +210,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientBeginDisableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitor
 //     method.
@@ -288,7 +287,7 @@ func (client *ExtensionsClient) disableAzureMonitorCreateRequest(ctx context.Con
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientBeginDisableAzureMonitorAgentOptions contains the optional parameters for the ExtensionsClient.BeginDisableAzureMonitorAgent
 //     method.
@@ -365,7 +364,7 @@ func (client *ExtensionsClient) disableAzureMonitorAgentCreateRequest(ctx contex
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientBeginDisableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginDisableMonitoring
 //     method.
@@ -442,7 +441,7 @@ func (client *ExtensionsClient) disableMonitoringCreateRequest(ctx context.Conte
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The Log Analytics workspace parameters.
 //   - options - ExtensionsClientBeginEnableAzureMonitorOptions contains the optional parameters for the ExtensionsClient.BeginEnableAzureMonitor
@@ -523,7 +522,7 @@ func (client *ExtensionsClient) enableAzureMonitorCreateRequest(ctx context.Cont
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The Log Analytics workspace parameters.
 //   - options - ExtensionsClientBeginEnableAzureMonitorAgentOptions contains the optional parameters for the ExtensionsClient.BeginEnableAzureMonitorAgent
@@ -604,7 +603,7 @@ func (client *ExtensionsClient) enableAzureMonitorAgentCreateRequest(ctx context
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - parameters - The Operations Management Suite (OMS) workspace parameters.
 //   - options - ExtensionsClientBeginEnableMonitoringOptions contains the optional parameters for the ExtensionsClient.BeginEnableMonitoring
@@ -685,7 +684,7 @@ func (client *ExtensionsClient) enableMonitoringCreateRequest(ctx context.Contex
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
 //   - options - ExtensionsClientGetOptions contains the optional parameters for the ExtensionsClient.Get method.
@@ -754,7 +753,7 @@ func (client *ExtensionsClient) getHandleResponse(resp *http.Response) (Extensio
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - extensionName - The name of the cluster extension.
 //   - operationID - The long running operation id.
@@ -829,7 +828,7 @@ func (client *ExtensionsClient) getAzureAsyncOperationStatusHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientGetAzureMonitorAgentStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureMonitorAgentStatus
 //     method.
@@ -894,7 +893,7 @@ func (client *ExtensionsClient) getAzureMonitorAgentStatusHandleResponse(resp *h
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientGetAzureMonitorStatusOptions contains the optional parameters for the ExtensionsClient.GetAzureMonitorStatus
 //     method.
@@ -959,7 +958,7 @@ func (client *ExtensionsClient) getAzureMonitorStatusHandleResponse(resp *http.R
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - resourceGroupName - The name of the resource group.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - ExtensionsClientGetMonitoringStatusOptions contains the optional parameters for the ExtensionsClient.GetMonitoringStatus
 //     method.

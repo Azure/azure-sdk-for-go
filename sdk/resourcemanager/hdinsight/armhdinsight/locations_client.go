@@ -25,10 +25,9 @@ type LocationsClient struct {
 }
 
 // NewLocationsClient creates a new instance of LocationsClient with the specified values.
-//   - subscriptionID - The subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-//     forms part of the URI for every service call.
+//   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +44,8 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - location - The Azure location (region) for which to make the request.
+//   - location - The name of Azure region.
+//   - parameters - The request body
 //   - options - LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
 //     method.
 func (client *LocationsClient) CheckNameAvailability(ctx context.Context, location string, parameters NameAvailabilityCheckRequestParameters, options *LocationsClientCheckNameAvailabilityOptions) (LocationsClientCheckNameAvailabilityResponse, error) {
@@ -108,7 +108,7 @@ func (client *LocationsClient) checkNameAvailabilityHandleResponse(resp *http.Re
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - location - The Azure location (region) for which to make the request.
+//   - location - The name of Azure region.
 //   - operationID - The long running operation id.
 //   - options - LocationsClientGetAzureAsyncOperationStatusOptions contains the optional parameters for the LocationsClient.GetAzureAsyncOperationStatus
 //     method.
@@ -173,7 +173,7 @@ func (client *LocationsClient) getAzureAsyncOperationStatusHandleResponse(resp *
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - location - The Azure location (region) for which to make the request.
+//   - location - The name of Azure region.
 //   - options - LocationsClientGetCapabilitiesOptions contains the optional parameters for the LocationsClient.GetCapabilities
 //     method.
 func (client *LocationsClient) GetCapabilities(ctx context.Context, location string, options *LocationsClientGetCapabilitiesOptions) (LocationsClientGetCapabilitiesResponse, error) {
@@ -233,7 +233,7 @@ func (client *LocationsClient) getCapabilitiesHandleResponse(resp *http.Response
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - location - The Azure location (region) for which to make the request.
+//   - location - The name of Azure region.
 //   - options - LocationsClientListBillingSpecsOptions contains the optional parameters for the LocationsClient.ListBillingSpecs
 //     method.
 func (client *LocationsClient) ListBillingSpecs(ctx context.Context, location string, options *LocationsClientListBillingSpecsOptions) (LocationsClientListBillingSpecsResponse, error) {
@@ -293,7 +293,7 @@ func (client *LocationsClient) listBillingSpecsHandleResponse(resp *http.Respons
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - location - The Azure location (region) for which to make the request.
+//   - location - The name of Azure region.
 //   - options - LocationsClientListUsagesOptions contains the optional parameters for the LocationsClient.ListUsages method.
 func (client *LocationsClient) ListUsages(ctx context.Context, location string, options *LocationsClientListUsagesOptions) (LocationsClientListUsagesResponse, error) {
 	var err error
@@ -352,7 +352,8 @@ func (client *LocationsClient) listUsagesHandleResponse(resp *http.Response) (Lo
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-01-15-preview
-//   - location - The Azure location (region) for which to make the request.
+//   - location - The name of Azure region.
+//   - parameters - The request body
 //   - options - LocationsClientValidateClusterCreateRequestOptions contains the optional parameters for the LocationsClient.ValidateClusterCreateRequest
 //     method.
 func (client *LocationsClient) ValidateClusterCreateRequest(ctx context.Context, location string, parameters ClusterCreateRequestValidationParameters, options *LocationsClientValidateClusterCreateRequestOptions) (LocationsClientValidateClusterCreateRequestResponse, error) {

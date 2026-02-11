@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -24,7 +24,7 @@ func ExampleKubeEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewKubeEnvironmentsClient().BeginCreateOrUpdate(ctx, "examplerg", "testkubeenv", armappservice.KubeEnvironment{
-		Location:	to.Ptr("East US"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.KubeEnvironmentProperties{
 			StaticIP: to.Ptr("1.2.3.4"),
 		},

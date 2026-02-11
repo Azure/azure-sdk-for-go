@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,15 +22,15 @@ import (
 type WorkflowRunActionRepetitionsServer struct {
 	// Get is the fake for method WorkflowRunActionRepetitionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *armappservice.WorkflowRunActionRepetitionsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowRunActionRepetitionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *armappservice.WorkflowRunActionRepetitionsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowRunActionRepetitionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WorkflowRunActionRepetitionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *armappservice.WorkflowRunActionRepetitionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse])
+	NewListPager func(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *armappservice.WorkflowRunActionRepetitionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse])
 
 	// NewListExpressionTracesPager is the fake for method WorkflowRunActionRepetitionsClient.NewListExpressionTracesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListExpressionTracesPager	func(resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse])
+	NewListExpressionTracesPager func(resourceGroupName string, name string, workflowName string, runName string, actionName string, repetitionName string, options *armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse])
 }
 
 // NewWorkflowRunActionRepetitionsServerTransport creates a new instance of WorkflowRunActionRepetitionsServerTransport with the provided implementation.
@@ -38,18 +38,18 @@ type WorkflowRunActionRepetitionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkflowRunActionRepetitionsServerTransport(srv *WorkflowRunActionRepetitionsServer) *WorkflowRunActionRepetitionsServerTransport {
 	return &WorkflowRunActionRepetitionsServerTransport{
-		srv:				srv,
-		newListPager:			newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]](),
-		newListExpressionTracesPager:	newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse]](),
+		srv:                          srv,
+		newListPager:                 newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]](),
+		newListExpressionTracesPager: newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse]](),
 	}
 }
 
 // WorkflowRunActionRepetitionsServerTransport connects instances of armappservice.WorkflowRunActionRepetitionsClient to instances of WorkflowRunActionRepetitionsServer.
 // Don't use this type directly, use NewWorkflowRunActionRepetitionsServerTransport instead.
 type WorkflowRunActionRepetitionsServerTransport struct {
-	srv				*WorkflowRunActionRepetitionsServer
-	newListPager			*tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]]
-	newListExpressionTracesPager	*tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse]]
+	srv                          *WorkflowRunActionRepetitionsServer
+	newListPager                 *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListResponse]]
+	newListExpressionTracesPager *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionRepetitionsClientListExpressionTracesResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowRunActionRepetitionsServerTransport.

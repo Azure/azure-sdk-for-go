@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,15 +23,15 @@ import (
 type WorkflowTriggerHistoriesServer struct {
 	// Get is the fake for method WorkflowTriggerHistoriesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientGetOptions) (resp azfake.Responder[armappservice.WorkflowTriggerHistoriesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientGetOptions) (resp azfake.Responder[armappservice.WorkflowTriggerHistoriesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WorkflowTriggerHistoriesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggerHistoriesClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse])
+	NewListPager func(resourceGroupName string, name string, workflowName string, triggerName string, options *armappservice.WorkflowTriggerHistoriesClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse])
 
 	// BeginResubmit is the fake for method WorkflowTriggerHistoriesClient.BeginResubmit
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginResubmit	func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientBeginResubmitOptions) (resp azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse], errResp azfake.ErrorResponder)
+	BeginResubmit func(ctx context.Context, resourceGroupName string, name string, workflowName string, triggerName string, historyName string, options *armappservice.WorkflowTriggerHistoriesClientBeginResubmitOptions) (resp azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkflowTriggerHistoriesServerTransport creates a new instance of WorkflowTriggerHistoriesServerTransport with the provided implementation.
@@ -39,18 +39,18 @@ type WorkflowTriggerHistoriesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkflowTriggerHistoriesServerTransport(srv *WorkflowTriggerHistoriesServer) *WorkflowTriggerHistoriesServerTransport {
 	return &WorkflowTriggerHistoriesServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]](),
-		beginResubmit:	newTracker[azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse]](),
+		srv:           srv,
+		newListPager:  newTracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]](),
+		beginResubmit: newTracker[azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse]](),
 	}
 }
 
 // WorkflowTriggerHistoriesServerTransport connects instances of armappservice.WorkflowTriggerHistoriesClient to instances of WorkflowTriggerHistoriesServer.
 // Don't use this type directly, use NewWorkflowTriggerHistoriesServerTransport instead.
 type WorkflowTriggerHistoriesServerTransport struct {
-	srv		*WorkflowTriggerHistoriesServer
-	newListPager	*tracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]]
-	beginResubmit	*tracker[azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse]]
+	srv           *WorkflowTriggerHistoriesServer
+	newListPager  *tracker[azfake.PagerResponder[armappservice.WorkflowTriggerHistoriesClientListResponse]]
+	beginResubmit *tracker[azfake.PollerResponder[armappservice.WorkflowTriggerHistoriesClientResubmitResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowTriggerHistoriesServerTransport.
@@ -197,8 +197,8 @@ func (w *WorkflowTriggerHistoriesServerTransport) dispatchNewListPager(req *http
 		var options *armappservice.WorkflowTriggerHistoriesClientListOptions
 		if topParam != nil || filterParam != nil {
 			options = &armappservice.WorkflowTriggerHistoriesClientListOptions{
-				Top:	topParam,
-				Filter:	filterParam,
+				Top:    topParam,
+				Filter: filterParam,
 			}
 		}
 		resp := w.srv.NewListPager(resourceGroupNameParam, nameParam, workflowNameParam, triggerNameParam, options)

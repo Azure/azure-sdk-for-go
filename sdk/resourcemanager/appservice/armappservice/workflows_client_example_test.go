@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -50,14 +50,14 @@ func ExampleWorkflowsClient_Validate() {
 	res, err := clientFactory.NewWorkflowsClient().Validate(ctx, "test-resource-group", "test-name", "test-workflow", armappservice.Workflow{
 		Properties: &armappservice.WorkflowProperties{
 			Definition: map[string]any{
-				"$schema":		"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-				"actions":		map[string]any{},
-				"contentVersion":	"1.0.0.0",
-				"outputs":		map[string]any{},
-				"parameters":		map[string]any{},
-				"triggers":		map[string]any{},
+				"$schema":        "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+				"actions":        map[string]any{},
+				"contentVersion": "1.0.0.0",
+				"outputs":        map[string]any{},
+				"parameters":     map[string]any{},
+				"triggers":       map[string]any{},
 			},
-			Kind:	to.Ptr(armappservice.KindStateful),
+			Kind: to.Ptr(armappservice.KindStateful),
 		},
 	}, nil)
 	if err != nil {

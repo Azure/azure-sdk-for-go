@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,79 +23,79 @@ import (
 type WebSiteManagementServer struct {
 	// CheckNameAvailability is the fake for method WebSiteManagementClient.CheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability	func(ctx context.Context, request armappservice.ResourceNameAvailabilityRequest, options *armappservice.WebSiteManagementClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	CheckNameAvailability func(ctx context.Context, request armappservice.ResourceNameAvailabilityRequest, options *armappservice.WebSiteManagementClientCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// GetPublishingUser is the fake for method WebSiteManagementClient.GetPublishingUser
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPublishingUser	func(ctx context.Context, options *armappservice.WebSiteManagementClientGetPublishingUserOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetPublishingUserResponse], errResp azfake.ErrorResponder)
+	GetPublishingUser func(ctx context.Context, options *armappservice.WebSiteManagementClientGetPublishingUserOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetPublishingUserResponse], errResp azfake.ErrorResponder)
 
 	// GetSourceControl is the fake for method WebSiteManagementClient.GetSourceControl
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSourceControl	func(ctx context.Context, sourceControlType string, options *armappservice.WebSiteManagementClientGetSourceControlOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSourceControlResponse], errResp azfake.ErrorResponder)
+	GetSourceControl func(ctx context.Context, sourceControlType string, options *armappservice.WebSiteManagementClientGetSourceControlOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSourceControlResponse], errResp azfake.ErrorResponder)
 
 	// GetSubscriptionDeploymentLocations is the fake for method WebSiteManagementClient.GetSubscriptionDeploymentLocations
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSubscriptionDeploymentLocations	func(ctx context.Context, options *armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse], errResp azfake.ErrorResponder)
+	GetSubscriptionDeploymentLocations func(ctx context.Context, options *armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse], errResp azfake.ErrorResponder)
 
 	// NewListAseRegionsPager is the fake for method WebSiteManagementClient.NewListAseRegionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListAseRegionsPager	func(options *armappservice.WebSiteManagementClientListAseRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse])
+	NewListAseRegionsPager func(options *armappservice.WebSiteManagementClientListAseRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse])
 
 	// NewListBillingMetersPager is the fake for method WebSiteManagementClient.NewListBillingMetersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBillingMetersPager	func(options *armappservice.WebSiteManagementClientListBillingMetersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse])
+	NewListBillingMetersPager func(options *armappservice.WebSiteManagementClientListBillingMetersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse])
 
 	// NewListCustomHostNameSitesPager is the fake for method WebSiteManagementClient.NewListCustomHostNameSitesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListCustomHostNameSitesPager	func(options *armappservice.WebSiteManagementClientListCustomHostNameSitesOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse])
+	NewListCustomHostNameSitesPager func(options *armappservice.WebSiteManagementClientListCustomHostNameSitesOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse])
 
 	// NewListGeoRegionsPager is the fake for method WebSiteManagementClient.NewListGeoRegionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListGeoRegionsPager	func(options *armappservice.WebSiteManagementClientListGeoRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse])
+	NewListGeoRegionsPager func(options *armappservice.WebSiteManagementClientListGeoRegionsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse])
 
 	// NewListPremierAddOnOffersPager is the fake for method WebSiteManagementClient.NewListPremierAddOnOffersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPremierAddOnOffersPager	func(options *armappservice.WebSiteManagementClientListPremierAddOnOffersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse])
+	NewListPremierAddOnOffersPager func(options *armappservice.WebSiteManagementClientListPremierAddOnOffersOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse])
 
 	// ListSKUs is the fake for method WebSiteManagementClient.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSKUs	func(ctx context.Context, options *armappservice.WebSiteManagementClientListSKUsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientListSKUsResponse], errResp azfake.ErrorResponder)
+	ListSKUs func(ctx context.Context, options *armappservice.WebSiteManagementClientListSKUsOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientListSKUsResponse], errResp azfake.ErrorResponder)
 
 	// NewListSiteIdentifiersAssignedToHostNamePager is the fake for method WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteIdentifiersAssignedToHostNamePager	func(nameIdentifier armappservice.NameIdentifier, options *armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse])
+	NewListSiteIdentifiersAssignedToHostNamePager func(nameIdentifier armappservice.NameIdentifier, options *armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse])
 
 	// NewListSourceControlsPager is the fake for method WebSiteManagementClient.NewListSourceControlsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSourceControlsPager	func(options *armappservice.WebSiteManagementClientListSourceControlsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse])
+	NewListSourceControlsPager func(options *armappservice.WebSiteManagementClientListSourceControlsOptions) (resp azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse])
 
 	// Move is the fake for method WebSiteManagementClient.Move
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Move	func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientMoveResponse], errResp azfake.ErrorResponder)
+	Move func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientMoveResponse], errResp azfake.ErrorResponder)
 
 	// RegionalCheckNameAvailability is the fake for method WebSiteManagementClient.RegionalCheckNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
-	RegionalCheckNameAvailability	func(ctx context.Context, location string, request armappservice.DnlResourceNameAvailabilityRequest, options *armappservice.WebSiteManagementClientRegionalCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientRegionalCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+	RegionalCheckNameAvailability func(ctx context.Context, location string, request armappservice.DnlResourceNameAvailabilityRequest, options *armappservice.WebSiteManagementClientRegionalCheckNameAvailabilityOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientRegionalCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
 
 	// UpdatePublishingUser is the fake for method WebSiteManagementClient.UpdatePublishingUser
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdatePublishingUser	func(ctx context.Context, userDetails armappservice.User, options *armappservice.WebSiteManagementClientUpdatePublishingUserOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientUpdatePublishingUserResponse], errResp azfake.ErrorResponder)
+	UpdatePublishingUser func(ctx context.Context, userDetails armappservice.User, options *armappservice.WebSiteManagementClientUpdatePublishingUserOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientUpdatePublishingUserResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSourceControl is the fake for method WebSiteManagementClient.UpdateSourceControl
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSourceControl	func(ctx context.Context, sourceControlType string, requestMessage armappservice.SourceControl, options *armappservice.WebSiteManagementClientUpdateSourceControlOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientUpdateSourceControlResponse], errResp azfake.ErrorResponder)
+	UpdateSourceControl func(ctx context.Context, sourceControlType string, requestMessage armappservice.SourceControl, options *armappservice.WebSiteManagementClientUpdateSourceControlOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientUpdateSourceControlResponse], errResp azfake.ErrorResponder)
 
 	// Validate is the fake for method WebSiteManagementClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
-	Validate	func(ctx context.Context, resourceGroupName string, validateRequest armappservice.ValidateRequest, options *armappservice.WebSiteManagementClientValidateOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientValidateResponse], errResp azfake.ErrorResponder)
+	Validate func(ctx context.Context, resourceGroupName string, validateRequest armappservice.ValidateRequest, options *armappservice.WebSiteManagementClientValidateOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientValidateResponse], errResp azfake.ErrorResponder)
 
 	// ValidateMove is the fake for method WebSiteManagementClient.ValidateMove
 	// HTTP status codes to indicate success: http.StatusNoContent
-	ValidateMove	func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientValidateMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientValidateMoveResponse], errResp azfake.ErrorResponder)
+	ValidateMove func(ctx context.Context, resourceGroupName string, moveResourceEnvelope armappservice.CsmMoveResourceEnvelope, options *armappservice.WebSiteManagementClientValidateMoveOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientValidateMoveResponse], errResp azfake.ErrorResponder)
 
 	// VerifyHostingEnvironmentVnet is the fake for method WebSiteManagementClient.VerifyHostingEnvironmentVnet
 	// HTTP status codes to indicate success: http.StatusOK
-	VerifyHostingEnvironmentVnet	func(ctx context.Context, parameters armappservice.VnetParameters, options *armappservice.WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientVerifyHostingEnvironmentVnetResponse], errResp azfake.ErrorResponder)
+	VerifyHostingEnvironmentVnet func(ctx context.Context, parameters armappservice.VnetParameters, options *armappservice.WebSiteManagementClientVerifyHostingEnvironmentVnetOptions) (resp azfake.Responder[armappservice.WebSiteManagementClientVerifyHostingEnvironmentVnetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWebSiteManagementServerTransport creates a new instance of WebSiteManagementServerTransport with the provided implementation.
@@ -103,28 +103,28 @@ type WebSiteManagementServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebSiteManagementServerTransport(srv *WebSiteManagementServer) *WebSiteManagementServerTransport {
 	return &WebSiteManagementServerTransport{
-		srv:					srv,
-		newListAseRegionsPager:			newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse]](),
-		newListBillingMetersPager:		newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse]](),
-		newListCustomHostNameSitesPager:	newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse]](),
-		newListGeoRegionsPager:			newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse]](),
-		newListPremierAddOnOffersPager:		newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse]](),
-		newListSiteIdentifiersAssignedToHostNamePager:	newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]](),
-		newListSourceControlsPager:			newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse]](),
+		srv:                             srv,
+		newListAseRegionsPager:          newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse]](),
+		newListBillingMetersPager:       newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse]](),
+		newListCustomHostNameSitesPager: newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse]](),
+		newListGeoRegionsPager:          newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse]](),
+		newListPremierAddOnOffersPager:  newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse]](),
+		newListSiteIdentifiersAssignedToHostNamePager: newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]](),
+		newListSourceControlsPager:                    newTracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse]](),
 	}
 }
 
 // WebSiteManagementServerTransport connects instances of armappservice.WebSiteManagementClient to instances of WebSiteManagementServer.
 // Don't use this type directly, use NewWebSiteManagementServerTransport instead.
 type WebSiteManagementServerTransport struct {
-	srv						*WebSiteManagementServer
-	newListAseRegionsPager				*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse]]
-	newListBillingMetersPager			*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse]]
-	newListCustomHostNameSitesPager			*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse]]
-	newListGeoRegionsPager				*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse]]
-	newListPremierAddOnOffersPager			*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse]]
-	newListSiteIdentifiersAssignedToHostNamePager	*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]]
-	newListSourceControlsPager			*tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse]]
+	srv                                           *WebSiteManagementServer
+	newListAseRegionsPager                        *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListAseRegionsResponse]]
+	newListBillingMetersPager                     *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListBillingMetersResponse]]
+	newListCustomHostNameSitesPager               *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListCustomHostNameSitesResponse]]
+	newListGeoRegionsPager                        *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListGeoRegionsResponse]]
+	newListPremierAddOnOffersPager                *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListPremierAddOnOffersResponse]]
+	newListSiteIdentifiersAssignedToHostNamePager *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse]]
+	newListSourceControlsPager                    *tracker[azfake.PagerResponder[armappservice.WebSiteManagementClientListSourceControlsResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebSiteManagementServerTransport.
@@ -368,8 +368,8 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 		var options *armappservice.WebSiteManagementClientListBillingMetersOptions
 		if billingLocationParam != nil || oSTypeParam != nil {
 			options = &armappservice.WebSiteManagementClientListBillingMetersOptions{
-				BillingLocation:	billingLocationParam,
-				OSType:			oSTypeParam,
+				BillingLocation: billingLocationParam,
+				OSType:          oSTypeParam,
 			}
 		}
 		resp := w.srv.NewListBillingMetersPager(options)
@@ -491,11 +491,11 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 		var options *armappservice.WebSiteManagementClientListGeoRegionsOptions
 		if sKUParam != nil || linuxWorkersEnabledParam != nil || xenonWorkersEnabledParam != nil || linuxDynamicWorkersEnabledParam != nil || customModeWorkersEnabledParam != nil {
 			options = &armappservice.WebSiteManagementClientListGeoRegionsOptions{
-				SKU:				sKUParam,
-				LinuxWorkersEnabled:		linuxWorkersEnabledParam,
-				XenonWorkersEnabled:		xenonWorkersEnabledParam,
-				LinuxDynamicWorkersEnabled:	linuxDynamicWorkersEnabledParam,
-				CustomModeWorkersEnabled:	customModeWorkersEnabledParam,
+				SKU:                        sKUParam,
+				LinuxWorkersEnabled:        linuxWorkersEnabledParam,
+				XenonWorkersEnabled:        xenonWorkersEnabledParam,
+				LinuxDynamicWorkersEnabled: linuxDynamicWorkersEnabledParam,
+				CustomModeWorkersEnabled:   customModeWorkersEnabledParam,
 			}
 		}
 		resp := w.srv.NewListGeoRegionsPager(options)

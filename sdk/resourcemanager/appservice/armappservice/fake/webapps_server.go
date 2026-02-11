@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -24,1667 +24,1667 @@ import (
 type WebAppsServer struct {
 	// AddPremierAddOn is the fake for method WebAppsClient.AddPremierAddOn
 	// HTTP status codes to indicate success: http.StatusOK
-	AddPremierAddOn	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn armappservice.PremierAddOn, options *armappservice.WebAppsClientAddPremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientAddPremierAddOnResponse], errResp azfake.ErrorResponder)
+	AddPremierAddOn func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn armappservice.PremierAddOn, options *armappservice.WebAppsClientAddPremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientAddPremierAddOnResponse], errResp azfake.ErrorResponder)
 
 	// AddPremierAddOnSlot is the fake for method WebAppsClient.AddPremierAddOnSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	AddPremierAddOnSlot	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn armappservice.PremierAddOn, options *armappservice.WebAppsClientAddPremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientAddPremierAddOnSlotResponse], errResp azfake.ErrorResponder)
+	AddPremierAddOnSlot func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn armappservice.PremierAddOn, options *armappservice.WebAppsClientAddPremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientAddPremierAddOnSlotResponse], errResp azfake.ErrorResponder)
 
 	// AnalyzeCustomHostname is the fake for method WebAppsClient.AnalyzeCustomHostname
 	// HTTP status codes to indicate success: http.StatusOK
-	AnalyzeCustomHostname	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientAnalyzeCustomHostnameOptions) (resp azfake.Responder[armappservice.WebAppsClientAnalyzeCustomHostnameResponse], errResp azfake.ErrorResponder)
+	AnalyzeCustomHostname func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientAnalyzeCustomHostnameOptions) (resp azfake.Responder[armappservice.WebAppsClientAnalyzeCustomHostnameResponse], errResp azfake.ErrorResponder)
 
 	// AnalyzeCustomHostnameSlot is the fake for method WebAppsClient.AnalyzeCustomHostnameSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	AnalyzeCustomHostnameSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientAnalyzeCustomHostnameSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientAnalyzeCustomHostnameSlotResponse], errResp azfake.ErrorResponder)
+	AnalyzeCustomHostnameSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientAnalyzeCustomHostnameSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientAnalyzeCustomHostnameSlotResponse], errResp azfake.ErrorResponder)
 
 	// ApplySlotConfigToProduction is the fake for method WebAppsClient.ApplySlotConfigToProduction
 	// HTTP status codes to indicate success: http.StatusOK
-	ApplySlotConfigToProduction	func(ctx context.Context, resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientApplySlotConfigToProductionOptions) (resp azfake.Responder[armappservice.WebAppsClientApplySlotConfigToProductionResponse], errResp azfake.ErrorResponder)
+	ApplySlotConfigToProduction func(ctx context.Context, resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientApplySlotConfigToProductionOptions) (resp azfake.Responder[armappservice.WebAppsClientApplySlotConfigToProductionResponse], errResp azfake.ErrorResponder)
 
 	// ApplySlotConfigurationSlot is the fake for method WebAppsClient.ApplySlotConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ApplySlotConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientApplySlotConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientApplySlotConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	ApplySlotConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientApplySlotConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientApplySlotConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginApproveOrRejectPrivateEndpointConnection is the fake for method WebAppsClient.BeginApproveOrRejectPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginApproveOrRejectPrivateEndpointConnection	func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	BeginApproveOrRejectPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
 	// BeginApproveOrRejectPrivateEndpointConnectionSlot is the fake for method WebAppsClient.BeginApproveOrRejectPrivateEndpointConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginApproveOrRejectPrivateEndpointConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
+	BeginApproveOrRejectPrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper armappservice.RemotePrivateEndpointConnectionARMResource, options *armappservice.WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// Backup is the fake for method WebAppsClient.Backup
 	// HTTP status codes to indicate success: http.StatusOK
-	Backup	func(ctx context.Context, resourceGroupName string, name string, request armappservice.BackupRequest, options *armappservice.WebAppsClientBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientBackupResponse], errResp azfake.ErrorResponder)
+	Backup func(ctx context.Context, resourceGroupName string, name string, request armappservice.BackupRequest, options *armappservice.WebAppsClientBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientBackupResponse], errResp azfake.ErrorResponder)
 
 	// BackupSlot is the fake for method WebAppsClient.BackupSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	BackupSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientBackupSlotResponse], errResp azfake.ErrorResponder)
+	BackupSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientBackupSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateDeployment is the fake for method WebAppsClient.CreateDeployment
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateDeployment	func(ctx context.Context, resourceGroupName string, name string, id string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentResponse], errResp azfake.ErrorResponder)
+	CreateDeployment func(ctx context.Context, resourceGroupName string, name string, id string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentResponse], errResp azfake.ErrorResponder)
 
 	// CreateDeploymentSlot is the fake for method WebAppsClient.CreateDeploymentSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateDeploymentSlot	func(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentSlotResponse], errResp azfake.ErrorResponder)
+	CreateDeploymentSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment armappservice.Deployment, options *armappservice.WebAppsClientCreateDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateDeploymentSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateFunction is the fake for method WebAppsClient.BeginCreateFunction
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateFunction	func(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope armappservice.FunctionEnvelope, options *armappservice.WebAppsClientBeginCreateFunctionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateFunctionResponse], errResp azfake.ErrorResponder)
+	BeginCreateFunction func(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope armappservice.FunctionEnvelope, options *armappservice.WebAppsClientBeginCreateFunctionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateFunctionResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateInstanceFunctionSlot is the fake for method WebAppsClient.BeginCreateInstanceFunctionSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateInstanceFunctionSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope armappservice.FunctionEnvelope, options *armappservice.WebAppsClientBeginCreateInstanceFunctionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceFunctionSlotResponse], errResp azfake.ErrorResponder)
+	BeginCreateInstanceFunctionSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope armappservice.FunctionEnvelope, options *armappservice.WebAppsClientBeginCreateInstanceFunctionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceFunctionSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateInstanceMSDeployOperation is the fake for method WebAppsClient.BeginCreateInstanceMSDeployOperation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateInstanceMSDeployOperation	func(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationResponse], errResp azfake.ErrorResponder)
+	BeginCreateInstanceMSDeployOperation func(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateInstanceMSDeployOperationSlot is the fake for method WebAppsClient.BeginCreateInstanceMSDeployOperationSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateInstanceMSDeployOperationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationSlotResponse], errResp azfake.ErrorResponder)
+	BeginCreateInstanceMSDeployOperationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateMSDeployOperation is the fake for method WebAppsClient.BeginCreateMSDeployOperation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateMSDeployOperation	func(ctx context.Context, resourceGroupName string, name string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateMSDeployOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationResponse], errResp azfake.ErrorResponder)
+	BeginCreateMSDeployOperation func(ctx context.Context, resourceGroupName string, name string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateMSDeployOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateMSDeployOperationSlot is the fake for method WebAppsClient.BeginCreateMSDeployOperationSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateMSDeployOperationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateMSDeployOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse], errResp azfake.ErrorResponder)
+	BeginCreateMSDeployOperationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy armappservice.MSDeploy, options *armappservice.WebAppsClientBeginCreateMSDeployOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOneDeployOperation is the fake for method WebAppsClient.CreateOneDeployOperation
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOneDeployOperation	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientCreateOneDeployOperationOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOneDeployOperationResponse], errResp azfake.ErrorResponder)
+	CreateOneDeployOperation func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientCreateOneDeployOperationOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOneDeployOperationResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdate is the fake for method WebAppsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, name string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateConfiguration is the fake for method WebAppsClient.CreateOrUpdateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateConfiguration	func(ctx context.Context, resourceGroupName string, name string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientCreateOrUpdateConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateConfigurationResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateConfiguration func(ctx context.Context, resourceGroupName string, name string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientCreateOrUpdateConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateConfigurationSlot is the fake for method WebAppsClient.CreateOrUpdateConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientCreateOrUpdateConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientCreateOrUpdateConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateDomainOwnershipIdentifier is the fake for method WebAppsClient.CreateOrUpdateDomainOwnershipIdentifier
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateDomainOwnershipIdentifier	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateDomainOwnershipIdentifier func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateDomainOwnershipIdentifierSlot is the fake for method WebAppsClient.CreateOrUpdateDomainOwnershipIdentifierSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateDomainOwnershipIdentifierSlot	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateDomainOwnershipIdentifierSlot func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateFunctionSecret is the fake for method WebAppsClient.CreateOrUpdateFunctionSecret
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdateFunctionSecret	func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateFunctionSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateFunctionSecretResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateFunctionSecret func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateFunctionSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateFunctionSecretResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateFunctionSecretSlot is the fake for method WebAppsClient.CreateOrUpdateFunctionSecretSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdateFunctionSecretSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateFunctionSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateFunctionSecretSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateFunctionSecretSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateFunctionSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateFunctionSecretSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateHostNameBinding is the fake for method WebAppsClient.CreateOrUpdateHostNameBinding
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateHostNameBinding	func(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding armappservice.HostNameBinding, options *armappservice.WebAppsClientCreateOrUpdateHostNameBindingOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostNameBindingResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateHostNameBinding func(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding armappservice.HostNameBinding, options *armappservice.WebAppsClientCreateOrUpdateHostNameBindingOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostNameBindingResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateHostNameBindingSlot is the fake for method WebAppsClient.CreateOrUpdateHostNameBindingSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateHostNameBindingSlot	func(ctx context.Context, resourceGroupName string, name string, hostName string, slot string, hostNameBinding armappservice.HostNameBinding, options *armappservice.WebAppsClientCreateOrUpdateHostNameBindingSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostNameBindingSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateHostNameBindingSlot func(ctx context.Context, resourceGroupName string, name string, hostName string, slot string, hostNameBinding armappservice.HostNameBinding, options *armappservice.WebAppsClientCreateOrUpdateHostNameBindingSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostNameBindingSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateHostSecret is the fake for method WebAppsClient.CreateOrUpdateHostSecret
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdateHostSecret	func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateHostSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostSecretResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateHostSecret func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateHostSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostSecretResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateHostSecretSlot is the fake for method WebAppsClient.CreateOrUpdateHostSecretSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdateHostSecretSlot	func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateHostSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostSecretSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateHostSecretSlot func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key armappservice.KeyInfo, options *armappservice.WebAppsClientCreateOrUpdateHostSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHostSecretSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateHybridConnection is the fake for method WebAppsClient.CreateOrUpdateHybridConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateHybridConnection	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientCreateOrUpdateHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHybridConnectionResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateHybridConnection func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientCreateOrUpdateHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHybridConnectionResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateHybridConnectionSlot is the fake for method WebAppsClient.CreateOrUpdateHybridConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateHybridConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientCreateOrUpdateHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateHybridConnectionSlot func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientCreateOrUpdateHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdatePublicCertificate is the fake for method WebAppsClient.CreateOrUpdatePublicCertificate
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdatePublicCertificate	func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, publicCertificate armappservice.PublicCertificate, options *armappservice.WebAppsClientCreateOrUpdatePublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdatePublicCertificateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdatePublicCertificate func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, publicCertificate armappservice.PublicCertificate, options *armappservice.WebAppsClientCreateOrUpdatePublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdatePublicCertificateResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdatePublicCertificateSlot is the fake for method WebAppsClient.CreateOrUpdatePublicCertificateSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdatePublicCertificateSlot	func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, slot string, publicCertificate armappservice.PublicCertificate, options *armappservice.WebAppsClientCreateOrUpdatePublicCertificateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdatePublicCertificateSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdatePublicCertificateSlot func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, slot string, publicCertificate armappservice.PublicCertificate, options *armappservice.WebAppsClientCreateOrUpdatePublicCertificateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdatePublicCertificateSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateRelayServiceConnection is the fake for method WebAppsClient.CreateOrUpdateRelayServiceConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateRelayServiceConnection	func(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateRelayServiceConnection func(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateRelayServiceConnectionSlot is the fake for method WebAppsClient.CreateOrUpdateRelayServiceConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateRelayServiceConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateRelayServiceConnectionSlot func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateSiteContainer is the fake for method WebAppsClient.CreateOrUpdateSiteContainer
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdateSiteContainer	func(ctx context.Context, resourceGroupName string, name string, containerName string, request armappservice.SiteContainer, options *armappservice.WebAppsClientCreateOrUpdateSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSiteContainerResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateSiteContainer func(ctx context.Context, resourceGroupName string, name string, containerName string, request armappservice.SiteContainer, options *armappservice.WebAppsClientCreateOrUpdateSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSiteContainerResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateSiteContainerSlot is the fake for method WebAppsClient.CreateOrUpdateSiteContainerSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdateSiteContainerSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, request armappservice.SiteContainer, options *armappservice.WebAppsClientCreateOrUpdateSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSiteContainerSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateSiteContainerSlot func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, request armappservice.SiteContainer, options *armappservice.WebAppsClientCreateOrUpdateSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSiteContainerSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdateSlot is the fake for method WebAppsClient.BeginCreateOrUpdateSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateOrUpdateSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope armappservice.Site, options *armappservice.WebAppsClientBeginCreateOrUpdateSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdateSourceControl is the fake for method WebAppsClient.BeginCreateOrUpdateSourceControl
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdateSourceControl	func(ctx context.Context, resourceGroupName string, name string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateSourceControl func(ctx context.Context, resourceGroupName string, name string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse], errResp azfake.ErrorResponder)
 
 	// BeginCreateOrUpdateSourceControlSlot is the fake for method WebAppsClient.BeginCreateOrUpdateSourceControlSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	BeginCreateOrUpdateSourceControlSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdateSourceControlSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck is the fake for method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck	func(ctx context.Context, resourceGroupName string, name string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck func(ctx context.Context, resourceGroupName string, name string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot is the fake for method WebAppsClient.CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot func(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateVnetConnection is the fake for method WebAppsClient.CreateOrUpdateVnetConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateVnetConnection	func(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateVnetConnection func(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateVnetConnectionGateway is the fake for method WebAppsClient.CreateOrUpdateVnetConnectionGateway
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateVnetConnectionGateway	func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateVnetConnectionGateway func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateVnetConnectionGatewaySlot is the fake for method WebAppsClient.CreateOrUpdateVnetConnectionGatewaySlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateVnetConnectionGatewaySlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateVnetConnectionGatewaySlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdateVnetConnectionSlot is the fake for method WebAppsClient.CreateOrUpdateVnetConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdateVnetConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdateVnetConnectionSlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientCreateOrUpdateVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientCreateOrUpdateVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method WebAppsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// DeleteBackup is the fake for method WebAppsClient.DeleteBackup
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteBackup	func(ctx context.Context, resourceGroupName string, name string, backupID string, options *armappservice.WebAppsClientDeleteBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupResponse], errResp azfake.ErrorResponder)
+	DeleteBackup func(ctx context.Context, resourceGroupName string, name string, backupID string, options *armappservice.WebAppsClientDeleteBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupResponse], errResp azfake.ErrorResponder)
 
 	// DeleteBackupConfiguration is the fake for method WebAppsClient.DeleteBackupConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteBackupConfiguration	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteBackupConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupConfigurationResponse], errResp azfake.ErrorResponder)
+	DeleteBackupConfiguration func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteBackupConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// DeleteBackupConfigurationSlot is the fake for method WebAppsClient.DeleteBackupConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteBackupConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteBackupConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	DeleteBackupConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteBackupConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteBackupSlot is the fake for method WebAppsClient.DeleteBackupSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteBackupSlot	func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *armappservice.WebAppsClientDeleteBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupSlotResponse], errResp azfake.ErrorResponder)
+	DeleteBackupSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *armappservice.WebAppsClientDeleteBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteBackupSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteContinuousWebJob is the fake for method WebAppsClient.DeleteContinuousWebJob
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteContinuousWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientDeleteContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteContinuousWebJobResponse], errResp azfake.ErrorResponder)
+	DeleteContinuousWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientDeleteContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteContinuousWebJobResponse], errResp azfake.ErrorResponder)
 
 	// DeleteContinuousWebJobSlot is the fake for method WebAppsClient.DeleteContinuousWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteContinuousWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientDeleteContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
+	DeleteContinuousWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientDeleteContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteDeployment is the fake for method WebAppsClient.DeleteDeployment
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteDeployment	func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientDeleteDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDeploymentResponse], errResp azfake.ErrorResponder)
+	DeleteDeployment func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientDeleteDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDeploymentResponse], errResp azfake.ErrorResponder)
 
 	// DeleteDeploymentSlot is the fake for method WebAppsClient.DeleteDeploymentSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteDeploymentSlot	func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientDeleteDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDeploymentSlotResponse], errResp azfake.ErrorResponder)
+	DeleteDeploymentSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientDeleteDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDeploymentSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteDomainOwnershipIdentifier is the fake for method WebAppsClient.DeleteDomainOwnershipIdentifier
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteDomainOwnershipIdentifier	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *armappservice.WebAppsClientDeleteDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
+	DeleteDomainOwnershipIdentifier func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *armappservice.WebAppsClientDeleteDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
 
 	// DeleteDomainOwnershipIdentifierSlot is the fake for method WebAppsClient.DeleteDomainOwnershipIdentifierSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteDomainOwnershipIdentifierSlot	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *armappservice.WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
+	DeleteDomainOwnershipIdentifierSlot func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *armappservice.WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteFunction is the fake for method WebAppsClient.DeleteFunction
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteFunction	func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientDeleteFunctionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteFunctionResponse], errResp azfake.ErrorResponder)
+	DeleteFunction func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientDeleteFunctionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteFunctionResponse], errResp azfake.ErrorResponder)
 
 	// DeleteFunctionSecret is the fake for method WebAppsClient.DeleteFunctionSecret
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteFunctionSecret	func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, options *armappservice.WebAppsClientDeleteFunctionSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteFunctionSecretResponse], errResp azfake.ErrorResponder)
+	DeleteFunctionSecret func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, options *armappservice.WebAppsClientDeleteFunctionSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteFunctionSecretResponse], errResp azfake.ErrorResponder)
 
 	// DeleteFunctionSecretSlot is the fake for method WebAppsClient.DeleteFunctionSecretSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteFunctionSecretSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, options *armappservice.WebAppsClientDeleteFunctionSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteFunctionSecretSlotResponse], errResp azfake.ErrorResponder)
+	DeleteFunctionSecretSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, options *armappservice.WebAppsClientDeleteFunctionSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteFunctionSecretSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteHostNameBinding is the fake for method WebAppsClient.DeleteHostNameBinding
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteHostNameBinding	func(ctx context.Context, resourceGroupName string, name string, hostName string, options *armappservice.WebAppsClientDeleteHostNameBindingOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostNameBindingResponse], errResp azfake.ErrorResponder)
+	DeleteHostNameBinding func(ctx context.Context, resourceGroupName string, name string, hostName string, options *armappservice.WebAppsClientDeleteHostNameBindingOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostNameBindingResponse], errResp azfake.ErrorResponder)
 
 	// DeleteHostNameBindingSlot is the fake for method WebAppsClient.DeleteHostNameBindingSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteHostNameBindingSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *armappservice.WebAppsClientDeleteHostNameBindingSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostNameBindingSlotResponse], errResp azfake.ErrorResponder)
+	DeleteHostNameBindingSlot func(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *armappservice.WebAppsClientDeleteHostNameBindingSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostNameBindingSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteHostSecret is the fake for method WebAppsClient.DeleteHostSecret
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteHostSecret	func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, options *armappservice.WebAppsClientDeleteHostSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostSecretResponse], errResp azfake.ErrorResponder)
+	DeleteHostSecret func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, options *armappservice.WebAppsClientDeleteHostSecretOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostSecretResponse], errResp azfake.ErrorResponder)
 
 	// DeleteHostSecretSlot is the fake for method WebAppsClient.DeleteHostSecretSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteHostSecretSlot	func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, options *armappservice.WebAppsClientDeleteHostSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostSecretSlotResponse], errResp azfake.ErrorResponder)
+	DeleteHostSecretSlot func(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, options *armappservice.WebAppsClientDeleteHostSecretSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHostSecretSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteHybridConnection is the fake for method WebAppsClient.DeleteHybridConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteHybridConnection	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *armappservice.WebAppsClientDeleteHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHybridConnectionResponse], errResp azfake.ErrorResponder)
+	DeleteHybridConnection func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *armappservice.WebAppsClientDeleteHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHybridConnectionResponse], errResp azfake.ErrorResponder)
 
 	// DeleteHybridConnectionSlot is the fake for method WebAppsClient.DeleteHybridConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteHybridConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *armappservice.WebAppsClientDeleteHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
+	DeleteHybridConnectionSlot func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *armappservice.WebAppsClientDeleteHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteInstanceFunctionSlot is the fake for method WebAppsClient.DeleteInstanceFunctionSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteInstanceFunctionSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientDeleteInstanceFunctionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteInstanceFunctionSlotResponse], errResp azfake.ErrorResponder)
+	DeleteInstanceFunctionSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientDeleteInstanceFunctionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteInstanceFunctionSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteInstanceProcess is the fake for method WebAppsClient.DeleteInstanceProcess
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteInstanceProcess	func(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientDeleteInstanceProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteInstanceProcessResponse], errResp azfake.ErrorResponder)
+	DeleteInstanceProcess func(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientDeleteInstanceProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteInstanceProcessResponse], errResp azfake.ErrorResponder)
 
 	// DeleteInstanceProcessSlot is the fake for method WebAppsClient.DeleteInstanceProcessSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteInstanceProcessSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientDeleteInstanceProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteInstanceProcessSlotResponse], errResp azfake.ErrorResponder)
+	DeleteInstanceProcessSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientDeleteInstanceProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteInstanceProcessSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeletePremierAddOn is the fake for method WebAppsClient.DeletePremierAddOn
 	// HTTP status codes to indicate success: http.StatusOK
-	DeletePremierAddOn	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *armappservice.WebAppsClientDeletePremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePremierAddOnResponse], errResp azfake.ErrorResponder)
+	DeletePremierAddOn func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *armappservice.WebAppsClientDeletePremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePremierAddOnResponse], errResp azfake.ErrorResponder)
 
 	// DeletePremierAddOnSlot is the fake for method WebAppsClient.DeletePremierAddOnSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeletePremierAddOnSlot	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *armappservice.WebAppsClientDeletePremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePremierAddOnSlotResponse], errResp azfake.ErrorResponder)
+	DeletePremierAddOnSlot func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *armappservice.WebAppsClientDeletePremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePremierAddOnSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeletePrivateEndpointConnection is the fake for method WebAppsClient.BeginDeletePrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeletePrivateEndpointConnection	func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	BeginDeletePrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
 	// BeginDeletePrivateEndpointConnectionSlot is the fake for method WebAppsClient.BeginDeletePrivateEndpointConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeletePrivateEndpointConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
+	BeginDeletePrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteProcess is the fake for method WebAppsClient.DeleteProcess
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteProcess	func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientDeleteProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteProcessResponse], errResp azfake.ErrorResponder)
+	DeleteProcess func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientDeleteProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteProcessResponse], errResp azfake.ErrorResponder)
 
 	// DeleteProcessSlot is the fake for method WebAppsClient.DeleteProcessSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteProcessSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientDeleteProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteProcessSlotResponse], errResp azfake.ErrorResponder)
+	DeleteProcessSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientDeleteProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteProcessSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeletePublicCertificate is the fake for method WebAppsClient.DeletePublicCertificate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeletePublicCertificate	func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *armappservice.WebAppsClientDeletePublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePublicCertificateResponse], errResp azfake.ErrorResponder)
+	DeletePublicCertificate func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *armappservice.WebAppsClientDeletePublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePublicCertificateResponse], errResp azfake.ErrorResponder)
 
 	// DeletePublicCertificateSlot is the fake for method WebAppsClient.DeletePublicCertificateSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeletePublicCertificateSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *armappservice.WebAppsClientDeletePublicCertificateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePublicCertificateSlotResponse], errResp azfake.ErrorResponder)
+	DeletePublicCertificateSlot func(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *armappservice.WebAppsClientDeletePublicCertificateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeletePublicCertificateSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteRelayServiceConnection is the fake for method WebAppsClient.DeleteRelayServiceConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteRelayServiceConnection	func(ctx context.Context, resourceGroupName string, name string, entityName string, options *armappservice.WebAppsClientDeleteRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
+	DeleteRelayServiceConnection func(ctx context.Context, resourceGroupName string, name string, entityName string, options *armappservice.WebAppsClientDeleteRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
 
 	// DeleteRelayServiceConnectionSlot is the fake for method WebAppsClient.DeleteRelayServiceConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteRelayServiceConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *armappservice.WebAppsClientDeleteRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
+	DeleteRelayServiceConnectionSlot func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *armappservice.WebAppsClientDeleteRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSiteContainer is the fake for method WebAppsClient.DeleteSiteContainer
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteSiteContainer	func(ctx context.Context, resourceGroupName string, name string, containerName string, options *armappservice.WebAppsClientDeleteSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteContainerResponse], errResp azfake.ErrorResponder)
+	DeleteSiteContainer func(ctx context.Context, resourceGroupName string, name string, containerName string, options *armappservice.WebAppsClientDeleteSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteContainerResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSiteContainerSlot is the fake for method WebAppsClient.DeleteSiteContainerSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteSiteContainerSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, options *armappservice.WebAppsClientDeleteSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteContainerSlotResponse], errResp azfake.ErrorResponder)
+	DeleteSiteContainerSlot func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, options *armappservice.WebAppsClientDeleteSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteContainerSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSiteExtension is the fake for method WebAppsClient.DeleteSiteExtension
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteSiteExtension	func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientDeleteSiteExtensionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteExtensionResponse], errResp azfake.ErrorResponder)
+	DeleteSiteExtension func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientDeleteSiteExtensionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteExtensionResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSiteExtensionSlot is the fake for method WebAppsClient.DeleteSiteExtensionSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	DeleteSiteExtensionSlot	func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientDeleteSiteExtensionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
+	DeleteSiteExtensionSlot func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientDeleteSiteExtensionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSlot is the fake for method WebAppsClient.DeleteSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSlotResponse], errResp azfake.ErrorResponder)
+	DeleteSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSourceControl is the fake for method WebAppsClient.DeleteSourceControl
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	DeleteSourceControl	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteSourceControlOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSourceControlResponse], errResp azfake.ErrorResponder)
+	DeleteSourceControl func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteSourceControlOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSourceControlResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSourceControlSlot is the fake for method WebAppsClient.DeleteSourceControlSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	DeleteSourceControlSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteSourceControlSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSourceControlSlotResponse], errResp azfake.ErrorResponder)
+	DeleteSourceControlSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteSourceControlSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSourceControlSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSwiftVirtualNetwork is the fake for method WebAppsClient.DeleteSwiftVirtualNetwork
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteSwiftVirtualNetwork	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteSwiftVirtualNetworkOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSwiftVirtualNetworkResponse], errResp azfake.ErrorResponder)
+	DeleteSwiftVirtualNetwork func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeleteSwiftVirtualNetworkOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSwiftVirtualNetworkResponse], errResp azfake.ErrorResponder)
 
 	// DeleteSwiftVirtualNetworkSlot is the fake for method WebAppsClient.DeleteSwiftVirtualNetworkSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteSwiftVirtualNetworkSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteSwiftVirtualNetworkSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSwiftVirtualNetworkSlotResponse], errResp azfake.ErrorResponder)
+	DeleteSwiftVirtualNetworkSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeleteSwiftVirtualNetworkSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteSwiftVirtualNetworkSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteTriggeredWebJob is the fake for method WebAppsClient.DeleteTriggeredWebJob
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteTriggeredWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientDeleteTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteTriggeredWebJobResponse], errResp azfake.ErrorResponder)
+	DeleteTriggeredWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientDeleteTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteTriggeredWebJobResponse], errResp azfake.ErrorResponder)
 
 	// DeleteTriggeredWebJobSlot is the fake for method WebAppsClient.DeleteTriggeredWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	DeleteTriggeredWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientDeleteTriggeredWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteTriggeredWebJobSlotResponse], errResp azfake.ErrorResponder)
+	DeleteTriggeredWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientDeleteTriggeredWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteTriggeredWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeleteVnetConnection is the fake for method WebAppsClient.DeleteVnetConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteVnetConnection	func(ctx context.Context, resourceGroupName string, name string, vnetName string, options *armappservice.WebAppsClientDeleteVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteVnetConnectionResponse], errResp azfake.ErrorResponder)
+	DeleteVnetConnection func(ctx context.Context, resourceGroupName string, name string, vnetName string, options *armappservice.WebAppsClientDeleteVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteVnetConnectionResponse], errResp azfake.ErrorResponder)
 
 	// DeleteVnetConnectionSlot is the fake for method WebAppsClient.DeleteVnetConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeleteVnetConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *armappservice.WebAppsClientDeleteVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
+	DeleteVnetConnectionSlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *armappservice.WebAppsClientDeleteVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeleteVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// DeployWorkflowArtifacts is the fake for method WebAppsClient.DeployWorkflowArtifacts
 	// HTTP status codes to indicate success: http.StatusOK
-	DeployWorkflowArtifacts	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeployWorkflowArtifactsOptions) (resp azfake.Responder[armappservice.WebAppsClientDeployWorkflowArtifactsResponse], errResp azfake.ErrorResponder)
+	DeployWorkflowArtifacts func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientDeployWorkflowArtifactsOptions) (resp azfake.Responder[armappservice.WebAppsClientDeployWorkflowArtifactsResponse], errResp azfake.ErrorResponder)
 
 	// DeployWorkflowArtifactsSlot is the fake for method WebAppsClient.DeployWorkflowArtifactsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DeployWorkflowArtifactsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeployWorkflowArtifactsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeployWorkflowArtifactsSlotResponse], errResp azfake.ErrorResponder)
+	DeployWorkflowArtifactsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientDeployWorkflowArtifactsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDeployWorkflowArtifactsSlotResponse], errResp azfake.ErrorResponder)
 
 	// DiscoverBackup is the fake for method WebAppsClient.DiscoverBackup
 	// HTTP status codes to indicate success: http.StatusOK
-	DiscoverBackup	func(ctx context.Context, resourceGroupName string, name string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientDiscoverBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientDiscoverBackupResponse], errResp azfake.ErrorResponder)
+	DiscoverBackup func(ctx context.Context, resourceGroupName string, name string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientDiscoverBackupOptions) (resp azfake.Responder[armappservice.WebAppsClientDiscoverBackupResponse], errResp azfake.ErrorResponder)
 
 	// DiscoverBackupSlot is the fake for method WebAppsClient.DiscoverBackupSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	DiscoverBackupSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientDiscoverBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDiscoverBackupSlotResponse], errResp azfake.ErrorResponder)
+	DiscoverBackupSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientDiscoverBackupSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientDiscoverBackupSlotResponse], errResp azfake.ErrorResponder)
 
 	// GenerateNewSitePublishingPassword is the fake for method WebAppsClient.GenerateNewSitePublishingPassword
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	GenerateNewSitePublishingPassword	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGenerateNewSitePublishingPasswordOptions) (resp azfake.Responder[armappservice.WebAppsClientGenerateNewSitePublishingPasswordResponse], errResp azfake.ErrorResponder)
+	GenerateNewSitePublishingPassword func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGenerateNewSitePublishingPasswordOptions) (resp azfake.Responder[armappservice.WebAppsClientGenerateNewSitePublishingPasswordResponse], errResp azfake.ErrorResponder)
 
 	// GenerateNewSitePublishingPasswordSlot is the fake for method WebAppsClient.GenerateNewSitePublishingPasswordSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	GenerateNewSitePublishingPasswordSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGenerateNewSitePublishingPasswordSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGenerateNewSitePublishingPasswordSlotResponse], errResp azfake.ErrorResponder)
+	GenerateNewSitePublishingPasswordSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGenerateNewSitePublishingPasswordSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGenerateNewSitePublishingPasswordSlotResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WebAppsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetOptions) (resp azfake.Responder[armappservice.WebAppsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetOptions) (resp azfake.Responder[armappservice.WebAppsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetAppSettingKeyVaultReference is the fake for method WebAppsClient.GetAppSettingKeyVaultReference
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAppSettingKeyVaultReference	func(ctx context.Context, resourceGroupName string, name string, appSettingKey string, options *armappservice.WebAppsClientGetAppSettingKeyVaultReferenceOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAppSettingKeyVaultReferenceResponse], errResp azfake.ErrorResponder)
+	GetAppSettingKeyVaultReference func(ctx context.Context, resourceGroupName string, name string, appSettingKey string, options *armappservice.WebAppsClientGetAppSettingKeyVaultReferenceOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAppSettingKeyVaultReferenceResponse], errResp azfake.ErrorResponder)
 
 	// GetAppSettingKeyVaultReferenceSlot is the fake for method WebAppsClient.GetAppSettingKeyVaultReferenceSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAppSettingKeyVaultReferenceSlot	func(ctx context.Context, resourceGroupName string, name string, appSettingKey string, slot string, options *armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse], errResp azfake.ErrorResponder)
+	GetAppSettingKeyVaultReferenceSlot func(ctx context.Context, resourceGroupName string, name string, appSettingKey string, slot string, options *armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewGetAppSettingsKeyVaultReferencesPager is the fake for method WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAppSettingsKeyVaultReferencesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse])
+	NewGetAppSettingsKeyVaultReferencesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse])
 
 	// NewGetAppSettingsKeyVaultReferencesSlotPager is the fake for method WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetAppSettingsKeyVaultReferencesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse])
+	NewGetAppSettingsKeyVaultReferencesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse])
 
 	// GetAuthSettings is the fake for method WebAppsClient.GetAuthSettings
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthSettings	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetAuthSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsResponse], errResp azfake.ErrorResponder)
+	GetAuthSettings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetAuthSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsResponse], errResp azfake.ErrorResponder)
 
 	// GetAuthSettingsSlot is the fake for method WebAppsClient.GetAuthSettingsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthSettingsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAuthSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsSlotResponse], errResp azfake.ErrorResponder)
+	GetAuthSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAuthSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetAuthSettingsV2 is the fake for method WebAppsClient.GetAuthSettingsV2
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthSettingsV2	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetAuthSettingsV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2Response], errResp azfake.ErrorResponder)
+	GetAuthSettingsV2 func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetAuthSettingsV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2Response], errResp azfake.ErrorResponder)
 
 	// GetAuthSettingsV2Slot is the fake for method WebAppsClient.GetAuthSettingsV2Slot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthSettingsV2Slot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAuthSettingsV2SlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2SlotResponse], errResp azfake.ErrorResponder)
+	GetAuthSettingsV2Slot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAuthSettingsV2SlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2SlotResponse], errResp azfake.ErrorResponder)
 
 	// GetAuthSettingsV2WithoutSecrets is the fake for method WebAppsClient.GetAuthSettingsV2WithoutSecrets
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthSettingsV2WithoutSecrets	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsResponse], errResp azfake.ErrorResponder)
+	GetAuthSettingsV2WithoutSecrets func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsResponse], errResp azfake.ErrorResponder)
 
 	// GetAuthSettingsV2WithoutSecretsSlot is the fake for method WebAppsClient.GetAuthSettingsV2WithoutSecretsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetAuthSettingsV2WithoutSecretsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse], errResp azfake.ErrorResponder)
+	GetAuthSettingsV2WithoutSecretsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetBackupConfiguration is the fake for method WebAppsClient.GetBackupConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBackupConfiguration	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetBackupConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupConfigurationResponse], errResp azfake.ErrorResponder)
+	GetBackupConfiguration func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetBackupConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// GetBackupConfigurationSlot is the fake for method WebAppsClient.GetBackupConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBackupConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetBackupConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	GetBackupConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetBackupConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetBackupStatus is the fake for method WebAppsClient.GetBackupStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBackupStatus	func(ctx context.Context, resourceGroupName string, name string, backupID string, options *armappservice.WebAppsClientGetBackupStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupStatusResponse], errResp azfake.ErrorResponder)
+	GetBackupStatus func(ctx context.Context, resourceGroupName string, name string, backupID string, options *armappservice.WebAppsClientGetBackupStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetBackupStatusSlot is the fake for method WebAppsClient.GetBackupStatusSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBackupStatusSlot	func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *armappservice.WebAppsClientGetBackupStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupStatusSlotResponse], errResp azfake.ErrorResponder)
+	GetBackupStatusSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, options *armappservice.WebAppsClientGetBackupStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetBackupStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetConfiguration is the fake for method WebAppsClient.GetConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	GetConfiguration	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationResponse], errResp azfake.ErrorResponder)
+	GetConfiguration func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// GetConfigurationSlot is the fake for method WebAppsClient.GetConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	GetConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetConfigurationSnapshot is the fake for method WebAppsClient.GetConfigurationSnapshot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetConfigurationSnapshot	func(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *armappservice.WebAppsClientGetConfigurationSnapshotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationSnapshotResponse], errResp azfake.ErrorResponder)
+	GetConfigurationSnapshot func(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *armappservice.WebAppsClientGetConfigurationSnapshotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationSnapshotResponse], errResp azfake.ErrorResponder)
 
 	// GetConfigurationSnapshotSlot is the fake for method WebAppsClient.GetConfigurationSnapshotSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetConfigurationSnapshotSlot	func(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *armappservice.WebAppsClientGetConfigurationSnapshotSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationSnapshotSlotResponse], errResp azfake.ErrorResponder)
+	GetConfigurationSnapshotSlot func(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *armappservice.WebAppsClientGetConfigurationSnapshotSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetConfigurationSnapshotSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetContainerLogsZip is the fake for method WebAppsClient.GetContainerLogsZip
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	GetContainerLogsZip	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetContainerLogsZipOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContainerLogsZipResponse], errResp azfake.ErrorResponder)
+	GetContainerLogsZip func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetContainerLogsZipOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContainerLogsZipResponse], errResp azfake.ErrorResponder)
 
 	// GetContainerLogsZipSlot is the fake for method WebAppsClient.GetContainerLogsZipSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	GetContainerLogsZipSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetContainerLogsZipSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContainerLogsZipSlotResponse], errResp azfake.ErrorResponder)
+	GetContainerLogsZipSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetContainerLogsZipSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContainerLogsZipSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetContinuousWebJob is the fake for method WebAppsClient.GetContinuousWebJob
 	// HTTP status codes to indicate success: http.StatusOK
-	GetContinuousWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientGetContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContinuousWebJobResponse], errResp azfake.ErrorResponder)
+	GetContinuousWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientGetContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContinuousWebJobResponse], errResp azfake.ErrorResponder)
 
 	// GetContinuousWebJobSlot is the fake for method WebAppsClient.GetContinuousWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetContinuousWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientGetContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
+	GetContinuousWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientGetContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetDeployment is the fake for method WebAppsClient.GetDeployment
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeployment	func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientGetDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDeploymentResponse], errResp azfake.ErrorResponder)
+	GetDeployment func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientGetDeploymentOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDeploymentResponse], errResp azfake.ErrorResponder)
 
 	// GetDeploymentSlot is the fake for method WebAppsClient.GetDeploymentSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeploymentSlot	func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientGetDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDeploymentSlotResponse], errResp azfake.ErrorResponder)
+	GetDeploymentSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientGetDeploymentSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDeploymentSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetDiagnosticLogsConfiguration is the fake for method WebAppsClient.GetDiagnosticLogsConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDiagnosticLogsConfiguration	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetDiagnosticLogsConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDiagnosticLogsConfigurationResponse], errResp azfake.ErrorResponder)
+	GetDiagnosticLogsConfiguration func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetDiagnosticLogsConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDiagnosticLogsConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// GetDiagnosticLogsConfigurationSlot is the fake for method WebAppsClient.GetDiagnosticLogsConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDiagnosticLogsConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetDiagnosticLogsConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDiagnosticLogsConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	GetDiagnosticLogsConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetDiagnosticLogsConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDiagnosticLogsConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetDomainOwnershipIdentifier is the fake for method WebAppsClient.GetDomainOwnershipIdentifier
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDomainOwnershipIdentifier	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *armappservice.WebAppsClientGetDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
+	GetDomainOwnershipIdentifier func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, options *armappservice.WebAppsClientGetDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
 
 	// GetDomainOwnershipIdentifierSlot is the fake for method WebAppsClient.GetDomainOwnershipIdentifierSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDomainOwnershipIdentifierSlot	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *armappservice.WebAppsClientGetDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
+	GetDomainOwnershipIdentifierSlot func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, options *armappservice.WebAppsClientGetDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetFtpAllowed is the fake for method WebAppsClient.GetFtpAllowed
 	// HTTP status codes to indicate success: http.StatusOK
-	GetFtpAllowed	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetFtpAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFtpAllowedResponse], errResp azfake.ErrorResponder)
+	GetFtpAllowed func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetFtpAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFtpAllowedResponse], errResp azfake.ErrorResponder)
 
 	// GetFtpAllowedSlot is the fake for method WebAppsClient.GetFtpAllowedSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetFtpAllowedSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetFtpAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFtpAllowedSlotResponse], errResp azfake.ErrorResponder)
+	GetFtpAllowedSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetFtpAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFtpAllowedSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetFunction is the fake for method WebAppsClient.GetFunction
 	// HTTP status codes to indicate success: http.StatusOK
-	GetFunction	func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientGetFunctionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFunctionResponse], errResp azfake.ErrorResponder)
+	GetFunction func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientGetFunctionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFunctionResponse], errResp azfake.ErrorResponder)
 
 	// GetFunctionsAdminToken is the fake for method WebAppsClient.GetFunctionsAdminToken
 	// HTTP status codes to indicate success: http.StatusOK
-	GetFunctionsAdminToken	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetFunctionsAdminTokenOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFunctionsAdminTokenResponse], errResp azfake.ErrorResponder)
+	GetFunctionsAdminToken func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetFunctionsAdminTokenOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFunctionsAdminTokenResponse], errResp azfake.ErrorResponder)
 
 	// GetFunctionsAdminTokenSlot is the fake for method WebAppsClient.GetFunctionsAdminTokenSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetFunctionsAdminTokenSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetFunctionsAdminTokenSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFunctionsAdminTokenSlotResponse], errResp azfake.ErrorResponder)
+	GetFunctionsAdminTokenSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetFunctionsAdminTokenSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetFunctionsAdminTokenSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetHostNameBinding is the fake for method WebAppsClient.GetHostNameBinding
 	// HTTP status codes to indicate success: http.StatusOK
-	GetHostNameBinding	func(ctx context.Context, resourceGroupName string, name string, hostName string, options *armappservice.WebAppsClientGetHostNameBindingOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHostNameBindingResponse], errResp azfake.ErrorResponder)
+	GetHostNameBinding func(ctx context.Context, resourceGroupName string, name string, hostName string, options *armappservice.WebAppsClientGetHostNameBindingOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHostNameBindingResponse], errResp azfake.ErrorResponder)
 
 	// GetHostNameBindingSlot is the fake for method WebAppsClient.GetHostNameBindingSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetHostNameBindingSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *armappservice.WebAppsClientGetHostNameBindingSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHostNameBindingSlotResponse], errResp azfake.ErrorResponder)
+	GetHostNameBindingSlot func(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, options *armappservice.WebAppsClientGetHostNameBindingSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHostNameBindingSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetHybridConnection is the fake for method WebAppsClient.GetHybridConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetHybridConnection	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *armappservice.WebAppsClientGetHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHybridConnectionResponse], errResp azfake.ErrorResponder)
+	GetHybridConnection func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *armappservice.WebAppsClientGetHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHybridConnectionResponse], errResp azfake.ErrorResponder)
 
 	// GetHybridConnectionSlot is the fake for method WebAppsClient.GetHybridConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetHybridConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *armappservice.WebAppsClientGetHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
+	GetHybridConnectionSlot func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, options *armappservice.WebAppsClientGetHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceFunctionSlot is the fake for method WebAppsClient.GetInstanceFunctionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceFunctionSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientGetInstanceFunctionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceFunctionSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceFunctionSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientGetInstanceFunctionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceFunctionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceInfo is the fake for method WebAppsClient.GetInstanceInfo
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceInfo	func(ctx context.Context, resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientGetInstanceInfoOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceInfoResponse], errResp azfake.ErrorResponder)
+	GetInstanceInfo func(ctx context.Context, resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientGetInstanceInfoOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceInfoResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceInfoSlot is the fake for method WebAppsClient.GetInstanceInfoSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceInfoSlot	func(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string, options *armappservice.WebAppsClientGetInstanceInfoSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceInfoSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceInfoSlot func(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string, options *armappservice.WebAppsClientGetInstanceInfoSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceInfoSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceMSDeployLog is the fake for method WebAppsClient.GetInstanceMSDeployLog
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceMSDeployLog	func(ctx context.Context, resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientGetInstanceMSDeployLogOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMSDeployLogResponse], errResp azfake.ErrorResponder)
+	GetInstanceMSDeployLog func(ctx context.Context, resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientGetInstanceMSDeployLogOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMSDeployLogResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceMSDeployLogSlot is the fake for method WebAppsClient.GetInstanceMSDeployLogSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceMSDeployLogSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceMSDeployLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMSDeployLogSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceMSDeployLogSlot func(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceMSDeployLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMSDeployLogSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceMsDeployStatus is the fake for method WebAppsClient.GetInstanceMsDeployStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceMsDeployStatus	func(ctx context.Context, resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientGetInstanceMsDeployStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMsDeployStatusResponse], errResp azfake.ErrorResponder)
+	GetInstanceMsDeployStatus func(ctx context.Context, resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientGetInstanceMsDeployStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMsDeployStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceMsDeployStatusSlot is the fake for method WebAppsClient.GetInstanceMsDeployStatusSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceMsDeployStatusSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceMsDeployStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMsDeployStatusSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceMsDeployStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceMsDeployStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceMsDeployStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceProcess is the fake for method WebAppsClient.GetInstanceProcess
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceProcess	func(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessResponse], errResp azfake.ErrorResponder)
+	GetInstanceProcess func(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceProcessDump is the fake for method WebAppsClient.GetInstanceProcessDump
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceProcessDump	func(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessDumpOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessDumpResponse], errResp azfake.ErrorResponder)
+	GetInstanceProcessDump func(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessDumpOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessDumpResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceProcessDumpSlot is the fake for method WebAppsClient.GetInstanceProcessDumpSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceProcessDumpSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessDumpSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessDumpSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceProcessDumpSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessDumpSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessDumpSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceProcessModule is the fake for method WebAppsClient.GetInstanceProcessModule
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceProcessModule	func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessModuleOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessModuleResponse], errResp azfake.ErrorResponder)
+	GetInstanceProcessModule func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessModuleOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessModuleResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceProcessModuleSlot is the fake for method WebAppsClient.GetInstanceProcessModuleSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceProcessModuleSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessModuleSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessModuleSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceProcessModuleSlot func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessModuleSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessModuleSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceProcessSlot is the fake for method WebAppsClient.GetInstanceProcessSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceProcessSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceProcessSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientGetInstanceProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceProcessSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetInstanceWorkflowSlot is the fake for method WebAppsClient.GetInstanceWorkflowSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetInstanceWorkflowSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, workflowName string, options *armappservice.WebAppsClientGetInstanceWorkflowSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceWorkflowSlotResponse], errResp azfake.ErrorResponder)
+	GetInstanceWorkflowSlot func(ctx context.Context, resourceGroupName string, name string, slot string, workflowName string, options *armappservice.WebAppsClientGetInstanceWorkflowSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetInstanceWorkflowSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetMSDeployLog is the fake for method WebAppsClient.GetMSDeployLog
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMSDeployLog	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetMSDeployLogOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployLogResponse], errResp azfake.ErrorResponder)
+	GetMSDeployLog func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetMSDeployLogOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployLogResponse], errResp azfake.ErrorResponder)
 
 	// GetMSDeployLogSlot is the fake for method WebAppsClient.GetMSDeployLogSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMSDeployLogSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetMSDeployLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployLogSlotResponse], errResp azfake.ErrorResponder)
+	GetMSDeployLogSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetMSDeployLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployLogSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetMSDeployStatus is the fake for method WebAppsClient.GetMSDeployStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMSDeployStatus	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetMSDeployStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployStatusResponse], errResp azfake.ErrorResponder)
+	GetMSDeployStatus func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetMSDeployStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetMSDeployStatusSlot is the fake for method WebAppsClient.GetMSDeployStatusSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMSDeployStatusSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetMSDeployStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployStatusSlotResponse], errResp azfake.ErrorResponder)
+	GetMSDeployStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetMSDeployStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMSDeployStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetMigrateMySQLStatus is the fake for method WebAppsClient.GetMigrateMySQLStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMigrateMySQLStatus	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetMigrateMySQLStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMigrateMySQLStatusResponse], errResp azfake.ErrorResponder)
+	GetMigrateMySQLStatus func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetMigrateMySQLStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMigrateMySQLStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetMigrateMySQLStatusSlot is the fake for method WebAppsClient.GetMigrateMySQLStatusSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMigrateMySQLStatusSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetMigrateMySQLStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMigrateMySQLStatusSlotResponse], errResp azfake.ErrorResponder)
+	GetMigrateMySQLStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetMigrateMySQLStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetMigrateMySQLStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetNetworkTraceOperation is the fake for method WebAppsClient.GetNetworkTraceOperation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	GetNetworkTraceOperation	func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTraceOperationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationResponse], errResp azfake.ErrorResponder)
+	GetNetworkTraceOperation func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTraceOperationOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationResponse], errResp azfake.ErrorResponder)
 
 	// GetNetworkTraceOperationSlot is the fake for method WebAppsClient.GetNetworkTraceOperationSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	GetNetworkTraceOperationSlot	func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTraceOperationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationSlotResponse], errResp azfake.ErrorResponder)
+	GetNetworkTraceOperationSlot func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTraceOperationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetNetworkTraceOperationSlotV2 is the fake for method WebAppsClient.GetNetworkTraceOperationSlotV2
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	GetNetworkTraceOperationSlotV2	func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTraceOperationSlotV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationSlotV2Response], errResp azfake.ErrorResponder)
+	GetNetworkTraceOperationSlotV2 func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTraceOperationSlotV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationSlotV2Response], errResp azfake.ErrorResponder)
 
 	// GetNetworkTraceOperationV2 is the fake for method WebAppsClient.GetNetworkTraceOperationV2
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	GetNetworkTraceOperationV2	func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTraceOperationV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationV2Response], errResp azfake.ErrorResponder)
+	GetNetworkTraceOperationV2 func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTraceOperationV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTraceOperationV2Response], errResp azfake.ErrorResponder)
 
 	// GetNetworkTraces is the fake for method WebAppsClient.GetNetworkTraces
 	// HTTP status codes to indicate success: http.StatusOK
-	GetNetworkTraces	func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTracesOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesResponse], errResp azfake.ErrorResponder)
+	GetNetworkTraces func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTracesOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesResponse], errResp azfake.ErrorResponder)
 
 	// GetNetworkTracesSlot is the fake for method WebAppsClient.GetNetworkTracesSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetNetworkTracesSlot	func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTracesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesSlotResponse], errResp azfake.ErrorResponder)
+	GetNetworkTracesSlot func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTracesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetNetworkTracesSlotV2 is the fake for method WebAppsClient.GetNetworkTracesSlotV2
 	// HTTP status codes to indicate success: http.StatusOK
-	GetNetworkTracesSlotV2	func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTracesSlotV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesSlotV2Response], errResp azfake.ErrorResponder)
+	GetNetworkTracesSlotV2 func(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, options *armappservice.WebAppsClientGetNetworkTracesSlotV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesSlotV2Response], errResp azfake.ErrorResponder)
 
 	// GetNetworkTracesV2 is the fake for method WebAppsClient.GetNetworkTracesV2
 	// HTTP status codes to indicate success: http.StatusOK
-	GetNetworkTracesV2	func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTracesV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesV2Response], errResp azfake.ErrorResponder)
+	GetNetworkTracesV2 func(ctx context.Context, resourceGroupName string, name string, operationID string, options *armappservice.WebAppsClientGetNetworkTracesV2Options) (resp azfake.Responder[armappservice.WebAppsClientGetNetworkTracesV2Response], errResp azfake.ErrorResponder)
 
 	// GetOneDeployStatus is the fake for method WebAppsClient.GetOneDeployStatus
 	// HTTP status codes to indicate success: http.StatusOK
-	GetOneDeployStatus	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetOneDeployStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetOneDeployStatusResponse], errResp azfake.ErrorResponder)
+	GetOneDeployStatus func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetOneDeployStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientGetOneDeployStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetPremierAddOn is the fake for method WebAppsClient.GetPremierAddOn
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPremierAddOn	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *armappservice.WebAppsClientGetPremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPremierAddOnResponse], errResp azfake.ErrorResponder)
+	GetPremierAddOn func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, options *armappservice.WebAppsClientGetPremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPremierAddOnResponse], errResp azfake.ErrorResponder)
 
 	// GetPremierAddOnSlot is the fake for method WebAppsClient.GetPremierAddOnSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPremierAddOnSlot	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *armappservice.WebAppsClientGetPremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPremierAddOnSlotResponse], errResp azfake.ErrorResponder)
+	GetPremierAddOnSlot func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, options *armappservice.WebAppsClientGetPremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPremierAddOnSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateAccess is the fake for method WebAppsClient.GetPrivateAccess
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateAccess	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateAccessOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateAccessResponse], errResp azfake.ErrorResponder)
+	GetPrivateAccess func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateAccessOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateAccessResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateAccessSlot is the fake for method WebAppsClient.GetPrivateAccessSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateAccessSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateAccessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateAccessSlotResponse], errResp azfake.ErrorResponder)
+	GetPrivateAccessSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateAccessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateAccessSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateEndpointConnection is the fake for method WebAppsClient.GetPrivateEndpointConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateEndpointConnection	func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
+	GetPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 
 	// NewGetPrivateEndpointConnectionListPager is the fake for method WebAppsClient.NewGetPrivateEndpointConnectionListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPrivateEndpointConnectionListPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse])
+	NewGetPrivateEndpointConnectionListPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse])
 
 	// NewGetPrivateEndpointConnectionListSlotPager is the fake for method WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetPrivateEndpointConnectionListSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse])
+	NewGetPrivateEndpointConnectionListSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse])
 
 	// GetPrivateEndpointConnectionSlot is the fake for method WebAppsClient.GetPrivateEndpointConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateEndpointConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
+	GetPrivateEndpointConnectionSlot func(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, options *armappservice.WebAppsClientGetPrivateEndpointConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateEndpointConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateLinkResources is the fake for method WebAppsClient.GetPrivateLinkResources
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateLinkResources	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateLinkResourcesOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
+	GetPrivateLinkResources func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetPrivateLinkResourcesOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateLinkResourcesResponse], errResp azfake.ErrorResponder)
 
 	// GetPrivateLinkResourcesSlot is the fake for method WebAppsClient.GetPrivateLinkResourcesSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPrivateLinkResourcesSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateLinkResourcesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateLinkResourcesSlotResponse], errResp azfake.ErrorResponder)
+	GetPrivateLinkResourcesSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetPrivateLinkResourcesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPrivateLinkResourcesSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetProcess is the fake for method WebAppsClient.GetProcess
 	// HTTP status codes to indicate success: http.StatusOK
-	GetProcess	func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientGetProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessResponse], errResp azfake.ErrorResponder)
+	GetProcess func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientGetProcessOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessResponse], errResp azfake.ErrorResponder)
 
 	// GetProcessDump is the fake for method WebAppsClient.GetProcessDump
 	// HTTP status codes to indicate success: http.StatusOK
-	GetProcessDump	func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientGetProcessDumpOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessDumpResponse], errResp azfake.ErrorResponder)
+	GetProcessDump func(ctx context.Context, resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientGetProcessDumpOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessDumpResponse], errResp azfake.ErrorResponder)
 
 	// GetProcessDumpSlot is the fake for method WebAppsClient.GetProcessDumpSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetProcessDumpSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientGetProcessDumpSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessDumpSlotResponse], errResp azfake.ErrorResponder)
+	GetProcessDumpSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientGetProcessDumpSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessDumpSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetProcessModule is the fake for method WebAppsClient.GetProcessModule
 	// HTTP status codes to indicate success: http.StatusOK
-	GetProcessModule	func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, options *armappservice.WebAppsClientGetProcessModuleOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessModuleResponse], errResp azfake.ErrorResponder)
+	GetProcessModule func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, options *armappservice.WebAppsClientGetProcessModuleOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessModuleResponse], errResp azfake.ErrorResponder)
 
 	// GetProcessModuleSlot is the fake for method WebAppsClient.GetProcessModuleSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetProcessModuleSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, options *armappservice.WebAppsClientGetProcessModuleSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessModuleSlotResponse], errResp azfake.ErrorResponder)
+	GetProcessModuleSlot func(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, options *armappservice.WebAppsClientGetProcessModuleSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessModuleSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetProcessSlot is the fake for method WebAppsClient.GetProcessSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetProcessSlot	func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientGetProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessSlotResponse], errResp azfake.ErrorResponder)
+	GetProcessSlot func(ctx context.Context, resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientGetProcessSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetProcessSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetProductionSiteDeploymentStatus is the fake for method WebAppsClient.BeginGetProductionSiteDeploymentStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetProductionSiteDeploymentStatus	func(ctx context.Context, resourceGroupName string, name string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse], errResp azfake.ErrorResponder)
+	BeginGetProductionSiteDeploymentStatus func(ctx context.Context, resourceGroupName string, name string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse], errResp azfake.ErrorResponder)
 
 	// GetPublicCertificate is the fake for method WebAppsClient.GetPublicCertificate
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPublicCertificate	func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *armappservice.WebAppsClientGetPublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPublicCertificateResponse], errResp azfake.ErrorResponder)
+	GetPublicCertificate func(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, options *armappservice.WebAppsClientGetPublicCertificateOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPublicCertificateResponse], errResp azfake.ErrorResponder)
 
 	// GetPublicCertificateSlot is the fake for method WebAppsClient.GetPublicCertificateSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetPublicCertificateSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *armappservice.WebAppsClientGetPublicCertificateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPublicCertificateSlotResponse], errResp azfake.ErrorResponder)
+	GetPublicCertificateSlot func(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, options *armappservice.WebAppsClientGetPublicCertificateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetPublicCertificateSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetRelayServiceConnection is the fake for method WebAppsClient.GetRelayServiceConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetRelayServiceConnection	func(ctx context.Context, resourceGroupName string, name string, entityName string, options *armappservice.WebAppsClientGetRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
+	GetRelayServiceConnection func(ctx context.Context, resourceGroupName string, name string, entityName string, options *armappservice.WebAppsClientGetRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
 
 	// GetRelayServiceConnectionSlot is the fake for method WebAppsClient.GetRelayServiceConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetRelayServiceConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *armappservice.WebAppsClientGetRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
+	GetRelayServiceConnectionSlot func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, options *armappservice.WebAppsClientGetRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetScmAllowed is the fake for method WebAppsClient.GetScmAllowed
 	// HTTP status codes to indicate success: http.StatusOK
-	GetScmAllowed	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetScmAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientGetScmAllowedResponse], errResp azfake.ErrorResponder)
+	GetScmAllowed func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetScmAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientGetScmAllowedResponse], errResp azfake.ErrorResponder)
 
 	// GetScmAllowedSlot is the fake for method WebAppsClient.GetScmAllowedSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetScmAllowedSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetScmAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetScmAllowedSlotResponse], errResp azfake.ErrorResponder)
+	GetScmAllowedSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetScmAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetScmAllowedSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteConnectionStringKeyVaultReference is the fake for method WebAppsClient.GetSiteConnectionStringKeyVaultReference
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteConnectionStringKeyVaultReference	func(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse], errResp azfake.ErrorResponder)
+	GetSiteConnectionStringKeyVaultReference func(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteConnectionStringKeyVaultReferenceSlot is the fake for method WebAppsClient.GetSiteConnectionStringKeyVaultReferenceSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteConnectionStringKeyVaultReferenceSlot	func(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse], errResp azfake.ErrorResponder)
+	GetSiteConnectionStringKeyVaultReferenceSlot func(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewGetSiteConnectionStringKeyVaultReferencesPager is the fake for method WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetSiteConnectionStringKeyVaultReferencesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse])
+	NewGetSiteConnectionStringKeyVaultReferencesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse])
 
 	// NewGetSiteConnectionStringKeyVaultReferencesSlotPager is the fake for method WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewGetSiteConnectionStringKeyVaultReferencesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse])
+	NewGetSiteConnectionStringKeyVaultReferencesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse])
 
 	// GetSiteContainer is the fake for method WebAppsClient.GetSiteContainer
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteContainer	func(ctx context.Context, resourceGroupName string, name string, containerName string, options *armappservice.WebAppsClientGetSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteContainerResponse], errResp azfake.ErrorResponder)
+	GetSiteContainer func(ctx context.Context, resourceGroupName string, name string, containerName string, options *armappservice.WebAppsClientGetSiteContainerOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteContainerResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteContainerSlot is the fake for method WebAppsClient.GetSiteContainerSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteContainerSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, options *armappservice.WebAppsClientGetSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteContainerSlotResponse], errResp azfake.ErrorResponder)
+	GetSiteContainerSlot func(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, options *armappservice.WebAppsClientGetSiteContainerSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteContainerSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteExtension is the fake for method WebAppsClient.GetSiteExtension
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteExtension	func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientGetSiteExtensionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteExtensionResponse], errResp azfake.ErrorResponder)
+	GetSiteExtension func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientGetSiteExtensionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteExtensionResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteExtensionSlot is the fake for method WebAppsClient.GetSiteExtensionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteExtensionSlot	func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientGetSiteExtensionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
+	GetSiteExtensionSlot func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientGetSiteExtensionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSitePhpErrorLogFlag is the fake for method WebAppsClient.GetSitePhpErrorLogFlag
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSitePhpErrorLogFlag	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetSitePhpErrorLogFlagOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSitePhpErrorLogFlagResponse], errResp azfake.ErrorResponder)
+	GetSitePhpErrorLogFlag func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetSitePhpErrorLogFlagOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSitePhpErrorLogFlagResponse], errResp azfake.ErrorResponder)
 
 	// GetSitePhpErrorLogFlagSlot is the fake for method WebAppsClient.GetSitePhpErrorLogFlagSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSitePhpErrorLogFlagSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSitePhpErrorLogFlagSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSitePhpErrorLogFlagSlotResponse], errResp azfake.ErrorResponder)
+	GetSitePhpErrorLogFlagSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSitePhpErrorLogFlagSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSitePhpErrorLogFlagSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSlot is the fake for method WebAppsClient.GetSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSlotResponse], errResp azfake.ErrorResponder)
+	GetSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetSlotSiteDeploymentStatusSlot is the fake for method WebAppsClient.BeginGetSlotSiteDeploymentStatusSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginGetSlotSiteDeploymentStatusSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse], errResp azfake.ErrorResponder)
+	BeginGetSlotSiteDeploymentStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, deploymentStatusID string, options *armappservice.WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSourceControl is the fake for method WebAppsClient.GetSourceControl
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	GetSourceControl	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetSourceControlOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSourceControlResponse], errResp azfake.ErrorResponder)
+	GetSourceControl func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetSourceControlOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSourceControlResponse], errResp azfake.ErrorResponder)
 
 	// GetSourceControlSlot is the fake for method WebAppsClient.GetSourceControlSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	GetSourceControlSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSourceControlSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSourceControlSlotResponse], errResp azfake.ErrorResponder)
+	GetSourceControlSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSourceControlSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSourceControlSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSwiftVirtualNetworkConnection is the fake for method WebAppsClient.GetSwiftVirtualNetworkConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSwiftVirtualNetworkConnection	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionResponse], errResp azfake.ErrorResponder)
+	GetSwiftVirtualNetworkConnection func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionResponse], errResp azfake.ErrorResponder)
 
 	// GetSwiftVirtualNetworkConnectionSlot is the fake for method WebAppsClient.GetSwiftVirtualNetworkConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSwiftVirtualNetworkConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse], errResp azfake.ErrorResponder)
+	GetSwiftVirtualNetworkConnectionSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetTriggeredWebJob is the fake for method WebAppsClient.GetTriggeredWebJob
 	// HTTP status codes to indicate success: http.StatusOK
-	GetTriggeredWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientGetTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobResponse], errResp azfake.ErrorResponder)
+	GetTriggeredWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientGetTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobResponse], errResp azfake.ErrorResponder)
 
 	// GetTriggeredWebJobHistory is the fake for method WebAppsClient.GetTriggeredWebJobHistory
 	// HTTP status codes to indicate success: http.StatusOK
-	GetTriggeredWebJobHistory	func(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, options *armappservice.WebAppsClientGetTriggeredWebJobHistoryOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobHistoryResponse], errResp azfake.ErrorResponder)
+	GetTriggeredWebJobHistory func(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, options *armappservice.WebAppsClientGetTriggeredWebJobHistoryOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobHistoryResponse], errResp azfake.ErrorResponder)
 
 	// GetTriggeredWebJobHistorySlot is the fake for method WebAppsClient.GetTriggeredWebJobHistorySlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetTriggeredWebJobHistorySlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, slot string, options *armappservice.WebAppsClientGetTriggeredWebJobHistorySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobHistorySlotResponse], errResp azfake.ErrorResponder)
+	GetTriggeredWebJobHistorySlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, slot string, options *armappservice.WebAppsClientGetTriggeredWebJobHistorySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobHistorySlotResponse], errResp azfake.ErrorResponder)
 
 	// GetTriggeredWebJobSlot is the fake for method WebAppsClient.GetTriggeredWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetTriggeredWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientGetTriggeredWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobSlotResponse], errResp azfake.ErrorResponder)
+	GetTriggeredWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientGetTriggeredWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetTriggeredWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetVnetConnection is the fake for method WebAppsClient.GetVnetConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	GetVnetConnection	func(ctx context.Context, resourceGroupName string, name string, vnetName string, options *armappservice.WebAppsClientGetVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionResponse], errResp azfake.ErrorResponder)
+	GetVnetConnection func(ctx context.Context, resourceGroupName string, name string, vnetName string, options *armappservice.WebAppsClientGetVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionResponse], errResp azfake.ErrorResponder)
 
 	// GetVnetConnectionGateway is the fake for method WebAppsClient.GetVnetConnectionGateway
 	// HTTP status codes to indicate success: http.StatusOK
-	GetVnetConnectionGateway	func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *armappservice.WebAppsClientGetVnetConnectionGatewayOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionGatewayResponse], errResp azfake.ErrorResponder)
+	GetVnetConnectionGateway func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *armappservice.WebAppsClientGetVnetConnectionGatewayOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionGatewayResponse], errResp azfake.ErrorResponder)
 
 	// GetVnetConnectionGatewaySlot is the fake for method WebAppsClient.GetVnetConnectionGatewaySlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetVnetConnectionGatewaySlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, options *armappservice.WebAppsClientGetVnetConnectionGatewaySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionGatewaySlotResponse], errResp azfake.ErrorResponder)
+	GetVnetConnectionGatewaySlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, options *armappservice.WebAppsClientGetVnetConnectionGatewaySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionGatewaySlotResponse], errResp azfake.ErrorResponder)
 
 	// GetVnetConnectionSlot is the fake for method WebAppsClient.GetVnetConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetVnetConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *armappservice.WebAppsClientGetVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
+	GetVnetConnectionSlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, options *armappservice.WebAppsClientGetVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetWebJob is the fake for method WebAppsClient.GetWebJob
 	// HTTP status codes to indicate success: http.StatusOK
-	GetWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientGetWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebJobResponse], errResp azfake.ErrorResponder)
+	GetWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientGetWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebJobResponse], errResp azfake.ErrorResponder)
 
 	// GetWebJobSlot is the fake for method WebAppsClient.GetWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientGetWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebJobSlotResponse], errResp azfake.ErrorResponder)
+	GetWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientGetWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetWebSiteContainerLogs is the fake for method WebAppsClient.GetWebSiteContainerLogs
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	GetWebSiteContainerLogs	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetWebSiteContainerLogsOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebSiteContainerLogsResponse], errResp azfake.ErrorResponder)
+	GetWebSiteContainerLogs func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientGetWebSiteContainerLogsOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebSiteContainerLogsResponse], errResp azfake.ErrorResponder)
 
 	// GetWebSiteContainerLogsSlot is the fake for method WebAppsClient.GetWebSiteContainerLogsSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	GetWebSiteContainerLogsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetWebSiteContainerLogsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebSiteContainerLogsSlotResponse], errResp azfake.ErrorResponder)
+	GetWebSiteContainerLogsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientGetWebSiteContainerLogsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWebSiteContainerLogsSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetWorkflow is the fake for method WebAppsClient.GetWorkflow
 	// HTTP status codes to indicate success: http.StatusOK
-	GetWorkflow	func(ctx context.Context, resourceGroupName string, name string, workflowName string, options *armappservice.WebAppsClientGetWorkflowOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWorkflowResponse], errResp azfake.ErrorResponder)
+	GetWorkflow func(ctx context.Context, resourceGroupName string, name string, workflowName string, options *armappservice.WebAppsClientGetWorkflowOptions) (resp azfake.Responder[armappservice.WebAppsClientGetWorkflowResponse], errResp azfake.ErrorResponder)
 
 	// BeginInstallSiteExtension is the fake for method WebAppsClient.BeginInstallSiteExtension
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginInstallSiteExtension	func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientBeginInstallSiteExtensionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse], errResp azfake.ErrorResponder)
+	BeginInstallSiteExtension func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, options *armappservice.WebAppsClientBeginInstallSiteExtensionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse], errResp azfake.ErrorResponder)
 
 	// BeginInstallSiteExtensionSlot is the fake for method WebAppsClient.BeginInstallSiteExtensionSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginInstallSiteExtensionSlot	func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientBeginInstallSiteExtensionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
+	BeginInstallSiteExtensionSlot func(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, options *armappservice.WebAppsClientBeginInstallSiteExtensionSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse], errResp azfake.ErrorResponder)
 
 	// IsCloneable is the fake for method WebAppsClient.IsCloneable
 	// HTTP status codes to indicate success: http.StatusOK
-	IsCloneable	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientIsCloneableOptions) (resp azfake.Responder[armappservice.WebAppsClientIsCloneableResponse], errResp azfake.ErrorResponder)
+	IsCloneable func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientIsCloneableOptions) (resp azfake.Responder[armappservice.WebAppsClientIsCloneableResponse], errResp azfake.ErrorResponder)
 
 	// IsCloneableSlot is the fake for method WebAppsClient.IsCloneableSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	IsCloneableSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientIsCloneableSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientIsCloneableSlotResponse], errResp azfake.ErrorResponder)
+	IsCloneableSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientIsCloneableSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientIsCloneableSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WebAppsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armappservice.WebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListResponse])
+	NewListPager func(options *armappservice.WebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListResponse])
 
 	// ListApplicationSettings is the fake for method WebAppsClient.ListApplicationSettings
 	// HTTP status codes to indicate success: http.StatusOK
-	ListApplicationSettings	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListApplicationSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientListApplicationSettingsResponse], errResp azfake.ErrorResponder)
+	ListApplicationSettings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListApplicationSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientListApplicationSettingsResponse], errResp azfake.ErrorResponder)
 
 	// ListApplicationSettingsSlot is the fake for method WebAppsClient.ListApplicationSettingsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListApplicationSettingsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListApplicationSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListApplicationSettingsSlotResponse], errResp azfake.ErrorResponder)
+	ListApplicationSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListApplicationSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListApplicationSettingsSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListAzureStorageAccounts is the fake for method WebAppsClient.ListAzureStorageAccounts
 	// HTTP status codes to indicate success: http.StatusOK
-	ListAzureStorageAccounts	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListAzureStorageAccountsOptions) (resp azfake.Responder[armappservice.WebAppsClientListAzureStorageAccountsResponse], errResp azfake.ErrorResponder)
+	ListAzureStorageAccounts func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListAzureStorageAccountsOptions) (resp azfake.Responder[armappservice.WebAppsClientListAzureStorageAccountsResponse], errResp azfake.ErrorResponder)
 
 	// ListAzureStorageAccountsSlot is the fake for method WebAppsClient.ListAzureStorageAccountsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListAzureStorageAccountsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListAzureStorageAccountsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListAzureStorageAccountsSlotResponse], errResp azfake.ErrorResponder)
+	ListAzureStorageAccountsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListAzureStorageAccountsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListAzureStorageAccountsSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListBackupStatusSecrets is the fake for method WebAppsClient.ListBackupStatusSecrets
 	// HTTP status codes to indicate success: http.StatusOK
-	ListBackupStatusSecrets	func(ctx context.Context, resourceGroupName string, name string, backupID string, request armappservice.BackupRequest, options *armappservice.WebAppsClientListBackupStatusSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListBackupStatusSecretsResponse], errResp azfake.ErrorResponder)
+	ListBackupStatusSecrets func(ctx context.Context, resourceGroupName string, name string, backupID string, request armappservice.BackupRequest, options *armappservice.WebAppsClientListBackupStatusSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListBackupStatusSecretsResponse], errResp azfake.ErrorResponder)
 
 	// ListBackupStatusSecretsSlot is the fake for method WebAppsClient.ListBackupStatusSecretsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListBackupStatusSecretsSlot	func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientListBackupStatusSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListBackupStatusSecretsSlotResponse], errResp azfake.ErrorResponder)
+	ListBackupStatusSecretsSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientListBackupStatusSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListBackupStatusSecretsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListBackupsPager is the fake for method WebAppsClient.NewListBackupsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBackupsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListBackupsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse])
+	NewListBackupsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListBackupsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse])
 
 	// NewListBackupsSlotPager is the fake for method WebAppsClient.NewListBackupsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBackupsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListBackupsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse])
+	NewListBackupsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListBackupsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse])
 
 	// NewListBasicPublishingCredentialsPoliciesPager is the fake for method WebAppsClient.NewListBasicPublishingCredentialsPoliciesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBasicPublishingCredentialsPoliciesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse])
+	NewListBasicPublishingCredentialsPoliciesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse])
 
 	// NewListBasicPublishingCredentialsPoliciesSlotPager is the fake for method WebAppsClient.NewListBasicPublishingCredentialsPoliciesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBasicPublishingCredentialsPoliciesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse])
+	NewListBasicPublishingCredentialsPoliciesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse])
 
 	// NewListByResourceGroupPager is the fake for method WebAppsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armappservice.WebAppsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.WebAppsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListByResourceGroupResponse])
 
 	// NewListConfigurationSnapshotInfoPager is the fake for method WebAppsClient.NewListConfigurationSnapshotInfoPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListConfigurationSnapshotInfoPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListConfigurationSnapshotInfoOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoResponse])
+	NewListConfigurationSnapshotInfoPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListConfigurationSnapshotInfoOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoResponse])
 
 	// NewListConfigurationSnapshotInfoSlotPager is the fake for method WebAppsClient.NewListConfigurationSnapshotInfoSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListConfigurationSnapshotInfoSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConfigurationSnapshotInfoSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoSlotResponse])
+	NewListConfigurationSnapshotInfoSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConfigurationSnapshotInfoSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoSlotResponse])
 
 	// NewListConfigurationsPager is the fake for method WebAppsClient.NewListConfigurationsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListConfigurationsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListConfigurationsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsResponse])
+	NewListConfigurationsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListConfigurationsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsResponse])
 
 	// NewListConfigurationsSlotPager is the fake for method WebAppsClient.NewListConfigurationsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListConfigurationsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConfigurationsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse])
+	NewListConfigurationsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConfigurationsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse])
 
 	// ListConnectionStrings is the fake for method WebAppsClient.ListConnectionStrings
 	// HTTP status codes to indicate success: http.StatusOK
-	ListConnectionStrings	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListConnectionStringsOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
+	ListConnectionStrings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListConnectionStringsOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsResponse], errResp azfake.ErrorResponder)
 
 	// ListConnectionStringsSlot is the fake for method WebAppsClient.ListConnectionStringsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListConnectionStringsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConnectionStringsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsSlotResponse], errResp azfake.ErrorResponder)
+	ListConnectionStringsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListConnectionStringsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListConnectionStringsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListContinuousWebJobsPager is the fake for method WebAppsClient.NewListContinuousWebJobsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListContinuousWebJobsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListContinuousWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse])
+	NewListContinuousWebJobsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListContinuousWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse])
 
 	// NewListContinuousWebJobsSlotPager is the fake for method WebAppsClient.NewListContinuousWebJobsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListContinuousWebJobsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListContinuousWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse])
+	NewListContinuousWebJobsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListContinuousWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse])
 
 	// ListDeploymentLog is the fake for method WebAppsClient.ListDeploymentLog
 	// HTTP status codes to indicate success: http.StatusOK
-	ListDeploymentLog	func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientListDeploymentLogOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogResponse], errResp azfake.ErrorResponder)
+	ListDeploymentLog func(ctx context.Context, resourceGroupName string, name string, id string, options *armappservice.WebAppsClientListDeploymentLogOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogResponse], errResp azfake.ErrorResponder)
 
 	// ListDeploymentLogSlot is the fake for method WebAppsClient.ListDeploymentLogSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListDeploymentLogSlot	func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientListDeploymentLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogSlotResponse], errResp azfake.ErrorResponder)
+	ListDeploymentLogSlot func(ctx context.Context, resourceGroupName string, name string, id string, slot string, options *armappservice.WebAppsClientListDeploymentLogSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListDeploymentLogSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListDeploymentsPager is the fake for method WebAppsClient.NewListDeploymentsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListDeploymentsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListDeploymentsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsResponse])
+	NewListDeploymentsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListDeploymentsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsResponse])
 
 	// NewListDeploymentsSlotPager is the fake for method WebAppsClient.NewListDeploymentsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListDeploymentsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListDeploymentsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsSlotResponse])
+	NewListDeploymentsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListDeploymentsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsSlotResponse])
 
 	// NewListDomainOwnershipIdentifiersPager is the fake for method WebAppsClient.NewListDomainOwnershipIdentifiersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListDomainOwnershipIdentifiersPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListDomainOwnershipIdentifiersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersResponse])
+	NewListDomainOwnershipIdentifiersPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListDomainOwnershipIdentifiersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersResponse])
 
 	// NewListDomainOwnershipIdentifiersSlotPager is the fake for method WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListDomainOwnershipIdentifiersSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse])
+	NewListDomainOwnershipIdentifiersSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse])
 
 	// ListFunctionKeys is the fake for method WebAppsClient.ListFunctionKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionKeys	func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysResponse], errResp azfake.ErrorResponder)
+	ListFunctionKeys func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysResponse], errResp azfake.ErrorResponder)
 
 	// ListFunctionKeysSlot is the fake for method WebAppsClient.ListFunctionKeysSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionKeysSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysSlotResponse], errResp azfake.ErrorResponder)
+	ListFunctionKeysSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionKeysSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListFunctionSecrets is the fake for method WebAppsClient.ListFunctionSecrets
 	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionSecrets	func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsResponse], errResp azfake.ErrorResponder)
+	ListFunctionSecrets func(ctx context.Context, resourceGroupName string, name string, functionName string, options *armappservice.WebAppsClientListFunctionSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsResponse], errResp azfake.ErrorResponder)
 
 	// ListFunctionSecretsSlot is the fake for method WebAppsClient.ListFunctionSecretsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListFunctionSecretsSlot	func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsSlotResponse], errResp azfake.ErrorResponder)
+	ListFunctionSecretsSlot func(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, options *armappservice.WebAppsClientListFunctionSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListFunctionSecretsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListFunctionsPager is the fake for method WebAppsClient.NewListFunctionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListFunctionsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListFunctionsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse])
+	NewListFunctionsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListFunctionsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse])
 
 	// ListHostKeys is the fake for method WebAppsClient.ListHostKeys
 	// HTTP status codes to indicate success: http.StatusOK
-	ListHostKeys	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHostKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysResponse], errResp azfake.ErrorResponder)
+	ListHostKeys func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHostKeysOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysResponse], errResp azfake.ErrorResponder)
 
 	// ListHostKeysSlot is the fake for method WebAppsClient.ListHostKeysSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListHostKeysSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysSlotResponse], errResp azfake.ErrorResponder)
+	ListHostKeysSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostKeysSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHostKeysSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListHostNameBindingsPager is the fake for method WebAppsClient.NewListHostNameBindingsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListHostNameBindingsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListHostNameBindingsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsResponse])
+	NewListHostNameBindingsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListHostNameBindingsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsResponse])
 
 	// NewListHostNameBindingsSlotPager is the fake for method WebAppsClient.NewListHostNameBindingsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListHostNameBindingsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostNameBindingsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse])
+	NewListHostNameBindingsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHostNameBindingsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse])
 
 	// ListHybridConnections is the fake for method WebAppsClient.ListHybridConnections
 	// HTTP status codes to indicate success: http.StatusOK
-	ListHybridConnections	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHybridConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsResponse], errResp azfake.ErrorResponder)
+	ListHybridConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListHybridConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsResponse], errResp azfake.ErrorResponder)
 
 	// ListHybridConnectionsSlot is the fake for method WebAppsClient.ListHybridConnectionsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListHybridConnectionsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHybridConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsSlotResponse], errResp azfake.ErrorResponder)
+	ListHybridConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListHybridConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListHybridConnectionsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListInstanceFunctionsSlotPager is the fake for method WebAppsClient.NewListInstanceFunctionsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceFunctionsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceFunctionsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceFunctionsSlotResponse])
+	NewListInstanceFunctionsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceFunctionsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceFunctionsSlotResponse])
 
 	// NewListInstanceIdentifiersPager is the fake for method WebAppsClient.NewListInstanceIdentifiersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceIdentifiersPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListInstanceIdentifiersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersResponse])
+	NewListInstanceIdentifiersPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListInstanceIdentifiersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersResponse])
 
 	// NewListInstanceIdentifiersSlotPager is the fake for method WebAppsClient.NewListInstanceIdentifiersSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceIdentifiersSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceIdentifiersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersSlotResponse])
+	NewListInstanceIdentifiersSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceIdentifiersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersSlotResponse])
 
 	// NewListInstanceProcessModulesPager is the fake for method WebAppsClient.NewListInstanceProcessModulesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceProcessModulesPager	func(resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessModulesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesResponse])
+	NewListInstanceProcessModulesPager func(resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessModulesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesResponse])
 
 	// NewListInstanceProcessModulesSlotPager is the fake for method WebAppsClient.NewListInstanceProcessModulesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceProcessModulesSlotPager	func(resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessModulesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesSlotResponse])
+	NewListInstanceProcessModulesSlotPager func(resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessModulesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesSlotResponse])
 
 	// NewListInstanceProcessThreadsPager is the fake for method WebAppsClient.NewListInstanceProcessThreadsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceProcessThreadsPager	func(resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessThreadsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsResponse])
+	NewListInstanceProcessThreadsPager func(resourceGroupName string, name string, processID string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessThreadsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsResponse])
 
 	// NewListInstanceProcessThreadsSlotPager is the fake for method WebAppsClient.NewListInstanceProcessThreadsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceProcessThreadsSlotPager	func(resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessThreadsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsSlotResponse])
+	NewListInstanceProcessThreadsSlotPager func(resourceGroupName string, name string, processID string, slot string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessThreadsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsSlotResponse])
 
 	// NewListInstanceProcessesPager is the fake for method WebAppsClient.NewListInstanceProcessesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceProcessesPager	func(resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse])
+	NewListInstanceProcessesPager func(resourceGroupName string, name string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse])
 
 	// NewListInstanceProcessesSlotPager is the fake for method WebAppsClient.NewListInstanceProcessesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceProcessesSlotPager	func(resourceGroupName string, name string, slot string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse])
+	NewListInstanceProcessesSlotPager func(resourceGroupName string, name string, slot string, instanceID string, options *armappservice.WebAppsClientListInstanceProcessesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse])
 
 	// NewListInstanceWorkflowsSlotPager is the fake for method WebAppsClient.NewListInstanceWorkflowsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListInstanceWorkflowsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceWorkflowsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse])
+	NewListInstanceWorkflowsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListInstanceWorkflowsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse])
 
 	// ListMetadata is the fake for method WebAppsClient.ListMetadata
 	// HTTP status codes to indicate success: http.StatusOK
-	ListMetadata	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataResponse], errResp azfake.ErrorResponder)
+	ListMetadata func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataResponse], errResp azfake.ErrorResponder)
 
 	// ListMetadataSlot is the fake for method WebAppsClient.ListMetadataSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListMetadataSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListMetadataSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataSlotResponse], errResp azfake.ErrorResponder)
+	ListMetadataSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListMetadataSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListMetadataSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListNetworkFeatures is the fake for method WebAppsClient.ListNetworkFeatures
 	// HTTP status codes to indicate success: http.StatusOK
-	ListNetworkFeatures	func(ctx context.Context, resourceGroupName string, name string, view string, options *armappservice.WebAppsClientListNetworkFeaturesOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesResponse], errResp azfake.ErrorResponder)
+	ListNetworkFeatures func(ctx context.Context, resourceGroupName string, name string, view string, options *armappservice.WebAppsClientListNetworkFeaturesOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesResponse], errResp azfake.ErrorResponder)
 
 	// ListNetworkFeaturesSlot is the fake for method WebAppsClient.ListNetworkFeaturesSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListNetworkFeaturesSlot	func(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *armappservice.WebAppsClientListNetworkFeaturesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesSlotResponse], errResp azfake.ErrorResponder)
+	ListNetworkFeaturesSlot func(ctx context.Context, resourceGroupName string, name string, view string, slot string, options *armappservice.WebAppsClientListNetworkFeaturesSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListNetworkFeaturesSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListPerfMonCountersPager is the fake for method WebAppsClient.NewListPerfMonCountersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPerfMonCountersPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListPerfMonCountersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse])
+	NewListPerfMonCountersPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListPerfMonCountersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse])
 
 	// NewListPerfMonCountersSlotPager is the fake for method WebAppsClient.NewListPerfMonCountersSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPerfMonCountersSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPerfMonCountersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse])
+	NewListPerfMonCountersSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPerfMonCountersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse])
 
 	// ListPremierAddOns is the fake for method WebAppsClient.ListPremierAddOns
 	// HTTP status codes to indicate success: http.StatusOK
-	ListPremierAddOns	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListPremierAddOnsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsResponse], errResp azfake.ErrorResponder)
+	ListPremierAddOns func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListPremierAddOnsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsResponse], errResp azfake.ErrorResponder)
 
 	// ListPremierAddOnsSlot is the fake for method WebAppsClient.ListPremierAddOnsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListPremierAddOnsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPremierAddOnsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsSlotResponse], errResp azfake.ErrorResponder)
+	ListPremierAddOnsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPremierAddOnsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPremierAddOnsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListProcessModulesPager is the fake for method WebAppsClient.NewListProcessModulesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProcessModulesPager	func(resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientListProcessModulesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse])
+	NewListProcessModulesPager func(resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientListProcessModulesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse])
 
 	// NewListProcessModulesSlotPager is the fake for method WebAppsClient.NewListProcessModulesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProcessModulesSlotPager	func(resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientListProcessModulesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesSlotResponse])
+	NewListProcessModulesSlotPager func(resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientListProcessModulesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesSlotResponse])
 
 	// NewListProcessThreadsPager is the fake for method WebAppsClient.NewListProcessThreadsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProcessThreadsPager	func(resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientListProcessThreadsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsResponse])
+	NewListProcessThreadsPager func(resourceGroupName string, name string, processID string, options *armappservice.WebAppsClientListProcessThreadsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsResponse])
 
 	// NewListProcessThreadsSlotPager is the fake for method WebAppsClient.NewListProcessThreadsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProcessThreadsSlotPager	func(resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientListProcessThreadsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsSlotResponse])
+	NewListProcessThreadsSlotPager func(resourceGroupName string, name string, processID string, slot string, options *armappservice.WebAppsClientListProcessThreadsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsSlotResponse])
 
 	// NewListProcessesPager is the fake for method WebAppsClient.NewListProcessesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProcessesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListProcessesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessesResponse])
+	NewListProcessesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListProcessesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessesResponse])
 
 	// NewListProcessesSlotPager is the fake for method WebAppsClient.NewListProcessesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProcessesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListProcessesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessesSlotResponse])
+	NewListProcessesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListProcessesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProcessesSlotResponse])
 
 	// NewListProductionSiteDeploymentStatusesPager is the fake for method WebAppsClient.NewListProductionSiteDeploymentStatusesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListProductionSiteDeploymentStatusesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListProductionSiteDeploymentStatusesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse])
+	NewListProductionSiteDeploymentStatusesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListProductionSiteDeploymentStatusesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse])
 
 	// NewListPublicCertificatesPager is the fake for method WebAppsClient.NewListPublicCertificatesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPublicCertificatesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListPublicCertificatesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse])
+	NewListPublicCertificatesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListPublicCertificatesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse])
 
 	// NewListPublicCertificatesSlotPager is the fake for method WebAppsClient.NewListPublicCertificatesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPublicCertificatesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPublicCertificatesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse])
+	NewListPublicCertificatesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListPublicCertificatesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse])
 
 	// BeginListPublishingCredentials is the fake for method WebAppsClient.BeginListPublishingCredentials
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginListPublishingCredentials	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginListPublishingCredentialsOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse], errResp azfake.ErrorResponder)
+	BeginListPublishingCredentials func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginListPublishingCredentialsOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse], errResp azfake.ErrorResponder)
 
 	// BeginListPublishingCredentialsSlot is the fake for method WebAppsClient.BeginListPublishingCredentialsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginListPublishingCredentialsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginListPublishingCredentialsSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse], errResp azfake.ErrorResponder)
+	BeginListPublishingCredentialsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginListPublishingCredentialsSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListPublishingProfileXMLWithSecrets is the fake for method WebAppsClient.ListPublishingProfileXMLWithSecrets
 	// HTTP status codes to indicate success: http.StatusOK
-	ListPublishingProfileXMLWithSecrets	func(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsResponse], errResp azfake.ErrorResponder)
+	ListPublishingProfileXMLWithSecrets func(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsResponse], errResp azfake.ErrorResponder)
 
 	// ListPublishingProfileXMLWithSecretsSlot is the fake for method WebAppsClient.ListPublishingProfileXMLWithSecretsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListPublishingProfileXMLWithSecretsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse], errResp azfake.ErrorResponder)
+	ListPublishingProfileXMLWithSecretsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions armappservice.CsmPublishingProfileOptions, options *armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListRelayServiceConnections is the fake for method WebAppsClient.ListRelayServiceConnections
 	// HTTP status codes to indicate success: http.StatusOK
-	ListRelayServiceConnections	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListRelayServiceConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsResponse], errResp azfake.ErrorResponder)
+	ListRelayServiceConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListRelayServiceConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsResponse], errResp azfake.ErrorResponder)
 
 	// ListRelayServiceConnectionsSlot is the fake for method WebAppsClient.ListRelayServiceConnectionsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListRelayServiceConnectionsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListRelayServiceConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsSlotResponse], errResp azfake.ErrorResponder)
+	ListRelayServiceConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListRelayServiceConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListRelayServiceConnectionsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListSiteBackupsPager is the fake for method WebAppsClient.NewListSiteBackupsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteBackupsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteBackupsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse])
+	NewListSiteBackupsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteBackupsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse])
 
 	// NewListSiteBackupsSlotPager is the fake for method WebAppsClient.NewListSiteBackupsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteBackupsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteBackupsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse])
+	NewListSiteBackupsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteBackupsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse])
 
 	// NewListSiteContainersPager is the fake for method WebAppsClient.NewListSiteContainersPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteContainersPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteContainersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse])
+	NewListSiteContainersPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteContainersOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse])
 
 	// NewListSiteContainersSlotPager is the fake for method WebAppsClient.NewListSiteContainersSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteContainersSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteContainersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersSlotResponse])
+	NewListSiteContainersSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteContainersSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersSlotResponse])
 
 	// NewListSiteExtensionsPager is the fake for method WebAppsClient.NewListSiteExtensionsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteExtensionsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteExtensionsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsResponse])
+	NewListSiteExtensionsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSiteExtensionsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsResponse])
 
 	// NewListSiteExtensionsSlotPager is the fake for method WebAppsClient.NewListSiteExtensionsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteExtensionsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteExtensionsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse])
+	NewListSiteExtensionsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSiteExtensionsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse])
 
 	// ListSitePushSettings is the fake for method WebAppsClient.ListSitePushSettings
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSitePushSettings	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSitePushSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsResponse], errResp azfake.ErrorResponder)
+	ListSitePushSettings func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSitePushSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsResponse], errResp azfake.ErrorResponder)
 
 	// ListSitePushSettingsSlot is the fake for method WebAppsClient.ListSitePushSettingsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSitePushSettingsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSitePushSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsSlotResponse], errResp azfake.ErrorResponder)
+	ListSitePushSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSitePushSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSitePushSettingsSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListSlotConfigurationNames is the fake for method WebAppsClient.ListSlotConfigurationNames
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSlotConfigurationNames	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotConfigurationNamesOptions) (resp azfake.Responder[armappservice.WebAppsClientListSlotConfigurationNamesResponse], errResp azfake.ErrorResponder)
+	ListSlotConfigurationNames func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotConfigurationNamesOptions) (resp azfake.Responder[armappservice.WebAppsClientListSlotConfigurationNamesResponse], errResp azfake.ErrorResponder)
 
 	// NewListSlotDifferencesFromProductionPager is the fake for method WebAppsClient.NewListSlotDifferencesFromProductionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSlotDifferencesFromProductionPager	func(resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientListSlotDifferencesFromProductionOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse])
+	NewListSlotDifferencesFromProductionPager func(resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientListSlotDifferencesFromProductionOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse])
 
 	// NewListSlotDifferencesSlotPager is the fake for method WebAppsClient.NewListSlotDifferencesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSlotDifferencesSlotPager	func(resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientListSlotDifferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse])
+	NewListSlotDifferencesSlotPager func(resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientListSlotDifferencesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse])
 
 	// NewListSlotSiteDeploymentStatusesSlotPager is the fake for method WebAppsClient.NewListSlotSiteDeploymentStatusesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSlotSiteDeploymentStatusesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse])
+	NewListSlotSiteDeploymentStatusesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse])
 
 	// NewListSlotsPager is the fake for method WebAppsClient.NewListSlotsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSlotsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse])
+	NewListSlotsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSlotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse])
 
 	// NewListSnapshotsPager is the fake for method WebAppsClient.NewListSnapshotsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSnapshotsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse])
+	NewListSnapshotsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse])
 
 	// NewListSnapshotsFromDRSecondaryPager is the fake for method WebAppsClient.NewListSnapshotsFromDRSecondaryPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSnapshotsFromDRSecondaryPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsFromDRSecondaryOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse])
+	NewListSnapshotsFromDRSecondaryPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListSnapshotsFromDRSecondaryOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse])
 
 	// NewListSnapshotsFromDRSecondarySlotPager is the fake for method WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSnapshotsFromDRSecondarySlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse])
+	NewListSnapshotsFromDRSecondarySlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse])
 
 	// NewListSnapshotsSlotPager is the fake for method WebAppsClient.NewListSnapshotsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSnapshotsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSnapshotsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse])
+	NewListSnapshotsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSnapshotsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse])
 
 	// ListSyncFunctionTriggers is the fake for method WebAppsClient.ListSyncFunctionTriggers
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSyncFunctionTriggers	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncFunctionTriggersOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersResponse], errResp azfake.ErrorResponder)
+	ListSyncFunctionTriggers func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncFunctionTriggersOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersResponse], errResp azfake.ErrorResponder)
 
 	// ListSyncFunctionTriggersSlot is the fake for method WebAppsClient.ListSyncFunctionTriggersSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListSyncFunctionTriggersSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncFunctionTriggersSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersSlotResponse], errResp azfake.ErrorResponder)
+	ListSyncFunctionTriggersSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncFunctionTriggersSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncFunctionTriggersSlotResponse], errResp azfake.ErrorResponder)
 
 	// ListSyncStatus is the fake for method WebAppsClient.ListSyncStatus
 	// HTTP status codes to indicate success: http.StatusNoContent
-	ListSyncStatus	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusResponse], errResp azfake.ErrorResponder)
+	ListSyncStatus func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListSyncStatusOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusResponse], errResp azfake.ErrorResponder)
 
 	// ListSyncStatusSlot is the fake for method WebAppsClient.ListSyncStatusSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	ListSyncStatusSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusSlotResponse], errResp azfake.ErrorResponder)
+	ListSyncStatusSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListSyncStatusSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListSyncStatusSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListTriggeredWebJobHistoryPager is the fake for method WebAppsClient.NewListTriggeredWebJobHistoryPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListTriggeredWebJobHistoryPager	func(resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientListTriggeredWebJobHistoryOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse])
+	NewListTriggeredWebJobHistoryPager func(resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientListTriggeredWebJobHistoryOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse])
 
 	// NewListTriggeredWebJobHistorySlotPager is the fake for method WebAppsClient.NewListTriggeredWebJobHistorySlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListTriggeredWebJobHistorySlotPager	func(resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientListTriggeredWebJobHistorySlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse])
+	NewListTriggeredWebJobHistorySlotPager func(resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientListTriggeredWebJobHistorySlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse])
 
 	// NewListTriggeredWebJobsPager is the fake for method WebAppsClient.NewListTriggeredWebJobsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListTriggeredWebJobsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListTriggeredWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsResponse])
+	NewListTriggeredWebJobsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListTriggeredWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsResponse])
 
 	// NewListTriggeredWebJobsSlotPager is the fake for method WebAppsClient.NewListTriggeredWebJobsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListTriggeredWebJobsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListTriggeredWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsSlotResponse])
+	NewListTriggeredWebJobsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListTriggeredWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsSlotResponse])
 
 	// NewListUsagesPager is the fake for method WebAppsClient.NewListUsagesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListUsagesPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListUsagesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListUsagesResponse])
+	NewListUsagesPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListUsagesOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListUsagesResponse])
 
 	// NewListUsagesSlotPager is the fake for method WebAppsClient.NewListUsagesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListUsagesSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListUsagesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse])
+	NewListUsagesSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListUsagesSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse])
 
 	// ListVnetConnections is the fake for method WebAppsClient.ListVnetConnections
 	// HTTP status codes to indicate success: http.StatusOK
-	ListVnetConnections	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListVnetConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsResponse], errResp azfake.ErrorResponder)
+	ListVnetConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListVnetConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsResponse], errResp azfake.ErrorResponder)
 
 	// ListVnetConnectionsSlot is the fake for method WebAppsClient.ListVnetConnectionsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListVnetConnectionsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListVnetConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsSlotResponse], errResp azfake.ErrorResponder)
+	ListVnetConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListVnetConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListVnetConnectionsSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListWebJobsPager is the fake for method WebAppsClient.NewListWebJobsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListWebJobsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse])
+	NewListWebJobsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListWebJobsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse])
 
 	// NewListWebJobsSlotPager is the fake for method WebAppsClient.NewListWebJobsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListWebJobsSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse])
+	NewListWebJobsSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListWebJobsSlotOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse])
 
 	// NewListWorkflowsPager is the fake for method WebAppsClient.NewListWorkflowsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListWorkflowsPager	func(resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse])
+	NewListWorkflowsPager func(resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsOptions) (resp azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse])
 
 	// ListWorkflowsConnections is the fake for method WebAppsClient.ListWorkflowsConnections
 	// HTTP status codes to indicate success: http.StatusOK
-	ListWorkflowsConnections	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsResponse], errResp azfake.ErrorResponder)
+	ListWorkflowsConnections func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientListWorkflowsConnectionsOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsResponse], errResp azfake.ErrorResponder)
 
 	// ListWorkflowsConnectionsSlot is the fake for method WebAppsClient.ListWorkflowsConnectionsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ListWorkflowsConnectionsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListWorkflowsConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse], errResp azfake.ErrorResponder)
+	ListWorkflowsConnectionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientListWorkflowsConnectionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginMigrateMySQL is the fake for method WebAppsClient.BeginMigrateMySQL
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginMigrateMySQL	func(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope armappservice.MigrateMySQLRequest, options *armappservice.WebAppsClientBeginMigrateMySQLOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse], errResp azfake.ErrorResponder)
+	BeginMigrateMySQL func(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope armappservice.MigrateMySQLRequest, options *armappservice.WebAppsClientBeginMigrateMySQLOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse], errResp azfake.ErrorResponder)
 
 	// BeginMigrateStorage is the fake for method WebAppsClient.BeginMigrateStorage
 	// HTTP status codes to indicate success: http.StatusOK
-	BeginMigrateStorage	func(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions armappservice.StorageMigrationOptions, options *armappservice.WebAppsClientBeginMigrateStorageOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse], errResp azfake.ErrorResponder)
+	BeginMigrateStorage func(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions armappservice.StorageMigrationOptions, options *armappservice.WebAppsClientBeginMigrateStorageOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse], errResp azfake.ErrorResponder)
 
 	// PutPrivateAccessVnet is the fake for method WebAppsClient.PutPrivateAccessVnet
 	// HTTP status codes to indicate success: http.StatusOK
-	PutPrivateAccessVnet	func(ctx context.Context, resourceGroupName string, name string, access armappservice.PrivateAccess, options *armappservice.WebAppsClientPutPrivateAccessVnetOptions) (resp azfake.Responder[armappservice.WebAppsClientPutPrivateAccessVnetResponse], errResp azfake.ErrorResponder)
+	PutPrivateAccessVnet func(ctx context.Context, resourceGroupName string, name string, access armappservice.PrivateAccess, options *armappservice.WebAppsClientPutPrivateAccessVnetOptions) (resp azfake.Responder[armappservice.WebAppsClientPutPrivateAccessVnetResponse], errResp azfake.ErrorResponder)
 
 	// PutPrivateAccessVnetSlot is the fake for method WebAppsClient.PutPrivateAccessVnetSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	PutPrivateAccessVnetSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, access armappservice.PrivateAccess, options *armappservice.WebAppsClientPutPrivateAccessVnetSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientPutPrivateAccessVnetSlotResponse], errResp azfake.ErrorResponder)
+	PutPrivateAccessVnetSlot func(ctx context.Context, resourceGroupName string, name string, slot string, access armappservice.PrivateAccess, options *armappservice.WebAppsClientPutPrivateAccessVnetSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientPutPrivateAccessVnetSlotResponse], errResp azfake.ErrorResponder)
 
 	// RecoverSiteConfigurationSnapshot is the fake for method WebAppsClient.RecoverSiteConfigurationSnapshot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RecoverSiteConfigurationSnapshot	func(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *armappservice.WebAppsClientRecoverSiteConfigurationSnapshotOptions) (resp azfake.Responder[armappservice.WebAppsClientRecoverSiteConfigurationSnapshotResponse], errResp azfake.ErrorResponder)
+	RecoverSiteConfigurationSnapshot func(ctx context.Context, resourceGroupName string, name string, snapshotID string, options *armappservice.WebAppsClientRecoverSiteConfigurationSnapshotOptions) (resp azfake.Responder[armappservice.WebAppsClientRecoverSiteConfigurationSnapshotResponse], errResp azfake.ErrorResponder)
 
 	// RecoverSiteConfigurationSnapshotSlot is the fake for method WebAppsClient.RecoverSiteConfigurationSnapshotSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RecoverSiteConfigurationSnapshotSlot	func(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *armappservice.WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse], errResp azfake.ErrorResponder)
+	RecoverSiteConfigurationSnapshotSlot func(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, options *armappservice.WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse], errResp azfake.ErrorResponder)
 
 	// ResetProductionSlotConfig is the fake for method WebAppsClient.ResetProductionSlotConfig
 	// HTTP status codes to indicate success: http.StatusOK
-	ResetProductionSlotConfig	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientResetProductionSlotConfigOptions) (resp azfake.Responder[armappservice.WebAppsClientResetProductionSlotConfigResponse], errResp azfake.ErrorResponder)
+	ResetProductionSlotConfig func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientResetProductionSlotConfigOptions) (resp azfake.Responder[armappservice.WebAppsClientResetProductionSlotConfigResponse], errResp azfake.ErrorResponder)
 
 	// ResetSlotConfigurationSlot is the fake for method WebAppsClient.ResetSlotConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ResetSlotConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientResetSlotConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientResetSlotConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	ResetSlotConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientResetSlotConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientResetSlotConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// Restart is the fake for method WebAppsClient.Restart
 	// HTTP status codes to indicate success: http.StatusOK
-	Restart	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientRestartOptions) (resp azfake.Responder[armappservice.WebAppsClientRestartResponse], errResp azfake.ErrorResponder)
+	Restart func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientRestartOptions) (resp azfake.Responder[armappservice.WebAppsClientRestartResponse], errResp azfake.ErrorResponder)
 
 	// RestartSlot is the fake for method WebAppsClient.RestartSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	RestartSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientRestartSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRestartSlotResponse], errResp azfake.ErrorResponder)
+	RestartSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientRestartSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRestartSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestore is the fake for method WebAppsClient.BeginRestore
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestore	func(ctx context.Context, resourceGroupName string, name string, backupID string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse], errResp azfake.ErrorResponder)
+	BeginRestore func(ctx context.Context, resourceGroupName string, name string, backupID string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreFromBackupBlob is the fake for method WebAppsClient.BeginRestoreFromBackupBlob
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromBackupBlob	func(ctx context.Context, resourceGroupName string, name string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse], errResp azfake.ErrorResponder)
+	BeginRestoreFromBackupBlob func(ctx context.Context, resourceGroupName string, name string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreFromBackupBlobSlot is the fake for method WebAppsClient.BeginRestoreFromBackupBlobSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromBackupBlobSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse], errResp azfake.ErrorResponder)
+	BeginRestoreFromBackupBlobSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreFromDeletedApp is the fake for method WebAppsClient.BeginRestoreFromDeletedApp
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromDeletedApp	func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse], errResp azfake.ErrorResponder)
+	BeginRestoreFromDeletedApp func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreFromDeletedAppSlot is the fake for method WebAppsClient.BeginRestoreFromDeletedAppSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreFromDeletedAppSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse], errResp azfake.ErrorResponder)
+	BeginRestoreFromDeletedAppSlot func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.DeletedAppRestoreRequest, options *armappservice.WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreSlot is the fake for method WebAppsClient.BeginRestoreSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreSlot	func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse], errResp azfake.ErrorResponder)
+	BeginRestoreSlot func(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request armappservice.RestoreRequest, options *armappservice.WebAppsClientBeginRestoreSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreSnapshot is the fake for method WebAppsClient.BeginRestoreSnapshot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreSnapshot	func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse], errResp azfake.ErrorResponder)
+	BeginRestoreSnapshot func(ctx context.Context, resourceGroupName string, name string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestoreSnapshotSlot is the fake for method WebAppsClient.BeginRestoreSnapshotSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRestoreSnapshotSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse], errResp azfake.ErrorResponder)
+	BeginRestoreSnapshotSlot func(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest armappservice.SnapshotRestoreRequest, options *armappservice.WebAppsClientBeginRestoreSnapshotSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse], errResp azfake.ErrorResponder)
 
 	// RunTriggeredWebJob is the fake for method WebAppsClient.RunTriggeredWebJob
 	// HTTP status codes to indicate success: http.StatusOK
-	RunTriggeredWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientRunTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientRunTriggeredWebJobResponse], errResp azfake.ErrorResponder)
+	RunTriggeredWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientRunTriggeredWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientRunTriggeredWebJobResponse], errResp azfake.ErrorResponder)
 
 	// RunTriggeredWebJobSlot is the fake for method WebAppsClient.RunTriggeredWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	RunTriggeredWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientRunTriggeredWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRunTriggeredWebJobSlotResponse], errResp azfake.ErrorResponder)
+	RunTriggeredWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientRunTriggeredWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientRunTriggeredWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// Start is the fake for method WebAppsClient.Start
 	// HTTP status codes to indicate success: http.StatusOK
-	Start	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStartOptions) (resp azfake.Responder[armappservice.WebAppsClientStartResponse], errResp azfake.ErrorResponder)
+	Start func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStartOptions) (resp azfake.Responder[armappservice.WebAppsClientStartResponse], errResp azfake.ErrorResponder)
 
 	// StartContinuousWebJob is the fake for method WebAppsClient.StartContinuousWebJob
 	// HTTP status codes to indicate success: http.StatusOK
-	StartContinuousWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientStartContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientStartContinuousWebJobResponse], errResp azfake.ErrorResponder)
+	StartContinuousWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientStartContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientStartContinuousWebJobResponse], errResp azfake.ErrorResponder)
 
 	// StartContinuousWebJobSlot is the fake for method WebAppsClient.StartContinuousWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	StartContinuousWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientStartContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
+	StartContinuousWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientStartContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginStartNetworkTrace is the fake for method WebAppsClient.BeginStartNetworkTrace
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStartNetworkTrace	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartNetworkTraceOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse], errResp azfake.ErrorResponder)
+	BeginStartNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartNetworkTraceOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse], errResp azfake.ErrorResponder)
 
 	// BeginStartNetworkTraceSlot is the fake for method WebAppsClient.BeginStartNetworkTraceSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStartNetworkTraceSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
+	BeginStartNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
 
 	// StartSlot is the fake for method WebAppsClient.StartSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	StartSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStartSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartSlotResponse], errResp azfake.ErrorResponder)
+	StartSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStartSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartSlotResponse], errResp azfake.ErrorResponder)
 
 	// StartWebSiteNetworkTrace is the fake for method WebAppsClient.StartWebSiteNetworkTrace
 	// HTTP status codes to indicate success: http.StatusOK
-	StartWebSiteNetworkTrace	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStartWebSiteNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStartWebSiteNetworkTraceResponse], errResp azfake.ErrorResponder)
+	StartWebSiteNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStartWebSiteNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStartWebSiteNetworkTraceResponse], errResp azfake.ErrorResponder)
 
 	// BeginStartWebSiteNetworkTraceOperation is the fake for method WebAppsClient.BeginStartWebSiteNetworkTraceOperation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStartWebSiteNetworkTraceOperation	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse], errResp azfake.ErrorResponder)
+	BeginStartWebSiteNetworkTraceOperation func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse], errResp azfake.ErrorResponder)
 
 	// BeginStartWebSiteNetworkTraceOperationSlot is the fake for method WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginStartWebSiteNetworkTraceOperationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], errResp azfake.ErrorResponder)
+	BeginStartWebSiteNetworkTraceOperationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse], errResp azfake.ErrorResponder)
 
 	// StartWebSiteNetworkTraceSlot is the fake for method WebAppsClient.StartWebSiteNetworkTraceSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	StartWebSiteNetworkTraceSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStartWebSiteNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartWebSiteNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
+	StartWebSiteNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStartWebSiteNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStartWebSiteNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
 
 	// Stop is the fake for method WebAppsClient.Stop
 	// HTTP status codes to indicate success: http.StatusOK
-	Stop	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStopOptions) (resp azfake.Responder[armappservice.WebAppsClientStopResponse], errResp azfake.ErrorResponder)
+	Stop func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStopOptions) (resp azfake.Responder[armappservice.WebAppsClientStopResponse], errResp azfake.ErrorResponder)
 
 	// StopContinuousWebJob is the fake for method WebAppsClient.StopContinuousWebJob
 	// HTTP status codes to indicate success: http.StatusOK
-	StopContinuousWebJob	func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientStopContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientStopContinuousWebJobResponse], errResp azfake.ErrorResponder)
+	StopContinuousWebJob func(ctx context.Context, resourceGroupName string, name string, webJobName string, options *armappservice.WebAppsClientStopContinuousWebJobOptions) (resp azfake.Responder[armappservice.WebAppsClientStopContinuousWebJobResponse], errResp azfake.ErrorResponder)
 
 	// StopContinuousWebJobSlot is the fake for method WebAppsClient.StopContinuousWebJobSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	StopContinuousWebJobSlot	func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientStopContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
+	StopContinuousWebJobSlot func(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, options *armappservice.WebAppsClientStopContinuousWebJobSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopContinuousWebJobSlotResponse], errResp azfake.ErrorResponder)
 
 	// StopNetworkTrace is the fake for method WebAppsClient.StopNetworkTrace
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	StopNetworkTrace	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStopNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStopNetworkTraceResponse], errResp azfake.ErrorResponder)
+	StopNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStopNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStopNetworkTraceResponse], errResp azfake.ErrorResponder)
 
 	// StopNetworkTraceSlot is the fake for method WebAppsClient.StopNetworkTraceSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	StopNetworkTraceSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
+	StopNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
 
 	// StopSlot is the fake for method WebAppsClient.StopSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	StopSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopSlotResponse], errResp azfake.ErrorResponder)
+	StopSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopSlotResponse], errResp azfake.ErrorResponder)
 
 	// StopWebSiteNetworkTrace is the fake for method WebAppsClient.StopWebSiteNetworkTrace
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	StopWebSiteNetworkTrace	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStopWebSiteNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStopWebSiteNetworkTraceResponse], errResp azfake.ErrorResponder)
+	StopWebSiteNetworkTrace func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientStopWebSiteNetworkTraceOptions) (resp azfake.Responder[armappservice.WebAppsClientStopWebSiteNetworkTraceResponse], errResp azfake.ErrorResponder)
 
 	// StopWebSiteNetworkTraceSlot is the fake for method WebAppsClient.StopWebSiteNetworkTraceSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	StopWebSiteNetworkTraceSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopWebSiteNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopWebSiteNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
+	StopWebSiteNetworkTraceSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientStopWebSiteNetworkTraceSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientStopWebSiteNetworkTraceSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginSwapSlot is the fake for method WebAppsClient.BeginSwapSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSwapSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse], errResp azfake.ErrorResponder)
+	BeginSwapSlot func(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse], errResp azfake.ErrorResponder)
 
 	// BeginSwapSlotWithProduction is the fake for method WebAppsClient.BeginSwapSlotWithProduction
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginSwapSlotWithProduction	func(ctx context.Context, resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotWithProductionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse], errResp azfake.ErrorResponder)
+	BeginSwapSlotWithProduction func(ctx context.Context, resourceGroupName string, name string, slotSwapEntity armappservice.CsmSlotEntity, options *armappservice.WebAppsClientBeginSwapSlotWithProductionOptions) (resp azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse], errResp azfake.ErrorResponder)
 
 	// SyncFunctionTriggers is the fake for method WebAppsClient.SyncFunctionTriggers
 	// HTTP status codes to indicate success: http.StatusNoContent
-	SyncFunctionTriggers	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientSyncFunctionTriggersOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionTriggersResponse], errResp azfake.ErrorResponder)
+	SyncFunctionTriggers func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientSyncFunctionTriggersOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionTriggersResponse], errResp azfake.ErrorResponder)
 
 	// SyncFunctionTriggersSlot is the fake for method WebAppsClient.SyncFunctionTriggersSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	SyncFunctionTriggersSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientSyncFunctionTriggersSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionTriggersSlotResponse], errResp azfake.ErrorResponder)
+	SyncFunctionTriggersSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientSyncFunctionTriggersSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionTriggersSlotResponse], errResp azfake.ErrorResponder)
 
 	// SyncFunctions is the fake for method WebAppsClient.SyncFunctions
 	// HTTP status codes to indicate success: http.StatusNoContent
-	SyncFunctions	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientSyncFunctionsOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionsResponse], errResp azfake.ErrorResponder)
+	SyncFunctions func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientSyncFunctionsOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionsResponse], errResp azfake.ErrorResponder)
 
 	// SyncFunctionsSlot is the fake for method WebAppsClient.SyncFunctionsSlot
 	// HTTP status codes to indicate success: http.StatusNoContent
-	SyncFunctionsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientSyncFunctionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionsSlotResponse], errResp azfake.ErrorResponder)
+	SyncFunctionsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientSyncFunctionsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncFunctionsSlotResponse], errResp azfake.ErrorResponder)
 
 	// SyncRepository is the fake for method WebAppsClient.SyncRepository
 	// HTTP status codes to indicate success: http.StatusOK
-	SyncRepository	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientSyncRepositoryOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncRepositoryResponse], errResp azfake.ErrorResponder)
+	SyncRepository func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientSyncRepositoryOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncRepositoryResponse], errResp azfake.ErrorResponder)
 
 	// SyncRepositorySlot is the fake for method WebAppsClient.SyncRepositorySlot
 	// HTTP status codes to indicate success: http.StatusOK
-	SyncRepositorySlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientSyncRepositorySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncRepositorySlotResponse], errResp azfake.ErrorResponder)
+	SyncRepositorySlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.WebAppsClientSyncRepositorySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientSyncRepositorySlotResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method WebAppsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	Update	func(ctx context.Context, resourceGroupName string, name string, siteEnvelope armappservice.SitePatchResource, options *armappservice.WebAppsClientUpdateOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, name string, siteEnvelope armappservice.SitePatchResource, options *armappservice.WebAppsClientUpdateOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateResponse], errResp azfake.ErrorResponder)
 
 	// UpdateApplicationSettings is the fake for method WebAppsClient.UpdateApplicationSettings
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateApplicationSettings	func(ctx context.Context, resourceGroupName string, name string, appSettings armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateApplicationSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateApplicationSettingsResponse], errResp azfake.ErrorResponder)
+	UpdateApplicationSettings func(ctx context.Context, resourceGroupName string, name string, appSettings armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateApplicationSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateApplicationSettingsResponse], errResp azfake.ErrorResponder)
 
 	// UpdateApplicationSettingsSlot is the fake for method WebAppsClient.UpdateApplicationSettingsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateApplicationSettingsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, appSettings armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateApplicationSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateApplicationSettingsSlotResponse], errResp azfake.ErrorResponder)
+	UpdateApplicationSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, appSettings armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateApplicationSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateApplicationSettingsSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateAuthSettings is the fake for method WebAppsClient.UpdateAuthSettings
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateAuthSettings	func(ctx context.Context, resourceGroupName string, name string, siteAuthSettings armappservice.SiteAuthSettings, options *armappservice.WebAppsClientUpdateAuthSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsResponse], errResp azfake.ErrorResponder)
+	UpdateAuthSettings func(ctx context.Context, resourceGroupName string, name string, siteAuthSettings armappservice.SiteAuthSettings, options *armappservice.WebAppsClientUpdateAuthSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsResponse], errResp azfake.ErrorResponder)
 
 	// UpdateAuthSettingsSlot is the fake for method WebAppsClient.UpdateAuthSettingsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateAuthSettingsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettings armappservice.SiteAuthSettings, options *armappservice.WebAppsClientUpdateAuthSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsSlotResponse], errResp azfake.ErrorResponder)
+	UpdateAuthSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettings armappservice.SiteAuthSettings, options *armappservice.WebAppsClientUpdateAuthSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateAuthSettingsV2 is the fake for method WebAppsClient.UpdateAuthSettingsV2
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateAuthSettingsV2	func(ctx context.Context, resourceGroupName string, name string, siteAuthSettingsV2 armappservice.SiteAuthSettingsV2, options *armappservice.WebAppsClientUpdateAuthSettingsV2Options) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsV2Response], errResp azfake.ErrorResponder)
+	UpdateAuthSettingsV2 func(ctx context.Context, resourceGroupName string, name string, siteAuthSettingsV2 armappservice.SiteAuthSettingsV2, options *armappservice.WebAppsClientUpdateAuthSettingsV2Options) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsV2Response], errResp azfake.ErrorResponder)
 
 	// UpdateAuthSettingsV2Slot is the fake for method WebAppsClient.UpdateAuthSettingsV2Slot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateAuthSettingsV2Slot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettingsV2 armappservice.SiteAuthSettingsV2, options *armappservice.WebAppsClientUpdateAuthSettingsV2SlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsV2SlotResponse], errResp azfake.ErrorResponder)
+	UpdateAuthSettingsV2Slot func(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettingsV2 armappservice.SiteAuthSettingsV2, options *armappservice.WebAppsClientUpdateAuthSettingsV2SlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAuthSettingsV2SlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateAzureStorageAccounts is the fake for method WebAppsClient.UpdateAzureStorageAccounts
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateAzureStorageAccounts	func(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts armappservice.AzureStoragePropertyDictionaryResource, options *armappservice.WebAppsClientUpdateAzureStorageAccountsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAzureStorageAccountsResponse], errResp azfake.ErrorResponder)
+	UpdateAzureStorageAccounts func(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts armappservice.AzureStoragePropertyDictionaryResource, options *armappservice.WebAppsClientUpdateAzureStorageAccountsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAzureStorageAccountsResponse], errResp azfake.ErrorResponder)
 
 	// UpdateAzureStorageAccountsSlot is the fake for method WebAppsClient.UpdateAzureStorageAccountsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateAzureStorageAccountsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, azureStorageAccounts armappservice.AzureStoragePropertyDictionaryResource, options *armappservice.WebAppsClientUpdateAzureStorageAccountsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAzureStorageAccountsSlotResponse], errResp azfake.ErrorResponder)
+	UpdateAzureStorageAccountsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, azureStorageAccounts armappservice.AzureStoragePropertyDictionaryResource, options *armappservice.WebAppsClientUpdateAzureStorageAccountsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateAzureStorageAccountsSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateBackupConfiguration is the fake for method WebAppsClient.UpdateBackupConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateBackupConfiguration	func(ctx context.Context, resourceGroupName string, name string, request armappservice.BackupRequest, options *armappservice.WebAppsClientUpdateBackupConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateBackupConfigurationResponse], errResp azfake.ErrorResponder)
+	UpdateBackupConfiguration func(ctx context.Context, resourceGroupName string, name string, request armappservice.BackupRequest, options *armappservice.WebAppsClientUpdateBackupConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateBackupConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// UpdateBackupConfigurationSlot is the fake for method WebAppsClient.UpdateBackupConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateBackupConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientUpdateBackupConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateBackupConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	UpdateBackupConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, request armappservice.BackupRequest, options *armappservice.WebAppsClientUpdateBackupConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateBackupConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateConfiguration is the fake for method WebAppsClient.UpdateConfiguration
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateConfiguration	func(ctx context.Context, resourceGroupName string, name string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientUpdateConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConfigurationResponse], errResp azfake.ErrorResponder)
+	UpdateConfiguration func(ctx context.Context, resourceGroupName string, name string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientUpdateConfigurationOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConfigurationResponse], errResp azfake.ErrorResponder)
 
 	// UpdateConfigurationSlot is the fake for method WebAppsClient.UpdateConfigurationSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateConfigurationSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientUpdateConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConfigurationSlotResponse], errResp azfake.ErrorResponder)
+	UpdateConfigurationSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig armappservice.SiteConfigResource, options *armappservice.WebAppsClientUpdateConfigurationSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConfigurationSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateConnectionStrings is the fake for method WebAppsClient.UpdateConnectionStrings
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateConnectionStrings	func(ctx context.Context, resourceGroupName string, name string, connectionStrings armappservice.ConnectionStringDictionary, options *armappservice.WebAppsClientUpdateConnectionStringsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConnectionStringsResponse], errResp azfake.ErrorResponder)
+	UpdateConnectionStrings func(ctx context.Context, resourceGroupName string, name string, connectionStrings armappservice.ConnectionStringDictionary, options *armappservice.WebAppsClientUpdateConnectionStringsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConnectionStringsResponse], errResp azfake.ErrorResponder)
 
 	// UpdateConnectionStringsSlot is the fake for method WebAppsClient.UpdateConnectionStringsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateConnectionStringsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, connectionStrings armappservice.ConnectionStringDictionary, options *armappservice.WebAppsClientUpdateConnectionStringsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConnectionStringsSlotResponse], errResp azfake.ErrorResponder)
+	UpdateConnectionStringsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, connectionStrings armappservice.ConnectionStringDictionary, options *armappservice.WebAppsClientUpdateConnectionStringsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateConnectionStringsSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateDiagnosticLogsConfig is the fake for method WebAppsClient.UpdateDiagnosticLogsConfig
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateDiagnosticLogsConfig	func(ctx context.Context, resourceGroupName string, name string, siteLogsConfig armappservice.SiteLogsConfig, options *armappservice.WebAppsClientUpdateDiagnosticLogsConfigOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDiagnosticLogsConfigResponse], errResp azfake.ErrorResponder)
+	UpdateDiagnosticLogsConfig func(ctx context.Context, resourceGroupName string, name string, siteLogsConfig armappservice.SiteLogsConfig, options *armappservice.WebAppsClientUpdateDiagnosticLogsConfigOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDiagnosticLogsConfigResponse], errResp azfake.ErrorResponder)
 
 	// UpdateDiagnosticLogsConfigSlot is the fake for method WebAppsClient.UpdateDiagnosticLogsConfigSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateDiagnosticLogsConfigSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteLogsConfig armappservice.SiteLogsConfig, options *armappservice.WebAppsClientUpdateDiagnosticLogsConfigSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDiagnosticLogsConfigSlotResponse], errResp azfake.ErrorResponder)
+	UpdateDiagnosticLogsConfigSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteLogsConfig armappservice.SiteLogsConfig, options *armappservice.WebAppsClientUpdateDiagnosticLogsConfigSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDiagnosticLogsConfigSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateDomainOwnershipIdentifier is the fake for method WebAppsClient.UpdateDomainOwnershipIdentifier
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateDomainOwnershipIdentifier	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientUpdateDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
+	UpdateDomainOwnershipIdentifier func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientUpdateDomainOwnershipIdentifierOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDomainOwnershipIdentifierResponse], errResp azfake.ErrorResponder)
 
 	// UpdateDomainOwnershipIdentifierSlot is the fake for method WebAppsClient.UpdateDomainOwnershipIdentifierSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateDomainOwnershipIdentifierSlot	func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
+	UpdateDomainOwnershipIdentifierSlot func(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier armappservice.Identifier, options *armappservice.WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateFtpAllowed is the fake for method WebAppsClient.UpdateFtpAllowed
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateFtpAllowed	func(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateFtpAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateFtpAllowedResponse], errResp azfake.ErrorResponder)
+	UpdateFtpAllowed func(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateFtpAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateFtpAllowedResponse], errResp azfake.ErrorResponder)
 
 	// UpdateFtpAllowedSlot is the fake for method WebAppsClient.UpdateFtpAllowedSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateFtpAllowedSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateFtpAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateFtpAllowedSlotResponse], errResp azfake.ErrorResponder)
+	UpdateFtpAllowedSlot func(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateFtpAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateFtpAllowedSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateHybridConnection is the fake for method WebAppsClient.UpdateHybridConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateHybridConnection	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientUpdateHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateHybridConnectionResponse], errResp azfake.ErrorResponder)
+	UpdateHybridConnection func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientUpdateHybridConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateHybridConnectionResponse], errResp azfake.ErrorResponder)
 
 	// UpdateHybridConnectionSlot is the fake for method WebAppsClient.UpdateHybridConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateHybridConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientUpdateHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
+	UpdateHybridConnectionSlot func(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope armappservice.HybridConnection, options *armappservice.WebAppsClientUpdateHybridConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateHybridConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateMachineKey is the fake for method WebAppsClient.UpdateMachineKey
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateMachineKey	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientUpdateMachineKeyOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMachineKeyResponse], errResp azfake.ErrorResponder)
+	UpdateMachineKey func(ctx context.Context, resourceGroupName string, name string, options *armappservice.WebAppsClientUpdateMachineKeyOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMachineKeyResponse], errResp azfake.ErrorResponder)
 
 	// UpdateMetadata is the fake for method WebAppsClient.UpdateMetadata
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateMetadata	func(ctx context.Context, resourceGroupName string, name string, metadata armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMetadataResponse], errResp azfake.ErrorResponder)
+	UpdateMetadata func(ctx context.Context, resourceGroupName string, name string, metadata armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateMetadataOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMetadataResponse], errResp azfake.ErrorResponder)
 
 	// UpdateMetadataSlot is the fake for method WebAppsClient.UpdateMetadataSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateMetadataSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, metadata armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateMetadataSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMetadataSlotResponse], errResp azfake.ErrorResponder)
+	UpdateMetadataSlot func(ctx context.Context, resourceGroupName string, name string, slot string, metadata armappservice.StringDictionary, options *armappservice.WebAppsClientUpdateMetadataSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateMetadataSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdatePremierAddOn is the fake for method WebAppsClient.UpdatePremierAddOn
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdatePremierAddOn	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn armappservice.PremierAddOnPatchResource, options *armappservice.WebAppsClientUpdatePremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdatePremierAddOnResponse], errResp azfake.ErrorResponder)
+	UpdatePremierAddOn func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn armappservice.PremierAddOnPatchResource, options *armappservice.WebAppsClientUpdatePremierAddOnOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdatePremierAddOnResponse], errResp azfake.ErrorResponder)
 
 	// UpdatePremierAddOnSlot is the fake for method WebAppsClient.UpdatePremierAddOnSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdatePremierAddOnSlot	func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn armappservice.PremierAddOnPatchResource, options *armappservice.WebAppsClientUpdatePremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdatePremierAddOnSlotResponse], errResp azfake.ErrorResponder)
+	UpdatePremierAddOnSlot func(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn armappservice.PremierAddOnPatchResource, options *armappservice.WebAppsClientUpdatePremierAddOnSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdatePremierAddOnSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateRelayServiceConnection is the fake for method WebAppsClient.UpdateRelayServiceConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateRelayServiceConnection	func(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientUpdateRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
+	UpdateRelayServiceConnection func(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientUpdateRelayServiceConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateRelayServiceConnectionResponse], errResp azfake.ErrorResponder)
 
 	// UpdateRelayServiceConnectionSlot is the fake for method WebAppsClient.UpdateRelayServiceConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateRelayServiceConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientUpdateRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
+	UpdateRelayServiceConnectionSlot func(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope armappservice.RelayServiceConnectionEntity, options *armappservice.WebAppsClientUpdateRelayServiceConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateRelayServiceConnectionSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateScmAllowed is the fake for method WebAppsClient.UpdateScmAllowed
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateScmAllowed	func(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateScmAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateScmAllowedResponse], errResp azfake.ErrorResponder)
+	UpdateScmAllowed func(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateScmAllowedOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateScmAllowedResponse], errResp azfake.ErrorResponder)
 
 	// UpdateScmAllowedSlot is the fake for method WebAppsClient.UpdateScmAllowedSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateScmAllowedSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateScmAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateScmAllowedSlotResponse], errResp azfake.ErrorResponder)
+	UpdateScmAllowedSlot func(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity armappservice.CsmPublishingCredentialsPoliciesEntity, options *armappservice.WebAppsClientUpdateScmAllowedSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateScmAllowedSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSitePushSettings is the fake for method WebAppsClient.UpdateSitePushSettings
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSitePushSettings	func(ctx context.Context, resourceGroupName string, name string, pushSettings armappservice.PushSettings, options *armappservice.WebAppsClientUpdateSitePushSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSitePushSettingsResponse], errResp azfake.ErrorResponder)
+	UpdateSitePushSettings func(ctx context.Context, resourceGroupName string, name string, pushSettings armappservice.PushSettings, options *armappservice.WebAppsClientUpdateSitePushSettingsOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSitePushSettingsResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSitePushSettingsSlot is the fake for method WebAppsClient.UpdateSitePushSettingsSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSitePushSettingsSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, pushSettings armappservice.PushSettings, options *armappservice.WebAppsClientUpdateSitePushSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSitePushSettingsSlotResponse], errResp azfake.ErrorResponder)
+	UpdateSitePushSettingsSlot func(ctx context.Context, resourceGroupName string, name string, slot string, pushSettings armappservice.PushSettings, options *armappservice.WebAppsClientUpdateSitePushSettingsSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSitePushSettingsSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSlot is the fake for method WebAppsClient.UpdateSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	UpdateSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope armappservice.SitePatchResource, options *armappservice.WebAppsClientUpdateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSlotResponse], errResp azfake.ErrorResponder)
+	UpdateSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope armappservice.SitePatchResource, options *armappservice.WebAppsClientUpdateSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSlotConfigurationNames is the fake for method WebAppsClient.UpdateSlotConfigurationNames
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSlotConfigurationNames	func(ctx context.Context, resourceGroupName string, name string, slotConfigNames armappservice.SlotConfigNamesResource, options *armappservice.WebAppsClientUpdateSlotConfigurationNamesOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSlotConfigurationNamesResponse], errResp azfake.ErrorResponder)
+	UpdateSlotConfigurationNames func(ctx context.Context, resourceGroupName string, name string, slotConfigNames armappservice.SlotConfigNamesResource, options *armappservice.WebAppsClientUpdateSlotConfigurationNamesOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSlotConfigurationNamesResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSourceControl is the fake for method WebAppsClient.UpdateSourceControl
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	UpdateSourceControl	func(ctx context.Context, resourceGroupName string, name string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientUpdateSourceControlOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSourceControlResponse], errResp azfake.ErrorResponder)
+	UpdateSourceControl func(ctx context.Context, resourceGroupName string, name string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientUpdateSourceControlOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSourceControlResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSourceControlSlot is the fake for method WebAppsClient.UpdateSourceControlSlot
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
-	UpdateSourceControlSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientUpdateSourceControlSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSourceControlSlotResponse], errResp azfake.ErrorResponder)
+	UpdateSourceControlSlot func(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl armappservice.SiteSourceControl, options *armappservice.WebAppsClientUpdateSourceControlSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSourceControlSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSwiftVirtualNetworkConnectionWithCheck is the fake for method WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheck
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSwiftVirtualNetworkConnectionWithCheck	func(ctx context.Context, resourceGroupName string, name string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse], errResp azfake.ErrorResponder)
+	UpdateSwiftVirtualNetworkConnectionWithCheck func(ctx context.Context, resourceGroupName string, name string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse], errResp azfake.ErrorResponder)
 
 	// UpdateSwiftVirtualNetworkConnectionWithCheckSlot is the fake for method WebAppsClient.UpdateSwiftVirtualNetworkConnectionWithCheckSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateSwiftVirtualNetworkConnectionWithCheckSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse], errResp azfake.ErrorResponder)
+	UpdateSwiftVirtualNetworkConnectionWithCheckSlot func(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope armappservice.SwiftVirtualNetwork, options *armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateVnetConnection is the fake for method WebAppsClient.UpdateVnetConnection
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateVnetConnection	func(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientUpdateVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionResponse], errResp azfake.ErrorResponder)
+	UpdateVnetConnection func(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientUpdateVnetConnectionOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionResponse], errResp azfake.ErrorResponder)
 
 	// UpdateVnetConnectionGateway is the fake for method WebAppsClient.UpdateVnetConnectionGateway
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateVnetConnectionGateway	func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientUpdateVnetConnectionGatewayOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionGatewayResponse], errResp azfake.ErrorResponder)
+	UpdateVnetConnectionGateway func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientUpdateVnetConnectionGatewayOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionGatewayResponse], errResp azfake.ErrorResponder)
 
 	// UpdateVnetConnectionGatewaySlot is the fake for method WebAppsClient.UpdateVnetConnectionGatewaySlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateVnetConnectionGatewaySlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientUpdateVnetConnectionGatewaySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionGatewaySlotResponse], errResp azfake.ErrorResponder)
+	UpdateVnetConnectionGatewaySlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope armappservice.VnetGateway, options *armappservice.WebAppsClientUpdateVnetConnectionGatewaySlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionGatewaySlotResponse], errResp azfake.ErrorResponder)
 
 	// UpdateVnetConnectionSlot is the fake for method WebAppsClient.UpdateVnetConnectionSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	UpdateVnetConnectionSlot	func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientUpdateVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
+	UpdateVnetConnectionSlot func(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope armappservice.VnetInfoResource, options *armappservice.WebAppsClientUpdateVnetConnectionSlotOptions) (resp azfake.Responder[armappservice.WebAppsClientUpdateVnetConnectionSlotResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWebAppsServerTransport creates a new instance of WebAppsServerTransport with the provided implementation.
@@ -1692,224 +1692,224 @@ type WebAppsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWebAppsServerTransport(srv *WebAppsServer) *WebAppsServerTransport {
 	return &WebAppsServerTransport{
-		srv:	srv,
-		beginApproveOrRejectPrivateEndpointConnection:		newTracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse]](),
-		beginApproveOrRejectPrivateEndpointConnectionSlot:	newTracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse]](),
-		beginCreateFunction:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateFunctionResponse]](),
-		beginCreateInstanceFunctionSlot:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceFunctionSlotResponse]](),
-		beginCreateInstanceMSDeployOperation:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationResponse]](),
-		beginCreateInstanceMSDeployOperationSlot:		newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationSlotResponse]](),
-		beginCreateMSDeployOperation:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationResponse]](),
-		beginCreateMSDeployOperationSlot:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse]](),
-		beginCreateOrUpdate:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse]](),
-		beginCreateOrUpdateSlot:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse]](),
-		beginCreateOrUpdateSourceControl:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse]](),
-		beginCreateOrUpdateSourceControlSlot:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse]](),
-		beginDeletePrivateEndpointConnection:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse]](),
-		beginDeletePrivateEndpointConnectionSlot:		newTracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse]](),
-		newGetAppSettingsKeyVaultReferencesPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse]](),
-		newGetAppSettingsKeyVaultReferencesSlotPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]](),
-		newGetPrivateEndpointConnectionListPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse]](),
-		newGetPrivateEndpointConnectionListSlotPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse]](),
-		beginGetProductionSiteDeploymentStatus:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]](),
-		newGetSiteConnectionStringKeyVaultReferencesPager:	newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]](),
-		newGetSiteConnectionStringKeyVaultReferencesSlotPager:	newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]](),
-		beginGetSlotSiteDeploymentStatusSlot:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]](),
-		beginInstallSiteExtension:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]](),
-		beginInstallSiteExtensionSlot:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]](),
-		newListPager:						newTracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]](),
-		newListBackupsPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse]](),
-		newListBackupsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse]](),
-		newListBasicPublishingCredentialsPoliciesPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse]](),
-		newListBasicPublishingCredentialsPoliciesSlotPager:	newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse]](),
-		newListByResourceGroupPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListByResourceGroupResponse]](),
-		newListConfigurationSnapshotInfoPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoResponse]](),
-		newListConfigurationSnapshotInfoSlotPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoSlotResponse]](),
-		newListConfigurationsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsResponse]](),
-		newListConfigurationsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse]](),
-		newListContinuousWebJobsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse]](),
-		newListContinuousWebJobsSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse]](),
-		newListDeploymentsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsResponse]](),
-		newListDeploymentsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsSlotResponse]](),
-		newListDomainOwnershipIdentifiersPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersResponse]](),
-		newListDomainOwnershipIdentifiersSlotPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse]](),
-		newListFunctionsPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse]](),
-		newListHostNameBindingsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsResponse]](),
-		newListHostNameBindingsSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse]](),
-		newListInstanceFunctionsSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceFunctionsSlotResponse]](),
-		newListInstanceIdentifiersPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersResponse]](),
-		newListInstanceIdentifiersSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersSlotResponse]](),
-		newListInstanceProcessModulesPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesResponse]](),
-		newListInstanceProcessModulesSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesSlotResponse]](),
-		newListInstanceProcessThreadsPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsResponse]](),
-		newListInstanceProcessThreadsSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsSlotResponse]](),
-		newListInstanceProcessesPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse]](),
-		newListInstanceProcessesSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse]](),
-		newListInstanceWorkflowsSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse]](),
-		newListPerfMonCountersPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse]](),
-		newListPerfMonCountersSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse]](),
-		newListProcessModulesPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse]](),
-		newListProcessModulesSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesSlotResponse]](),
-		newListProcessThreadsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsResponse]](),
-		newListProcessThreadsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsSlotResponse]](),
-		newListProcessesPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesResponse]](),
-		newListProcessesSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesSlotResponse]](),
-		newListProductionSiteDeploymentStatusesPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse]](),
-		newListPublicCertificatesPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse]](),
-		newListPublicCertificatesSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse]](),
-		beginListPublishingCredentials:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]](),
-		beginListPublishingCredentialsSlot:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]](),
-		newListSiteBackupsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse]](),
-		newListSiteBackupsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse]](),
-		newListSiteContainersPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse]](),
-		newListSiteContainersSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersSlotResponse]](),
-		newListSiteExtensionsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsResponse]](),
-		newListSiteExtensionsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse]](),
-		newListSlotDifferencesFromProductionPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse]](),
-		newListSlotDifferencesSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse]](),
-		newListSlotSiteDeploymentStatusesSlotPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]](),
-		newListSlotsPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse]](),
-		newListSnapshotsPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]](),
-		newListSnapshotsFromDRSecondaryPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse]](),
-		newListSnapshotsFromDRSecondarySlotPager:		newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse]](),
-		newListSnapshotsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse]](),
-		newListTriggeredWebJobHistoryPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse]](),
-		newListTriggeredWebJobHistorySlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse]](),
-		newListTriggeredWebJobsPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsResponse]](),
-		newListTriggeredWebJobsSlotPager:			newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsSlotResponse]](),
-		newListUsagesPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesResponse]](),
-		newListUsagesSlotPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse]](),
-		newListWebJobsPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse]](),
-		newListWebJobsSlotPager:				newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse]](),
-		newListWorkflowsPager:					newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse]](),
-		beginMigrateMySQL:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]](),
-		beginMigrateStorage:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]](),
-		beginRestore:						newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]](),
-		beginRestoreFromBackupBlob:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]](),
-		beginRestoreFromBackupBlobSlot:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]](),
-		beginRestoreFromDeletedApp:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]](),
-		beginRestoreFromDeletedAppSlot:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]](),
-		beginRestoreSlot:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]](),
-		beginRestoreSnapshot:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]](),
-		beginRestoreSnapshotSlot:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]](),
-		beginStartNetworkTrace:					newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]](),
-		beginStartNetworkTraceSlot:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]](),
-		beginStartWebSiteNetworkTraceOperation:			newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]](),
-		beginStartWebSiteNetworkTraceOperationSlot:		newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]](),
-		beginSwapSlot:						newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]](),
-		beginSwapSlotWithProduction:				newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]](),
+		srv: srv,
+		beginApproveOrRejectPrivateEndpointConnection:         newTracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse]](),
+		beginApproveOrRejectPrivateEndpointConnectionSlot:     newTracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse]](),
+		beginCreateFunction:                                   newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateFunctionResponse]](),
+		beginCreateInstanceFunctionSlot:                       newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceFunctionSlotResponse]](),
+		beginCreateInstanceMSDeployOperation:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationResponse]](),
+		beginCreateInstanceMSDeployOperationSlot:              newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationSlotResponse]](),
+		beginCreateMSDeployOperation:                          newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationResponse]](),
+		beginCreateMSDeployOperationSlot:                      newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse]](),
+		beginCreateOrUpdate:                                   newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse]](),
+		beginCreateOrUpdateSlot:                               newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse]](),
+		beginCreateOrUpdateSourceControl:                      newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse]](),
+		beginCreateOrUpdateSourceControlSlot:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse]](),
+		beginDeletePrivateEndpointConnection:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse]](),
+		beginDeletePrivateEndpointConnectionSlot:              newTracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse]](),
+		newGetAppSettingsKeyVaultReferencesPager:              newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse]](),
+		newGetAppSettingsKeyVaultReferencesSlotPager:          newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]](),
+		newGetPrivateEndpointConnectionListPager:              newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse]](),
+		newGetPrivateEndpointConnectionListSlotPager:          newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse]](),
+		beginGetProductionSiteDeploymentStatus:                newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]](),
+		newGetSiteConnectionStringKeyVaultReferencesPager:     newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]](),
+		newGetSiteConnectionStringKeyVaultReferencesSlotPager: newTracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]](),
+		beginGetSlotSiteDeploymentStatusSlot:                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]](),
+		beginInstallSiteExtension:                             newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]](),
+		beginInstallSiteExtensionSlot:                         newTracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]](),
+		newListPager:                                          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]](),
+		newListBackupsPager:                                   newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse]](),
+		newListBackupsSlotPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse]](),
+		newListBasicPublishingCredentialsPoliciesPager:        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse]](),
+		newListBasicPublishingCredentialsPoliciesSlotPager:    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse]](),
+		newListByResourceGroupPager:                           newTracker[azfake.PagerResponder[armappservice.WebAppsClientListByResourceGroupResponse]](),
+		newListConfigurationSnapshotInfoPager:                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoResponse]](),
+		newListConfigurationSnapshotInfoSlotPager:             newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoSlotResponse]](),
+		newListConfigurationsPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsResponse]](),
+		newListConfigurationsSlotPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse]](),
+		newListContinuousWebJobsPager:                         newTracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse]](),
+		newListContinuousWebJobsSlotPager:                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse]](),
+		newListDeploymentsPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsResponse]](),
+		newListDeploymentsSlotPager:                           newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsSlotResponse]](),
+		newListDomainOwnershipIdentifiersPager:                newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersResponse]](),
+		newListDomainOwnershipIdentifiersSlotPager:            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse]](),
+		newListFunctionsPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse]](),
+		newListHostNameBindingsPager:                          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsResponse]](),
+		newListHostNameBindingsSlotPager:                      newTracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse]](),
+		newListInstanceFunctionsSlotPager:                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceFunctionsSlotResponse]](),
+		newListInstanceIdentifiersPager:                       newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersResponse]](),
+		newListInstanceIdentifiersSlotPager:                   newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersSlotResponse]](),
+		newListInstanceProcessModulesPager:                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesResponse]](),
+		newListInstanceProcessModulesSlotPager:                newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesSlotResponse]](),
+		newListInstanceProcessThreadsPager:                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsResponse]](),
+		newListInstanceProcessThreadsSlotPager:                newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsSlotResponse]](),
+		newListInstanceProcessesPager:                         newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse]](),
+		newListInstanceProcessesSlotPager:                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse]](),
+		newListInstanceWorkflowsSlotPager:                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse]](),
+		newListPerfMonCountersPager:                           newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse]](),
+		newListPerfMonCountersSlotPager:                       newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse]](),
+		newListProcessModulesPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse]](),
+		newListProcessModulesSlotPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesSlotResponse]](),
+		newListProcessThreadsPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsResponse]](),
+		newListProcessThreadsSlotPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsSlotResponse]](),
+		newListProcessesPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesResponse]](),
+		newListProcessesSlotPager:                             newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesSlotResponse]](),
+		newListProductionSiteDeploymentStatusesPager:          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse]](),
+		newListPublicCertificatesPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse]](),
+		newListPublicCertificatesSlotPager:                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse]](),
+		beginListPublishingCredentials:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]](),
+		beginListPublishingCredentialsSlot:                    newTracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]](),
+		newListSiteBackupsPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse]](),
+		newListSiteBackupsSlotPager:                           newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse]](),
+		newListSiteContainersPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse]](),
+		newListSiteContainersSlotPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersSlotResponse]](),
+		newListSiteExtensionsPager:                            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsResponse]](),
+		newListSiteExtensionsSlotPager:                        newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse]](),
+		newListSlotDifferencesFromProductionPager:             newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse]](),
+		newListSlotDifferencesSlotPager:                       newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse]](),
+		newListSlotSiteDeploymentStatusesSlotPager:            newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]](),
+		newListSlotsPager:                                     newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse]](),
+		newListSnapshotsPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]](),
+		newListSnapshotsFromDRSecondaryPager:                  newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse]](),
+		newListSnapshotsFromDRSecondarySlotPager:              newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse]](),
+		newListSnapshotsSlotPager:                             newTracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse]](),
+		newListTriggeredWebJobHistoryPager:                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse]](),
+		newListTriggeredWebJobHistorySlotPager:                newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse]](),
+		newListTriggeredWebJobsPager:                          newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsResponse]](),
+		newListTriggeredWebJobsSlotPager:                      newTracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsSlotResponse]](),
+		newListUsagesPager:                                    newTracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesResponse]](),
+		newListUsagesSlotPager:                                newTracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse]](),
+		newListWebJobsPager:                                   newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse]](),
+		newListWebJobsSlotPager:                               newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse]](),
+		newListWorkflowsPager:                                 newTracker[azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse]](),
+		beginMigrateMySQL:                                     newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]](),
+		beginMigrateStorage:                                   newTracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]](),
+		beginRestore:                                          newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]](),
+		beginRestoreFromBackupBlob:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]](),
+		beginRestoreFromBackupBlobSlot:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]](),
+		beginRestoreFromDeletedApp:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]](),
+		beginRestoreFromDeletedAppSlot:                        newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]](),
+		beginRestoreSlot:                                      newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]](),
+		beginRestoreSnapshot:                                  newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]](),
+		beginRestoreSnapshotSlot:                              newTracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]](),
+		beginStartNetworkTrace:                                newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]](),
+		beginStartNetworkTraceSlot:                            newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]](),
+		beginStartWebSiteNetworkTraceOperation:                newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]](),
+		beginStartWebSiteNetworkTraceOperationSlot:            newTracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]](),
+		beginSwapSlot:                                         newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]](),
+		beginSwapSlotWithProduction:                           newTracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]](),
 	}
 }
 
 // WebAppsServerTransport connects instances of armappservice.WebAppsClient to instances of WebAppsServer.
 // Don't use this type directly, use NewWebAppsServerTransport instead.
 type WebAppsServerTransport struct {
-	srv							*WebAppsServer
-	beginApproveOrRejectPrivateEndpointConnection		*tracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse]]
-	beginApproveOrRejectPrivateEndpointConnectionSlot	*tracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse]]
-	beginCreateFunction					*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateFunctionResponse]]
-	beginCreateInstanceFunctionSlot				*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceFunctionSlotResponse]]
-	beginCreateInstanceMSDeployOperation			*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationResponse]]
-	beginCreateInstanceMSDeployOperationSlot		*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationSlotResponse]]
-	beginCreateMSDeployOperation				*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationResponse]]
-	beginCreateMSDeployOperationSlot			*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse]]
-	beginCreateOrUpdate					*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse]]
-	beginCreateOrUpdateSlot					*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse]]
-	beginCreateOrUpdateSourceControl			*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse]]
-	beginCreateOrUpdateSourceControlSlot			*tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse]]
-	beginDeletePrivateEndpointConnection			*tracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse]]
-	beginDeletePrivateEndpointConnectionSlot		*tracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse]]
-	newGetAppSettingsKeyVaultReferencesPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse]]
-	newGetAppSettingsKeyVaultReferencesSlotPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]]
-	newGetPrivateEndpointConnectionListPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse]]
-	newGetPrivateEndpointConnectionListSlotPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse]]
-	beginGetProductionSiteDeploymentStatus			*tracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]]
-	newGetSiteConnectionStringKeyVaultReferencesPager	*tracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]]
-	newGetSiteConnectionStringKeyVaultReferencesSlotPager	*tracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]]
-	beginGetSlotSiteDeploymentStatusSlot			*tracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]]
-	beginInstallSiteExtension				*tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]]
-	beginInstallSiteExtensionSlot				*tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]]
-	newListPager						*tracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]]
-	newListBackupsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse]]
-	newListBackupsSlotPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse]]
-	newListBasicPublishingCredentialsPoliciesPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse]]
-	newListBasicPublishingCredentialsPoliciesSlotPager	*tracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse]]
-	newListByResourceGroupPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListByResourceGroupResponse]]
-	newListConfigurationSnapshotInfoPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoResponse]]
-	newListConfigurationSnapshotInfoSlotPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoSlotResponse]]
-	newListConfigurationsPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsResponse]]
-	newListConfigurationsSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse]]
-	newListContinuousWebJobsPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse]]
-	newListContinuousWebJobsSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse]]
-	newListDeploymentsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsResponse]]
-	newListDeploymentsSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsSlotResponse]]
-	newListDomainOwnershipIdentifiersPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersResponse]]
-	newListDomainOwnershipIdentifiersSlotPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse]]
-	newListFunctionsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse]]
-	newListHostNameBindingsPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsResponse]]
-	newListHostNameBindingsSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse]]
-	newListInstanceFunctionsSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceFunctionsSlotResponse]]
-	newListInstanceIdentifiersPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersResponse]]
-	newListInstanceIdentifiersSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersSlotResponse]]
-	newListInstanceProcessModulesPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesResponse]]
-	newListInstanceProcessModulesSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesSlotResponse]]
-	newListInstanceProcessThreadsPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsResponse]]
-	newListInstanceProcessThreadsSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsSlotResponse]]
-	newListInstanceProcessesPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse]]
-	newListInstanceProcessesSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse]]
-	newListInstanceWorkflowsSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse]]
-	newListPerfMonCountersPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse]]
-	newListPerfMonCountersSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse]]
-	newListProcessModulesPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse]]
-	newListProcessModulesSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesSlotResponse]]
-	newListProcessThreadsPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsResponse]]
-	newListProcessThreadsSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsSlotResponse]]
-	newListProcessesPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesResponse]]
-	newListProcessesSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesSlotResponse]]
-	newListProductionSiteDeploymentStatusesPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse]]
-	newListPublicCertificatesPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse]]
-	newListPublicCertificatesSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse]]
-	beginListPublishingCredentials				*tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]]
-	beginListPublishingCredentialsSlot			*tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]]
-	newListSiteBackupsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse]]
-	newListSiteBackupsSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse]]
-	newListSiteContainersPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse]]
-	newListSiteContainersSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersSlotResponse]]
-	newListSiteExtensionsPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsResponse]]
-	newListSiteExtensionsSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse]]
-	newListSlotDifferencesFromProductionPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse]]
-	newListSlotDifferencesSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse]]
-	newListSlotSiteDeploymentStatusesSlotPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]]
-	newListSlotsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse]]
-	newListSnapshotsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]]
-	newListSnapshotsFromDRSecondaryPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse]]
-	newListSnapshotsFromDRSecondarySlotPager		*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse]]
-	newListSnapshotsSlotPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse]]
-	newListTriggeredWebJobHistoryPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse]]
-	newListTriggeredWebJobHistorySlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse]]
-	newListTriggeredWebJobsPager				*tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsResponse]]
-	newListTriggeredWebJobsSlotPager			*tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsSlotResponse]]
-	newListUsagesPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesResponse]]
-	newListUsagesSlotPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse]]
-	newListWebJobsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse]]
-	newListWebJobsSlotPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse]]
-	newListWorkflowsPager					*tracker[azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse]]
-	beginMigrateMySQL					*tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]]
-	beginMigrateStorage					*tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]]
-	beginRestore						*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]]
-	beginRestoreFromBackupBlob				*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]]
-	beginRestoreFromBackupBlobSlot				*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]]
-	beginRestoreFromDeletedApp				*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]]
-	beginRestoreFromDeletedAppSlot				*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]]
-	beginRestoreSlot					*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]]
-	beginRestoreSnapshot					*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]]
-	beginRestoreSnapshotSlot				*tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]]
-	beginStartNetworkTrace					*tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]]
-	beginStartNetworkTraceSlot				*tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]]
-	beginStartWebSiteNetworkTraceOperation			*tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]]
-	beginStartWebSiteNetworkTraceOperationSlot		*tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]]
-	beginSwapSlot						*tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]]
-	beginSwapSlotWithProduction				*tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]]
+	srv                                                   *WebAppsServer
+	beginApproveOrRejectPrivateEndpointConnection         *tracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionResponse]]
+	beginApproveOrRejectPrivateEndpointConnectionSlot     *tracker[azfake.PollerResponder[armappservice.WebAppsClientApproveOrRejectPrivateEndpointConnectionSlotResponse]]
+	beginCreateFunction                                   *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateFunctionResponse]]
+	beginCreateInstanceFunctionSlot                       *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceFunctionSlotResponse]]
+	beginCreateInstanceMSDeployOperation                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationResponse]]
+	beginCreateInstanceMSDeployOperationSlot              *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateInstanceMSDeployOperationSlotResponse]]
+	beginCreateMSDeployOperation                          *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationResponse]]
+	beginCreateMSDeployOperationSlot                      *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateMSDeployOperationSlotResponse]]
+	beginCreateOrUpdate                                   *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateResponse]]
+	beginCreateOrUpdateSlot                               *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSlotResponse]]
+	beginCreateOrUpdateSourceControl                      *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlResponse]]
+	beginCreateOrUpdateSourceControlSlot                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientCreateOrUpdateSourceControlSlotResponse]]
+	beginDeletePrivateEndpointConnection                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionResponse]]
+	beginDeletePrivateEndpointConnectionSlot              *tracker[azfake.PollerResponder[armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse]]
+	newGetAppSettingsKeyVaultReferencesPager              *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse]]
+	newGetAppSettingsKeyVaultReferencesSlotPager          *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse]]
+	newGetPrivateEndpointConnectionListPager              *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListResponse]]
+	newGetPrivateEndpointConnectionListSlotPager          *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetPrivateEndpointConnectionListSlotResponse]]
+	beginGetProductionSiteDeploymentStatus                *tracker[azfake.PollerResponder[armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse]]
+	newGetSiteConnectionStringKeyVaultReferencesPager     *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse]]
+	newGetSiteConnectionStringKeyVaultReferencesSlotPager *tracker[azfake.PagerResponder[armappservice.WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse]]
+	beginGetSlotSiteDeploymentStatusSlot                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse]]
+	beginInstallSiteExtension                             *tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionResponse]]
+	beginInstallSiteExtensionSlot                         *tracker[azfake.PollerResponder[armappservice.WebAppsClientInstallSiteExtensionSlotResponse]]
+	newListPager                                          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListResponse]]
+	newListBackupsPager                                   *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsResponse]]
+	newListBackupsSlotPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBackupsSlotResponse]]
+	newListBasicPublishingCredentialsPoliciesPager        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesResponse]]
+	newListBasicPublishingCredentialsPoliciesSlotPager    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse]]
+	newListByResourceGroupPager                           *tracker[azfake.PagerResponder[armappservice.WebAppsClientListByResourceGroupResponse]]
+	newListConfigurationSnapshotInfoPager                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoResponse]]
+	newListConfigurationSnapshotInfoSlotPager             *tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationSnapshotInfoSlotResponse]]
+	newListConfigurationsPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsResponse]]
+	newListConfigurationsSlotPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListConfigurationsSlotResponse]]
+	newListContinuousWebJobsPager                         *tracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsResponse]]
+	newListContinuousWebJobsSlotPager                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListContinuousWebJobsSlotResponse]]
+	newListDeploymentsPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsResponse]]
+	newListDeploymentsSlotPager                           *tracker[azfake.PagerResponder[armappservice.WebAppsClientListDeploymentsSlotResponse]]
+	newListDomainOwnershipIdentifiersPager                *tracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersResponse]]
+	newListDomainOwnershipIdentifiersSlotPager            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListDomainOwnershipIdentifiersSlotResponse]]
+	newListFunctionsPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListFunctionsResponse]]
+	newListHostNameBindingsPager                          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsResponse]]
+	newListHostNameBindingsSlotPager                      *tracker[azfake.PagerResponder[armappservice.WebAppsClientListHostNameBindingsSlotResponse]]
+	newListInstanceFunctionsSlotPager                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceFunctionsSlotResponse]]
+	newListInstanceIdentifiersPager                       *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersResponse]]
+	newListInstanceIdentifiersSlotPager                   *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceIdentifiersSlotResponse]]
+	newListInstanceProcessModulesPager                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesResponse]]
+	newListInstanceProcessModulesSlotPager                *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessModulesSlotResponse]]
+	newListInstanceProcessThreadsPager                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsResponse]]
+	newListInstanceProcessThreadsSlotPager                *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessThreadsSlotResponse]]
+	newListInstanceProcessesPager                         *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesResponse]]
+	newListInstanceProcessesSlotPager                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceProcessesSlotResponse]]
+	newListInstanceWorkflowsSlotPager                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListInstanceWorkflowsSlotResponse]]
+	newListPerfMonCountersPager                           *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersResponse]]
+	newListPerfMonCountersSlotPager                       *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPerfMonCountersSlotResponse]]
+	newListProcessModulesPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesResponse]]
+	newListProcessModulesSlotPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessModulesSlotResponse]]
+	newListProcessThreadsPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsResponse]]
+	newListProcessThreadsSlotPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessThreadsSlotResponse]]
+	newListProcessesPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesResponse]]
+	newListProcessesSlotPager                             *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProcessesSlotResponse]]
+	newListProductionSiteDeploymentStatusesPager          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListProductionSiteDeploymentStatusesResponse]]
+	newListPublicCertificatesPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesResponse]]
+	newListPublicCertificatesSlotPager                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListPublicCertificatesSlotResponse]]
+	beginListPublishingCredentials                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsResponse]]
+	beginListPublishingCredentialsSlot                    *tracker[azfake.PollerResponder[armappservice.WebAppsClientListPublishingCredentialsSlotResponse]]
+	newListSiteBackupsPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsResponse]]
+	newListSiteBackupsSlotPager                           *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteBackupsSlotResponse]]
+	newListSiteContainersPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersResponse]]
+	newListSiteContainersSlotPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteContainersSlotResponse]]
+	newListSiteExtensionsPager                            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsResponse]]
+	newListSiteExtensionsSlotPager                        *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSiteExtensionsSlotResponse]]
+	newListSlotDifferencesFromProductionPager             *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesFromProductionResponse]]
+	newListSlotDifferencesSlotPager                       *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotDifferencesSlotResponse]]
+	newListSlotSiteDeploymentStatusesSlotPager            *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotSiteDeploymentStatusesSlotResponse]]
+	newListSlotsPager                                     *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSlotsResponse]]
+	newListSnapshotsPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsResponse]]
+	newListSnapshotsFromDRSecondaryPager                  *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondaryResponse]]
+	newListSnapshotsFromDRSecondarySlotPager              *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsFromDRSecondarySlotResponse]]
+	newListSnapshotsSlotPager                             *tracker[azfake.PagerResponder[armappservice.WebAppsClientListSnapshotsSlotResponse]]
+	newListTriggeredWebJobHistoryPager                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistoryResponse]]
+	newListTriggeredWebJobHistorySlotPager                *tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobHistorySlotResponse]]
+	newListTriggeredWebJobsPager                          *tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsResponse]]
+	newListTriggeredWebJobsSlotPager                      *tracker[azfake.PagerResponder[armappservice.WebAppsClientListTriggeredWebJobsSlotResponse]]
+	newListUsagesPager                                    *tracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesResponse]]
+	newListUsagesSlotPager                                *tracker[azfake.PagerResponder[armappservice.WebAppsClientListUsagesSlotResponse]]
+	newListWebJobsPager                                   *tracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsResponse]]
+	newListWebJobsSlotPager                               *tracker[azfake.PagerResponder[armappservice.WebAppsClientListWebJobsSlotResponse]]
+	newListWorkflowsPager                                 *tracker[azfake.PagerResponder[armappservice.WebAppsClientListWorkflowsResponse]]
+	beginMigrateMySQL                                     *tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateMySQLResponse]]
+	beginMigrateStorage                                   *tracker[azfake.PollerResponder[armappservice.WebAppsClientMigrateStorageResponse]]
+	beginRestore                                          *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreResponse]]
+	beginRestoreFromBackupBlob                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobResponse]]
+	beginRestoreFromBackupBlobSlot                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromBackupBlobSlotResponse]]
+	beginRestoreFromDeletedApp                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppResponse]]
+	beginRestoreFromDeletedAppSlot                        *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreFromDeletedAppSlotResponse]]
+	beginRestoreSlot                                      *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSlotResponse]]
+	beginRestoreSnapshot                                  *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotResponse]]
+	beginRestoreSnapshotSlot                              *tracker[azfake.PollerResponder[armappservice.WebAppsClientRestoreSnapshotSlotResponse]]
+	beginStartNetworkTrace                                *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceResponse]]
+	beginStartNetworkTraceSlot                            *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartNetworkTraceSlotResponse]]
+	beginStartWebSiteNetworkTraceOperation                *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse]]
+	beginStartWebSiteNetworkTraceOperationSlot            *tracker[azfake.PollerResponder[armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse]]
+	beginSwapSlot                                         *tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotResponse]]
+	beginSwapSlotWithProduction                           *tracker[azfake.PollerResponder[armappservice.WebAppsClientSwapSlotWithProductionResponse]]
 }
 
 // Do implements the policy.Transporter interface for WebAppsServerTransport.
@@ -4951,8 +4951,8 @@ func (w *WebAppsServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	var options *armappservice.WebAppsClientDeleteOptions
 	if deleteMetricsParam != nil || deleteEmptyServerFarmParam != nil {
 		options = &armappservice.WebAppsClientDeleteOptions{
-			DeleteMetrics:		deleteMetricsParam,
-			DeleteEmptyServerFarm:	deleteEmptyServerFarmParam,
+			DeleteMetrics:         deleteMetricsParam,
+			DeleteEmptyServerFarm: deleteEmptyServerFarmParam,
 		}
 	}
 	respr, errRespr := w.srv.Delete(req.Context(), resourceGroupNameParam, nameParam, options)
@@ -6462,8 +6462,8 @@ func (w *WebAppsServerTransport) dispatchDeleteSlot(req *http.Request) (*http.Re
 	var options *armappservice.WebAppsClientDeleteSlotOptions
 	if deleteMetricsParam != nil || deleteEmptyServerFarmParam != nil {
 		options = &armappservice.WebAppsClientDeleteSlotOptions{
-			DeleteMetrics:		deleteMetricsParam,
-			DeleteEmptyServerFarm:	deleteEmptyServerFarmParam,
+			DeleteMetrics:         deleteMetricsParam,
+			DeleteEmptyServerFarm: deleteEmptyServerFarmParam,
 		}
 	}
 	respr, errRespr := w.srv.DeleteSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
@@ -7769,8 +7769,8 @@ func (w *WebAppsServerTransport) dispatchGetContainerLogsZip(req *http.Request) 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -7812,8 +7812,8 @@ func (w *WebAppsServerTransport) dispatchGetContainerLogsZipSlot(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -8820,8 +8820,8 @@ func (w *WebAppsServerTransport) dispatchGetInstanceProcessDump(req *http.Reques
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -8871,8 +8871,8 @@ func (w *WebAppsServerTransport) dispatchGetInstanceProcessDumpSlot(req *http.Re
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -10068,8 +10068,8 @@ func (w *WebAppsServerTransport) dispatchGetProcessDump(req *http.Request) (*htt
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -10115,8 +10115,8 @@ func (w *WebAppsServerTransport) dispatchGetProcessDumpSlot(req *http.Request) (
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -11580,8 +11580,8 @@ func (w *WebAppsServerTransport) dispatchGetWebSiteContainerLogs(req *http.Reque
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -11623,8 +11623,8 @@ func (w *WebAppsServerTransport) dispatchGetWebSiteContainerLogsSlot(req *http.R
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, &server.ResponseOptions{
-		Body:		server.GetResponse(respr).Body,
-		ContentType:	req.Header.Get("Content-Type"),
+		Body:        server.GetResponse(respr).Body,
+		ContentType: req.Header.Get("Content-Type"),
 	})
 	if err != nil {
 		return nil, err
@@ -16550,8 +16550,8 @@ func (w *WebAppsServerTransport) dispatchRestart(req *http.Request) (*http.Respo
 	var options *armappservice.WebAppsClientRestartOptions
 	if softRestartParam != nil || synchronousParam != nil {
 		options = &armappservice.WebAppsClientRestartOptions{
-			SoftRestart:	softRestartParam,
-			Synchronous:	synchronousParam,
+			SoftRestart: softRestartParam,
+			Synchronous: synchronousParam,
 		}
 	}
 	respr, errRespr := w.srv.Restart(req.Context(), resourceGroupNameParam, nameParam, options)
@@ -16611,8 +16611,8 @@ func (w *WebAppsServerTransport) dispatchRestartSlot(req *http.Request) (*http.R
 	var options *armappservice.WebAppsClientRestartSlotOptions
 	if softRestartParam != nil || synchronousParam != nil {
 		options = &armappservice.WebAppsClientRestartSlotOptions{
-			SoftRestart:	softRestartParam,
-			Synchronous:	synchronousParam,
+			SoftRestart: softRestartParam,
+			Synchronous: synchronousParam,
 		}
 	}
 	respr, errRespr := w.srv.RestartSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
@@ -17284,9 +17284,9 @@ func (w *WebAppsServerTransport) dispatchBeginStartNetworkTrace(req *http.Reques
 		var options *armappservice.WebAppsClientBeginStartNetworkTraceOptions
 		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
 			options = &armappservice.WebAppsClientBeginStartNetworkTraceOptions{
-				DurationInSeconds:	durationInSecondsParam,
-				MaxFrameLength:		maxFrameLengthParam,
-				SasURL:			sasURLParam,
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
 			}
 		}
 		respr, errRespr := w.srv.BeginStartNetworkTrace(req.Context(), resourceGroupNameParam, nameParam, options)
@@ -17374,9 +17374,9 @@ func (w *WebAppsServerTransport) dispatchBeginStartNetworkTraceSlot(req *http.Re
 		var options *armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions
 		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
 			options = &armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{
-				DurationInSeconds:	durationInSecondsParam,
-				MaxFrameLength:		maxFrameLengthParam,
-				SasURL:			sasURLParam,
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
 			}
 		}
 		respr, errRespr := w.srv.BeginStartNetworkTraceSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
@@ -17495,9 +17495,9 @@ func (w *WebAppsServerTransport) dispatchStartWebSiteNetworkTrace(req *http.Requ
 	var options *armappservice.WebAppsClientStartWebSiteNetworkTraceOptions
 	if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
 		options = &armappservice.WebAppsClientStartWebSiteNetworkTraceOptions{
-			DurationInSeconds:	durationInSecondsParam,
-			MaxFrameLength:		maxFrameLengthParam,
-			SasURL:			sasURLParam,
+			DurationInSeconds: durationInSecondsParam,
+			MaxFrameLength:    maxFrameLengthParam,
+			SasURL:            sasURLParam,
 		}
 	}
 	respr, errRespr := w.srv.StartWebSiteNetworkTrace(req.Context(), resourceGroupNameParam, nameParam, options)
@@ -17572,9 +17572,9 @@ func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperation(
 		var options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions
 		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
 			options = &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{
-				DurationInSeconds:	durationInSecondsParam,
-				MaxFrameLength:		maxFrameLengthParam,
-				SasURL:			sasURLParam,
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
 			}
 		}
 		respr, errRespr := w.srv.BeginStartWebSiteNetworkTraceOperation(req.Context(), resourceGroupNameParam, nameParam, options)
@@ -17662,9 +17662,9 @@ func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperationS
 		var options *armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions
 		if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
 			options = &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{
-				DurationInSeconds:	durationInSecondsParam,
-				MaxFrameLength:		maxFrameLengthParam,
-				SasURL:			sasURLParam,
+				DurationInSeconds: durationInSecondsParam,
+				MaxFrameLength:    maxFrameLengthParam,
+				SasURL:            sasURLParam,
 			}
 		}
 		respr, errRespr := w.srv.BeginStartWebSiteNetworkTraceOperationSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)
@@ -17750,9 +17750,9 @@ func (w *WebAppsServerTransport) dispatchStartWebSiteNetworkTraceSlot(req *http.
 	var options *armappservice.WebAppsClientStartWebSiteNetworkTraceSlotOptions
 	if durationInSecondsParam != nil || maxFrameLengthParam != nil || sasURLParam != nil {
 		options = &armappservice.WebAppsClientStartWebSiteNetworkTraceSlotOptions{
-			DurationInSeconds:	durationInSecondsParam,
-			MaxFrameLength:		maxFrameLengthParam,
-			SasURL:			sasURLParam,
+			DurationInSeconds: durationInSecondsParam,
+			MaxFrameLength:    maxFrameLengthParam,
+			SasURL:            sasURLParam,
 		}
 	}
 	respr, errRespr := w.srv.StartWebSiteNetworkTraceSlot(req.Context(), resourceGroupNameParam, nameParam, slotParam, options)

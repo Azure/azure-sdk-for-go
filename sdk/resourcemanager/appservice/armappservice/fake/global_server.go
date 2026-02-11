@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,15 +21,15 @@ import (
 type GlobalServer struct {
 	// GetDeletedWebApp is the fake for method GlobalClient.GetDeletedWebApp
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeletedWebApp	func(ctx context.Context, deletedSiteID string, options *armappservice.GlobalClientGetDeletedWebAppOptions) (resp azfake.Responder[armappservice.GlobalClientGetDeletedWebAppResponse], errResp azfake.ErrorResponder)
+	GetDeletedWebApp func(ctx context.Context, deletedSiteID string, options *armappservice.GlobalClientGetDeletedWebAppOptions) (resp azfake.Responder[armappservice.GlobalClientGetDeletedWebAppResponse], errResp azfake.ErrorResponder)
 
 	// GetDeletedWebAppSnapshots is the fake for method GlobalClient.GetDeletedWebAppSnapshots
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeletedWebAppSnapshots	func(ctx context.Context, deletedSiteID string, options *armappservice.GlobalClientGetDeletedWebAppSnapshotsOptions) (resp azfake.Responder[armappservice.GlobalClientGetDeletedWebAppSnapshotsResponse], errResp azfake.ErrorResponder)
+	GetDeletedWebAppSnapshots func(ctx context.Context, deletedSiteID string, options *armappservice.GlobalClientGetDeletedWebAppSnapshotsOptions) (resp azfake.Responder[armappservice.GlobalClientGetDeletedWebAppSnapshotsResponse], errResp azfake.ErrorResponder)
 
 	// GetSubscriptionOperationWithAsyncResponse is the fake for method GlobalClient.GetSubscriptionOperationWithAsyncResponse
 	// HTTP status codes to indicate success: http.StatusNoContent
-	GetSubscriptionOperationWithAsyncResponse	func(ctx context.Context, location string, operationID string, options *armappservice.GlobalClientGetSubscriptionOperationWithAsyncResponseOptions) (resp azfake.Responder[armappservice.GlobalClientGetSubscriptionOperationWithAsyncResponseResponse], errResp azfake.ErrorResponder)
+	GetSubscriptionOperationWithAsyncResponse func(ctx context.Context, location string, operationID string, options *armappservice.GlobalClientGetSubscriptionOperationWithAsyncResponseOptions) (resp azfake.Responder[armappservice.GlobalClientGetSubscriptionOperationWithAsyncResponseResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGlobalServerTransport creates a new instance of GlobalServerTransport with the provided implementation.

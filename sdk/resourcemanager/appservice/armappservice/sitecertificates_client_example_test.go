@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -24,12 +24,12 @@ func ExampleSiteCertificatesClient_CreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSiteCertificatesClient().CreateOrUpdate(ctx, "testrg123", "testSiteName", "testc6282", armappservice.AppCertificate{
-		Location:	to.Ptr("East US"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.AppCertificateProperties{
 			HostNames: []*string{
 				to.Ptr("ServerCert"),
 			},
-			Password:	to.Ptr("<password>"),
+			Password: to.Ptr("<password>"),
 		},
 	}, nil)
 	if err != nil {
@@ -71,12 +71,12 @@ func ExampleSiteCertificatesClient_CreateOrUpdateSlot() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSiteCertificatesClient().CreateOrUpdateSlot(ctx, "testrg123", "testSiteName", "staging", "testc6282", armappservice.AppCertificate{
-		Location:	to.Ptr("East US"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.AppCertificateProperties{
 			HostNames: []*string{
 				to.Ptr("ServerCert"),
 			},
-			Password:	to.Ptr("<password>"),
+			Password: to.Ptr("<password>"),
 		},
 	}, nil)
 	if err != nil {

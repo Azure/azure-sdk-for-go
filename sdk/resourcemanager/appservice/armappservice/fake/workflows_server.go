@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,11 +21,11 @@ import (
 type WorkflowsServer struct {
 	// RegenerateAccessKey is the fake for method WorkflowsClient.RegenerateAccessKey
 	// HTTP status codes to indicate success: http.StatusOK
-	RegenerateAccessKey	func(ctx context.Context, resourceGroupName string, name string, workflowName string, keyType armappservice.RegenerateActionParameter, options *armappservice.WorkflowsClientRegenerateAccessKeyOptions) (resp azfake.Responder[armappservice.WorkflowsClientRegenerateAccessKeyResponse], errResp azfake.ErrorResponder)
+	RegenerateAccessKey func(ctx context.Context, resourceGroupName string, name string, workflowName string, keyType armappservice.RegenerateActionParameter, options *armappservice.WorkflowsClientRegenerateAccessKeyOptions) (resp azfake.Responder[armappservice.WorkflowsClientRegenerateAccessKeyResponse], errResp azfake.ErrorResponder)
 
 	// Validate is the fake for method WorkflowsClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
-	Validate	func(ctx context.Context, resourceGroupName string, name string, workflowName string, validate armappservice.Workflow, options *armappservice.WorkflowsClientValidateOptions) (resp azfake.Responder[armappservice.WorkflowsClientValidateResponse], errResp azfake.ErrorResponder)
+	Validate func(ctx context.Context, resourceGroupName string, name string, workflowName string, validate armappservice.Workflow, options *armappservice.WorkflowsClientValidateOptions) (resp azfake.Responder[armappservice.WorkflowsClientValidateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewWorkflowsServerTransport creates a new instance of WorkflowsServerTransport with the provided implementation.

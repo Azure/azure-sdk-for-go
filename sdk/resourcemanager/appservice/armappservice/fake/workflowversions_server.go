@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,11 +23,11 @@ import (
 type WorkflowVersionsServer struct {
 	// Get is the fake for method WorkflowVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, workflowName string, versionID string, options *armappservice.WorkflowVersionsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowVersionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, versionID string, options *armappservice.WorkflowVersionsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowVersionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WorkflowVersionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, name string, workflowName string, options *armappservice.WorkflowVersionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowVersionsClientListResponse])
+	NewListPager func(resourceGroupName string, name string, workflowName string, options *armappservice.WorkflowVersionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowVersionsClientListResponse])
 }
 
 // NewWorkflowVersionsServerTransport creates a new instance of WorkflowVersionsServerTransport with the provided implementation.
@@ -35,16 +35,16 @@ type WorkflowVersionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkflowVersionsServerTransport(srv *WorkflowVersionsServer) *WorkflowVersionsServerTransport {
 	return &WorkflowVersionsServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armappservice.WorkflowVersionsClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armappservice.WorkflowVersionsClientListResponse]](),
 	}
 }
 
 // WorkflowVersionsServerTransport connects instances of armappservice.WorkflowVersionsClient to instances of WorkflowVersionsServer.
 // Don't use this type directly, use NewWorkflowVersionsServerTransport instead.
 type WorkflowVersionsServerTransport struct {
-	srv		*WorkflowVersionsServer
-	newListPager	*tracker[azfake.PagerResponder[armappservice.WorkflowVersionsClientListResponse]]
+	srv          *WorkflowVersionsServer
+	newListPager *tracker[azfake.PagerResponder[armappservice.WorkflowVersionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowVersionsServerTransport.

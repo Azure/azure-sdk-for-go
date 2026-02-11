@@ -11,7 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,16 +29,16 @@ type GetUsagesInLocationServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewGetUsagesInLocationServerTransport(srv *GetUsagesInLocationServer) *GetUsagesInLocationServerTransport {
 	return &GetUsagesInLocationServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armappservice.GetUsagesInLocationClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armappservice.GetUsagesInLocationClientListResponse]](),
 	}
 }
 
 // GetUsagesInLocationServerTransport connects instances of armappservice.GetUsagesInLocationClient to instances of GetUsagesInLocationServer.
 // Don't use this type directly, use NewGetUsagesInLocationServerTransport instead.
 type GetUsagesInLocationServerTransport struct {
-	srv		*GetUsagesInLocationServer
-	newListPager	*tracker[azfake.PagerResponder[armappservice.GetUsagesInLocationClientListResponse]]
+	srv          *GetUsagesInLocationServer
+	newListPager *tracker[azfake.PagerResponder[armappservice.GetUsagesInLocationClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for GetUsagesInLocationServerTransport.

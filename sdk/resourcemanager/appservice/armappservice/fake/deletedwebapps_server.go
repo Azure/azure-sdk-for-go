@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,15 +22,15 @@ import (
 type DeletedWebAppsServer struct {
 	// GetDeletedWebAppByLocation is the fake for method DeletedWebAppsClient.GetDeletedWebAppByLocation
 	// HTTP status codes to indicate success: http.StatusOK
-	GetDeletedWebAppByLocation	func(ctx context.Context, location string, deletedSiteID string, options *armappservice.DeletedWebAppsClientGetDeletedWebAppByLocationOptions) (resp azfake.Responder[armappservice.DeletedWebAppsClientGetDeletedWebAppByLocationResponse], errResp azfake.ErrorResponder)
+	GetDeletedWebAppByLocation func(ctx context.Context, location string, deletedSiteID string, options *armappservice.DeletedWebAppsClientGetDeletedWebAppByLocationOptions) (resp azfake.Responder[armappservice.DeletedWebAppsClientGetDeletedWebAppByLocationResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DeletedWebAppsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armappservice.DeletedWebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse])
+	NewListPager func(options *armappservice.DeletedWebAppsClientListOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse])
 
 	// NewListByLocationPager is the fake for method DeletedWebAppsClient.NewListByLocationPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByLocationPager	func(location string, options *armappservice.DeletedWebAppsClientListByLocationOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse])
+	NewListByLocationPager func(location string, options *armappservice.DeletedWebAppsClientListByLocationOptions) (resp azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse])
 }
 
 // NewDeletedWebAppsServerTransport creates a new instance of DeletedWebAppsServerTransport with the provided implementation.
@@ -38,18 +38,18 @@ type DeletedWebAppsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDeletedWebAppsServerTransport(srv *DeletedWebAppsServer) *DeletedWebAppsServerTransport {
 	return &DeletedWebAppsServerTransport{
-		srv:			srv,
-		newListPager:		newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]](),
-		newListByLocationPager:	newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse]](),
+		srv:                    srv,
+		newListPager:           newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]](),
+		newListByLocationPager: newTracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse]](),
 	}
 }
 
 // DeletedWebAppsServerTransport connects instances of armappservice.DeletedWebAppsClient to instances of DeletedWebAppsServer.
 // Don't use this type directly, use NewDeletedWebAppsServerTransport instead.
 type DeletedWebAppsServerTransport struct {
-	srv			*DeletedWebAppsServer
-	newListPager		*tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]]
-	newListByLocationPager	*tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse]]
+	srv                    *DeletedWebAppsServer
+	newListPager           *tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListResponse]]
+	newListByLocationPager *tracker[azfake.PagerResponder[armappservice.DeletedWebAppsClientListByLocationResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeletedWebAppsServerTransport.

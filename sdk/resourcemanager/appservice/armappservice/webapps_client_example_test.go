@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 	"time"
 )
@@ -107,8 +107,8 @@ func ExampleWebAppsClient_ApplySlotConfigToProduction() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewWebAppsClient().ApplySlotConfigToProduction(ctx, "testrg123", "sitef6141", armappservice.CsmSlotEntity{
-		PreserveVnet:	to.Ptr(true),
-		TargetSlot:	to.Ptr("staging"),
+		PreserveVnet: to.Ptr(true),
+		TargetSlot:   to.Ptr("staging"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -134,9 +134,9 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	poller, err := clientFactory.NewWebAppsClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "rg", "testSite", "connection", armappservice.RemotePrivateEndpointConnectionARMResource{
 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-				Description:		to.Ptr("Approved by admin."),
-				ActionsRequired:	to.Ptr(""),
-				Status:			to.Ptr("Approved"),
+				Description:     to.Ptr("Approved by admin."),
+				ActionsRequired: to.Ptr(""),
+				Status:          to.Ptr("Approved"),
 			},
 		},
 	}, nil)
@@ -184,9 +184,9 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	poller, err := clientFactory.NewWebAppsClient().BeginApproveOrRejectPrivateEndpointConnectionSlot(ctx, "rg", "testSite", "connection", "stage", armappservice.RemotePrivateEndpointConnectionARMResource{
 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-				Description:		to.Ptr("Approved by admin."),
-				ActionsRequired:	to.Ptr(""),
-				Status:			to.Ptr("Approved"),
+				Description:     to.Ptr("Approved by admin."),
+				ActionsRequired: to.Ptr(""),
+				Status:          to.Ptr("Approved"),
 			},
 		},
 	}, nil)
@@ -233,30 +233,30 @@ func ExampleWebAppsClient_Backup() {
 	}
 	res, err := clientFactory.NewWebAppsClient().Backup(ctx, "testrg123", "sitef6141", armappservice.BackupRequest{
 		Properties: &armappservice.BackupRequestProperties{
-			BackupName:	to.Ptr("abcdwe"),
+			BackupName: to.Ptr("abcdwe"),
 			BackupSchedule: &armappservice.BackupSchedule{
-				FrequencyInterval:	to.Ptr[int32](7),
-				FrequencyUnit:		to.Ptr(armappservice.FrequencyUnitDay),
-				KeepAtLeastOneBackup:	to.Ptr(true),
-				RetentionPeriodInDays:	to.Ptr[int32](30),
-				StartTime:		to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t }()),
+				FrequencyInterval:     to.Ptr[int32](7),
+				FrequencyUnit:         to.Ptr(armappservice.FrequencyUnitDay),
+				KeepAtLeastOneBackup:  to.Ptr(true),
+				RetentionPeriodInDays: to.Ptr[int32](30),
+				StartTime:             to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t }()),
 			},
 			Databases: []*armappservice.DatabaseBackupSetting{
 				{
-					Name:			to.Ptr("backenddb"),
-					ConnectionString:	to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName:	to.Ptr("backend"),
-					DatabaseType:		to.Ptr(armappservice.DatabaseTypeSQLAzure),
+					Name:                 to.Ptr("backenddb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("backend"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
 				},
 				{
-					Name:			to.Ptr("statsdb"),
-					ConnectionString:	to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName:	to.Ptr("stats"),
-					DatabaseType:		to.Ptr(armappservice.DatabaseTypeSQLAzure),
+					Name:                 to.Ptr("statsdb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("stats"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
 				},
 			},
-			Enabled:		to.Ptr(true),
-			StorageAccountURL:	to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
+			Enabled:           to.Ptr(true),
+			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
 		},
 	}, nil)
 	if err != nil {
@@ -314,21 +314,21 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_cloneWebApp() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdate(ctx, "testrg123", "sitef6141", armappservice.Site{
-		Kind:		to.Ptr("app"),
-		Location:	to.Ptr("East US"),
+		Kind:     to.Ptr("app"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.SiteProperties{
 			CloningInfo: &armappservice.CloningInfo{
 				AppSettingsOverrides: map[string]*string{
-					"Setting1":	to.Ptr("NewValue1"),
-					"Setting3":	to.Ptr("NewValue5"),
+					"Setting1": to.Ptr("NewValue1"),
+					"Setting3": to.Ptr("NewValue5"),
 				},
-				CloneCustomHostNames:	to.Ptr(true),
-				CloneSourceControl:	to.Ptr(true),
-				ConfigureLoadBalancing:	to.Ptr(false),
-				HostingEnvironment:	to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/hostingenvironments/aseforsites"),
-				Overwrite:		to.Ptr(false),
-				SourceWebAppID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/sites/srcsiteg478"),
-				SourceWebAppLocation:	to.Ptr("West Europe"),
+				CloneCustomHostNames:   to.Ptr(true),
+				CloneSourceControl:     to.Ptr(true),
+				ConfigureLoadBalancing: to.Ptr(false),
+				HostingEnvironment:     to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/hostingenvironments/aseforsites"),
+				Overwrite:              to.Ptr(false),
+				SourceWebAppID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/sites/srcsiteg478"),
+				SourceWebAppLocation:   to.Ptr("West Europe"),
 			},
 		},
 	}, nil)
@@ -471,27 +471,27 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdate(ctx, "testrg123", "sitef6141", armappservice.Site{
-		Kind:		to.Ptr("functionapp,linux"),
-		Location:	to.Ptr("East US"),
+		Kind:     to.Ptr("functionapp,linux"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.SiteProperties{
 			FunctionAppConfig: &armappservice.FunctionAppConfig{
 				Deployment: &armappservice.FunctionsDeployment{
 					Storage: &armappservice.FunctionsDeploymentStorage{
-						Type:	to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
+						Type: to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
 						Authentication: &armappservice.FunctionsDeploymentStorageAuthentication{
-							Type:					to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
-							StorageAccountConnectionStringName:	to.Ptr("TheAppSettingName"),
+							Type:                               to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
+							StorageAccountConnectionStringName: to.Ptr("TheAppSettingName"),
 						},
-						Value:	to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
+						Value: to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
 					},
 				},
 				Runtime: &armappservice.FunctionsRuntime{
-					Name:		to.Ptr(armappservice.RuntimeNamePython),
-					Version:	to.Ptr("3.11"),
+					Name:    to.Ptr(armappservice.RuntimeNamePython),
+					Version: to.Ptr("3.11"),
 				},
 				ScaleAndConcurrency: &armappservice.FunctionsScaleAndConcurrency{
-					InstanceMemoryMB:	to.Ptr[int32](2048),
-					MaximumInstanceCount:	to.Ptr[int32](100),
+					InstanceMemoryMB:     to.Ptr[int32](2048),
+					MaximumInstanceCount: to.Ptr[int32](100),
 				},
 				SiteUpdateStrategy: &armappservice.FunctionsSiteUpdateStrategy{
 					Type: to.Ptr(armappservice.SiteUpdateStrategyTypeRollingUpdate),
@@ -500,12 +500,12 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 			SiteConfig: &armappservice.SiteConfig{
 				AppSettings: []*armappservice.NameValuePair{
 					{
-						Name:	to.Ptr("AzureWebJobsStorage"),
-						Value:	to.Ptr("DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
+						Name:  to.Ptr("AzureWebJobsStorage"),
+						Value: to.Ptr("DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
 					},
 					{
-						Name:	to.Ptr("APPLICATIONINSIGHTS_CONNECTION_STRING"),
-						Value:	to.Ptr("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"),
+						Name:  to.Ptr("APPLICATIONINSIGHTS_CONNECTION_STRING"),
+						Value: to.Ptr("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"),
 					},
 				},
 			},
@@ -680,33 +680,33 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdate(ctx, "testrg123", "sitef6141", armappservice.Site{
-		Kind:		to.Ptr("functionapp,linux"),
-		Location:	to.Ptr("East US"),
+		Kind:     to.Ptr("functionapp,linux"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.SiteProperties{
 			FunctionAppConfig: &armappservice.FunctionAppConfig{
 				Deployment: &armappservice.FunctionsDeployment{
 					Storage: &armappservice.FunctionsDeploymentStorage{
-						Type:	to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
+						Type: to.Ptr(armappservice.FunctionsDeploymentStorageTypeBlobContainer),
 						Authentication: &armappservice.FunctionsDeploymentStorageAuthentication{
-							Type:					to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
-							StorageAccountConnectionStringName:	to.Ptr("TheAppSettingName"),
+							Type:                               to.Ptr(armappservice.AuthenticationTypeStorageAccountConnectionString),
+							StorageAccountConnectionStringName: to.Ptr("TheAppSettingName"),
 						},
-						Value:	to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
+						Value: to.Ptr("https://storageAccountName.blob.core.windows.net/containername"),
 					},
 				},
 				Runtime: &armappservice.FunctionsRuntime{
-					Name:		to.Ptr(armappservice.RuntimeNamePython),
-					Version:	to.Ptr("3.11"),
+					Name:    to.Ptr(armappservice.RuntimeNamePython),
+					Version: to.Ptr("3.11"),
 				},
 				ScaleAndConcurrency: &armappservice.FunctionsScaleAndConcurrency{
 					AlwaysReady: []*armappservice.FunctionsAlwaysReadyConfig{
 						{
-							Name:		to.Ptr("http"),
-							InstanceCount:	to.Ptr[int32](2),
+							Name:          to.Ptr("http"),
+							InstanceCount: to.Ptr[int32](2),
 						},
 					},
-					InstanceMemoryMB:	to.Ptr[int32](2048),
-					MaximumInstanceCount:	to.Ptr[int32](100),
+					InstanceMemoryMB:     to.Ptr[int32](2048),
+					MaximumInstanceCount: to.Ptr[int32](100),
 					Triggers: &armappservice.FunctionsScaleAndConcurrencyTriggers{
 						HTTP: &armappservice.FunctionsScaleAndConcurrencyTriggersHTTP{
 							PerInstanceConcurrency: to.Ptr[int32](16),
@@ -720,12 +720,12 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 			SiteConfig: &armappservice.SiteConfig{
 				AppSettings: []*armappservice.NameValuePair{
 					{
-						Name:	to.Ptr("AzureWebJobsStorage"),
-						Value:	to.Ptr("DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
+						Name:  to.Ptr("AzureWebJobsStorage"),
+						Value: to.Ptr("DefaultEndpointsProtocol=https;AccountName=StorageAccountName;AccountKey=Sanitized;EndpointSuffix=core.windows.net"),
 					},
 					{
-						Name:	to.Ptr("APPLICATIONINSIGHTS_CONNECTION_STRING"),
-						Value:	to.Ptr("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"),
+						Name:  to.Ptr("APPLICATIONINSIGHTS_CONNECTION_STRING"),
+						Value: to.Ptr("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"),
 					},
 				},
 			},
@@ -911,8 +911,8 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateWebApp() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdate(ctx, "testrg123", "sitef6141", armappservice.Site{
-		Kind:		to.Ptr("app"),
-		Location:	to.Ptr("East US"),
+		Kind:     to.Ptr("app"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.SiteProperties{
 			ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
 		},
@@ -1063,11 +1063,11 @@ func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
 	}
 	res, err := clientFactory.NewWebAppsClient().CreateOrUpdateConfiguration(ctx, "testrg123", "sitef6141", armappservice.SiteConfigResource{
 		Properties: &armappservice.SiteConfig{
-			AcrUseManagedIdentityCreds:	to.Ptr(false),
-			AlwaysOn:			to.Ptr(false),
-			AppCommandLine:			to.Ptr(""),
-			AutoHealEnabled:		to.Ptr(false),
-			AzureStorageAccounts:		map[string]*armappservice.AzureStorageInfoValue{},
+			AcrUseManagedIdentityCreds: to.Ptr(false),
+			AlwaysOn:                   to.Ptr(false),
+			AppCommandLine:             to.Ptr(""),
+			AutoHealEnabled:            to.Ptr(false),
+			AzureStorageAccounts:       map[string]*armappservice.AzureStorageInfoValue{},
 			DefaultDocuments: []*string{
 				to.Ptr("Default.htm"),
 				to.Ptr("Default.html"),
@@ -1079,39 +1079,39 @@ func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
 				to.Ptr("index.php"),
 				to.Ptr("hostingstart.html"),
 			},
-			DetailedErrorLoggingEnabled:		to.Ptr(false),
-			FtpsState:				to.Ptr(armappservice.FtpsStateAllAllowed),
-			FunctionAppScaleLimit:			to.Ptr[int32](0),
-			FunctionsRuntimeScaleMonitoringEnabled:	to.Ptr(false),
-			Http20Enabled:				to.Ptr(false),
-			HTTPLoggingEnabled:			to.Ptr(false),
-			LinuxFxVersion:				to.Ptr(""),
-			LoadBalancing:				to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
-			LogsDirectorySizeLimit:			to.Ptr[int32](35),
-			ManagedPipelineMode:			to.Ptr(armappservice.ManagedPipelineModeIntegrated),
-			MinTLSVersion:				to.Ptr(armappservice.SupportedTLSVersionsOne2),
-			MinimumElasticInstanceCount:		to.Ptr[int32](0),
-			NetFrameworkVersion:			to.Ptr("v4.0"),
-			NodeVersion:				to.Ptr(""),
-			NumberOfWorkers:			to.Ptr[int32](1),
-			PhpVersion:				to.Ptr("5.6"),
-			PowerShellVersion:			to.Ptr(""),
-			PythonVersion:				to.Ptr(""),
-			RemoteDebuggingEnabled:			to.Ptr(false),
-			RequestTracingEnabled:			to.Ptr(false),
-			ScmMinTLSVersion:			to.Ptr(armappservice.SupportedTLSVersionsOne2),
-			Use32BitWorkerProcess:			to.Ptr(true),
+			DetailedErrorLoggingEnabled:            to.Ptr(false),
+			FtpsState:                              to.Ptr(armappservice.FtpsStateAllAllowed),
+			FunctionAppScaleLimit:                  to.Ptr[int32](0),
+			FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+			Http20Enabled:                          to.Ptr(false),
+			HTTPLoggingEnabled:                     to.Ptr(false),
+			LinuxFxVersion:                         to.Ptr(""),
+			LoadBalancing:                          to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+			LogsDirectorySizeLimit:                 to.Ptr[int32](35),
+			ManagedPipelineMode:                    to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+			MinTLSVersion:                          to.Ptr(armappservice.SupportedTLSVersionsOne2),
+			MinimumElasticInstanceCount:            to.Ptr[int32](0),
+			NetFrameworkVersion:                    to.Ptr("v4.0"),
+			NodeVersion:                            to.Ptr(""),
+			NumberOfWorkers:                        to.Ptr[int32](1),
+			PhpVersion:                             to.Ptr("5.6"),
+			PowerShellVersion:                      to.Ptr(""),
+			PythonVersion:                          to.Ptr(""),
+			RemoteDebuggingEnabled:                 to.Ptr(false),
+			RequestTracingEnabled:                  to.Ptr(false),
+			ScmMinTLSVersion:                       to.Ptr(armappservice.SupportedTLSVersionsOne2),
+			Use32BitWorkerProcess:                  to.Ptr(true),
 			VirtualApplications: []*armappservice.VirtualApplication{
 				{
-					PhysicalPath:	to.Ptr("site\\wwwroot"),
-					PreloadEnabled:	to.Ptr(false),
-					VirtualPath:	to.Ptr("/"),
+					PhysicalPath:   to.Ptr("site\\wwwroot"),
+					PreloadEnabled: to.Ptr(false),
+					VirtualPath:    to.Ptr("/"),
 				},
 			},
-			VnetName:		to.Ptr(""),
-			VnetPrivatePortsCount:	to.Ptr[int32](0),
-			VnetRouteAllEnabled:	to.Ptr(false),
-			WebSocketsEnabled:	to.Ptr(false),
+			VnetName:              to.Ptr(""),
+			VnetPrivatePortsCount: to.Ptr[int32](0),
+			VnetRouteAllEnabled:   to.Ptr(false),
+			WebSocketsEnabled:     to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -1194,21 +1194,21 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_cloneWebAppSlot() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdateSlot(ctx, "testrg123", "sitef6141", "staging", armappservice.Site{
-		Kind:		to.Ptr("app"),
-		Location:	to.Ptr("East US"),
+		Kind:     to.Ptr("app"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.SiteProperties{
 			CloningInfo: &armappservice.CloningInfo{
 				AppSettingsOverrides: map[string]*string{
-					"Setting1":	to.Ptr("NewValue1"),
-					"Setting3":	to.Ptr("NewValue5"),
+					"Setting1": to.Ptr("NewValue1"),
+					"Setting3": to.Ptr("NewValue5"),
 				},
-				CloneCustomHostNames:	to.Ptr(true),
-				CloneSourceControl:	to.Ptr(true),
-				ConfigureLoadBalancing:	to.Ptr(false),
-				HostingEnvironment:	to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/hostingenvironments/aseforsites"),
-				Overwrite:		to.Ptr(false),
-				SourceWebAppID:		to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/sites/srcsiteg478/slot/qa"),
-				SourceWebAppLocation:	to.Ptr("West Europe"),
+				CloneCustomHostNames:   to.Ptr(true),
+				CloneSourceControl:     to.Ptr(true),
+				ConfigureLoadBalancing: to.Ptr(false),
+				HostingEnvironment:     to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/hostingenvironments/aseforsites"),
+				Overwrite:              to.Ptr(false),
+				SourceWebAppID:         to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg456/providers/Microsoft.Web/sites/srcsiteg478/slot/qa"),
+				SourceWebAppLocation:   to.Ptr("West Europe"),
 			},
 		},
 	}, nil)
@@ -1351,8 +1351,8 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_createOrUpdateWebAppSlot() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewWebAppsClient().BeginCreateOrUpdateSlot(ctx, "testrg123", "sitef6141", "staging", armappservice.Site{
-		Kind:		to.Ptr("app"),
-		Location:	to.Ptr("East US"),
+		Kind:     to.Ptr("app"),
+		Location: to.Ptr("East US"),
 		Properties: &armappservice.SiteProperties{
 			ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
 		},
@@ -1648,10 +1648,10 @@ func ExampleWebAppsClient_DeployWorkflowArtifacts_deploysWorkflowArtifacts() {
 			},
 			Files: map[string]any{
 				"connections.json": map[string]any{
-					"managedApiConnections":	map[string]any{},
+					"managedApiConnections": map[string]any{},
 					"serviceProviderConnections": map[string]any{
 						"eventHub": map[string]any{
-							"displayName":	"example1",
+							"displayName": "example1",
 							"parameterValues": map[string]any{
 								"connectionString": "@appsetting('eventHub_connectionString')",
 							},
@@ -1663,28 +1663,28 @@ func ExampleWebAppsClient_DeployWorkflowArtifacts_deploysWorkflowArtifacts() {
 				},
 				"test1/workflow.json": map[string]any{
 					"definition": map[string]any{
-						"$schema":		"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-						"actions":		map[string]any{},
-						"contentVersion":	"1.0.0.0",
-						"outputs":		map[string]any{},
+						"$schema":        "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+						"actions":        map[string]any{},
+						"contentVersion": "1.0.0.0",
+						"outputs":        map[string]any{},
 						"triggers": map[string]any{
 							"When_events_are_available_in_Event_hub": map[string]any{
-								"type":	"ServiceProvider",
+								"type": "ServiceProvider",
 								"inputs": map[string]any{
 									"parameters": map[string]any{
 										"eventHubName": "test123",
 									},
 									"serviceProviderConfiguration": map[string]any{
-										"operationId":		"receiveEvents",
-										"connectionName":	"eventHub",
-										"serviceProviderId":	"/serviceProviders/eventHub",
+										"operationId":       "receiveEvents",
+										"connectionName":    "eventHub",
+										"serviceProviderId": "/serviceProviders/eventHub",
 									},
 								},
-								"splitOn":	"@triggerOutputs()?['body']",
+								"splitOn": "@triggerOutputs()?['body']",
 							},
 						},
 					},
-					"kind":	"Stateful",
+					"kind": "Stateful",
 				},
 			},
 		}})
@@ -1716,10 +1716,10 @@ func ExampleWebAppsClient_DeployWorkflowArtifactsSlot() {
 			},
 			Files: map[string]any{
 				"connections.json": map[string]any{
-					"managedApiConnections":	map[string]any{},
+					"managedApiConnections": map[string]any{},
 					"serviceProviderConnections": map[string]any{
 						"eventHub": map[string]any{
-							"displayName":	"example1",
+							"displayName": "example1",
 							"parameterValues": map[string]any{
 								"connectionString": "@appsetting('eventHub_connectionString')",
 							},
@@ -1731,28 +1731,28 @@ func ExampleWebAppsClient_DeployWorkflowArtifactsSlot() {
 				},
 				"test1/workflow.json": map[string]any{
 					"definition": map[string]any{
-						"$schema":		"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-						"actions":		map[string]any{},
-						"contentVersion":	"1.0.0.0",
-						"outputs":		map[string]any{},
+						"$schema":        "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+						"actions":        map[string]any{},
+						"contentVersion": "1.0.0.0",
+						"outputs":        map[string]any{},
 						"triggers": map[string]any{
 							"When_events_are_available_in_Event_hub": map[string]any{
-								"type":	"ServiceProvider",
+								"type": "ServiceProvider",
 								"inputs": map[string]any{
 									"parameters": map[string]any{
 										"eventHubName": "test123",
 									},
 									"serviceProviderConfiguration": map[string]any{
-										"operationId":		"receiveEvents",
-										"connectionName":	"eventHub",
-										"serviceProviderId":	"/serviceProviders/eventHub",
+										"operationId":       "receiveEvents",
+										"connectionName":    "eventHub",
+										"serviceProviderId": "/serviceProviders/eventHub",
 									},
 								},
-								"splitOn":	"@triggerOutputs()?['body']",
+								"splitOn": "@triggerOutputs()?['body']",
 							},
 						},
 					},
-					"kind":	"Stateful",
+					"kind": "Stateful",
 				},
 			},
 		}})
@@ -3663,30 +3663,30 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	}
 	res, err := clientFactory.NewWebAppsClient().ListBackupStatusSecrets(ctx, "testrg123", "sitef6141", "12345", armappservice.BackupRequest{
 		Properties: &armappservice.BackupRequestProperties{
-			BackupName:	to.Ptr("abcdwe"),
+			BackupName: to.Ptr("abcdwe"),
 			BackupSchedule: &armappservice.BackupSchedule{
-				FrequencyInterval:	to.Ptr[int32](7),
-				FrequencyUnit:		to.Ptr(armappservice.FrequencyUnitDay),
-				KeepAtLeastOneBackup:	to.Ptr(true),
-				RetentionPeriodInDays:	to.Ptr[int32](30),
-				StartTime:		to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t }()),
+				FrequencyInterval:     to.Ptr[int32](7),
+				FrequencyUnit:         to.Ptr(armappservice.FrequencyUnitDay),
+				KeepAtLeastOneBackup:  to.Ptr(true),
+				RetentionPeriodInDays: to.Ptr[int32](30),
+				StartTime:             to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t }()),
 			},
 			Databases: []*armappservice.DatabaseBackupSetting{
 				{
-					Name:			to.Ptr("backenddb"),
-					ConnectionString:	to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName:	to.Ptr("backend"),
-					DatabaseType:		to.Ptr(armappservice.DatabaseTypeSQLAzure),
+					Name:                 to.Ptr("backenddb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("backend"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
 				},
 				{
-					Name:			to.Ptr("statsdb"),
-					ConnectionString:	to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName:	to.Ptr("stats"),
-					DatabaseType:		to.Ptr(armappservice.DatabaseTypeSQLAzure),
+					Name:                 to.Ptr("statsdb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("stats"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
 				},
 			},
-			Enabled:		to.Ptr(true),
-			StorageAccountURL:	to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
+			Enabled:           to.Ptr(true),
+			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
 		},
 	}, nil)
 	if err != nil {
@@ -4890,21 +4890,21 @@ func ExampleWebAppsClient_BeginRestore() {
 		Properties: &armappservice.RestoreRequestProperties{
 			Databases: []*armappservice.DatabaseBackupSetting{
 				{
-					Name:			to.Ptr("backenddb"),
-					ConnectionString:	to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName:	to.Ptr("backend"),
-					DatabaseType:		to.Ptr(armappservice.DatabaseTypeSQLAzure),
+					Name:                 to.Ptr("backenddb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("backend"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
 				},
 				{
-					Name:			to.Ptr("statsdb"),
-					ConnectionString:	to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName:	to.Ptr("stats"),
-					DatabaseType:		to.Ptr(armappservice.DatabaseTypeSQLAzure),
+					Name:                 to.Ptr("statsdb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("stats"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
 				},
 			},
-			Overwrite:		to.Ptr(true),
-			SiteName:		to.Ptr("sitef6141"),
-			StorageAccountURL:	to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
+			Overwrite:         to.Ptr(true),
+			SiteName:          to.Ptr("sitef6141"),
+			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
 		},
 	}, nil)
 	if err != nil {
@@ -5274,8 +5274,8 @@ func ExampleWebAppsClient_UpdateApplicationSettings() {
 	}
 	res, err := clientFactory.NewWebAppsClient().UpdateApplicationSettings(ctx, "testrg123", "sitef6141", armappservice.StringDictionary{
 		Properties: map[string]*string{
-			"Setting1":	to.Ptr("Value1"),
-			"Setting2":	to.Ptr("Value2"),
+			"Setting1": to.Ptr("Value1"),
+			"Setting2": to.Ptr("Value2"),
 		},
 	}, nil)
 	if err != nil {
@@ -5315,13 +5315,13 @@ func ExampleWebAppsClient_UpdateAuthSettings() {
 				to.Ptr("sitef6141.customdomain.net"),
 				to.Ptr("sitef6141.customdomain.info"),
 			},
-			ClientID:			to.Ptr("42d795a9-8abb-4d06-8534-39528af40f8e.apps.googleusercontent.com"),
-			DefaultProvider:		to.Ptr(armappservice.BuiltInAuthenticationProviderGoogle),
-			Enabled:			to.Ptr(true),
-			RuntimeVersion:			to.Ptr("~1"),
-			TokenRefreshExtensionHours:	to.Ptr[float64](120),
-			TokenStoreEnabled:		to.Ptr(true),
-			UnauthenticatedClientAction:	to.Ptr(armappservice.UnauthenticatedClientActionRedirectToLoginPage),
+			ClientID:                    to.Ptr("42d795a9-8abb-4d06-8534-39528af40f8e.apps.googleusercontent.com"),
+			DefaultProvider:             to.Ptr(armappservice.BuiltInAuthenticationProviderGoogle),
+			Enabled:                     to.Ptr(true),
+			RuntimeVersion:              to.Ptr("~1"),
+			TokenRefreshExtensionHours:  to.Ptr[float64](120),
+			TokenStoreEnabled:           to.Ptr(true),
+			UnauthenticatedClientAction: to.Ptr(armappservice.UnauthenticatedClientActionRedirectToLoginPage),
 		},
 	}, nil)
 	if err != nil {
@@ -5370,31 +5370,31 @@ func ExampleWebAppsClient_UpdateAuthSettingsV2() {
 				ExcludedPaths: []*string{
 					to.Ptr("/nosecrets/Path"),
 				},
-				RequireAuthentication:		to.Ptr(true),
-				UnauthenticatedClientAction:	to.Ptr(armappservice.UnauthenticatedClientActionV2Return403),
+				RequireAuthentication:       to.Ptr(true),
+				UnauthenticatedClientAction: to.Ptr(armappservice.UnauthenticatedClientActionV2Return403),
 			},
 			HTTPSettings: &armappservice.HTTPSettings{
 				ForwardProxy: &armappservice.ForwardProxy{
-					Convention:		to.Ptr(armappservice.ForwardProxyConventionStandard),
-					CustomHostHeaderName:	to.Ptr("authHeader"),
-					CustomProtoHeaderName:	to.Ptr("customProtoHeader"),
+					Convention:            to.Ptr(armappservice.ForwardProxyConventionStandard),
+					CustomHostHeaderName:  to.Ptr("authHeader"),
+					CustomProtoHeaderName: to.Ptr("customProtoHeader"),
 				},
-				RequireHTTPS:	to.Ptr(true),
+				RequireHTTPS: to.Ptr(true),
 				Routes: &armappservice.HTTPSettingsRoutes{
 					APIPrefix: to.Ptr("/authv2/"),
 				},
 			},
 			IdentityProviders: &armappservice.IdentityProviders{
 				Google: &armappservice.Google{
-					Enabled:	to.Ptr(true),
+					Enabled: to.Ptr(true),
 					Login: &armappservice.LoginScopes{
 						Scopes: []*string{
 							to.Ptr("admin"),
 						},
 					},
 					Registration: &armappservice.ClientRegistration{
-						ClientID:			to.Ptr("42d795a9-8abb-4d06-8534-39528af40f8e.apps.googleusercontent.com"),
-						ClientSecretSettingName:	to.Ptr("ClientSecret"),
+						ClientID:                to.Ptr("42d795a9-8abb-4d06-8534-39528af40f8e.apps.googleusercontent.com"),
+						ClientSecretSettingName: to.Ptr("ClientSecret"),
 					},
 					Validation: &armappservice.AllowedAudiencesValidation{
 						AllowedAudiences: []*string{
@@ -5408,28 +5408,28 @@ func ExampleWebAppsClient_UpdateAuthSettingsV2() {
 					to.Ptr("https://someurl.com"),
 				},
 				CookieExpiration: &armappservice.CookieExpiration{
-					Convention:		to.Ptr(armappservice.CookieExpirationConventionIdentityProviderDerived),
-					TimeToExpiration:	to.Ptr("2022:09-01T00:00Z"),
+					Convention:       to.Ptr(armappservice.CookieExpirationConventionIdentityProviderDerived),
+					TimeToExpiration: to.Ptr("2022:09-01T00:00Z"),
 				},
 				Nonce: &armappservice.Nonce{
 					ValidateNonce: to.Ptr(true),
 				},
-				PreserveURLFragmentsForLogins:	to.Ptr(true),
+				PreserveURLFragmentsForLogins: to.Ptr(true),
 				Routes: &armappservice.LoginRoutes{
 					LogoutEndpoint: to.Ptr("https://app.com/logout"),
 				},
 				TokenStore: &armappservice.TokenStore{
-					Enabled:	to.Ptr(true),
+					Enabled: to.Ptr(true),
 					FileSystem: &armappservice.FileSystemTokenStore{
 						Directory: to.Ptr("/wwwroot/sites/example"),
 					},
-					TokenRefreshExtensionHours:	to.Ptr[float64](96),
+					TokenRefreshExtensionHours: to.Ptr[float64](96),
 				},
 			},
 			Platform: &armappservice.AuthPlatform{
-				ConfigFilePath:	to.Ptr("/auth/config.json"),
-				Enabled:	to.Ptr(true),
-				RuntimeVersion:	to.Ptr("~1"),
+				ConfigFilePath: to.Ptr("/auth/config.json"),
+				Enabled:        to.Ptr(true),
+				RuntimeVersion: to.Ptr("~1"),
 			},
 		},
 	}, nil)
@@ -5530,11 +5530,11 @@ func ExampleWebAppsClient_UpdateAzureStorageAccounts() {
 	res, err := clientFactory.NewWebAppsClient().UpdateAzureStorageAccounts(ctx, "testrg123", "sitef6141", armappservice.AzureStoragePropertyDictionaryResource{
 		Properties: map[string]*armappservice.AzureStorageInfoValue{
 			"account1": {
-				Type:		to.Ptr(armappservice.AzureStorageTypeAzureFiles),
-				AccessKey:	to.Ptr("26515^%@#*"),
-				AccountName:	to.Ptr("testsa"),
-				MountPath:	to.Ptr("/mounts/a/files"),
-				ShareName:	to.Ptr("web"),
+				Type:        to.Ptr(armappservice.AzureStorageTypeAzureFiles),
+				AccessKey:   to.Ptr("26515^%@#*"),
+				AccountName: to.Ptr("testsa"),
+				MountPath:   to.Ptr("/mounts/a/files"),
+				ShareName:   to.Ptr("web"),
 			},
 		},
 	}, nil)

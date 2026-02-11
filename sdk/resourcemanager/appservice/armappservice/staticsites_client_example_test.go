@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -26,9 +26,9 @@ func ExampleStaticSitesClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	poller, err := clientFactory.NewStaticSitesClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "rg", "testSite", "connection", armappservice.RemotePrivateEndpointConnectionARMResource{
 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-				Description:		to.Ptr("Approved by admin."),
-				ActionsRequired:	to.Ptr(""),
-				Status:			to.Ptr("Approved"),
+				Description:     to.Ptr("Approved by admin."),
+				ActionsRequired: to.Ptr(""),
+				Status:          to.Ptr("Approved"),
 			},
 		},
 	}, nil)
@@ -75,8 +75,8 @@ func ExampleStaticSitesClient_CreateOrUpdateBasicAuth() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateBasicAuth(ctx, "rg", "testStaticSite0", armappservice.BasicAuthNameDefault, armappservice.StaticSiteBasicAuthPropertiesARMResource{
 		Properties: &armappservice.StaticSiteBasicAuthPropertiesARMResourceProperties{
-			ApplicableEnvironmentsMode:	to.Ptr("AllEnvironments"),
-			Password:			to.Ptr("**********************"),
+			ApplicableEnvironmentsMode: to.Ptr("AllEnvironments"),
+			Password:                   to.Ptr("**********************"),
 		},
 	}, nil)
 	if err != nil {
@@ -109,10 +109,10 @@ func ExampleStaticSitesClient_CreateOrUpdateBuildDatabaseConnection() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateBuildDatabaseConnection(ctx, "rg", "testStaticSite0", "default", "default", armappservice.DatabaseConnection{
 		Properties: &armappservice.DatabaseConnectionProperties{
-			ConnectionIdentity:	to.Ptr("SystemAssigned"),
-			ConnectionString:	to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
-			Region:			to.Ptr("West US 2"),
-			ResourceID:		to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
+			ConnectionIdentity: to.Ptr("SystemAssigned"),
+			ConnectionString:   to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
+			Region:             to.Ptr("West US 2"),
+			ResourceID:         to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
 		},
 	}, nil)
 	if err != nil {
@@ -148,10 +148,10 @@ func ExampleStaticSitesClient_CreateOrUpdateDatabaseConnection() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateDatabaseConnection(ctx, "rg", "testStaticSite0", "default", armappservice.DatabaseConnection{
 		Properties: &armappservice.DatabaseConnectionProperties{
-			ConnectionIdentity:	to.Ptr("SystemAssigned"),
-			ConnectionString:	to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
-			Region:			to.Ptr("West US 2"),
-			ResourceID:		to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
+			ConnectionIdentity: to.Ptr("SystemAssigned"),
+			ConnectionString:   to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
+			Region:             to.Ptr("West US 2"),
+			ResourceID:         to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
 		},
 	}, nil)
 	if err != nil {
@@ -186,20 +186,20 @@ func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteARMResource{
-		Location:	to.Ptr("West US 2"),
+		Location: to.Ptr("West US 2"),
 		Properties: &armappservice.StaticSite{
-			Branch:	to.Ptr("master"),
+			Branch: to.Ptr("master"),
 			BuildProperties: &armappservice.StaticSiteBuildProperties{
-				APILocation:		to.Ptr("api"),
-				AppArtifactLocation:	to.Ptr("build"),
-				AppLocation:		to.Ptr("app"),
+				APILocation:         to.Ptr("api"),
+				AppArtifactLocation: to.Ptr("build"),
+				AppLocation:         to.Ptr("app"),
 			},
-			RepositoryToken:	to.Ptr("repoToken123"),
-			RepositoryURL:		to.Ptr("https://github.com/username/RepoName"),
+			RepositoryToken: to.Ptr("repoToken123"),
+			RepositoryURL:   to.Ptr("https://github.com/username/RepoName"),
 		},
 		SKU: &armappservice.SKUDescription{
-			Name:	to.Ptr("Basic"),
-			Tier:	to.Ptr("Basic"),
+			Name: to.Ptr("Basic"),
+			Tier: to.Ptr("Basic"),
 		},
 	}, nil)
 	if err != nil {
@@ -254,8 +254,8 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteAppSettings() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteAppSettings(ctx, "rg", "testStaticSite0", armappservice.StringDictionary{
 		Properties: map[string]*string{
-			"setting1":	to.Ptr("someval"),
-			"setting2":	to.Ptr("someval2"),
+			"setting1": to.Ptr("someval"),
+			"setting2": to.Ptr("someval2"),
 		},
 	}, nil)
 	if err != nil {
@@ -288,8 +288,8 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildAppSettings() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteBuildAppSettings(ctx, "rg", "testStaticSite0", "12", armappservice.StringDictionary{
 		Properties: map[string]*string{
-			"setting1":	to.Ptr("someval"),
-			"setting2":	to.Ptr("someval2"),
+			"setting1": to.Ptr("someval"),
+			"setting2": to.Ptr("someval2"),
 		},
 	}, nil)
 	if err != nil {
@@ -322,8 +322,8 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildFunctionAppSettings()
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteBuildFunctionAppSettings(ctx, "rg", "testStaticSite0", "12", armappservice.StringDictionary{
 		Properties: map[string]*string{
-			"setting1":	to.Ptr("someval"),
-			"setting2":	to.Ptr("someval2"),
+			"setting1": to.Ptr("someval"),
+			"setting2": to.Ptr("someval2"),
 		},
 	}, nil)
 	if err != nil {
@@ -391,8 +391,8 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteFunctionAppSettings() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateOrUpdateStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", armappservice.StringDictionary{
 		Properties: map[string]*string{
-			"setting1":	to.Ptr("someval"),
-			"setting2":	to.Ptr("someval2"),
+			"setting1": to.Ptr("someval"),
+			"setting2": to.Ptr("someval2"),
 		},
 	}, nil)
 	if err != nil {
@@ -425,11 +425,11 @@ func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().CreateUserRolesInvitationLink(ctx, "rg", "testStaticSite0", armappservice.StaticSiteUserInvitationRequestResource{
 		Properties: &armappservice.StaticSiteUserInvitationRequestResourceProperties{
-			Domain:			to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
-			NumHoursToExpiration:	to.Ptr[int32](1),
-			Provider:		to.Ptr("aad"),
-			Roles:			to.Ptr("admin,contributor"),
-			UserDetails:		to.Ptr("username"),
+			Domain:               to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
+			NumHoursToExpiration: to.Ptr[int32](1),
+			Provider:             to.Ptr("aad"),
+			Roles:                to.Ptr("admin,contributor"),
+			UserDetails:          to.Ptr("username"),
 		},
 	}, nil)
 	if err != nil {
@@ -461,11 +461,11 @@ func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSite() {
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteZipDeploymentARMResource{
 		Properties: &armappservice.StaticSiteZipDeployment{
-			APIZipURL:		to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
-			AppZipURL:		to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
-			DeploymentTitle:	to.Ptr("Update index.html"),
-			FunctionLanguage:	to.Ptr("testFunctionLanguage"),
-			Provider:		to.Ptr("testProvider"),
+			APIZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
+			AppZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
+			DeploymentTitle:  to.Ptr("Update index.html"),
+			FunctionLanguage: to.Ptr("testFunctionLanguage"),
+			Provider:         to.Ptr("testProvider"),
 		},
 	}, nil)
 	if err != nil {
@@ -495,11 +495,11 @@ func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSiteBuild() {
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", armappservice.StaticSiteZipDeploymentARMResource{
 		Properties: &armappservice.StaticSiteZipDeployment{
-			APIZipURL:		to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
-			AppZipURL:		to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
-			DeploymentTitle:	to.Ptr("Update index.html"),
-			FunctionLanguage:	to.Ptr("testFunctionLanguage"),
-			Provider:		to.Ptr("testProvider"),
+			APIZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
+			AppZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
+			DeploymentTitle:  to.Ptr("Update index.html"),
+			FunctionLanguage: to.Ptr("testFunctionLanguage"),
+			Provider:         to.Ptr("testProvider"),
 		},
 	}, nil)
 	if err != nil {
@@ -1801,8 +1801,8 @@ func ExampleStaticSitesClient_BeginLinkBackend() {
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID:	to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:			to.Ptr("West US 2"),
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
 		},
 	}, nil)
 	if err != nil {
@@ -1843,8 +1843,8 @@ func ExampleStaticSitesClient_BeginLinkBackendToBuild() {
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackendToBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID:	to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:			to.Ptr("West US 2"),
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
 		},
 	}, nil)
 	if err != nil {
@@ -2302,13 +2302,13 @@ func ExampleStaticSitesClient_PreviewWorkflow() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().PreviewWorkflow(ctx, "West US 2", armappservice.StaticSitesWorkflowPreviewRequest{
 		Properties: &armappservice.StaticSitesWorkflowPreviewRequestProperties{
-			Branch:	to.Ptr("master"),
+			Branch: to.Ptr("master"),
 			BuildProperties: &armappservice.StaticSiteBuildProperties{
-				APILocation:		to.Ptr("api"),
-				AppArtifactLocation:	to.Ptr("build"),
-				AppLocation:		to.Ptr("app"),
+				APILocation:         to.Ptr("api"),
+				AppArtifactLocation: to.Ptr("build"),
+				AppLocation:         to.Ptr("app"),
 			},
-			RepositoryURL:	to.Ptr("https://github.com/username/RepoName"),
+			RepositoryURL: to.Ptr("https://github.com/username/RepoName"),
 		},
 	}, nil)
 	if err != nil {
@@ -2340,8 +2340,8 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-			FunctionAppRegion:	to.Ptr("West US 2"),
-			FunctionAppResourceID:	to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+			FunctionAppRegion:     to.Ptr("West US 2"),
+			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 		},
 	}, &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{
 		IsForced: to.Ptr(true)})
@@ -2382,8 +2382,8 @@ func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-			FunctionAppRegion:	to.Ptr("West US 2"),
-			FunctionAppResourceID:	to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+			FunctionAppRegion:     to.Ptr("West US 2"),
+			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 		},
 	}, &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{
 		IsForced: to.Ptr(true)})
@@ -2424,8 +2424,8 @@ func ExampleStaticSitesClient_ResetStaticSiteAPIKey() {
 	}
 	res, err := clientFactory.NewStaticSitesClient().ResetStaticSiteAPIKey(ctx, "rg", "testStaticSite0", armappservice.StaticSiteResetPropertiesARMResource{
 		Properties: &armappservice.StaticSiteResetPropertiesARMResourceProperties{
-			RepositoryToken:	to.Ptr("repoToken123"),
-			ShouldUpdateRepository:	to.Ptr(true),
+			RepositoryToken:        to.Ptr("repoToken123"),
+			ShouldUpdateRepository: to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -2646,8 +2646,8 @@ func ExampleStaticSitesClient_BeginValidateBackend() {
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID:	to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:			to.Ptr("West US 2"),
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
 		},
 	}, nil)
 	if err != nil {
@@ -2672,8 +2672,8 @@ func ExampleStaticSitesClient_BeginValidateBackendForBuild() {
 	}
 	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID:	to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:			to.Ptr("West US 2"),
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
 		},
 	}, nil)
 	if err != nil {

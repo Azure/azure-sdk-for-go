@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -26,8 +26,8 @@ func ExampleEnvironmentsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	poller, err := clientFactory.NewEnvironmentsClient().BeginApproveOrRejectPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", armappservice.RemotePrivateEndpointConnectionARMResource{
 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-				Description:	to.Ptr("Approved by johndoe@company.com"),
-				Status:		to.Ptr("Approved"),
+				Description: to.Ptr("Approved by johndoe@company.com"),
+				Status:      to.Ptr("Approved"),
 			},
 		},
 	}, nil)
@@ -115,8 +115,8 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewEnvironmentsClient().BeginCreateOrUpdate(ctx, "test-rg", "test-ase", armappservice.EnvironmentResource{
-		Kind:		to.Ptr("Asev3"),
-		Location:	to.Ptr("South Central US"),
+		Kind:     to.Ptr("Asev3"),
+		Location: to.Ptr("South Central US"),
 		Properties: &armappservice.Environment{
 			VirtualNetwork: &armappservice.VirtualNetworkProfile{
 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/delegated"),
@@ -200,8 +200,8 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdateMultiRolePool() {
 	}
 	poller, err := clientFactory.NewEnvironmentsClient().BeginCreateOrUpdateMultiRolePool(ctx, "test-rg", "test-ase", armappservice.WorkerPoolResource{
 		Properties: &armappservice.WorkerPool{
-			WorkerCount:	to.Ptr[int32](3),
-			WorkerSize:	to.Ptr("Medium"),
+			WorkerCount: to.Ptr[int32](3),
+			WorkerSize:  to.Ptr("Medium"),
 		},
 	}, nil)
 	if err != nil {
@@ -233,8 +233,8 @@ func ExampleEnvironmentsClient_BeginCreateOrUpdateWorkerPool() {
 	}
 	poller, err := clientFactory.NewEnvironmentsClient().BeginCreateOrUpdateWorkerPool(ctx, "test-rg", "test-ase", "0", armappservice.WorkerPoolResource{
 		Properties: &armappservice.WorkerPool{
-			WorkerCount:	to.Ptr[int32](3),
-			WorkerSize:	to.Ptr("Small"),
+			WorkerCount: to.Ptr[int32](3),
+			WorkerSize:  to.Ptr("Small"),
 		},
 	}, nil)
 	if err != nil {
@@ -2891,7 +2891,7 @@ func ExampleEnvironmentsClient_Update() {
 	}
 	res, err := clientFactory.NewEnvironmentsClient().Update(ctx, "test-rg", "test-ase", armappservice.EnvironmentPatchResource{
 		Properties: &armappservice.Environment{
-			FrontEndScaleFactor:	to.Ptr[int32](20),
+			FrontEndScaleFactor: to.Ptr[int32](20),
 			VirtualNetwork: &armappservice.VirtualNetworkProfile{
 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-subnet/subnets/delegated"),
 			},
@@ -2970,9 +2970,9 @@ func ExampleEnvironmentsClient_UpdateAseCustomDNSSuffixConfiguration() {
 	}
 	res, err := clientFactory.NewEnvironmentsClient().UpdateAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", armappservice.CustomDNSSuffixConfiguration{
 		Properties: &armappservice.CustomDNSSuffixConfigurationProperties{
-			CertificateURL:			to.Ptr("https://test-kv.vault.azure.net/secrets/contosocert"),
-			DNSSuffix:			to.Ptr("contoso.com"),
-			KeyVaultReferenceIdentity:	to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/test-rg/providers/microsoft.managedidentity/userassignedidentities/test-user-mi"),
+			CertificateURL:            to.Ptr("https://test-kv.vault.azure.net/secrets/contosocert"),
+			DNSSuffix:                 to.Ptr("contoso.com"),
+			KeyVaultReferenceIdentity: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/test-rg/providers/microsoft.managedidentity/userassignedidentities/test-user-mi"),
 		},
 	}, nil)
 	if err != nil {
@@ -3009,8 +3009,8 @@ func ExampleEnvironmentsClient_UpdateAseNetworkingConfiguration() {
 	}
 	res, err := clientFactory.NewEnvironmentsClient().UpdateAseNetworkingConfiguration(ctx, "test-rg", "test-ase", armappservice.AseV3NetworkingConfiguration{
 		Properties: &armappservice.AseV3NetworkingConfigurationProperties{
-			FtpEnabled:		to.Ptr(true),
-			RemoteDebugEnabled:	to.Ptr(true),
+			FtpEnabled:         to.Ptr(true),
+			RemoteDebugEnabled: to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -3059,8 +3059,8 @@ func ExampleEnvironmentsClient_UpdateMultiRolePool() {
 	}
 	res, err := clientFactory.NewEnvironmentsClient().UpdateMultiRolePool(ctx, "test-rg", "test-ase", armappservice.WorkerPoolResource{
 		Properties: &armappservice.WorkerPool{
-			WorkerCount:	to.Ptr[int32](3),
-			WorkerSize:	to.Ptr("Medium"),
+			WorkerCount: to.Ptr[int32](3),
+			WorkerSize:  to.Ptr("Medium"),
 		},
 	}, nil)
 	if err != nil {
@@ -3088,8 +3088,8 @@ func ExampleEnvironmentsClient_UpdateWorkerPool() {
 	}
 	res, err := clientFactory.NewEnvironmentsClient().UpdateWorkerPool(ctx, "test-rg", "test-ase", "0", armappservice.WorkerPoolResource{
 		Properties: &armappservice.WorkerPool{
-			WorkerCount:	to.Ptr[int32](3),
-			WorkerSize:	to.Ptr("Small"),
+			WorkerCount: to.Ptr[int32](3),
+			WorkerSize:  to.Ptr("Small"),
 		},
 	}, nil)
 	if err != nil {

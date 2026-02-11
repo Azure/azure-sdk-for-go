@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,15 +23,15 @@ import (
 type WorkflowRunsServer struct {
 	// Cancel is the fake for method WorkflowRunsClient.Cancel
 	// HTTP status codes to indicate success: http.StatusOK
-	Cancel	func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *armappservice.WorkflowRunsClientCancelOptions) (resp azfake.Responder[armappservice.WorkflowRunsClientCancelResponse], errResp azfake.ErrorResponder)
+	Cancel func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *armappservice.WorkflowRunsClientCancelOptions) (resp azfake.Responder[armappservice.WorkflowRunsClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WorkflowRunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *armappservice.WorkflowRunsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowRunsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *armappservice.WorkflowRunsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowRunsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method WorkflowRunsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(resourceGroupName string, name string, workflowName string, options *armappservice.WorkflowRunsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunsClientListResponse])
+	NewListPager func(resourceGroupName string, name string, workflowName string, options *armappservice.WorkflowRunsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunsClientListResponse])
 }
 
 // NewWorkflowRunsServerTransport creates a new instance of WorkflowRunsServerTransport with the provided implementation.
@@ -39,16 +39,16 @@ type WorkflowRunsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkflowRunsServerTransport(srv *WorkflowRunsServer) *WorkflowRunsServerTransport {
 	return &WorkflowRunsServerTransport{
-		srv:		srv,
-		newListPager:	newTracker[azfake.PagerResponder[armappservice.WorkflowRunsClientListResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armappservice.WorkflowRunsClientListResponse]](),
 	}
 }
 
 // WorkflowRunsServerTransport connects instances of armappservice.WorkflowRunsClient to instances of WorkflowRunsServer.
 // Don't use this type directly, use NewWorkflowRunsServerTransport instead.
 type WorkflowRunsServerTransport struct {
-	srv		*WorkflowRunsServer
-	newListPager	*tracker[azfake.PagerResponder[armappservice.WorkflowRunsClientListResponse]]
+	srv          *WorkflowRunsServer
+	newListPager *tracker[azfake.PagerResponder[armappservice.WorkflowRunsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowRunsServerTransport.
@@ -228,8 +228,8 @@ func (w *WorkflowRunsServerTransport) dispatchNewListPager(req *http.Request) (*
 		var options *armappservice.WorkflowRunsClientListOptions
 		if topParam != nil || filterParam != nil {
 			options = &armappservice.WorkflowRunsClientListOptions{
-				Top:	topParam,
-				Filter:	filterParam,
+				Top:    topParam,
+				Filter: filterParam,
 			}
 		}
 		resp := w.srv.NewListPager(resourceGroupNameParam, nameParam, workflowNameParam, options)

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,91 +23,91 @@ import (
 type DiagnosticsServer struct {
 	// ExecuteSiteAnalysis is the fake for method DiagnosticsClient.ExecuteSiteAnalysis
 	// HTTP status codes to indicate success: http.StatusOK
-	ExecuteSiteAnalysis	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *armappservice.DiagnosticsClientExecuteSiteAnalysisOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteAnalysisResponse], errResp azfake.ErrorResponder)
+	ExecuteSiteAnalysis func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *armappservice.DiagnosticsClientExecuteSiteAnalysisOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteAnalysisResponse], errResp azfake.ErrorResponder)
 
 	// ExecuteSiteAnalysisSlot is the fake for method DiagnosticsClient.ExecuteSiteAnalysisSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ExecuteSiteAnalysisSlot	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteAnalysisSlotResponse], errResp azfake.ErrorResponder)
+	ExecuteSiteAnalysisSlot func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteAnalysisSlotResponse], errResp azfake.ErrorResponder)
 
 	// ExecuteSiteDetector is the fake for method DiagnosticsClient.ExecuteSiteDetector
 	// HTTP status codes to indicate success: http.StatusOK
-	ExecuteSiteDetector	func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *armappservice.DiagnosticsClientExecuteSiteDetectorOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteDetectorResponse], errResp azfake.ErrorResponder)
+	ExecuteSiteDetector func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, options *armappservice.DiagnosticsClientExecuteSiteDetectorOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteDetectorResponse], errResp azfake.ErrorResponder)
 
 	// ExecuteSiteDetectorSlot is the fake for method DiagnosticsClient.ExecuteSiteDetectorSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	ExecuteSiteDetectorSlot	func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteDetectorSlotResponse], errResp azfake.ErrorResponder)
+	ExecuteSiteDetectorSlot func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientExecuteSiteDetectorSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetHostingEnvironmentDetectorResponse is the fake for method DiagnosticsClient.GetHostingEnvironmentDetectorResponse
 	// HTTP status codes to indicate success: http.StatusOK
-	GetHostingEnvironmentDetectorResponse	func(ctx context.Context, resourceGroupName string, name string, detectorName string, options *armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse], errResp azfake.ErrorResponder)
+	GetHostingEnvironmentDetectorResponse func(ctx context.Context, resourceGroupName string, name string, detectorName string, options *armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteAnalysis is the fake for method DiagnosticsClient.GetSiteAnalysis
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteAnalysis	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *armappservice.DiagnosticsClientGetSiteAnalysisOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteAnalysisResponse], errResp azfake.ErrorResponder)
+	GetSiteAnalysis func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, options *armappservice.DiagnosticsClientGetSiteAnalysisOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteAnalysisResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteAnalysisSlot is the fake for method DiagnosticsClient.GetSiteAnalysisSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteAnalysisSlot	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *armappservice.DiagnosticsClientGetSiteAnalysisSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteAnalysisSlotResponse], errResp azfake.ErrorResponder)
+	GetSiteAnalysisSlot func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, analysisName string, slot string, options *armappservice.DiagnosticsClientGetSiteAnalysisSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteAnalysisSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteDetector is the fake for method DiagnosticsClient.GetSiteDetector
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteDetector	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *armappservice.DiagnosticsClientGetSiteDetectorOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorResponse], errResp azfake.ErrorResponder)
+	GetSiteDetector func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, options *armappservice.DiagnosticsClientGetSiteDetectorOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteDetectorResponse is the fake for method DiagnosticsClient.GetSiteDetectorResponse
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteDetectorResponse	func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *armappservice.DiagnosticsClientGetSiteDetectorResponseOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorResponseResponse], errResp azfake.ErrorResponder)
+	GetSiteDetectorResponse func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, options *armappservice.DiagnosticsClientGetSiteDetectorResponseOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorResponseResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteDetectorResponseSlot is the fake for method DiagnosticsClient.GetSiteDetectorResponseSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteDetectorResponseSlot	func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorResponseSlotResponse], errResp azfake.ErrorResponder)
+	GetSiteDetectorResponseSlot func(ctx context.Context, resourceGroupName string, siteName string, detectorName string, slot string, options *armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorResponseSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteDetectorSlot is the fake for method DiagnosticsClient.GetSiteDetectorSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteDetectorSlot	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *armappservice.DiagnosticsClientGetSiteDetectorSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorSlotResponse], errResp azfake.ErrorResponder)
+	GetSiteDetectorSlot func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, detectorName string, slot string, options *armappservice.DiagnosticsClientGetSiteDetectorSlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDetectorSlotResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteDiagnosticCategory is the fake for method DiagnosticsClient.GetSiteDiagnosticCategory
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteDiagnosticCategory	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *armappservice.DiagnosticsClientGetSiteDiagnosticCategoryOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDiagnosticCategoryResponse], errResp azfake.ErrorResponder)
+	GetSiteDiagnosticCategory func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, options *armappservice.DiagnosticsClientGetSiteDiagnosticCategoryOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDiagnosticCategoryResponse], errResp azfake.ErrorResponder)
 
 	// GetSiteDiagnosticCategorySlot is the fake for method DiagnosticsClient.GetSiteDiagnosticCategorySlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetSiteDiagnosticCategorySlot	func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientGetSiteDiagnosticCategorySlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDiagnosticCategorySlotResponse], errResp azfake.ErrorResponder)
+	GetSiteDiagnosticCategorySlot func(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientGetSiteDiagnosticCategorySlotOptions) (resp azfake.Responder[armappservice.DiagnosticsClientGetSiteDiagnosticCategorySlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListHostingEnvironmentDetectorResponsesPager is the fake for method DiagnosticsClient.NewListHostingEnvironmentDetectorResponsesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListHostingEnvironmentDetectorResponsesPager	func(resourceGroupName string, name string, options *armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse])
+	NewListHostingEnvironmentDetectorResponsesPager func(resourceGroupName string, name string, options *armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse])
 
 	// NewListSiteAnalysesPager is the fake for method DiagnosticsClient.NewListSiteAnalysesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteAnalysesPager	func(resourceGroupName string, siteName string, diagnosticCategory string, options *armappservice.DiagnosticsClientListSiteAnalysesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesResponse])
+	NewListSiteAnalysesPager func(resourceGroupName string, siteName string, diagnosticCategory string, options *armappservice.DiagnosticsClientListSiteAnalysesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesResponse])
 
 	// NewListSiteAnalysesSlotPager is the fake for method DiagnosticsClient.NewListSiteAnalysesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteAnalysesSlotPager	func(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientListSiteAnalysesSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesSlotResponse])
+	NewListSiteAnalysesSlotPager func(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientListSiteAnalysesSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesSlotResponse])
 
 	// NewListSiteDetectorResponsesPager is the fake for method DiagnosticsClient.NewListSiteDetectorResponsesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteDetectorResponsesPager	func(resourceGroupName string, siteName string, options *armappservice.DiagnosticsClientListSiteDetectorResponsesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesResponse])
+	NewListSiteDetectorResponsesPager func(resourceGroupName string, siteName string, options *armappservice.DiagnosticsClientListSiteDetectorResponsesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesResponse])
 
 	// NewListSiteDetectorResponsesSlotPager is the fake for method DiagnosticsClient.NewListSiteDetectorResponsesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteDetectorResponsesSlotPager	func(resourceGroupName string, siteName string, slot string, options *armappservice.DiagnosticsClientListSiteDetectorResponsesSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesSlotResponse])
+	NewListSiteDetectorResponsesSlotPager func(resourceGroupName string, siteName string, slot string, options *armappservice.DiagnosticsClientListSiteDetectorResponsesSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesSlotResponse])
 
 	// NewListSiteDetectorsPager is the fake for method DiagnosticsClient.NewListSiteDetectorsPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteDetectorsPager	func(resourceGroupName string, siteName string, diagnosticCategory string, options *armappservice.DiagnosticsClientListSiteDetectorsOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsResponse])
+	NewListSiteDetectorsPager func(resourceGroupName string, siteName string, diagnosticCategory string, options *armappservice.DiagnosticsClientListSiteDetectorsOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsResponse])
 
 	// NewListSiteDetectorsSlotPager is the fake for method DiagnosticsClient.NewListSiteDetectorsSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteDetectorsSlotPager	func(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientListSiteDetectorsSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsSlotResponse])
+	NewListSiteDetectorsSlotPager func(resourceGroupName string, siteName string, diagnosticCategory string, slot string, options *armappservice.DiagnosticsClientListSiteDetectorsSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsSlotResponse])
 
 	// NewListSiteDiagnosticCategoriesPager is the fake for method DiagnosticsClient.NewListSiteDiagnosticCategoriesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteDiagnosticCategoriesPager	func(resourceGroupName string, siteName string, options *armappservice.DiagnosticsClientListSiteDiagnosticCategoriesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesResponse])
+	NewListSiteDiagnosticCategoriesPager func(resourceGroupName string, siteName string, options *armappservice.DiagnosticsClientListSiteDiagnosticCategoriesOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesResponse])
 
 	// NewListSiteDiagnosticCategoriesSlotPager is the fake for method DiagnosticsClient.NewListSiteDiagnosticCategoriesSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListSiteDiagnosticCategoriesSlotPager	func(resourceGroupName string, siteName string, slot string, options *armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse])
+	NewListSiteDiagnosticCategoriesSlotPager func(resourceGroupName string, siteName string, slot string, options *armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) (resp azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse])
 }
 
 // NewDiagnosticsServerTransport creates a new instance of DiagnosticsServerTransport with the provided implementation.
@@ -115,32 +115,32 @@ type DiagnosticsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDiagnosticsServerTransport(srv *DiagnosticsServer) *DiagnosticsServerTransport {
 	return &DiagnosticsServerTransport{
-		srv:	srv,
-		newListHostingEnvironmentDetectorResponsesPager:	newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]](),
-		newListSiteAnalysesPager:				newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesResponse]](),
-		newListSiteAnalysesSlotPager:				newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesSlotResponse]](),
-		newListSiteDetectorResponsesPager:			newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesResponse]](),
-		newListSiteDetectorResponsesSlotPager:			newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesSlotResponse]](),
-		newListSiteDetectorsPager:				newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsResponse]](),
-		newListSiteDetectorsSlotPager:				newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsSlotResponse]](),
-		newListSiteDiagnosticCategoriesPager:			newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesResponse]](),
-		newListSiteDiagnosticCategoriesSlotPager:		newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]](),
+		srv: srv,
+		newListHostingEnvironmentDetectorResponsesPager: newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]](),
+		newListSiteAnalysesPager:                        newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesResponse]](),
+		newListSiteAnalysesSlotPager:                    newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesSlotResponse]](),
+		newListSiteDetectorResponsesPager:               newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesResponse]](),
+		newListSiteDetectorResponsesSlotPager:           newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesSlotResponse]](),
+		newListSiteDetectorsPager:                       newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsResponse]](),
+		newListSiteDetectorsSlotPager:                   newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsSlotResponse]](),
+		newListSiteDiagnosticCategoriesPager:            newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesResponse]](),
+		newListSiteDiagnosticCategoriesSlotPager:        newTracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]](),
 	}
 }
 
 // DiagnosticsServerTransport connects instances of armappservice.DiagnosticsClient to instances of DiagnosticsServer.
 // Don't use this type directly, use NewDiagnosticsServerTransport instead.
 type DiagnosticsServerTransport struct {
-	srv						*DiagnosticsServer
-	newListHostingEnvironmentDetectorResponsesPager	*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]]
-	newListSiteAnalysesPager			*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesResponse]]
-	newListSiteAnalysesSlotPager			*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesSlotResponse]]
-	newListSiteDetectorResponsesPager		*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesResponse]]
-	newListSiteDetectorResponsesSlotPager		*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesSlotResponse]]
-	newListSiteDetectorsPager			*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsResponse]]
-	newListSiteDetectorsSlotPager			*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsSlotResponse]]
-	newListSiteDiagnosticCategoriesPager		*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesResponse]]
-	newListSiteDiagnosticCategoriesSlotPager	*tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]]
+	srv                                             *DiagnosticsServer
+	newListHostingEnvironmentDetectorResponsesPager *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse]]
+	newListSiteAnalysesPager                        *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesResponse]]
+	newListSiteAnalysesSlotPager                    *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteAnalysesSlotResponse]]
+	newListSiteDetectorResponsesPager               *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesResponse]]
+	newListSiteDetectorResponsesSlotPager           *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorResponsesSlotResponse]]
+	newListSiteDetectorsPager                       *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsResponse]]
+	newListSiteDetectorsSlotPager                   *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDetectorsSlotResponse]]
+	newListSiteDiagnosticCategoriesPager            *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesResponse]]
+	newListSiteDiagnosticCategoriesSlotPager        *tracker[azfake.PagerResponder[armappservice.DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiagnosticsServerTransport.
@@ -280,9 +280,9 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysis(req *http.Reque
 	var options *armappservice.DiagnosticsClientExecuteSiteAnalysisOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteAnalysisOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.ExecuteSiteAnalysis(req.Context(), resourceGroupNameParam, siteNameParam, diagnosticCategoryParam, analysisNameParam, options)
@@ -355,9 +355,9 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteAnalysisSlot(req *http.R
 	var options *armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteAnalysisSlotOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.ExecuteSiteAnalysisSlot(req.Context(), resourceGroupNameParam, siteNameParam, diagnosticCategoryParam, analysisNameParam, slotParam, options)
@@ -426,9 +426,9 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetector(req *http.Reque
 	var options *armappservice.DiagnosticsClientExecuteSiteDetectorOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteDetectorOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.ExecuteSiteDetector(req.Context(), resourceGroupNameParam, siteNameParam, detectorNameParam, diagnosticCategoryParam, options)
@@ -501,9 +501,9 @@ func (d *DiagnosticsServerTransport) dispatchExecuteSiteDetectorSlot(req *http.R
 	var options *armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientExecuteSiteDetectorSlotOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.ExecuteSiteDetectorSlot(req.Context(), resourceGroupNameParam, siteNameParam, detectorNameParam, diagnosticCategoryParam, slotParam, options)
@@ -568,9 +568,9 @@ func (d *DiagnosticsServerTransport) dispatchGetHostingEnvironmentDetectorRespon
 	var options *armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientGetHostingEnvironmentDetectorResponseOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.GetHostingEnvironmentDetectorResponse(req.Context(), resourceGroupNameParam, nameParam, detectorNameParam, options)
@@ -762,9 +762,9 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponse(req *http.R
 	var options *armappservice.DiagnosticsClientGetSiteDetectorResponseOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientGetSiteDetectorResponseOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.GetSiteDetectorResponse(req.Context(), resourceGroupNameParam, siteNameParam, detectorNameParam, options)
@@ -833,9 +833,9 @@ func (d *DiagnosticsServerTransport) dispatchGetSiteDetectorResponseSlot(req *ht
 	var options *armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions
 	if startTimeParam != nil || endTimeParam != nil || timeGrainParam != nil {
 		options = &armappservice.DiagnosticsClientGetSiteDetectorResponseSlotOptions{
-			StartTime:	startTimeParam,
-			EndTime:	endTimeParam,
-			TimeGrain:	timeGrainParam,
+			StartTime: startTimeParam,
+			EndTime:   endTimeParam,
+			TimeGrain: timeGrainParam,
 		}
 	}
 	respr, errRespr := d.srv.GetSiteDetectorResponseSlot(req.Context(), resourceGroupNameParam, siteNameParam, detectorNameParam, slotParam, options)

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,27 +22,27 @@ import (
 type CertificatesServer struct {
 	// CreateOrUpdate is the fake for method CertificatesClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK
-	CreateOrUpdate	func(ctx context.Context, resourceGroupName string, name string, certificateEnvelope armappservice.AppCertificate, options *armappservice.CertificatesClientCreateOrUpdateOptions) (resp azfake.Responder[armappservice.CertificatesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, certificateEnvelope armappservice.AppCertificate, options *armappservice.CertificatesClientCreateOrUpdateOptions) (resp azfake.Responder[armappservice.CertificatesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method CertificatesClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.CertificatesClientDeleteOptions) (resp azfake.Responder[armappservice.CertificatesClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, name string, options *armappservice.CertificatesClientDeleteOptions) (resp azfake.Responder[armappservice.CertificatesClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method CertificatesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.CertificatesClientGetOptions) (resp azfake.Responder[armappservice.CertificatesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, options *armappservice.CertificatesClientGetOptions) (resp azfake.Responder[armappservice.CertificatesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method CertificatesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armappservice.CertificatesClientListOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListResponse])
+	NewListPager func(options *armappservice.CertificatesClientListOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method CertificatesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armappservice.CertificatesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.CertificatesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse])
 
 	// Update is the fake for method CertificatesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update	func(ctx context.Context, resourceGroupName string, name string, certificateEnvelope armappservice.AppCertificatePatchResource, options *armappservice.CertificatesClientUpdateOptions) (resp azfake.Responder[armappservice.CertificatesClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, name string, certificateEnvelope armappservice.AppCertificatePatchResource, options *armappservice.CertificatesClientUpdateOptions) (resp azfake.Responder[armappservice.CertificatesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCertificatesServerTransport creates a new instance of CertificatesServerTransport with the provided implementation.
@@ -50,18 +50,18 @@ type CertificatesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewCertificatesServerTransport(srv *CertificatesServer) *CertificatesServerTransport {
 	return &CertificatesServerTransport{
-		srv:				srv,
-		newListPager:			newTracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse]](),
+		srv:                         srv,
+		newListPager:                newTracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse]](),
 	}
 }
 
 // CertificatesServerTransport connects instances of armappservice.CertificatesClient to instances of CertificatesServer.
 // Don't use this type directly, use NewCertificatesServerTransport instead.
 type CertificatesServerTransport struct {
-	srv				*CertificatesServer
-	newListPager			*tracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse]]
+	srv                         *CertificatesServer
+	newListPager                *tracker[azfake.PagerResponder[armappservice.CertificatesClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.CertificatesClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for CertificatesServerTransport.

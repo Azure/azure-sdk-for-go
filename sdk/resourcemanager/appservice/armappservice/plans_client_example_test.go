@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"log"
 )
 
@@ -24,15 +24,15 @@ func ExamplePlansClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewPlansClient().BeginCreateOrUpdate(ctx, "testrg123", "testsf6141", armappservice.Plan{
-		Kind:		to.Ptr("app"),
-		Location:	to.Ptr("East US"),
-		Properties:	&armappservice.PlanProperties{},
+		Kind:       to.Ptr("app"),
+		Location:   to.Ptr("East US"),
+		Properties: &armappservice.PlanProperties{},
 		SKU: &armappservice.SKUDescription{
-			Name:		to.Ptr("P1"),
-			Capacity:	to.Ptr[int32](1),
-			Family:		to.Ptr("P"),
-			Size:		to.Ptr("P1"),
-			Tier:		to.Ptr("Premium"),
+			Name:     to.Ptr("P1"),
+			Capacity: to.Ptr[int32](1),
+			Family:   to.Ptr("P"),
+			Size:     to.Ptr("P1"),
+			Tier:     to.Ptr("Premium"),
 		},
 	}, nil)
 	if err != nil {
@@ -322,8 +322,8 @@ func ExamplePlansClient_Update() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewPlansClient().Update(ctx, "testrg123", "testsf6141", armappservice.PlanPatchResource{
-		Kind:		to.Ptr("app"),
-		Properties:	&armappservice.PlanPatchResourceProperties{},
+		Kind:       to.Ptr("app"),
+		Properties: &armappservice.PlanPatchResourceProperties{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

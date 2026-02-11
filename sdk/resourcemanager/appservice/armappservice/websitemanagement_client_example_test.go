@@ -198,9 +198,9 @@ func ExampleWebSiteManagementClient_VerifyHostingEnvironmentVnet() {
 	}
 	res, err := clientFactory.NewWebSiteManagementClient().VerifyHostingEnvironmentVnet(ctx, armappservice.VnetParameters{
 		Properties: &armappservice.VnetParametersProperties{
-			VnetName:		to.Ptr("vNet123"),
-			VnetResourceGroup:	to.Ptr("vNet123rg"),
-			VnetSubnetName:		to.Ptr("vNet123SubNet"),
+			VnetName:          to.Ptr("vNet123"),
+			VnetResourceGroup: to.Ptr("vNet123rg"),
+			VnetSubnetName:    to.Ptr("vNet123SubNet"),
 		},
 	}, nil)
 	if err != nil {

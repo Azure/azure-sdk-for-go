@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,27 +22,27 @@ import (
 type KubeEnvironmentsServer struct {
 	// BeginCreateOrUpdate is the fake for method KubeEnvironmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate	func(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope armappservice.KubeEnvironment, options *armappservice.KubeEnvironmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappservice.KubeEnvironmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope armappservice.KubeEnvironment, options *armappservice.KubeEnvironmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappservice.KubeEnvironmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method KubeEnvironmentsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.KubeEnvironmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappservice.KubeEnvironmentsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, name string, options *armappservice.KubeEnvironmentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armappservice.KubeEnvironmentsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method KubeEnvironmentsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.KubeEnvironmentsClientGetOptions) (resp azfake.Responder[armappservice.KubeEnvironmentsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, options *armappservice.KubeEnvironmentsClientGetOptions) (resp azfake.Responder[armappservice.KubeEnvironmentsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListByResourceGroupPager is the fake for method KubeEnvironmentsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armappservice.KubeEnvironmentsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.KubeEnvironmentsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.KubeEnvironmentsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.KubeEnvironmentsClientListByResourceGroupResponse])
 
 	// NewListBySubscriptionPager is the fake for method KubeEnvironmentsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager	func(options *armappservice.KubeEnvironmentsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappservice.KubeEnvironmentsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(options *armappservice.KubeEnvironmentsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappservice.KubeEnvironmentsClientListBySubscriptionResponse])
 
 	// Update is the fake for method KubeEnvironmentsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Update	func(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope armappservice.KubeEnvironmentPatchResource, options *armappservice.KubeEnvironmentsClientUpdateOptions) (resp azfake.Responder[armappservice.KubeEnvironmentsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope armappservice.KubeEnvironmentPatchResource, options *armappservice.KubeEnvironmentsClientUpdateOptions) (resp azfake.Responder[armappservice.KubeEnvironmentsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewKubeEnvironmentsServerTransport creates a new instance of KubeEnvironmentsServerTransport with the provided implementation.
@@ -50,22 +50,22 @@ type KubeEnvironmentsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewKubeEnvironmentsServerTransport(srv *KubeEnvironmentsServer) *KubeEnvironmentsServerTransport {
 	return &KubeEnvironmentsServerTransport{
-		srv:				srv,
-		beginCreateOrUpdate:		newTracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientCreateOrUpdateResponse]](),
-		beginDelete:			newTracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientDeleteResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:	newTracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListBySubscriptionResponse]](),
+		srv:                         srv,
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientDeleteResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListBySubscriptionResponse]](),
 	}
 }
 
 // KubeEnvironmentsServerTransport connects instances of armappservice.KubeEnvironmentsClient to instances of KubeEnvironmentsServer.
 // Don't use this type directly, use NewKubeEnvironmentsServerTransport instead.
 type KubeEnvironmentsServerTransport struct {
-	srv				*KubeEnvironmentsServer
-	beginCreateOrUpdate		*tracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientCreateOrUpdateResponse]]
-	beginDelete			*tracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientDeleteResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager	*tracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListBySubscriptionResponse]]
+	srv                         *KubeEnvironmentsServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armappservice.KubeEnvironmentsClientDeleteResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappservice.KubeEnvironmentsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for KubeEnvironmentsServerTransport.

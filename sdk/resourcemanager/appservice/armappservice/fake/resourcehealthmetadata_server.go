@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v5"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -22,27 +22,27 @@ import (
 type ResourceHealthMetadataServer struct {
 	// GetBySite is the fake for method ResourceHealthMetadataClient.GetBySite
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBySite	func(ctx context.Context, resourceGroupName string, name string, options *armappservice.ResourceHealthMetadataClientGetBySiteOptions) (resp azfake.Responder[armappservice.ResourceHealthMetadataClientGetBySiteResponse], errResp azfake.ErrorResponder)
+	GetBySite func(ctx context.Context, resourceGroupName string, name string, options *armappservice.ResourceHealthMetadataClientGetBySiteOptions) (resp azfake.Responder[armappservice.ResourceHealthMetadataClientGetBySiteResponse], errResp azfake.ErrorResponder)
 
 	// GetBySiteSlot is the fake for method ResourceHealthMetadataClient.GetBySiteSlot
 	// HTTP status codes to indicate success: http.StatusOK
-	GetBySiteSlot	func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.ResourceHealthMetadataClientGetBySiteSlotOptions) (resp azfake.Responder[armappservice.ResourceHealthMetadataClientGetBySiteSlotResponse], errResp azfake.ErrorResponder)
+	GetBySiteSlot func(ctx context.Context, resourceGroupName string, name string, slot string, options *armappservice.ResourceHealthMetadataClientGetBySiteSlotOptions) (resp azfake.Responder[armappservice.ResourceHealthMetadataClientGetBySiteSlotResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method ResourceHealthMetadataClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager	func(options *armappservice.ResourceHealthMetadataClientListOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse])
+	NewListPager func(options *armappservice.ResourceHealthMetadataClientListOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ResourceHealthMetadataClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager	func(resourceGroupName string, options *armappservice.ResourceHealthMetadataClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.ResourceHealthMetadataClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse])
 
 	// NewListBySitePager is the fake for method ResourceHealthMetadataClient.NewListBySitePager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySitePager	func(resourceGroupName string, name string, options *armappservice.ResourceHealthMetadataClientListBySiteOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse])
+	NewListBySitePager func(resourceGroupName string, name string, options *armappservice.ResourceHealthMetadataClientListBySiteOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse])
 
 	// NewListBySiteSlotPager is the fake for method ResourceHealthMetadataClient.NewListBySiteSlotPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySiteSlotPager	func(resourceGroupName string, name string, slot string, options *armappservice.ResourceHealthMetadataClientListBySiteSlotOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse])
+	NewListBySiteSlotPager func(resourceGroupName string, name string, slot string, options *armappservice.ResourceHealthMetadataClientListBySiteSlotOptions) (resp azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse])
 }
 
 // NewResourceHealthMetadataServerTransport creates a new instance of ResourceHealthMetadataServerTransport with the provided implementation.
@@ -50,22 +50,22 @@ type ResourceHealthMetadataServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResourceHealthMetadataServerTransport(srv *ResourceHealthMetadataServer) *ResourceHealthMetadataServerTransport {
 	return &ResourceHealthMetadataServerTransport{
-		srv:				srv,
-		newListPager:			newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]](),
-		newListByResourceGroupPager:	newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse]](),
-		newListBySitePager:		newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse]](),
-		newListBySiteSlotPager:		newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse]](),
+		srv:                         srv,
+		newListPager:                newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse]](),
+		newListBySitePager:          newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse]](),
+		newListBySiteSlotPager:      newTracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse]](),
 	}
 }
 
 // ResourceHealthMetadataServerTransport connects instances of armappservice.ResourceHealthMetadataClient to instances of ResourceHealthMetadataServer.
 // Don't use this type directly, use NewResourceHealthMetadataServerTransport instead.
 type ResourceHealthMetadataServerTransport struct {
-	srv				*ResourceHealthMetadataServer
-	newListPager			*tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]]
-	newListByResourceGroupPager	*tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse]]
-	newListBySitePager		*tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse]]
-	newListBySiteSlotPager		*tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse]]
+	srv                         *ResourceHealthMetadataServer
+	newListPager                *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListByResourceGroupResponse]]
+	newListBySitePager          *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteResponse]]
+	newListBySiteSlotPager      *tracker[azfake.PagerResponder[armappservice.ResourceHealthMetadataClientListBySiteSlotResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceHealthMetadataServerTransport.

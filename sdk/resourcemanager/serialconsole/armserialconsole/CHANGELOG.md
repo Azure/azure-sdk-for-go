@@ -1,5 +1,38 @@
 # Release History
 
+## 2.0.0 (2026-02-11)
+### Breaking Changes
+
+- Function `*SerialPortsClient.Delete` has been removed
+- Struct `GetSerialConsoleSubscriptionNotFound` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Field `Disabled` of struct `DisableSerialConsoleResult` has been removed
+- Field `Disabled` of struct `EnableSerialConsoleResult` has been removed
+- Field `Value` of struct `MicrosoftSerialConsoleClientDisableConsoleResponse` has been removed
+- Field `Value` of struct `MicrosoftSerialConsoleClientEnableConsoleResponse` has been removed
+- Field `Value` of struct `MicrosoftSerialConsoleClientGetConsoleStatusResponse` has been removed
+- Field `Disabled` of struct `Status` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `SerialPortConnectionState` with values `SerialPortConnectionStateActive`, `SerialPortConnectionStateInactive`
+- New function `*MicrosoftSerialConsoleClient.NewSerialPortsClient() *SerialPortsClient`
+- New struct `DisableSerialConsoleResultProperties`
+- New struct `EnableSerialConsoleResultProperties`
+- New struct `StatusProperties`
+- New struct `SystemData`
+- New field `Properties` in struct `DisableSerialConsoleResult`
+- New field `Properties` in struct `EnableSerialConsoleResult`
+- New anonymous field `DisableSerialConsoleResult` in struct `MicrosoftSerialConsoleClientDisableConsoleResponse`
+- New anonymous field `EnableSerialConsoleResult` in struct `MicrosoftSerialConsoleClientEnableConsoleResponse`
+- New anonymous field `Status` in struct `MicrosoftSerialConsoleClientGetConsoleStatusResponse`
+- New field `SystemData` in struct `SerialPort`
+- New field `ConnectionState` in struct `SerialPortProperties`
+- New field `Properties` in struct `Status`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

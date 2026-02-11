@@ -108,9 +108,7 @@ func (pk *PartitionKey) toJsonString() (string, error) {
 // this partition key value.
 func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) epk.EffectivePartitionKey {
 	values := make([]interface{}, len(pk.values))
-	for i, v := range pk.values {
-		values[i] = v
-	}
+	copy(values, pk.values)
 
 	// Empty values → undefined partition key
 	if len(values) == 0 {

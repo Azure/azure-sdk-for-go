@@ -12,10 +12,10 @@ import (
 func TestQueryBuilder_IDPartitionKey_Simple(t *testing.T) {
 	qb := queryBuilder{}
 	pkDef := PartitionKeyDefinition{Paths: []string{"/id"}}
-	items := []indexedItem{
-		{id: "a", pk: NewPartitionKeyString("a")},
-		{id: "b", pk: NewPartitionKeyString("b")},
-		{id: "c", pk: NewPartitionKeyString("c")},
+	items := []ItemIdentity{
+		{ID: "a", PartitionKey: NewPartitionKeyString("a")},
+		{ID: "b", PartitionKey: NewPartitionKeyString("b")},
+		{ID: "c", PartitionKey: NewPartitionKeyString("c")},
 	}
 
 	require.True(t, qb.isIDPartitionKeyQuery(items, pkDef))
@@ -23,65 +23,76 @@ func TestQueryBuilder_IDPartitionKey_Simple(t *testing.T) {
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	require.Equal(t, "SELECT * FROM c WHERE c.id IN (@param_id0, @param_id1, @param_id2)", query)
 	require.Len(t, params, 3)
-	require.Equal(t, "@param_id0", params[0].Name)
-	require.Equal(t, "a", params[0].Value)
-	require.Equal(t, "@param_id1", params[1].Name)
-	require.Equal(t, "b", params[1].Value)
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "a"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "b"}, params[1])
+	require.Equal(t, QueryParameter{Name: "@param_id2", Value: "c"}, params[2])
 }
 
 func TestQueryBuilder_IDPartitionKey_Mismatch(t *testing.T) {
 	qb := queryBuilder{}
 	pkDef := PartitionKeyDefinition{Paths: []string{"/id"}}
-	items := []indexedItem{
-		{id: "a", pk: NewPartitionKeyString("a")},
-		{id: "b", pk: NewPartitionKeyString("different")},
+	items := []ItemIdentity{
+		{ID: "a", PartitionKey: NewPartitionKeyString("a")},
+		{ID: "b", PartitionKey: NewPartitionKeyString("different")},
 	}
 
 	require.False(t, qb.isIDPartitionKeyQuery(items, pkDef))
 
 	// Falls through to OR-of-conjunctions since PKs differ
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
-	require.Contains(t, query, "OR")
-	require.Len(t, params, 4) // 2 ids + 2 pks
+	require.Equal(t, "SELECT * FROM c WHERE (c.id = @param_id0 AND c.id = @param_pk00) OR (c.id = @param_id1 AND c.id = @param_pk10)", query)
+	require.Len(t, params, 4)
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "a"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_pk00", Value: "a"}, params[1])
+	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "b"}, params[2])
+	require.Equal(t, QueryParameter{Name: "@param_pk10", Value: "different"}, params[3])
 }
 
 func TestQueryBuilder_SingleLogicalPartition(t *testing.T) {
 	qb := queryBuilder{}
 	pkDef := PartitionKeyDefinition{Paths: []string{"/myPk"}}
-	items := []indexedItem{
-		{id: "1", pk: NewPartitionKeyString("samePK")},
-		{id: "2", pk: NewPartitionKeyString("samePK")},
-		{id: "3", pk: NewPartitionKeyString("samePK")},
-		{id: "4", pk: NewPartitionKeyString("samePK")},
-		{id: "5", pk: NewPartitionKeyString("samePK")},
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: NewPartitionKeyString("samePK")},
+		{ID: "2", PartitionKey: NewPartitionKeyString("samePK")},
+		{ID: "3", PartitionKey: NewPartitionKeyString("samePK")},
+		{ID: "4", PartitionKey: NewPartitionKeyString("samePK")},
+		{ID: "5", PartitionKey: NewPartitionKeyString("samePK")},
 	}
 
 	require.True(t, qb.isSingleLogicalPartitionQuery(items))
 
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	require.Equal(t, "SELECT * FROM c WHERE c.myPk = @pk0 AND c.id IN (@param_id0, @param_id1, @param_id2, @param_id3, @param_id4)", query)
-	require.Len(t, params, 6) // 1 pk + 5 ids
-	require.Equal(t, "@pk0", params[0].Name)
-	require.Equal(t, "samePK", params[0].Value)
+	require.Len(t, params, 6)
+	require.Equal(t, QueryParameter{Name: "@pk0", Value: "samePK"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "1"}, params[1])
+	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "2"}, params[2])
+	require.Equal(t, QueryParameter{Name: "@param_id2", Value: "3"}, params[3])
+	require.Equal(t, QueryParameter{Name: "@param_id3", Value: "4"}, params[4])
+	require.Equal(t, QueryParameter{Name: "@param_id4", Value: "5"}, params[5])
 }
 
 func TestQueryBuilder_MultipleLogicalPartitions(t *testing.T) {
 	qb := queryBuilder{}
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
-	items := []indexedItem{
-		{id: "1", pk: NewPartitionKeyString("pkA")},
-		{id: "2", pk: NewPartitionKeyString("pkB")},
-		{id: "3", pk: NewPartitionKeyString("pkA")},
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: NewPartitionKeyString("pkA")},
+		{ID: "2", PartitionKey: NewPartitionKeyString("pkB")},
+		{ID: "3", PartitionKey: NewPartitionKeyString("pkA")},
 	}
 
 	require.False(t, qb.isIDPartitionKeyQuery(items, pkDef))
 	require.False(t, qb.isSingleLogicalPartitionQuery(items))
 
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
-	require.Contains(t, query, "OR")
-	require.Contains(t, query, "c.id = @param_id0")
-	require.Contains(t, query, "c.pk = @param_pk00")
-	require.Len(t, params, 6) // 3 ids + 3 pks
+	require.Equal(t, "SELECT * FROM c WHERE (c.id = @param_id0 AND c.pk = @param_pk00) OR (c.id = @param_id1 AND c.pk = @param_pk10) OR (c.id = @param_id2 AND c.pk = @param_pk20)", query)
+	require.Len(t, params, 6)
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "1"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_pk00", Value: "pkA"}, params[1])
+	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "2"}, params[2])
+	require.Equal(t, QueryParameter{Name: "@param_pk10", Value: "pkB"}, params[3])
+	require.Equal(t, QueryParameter{Name: "@param_id2", Value: "3"}, params[4])
+	require.Equal(t, QueryParameter{Name: "@param_pk20", Value: "pkA"}, params[5])
 }
 
 func TestQueryBuilder_NestedPKPath(t *testing.T) {
@@ -99,17 +110,17 @@ func TestQueryBuilder_NonIdentifierPKPath(t *testing.T) {
 func TestQueryBuilder_NullPartitionKey(t *testing.T) {
 	qb := queryBuilder{}
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
-	items := []indexedItem{
-		{id: "1", pk: NullPartitionKey},
-		{id: "2", pk: NullPartitionKey},
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: NullPartitionKey},
+		{ID: "2", PartitionKey: NullPartitionKey},
 	}
 
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	// Single logical partition (both null), uses PK+ID IN shape
-	require.Contains(t, query, "IS_DEFINED(c.pk) = false")
-	require.Contains(t, query, "c.id IN")
-	// Only id params, no pk params for null
+	require.Equal(t, "SELECT * FROM c WHERE IS_DEFINED(c.pk) = false AND c.id IN (@param_id0, @param_id1)", query)
 	require.Len(t, params, 2)
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "1"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "2"}, params[1])
 }
 
 func TestQueryBuilder_HierarchicalPK(t *testing.T) {
@@ -118,20 +129,21 @@ func TestQueryBuilder_HierarchicalPK(t *testing.T) {
 		Paths: []string{"/tenantId", "/userId"},
 		Kind:  PartitionKeyKindMultiHash,
 	}
-	items := []indexedItem{
-		{id: "1", pk: NewPartitionKeyString("t1").AppendString("u1")},
-		{id: "2", pk: NewPartitionKeyString("t1").AppendString("u2")},
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: NewPartitionKeyString("t1").AppendString("u1")},
+		{ID: "2", PartitionKey: NewPartitionKeyString("t1").AppendString("u2")},
 	}
 
 	// Different PKs → OR-of-conjunctions
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
-	require.Contains(t, query, "OR")
-	require.Contains(t, query, "c.tenantId = @param_pk00")
-	require.Contains(t, query, "c.userId = @param_pk01")
-	require.Contains(t, query, "c.tenantId = @param_pk10")
-	require.Contains(t, query, "c.userId = @param_pk11")
-	// 2 ids + 4 pk components
+	require.Equal(t, "SELECT * FROM c WHERE (c.id = @param_id0 AND c.tenantId = @param_pk00 AND c.userId = @param_pk01) OR (c.id = @param_id1 AND c.tenantId = @param_pk10 AND c.userId = @param_pk11)", query)
 	require.Len(t, params, 6)
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "1"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_pk00", Value: "t1"}, params[1])
+	require.Equal(t, QueryParameter{Name: "@param_pk01", Value: "u1"}, params[2])
+	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "2"}, params[3])
+	require.Equal(t, QueryParameter{Name: "@param_pk10", Value: "t1"}, params[4])
+	require.Equal(t, QueryParameter{Name: "@param_pk11", Value: "u2"}, params[5])
 }
 
 func TestQueryBuilder_EmptyItems(t *testing.T) {
@@ -144,8 +156,8 @@ func TestQueryBuilder_EmptyItems(t *testing.T) {
 
 func TestQueryBuilder_SingleItem(t *testing.T) {
 	qb := queryBuilder{}
-	items := []indexedItem{
-		{id: "1", pk: NewPartitionKeyString("pk1")},
+	items := []ItemIdentity{
+		{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
 	}
 
 	// Single item → isSingleLogicalPartitionQuery returns false
@@ -154,8 +166,10 @@ func TestQueryBuilder_SingleItem(t *testing.T) {
 	// buildParameterizedQueryForItems still works (OR-of-conjunctions with 1 item)
 	pkDef := PartitionKeyDefinition{Paths: []string{"/pk"}}
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
-	require.Contains(t, query, "c.id = @param_id0")
+	require.Equal(t, "SELECT * FROM c WHERE (c.id = @param_id0 AND c.pk = @param_pk00)", query)
 	require.Len(t, params, 2)
+	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "1"}, params[0])
+	require.Equal(t, QueryParameter{Name: "@param_pk00", Value: "pk1"}, params[1])
 }
 
 func TestQueryBuilder_GetFieldExpression(t *testing.T) {

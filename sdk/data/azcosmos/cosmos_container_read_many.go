@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"errors"
+	"sort"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -98,11 +99,11 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 
 const maxItemsPerQuery = 1000
 
-// queryChunk is a single parameterized query targeting one logical partition key group.
+// queryChunk is a single parameterized query targeting one physical partition key range.
 type queryChunk struct {
-	query  string
-	params []QueryParameter
-	pk     PartitionKey // used for x-ms-documentdb-partitionkey header routing
+	query   string
+	params  []QueryParameter
+	rangeID string // physical partition key range ID for x-ms-documentdb-partitionkeyrangeid header
 }
 
 // chunkResult holds the outcome of executing a single queryChunk.
@@ -112,48 +113,71 @@ type chunkResult struct {
 	err           error
 }
 
-// groupItemsByLogicalPK groups ItemIdentity values by their serialised partition
-// key. It returns the groups in first-seen order.
-func groupItemsByLogicalPK(items []ItemIdentity) ([]PartitionKey, map[string][]indexedItem, error) {
-	order := make([]string, 0)
-	pkForJSON := make(map[string]PartitionKey)
-	groups := make(map[string][]indexedItem)
-
-	for _, item := range items {
-		pkJSON, err := item.PartitionKey.toJsonString()
-		if err != nil {
-			return nil, nil, err
-		}
-		if _, exists := groups[pkJSON]; !exists {
-			order = append(order, pkJSON)
-			pkForJSON[pkJSON] = item.PartitionKey
-		}
-		groups[pkJSON] = append(groups[pkJSON], indexedItem{
-			id: item.ID,
-			pk: item.PartitionKey,
-		})
+// findPhysicalRangeForEPK finds the partition key range that contains the given
+// EPK value. The ranges must be sorted by MinInclusive ascending. Returns the
+// range ID and true if found, or ("", false) otherwise.
+func findPhysicalRangeForEPK(epkValue string, ranges []partitionKeyRange) (string, bool) {
+	// Binary search: find the last range whose MinInclusive <= epkValue.
+	idx := sort.Search(len(ranges), func(i int) bool {
+		return ranges[i].MinInclusive > epkValue
+	}) - 1
+	if idx < 0 {
+		return "", false
 	}
-
-	// Build ordered PK list
-	pks := make([]PartitionKey, len(order))
-	for i, j := range order {
-		pks[i] = pkForJSON[j]
+	// Verify epkValue < MaxExclusive (empty MaxExclusive means unbounded).
+	r := ranges[idx]
+	if r.MaxExclusive != "" && epkValue >= r.MaxExclusive {
+		return "", false
 	}
-	return pks, groups, nil
+	return r.ID, true
 }
 
-// buildQueryChunks creates queryChunk values by splitting each logical PK group
-// into slices of at most maxItemsPerQuery and building parameterized SQL for each.
-func buildQueryChunks(orderedPKs []PartitionKey, groups map[string][]indexedItem, pkDef PartitionKeyDefinition) ([]queryChunk, error) {
+// groupItemsByPhysicalRange computes the EPK for each item and groups them by
+// physical partition range. It returns the range IDs in first-seen order and
+// the groups keyed by range ID.
+func groupItemsByPhysicalRange(items []ItemIdentity, pkDef PartitionKeyDefinition, ranges []partitionKeyRange) ([]string, map[string][]ItemIdentity, error) {
+	// Sort ranges by MinInclusive for binary search.
+	sorted := make([]partitionKeyRange, len(ranges))
+	copy(sorted, ranges)
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i].MinInclusive < sorted[j].MinInclusive
+	})
+	
+	order := make([]string, 0)
+	seen := make(map[string]bool)
+	groups := make(map[string][]ItemIdentity)
+
+	pkVersion := pkDef.Version
+	if pkVersion == 0 {
+		pkVersion = 1
+	}
+
+	for _, item := range items {
+		epkVal := item.PartitionKey.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
+		rangeID, ok := findPhysicalRangeForEPK(epkVal.EPK, sorted)
+		if !ok {
+			return nil, nil, errors.New("could not find physical partition range for item EPK")
+		}
+
+		if !seen[rangeID] {
+			order = append(order, rangeID)
+			seen[rangeID] = true
+		}
+		groups[rangeID] = append(groups[rangeID], item)
+	}
+
+	return order, groups, nil
+}
+
+// buildQueryChunksForRanges creates queryChunk values by splitting each physical
+// range's item list into slices of at most maxItemsPerQuery and building
+// parameterized SQL for each.
+func buildQueryChunksForRanges(orderedRangeIDs []string, groups map[string][]ItemIdentity, pkDef PartitionKeyDefinition) ([]queryChunk, error) {
 	qb := queryBuilder{}
 	var chunks []queryChunk
 
-	for _, pk := range orderedPKs {
-		pkJSON, err := pk.toJsonString()
-		if err != nil {
-			return nil, err
-		}
-		items := groups[pkJSON]
+	for _, rangeID := range orderedRangeIDs {
+		items := groups[rangeID]
 		for start := 0; start < len(items); start += maxItemsPerQuery {
 			end := start + maxItemsPerQuery
 			if end > len(items) {
@@ -161,9 +185,9 @@ func buildQueryChunks(orderedPKs []PartitionKey, groups map[string][]indexedItem
 			}
 			q, params := qb.buildParameterizedQueryForItems(items[start:end], pkDef)
 			chunks = append(chunks, queryChunk{
-				query:  q,
-				params: params,
-				pk:     pk,
+				query:   q,
+				params:  params,
+				rangeID: rangeID,
 			})
 		}
 	}
@@ -249,11 +273,6 @@ func (c *ContainerClient) executeOneChunk(
 	path string,
 	done <-chan struct{},
 ) ([][]byte, float32, error) {
-	pkHeader, err := chunk.pk.toJsonString()
-	if err != nil {
-		return nil, 0, err
-	}
-
 	var allItems [][]byte
 	var totalCharge float32
 	continuation := ""
@@ -264,7 +283,7 @@ func (c *ContainerClient) executeOneChunk(
 			localOpts.ContinuationToken = &continuation
 		}
 
-		pkHeaderCopy := pkHeader
+		rangeID := chunk.rangeID
 		azResponse, err := c.database.client.sendQueryRequest(
 			path,
 			ctx,
@@ -273,7 +292,8 @@ func (c *ContainerClient) executeOneChunk(
 			operationContext,
 			&localOpts,
 			func(req *policy.Request) {
-				req.Raw().Header.Set(cosmosHeaderPartitionKey, pkHeaderCopy)
+				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
+				req.Raw().Header.Set(cosmosHeaderEnableCrossPartitionQuery, "True")
 			},
 		)
 		if err != nil {
@@ -313,14 +333,11 @@ func collectChunkResults(results []chunkResult) (ReadManyItemsResponse, error) {
 	return ReadManyItemsResponse{RequestCharge: totalCharge, Items: allItems}, nil
 }
 
-// executeReadManyWithQueries groups items by logical partition key, builds
-// parameterized SQL queries (one per PK group, chunked at maxItemsPerQuery),
-// and executes them concurrently. This replaces the previous per-item point-read
-// strategy with far fewer HTTP round-trips.
-//
-// V1 routes each query using the x-ms-documentdb-partitionkey header (one query
-// per logical PK group). A future V2 can add EPK hashing to coalesce groups that
-// map to the same physical partition range into a single OR-of-conjunctions query.
+// executeReadManyWithQueries groups items by physical partition range using EPK
+// hashing, builds parameterized SQL queries (one per physical range, chunked at
+// maxItemsPerQuery), and executes them concurrently. This replaces the previous
+// per-logical-PK strategy with fewer HTTP round-trips when multiple logical PKs
+// map to the same physical partition range.
 func (c *ContainerClient) executeReadManyWithQueries(
 	ctx context.Context,
 	items []ItemIdentity,
@@ -333,12 +350,17 @@ func (c *ContainerClient) executeReadManyWithQueries(
 	}
 	pkDef := containerResp.ContainerProperties.PartitionKeyDefinition
 
-	orderedPKs, groups, err := groupItemsByLogicalPK(items)
+	pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}
 
-	chunks, err := buildQueryChunks(orderedPKs, groups, pkDef)
+	orderedRangeIDs, groups, err := groupItemsByPhysicalRange(items, pkDef, pkRangeResp.PartitionKeyRanges)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	chunks, err := buildQueryChunksForRanges(orderedRangeIDs, groups, pkDef)
 	if err != nil {
 		return ReadManyItemsResponse{}, err
 	}

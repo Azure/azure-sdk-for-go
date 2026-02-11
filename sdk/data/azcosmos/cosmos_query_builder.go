@@ -9,12 +9,6 @@ import (
 	"unicode"
 )
 
-// indexedItem tracks an item identity for query building.
-type indexedItem struct {
-	id string
-	pk PartitionKey
-}
-
 // queryBuilder builds parameterized SQL queries for read-many operations.
 // It chooses one of three query shapes depending on the items in the batch:
 //   - ID-only IN: when the PK path is /id and every PK value equals the item id
@@ -25,7 +19,7 @@ type queryBuilder struct{}
 // isIDPartitionKeyQuery returns true when the partition key path is "/id" and
 // every item's PK value equals its item ID. In that case, only an id IN (…)
 // clause is needed.
-func (qb queryBuilder) isIDPartitionKeyQuery(items []indexedItem, pkDef PartitionKeyDefinition) bool {
+func (qb queryBuilder) isIDPartitionKeyQuery(items []ItemIdentity, pkDef PartitionKeyDefinition) bool {
 	if len(items) == 0 {
 		return false
 	}
@@ -33,11 +27,11 @@ func (qb queryBuilder) isIDPartitionKeyQuery(items []indexedItem, pkDef Partitio
 		return false
 	}
 	for i := range items {
-		if len(items[i].pk.values) != 1 {
+		if len(items[i].PartitionKey.values) != 1 {
 			return false
 		}
-		pkStr, ok := items[i].pk.values[0].(string)
-		if !ok || pkStr != items[i].id {
+		pkStr, ok := items[i].PartitionKey.values[0].(string)
+		if !ok || pkStr != items[i].ID {
 			return false
 		}
 	}
@@ -46,16 +40,16 @@ func (qb queryBuilder) isIDPartitionKeyQuery(items []indexedItem, pkDef Partitio
 
 // isSingleLogicalPartitionQuery returns true when all items share the same
 // logical partition key value. The check compares JSON-serialised PK strings.
-func (qb queryBuilder) isSingleLogicalPartitionQuery(items []indexedItem) bool {
+func (qb queryBuilder) isSingleLogicalPartitionQuery(items []ItemIdentity) bool {
 	if len(items) <= 1 {
 		return false
 	}
-	first, err := items[0].pk.toJsonString()
+	first, err := items[0].PartitionKey.toJsonString()
 	if err != nil {
 		return false
 	}
 	for i := 1; i < len(items); i++ {
-		s, err := items[i].pk.toJsonString()
+		s, err := items[i].PartitionKey.toJsonString()
 		if err != nil || s != first {
 			return false
 		}
@@ -64,12 +58,12 @@ func (qb queryBuilder) isSingleLogicalPartitionQuery(items []indexedItem) bool {
 }
 
 // buildIDInQuery builds: SELECT * FROM c WHERE c.id IN (@param_id0, @param_id1, …)
-func (qb queryBuilder) buildIDInQuery(items []indexedItem) (string, []QueryParameter) {
+func (qb queryBuilder) buildIDInQuery(items []ItemIdentity) (string, []QueryParameter) {
 	params := make([]QueryParameter, 0, len(items))
 	placeholders := make([]string, 0, len(items))
 	for i, item := range items {
 		name := fmt.Sprintf("@param_id%d", i)
-		params = append(params, QueryParameter{Name: name, Value: item.id})
+		params = append(params, QueryParameter{Name: name, Value: item.ID})
 		placeholders = append(placeholders, name)
 	}
 	query := fmt.Sprintf("SELECT * FROM c WHERE c.id IN (%s)", strings.Join(placeholders, ", "))
@@ -79,7 +73,7 @@ func (qb queryBuilder) buildIDInQuery(items []indexedItem) (string, []QueryParam
 // buildPKAndIDInQuery builds:
 //
 //	SELECT * FROM c WHERE <pkExpr> = @pk AND c.id IN (@id0, @id1, …)
-func (qb queryBuilder) buildPKAndIDInQuery(items []indexedItem, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
+func (qb queryBuilder) buildPKAndIDInQuery(items []ItemIdentity, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
 	params := make([]QueryParameter, 0, len(items)+len(pkDef.Paths))
 
 	// Build PK equality conditions (one per path for hierarchical PKs)
@@ -89,8 +83,8 @@ func (qb queryBuilder) buildPKAndIDInQuery(items []indexedItem, pkDef PartitionK
 		paramName := fmt.Sprintf("@pk%d", pathIdx)
 
 		var pkVal interface{}
-		if pathIdx < len(items[0].pk.values) {
-			pkVal = items[0].pk.values[pathIdx]
+		if pathIdx < len(items[0].PartitionKey.values) {
+			pkVal = items[0].PartitionKey.values[pathIdx]
 		}
 
 		if pkVal == nil {
@@ -106,7 +100,7 @@ func (qb queryBuilder) buildPKAndIDInQuery(items []indexedItem, pkDef PartitionK
 	idPlaceholders := make([]string, 0, len(items))
 	for i, item := range items {
 		name := fmt.Sprintf("@param_id%d", i)
-		params = append(params, QueryParameter{Name: name, Value: item.id})
+		params = append(params, QueryParameter{Name: name, Value: item.ID})
 		idPlaceholders = append(idPlaceholders, name)
 	}
 
@@ -120,13 +114,13 @@ func (qb queryBuilder) buildPKAndIDInQuery(items []indexedItem, pkDef PartitionK
 //
 //	SELECT * FROM c WHERE (c.id = @param_id0 AND <pk0> = @param_pk00)
 //	  OR (c.id = @param_id1 AND <pk1> = @param_pk10) …
-func (qb queryBuilder) buildOrOfConjunctionsQuery(items []indexedItem, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
+func (qb queryBuilder) buildOrOfConjunctionsQuery(items []ItemIdentity, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
 	params := make([]QueryParameter, 0, len(items)*(1+len(pkDef.Paths)))
 	clauses := make([]string, 0, len(items))
 
 	for i, item := range items {
 		idParam := fmt.Sprintf("@param_id%d", i)
-		params = append(params, QueryParameter{Name: idParam, Value: item.id})
+		params = append(params, QueryParameter{Name: idParam, Value: item.ID})
 
 		conditions := []string{fmt.Sprintf("c.id = %s", idParam)}
 
@@ -134,8 +128,8 @@ func (qb queryBuilder) buildOrOfConjunctionsQuery(items []indexedItem, pkDef Par
 			fieldExpr := qb.getFieldExpression(path)
 
 			var pkVal interface{}
-			if pathIdx < len(item.pk.values) {
-				pkVal = item.pk.values[pathIdx]
+			if pathIdx < len(item.PartitionKey.values) {
+				pkVal = item.PartitionKey.values[pathIdx]
 			}
 
 			if pkVal == nil {
@@ -156,7 +150,7 @@ func (qb queryBuilder) buildOrOfConjunctionsQuery(items []indexedItem, pkDef Par
 
 // buildParameterizedQueryForItems selects the appropriate query shape and
 // returns the query string and parameters.
-func (qb queryBuilder) buildParameterizedQueryForItems(items []indexedItem, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
+func (qb queryBuilder) buildParameterizedQueryForItems(items []ItemIdentity, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
 	if qb.isIDPartitionKeyQuery(items, pkDef) {
 		return qb.buildIDInQuery(items)
 	}

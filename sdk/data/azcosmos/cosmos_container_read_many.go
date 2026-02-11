@@ -293,7 +293,6 @@ func (c *ContainerClient) executeOneChunk(
 			&localOpts,
 			func(req *policy.Request) {
 				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
-				req.Raw().Header.Set(cosmosHeaderEnableCrossPartitionQuery, "True")
 			},
 		)
 		if err != nil {

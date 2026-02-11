@@ -16,7 +16,11 @@ import (
 
 // executeReadManyWithEngine executes a query using the provided query engine.
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
-	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		// WE are specifying the resource type here, so this shouldn't fail.
+		panic("invalid resource address in operation context: " + operationContext.resourceAddress)
+	}
 
 	// get the partition key ranges for the container
 	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(ctx, operationContext)

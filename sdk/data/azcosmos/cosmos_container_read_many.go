@@ -233,9 +233,11 @@ func (c *ContainerClient) executeQueryChunks(
 				case <-ctx.Done():
 					return
 				default:
-				}
+			}
 
-				items, charge, err := c.executeOneChunk(ctx, chunks[idx], queryOpts, operationContext, path, done)
+			// Cancellation errors are stored in results and flow to collectChunkResults,
+			// which reports the entire operation as failed.
+			items, charge, err := c.executeOneChunk(ctx, chunks[idx], queryOpts, operationContext, path, done)
 				results[idx] = chunkResult{items: items, requestCharge: charge, err: err}
 				if err != nil {
 					select {

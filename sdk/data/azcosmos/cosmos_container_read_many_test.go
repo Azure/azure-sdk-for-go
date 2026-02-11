@@ -4,8 +4,16 @@
 package azcosmos
 
 import (
+	"context"
+	"net/http"
+	"net/url"
+	"sync/atomic"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -189,4 +197,102 @@ func TestBuildQueryChunksForRanges_Chunking(t *testing.T) {
 	require.Len(t, chunks, 2)
 	require.Equal(t, "0", chunks[0].rangeID)
 	require.Equal(t, "0", chunks[1].rangeID)
+}
+
+// cancelOnNthQueryPolicy is a pipeline policy that cancels a context after the
+// Nth query request completes, providing deterministic mid-execution cancellation.
+type cancelOnNthQueryPolicy struct {
+	cancelAfterN int32         // cancel context after this many query requests complete
+	count        atomic.Int32  // number of query requests seen so far
+	firstDone    chan struct{} // closed after the Nth query completes
+	gate         chan struct{} // blocks subsequent queries until signalled
+}
+
+func (p *cancelOnNthQueryPolicy) Do(req *policy.Request) (*http.Response, error) {
+	isQuery := req.Raw().Header.Get(cosmosHeaderQuery) == "True"
+	if !isQuery {
+		return req.Next()
+	}
+
+	n := p.count.Add(1)
+	if n <= p.cancelAfterN {
+		// Let the first N queries proceed normally
+		resp, err := req.Next()
+		if n == p.cancelAfterN {
+			close(p.firstDone)
+		}
+		return resp, err
+	}
+
+	// For queries beyond N, block until gate is opened (context cancellation)
+	<-p.gate
+	return req.Next()
+}
+
+func TestExecuteQueryChunks_CancelledContext(t *testing.T) {
+	queryResp := []byte(`{"Documents":[{"id":"1","pk":"pkA"}]}`)
+
+	srv, closeSrv := mock.NewTLSServer()
+	defer closeSrv()
+	srv.SetResponse(
+		mock.WithBody(queryResp),
+		mock.WithHeader(cosmosHeaderRequestCharge, "1.0"),
+		mock.WithStatusCode(200))
+
+	cancelPolicy := &cancelOnNthQueryPolicy{
+		cancelAfterN: 1,
+		firstDone:    make(chan struct{}),
+		gate:         make(chan struct{}),
+	}
+
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: []policy.Policy{cancelPolicy}},
+		&policy.ClientOptions{Transport: srv})
+
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	database, _ := newDatabase("databaseId", client)
+	container, _ := newContainer("containerId", database)
+
+	chunks := []queryChunk{
+		{query: "SELECT * FROM c WHERE c.id = @id0", params: []QueryParameter{{Name: "@id0", Value: "1"}}, rangeID: "0"},
+		{query: "SELECT * FROM c WHERE c.id = @id1", params: []QueryParameter{{Name: "@id1", Value: "2"}}, rangeID: "1"},
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// Cancel context after the first chunk completes, then unblock the gate
+	go func() {
+		<-cancelPolicy.firstDone
+		cancel()
+		close(cancelPolicy.gate)
+	}()
+
+	opCtx := pipelineRequestOptions{
+		resourceType:    resourceTypeDocument,
+		resourceAddress: "dbs/databaseId/colls/containerId",
+	}
+
+	results := container.executeQueryChunks(ctx, chunks, &QueryOptions{}, opCtx, 2)
+
+	// One chunk should succeed, the other should have a context cancellation error
+	var successCount, errorCount int
+	for _, r := range results {
+		if r.err != nil {
+			errorCount++
+			require.ErrorIs(t, r.err, context.Canceled)
+		} else {
+			successCount++
+			require.Len(t, r.items, 1)
+		}
+	}
+	require.Equal(t, 1, successCount, "expected exactly 1 successful chunk")
+	require.Equal(t, 1, errorCount, "expected exactly 1 cancelled chunk")
+
+	// collectChunkResults should surface the cancellation as an operation-level error
+	resp, err := collectChunkResults(results)
+	require.ErrorIs(t, err, context.Canceled)
+	require.Empty(t, resp.Items)
 }

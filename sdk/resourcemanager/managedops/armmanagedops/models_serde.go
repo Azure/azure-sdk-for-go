@@ -226,6 +226,37 @@ func (d *DesiredConfiguration) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type DesiredConfigurationUpdate.
+func (d DesiredConfigurationUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "defenderCspm", d.DefenderCspm)
+	populate(objectMap, "defenderForServers", d.DefenderForServers)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type DesiredConfigurationUpdate.
+func (d *DesiredConfigurationUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", d, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "defenderCspm":
+			err = unpopulate(val, "DefenderCspm", &d.DefenderCspm)
+			delete(rawMsg, key)
+		case "defenderForServers":
+			err = unpopulate(val, "DefenderForServers", &d.DefenderForServers)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", d, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type GuestConfigurationInformation.
 func (g GuestConfigurationInformation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

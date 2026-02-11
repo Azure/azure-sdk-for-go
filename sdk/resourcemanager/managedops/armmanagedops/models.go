@@ -66,6 +66,15 @@ type DesiredConfiguration struct {
 	DefenderForServers *DesiredConfigurationDefenderForServers
 }
 
+// DesiredConfigurationUpdate - Updatable parameters in the Desired configuration input.
+type DesiredConfigurationUpdate struct {
+	// Desired enablement state of the Defender Cloud Security Posture Management (CSPM) service.
+	DefenderCspm *DesiredConfigurationDefenderForServers
+
+	// Desired enablement state of the Defender For Servers service.
+	DefenderForServers *DesiredConfigurationDefenderForServers
+}
+
 // GuestConfigurationInformation - Azure Policy and Machine Configuration service information.
 type GuestConfigurationInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
@@ -99,16 +108,16 @@ type ManagedOpListResult struct {
 	NextLink *string
 }
 
-// ManagedOpUpdate - The type used for update operations of the ManagedOp.
+// ManagedOpUpdate - ManagedOps model for update operations
 type ManagedOpUpdate struct {
-	// The resource-specific properties for this resource.
+	// Updatable properties in the ManagedOps resource.
 	Properties *ManagedOpUpdateProperties
 }
 
-// ManagedOpUpdateProperties - The updatable properties of the ManagedOp.
+// ManagedOpUpdateProperties - Updatable properties in the ManagedOps resource.
 type ManagedOpUpdateProperties struct {
-	// Desired configuration input by the user.
-	DesiredConfiguration *DesiredConfiguration
+	// REQUIRED; Desired configuration input by the user.
+	DesiredConfiguration *DesiredConfigurationUpdate
 }
 
 // Operation - REST API Operation

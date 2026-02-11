@@ -25,10 +25,6 @@ func ExampleClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "default", armmanagedops.ManagedOp{
 		Properties: &armmanagedops.Properties{
-			SKU: &armmanagedops.SKU{
-				Name: to.Ptr("ManagedOps"),
-				Tier: to.Ptr("Essential"),
-			},
 			DesiredConfiguration: &armmanagedops.DesiredConfiguration{
 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingConfiguration{
 					LogAnalyticsWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.OperationalInsights/workspaces/00000000-0000-0000-0000-000000000000-Default"),

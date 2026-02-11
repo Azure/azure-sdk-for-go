@@ -142,7 +142,7 @@ func groupItemsByPhysicalRange(items []ItemIdentity, pkDef PartitionKeyDefinitio
 	sort.Slice(sorted, func(i, j int) bool {
 		return sorted[i].MinInclusive < sorted[j].MinInclusive
 	})
-	
+
 	order := make([]string, 0)
 	seen := make(map[string]bool)
 	groups := make(map[string][]ItemIdentity)

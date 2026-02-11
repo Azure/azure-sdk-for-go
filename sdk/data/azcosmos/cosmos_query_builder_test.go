@@ -117,7 +117,7 @@ func TestQueryBuilder_NullPartitionKey(t *testing.T) {
 
 	query, params := qb.buildParameterizedQueryForItems(items, pkDef)
 	// Single logical partition (both null), uses PK+ID IN shape
-	require.Equal(t, "SELECT * FROM c WHERE IS_DEFINED(c.pk) = false AND c.id IN (@param_id0, @param_id1)", query)
+	require.Equal(t, "SELECT * FROM c WHERE IS_NULL(c.pk) AND c.id IN (@param_id0, @param_id1)", query)
 	require.Len(t, params, 2)
 	require.Equal(t, QueryParameter{Name: "@param_id0", Value: "1"}, params[0])
 	require.Equal(t, QueryParameter{Name: "@param_id1", Value: "2"}, params[1])

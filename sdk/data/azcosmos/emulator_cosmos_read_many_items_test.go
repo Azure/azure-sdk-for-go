@@ -255,3 +255,51 @@ func TestReadManyWithQueries_MultipleLogicalPKs(t *testing.T) {
 		require.True(t, returnedSet[idPK{ti.ID, ti.PK}], "expected item %s/%s to be returned", ti.ID, ti.PK)
 	}
 }
+
+// TestReadMany_NullPartitionKey verifies that ReadManyItems can retrieve an item
+// that was created with a null partition key value. The query builder currently
+// previously emitted IS_DEFINED(c.pk) = false for null PKs, which was incorrect.
+// It should use IS_NULL(c.pk) since the field exists but has a null value.
+func TestReadMany_NullPartitionKey(t *testing.T) {
+	e := newEmulatorTests(t)
+	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
+	database := e.createDatabase(t, context.Background(), client, "readmany_nullpk_db")
+	defer e.deleteDatabase(t, context.Background(), database)
+
+	// Create container with /pk partition key
+	_, err := database.CreateContainer(context.Background(), ContainerProperties{
+		ID: "rmnullpk",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}, nil)
+	require.NoError(t, err)
+	container, err := database.NewContainer("rmnullpk")
+	require.NoError(t, err)
+
+	// Insert an item with a null partition key value.
+	// The JSON will be {"id":"null-item","pk":null}
+	nullPKItem := []byte(`{"id":"null-item","pk":null}`)
+	_, err = container.CreateItem(context.Background(), NullPartitionKey, nullPKItem, nil)
+	require.NoError(t, err)
+
+	// Also insert a non-null PK item to ensure the query differentiates
+	nonNullItem := []byte(`{"id":"normal-item","pk":"hello"}`)
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("hello"), nonNullItem, nil)
+	require.NoError(t, err)
+
+	// ReadMany requesting only the null-PK item
+	idents := []ItemIdentity{
+		{ID: "null-item", PartitionKey: NullPartitionKey},
+	}
+
+	resp, err := container.ReadManyItems(context.Background(), idents, nil)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.Items), "expected exactly 1 item with null PK to be returned")
+
+	// Verify the returned item is the correct one
+	var returned map[string]interface{}
+	err = json.Unmarshal(resp.Items[0], &returned)
+	require.NoError(t, err)
+	require.Equal(t, "null-item", returned["id"])
+}

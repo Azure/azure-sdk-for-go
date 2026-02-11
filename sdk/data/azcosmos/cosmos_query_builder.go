@@ -88,8 +88,7 @@ func (qb queryBuilder) buildPKAndIDInQuery(items []ItemIdentity, pkDef Partition
 		}
 
 		if pkVal == nil {
-			// null PK → IS_DEFINED check
-			pkConditions = append(pkConditions, fmt.Sprintf("IS_DEFINED(%s) = false", fieldExpr))
+			pkConditions = append(pkConditions, fmt.Sprintf("IS_NULL(%s)", fieldExpr))
 		} else {
 			params = append(params, QueryParameter{Name: paramName, Value: pkVal})
 			pkConditions = append(pkConditions, fmt.Sprintf("%s = %s", fieldExpr, paramName))
@@ -133,7 +132,7 @@ func (qb queryBuilder) buildOrOfConjunctionsQuery(items []ItemIdentity, pkDef Pa
 			}
 
 			if pkVal == nil {
-				conditions = append(conditions, fmt.Sprintf("IS_DEFINED(%s) = false", fieldExpr))
+				conditions = append(conditions, fmt.Sprintf("IS_NULL(%s)", fieldExpr))
 			} else {
 				pkParam := fmt.Sprintf("@param_pk%d%d", i, pathIdx)
 				params = append(params, QueryParameter{Name: pkParam, Value: pkVal})

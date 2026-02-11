@@ -171,7 +171,7 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 		return UploadResponse{}, err
 	}
 
-	opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.format()
+	opts := options.format()
 
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, opts)
@@ -180,8 +180,7 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 		}
 	}
 
-	resp, err := bb.generated().Upload(ctx, count, body, opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
-	return resp, err
+	return bb.generated().Upload(ctx, body, count, opts)
 }
 
 // UploadBlobFromURL - The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from
@@ -190,11 +189,7 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 // Block from URL API in conjunction with Put Block List.
 // For more information, see https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url
 func (bb *Client) UploadBlobFromURL(ctx context.Context, copySource string, options *UploadBlobFromURLOptions) (UploadBlobFromURLResponse, error) {
-	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions := options.format()
-
-	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions)
-
-	return resp, err
+	return bb.generated().UploadBlobFromURL(ctx, copySource, options.format())
 }
 
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -206,7 +201,7 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 		return StageBlockResponse{}, err
 	}
 
-	opts, leaseAccessConditions, cpkInfo, cpkScopeInfo := options.format()
+	opts := options.format()
 
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, opts)
@@ -215,7 +210,7 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 		}
 	}
 
-	resp, err := bb.generated().StageBlock(ctx, base64BlockID, count, body, opts, leaseAccessConditions, cpkInfo, cpkScopeInfo)
+	resp, err := bb.generated().StageBlock(ctx, base64BlockID, count, body, opts)
 	return resp, err
 }
 
@@ -223,13 +218,7 @@ func (bb *Client) StageBlock(ctx context.Context, base64BlockID string, body io.
 // If count is CountToEnd (0), then data is read from specified offset to the end.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url.
 func (bb *Client) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string, options *StageBlockFromURLOptions) (StageBlockFromURLResponse, error) {
-
-	stageBlockFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions := options.format()
-
-	resp, err := bb.generated().StageBlockFromURL(ctx, base64BlockID, 0, sourceURL, stageBlockFromURLOptions,
-		cpkInfo, cpkScopeInfo, leaseAccessConditions, sourceModifiedAccessConditions)
-
-	return resp, err
+	return bb.generated().StageBlockFromURL(ctx, base64BlockID, 0, sourceURL, options.format())
 }
 
 // CommitBlockList writes a blob by specifying the list of block IDs that make up the blob.
@@ -247,50 +236,20 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 
 	blockLookupList := generated.BlockLookupList{Latest: blockIds}
 
-	var commitOptions *generated.BlockBlobClientCommitBlockListOptions
-	var headers *generated.BlobHTTPHeaders
-	var leaseAccess *blob.LeaseAccessConditions
-	var cpkInfo *generated.CPKInfo
-	var cpkScope *generated.CPKScopeInfo
-	var modifiedAccess *generated.ModifiedAccessConditions
-
 	if options != nil {
-		commitOptions = &generated.BlockBlobClientCommitBlockListOptions{
-			BlobTagsString:            shared.SerializeBlobTagsToStrPtr(options.Tags),
-			Metadata:                  options.Metadata,
-			RequestID:                 options.RequestID,
-			Tier:                      options.Tier,
-			Timeout:                   options.Timeout,
-			TransactionalContentCRC64: options.TransactionalContentCRC64,
-			TransactionalContentMD5:   options.TransactionalContentMD5,
-			LegalHold:                 options.LegalHold,
-			ImmutabilityPolicyMode:    options.ImmutabilityPolicyMode,
-			ImmutabilityPolicyExpiry:  options.ImmutabilityPolicyExpiryTime,
-		}
-
 		// If user attempts to pass in their own checksum, errors out.
 		if options.TransactionalContentMD5 != nil || options.TransactionalContentCRC64 != nil {
 			return CommitBlockListResponse{}, bloberror.UnsupportedChecksum
 		}
-
-		headers = options.HTTPHeaders
-		leaseAccess, modifiedAccess = exported.FormatBlobAccessConditions(options.AccessConditions)
-		cpkInfo = options.CPKInfo
-		cpkScope = options.CPKScopeInfo
 	}
 
-	resp, err := bb.generated().CommitBlockList(ctx, blockLookupList, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
-	return resp, err
+	return bb.generated().CommitBlockList(ctx, blockLookupList, options.format())
 }
 
 // GetBlockList returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-block-list.
 func (bb *Client) GetBlockList(ctx context.Context, listType BlockListType, options *GetBlockListOptions) (GetBlockListResponse, error) {
-	o, lac, mac := options.format()
-
-	resp, err := bb.generated().GetBlockList(ctx, listType, o, lac, mac)
-
-	return resp, err
+	return bb.generated().GetBlockList(ctx, listType, options.format())
 }
 
 // Redeclared APIs ----- Copy over to Append blob and Page blob as well.

@@ -8,7 +8,7 @@ import (
 )
 
 func (client *PageBlobClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
 func (client *PageBlobClient) InternalClient() *azcore.Client {
@@ -21,7 +21,7 @@ func (client *PageBlobClient) InternalClient() *azcore.Client {
 func NewPageBlobClient(endpoint string, azClient *azcore.Client) *PageBlobClient {
 	client := &PageBlobClient{
 		internal: azClient,
-		endpoint: endpoint,
+		url:      endpoint,
 	}
 	return client
 }

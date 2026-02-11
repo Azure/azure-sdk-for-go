@@ -8,7 +8,7 @@ import (
 )
 
 func (client *ContainerClient) Endpoint() string {
-	return client.endpoint
+	return client.url
 }
 
 func (client *ContainerClient) InternalClient() *azcore.Client {
@@ -21,7 +21,7 @@ func (client *ContainerClient) InternalClient() *azcore.Client {
 func NewContainerClient(endpoint string, azClient *azcore.Client) *ContainerClient {
 	client := &ContainerClient{
 		internal: azClient,
-		endpoint: endpoint,
+		url:      endpoint,
 	}
 	return client
 }

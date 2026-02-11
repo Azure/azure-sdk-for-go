@@ -81,6 +81,18 @@ type CreateOptions struct {
 	CPKScopeInfo *CPKScopeInfo
 }
 
+func (o *CreateOptions) format() *generated.ContainerClientCreateOptions {
+	if o == nil {
+		return nil
+	}
+	// todo cpk scope info??
+	return &generated.ContainerClientCreateOptions{
+		Access:       o.Access,
+		Metadata:     o.Metadata,
+		CPKScopeInfo: o.CPKScopeInfo,
+	}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // DeleteOptions contains the optional parameters for the Client.Delete method.
@@ -88,13 +100,16 @@ type DeleteOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *DeleteOptions) format() (*generated.ContainerClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *DeleteOptions) format() *generated.ContainerClientDeleteOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatContainerAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, modifiedAccessConditions
+	// Note: missing o.AccessConditions.ModifiedAccessConditions.IfMatch and o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+	return &generated.ContainerClientDeleteOptions{
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -112,12 +127,13 @@ type GetPropertiesOptions struct {
 }
 
 // ContainerClientGetPropertiesOptions contains the optional parameters for the ContainerClient.GetProperties method.
-func (o *GetPropertiesOptions) format() (*generated.ContainerClientGetPropertiesOptions, *generated.LeaseAccessConditions) {
+func (o *GetPropertiesOptions) format() *generated.ContainerClientGetPropertiesOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
-
-	return nil, o.LeaseAccessConditions
+	return &generated.ContainerClientGetPropertiesOptions{
+		LeaseID: o.LeaseAccessConditions.LeaseID,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -262,12 +278,15 @@ type SetMetadataOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *SetMetadataOptions) format() (*generated.ContainerClientSetMetadataOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *SetMetadataOptions) format() *generated.ContainerClientSetMetadataOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	return &generated.ContainerClientSetMetadataOptions{Metadata: o.Metadata}, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	// Note: missing mapping for most of o.ModifiedAccessConditions
+	return &generated.ContainerClientSetMetadataOptions{
+		LeaseID:         o.LeaseAccessConditions.LeaseID,
+		IfModifiedSince: o.ModifiedAccessConditions.IfModifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -277,12 +296,14 @@ type GetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *GetAccessPolicyOptions) format() (*generated.ContainerClientGetAccessPolicyOptions, *LeaseAccessConditions) {
+func (o *GetAccessPolicyOptions) format() *generated.ContainerClientGetAccessPolicyOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
-	return nil, o.LeaseAccessConditions
+	return &generated.ContainerClientGetAccessPolicyOptions{
+		LeaseID: o.LeaseAccessConditions.LeaseID,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -296,22 +317,17 @@ type SetAccessPolicyOptions struct {
 	ContainerACL     []*SignedIdentifier
 }
 
-func (o *SetAccessPolicyOptions) format() (*generated.ContainerClientSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions, []*SignedIdentifier, error) {
+func (o *SetAccessPolicyOptions) format() *generated.ContainerClientSetAccessPolicyOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-	if o.ContainerACL != nil {
-		for _, c := range o.ContainerACL {
-			err := formatTime(c)
-			if err != nil {
-				return nil, nil, nil, nil, err
-			}
-		}
-	}
-	lac, mac := exported.FormatContainerAccessConditions(o.AccessConditions)
+	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions.IfMatch,  o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
 	return &generated.ContainerClientSetAccessPolicyOptions{
-		Access: o.Access,
-	}, lac, mac, o.ContainerACL, nil
+		Access:            o.Access,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 func formatTime(c *SignedIdentifier) error {
@@ -422,11 +438,11 @@ type FilterBlobsOptions struct {
 	MaxResults *int32
 }
 
-func (o *FilterBlobsOptions) format() *generated.ContainerClientFilterBlobsOptions {
+func (o *FilterBlobsOptions) format() *generated.ContainerClientFindBlobsByTagsOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.ContainerClientFilterBlobsOptions{
+	return &generated.ContainerClientFindBlobsByTagsOptions{
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 	}

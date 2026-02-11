@@ -49,21 +49,32 @@ type CreateOptions struct {
 	Metadata map[string]*string
 }
 
-func (o *CreateOptions) format() (*generated.AppendBlobClientCreateOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
+func (o *CreateOptions) format() *generated.AppendBlobClientCreateOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
+		return nil
 	}
-
-	options := generated.AppendBlobClientCreateOptions{
-		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
-		Metadata:                 o.Metadata,
+	return &generated.AppendBlobClientCreateOptions{
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		LegalHold:                o.LegalHold,
+		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
+		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
+		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
+		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
+		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
+		BlobContentType:          o.HTTPHeaders.BlobContentType,
+		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:            o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
+		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
+		Metadata:                 o.Metadata,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -83,14 +94,24 @@ type AppendBlockOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *AppendBlockOptions) format() (*generated.AppendBlobClientAppendBlockOptions, *generated.AppendPositionAccessConditions,
-	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+// TODO transfer validation fix
+func (o *AppendBlockOptions) format() *generated.AppendBlobClientAppendBlockOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &generated.AppendBlobClientAppendBlockOptions{}, o.AppendPositionAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, leaseAccessConditions
+	return &generated.AppendBlobClientAppendBlockOptions{
+		AppendPosition:      o.AppendPositionAccessConditions.AppendPosition,
+		MaxSize:             o.AppendPositionAccessConditions.MaxSize,
+		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -119,25 +140,38 @@ type AppendBlockFromURLOptions struct {
 	Range blob.HTTPRange
 }
 
-func (o *AppendBlockFromURLOptions) format() (*generated.AppendBlobClientAppendBlockFromURLOptions, *generated.CPKInfo,
-	*generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.AppendPositionAccessConditions,
-	*generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions) {
+func (o *AppendBlockFromURLOptions) format() *generated.AppendBlobClientAppendBlockFromURLOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil, nil
+		return nil
 	}
 
+	// Notes: no mapping for o.SourceModifiedAccessConditions.SourceIfTags
 	options := &generated.AppendBlobClientAppendBlockFromURLOptions{
-		SourceRange:             exported.FormatHTTPRange(o.Range),
 		CopySourceAuthorization: o.CopySourceAuthorization,
+		AppendPosition:          o.AppendPositionAccessConditions.AppendPosition,
+		MaxSize:                 o.AppendPositionAccessConditions.MaxSize,
+		LeaseID:                 o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                 o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:         o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:             o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:       o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm:     o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:           o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:     o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:         o.CPKScopeInfo.EncryptionScope,
 		FileRequestIntent:       o.FileRequestIntent,
+		SourceIfMatch:           o.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:   o.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:       o.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince: o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+		SourceRange:             exported.FormatHTTPRange(o.Range),
 	}
 
 	if o.SourceContentValidation != nil {
 		o.SourceContentValidation.Apply(options)
 	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.AppendPositionAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
+	return options
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -148,15 +182,19 @@ type SealOptions struct {
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 }
 
-func (o *SealOptions) format() (*generated.LeaseAccessConditions,
-	*generated.ModifiedAccessConditions, *generated.AppendPositionAccessConditions) {
+func (o *SealOptions) format() *generated.AppendBlobClientSealOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, modifiedAccessConditions, o.AppendPositionAccessConditions
-
+	// NOTE: o.AppendPositionAccessConditions.MaxSize does not exist for Seal operation
+	return &generated.AppendBlobClientSealOptions{
+		AppendPosition:    o.AppendPositionAccessConditions.AppendPosition,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

@@ -148,17 +148,13 @@ func (b *Client) WithVersionID(versionID string) (*Client, error) {
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (b *Client) Delete(ctx context.Context, o *DeleteOptions) (DeleteResponse, error) {
-	deleteOptions, leaseInfo, accessConditions := o.format()
-	resp, err := b.generated().Delete(ctx, deleteOptions, leaseInfo, accessConditions)
-	return resp, err
+	return b.generated().Delete(ctx, o.format())
 }
 
 // Undelete restores the contents and metadata of a soft-deleted blob and any associated soft-deleted snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/undelete-blob.
 func (b *Client) Undelete(ctx context.Context, o *UndeleteOptions) (UndeleteResponse, error) {
-	undeleteOptions := o.format()
-	resp, err := b.generated().Undelete(ctx, undeleteOptions)
-	return resp, err
+	return b.generated().Undelete(ctx, o.format())
 }
 
 // SetTier operation sets the tier on a blob. The operation is allowed on a page
@@ -168,34 +164,25 @@ func (b *Client) Undelete(ctx context.Context, o *UndeleteOptions) (UndeleteResp
 // does not update the blob's ETag.
 // For detailed information about block blob level tiers see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (b *Client) SetTier(ctx context.Context, tier AccessTier, o *SetTierOptions) (SetTierResponse, error) {
-	opts, leaseAccessConditions, modifiedAccessConditions := o.format()
-	resp, err := b.generated().SetTier(ctx, tier, opts, leaseAccessConditions, modifiedAccessConditions)
-	return resp, err
+	return b.generated().SetTier(ctx, tier, o.format())
 }
 
 // GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (b *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()
-	resp, err := b.generated().GetProperties(ctx, opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
-	return resp, err
+	return b.generated().GetProperties(ctx, options.format())
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (b *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, o *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	opts, leaseAccessConditions, modifiedAccessConditions := o.format()
-	resp, err := b.generated().SetHTTPHeaders(ctx, opts, &httpHeaders, leaseAccessConditions, modifiedAccessConditions)
-	return resp, err
+	return b.generated().SetProperties(ctx, o.format(httpHeaders))
 }
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
 func (b *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o *SetMetadataOptions) (SetMetadataResponse, error) {
-	basics := generated.BlobClientSetMetadataOptions{Metadata: metadata}
-	leaseAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions := o.format()
-	resp, err := b.generated().SetMetadata(ctx, &basics, leaseAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
-	return resp, err
+	return b.generated().SetMetadata(ctx, metadata, o.format())
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.
@@ -204,26 +191,19 @@ func (b *Client) CreateSnapshot(ctx context.Context, options *CreateSnapshotOpti
 	// CreateSnapshot does NOT panic if the user tries to create a snapshot using a URL that already has a snapshot query parameter
 	// because checking this would be a performance hit for a VERY unusual path, and we don't think the common case should suffer this
 	// performance hit.
-	opts, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := options.format()
-	resp, err := b.generated().CreateSnapshot(ctx, opts, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions)
-
-	return resp, err
+	return b.generated().CreateSnapshot(ctx, options.format())
 }
 
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b *Client) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyFromURLOptions) (StartCopyFromURLResponse, error) {
-	opts, sourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions := options.format()
-	resp, err := b.generated().StartCopyFromURL(ctx, copySource, opts, sourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions)
-	return resp, err
+	return b.generated().StartCopyFromURL(ctx, copySource, options.format())
 }
 
 // AbortCopyFromURL stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-blob.
 func (b *Client) AbortCopyFromURL(ctx context.Context, copyID string, options *AbortCopyFromURLOptions) (AbortCopyFromURLResponse, error) {
-	opts, leaseAccessConditions := options.format()
-	resp, err := b.generated().AbortCopyFromURL(ctx, copyID, opts, leaseAccessConditions)
-	return resp, err
+	return b.generated().AbortCopyFromURL(ctx, copyID, options.format())
 }
 
 // SetTags operation enables users to set tags on a blob or specific blob version, but not snapshot.
@@ -231,60 +211,43 @@ func (b *Client) AbortCopyFromURL(ctx context.Context, copyID string, options *A
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
 func (b *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
-	serializedTags := shared.SerializeBlobTags(tags)
-	blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions := options.format()
-	resp, err := b.generated().SetTags(ctx, *serializedTags, blobSetTagsOptions, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions)
-	return resp, err
+	return b.generated().SetTags(ctx, *tags, options.format())
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags
 func (b *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsResponse, error) {
-	blobGetTagsOptions, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions := options.format()
-	resp, err := b.generated().GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions)
-	return resp, err
-
+	return b.generated().GetTags(ctx, options.format())
 }
 
 // SetImmutabilityPolicy operation enables users to set the immutability policy on a blob. Mode defaults to "Unlocked".
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
 func (b *Client) SetImmutabilityPolicy(ctx context.Context, expiryTime time.Time, options *SetImmutabilityPolicyOptions) (SetImmutabilityPolicyResponse, error) {
-	blobSetImmutabilityPolicyOptions, modifiedAccessConditions := options.format()
-	blobSetImmutabilityPolicyOptions.ImmutabilityPolicyExpiry = &expiryTime
-	resp, err := b.generated().SetImmutabilityPolicy(ctx, blobSetImmutabilityPolicyOptions, modifiedAccessConditions)
-	return resp, err
+	return b.generated().SetImmutabilityPolicy(ctx, expiryTime, options.format())
 }
 
 // DeleteImmutabilityPolicy operation enables users to delete the immutability policy on a blob.
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
 func (b *Client) DeleteImmutabilityPolicy(ctx context.Context, options *DeleteImmutabilityPolicyOptions) (DeleteImmutabilityPolicyResponse, error) {
-	deleteImmutabilityOptions := options.format()
-	resp, err := b.generated().DeleteImmutabilityPolicy(ctx, deleteImmutabilityOptions)
-	return resp, err
+	return b.generated().DeleteImmutabilityPolicy(ctx, options.format())
 }
 
 // SetLegalHold operation enables users to set legal hold on a blob.
 // https://learn.microsoft.com/en-us/azure/storage/blobs/immutable-storage-overview
 func (b *Client) SetLegalHold(ctx context.Context, legalHold bool, options *SetLegalHoldOptions) (SetLegalHoldResponse, error) {
-	setLegalHoldOptions := options.format()
-	resp, err := b.generated().SetLegalHold(ctx, legalHold, setLegalHoldOptions)
-	return resp, err
+	return b.generated().SetLegalHold(ctx, legalHold, options.format())
 }
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *CopyFromURLOptions) (CopyFromURLResponse, error) {
-	copyOptions, smac, mac, lac, cpkScopeInfo := options.format()
-	resp, err := b.generated().CopyFromURL(ctx, copySource, copyOptions, smac, mac, lac, cpkScopeInfo)
-	return resp, err
+	return b.generated().CopyFromURL(ctx, copySource, options.format())
 }
 
 // GetAccountInfo provides account level information
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-account-information?tabs=shared-access-signatures.
 func (b *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (GetAccountInfoResponse, error) {
-	getAccountInfoOptions := o.format()
-	resp, err := b.generated().GetAccountInfo(ctx, getAccountInfoOptions)
-	return resp, err
+	return b.generated().GetAccountInfo(ctx, o.format())
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at blob.
@@ -404,12 +367,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (DownloadStreamResponse, error) {
-	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
-	if o == nil {
-		o = &DownloadStreamOptions{}
-	}
-
-	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
+	dr, err := b.generated().Download(ctx, o.format())
 	if err != nil {
 		return DownloadStreamResponse{}, err
 	}

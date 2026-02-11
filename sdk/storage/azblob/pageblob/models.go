@@ -63,20 +63,35 @@ type CreateOptions struct {
 	LegalHold *bool
 }
 
-func (o *CreateOptions) format() (*generated.PageBlobClientCreateOptions, *generated.BlobHTTPHeaders,
-	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
+func (o *CreateOptions) format() *generated.PageBlobClientCreateOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
+		return nil
 	}
 
-	options := &generated.PageBlobClientCreateOptions{
-		BlobSequenceNumber: o.SequenceNumber,
-		BlobTagsString:     shared.SerializeBlobTagsToStrPtr(o.Tags),
-		Metadata:           o.Metadata,
-		Tier:               o.Tier,
+	return &generated.PageBlobClientCreateOptions{
+		BlobSequenceNumber:       o.SequenceNumber,
+		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
+		Metadata:                 o.Metadata,
+		Tier:                     o.Tier,
+		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
+		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
+		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
+		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
+		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
+		BlobContentType:          o.HTTPHeaders.BlobContentType,
+		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:            o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
+		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
+		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
+		LegalHold:                o.LegalHold,
 	}
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -93,14 +108,24 @@ type UploadPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *UploadPagesOptions) format() (*generated.LeaseAccessConditions,
-	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *UploadPagesOptions) format() *generated.PageBlobClientUploadPagesOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return &generated.PageBlobClientUploadPagesOptions{
+		EncryptionAlgorithm:               o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:                     o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:               o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:                   o.CPKScopeInfo.EncryptionScope,
+		IfSequenceNumberEqualTo:           o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo,
+		IfSequenceNumberLessThan:          o.SequenceNumberAccessConditions.IfSequenceNumberLessThan,
+		IfSequenceNumberLessThanOrEqualTo: o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo,
+		LeaseID:                           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:                   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:                       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:                 o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -126,23 +151,37 @@ type UploadPagesFromURLOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *UploadPagesFromURLOptions) format() (*generated.PageBlobClientUploadPagesFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo,
-	*generated.LeaseAccessConditions, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions, *generated.SourceModifiedAccessConditions) {
+func (o *UploadPagesFromURLOptions) format() *generated.PageBlobClientUploadPagesFromURLOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil, nil
+		return nil
 	}
 
 	options := &generated.PageBlobClientUploadPagesFromURLOptions{
-		CopySourceAuthorization: o.CopySourceAuthorization,
-		FileRequestIntent:       o.FileRequestIntent,
+		CopySourceAuthorization:           o.CopySourceAuthorization,
+		FileRequestIntent:                 o.FileRequestIntent,
+		EncryptionAlgorithm:               o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:                     o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:               o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:                   o.CPKScopeInfo.EncryptionScope,
+		IfSequenceNumberEqualTo:           o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo,
+		IfSequenceNumberLessThan:          o.SequenceNumberAccessConditions.IfSequenceNumberLessThan,
+		IfSequenceNumberLessThanOrEqualTo: o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo,
+		SourceIfMatch:                     o.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:             o.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:                 o.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince:           o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+		LeaseID:                           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:                   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:                       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:                 o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
 
 	if o.SourceContentValidation != nil {
 		o.SourceContentValidation.Apply(options)
 	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return options, o.CPKInfo, o.CPKScopeInfo, leaseAccessConditions, o.SequenceNumberAccessConditions, modifiedAccessConditions, o.SourceModifiedAccessConditions
+	return options
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -155,14 +194,24 @@ type ClearPagesOptions struct {
 	AccessConditions               *blob.AccessConditions
 }
 
-func (o *ClearPagesOptions) format() (*generated.LeaseAccessConditions, *generated.CPKInfo,
-	*generated.CPKScopeInfo, *generated.SequenceNumberAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *ClearPagesOptions) format() *generated.PageBlobClientClearPagesOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, o.SequenceNumberAccessConditions, modifiedAccessConditions
+	return &generated.PageBlobClientClearPagesOptions{
+		EncryptionAlgorithm:               o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:                     o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:               o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:                   o.CPKScopeInfo.EncryptionScope,
+		IfSequenceNumberEqualTo:           o.SequenceNumberAccessConditions.IfSequenceNumberEqualTo,
+		IfSequenceNumberLessThan:          o.SequenceNumberAccessConditions.IfSequenceNumberLessThan,
+		IfSequenceNumberLessThanOrEqualTo: o.SequenceNumberAccessConditions.IfSequenceNumberLessThanOrEqualTo,
+		LeaseID:                           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:                   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:                       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:                 o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -273,14 +322,21 @@ type ResizeOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *ResizeOptions) format() (*generated.PageBlobClientResizeOptions, *generated.LeaseAccessConditions,
-	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
+func (o *ResizeOptions) format() *generated.PageBlobClientResizeOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
+	return &generated.PageBlobClientResizeOptions{
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -294,22 +350,25 @@ type UpdateSequenceNumberOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *UpdateSequenceNumberOptions) format() (*generated.SequenceNumberActionType, *generated.PageBlobClientUpdateSequenceNumberOptions,
-	*generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *UpdateSequenceNumberOptions) format() *generated.PageBlobClientSetSequenceNumberOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
 
-	options := &generated.PageBlobClientUpdateSequenceNumberOptions{
+	options := &generated.PageBlobClientSetSequenceNumberOptions{
 		BlobSequenceNumber: o.SequenceNumber,
+		LeaseID:            o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:            o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:    o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:        o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:  o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
 
 	if *o.ActionType == SequenceNumberActionTypeIncrement {
 		options.BlobSequenceNumber = nil
 	}
 
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return o.ActionType, options, leaseAccessConditions, modifiedAccessConditions
+	return options
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -319,12 +378,18 @@ type CopyIncrementalOptions struct {
 	ModifiedAccessConditions *blob.ModifiedAccessConditions
 }
 
-func (o *CopyIncrementalOptions) format() (*generated.PageBlobClientCopyIncrementalOptions, *generated.ModifiedAccessConditions) {
+func (o *CopyIncrementalOptions) format() *generated.PageBlobClientCopyIncrementalOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
-	return nil, o.ModifiedAccessConditions
+	return &generated.PageBlobClientCopyIncrementalOptions{
+		IfMatch:           o.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.ModifiedAccessConditions.IfUnmodifiedSince,
+		IfTags:            o.ModifiedAccessConditions.IfTags,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

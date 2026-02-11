@@ -49,13 +49,12 @@ type UploadOptions struct {
 	TransactionalContentMD5 []byte
 }
 
-func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *generated.BlobHTTPHeaders, *generated.LeaseAccessConditions,
-	*generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions) {
+func (o *UploadOptions) format() *generated.BlockBlobClientUploadOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil
+		return nil
 	}
 
-	basics := generated.BlockBlobClientUploadOptions{
+	return &generated.BlockBlobClientUploadOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		Metadata:                 o.Metadata,
 		Tier:                     o.Tier,
@@ -63,10 +62,22 @@ func (o *UploadOptions) format() (*generated.BlockBlobClientUploadOptions, *gene
 		LegalHold:                o.LegalHold,
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiryTime,
+		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:            o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
+		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
+		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
+		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
+		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
+		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
+		BlobContentType:          o.HTTPHeaders.BlobContentType,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -105,14 +116,11 @@ type UploadBlobFromURLOptions struct {
 	SourceModifiedAccessConditions *blob.SourceModifiedAccessConditions
 }
 
-func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFromURLOptions, *generated.BlobHTTPHeaders,
-	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions,
-	*generated.SourceModifiedAccessConditions) {
+func (o *UploadBlobFromURLOptions) format() *generated.BlockBlobClientUploadBlobFromURLOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil, nil
+		return nil
 	}
-
-	options := generated.BlockBlobClientPutBlobFromURLOptions{
+	return &generated.BlockBlobClientUploadBlobFromURLOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.Tags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
 		FileRequestIntent:        o.FileRequestIntent,
@@ -121,10 +129,26 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 		Metadata:                 o.Metadata,
 		SourceContentMD5:         o.SourceContentMD5,
 		Tier:                     o.Tier,
+		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm:      o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:            o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:      o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:          o.CPKScopeInfo.EncryptionScope,
+		BlobCacheControl:         o.HTTPHeaders.BlobCacheControl,
+		BlobContentDisposition:   o.HTTPHeaders.BlobContentDisposition,
+		BlobContentEncoding:      o.HTTPHeaders.BlobContentEncoding,
+		BlobContentLanguage:      o.HTTPHeaders.BlobContentLanguage,
+		BlobContentMD5:           o.HTTPHeaders.BlobContentMD5,
+		BlobContentType:          o.HTTPHeaders.BlobContentType,
+		SourceIfMatch:            o.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:    o.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:        o.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince:  o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, o.SourceModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -143,12 +167,18 @@ type StageBlockOptions struct {
 }
 
 // StageBlockOptions contains the optional parameters for the Client.StageBlock method.
-func (o *StageBlockOptions) format() (*generated.BlockBlobClientStageBlockOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo) {
+func (o *StageBlockOptions) format() *generated.BlockBlobClientStageBlockOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
 
-	return &generated.BlockBlobClientStageBlockOptions{}, o.LeaseAccessConditions, o.CPKInfo, o.CPKScopeInfo
+	return &generated.BlockBlobClientStageBlockOptions{
+		LeaseID:             o.LeaseAccessConditions.LeaseID,
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -176,22 +206,30 @@ type StageBlockFromURLOptions struct {
 	CPKScopeInfo *blob.CPKScopeInfo
 }
 
-func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions) {
+func (o *StageBlockFromURLOptions) format() *generated.BlockBlobClientStageBlockFromURLOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
 
 	options := &generated.BlockBlobClientStageBlockFromURLOptions{
 		CopySourceAuthorization: o.CopySourceAuthorization,
 		SourceRange:             exported.FormatHTTPRange(o.Range),
 		FileRequestIntent:       o.FileRequestIntent,
+		SourceIfMatch:           o.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:   o.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:       o.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince: o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+		EncryptionAlgorithm:     o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:           o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:     o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:         o.CPKScopeInfo.EncryptionScope,
 	}
 
 	if o.SourceContentValidation != nil {
 		o.SourceContentValidation.Apply(options)
 	}
 
-	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
+	return options
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -218,6 +256,40 @@ type CommitBlockListOptions struct {
 	TransactionalContentMD5 []byte
 }
 
+func (o *CommitBlockListOptions) format() *generated.BlockBlobClientCommitBlockListOptions {
+	if o == nil {
+		return nil
+	}
+	// TODO figure out request id
+	return &generated.BlockBlobClientCommitBlockListOptions{
+		BlobTagsString:            shared.SerializeBlobTagsToStrPtr(o.Tags),
+		Metadata:                  o.Metadata,
+		RequestID:                 o.RequestID,
+		Tier:                      o.Tier,
+		Timeout:                   o.Timeout,
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
+		LegalHold:                 o.LegalHold,
+		ImmutabilityPolicyMode:    o.ImmutabilityPolicyMode,
+		ImmutabilityPolicyExpiry:  o.ImmutabilityPolicyExpiryTime,
+		BlobCacheControl:          o.HTTPHeaders.BlobCacheControl,
+		BlobContentDisposition:    o.HTTPHeaders.BlobContentDisposition,
+		BlobContentEncoding:       o.HTTPHeaders.BlobContentEncoding,
+		BlobContentLanguage:       o.HTTPHeaders.BlobContentLanguage,
+		BlobContentMD5:            o.HTTPHeaders.BlobContentMD5,
+		BlobContentType:           o.HTTPHeaders.BlobContentType,
+		LeaseID:                   o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                   o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:           o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:               o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:         o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm:       o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:             o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256:       o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:           o.CPKScopeInfo.EncryptionScope,
+	}
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // GetBlockListOptions contains the optional parameters for the Client.GetBlockList method.
@@ -226,13 +298,15 @@ type GetBlockListOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *GetBlockListOptions) format() *generated.BlockBlobClientGetBlockListOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &generated.BlockBlobClientGetBlockListOptions{Snapshot: o.Snapshot}, leaseAccessConditions, modifiedAccessConditions
+	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
+	return &generated.BlockBlobClientGetBlockListOptions{
+		Snapshot: o.Snapshot,
+		LeaseID:  o.AccessConditions.LeaseAccessConditions.LeaseID,
+	}
 }
 
 // ------------------------------------------------------------

@@ -302,9 +302,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
 func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
-	serviceFilterBlobsOptions := o.format()
-	resp, err := s.generated().FilterBlobs(ctx, where, serviceFilterBlobsOptions)
-	return resp, err
+	return s.generated().FindBlobsByTags(ctx, where, o.format())
 }
 
 // NewBatchBuilder creates an instance of BatchBuilder using the same auth policy as the client.
@@ -355,7 +353,8 @@ func (s *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 
-	resp, err := s.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
+	resp, err := s.generated().SubmitBatch(ctx, int64(len(batchReq)),
+		generated.SubmitBatchRequest{Body: streaming.MultipartContent{Body: rsc, ContentType: multipartContentType}}, options.format())
 	if err != nil {
 		return SubmitBatchResponse{}, err
 	}

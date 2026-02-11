@@ -152,10 +152,7 @@ func (ab *Client) WithVersionID(versionID string) (*Client, error) {
 // Create creates a 0-size append blob. Call AppendBlock to append data to an append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
 func (ab *Client) Create(ctx context.Context, o *CreateOptions) (CreateResponse, error) {
-	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions := o.format()
-	resp, err := ab.generated().Create(ctx, 0, opts, httpHeaders, leaseAccessConditions, cpkInfo,
-		cpkScopeInfo, modifiedAccessConditions)
-	return resp, err
+	return ab.generated().Create(ctx, o.format())
 }
 
 // AppendBlock writes a stream to a new block of data to the end of the existing append blob.
@@ -168,63 +165,29 @@ func (ab *Client) AppendBlock(ctx context.Context, body io.ReadSeekCloser, o *Ap
 		return AppendBlockResponse{}, nil
 	}
 
-	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions, leaseAccessConditions := o.format()
+	options := o.format()
 
 	if o != nil && o.TransactionalValidation != nil {
-		body, err = o.TransactionalValidation.Apply(body, appendOptions)
+		body, err = o.TransactionalValidation.Apply(body, options)
 		if err != nil {
 			return AppendBlockResponse{}, nil
 		}
 	}
 
-	resp, err := ab.generated().AppendBlock(ctx,
-		count,
-		body,
-		appendOptions,
-		leaseAccessConditions,
-		appendPositionAccessConditions,
-		cpkInfo,
-		cpkScope,
-		modifiedAccessConditions)
-
-	return resp, err
+	return ab.generated().AppendBlock(ctx, body, count, options)
 }
 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block-from-url.
 func (ab *Client) AppendBlockFromURL(ctx context.Context, source string, o *AppendBlockFromURLOptions) (AppendBlockFromURLResponse, error) {
-	appendBlockFromURLOptions,
-		cpkInfo,
-		cpkScopeInfo,
-		leaseAccessConditions,
-		appendPositionAccessConditions,
-		modifiedAccessConditions,
-		sourceModifiedAccessConditions := o.format()
-
 	// content length should be 0 on * from URL. always. It's a 400 if it isn't.
-	resp, err := ab.generated().AppendBlockFromURL(ctx,
-		source,
-		0,
-		appendBlockFromURLOptions,
-		cpkInfo,
-		cpkScopeInfo,
-		leaseAccessConditions,
-		appendPositionAccessConditions,
-		modifiedAccessConditions,
-		sourceModifiedAccessConditions)
-	return resp, err
+	return ab.generated().AppendBlockFromURL(ctx, source, 0, o.format())
 }
 
 // Seal - The purpose of Append Blob Seal is to allow users and applications to seal append blobs, marking them as read only.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/append-blob-seal
 func (ab *Client) Seal(ctx context.Context, o *SealOptions) (SealResponse, error) {
-	leaseAccessConditions, modifiedAccessConditions, positionAccessConditions := o.format()
-	resp, err := ab.generated().Seal(ctx,
-		nil,
-		leaseAccessConditions,
-		modifiedAccessConditions,
-		positionAccessConditions)
-	return resp, err
+	return ab.generated().Seal(ctx, o.format())
 }
 
 // Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.

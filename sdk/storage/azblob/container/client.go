@@ -168,27 +168,13 @@ func (c *Client) NewPageBlobClient(blobName string) *pageblob.Client {
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
 func (c *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	var opts *generated.ContainerClientCreateOptions
-	var cpkScopes *generated.ContainerCPKScopeInfo
-	if options != nil {
-		opts = &generated.ContainerClientCreateOptions{
-			Access:   options.Access,
-			Metadata: options.Metadata,
-		}
-		cpkScopes = options.CPKScopeInfo
-	}
-	resp, err := c.generated().Create(ctx, opts, cpkScopes)
-
-	return resp, err
+	return c.generated().Create(ctx, options.format())
 }
 
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
 func (c *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	opts, leaseAccessConditions, modifiedAccessConditions := options.format()
-	resp, err := c.generated().Delete(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
-
-	return resp, err
+	return c.generated().Delete(ctx, options.format())
 }
 
 // Restore operation restore the contents and properties of a soft deleted container to a specified container.
@@ -214,46 +200,41 @@ func (c *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (Ge
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
 	// This allows us to not expose a GetMetadata method at all simplifying the API.
 	// The optionals are nil, like they were in track 1.5
-	opts, leaseAccessConditions := o.format()
-
-	resp, err := c.generated().GetProperties(ctx, opts, leaseAccessConditions)
-	return resp, err
+	return c.generated().GetProperties(ctx, o.format())
 }
 
+// TODO why is metadata optional???
 // SetMetadata sets the container's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
 func (c *Client) SetMetadata(ctx context.Context, o *SetMetadataOptions) (SetMetadataResponse, error) {
-	metadataOptions, lac, mac := o.format()
-	resp, err := c.generated().SetMetadata(ctx, metadataOptions, lac, mac)
-
-	return resp, err
+	return c.generated().SetMetadata(ctx, o.Metadata, o.format())
 }
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-acl.
 func (c *Client) GetAccessPolicy(ctx context.Context, o *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
-	options, ac := o.format()
-	resp, err := c.generated().GetAccessPolicy(ctx, options, ac)
-	return resp, err
+	return c.generated().GetAccessPolicy(ctx, o.format())
 }
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	accessPolicy, mac, lac, acl, err := o.format()
-	if err != nil {
-		return SetAccessPolicyResponse{}, err
+	if o.ContainerACL != nil {
+		for _, c := range o.ContainerACL {
+			err := formatTime(c)
+			if err != nil {
+				return SetAccessPolicyResponse{}, err
+			}
+		}
 	}
-	resp, err := c.generated().SetAccessPolicy(ctx, acl, accessPolicy, mac, lac)
+	resp, err := c.generated().SetAccessPolicy(ctx, o.ContainerACL, o.format())
 	return resp, err
 }
 
 // GetAccountInfo provides account level information
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-account-information?tabs=shared-access-signatures.
 func (c *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (GetAccountInfoResponse, error) {
-	getAccountInfoOptions := o.format()
-	resp, err := c.generated().GetAccountInfo(ctx, getAccountInfoOptions)
-	return resp, err
+	return c.generated().GetAccountInfo(ctx, o.format())
 }
 
 // NewListBlobsFlatPager returns a pager for blobs starting from the specified Marker. Use an empty
@@ -428,7 +409,5 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags-container
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 func (c *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
-	containerClientFilterBlobsOptions := o.format()
-	resp, err := c.generated().FilterBlobs(ctx, where, containerClientFilterBlobsOptions)
-	return resp, err
+	return c.generated().FindBlobsByTags(ctx, where, o.format())
 }

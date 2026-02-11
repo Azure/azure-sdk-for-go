@@ -70,18 +70,23 @@ type DownloadStreamOptions struct {
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
+func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
-
-	basics := generated.BlobClientDownloadOptions{
-		RangeGetContentMD5: o.RangeGetContentMD5,
-		Range:              exported.FormatHTTPRange(o.Range),
+	// Note: no mapping for o.CPKScopeInfo
+	return &generated.BlobClientDownloadOptions{
+		RangeGetContentMD5:  o.RangeGetContentMD5,
+		Range:               exported.FormatHTTPRange(o.Range),
+		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -201,21 +206,20 @@ type DeleteOptions struct {
 	BlobDeleteType *DeleteType
 }
 
-func (o *DeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *DeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
 
-	basics := generated.BlobClientDeleteOptions{
-		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType, // None by default
+	return &generated.BlobClientDeleteOptions{
+		DeleteSnapshots:   o.DeleteSnapshots,
+		BlobDeleteType:    o.BlobDeleteType, // None by default
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	if o.AccessConditions == nil {
-		return &basics, nil, nil
-	}
-
-	return &basics, o.AccessConditions.LeaseAccessConditions, o.AccessConditions.ModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -239,13 +243,15 @@ type SetTierOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *SetTierOptions) format() (*generated.BlobClientSetTierOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *SetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &generated.BlobClientSetTierOptions{RehydratePriority: o.RehydratePriority}, leaseAccessConditions, modifiedAccessConditions
+	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
+	return &generated.BlobClientSetTierOptions{
+		RehydratePriority: o.RehydratePriority,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -256,14 +262,20 @@ type GetPropertiesOptions struct {
 	CPKInfo          *CPKInfo
 }
 
-func (o *GetPropertiesOptions) format() (*generated.BlobClientGetPropertiesOptions,
-	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
+func (o *GetPropertiesOptions) format() *generated.BlobClientGetPropertiesOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
+	return &generated.BlobClientGetPropertiesOptions{
+		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -273,13 +285,23 @@ type SetHTTPHeadersOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *SetHTTPHeadersOptions) format() (*generated.BlobClientSetHTTPHeadersOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) *generated.BlobClientSetPropertiesOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return nil, leaseAccessConditions, modifiedAccessConditions
+	return &generated.BlobClientSetPropertiesOptions{
+		BlobCacheControl:       httpHeaders.BlobCacheControl,
+		BlobContentDisposition: httpHeaders.BlobContentDisposition,
+		BlobContentEncoding:    httpHeaders.BlobContentEncoding,
+		BlobContentLanguage:    httpHeaders.BlobContentLanguage,
+		BlobContentMD5:         httpHeaders.BlobContentMD5,
+		BlobContentType:        httpHeaders.BlobContentType,
+		LeaseID:                o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:            o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:      o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -291,14 +313,21 @@ type SetMetadataOptions struct {
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *SetMetadataOptions) format() (*generated.LeaseAccessConditions, *CPKInfo,
-	*CPKScopeInfo, *ModifiedAccessConditions) {
+func (o *SetMetadataOptions) format() *generated.BlobClientSetMetadataOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions
+	return &generated.BlobClientSetMetadataOptions{
+		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -311,17 +340,22 @@ type CreateSnapshotOptions struct {
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *CreateSnapshotOptions) format() (*generated.BlobClientCreateSnapshotOptions, *generated.CPKInfo,
-	*generated.CPKScopeInfo, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+func (o *CreateSnapshotOptions) format() *generated.BlobClientCreateSnapshotOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-
 	return &generated.BlobClientCreateSnapshotOptions{
-		Metadata: o.Metadata,
-	}, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, leaseAccessConditions
+		Metadata:            o.Metadata,
+		LeaseID:             o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:             o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:     o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:         o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+		EncryptionAlgorithm: o.CPKInfo.EncryptionAlgorithm,
+		EncryptionKey:       o.CPKInfo.EncryptionKey,
+		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
+		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -354,13 +388,11 @@ type StartCopyFromURLOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *StartCopyFromURLOptions) format() (*generated.BlobClientStartCopyFromURLOptions,
-	*generated.SourceModifiedAccessConditions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions) {
+func (o *StartCopyFromURLOptions) format() *generated.BlobClientStartCopyFromURLOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
-
-	basics := generated.BlobClientStartCopyFromURLOptions{
+	return &generated.BlobClientStartCopyFromURLOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.BlobTags),
 		Metadata:                 o.Metadata,
 		RehydratePriority:        o.RehydratePriority,
@@ -369,10 +401,16 @@ func (o *StartCopyFromURLOptions) format() (*generated.BlobClientStartCopyFromUR
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
 		ImmutabilityPolicyMode:   o.ImmutabilityPolicyMode,
 		LegalHold:                o.LegalHold,
+		SourceIfMatch:            o.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:    o.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:        o.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince:  o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+		LeaseID:                  o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                  o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:          o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:              o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:        o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -382,11 +420,13 @@ type AbortCopyFromURLOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *AbortCopyFromURLOptions) format() (*generated.BlobClientAbortCopyFromURLOptions, *generated.LeaseAccessConditions) {
+func (o *AbortCopyFromURLOptions) format() *generated.BlobClientAbortCopyFromURLOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
-	return nil, o.LeaseAccessConditions
+	return &generated.BlobClientAbortCopyFromURLOptions{
+		LeaseID: o.LeaseAccessConditions.LeaseID,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -406,20 +446,22 @@ type SetTagsOptions struct {
 	BlobModifiedAccessConditions *BlobModifiedAccessConditions
 }
 
-func (o *SetTagsOptions) format() (*generated.BlobClientSetTagsOptions, *ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.BlobModifiedAccessConditions) {
+func (o *SetTagsOptions) format() *generated.BlobClientSetTagsOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
 
-	options := &generated.BlobClientSetTagsOptions{
+	// Notes: no mapping for o.BlobModifiedAccessConditions
+	return &generated.BlobClientSetTagsOptions{
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		VersionID:                 o.VersionID,
+		LeaseID:                   o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                   o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:           o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:               o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:         o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions)
-	return options, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -437,19 +479,20 @@ type GetTagsOptions struct {
 	BlobModifiedAccessConditions *BlobModifiedAccessConditions
 }
 
-func (o *GetTagsOptions) format() (*generated.BlobClientGetTagsOptions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.BlobModifiedAccessConditions) {
+func (o *GetTagsOptions) format() *generated.BlobClientGetTagsOptions {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil
 	}
-
-	options := &generated.BlobClientGetTagsOptions{
-		Snapshot:  o.Snapshot,
-		VersionID: o.VersionID,
+	// Notes: no mapping for o.BlobModifiedAccessConditions
+	return &generated.BlobClientGetTagsOptions{
+		Snapshot:          o.Snapshot,
+		VersionID:         o.VersionID,
+		LeaseID:           o.BlobAccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:           o.BlobAccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
-	blobModifiedAccessConditions := exported.FormatBlobModifiedAccessConditions(o.BlobModifiedAccessConditions)
-	return options, modifiedAccessConditions, leaseAccessConditions, blobModifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -462,20 +505,15 @@ type SetImmutabilityPolicyOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *SetImmutabilityPolicyOptions) format() (*generated.BlobClientSetImmutabilityPolicyOptions, *ModifiedAccessConditions) {
+func (o *SetImmutabilityPolicyOptions) format() *generated.BlobClientSetImmutabilityPolicyOptions {
 	if o == nil {
-		return &generated.BlobClientSetImmutabilityPolicyOptions{}, nil
+		return nil
 	}
-	ac := &exported.BlobAccessConditions{
-		ModifiedAccessConditions: o.ModifiedAccessConditions,
-	}
-	_, modifiedAccessConditions := exported.FormatBlobAccessConditions(ac)
-
-	options := &generated.BlobClientSetImmutabilityPolicyOptions{
+	// Notes: no mapping for most of o.ModifiedAccessConditions
+	return &generated.BlobClientSetImmutabilityPolicyOptions{
 		ImmutabilityPolicyMode: o.Mode,
+		IfUnmodifiedSince:      o.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	return options, modifiedAccessConditions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -556,12 +594,12 @@ type CopyFromURLOptions struct {
 	CPKScopeInfo *CPKScopeInfo
 }
 
-func (o *CopyFromURLOptions) format() (*generated.BlobClientCopyFromURLOptions, *generated.SourceModifiedAccessConditions, *generated.ModifiedAccessConditions, *generated.LeaseAccessConditions, *generated.CPKScopeInfo) {
+func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil
 	}
-
-	options := &generated.BlobClientCopyFromURLOptions{
+	// Notes: no mapping for o.CPKScopeInfo
+	return &generated.BlobClientCopyFromURLOptions{
 		BlobTagsString:           shared.SerializeBlobTagsToStrPtr(o.BlobTags),
 		CopySourceAuthorization:  o.CopySourceAuthorization,
 		ImmutabilityPolicyExpiry: o.ImmutabilityPolicyExpiry,
@@ -571,10 +609,16 @@ func (o *CopyFromURLOptions) format() (*generated.BlobClientCopyFromURLOptions, 
 		Metadata:                 o.Metadata,
 		SourceContentMD5:         o.SourceContentMD5,
 		Tier:                     o.Tier,
+		SourceIfMatch:            o.SourceModifiedAccessConditions.SourceIfMatch,
+		SourceIfModifiedSince:    o.SourceModifiedAccessConditions.SourceIfModifiedSince,
+		SourceIfNoneMatch:        o.SourceModifiedAccessConditions.SourceIfNoneMatch,
+		SourceIfUnmodifiedSince:  o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince,
+		LeaseID:                  o.BlobAccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:                  o.BlobAccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:          o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:              o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince:        o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.BlobAccessConditions)
-	return options, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions, o.CPKScopeInfo
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

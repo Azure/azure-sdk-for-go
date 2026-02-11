@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	azcosmosinternal "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -152,7 +152,7 @@ func TestReadMany_WithQueryEngine_EmptyItems(t *testing.T) {
 	require.NoError(t, err)
 
 	// call ReadMany with empty list and a mock engine
-	options := &ReadManyOptions{QueryEngine: azcosmosinternal.NewMockQueryEngine()}
+	options := &ReadManyOptions{QueryEngine: mock.NewMockQueryEngine()}
 	resp, err := container.ReadManyItems(context.Background(), []ItemIdentity{}, options)
 	require.NoError(t, err)
 	require.Empty(t, resp.Items)
@@ -185,7 +185,7 @@ func TestReadMany_WithQueryEngine_ReturnsItems(t *testing.T) {
 	idents := []ItemIdentity{{ID: "0", PartitionKey: NewPartitionKeyString("pk_0")}, {ID: "1", PartitionKey: NewPartitionKeyString("pk_1")}}
 
 	// Use the mock query engine which will echo these identities as documents
-	options := &ReadManyOptions{QueryEngine: azcosmosinternal.NewMockQueryEngine()}
+	options := &ReadManyOptions{QueryEngine: mock.NewMockQueryEngine()}
 	resp, err := container.ReadManyItems(context.Background(), idents, options)
 	require.NoError(t, err)
 	// Expect two items per engine's behavior

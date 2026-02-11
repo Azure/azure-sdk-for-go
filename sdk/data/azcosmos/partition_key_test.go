@@ -4,10 +4,6 @@
 package azcosmos
 
 import (
-	"encoding/json"
-	"encoding/xml"
-	"math"
-	"os"
 	"reflect"
 	"testing"
 
@@ -111,122 +107,25 @@ func TestPartitionKeyEquality(t *testing.T) {
 	}
 }
 
-// XML structures for parsing the baseline test data.
-type epkBaselineResults struct {
-	Results []epkBaselineResult `xml:"Result"`
-}
+// TestComputeEffectivePartitionKey verifies that the computeEffectivePartitionKey
+// method on PartitionKey correctly delegates to the internal/epk package.
+func TestComputeEffectivePartitionKey(t *testing.T) {
+	// V1 Hash: string "hello" → known hash
+	pk := NewPartitionKeyString("hello")
+	result := pk.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
+	require.Equal(t, "000000000000000000000000FF69187F", result.EPK)
 
-type epkBaselineResult struct {
-	Input  epkBaselineInput  `xml:"Input"`
-	Output epkBaselineOutput `xml:"Output"`
-}
+	// V2 Hash: null → known hash
+	result = NullPartitionKey.computeEffectivePartitionKey(PartitionKeyKindHash, 2)
+	require.Equal(t, "778867E4430E67857ACE5C908374FE16", result.EPK)
 
-type epkBaselineInput struct {
-	Description       string `xml:"Description"`
-	PartitionKeyValue string `xml:"PartitionKeyValue"`
-}
+	// V2 MultiHash: ["a", "b"] → per-component hashes concatenated
+	multiPK := NewPartitionKey().AppendString("a").AppendString("b")
+	result = multiPK.computeEffectivePartitionKey(PartitionKeyKindMultiHash, 2)
+	require.Equal(t, "FA5381E1114EB8D3FCC90795045B49B7D95644569A78B1E22D200348AF9416CE", result.EPK)
 
-type epkBaselineOutput struct {
-	PartitionKeyHashV1 string `xml:"PartitionKeyHashV1"`
-	PartitionKeyHashV2 string `xml:"PartitionKeyHashV2"`
-}
-
-// parsePartitionKeyValue converts the XML PartitionKeyValue string into a
-// PartitionKey. The input is either the special string "UNDEFINED" or a valid
-// JSON value (null, bool, number, string, or array of strings for hierarchical PKs).
-// Post-unmarshal, the magic strings "NaN", "-Infinity", and "Infinity" are
-// converted to their float64 equivalents.
-func parsePartitionKeyValue(raw string) PartitionKey {
-	if raw == "UNDEFINED" {
-		return NewPartitionKey()
-	}
-
-	var v interface{}
-	if err := json.Unmarshal([]byte(raw), &v); err != nil {
-		panic("failed to parse partition key value: " + raw + ": " + err.Error())
-	}
-
-	switch val := v.(type) {
-	case nil:
-		return NullPartitionKey
-	case bool:
-		return NewPartitionKeyBool(val)
-	case float64:
-		return NewPartitionKeyNumber(val)
-	case string:
-		// Convert magic number strings to actual float64 values
-		switch val {
-		case "NaN":
-			return NewPartitionKeyNumber(math.NaN())
-		case "-Infinity":
-			return NewPartitionKeyNumber(math.Inf(-1))
-		case "Infinity":
-			return NewPartitionKeyNumber(math.Inf(1))
-		default:
-			return NewPartitionKeyString(val)
-		}
-	case []interface{}:
-		pk := NewPartitionKey()
-		for _, elem := range val {
-			s, ok := elem.(string)
-			if !ok {
-				panic("non-string element in list partition key value: " + raw)
-			}
-			pk = pk.AppendString(s)
-		}
-		return pk
-	default:
-		panic("unexpected JSON type in partition key value: " + raw)
-	}
-}
-
-func partitionKeyKindForCategory(category string) PartitionKeyKind {
-	if category == "Lists" {
-		return PartitionKeyKindMultiHash
-	}
-	return PartitionKeyKindHash
-}
-
-func loadBaselineResults(t *testing.T, filename string) epkBaselineResults {
-	t.Helper()
-	data, err := os.ReadFile(filename)
-	require.NoError(t, err, "failed to read baseline file %s", filename)
-	var results epkBaselineResults
-	require.NoError(t, xml.Unmarshal(data, &results), "failed to parse baseline file %s", filename)
-	return results
-}
-
-// TestComputeEffectivePartitionKey_Baseline enumerates every case in the XML
-// baseline files and verifies that computeEffectivePartitionKey produces the
-// expected V1 and V2 hash values.
-func TestComputeEffectivePartitionKey_Baseline(t *testing.T) {
-	files := map[string]string{
-		"Singletons": "testdata/PartitionKeyHashBaselineTest.Singletons.xml",
-		"Numbers":    "testdata/PartitionKeyHashBaselineTest.Numbers.xml",
-		"Strings":    "testdata/PartitionKeyHashBaselineTest.Strings.xml",
-		"Lists":      "testdata/PartitionKeyHashBaselineTest.Lists.xml",
-	}
-
-	for category, filename := range files {
-		baseline := loadBaselineResults(t, filename)
-		kind := partitionKeyKindForCategory(category)
-
-		for _, tc := range baseline.Results {
-			pk := parsePartitionKeyValue(tc.Input.PartitionKeyValue)
-
-			// Test V1 hash
-			t.Run(category+"/V1/"+tc.Input.Description, func(t *testing.T) {
-				epk := pk.computeEffectivePartitionKey(kind, 1)
-				require.Equal(t, tc.Output.PartitionKeyHashV1, epk.epk,
-					"V1 hash mismatch for %s (value: %s)", tc.Input.Description, tc.Input.PartitionKeyValue)
-			})
-
-			// Test V2 hash
-			t.Run(category+"/V2/"+tc.Input.Description, func(t *testing.T) {
-				epk := pk.computeEffectivePartitionKey(kind, 2)
-				require.Equal(t, tc.Output.PartitionKeyHashV2, epk.epk,
-					"V2 hash mismatch for %s (value: %s)", tc.Input.Description, tc.Input.PartitionKeyValue)
-			})
-		}
-	}
+	// Undefined partition key
+	emptyPK := NewPartitionKey()
+	result = emptyPK.computeEffectivePartitionKey(PartitionKeyKindHash, 1)
+	require.Equal(t, "000000000000000000000000514E28B7", result.EPK)
 }

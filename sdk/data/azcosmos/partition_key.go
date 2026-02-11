@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/epk"
 )
 
 // PartitionKey represents a logical partition key value.
@@ -102,21 +104,28 @@ func (pk *PartitionKey) toJsonString() (string, error) {
 	return completeJson.String(), nil
 }
 
-// effectivePartitionKey holds the computed EPK hash for a partition key value.
-// The EPK is a hex-encoded string that determines which physical partition range
-// a logical partition key maps to.
-type effectivePartitionKey struct {
-	// epk is the hex-encoded effective partition key hash string, comparable
-	// against partitionKeyRange.minInclusive / maxExclusive boundaries.
-	epk string
-}
-
 // computeEffectivePartitionKey computes the effective partition key hash for
-// this partition key value using the Cosmos DB V2 MurmurHash-based algorithm.
-// The result can be compared against physical partition key range boundaries
-// (minInclusive / maxExclusive) to determine which physical range owns this key.
-//
-// This is not yet implemented — it will panic if called.
-func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) effectivePartitionKey {
-	panic("azcosmos: computeEffectivePartitionKey is not yet implemented")
+// this partition key value.
+func (pk *PartitionKey) computeEffectivePartitionKey(kind PartitionKeyKind, version int) epk.EffectivePartitionKey {
+	values := make([]interface{}, len(pk.values))
+	for i, v := range pk.values {
+		values[i] = v
+	}
+
+	// Empty values → undefined partition key
+	if len(values) == 0 {
+		values = []interface{}{epk.UndefinedMarker{}}
+	}
+
+	var epkStr string
+	switch {
+	case version == 1:
+		epkStr = epk.ComputeV1(values)
+	case kind == PartitionKeyKindMultiHash:
+		epkStr = epk.ComputeV2MultiHash(values)
+	default:
+		epkStr = epk.ComputeV2Hash(values)
+	}
+
+	return epk.EffectivePartitionKey{EPK: epkStr}
 }

@@ -1,0 +1,4 @@
+directory: specification/serialconsole/SerialConsole.Management
+commit: 767474825d7294152bcc0587bf45f27e2058c607
+repo: i-specs
+additionalDirectories: 

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/VolumeQuotaRules_Create.json
+// Generated from example definition: 2025-12-01/VolumeQuotaRules_Create.json
 func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 		Properties: &armnetapp.VolumeQuotaRulesProperties{
 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 			QuotaTarget:     to.Ptr("1821"),
-			QuotaType:       to.Ptr(armnetapp.TypeIndividualUserQuota),
+			QuotaType:       to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
 		},
 	}, nil)
 	if err != nil {
@@ -51,13 +51,13 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 			QuotaTarget: to.Ptr("1821"),
-	// 			QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
+	// 			QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/VolumeQuotaRules_Delete.json
+// Generated from example definition: 2025-12-01/VolumeQuotaRules_Delete.json
 func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/VolumeQuotaRules_Get.json
+// Generated from example definition: 2025-12-01/VolumeQuotaRules_Get.json
 func ExampleVolumeQuotaRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,13 +111,13 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 			QuotaTarget: to.Ptr("1821"),
-	// 			QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
+	// 			QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/VolumeQuotaRules_List.json
+// Generated from example definition: 2025-12-01/VolumeQuotaRules_List.json
 func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 		// 					QuotaSizeInKiBs: to.Ptr[int64](100005),
 		// 					QuotaTarget: to.Ptr("1821"),
-		// 					QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
+		// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
 		// 				},
 		// 			},
 		// 		},
@@ -160,7 +160,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/VolumeQuotaRules_Update.json
+// Generated from example definition: 2025-12-01/VolumeQuotaRules_Update.json
 func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStatePatching),
 	// 			QuotaSizeInKiBs: to.Ptr[int64](100005),
 	// 			QuotaTarget: to.Ptr("1821"),
-	// 			QuotaType: to.Ptr(armnetapp.TypeIndividualUserQuota),
+	// 			QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
 	// 		},
 	// 	},
 	// }

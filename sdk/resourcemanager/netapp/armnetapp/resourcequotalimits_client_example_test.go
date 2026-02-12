@@ -7,11 +7,11 @@ package armnetapp_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/NetAppResourceQuotaLimits_Get.json
+// Generated from example definition: 2025-12-01/NetAppResourceQuotaLimits_Get.json
 func ExampleResourceQuotaLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleResourceQuotaLimitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/NetAppResourceQuotaLimits_List.json
+// Generated from example definition: 2025-12-01/NetAppResourceQuotaLimits_List.json
 func ExampleResourceQuotaLimitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

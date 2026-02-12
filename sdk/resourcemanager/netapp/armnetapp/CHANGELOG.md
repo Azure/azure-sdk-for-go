@@ -1,5 +1,40 @@
 # Release History
 
+## 9.0.0 (2026-02-12)
+### Breaking Changes
+
+- Type of `VolumeQuotaRulesProperties.QuotaType` has been changed from `*Type` to `*QuotaType`
+- Enum `Type` has been removed
+
+### Features Added
+
+- New enum type `ActualRansomwareProtectionState` with values `ActualRansomwareProtectionStateDisabled`, `ActualRansomwareProtectionStateEnabled`, `ActualRansomwareProtectionStateLearning`, `ActualRansomwareProtectionStatePaused`
+- New enum type `DesiredRansomwareProtectionState` with values `DesiredRansomwareProtectionStateDisabled`, `DesiredRansomwareProtectionStateEnabled`
+- New enum type `QuotaType` with values `QuotaTypeDefaultGroupQuota`, `QuotaTypeDefaultUserQuota`, `QuotaTypeIndividualGroupQuota`, `QuotaTypeIndividualUserQuota`
+- New enum type `RansomwareReportSeverity` with values `RansomwareReportSeverityHigh`, `RansomwareReportSeverityLow`, `RansomwareReportSeverityModerate`, `RansomwareReportSeverityNone`
+- New enum type `RansomwareReportState` with values `RansomwareReportStateActive`, `RansomwareReportStateResolved`
+- New enum type `RansomwareSuspectResolution` with values `RansomwareSuspectResolutionFalsePositive`, `RansomwareSuspectResolutionPotentialThreat`
+- New function `*ClientFactory.NewRansomwareReportsClient() *RansomwareReportsClient`
+- New function `NewRansomwareReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RansomwareReportsClient, error)`
+- New function `*RansomwareReportsClient.BeginClearSuspects(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, ransomwareReportName string, body RansomwareSuspectsClearRequest, options *RansomwareReportsClientBeginClearSuspectsOptions) (*runtime.Poller[RansomwareReportsClientClearSuspectsResponse], error)`
+- New function `*RansomwareReportsClient.Get(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, ransomwareReportName string, options *RansomwareReportsClientGetOptions) (RansomwareReportsClientGetResponse, error)`
+- New function `*RansomwareReportsClient.NewListPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *RansomwareReportsClientListOptions) *runtime.Pager[RansomwareReportsClientListResponse]`
+- New function `*VolumesClient.BeginListQuotaReport(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
+- New struct `ListQuotaReportResponse`
+- New struct `QuotaReport`
+- New struct `QuotaReportFilterRequest`
+- New struct `RansomwareProtectionPatchSettings`
+- New struct `RansomwareProtectionSettings`
+- New struct `RansomwareReport`
+- New struct `RansomwareReportProperties`
+- New struct `RansomwareReportsList`
+- New struct `RansomwareSuspects`
+- New struct `RansomwareSuspectsClearRequest`
+- New struct `SuspectFile`
+- New field `RansomwareProtection` in struct `VolumePatchPropertiesDataProtection`
+- New field `RansomwareProtection` in struct `VolumePropertiesDataProtection`
+
+
 ## 8.1.0-beta.1 (2025-12-03)
 ### Features Added
 

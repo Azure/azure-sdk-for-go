@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Accounts_ChangeKeyVault.json
+// Generated from example definition: 2025-12-01/Accounts_ChangeKeyVault.json
 func ExampleAccountsClient_BeginChangeKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleAccountsClient_BeginChangeKeyVault() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01/Accounts_CreateOrUpdate.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_CreateOrUpdateAD.json
+// Generated from example definition: 2025-12-01/Accounts_CreateOrUpdateAD.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveDirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 					LdapOverTLS:        to.Ptr(false),
 					LdapSigning:        to.Ptr(false),
 					OrganizationalUnit: to.Ptr("OU=Engineering"),
-					Password:           to.Ptr("<REDACTED>"),
+					Password:           to.Ptr("ad_password"),
 					Site:               to.Ptr("SiteName"),
 					SmbServerName:      to.Ptr("SMBServer"),
 					Username:           to.Ptr("ad_user_name"),
@@ -149,7 +149,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_Delete.json
+// Generated from example definition: 2025-12-01/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_Get.json
+// Generated from example definition: 2025-12-01/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_GetChangeKeyVaultInformation.json
+// Generated from example definition: 2025-12-01/Accounts_GetChangeKeyVaultInformation.json
 func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_List.json
+// Generated from example definition: 2025-12-01/Accounts_List.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_ListBySubscription.json
+// Generated from example definition: 2025-12-01/Accounts_ListBySubscription.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_RenewCredentials.json
+// Generated from example definition: 2025-12-01/Accounts_RenewCredentials.json
 func ExampleAccountsClient_BeginRenewCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleAccountsClient_BeginRenewCredentials() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_TransitionEncryptionKey.json
+// Generated from example definition: 2025-12-01/Accounts_TransitionEncryptionKey.json
 func ExampleAccountsClient_BeginTransitionToCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleAccountsClient_BeginTransitionToCmk() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/Accounts_Update.json
+// Generated from example definition: 2025-12-01/Accounts_Update.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -7,11 +7,11 @@ package armnetapp_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/Usages_Get.json
+// Generated from example definition: 2025-12-01/Usages_Get.json
 func ExampleResourceUsagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleResourceUsagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/Usages_List.json
+// Generated from example definition: 2025-12-01/Usages_List.json
 func ExampleResourceUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

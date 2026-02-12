@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/RansomwareReports_ClearSuspects.json
+// Generated from example definition: 2025-12-01/RansomwareReports_ClearSuspects.json
 func ExampleRansomwareReportsClient_BeginClearSuspects() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleRansomwareReportsClient_BeginClearSuspects() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/RansomwareReports_Get.json
+// Generated from example definition: 2025-12-01/RansomwareReports_Get.json
 func ExampleRansomwareReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleRansomwareReportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/RansomwareReports_List.json
+// Generated from example definition: 2025-12-01/RansomwareReports_List.json
 func ExampleRansomwareReportsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -18,8 +18,8 @@ import (
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
 	if err != nil {
-		// WE are specifying the resource type here, so this shouldn't fail.
-		panic("invalid resource address in operation context: " + operationContext.resourceAddress)
+		// We are specifying the resource type here, so this shouldn't fail. Still, we can't crash the process on a panic, so we return an error instead.
+		return ReadManyItemsResponse{}, errors.New("invalid resource address in operation context: " + operationContext.resourceAddress)
 	}
 
 	// get the partition key ranges for the container
@@ -199,18 +199,22 @@ func buildQueryChunksForRanges(orderedRangeIDs []string, groups map[string][]Ite
 }
 
 // executeQueryChunks runs the provided query chunks concurrently using a
-// goroutine pool and returns the per-chunk results.
+// goroutine pool and returns the per-chunk results. It creates a child context
+// so that when any chunk fails, all in-flight sibling requests are cancelled.
 func (c *ContainerClient) executeQueryChunks(
 	ctx context.Context,
 	chunks []queryChunk,
 	queryOpts *QueryOptions,
 	operationContext pipelineRequestOptions,
 	concurrency int,
-) []chunkResult {
+) ([]chunkResult, error) {
 	results := make([]chunkResult, len(chunks))
 	jobs := make(chan int, len(chunks))
-	done := make(chan struct{})
 	var wg sync.WaitGroup
+
+	// Create a child context that can be cancelled when any chunk encounters an error, to stop in-flight sibling requests.
+	chunksCtx, cancelChunks := context.WithCancel(ctx)
+	defer cancelChunks()
 
 	workerCount := concurrency
 	if workerCount > len(chunks) {
@@ -220,31 +224,28 @@ func (c *ContainerClient) executeQueryChunks(
 		workerCount = 1
 	}
 
-	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		// Unlikely since we are specifying the resource type, but handle just in case.
+		return nil, errors.New("invalid resource address in operation context: " + operationContext.resourceAddress)
+	}
 
 	for w := 0; w < workerCount; w++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for idx := range jobs {
-				select {
-				case <-done:
+				if chunksCtx.Err() != nil {
 					return
-				case <-ctx.Done():
-					return
-				default:
-			}
+				}
 
-			// Cancellation errors are stored in results and flow to collectChunkResults,
-			// which reports the entire operation as failed.
-			items, charge, err := c.executeOneChunk(ctx, chunks[idx], queryOpts, operationContext, path, done)
+				// Cancellation errors are stored in results and flow to collectChunkResults,
+				// which reports the entire operation as failed.
+				// Cancellation can come from EITHER the parent context, or the `cancelChunks` function cancelling our child context when any chunk encounters an error.
+				items, charge, err := c.executeOneChunk(chunksCtx, chunks[idx], queryOpts, operationContext, path)
 				results[idx] = chunkResult{items: items, requestCharge: charge, err: err}
 				if err != nil {
-					select {
-					case <-done:
-					default:
-						close(done)
-					}
+					cancelChunks()
 					return
 				}
 			}
@@ -254,11 +255,8 @@ func (c *ContainerClient) executeQueryChunks(
 	// Feed jobs
 	go func() {
 		for i := range chunks {
-			select {
-			case <-done:
-				close(jobs)
-				return
-			default:
+			if chunksCtx.Err() != nil {
+				break
 			}
 			jobs <- i
 		}
@@ -266,7 +264,7 @@ func (c *ContainerClient) executeQueryChunks(
 	}()
 
 	wg.Wait()
-	return results
+	return results, nil
 }
 
 // executeOneChunk sends a single parameterized query for a chunk, paging
@@ -277,7 +275,6 @@ func (c *ContainerClient) executeOneChunk(
 	queryOpts *QueryOptions,
 	operationContext pipelineRequestOptions,
 	path string,
-	done <-chan struct{},
 ) ([][]byte, float32, error) {
 	var allItems [][]byte
 	var totalCharge float32
@@ -382,6 +379,10 @@ func (c *ContainerClient) executeReadManyWithQueries(
 		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
 	}
 
-	results := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
+	results, err := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
+	if err != nil {
+		// An error here means we failed to even start executing the queries, so we return it directly. Errors from individual chunks are handled in collectChunkResults.
+		return ReadManyItemsResponse{}, err
+	}
 	return collectChunkResults(results)
 }

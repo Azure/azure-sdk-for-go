@@ -275,7 +275,8 @@ func TestExecuteQueryChunks_CancelledContext(t *testing.T) {
 		resourceAddress: "dbs/databaseId/colls/containerId",
 	}
 
-	results := container.executeQueryChunks(ctx, chunks, &QueryOptions{}, opCtx, 2)
+	results, err := container.executeQueryChunks(ctx, chunks, &QueryOptions{}, opCtx, 2)
+	require.NoError(t, err)
 
 	// One chunk should succeed, the other should have a context cancellation error
 	var successCount, errorCount int

@@ -1,5 +1,248 @@
 # Release History
 
+## 6.0.0 (2026-02-12)
+### Breaking Changes
+
+- Function `*RecommendationsClient.DisableAllForHostingEnvironment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsClientDisableAllForHostingEnvironmentOptions)` to `(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, environmentName string, options *RecommendationsClientDisableAllForHostingEnvironmentOptions)`
+- Function `*RecommendationsClient.ResetAllFiltersForHostingEnvironment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions)` to `(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, environmentName string, options *RecommendationsClientResetAllFiltersForHostingEnvironmentOptions)`
+- Enum `CertificateOrderActionType` has been removed
+- Enum `CertificateOrderStatus` has been removed
+- Enum `CertificateProductType` has been removed
+- Enum `DNSType` has been removed
+- Enum `DomainStatus` has been removed
+- Enum `DomainType` has been removed
+- Enum `ResourceNotRenewableReason` has been removed
+- Function `NewCertificateOrdersClient` has been removed
+- Function `*CertificateOrdersClient.BeginCreateOrUpdate` has been removed
+- Function `*CertificateOrdersClient.BeginCreateOrUpdateCertificate` has been removed
+- Function `*CertificateOrdersClient.Delete` has been removed
+- Function `*CertificateOrdersClient.DeleteCertificate` has been removed
+- Function `*CertificateOrdersClient.Get` has been removed
+- Function `*CertificateOrdersClient.GetCertificate` has been removed
+- Function `*CertificateOrdersClient.NewListByResourceGroupPager` has been removed
+- Function `*CertificateOrdersClient.NewListCertificatesPager` has been removed
+- Function `*CertificateOrdersClient.NewListPager` has been removed
+- Function `*CertificateOrdersClient.Reissue` has been removed
+- Function `*CertificateOrdersClient.Renew` has been removed
+- Function `*CertificateOrdersClient.ResendEmail` has been removed
+- Function `*CertificateOrdersClient.ResendRequestEmails` has been removed
+- Function `*CertificateOrdersClient.RetrieveCertificateActions` has been removed
+- Function `*CertificateOrdersClient.RetrieveCertificateEmailHistory` has been removed
+- Function `*CertificateOrdersClient.RetrieveSiteSeal` has been removed
+- Function `*CertificateOrdersClient.Update` has been removed
+- Function `*CertificateOrdersClient.UpdateCertificate` has been removed
+- Function `*CertificateOrdersClient.ValidatePurchaseInformation` has been removed
+- Function `*CertificateOrdersClient.VerifyDomainOwnership` has been removed
+- Function `NewCertificateOrdersDiagnosticsClient` has been removed
+- Function `*CertificateOrdersDiagnosticsClient.GetAppServiceCertificateOrderDetectorResponse` has been removed
+- Function `*CertificateOrdersDiagnosticsClient.NewListAppServiceCertificateOrderDetectorResponsePager` has been removed
+- Function `NewCertificateRegistrationProviderClient` has been removed
+- Function `*CertificateRegistrationProviderClient.NewListOperationsPager` has been removed
+- Function `*ClientFactory.NewCertificateOrdersClient` has been removed
+- Function `*ClientFactory.NewCertificateOrdersDiagnosticsClient` has been removed
+- Function `*ClientFactory.NewCertificateRegistrationProviderClient` has been removed
+- Function `*ClientFactory.NewDomainRegistrationProviderClient` has been removed
+- Function `*ClientFactory.NewDomainsClient` has been removed
+- Function `*ClientFactory.NewTopLevelDomainsClient` has been removed
+- Function `NewDomainRegistrationProviderClient` has been removed
+- Function `*DomainRegistrationProviderClient.NewListOperationsPager` has been removed
+- Function `NewDomainsClient` has been removed
+- Function `*DomainsClient.CheckAvailability` has been removed
+- Function `*DomainsClient.BeginCreateOrUpdate` has been removed
+- Function `*DomainsClient.CreateOrUpdateOwnershipIdentifier` has been removed
+- Function `*DomainsClient.Delete` has been removed
+- Function `*DomainsClient.DeleteOwnershipIdentifier` has been removed
+- Function `*DomainsClient.Get` has been removed
+- Function `*DomainsClient.GetControlCenterSsoRequest` has been removed
+- Function `*DomainsClient.GetOwnershipIdentifier` has been removed
+- Function `*DomainsClient.NewListByResourceGroupPager` has been removed
+- Function `*DomainsClient.NewListOwnershipIdentifiersPager` has been removed
+- Function `*DomainsClient.NewListPager` has been removed
+- Function `*DomainsClient.NewListRecommendationsPager` has been removed
+- Function `*DomainsClient.Renew` has been removed
+- Function `*DomainsClient.TransferOut` has been removed
+- Function `*DomainsClient.Update` has been removed
+- Function `*DomainsClient.UpdateOwnershipIdentifier` has been removed
+- Function `NewTopLevelDomainsClient` has been removed
+- Function `*TopLevelDomainsClient.Get` has been removed
+- Function `*TopLevelDomainsClient.NewListAgreementsPager` has been removed
+- Function `*TopLevelDomainsClient.NewListPager` has been removed
+- Struct `Address` has been removed
+- Struct `Certificate` has been removed
+- Struct `CertificateCollection` has been removed
+- Struct `CertificateDetails` has been removed
+- Struct `CertificateEmail` has been removed
+- Struct `CertificateOrder` has been removed
+- Struct `CertificateOrderAction` has been removed
+- Struct `CertificateOrderCollection` has been removed
+- Struct `CertificateOrderContact` has been removed
+- Struct `CertificateOrderPatchResource` has been removed
+- Struct `CertificateOrderPatchResourceProperties` has been removed
+- Struct `CertificateOrderProperties` has been removed
+- Struct `CertificatePatchResource` has been removed
+- Struct `CertificateResource` has been removed
+- Struct `CipherSuites` has been removed
+- Struct `Contact` has been removed
+- Struct `Container` has been removed
+- Struct `ContainerResources` has been removed
+- Struct `CustomScaleRule` has been removed
+- Struct `Dapr` has been removed
+- Struct `DaprComponent` has been removed
+- Struct `DaprMetadata` has been removed
+- Struct `DefaultErrorResponse` has been removed
+- Struct `DefaultErrorResponseError` has been removed
+- Struct `DefaultErrorResponseErrorDetailsItem` has been removed
+- Struct `Domain` has been removed
+- Struct `DomainAvailabilityCheckResult` has been removed
+- Struct `DomainCollection` has been removed
+- Struct `DomainControlCenterSsoRequest` has been removed
+- Struct `DomainOwnershipIdentifier` has been removed
+- Struct `DomainOwnershipIdentifierCollection` has been removed
+- Struct `DomainOwnershipIdentifierProperties` has been removed
+- Struct `DomainPatchResource` has been removed
+- Struct `DomainPatchResourceProperties` has been removed
+- Struct `DomainProperties` has been removed
+- Struct `DomainPurchaseConsent` has been removed
+- Struct `DomainRecommendationSearchParameters` has been removed
+- Struct `EnvironmentVar` has been removed
+- Struct `ErrorInfo` has been removed
+- Struct `ErrorPage` has been removed
+- Struct `GithubToken` has been removed
+- Struct `GithubTokenRequest` has been removed
+- Struct `HTTPScaleRule` has been removed
+- Struct `HostName` has been removed
+- Struct `NameIdentifierCollection` has been removed
+- Struct `OperationResult` has been removed
+- Struct `OperationResultProperties` has been removed
+- Struct `PrivateLinkConnectionApprovalRequest` has been removed
+- Struct `PrivateLinkConnectionApprovalRequestResource` has been removed
+- Struct `ProxyOnlyResource` has been removed
+- Struct `QueueScaleRule` has been removed
+- Struct `ReissueCertificateOrderRequest` has been removed
+- Struct `ReissueCertificateOrderRequestProperties` has been removed
+- Struct `RenewCertificateOrderRequest` has been removed
+- Struct `RenewCertificateOrderRequestProperties` has been removed
+- Struct `Resource` has been removed
+- Struct `RunCorrelation` has been removed
+- Struct `Scale` has been removed
+- Struct `ScaleRule` has been removed
+- Struct `ScaleRuleAuth` has been removed
+- Struct `SiteSeal` has been removed
+- Struct `SiteSealRequest` has been removed
+- Struct `SubResource` has been removed
+- Struct `Template` has been removed
+- Struct `TldLegalAgreement` has been removed
+- Struct `TldLegalAgreementCollection` has been removed
+- Struct `TopLevelDomain` has been removed
+- Struct `TopLevelDomainAgreementOption` has been removed
+- Struct `TopLevelDomainCollection` has been removed
+- Struct `TopLevelDomainProperties` has been removed
+- Struct `WorkflowFilter` has been removed
+- Struct `WorkflowListResult` has been removed
+- Struct `WorkflowResource` has been removed
+- Struct `WorkflowRunActionFilter` has been removed
+- Struct `WorkflowRunFilter` has been removed
+- Struct `WorkflowTriggerFilter` has been removed
+- Struct `WorkflowTriggerHistoryFilter` has been removed
+- Field `Interface` of struct `EnvironmentsClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `Interface` of struct `StaticSitesClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `Interface` of struct `WebAppsClientDeletePrivateEndpointConnectionResponse` has been removed
+- Field `Interface` of struct `WebAppsClientDeletePrivateEndpointConnectionSlotResponse` has been removed
+- Field `Body` of struct `WebAppsClientListPublishingProfileXMLWithSecretsResponse` has been removed
+- Field `Body` of struct `WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartNetworkTraceResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartNetworkTraceSlotResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartWebSiteNetworkTraceOperationResponse` has been removed
+- Field `NetworkTraceArray` of struct `WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse` has been removed
+
+### Features Added
+
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `SiteUpdateStrategyType` with values `SiteUpdateStrategyTypeRecreate`, `SiteUpdateStrategyTypeRollingUpdate`
+- New struct `FunctionsSiteUpdateStrategy`
+- New struct `SystemData`
+- New field `SystemData` in struct `APIKVReference`
+- New field `SystemData` in struct `AddressResponse`
+- New field `SystemData` in struct `AnalysisDefinition`
+- New field `SystemData` in struct `AppCertificate`
+- New field `SystemData` in struct `AseV3NetworkingConfiguration`
+- New field `SystemData` in struct `BackupItem`
+- New field `SystemData` in struct `ContinuousWebJob`
+- New field `SystemData` in struct `CsmDeploymentStatus`
+- New field `SystemData` in struct `CsmPublishingCredentialsPoliciesEntity`
+- New field `SystemData` in struct `CustomDNSSuffixConfiguration`
+- New field `SystemData` in struct `DatabaseConnection`
+- New field `SystemData` in struct `DeletedSite`
+- New field `SystemData` in struct `Deployment`
+- New field `SystemData` in struct `DetectorDefinitionResource`
+- New field `SystemData` in struct `DetectorResponse`
+- New field `SystemData` in struct `DiagnosticCategory`
+- New field `SystemData` in struct `EnvironmentResource`
+- New field `SiteUpdateStrategy` in struct `FunctionAppConfig`
+- New field `SystemData` in struct `FunctionEnvelope`
+- New field `SystemData` in struct `HostNameBinding`
+- New field `SystemData` in struct `HybridConnection`
+- New field `SystemData` in struct `HybridConnectionLimits`
+- New field `SystemData` in struct `Identifier`
+- New field `SystemData` in struct `KubeEnvironment`
+- New field `SystemData` in struct `MSDeployStatus`
+- New field `SystemData` in struct `MigrateMySQLStatus`
+- New field `SystemData` in struct `NetworkFeatures`
+- New field `SystemData` in struct `Plan`
+- New field `SystemData` in struct `PremierAddOn`
+- New field `SystemData` in struct `PrivateAccess`
+- New field `SystemData` in struct `ProcessInfo`
+- New field `SystemData` in struct `ProcessModuleInfo`
+- New field `SystemData` in struct `PublicCertificate`
+- New field `SystemData` in struct `RecommendationRule`
+- New field `SystemData` in struct `RelayServiceConnectionEntity`
+- New field `SystemData` in struct `RemotePrivateEndpointConnectionARMResource`
+- New field `SystemData` in struct `RequestHistory`
+- New field `SystemData` in struct `ResourceHealthMetadata`
+- New field `SystemData` in struct `Site`
+- New field `SystemData` in struct `SiteAuthSettingsV2`
+- New field `SystemData` in struct `SiteConfigResource`
+- New field `SystemData` in struct `SiteContainer`
+- New field `SystemData` in struct `SiteExtensionInfo`
+- New field `SystemData` in struct `SiteLogsConfig`
+- New field `SystemData` in struct `SiteSourceControl`
+- New field `SystemData` in struct `SlotConfigNamesResource`
+- New field `SystemData` in struct `SourceControl`
+- New field `SystemData` in struct `StaticSiteARMResource`
+- New field `SystemData` in struct `StaticSiteBasicAuthPropertiesARMResource`
+- New field `SystemData` in struct `StaticSiteBuildARMResource`
+- New field `SystemData` in struct `StaticSiteCustomDomainOverviewARMResource`
+- New field `SystemData` in struct `StaticSiteLinkedBackendARMResource`
+- New field `SystemData` in struct `StaticSiteUserProvidedFunctionAppARMResource`
+- New field `SystemData` in struct `SwiftVirtualNetwork`
+- New field `SystemData` in struct `TriggeredJobHistory`
+- New field `SystemData` in struct `TriggeredWebJob`
+- New field `SystemData` in struct `User`
+- New field `SystemData` in struct `VnetGateway`
+- New field `SystemData` in struct `VnetInfoResource`
+- New field `SystemData` in struct `VnetRoute`
+- New field `ContentType` in struct `WebAppsClientGetContainerLogsZipResponse`
+- New field `ContentType` in struct `WebAppsClientGetContainerLogsZipSlotResponse`
+- New field `ContentType` in struct `WebAppsClientGetInstanceProcessDumpResponse`
+- New field `ContentType` in struct `WebAppsClientGetInstanceProcessDumpSlotResponse`
+- New field `ContentType` in struct `WebAppsClientGetProcessDumpResponse`
+- New field `ContentType` in struct `WebAppsClientGetProcessDumpSlotResponse`
+- New field `ContentType` in struct `WebAppsClientGetWebSiteContainerLogsResponse`
+- New field `ContentType` in struct `WebAppsClientGetWebSiteContainerLogsSlotResponse`
+- New field `ContentType`, `Value` in struct `WebAppsClientListPublishingProfileXMLWithSecretsResponse`
+- New field `ContentType`, `Value` in struct `WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse`
+- New field `SystemData` in struct `WebJob`
+- New field `SystemData` in struct `WebSiteInstanceStatus`
+- New field `SystemData` in struct `WorkerPoolResource`
+- New field `SystemData` in struct `WorkflowEnvelope`
+- New field `SystemData` in struct `WorkflowRun`
+- New field `SystemData` in struct `WorkflowRunAction`
+- New field `SystemData` in struct `WorkflowRunActionRepetitionDefinition`
+- New field `SystemData` in struct `WorkflowTrigger`
+- New field `SystemData` in struct `WorkflowTriggerHistory`
+- New field `SystemData` in struct `WorkflowVersion`
+
+
 ## 5.1.0 (2025-11-26)
 ### Features Added
 

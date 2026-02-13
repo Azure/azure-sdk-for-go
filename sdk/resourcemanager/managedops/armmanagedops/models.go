@@ -116,7 +116,7 @@ type ManagedOpUpdate struct {
 
 // ManagedOpUpdateProperties - Updatable properties in the ManagedOps resource.
 type ManagedOpUpdateProperties struct {
-	// REQUIRED; Desired configuration input by the user.
+	// Desired configuration input by the user.
 	DesiredConfiguration *DesiredConfigurationUpdate
 }
 

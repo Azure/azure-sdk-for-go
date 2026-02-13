@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.0 (2026-02-11)
+## 0.1.0 (2026-02-13)
 ### Other Changes
 
 The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedops/armmanagedops` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).

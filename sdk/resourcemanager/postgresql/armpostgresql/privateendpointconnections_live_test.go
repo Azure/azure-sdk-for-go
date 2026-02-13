@@ -64,31 +64,40 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) Prepare() {
 	fmt.Println("Call operation: Servers_Create")
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	serversClientCreateResponsePoller, err := serversClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerForCreate{
+	serversClientCreateResponsePoller, err := serversClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.Server{
 		Location: to.Ptr(testsuite.location),
-		Properties: &armpostgresql.ServerPropertiesForDefaultCreate{
-			CreateMode:        to.Ptr(armpostgresql.CreateModeDefault),
-			MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:    to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
-			StorageProfile: &armpostgresql.StorageProfile{
+		Properties: &armpostgresql.ServerProperties{
+			AdministratorLogin:         to.Ptr("examplelogin"),
+			AdministratorLoginPassword: to.Ptr("examplepassword"),
+			Backup: &armpostgresql.Backup{
 				BackupRetentionDays: to.Ptr[int32](7),
-				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-				StorageMB:           to.Ptr[int32](128000),
+				GeoRedundantBackup:  to.Ptr(armpostgresql.GeographicallyRedundantBackupDisabled),
 			},
-			AdministratorLogin:         to.Ptr("cloudsa"),
-			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
+			Cluster: &armpostgresql.Cluster{
+				ClusterSize:         to.Ptr[int32](2),
+				DefaultDatabaseName: to.Ptr("clusterdb"),
+			},
+			CreateMode: to.Ptr(armpostgresql.CreateModeCreate),
+			HighAvailability: &armpostgresql.HighAvailability{
+				Mode: to.Ptr(armpostgresql.FlexibleServerHighAvailabilityModeDisabled),
+			},
+			Network: &armpostgresql.Network{
+				PublicNetworkAccess: to.Ptr(armpostgresql.ServerPublicNetworkAccessStateDisabled),
+			},
+			Storage: &armpostgresql.Storage{
+				AutoGrow:      to.Ptr(armpostgresql.StorageAutoGrowDisabled),
+				StorageSizeGB: to.Ptr[int32](256),
+				Tier:          to.Ptr(armpostgresql.AzureManagedDiskPerformanceTierP15),
+			},
+			Version: to.Ptr(armpostgresql.PostgresMajorVersion16),
 		},
 		SKU: &armpostgresql.SKU{
-			Name:   to.Ptr("GP_Gen5_8"),
-			Family: to.Ptr("Gen5"),
-			Tier:   to.Ptr(armpostgresql.SKUTierGeneralPurpose),
-		},
-		Tags: map[string]*string{
-			"ElasticServer": to.Ptr("1"),
+			Name: to.Ptr("Standard_D4ds_v5"),
+			Tier: to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
-	var serversClientCreateResponse *armpostgresql.ServersClientCreateResponse
+	var serversClientCreateResponse *armpostgresql.ServersClientCreateOrUpdateResponse
 	serversClientCreateResponse, err = testutil.PollForTest(testsuite.ctx, serversClientCreateResponsePoller)
 	testsuite.Require().NoError(err)
 	testsuite.postgresqlserverId = *serversClientCreateResponse.ID

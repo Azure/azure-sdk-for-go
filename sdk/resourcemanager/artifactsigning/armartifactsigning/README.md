@@ -1,6 +1,6 @@
-# Azure Artifactsigning Module for Go
+# Azure Artifact Signing Module for Go
 
-The `armartifactsigning` module provides operations for working with Azure Artifactsigning.
+The `armartifactsigning` module provides operations for working with Azure Artifact Signing.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/artifactsigning/armartifactsigning)
 
@@ -15,7 +15,7 @@ The `armartifactsigning` module provides operations for working with Azure Artif
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Artifactsigning module:
+Install the Azure Artifact Signing module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/artifactsigning/armartifactsigning
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/artifactsigning/arm
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Artifactsigning.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Artifact Signing.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Artifactsigning module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Artifact Signing module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armartifactsigning.NewClientFactory(<subscription ID>, cred, nil)

@@ -12,6 +12,19 @@ import (
 
 // AppendBlobClientAppendBlockFromURLResponse contains the response from method AppendBlobClient.AppendBlockFromURL.
 type AppendBlobClientAppendBlockFromURLResponse struct {
+	// This response header is returned only for append operations. It returns the offset at which the block was committed, in
+	// bytes.
+	BlobAppendOffset *string
+
+	// The number of committed blocks present in the blob. This header is returned only for append blobs.
+	BlobCommittedBlockCount *int32
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -22,44 +35,44 @@ type AppendBlobClientAppendBlockFromURLResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// This response header is returned only for append operations. It returns the offset at which the block was committed, in
-	// bytes.
-	XMSBlobAppendOffset *string
-
-	// The number of committed blocks present in the blob. This header is returned only for append blobs.
-	XMSBlobCommittedBlockCount *int32
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // AppendBlobClientAppendBlockResponse contains the response from method AppendBlobClient.AppendBlock.
 type AppendBlobClientAppendBlockResponse struct {
+	// This response header is returned only for append operations. It returns the offset at which the block was committed, in
+	// bytes.
+	BlobAppendOffset *string
+
+	// The number of committed blocks present in the blob. This header is returned only for append blobs.
+	BlobCommittedBlockCount *int32
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -70,47 +83,37 @@ type AppendBlobClientAppendBlockResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// This response header is returned only for append operations. It returns the offset at which the block was committed, in
-	// bytes.
-	XMSBlobAppendOffset *string
-
-	// The number of committed blocks present in the blob. This header is returned only for append blobs.
-	XMSBlobCommittedBlockCount *int32
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Indicates the response body contains a structured message and specifies the message schema version and properties.
-	XMSStructuredBody *string
+	StructuredBodyType *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // AppendBlobClientCreateResponse contains the response from method AppendBlobClient.Create.
 type AppendBlobClientCreateResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -121,77 +124,77 @@ type AppendBlobClientCreateResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // AppendBlobClientSealResponse contains the response from method AppendBlobClient.Seal.
 type AppendBlobClientSealResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
+	// If this blob has been sealed
+	IsSealed *bool
+
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// If this blob has been sealed
-	XMSBlobSealed *bool
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientAbortCopyFromURLResponse contains the response from method BlobClient.AbortCopyFromURL.
 type BlobClientAbortCopyFromURLResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientAcquireLeaseResponse contains the response from method BlobClient.AcquireLease.
 type BlobClientAcquireLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -201,21 +204,21 @@ type BlobClientAcquireLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Uniquely identifies a blobs' lease
-	XMSLeaseID *string
+	LeaseID *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientBreakLeaseResponse contains the response from method BlobClient.BreakLease.
 type BlobClientBreakLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -225,21 +228,21 @@ type BlobClientBreakLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Approximate time remaining in the lease period, in seconds.
-	XMSLeaseTime *int32
+	LeaseTime *int32
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientChangeLeaseResponse contains the response from method BlobClient.ChangeLease.
 type BlobClientChangeLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -249,124 +252,121 @@ type BlobClientChangeLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Uniquely identifies a blobs' lease
-	XMSLeaseID *string
+	LeaseID *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientCopyFromURLResponse contains the response from method BlobClient.CopyFromURL.
 type BlobClientCopyFromURLResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
 
+	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
+	// pass to Abort Copy Blob to abort a pending copy.
+	CopyID *string
+
+	// State of the copy operation identified by x-ms-copy-id.
+	CopyStatus *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
-
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
-	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
-	// pass to Abort Copy Blob to abort a pending copy.
-	XMSCopyID *string
-
-	// State of the copy operation identified by x-ms-copy-id.
-	XMSCopyStatus *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
+	EncryptionScope *string
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlobClientCreateSnapshotResponse contains the response from method BlobClient.CreateSnapshot.
 type BlobClientCreateSnapshotResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
+	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
+	// and false otherwise.
+	IsServerEncrypted *bool
+
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
-
-	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
-	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	RequestID *string
 
 	// Uniquely identifies the snapshot and indicates the snapshot version. It may be used in subsequent requests to access the
 	// snapshot.
-	XMSSnapshot *string
+	Snapshot *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlobClientDeleteImmutabilityPolicyResponse contains the response from method BlobClient.DeleteImmutabilityPolicy.
 type BlobClientDeleteImmutabilityPolicyResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientDeleteResponse contains the response from method BlobClient.Delete.
 type BlobClientDeleteResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientDownloadResponse contains the response from method BlobClient.Download.
@@ -374,11 +374,31 @@ type BlobClientDownloadResponse struct {
 	// Indicates that the service supports requests for partial blob content.
 	AcceptRanges *string
 
+	// The number of committed blocks present in the blob. This header is returned only for append blobs.
+	BlobCommittedBlockCount *int32
+
+	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
+	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
+	// with the latter calculated from the requested range
+	BlobContentMD5 []byte
+
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// The type of the blob.
+	BlobType *BlobType
+
 	// Body contains the streaming response.
 	Body io.ReadCloser
 
 	// This header is returned if it was previously specified for the blob.
 	CacheControl *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
 
 	// This header returns the value that was specified for the 'x-ms-blob-content-disposition' header. The Content-Disposition
 	// response header field conveys additional information about how to process the response payload, and also can be used to
@@ -406,163 +426,143 @@ type BlobClientDownloadResponse struct {
 	// The media type of the body of the response.
 	ContentType *string
 
-	// UTC date/time value generated by the service that indicates the time at which the response was initiated
-	Date *time.Time
-
-	// The ETag contains a value that you can use to perform operations conditionally.
-	ETag *azcore.ETag
-
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// The number of committed blocks present in the blob. This header is returned only for append blobs.
-	XMSBlobCommittedBlockCount *int32
-
-	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
-	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
-	// with the latter calculated from the requested range
-	XMSBlobContentMD5 []byte
-
-	// If this blob has been sealed
-	XMSBlobSealed *bool
-
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// The type of the blob.
-	XMSBlobType *BlobType
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// Conclusion time of the last attempted Copy Blob operation where this blob was the destination blob. This value can specify
 	// the time of a completed, aborted, or failed copy attempt. This header does not appear if a copy is pending, if this blob
 	// has never been the destination in a Copy Blob operation, or if this blob has been modified after a concluded Copy Blob
 	// operation using Set Blob Properties, Put Blob, or Put Block List.
-	XMSCopyCompletionTime *time.Time
+	CopyCompletionTime *time.Time
 
 	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
 	// pass to Abort Copy Blob to abort a pending copy.
-	XMSCopyID *string
+	CopyID *string
 
 	// Contains the number of bytes copied and the total bytes in the source in the last attempted Copy Blob operation where this
 	// blob was the destination blob. Can show between 0 and Content-Length bytes copied. This header does not appear if this
 	// blob has never been the destination in a Copy Blob operation, or if this blob has been modified after a concluded Copy
 	// Blob operation using Set Blob Properties, Put Blob, or Put Block List
-	XMSCopyProgress *string
+	CopyProgress *string
 
 	// URL up to 2 KB in length that specifies the source blob or file used in the last attempted Copy Blob operation where this
 	// blob was the destination blob. This header does not appear if this blob has never been the destination in a Copy Blob operation,
 	// or if this blob has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or Put Block
 	// List.
-	XMSCopySource *string
+	CopySource *string
 
 	// State of the copy operation identified by x-ms-copy-id.
-	XMSCopyStatus *CopyStatus
+	CopyStatus *CopyStatus
 
 	// Only appears when x-ms-copy-status is failed or pending. Describes the cause of the last fatal or non-fatal copy operation
 	// failure. This header does not appear if this blob has never been the destination in a Copy Blob operation, or if this blob
 	// has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or Put Block List
-	XMSCopyStatusDescription *string
+	CopyStatusDescription *string
 
 	// Returns the date and time the blob was created.
-	XMSCreationTime *time.Time
+	CreationTime *time.Time
+
+	// UTC date/time value generated by the service that indicates the time at which the response was initiated
+	Date *time.Time
+
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
+	Duration *LeaseDuration
+
+	// The ETag contains a value that you can use to perform operations conditionally.
+	ETag *azcore.ETag
 
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// Indicates the immutability policy mode of the blob.
-	XMSImmutabilityPolicyMode *ImmutabilityPolicyMode
+	EncryptionScope *string
 
 	// UTC date/time value generated by the service that indicates the time at which the blob immutability policy will expire.
-	XMSImmutabilityPolicyUntilDate *time.Time
+	ImmutabilityPolicyExpiresOn *time.Time
+
+	// Indicates the immutability policy mode of the blob.
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
 
 	// The value of this header indicates whether version of this blob is a current version, see also x-ms-version-id header.
-	XMSIsCurrentVersion *bool
+	IsCurrentVersion *bool
+
+	// If this blob has been sealed
+	IsSealed *bool
+
+	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
+	// and false otherwise.
+	IsServerEncrypted *bool
 
 	// UTC date/time value generated by the service that indicates the time at which the blob was last read or written to
-	XMSLastAccessTime *time.Time
+	LastAccessed *time.Time
 
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
-	XMSLeaseDuration *LeaseDuration
+	// The date/time that the container was last modified.
+	LastModified *time.Time
 
 	// Lease state of the blob.
-	XMSLeaseState *LeaseState
+	LeaseState *LeaseState
 
 	// The lease status of the blob.
-	XMSLeaseStatus *LeaseStatus
+	LeaseStatus *LeaseStatus
 
 	// Specifies the legal hold status to set on the blob.
-	XMSLegalHold *bool
+	LegalHold *bool
 
 	// The metadata headers.
-	XMSMeta *string
+	Metadata *string
+
+	// Optional. Only valid when Object Replication is enabled for the storage container and on the destination blob of the replication.
+	ObjectReplicationPolicyID *string
 
 	// Optional. Only valid when Object Replication is enabled for the storage container and on the source blob of the replication.
 	// When retrieving this header, it will return the header with the policy id and rule id (e.g. x-ms-or-policyid_ruleid), and
 	// the value will be the status of the replication (e.g. complete, failed).
-	XMSOr *string
-
-	// Optional. Only valid when Object Replication is enabled for the storage container and on the destination blob of the replication.
-	XMSOrPolicyID *string
+	ObjectReplicationRules *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
-
-	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
-	// and false otherwise.
-	XMSServerEncrypted *bool
+	RequestID *string
 
 	// Indicates the response body contains a structured message and specifies the message schema version and properties.
-	XMSStructuredBody *string
+	StructuredBodyType *string
 
 	// The length of the blob/file content inside the message body when the response body is returned as a structured message.
 	// Will always be smaller than Content-Length.
-	XMSStructuredContentLength *int64
+	StructuredContentLength *int64
 
 	// The number of tags associated with the blob
-	XMSTagCount *int64
+	TagCount *int64
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlobClientGetAccountInfoResponse contains the response from method BlobClient.GetAccountInfo.
 type BlobClientGetAccountInfoResponse struct {
+	// Identifies the account kind
+	AccountKind *AccountKind
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// Identifies the account kind
-	XMSAccountKind *AccountKind
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Version 2019-07-07 and newer. Indicates if the account has a hierarchical namespace enabled.
-	XMSIsHnsEnabled *bool
+	IsHierarchicalNamespaceEnabled *bool
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Identifies the sku name of the account
-	XMSSKUName *SKUName
+	SKUName *SKUName
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientGetPropertiesResponse contains the response from method BlobClient.GetProperties.
@@ -570,8 +570,37 @@ type BlobClientGetPropertiesResponse struct {
 	// Indicates that the service supports requests for partial blob content.
 	AcceptRanges *string
 
+	// The tier of page blob on a premium storage account or tier of block blob on blob storage LRS accounts. For a list of allowed
+	// premium page blob tiers, see https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssd. For blob storage
+	// LRS accounts, valid values are Hot/Cool/Archive.
+	AccessTier *string
+
+	// The time the tier was changed on the object. This is only returned if the tier on the block blob was ever set.
+	AccessTierChangeTime *time.Time
+
+	// For page blobs on a premium storage account only. If the access tier is not explicitly set on the blob, the tier is inferred
+	// based on its content length and this header will be returned with true value.
+	AccessTierInferred *bool
+
+	// For blob storage LRS accounts, valid values are rehydrate-pending-to-hot/rehydrate-pending-to-cool. If the blob is being
+	// rehydrated and is not complete then this header is returned indicating that rehydrate is pending and also tells the destination
+	// tier.
+	ArchiveStatus *ArchiveStatus
+
+	// The number of committed blocks present in the blob. This header is returned only for append blobs.
+	BlobCommittedBlockCount *int32
+
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// The type of the blob.
+	BlobType *BlobType
+
 	// This header is returned if it was previously specified for the blob.
 	CacheControl *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
 
 	// This header returns the value that was specified for the 'x-ms-blob-content-disposition' header. The Content-Disposition
 	// response header field conveys additional information about how to process the response payload, and also can be used to
@@ -592,155 +621,126 @@ type BlobClientGetPropertiesResponse struct {
 	// can check for message content integrity.
 	ContentMD5 []byte
 
-	// UTC date/time value generated by the service that indicates the time at which the response was initiated
-	Date *time.Time
-
-	// The ETag contains a value that you can use to perform operations conditionally.
-	ETag *azcore.ETag
-
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// The tier of page blob on a premium storage account or tier of block blob on blob storage LRS accounts. For a list of allowed
-	// premium page blob tiers, see https://learn.microsoft.com/azure/virtual-machines/disks-types#premium-ssd. For blob storage
-	// LRS accounts, valid values are Hot/Cool/Archive.
-	XMSAccessTier *string
-
-	// The time the tier was changed on the object. This is only returned if the tier on the block blob was ever set.
-	XMSAccessTierChangeTime *time.Time
-
-	// For page blobs on a premium storage account only. If the access tier is not explicitly set on the blob, the tier is inferred
-	// based on its content length and this header will be returned with true value.
-	XMSAccessTierInferred *bool
-
-	// For blob storage LRS accounts, valid values are rehydrate-pending-to-hot/rehydrate-pending-to-cool. If the blob is being
-	// rehydrated and is not complete then this header is returned indicating that rehydrate is pending and also tells the destination
-	// tier.
-	XMSArchiveStatus *ArchiveStatus
-
-	// The number of committed blocks present in the blob. This header is returned only for append blobs.
-	XMSBlobCommittedBlockCount *int32
-
-	// If this blob has been sealed
-	XMSBlobSealed *bool
-
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// The type of the blob.
-	XMSBlobType *BlobType
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Conclusion time of the last attempted Copy Blob operation where this blob was the destination blob. This value can specify
 	// the time of a completed, aborted, or failed copy attempt. This header does not appear if a copy is pending, if this blob
 	// has never been the destination in a Copy Blob operation, or if this blob has been modified after a concluded Copy Blob
 	// operation using Set Blob Properties, Put Blob, or Put Block List.
-	XMSCopyCompletionTime *time.Time
-
-	// Included if the blob is incremental copy blob or incremental copy snapshot, if x-ms-copy-status is success. Snapshot time
-	// of the last successful incremental copy snapshot for this blob.
-	XMSCopyDestinationSnapshot *string
+	CopyCompletionTime *time.Time
 
 	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
 	// pass to Abort Copy Blob to abort a pending copy.
-	XMSCopyID *string
+	CopyID *string
 
 	// Contains the number of bytes copied and the total bytes in the source in the last attempted Copy Blob operation where this
 	// blob was the destination blob. Can show between 0 and Content-Length bytes copied. This header does not appear if this
 	// blob has never been the destination in a Copy Blob operation, or if this blob has been modified after a concluded Copy
 	// Blob operation using Set Blob Properties, Put Blob, or Put Block List
-	XMSCopyProgress *string
+	CopyProgress *string
 
 	// URL up to 2 KB in length that specifies the source blob or file used in the last attempted Copy Blob operation where this
 	// blob was the destination blob. This header does not appear if this blob has never been the destination in a Copy Blob operation,
 	// or if this blob has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or Put Block
 	// List.
-	XMSCopySource *string
+	CopySource *string
 
 	// State of the copy operation identified by x-ms-copy-id.
-	XMSCopyStatus *CopyStatus
+	CopyStatus *CopyStatus
 
 	// Only appears when x-ms-copy-status is failed or pending. Describes the cause of the last fatal or non-fatal copy operation
 	// failure. This header does not appear if this blob has never been the destination in a Copy Blob operation, or if this blob
 	// has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or Put Block List
-	XMSCopyStatusDescription *string
+	CopyStatusDescription *string
 
 	// Returns the date and time the blob was created.
-	XMSCreationTime *time.Time
+	CreationTime *time.Time
+
+	// UTC date/time value generated by the service that indicates the time at which the response was initiated
+	Date *time.Time
+
+	// Included if the blob is incremental copy blob or incremental copy snapshot, if x-ms-copy-status is success. Snapshot time
+	// of the last successful incremental copy snapshot for this blob.
+	DestinationSnapshot *string
+
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
+	Duration *LeaseDuration
+
+	// The ETag contains a value that you can use to perform operations conditionally.
+	ETag *azcore.ETag
 
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
+	EncryptionScope *string
 
 	// The time this blob will expire.
-	XMSExpiryTime *time.Time
-
-	// Indicates the immutability policy mode of the blob.
-	XMSImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ExpiresOn *time.Time
 
 	// UTC date/time value generated by the service that indicates the time at which the blob immutability policy will expire.
-	XMSImmutabilityPolicyUntilDate *time.Time
+	ImmutabilityPolicyExpiresOn *time.Time
 
-	// Included if the blob is incremental copy blob.
-	XMSIncrementalCopy *bool
+	// Indicates the immutability policy mode of the blob.
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
 
 	// The value of this header indicates whether version of this blob is a current version, see also x-ms-version-id header.
-	XMSIsCurrentVersion *bool
+	IsCurrentVersion *bool
+
+	// Included if the blob is incremental copy blob.
+	IsIncrementalCopy *bool
+
+	// If this blob has been sealed
+	IsSealed *bool
+
+	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
+	// and false otherwise.
+	IsServerEncrypted *bool
 
 	// UTC date/time value generated by the service that indicates the time at which the blob was last read or written to
-	XMSLastAccessTime *time.Time
+	LastAccessed *time.Time
 
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
-	XMSLeaseDuration *LeaseDuration
+	// The date/time that the container was last modified.
+	LastModified *time.Time
 
 	// Lease state of the blob.
-	XMSLeaseState *LeaseState
+	LeaseState *LeaseState
 
 	// The lease status of the blob.
-	XMSLeaseStatus *LeaseStatus
+	LeaseStatus *LeaseStatus
 
 	// Specifies the legal hold status to set on the blob.
-	XMSLegalHold *bool
+	LegalHold *bool
 
 	// The metadata headers.
-	XMSMeta *string
+	Metadata *string
+
+	// Optional. Only valid when Object Replication is enabled for the storage container and on the destination blob of the replication.
+	ObjectReplicationPolicyID *string
 
 	// Optional. Only valid when Object Replication is enabled for the storage container and on the source blob of the replication.
 	// When retrieving this header, it will return the header with the policy id and rule id (e.g. x-ms-or-policyid_ruleid), and
 	// the value will be the status of the replication (e.g. complete, failed).
-	XMSOr *string
-
-	// Optional. Only valid when Object Replication is enabled for the storage container and on the destination blob of the replication.
-	XMSOrPolicyID *string
+	ObjectReplicationRules *string
 
 	// If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High
 	// and Standard.
-	XMSRehydratePriority *RehydratePriority
+	RehydratePriority *RehydratePriority
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
-
-	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
-	// and false otherwise.
-	XMSServerEncrypted *bool
+	RequestID *string
 
 	// The number of tags associated with the blob
-	XMSTagCount *int64
+	TagCount *int64
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlobClientGetTagsResponse contains the response from method BlobClient.GetTags.
@@ -748,24 +748,27 @@ type BlobClientGetTagsResponse struct {
 	// Represents blob tags.
 	BlobTags
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientReleaseLeaseResponse contains the response from method BlobClient.ReleaseLease.
 type BlobClientReleaseLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -775,18 +778,18 @@ type BlobClientReleaseLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientRenewLeaseResponse contains the response from method BlobClient.RenewLease.
 type BlobClientRenewLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -796,21 +799,21 @@ type BlobClientRenewLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Uniquely identifies a blobs' lease
-	XMSLeaseID *string
+	LeaseID *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientSetExpiryResponse contains the response from method BlobClient.SetExpiry.
 type BlobClientSetExpiryResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -820,95 +823,98 @@ type BlobClientSetExpiryResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientSetImmutabilityPolicyResponse contains the response from method BlobClient.SetImmutabilityPolicy.
 type BlobClientSetImmutabilityPolicyResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
+	// UTC date/time value generated by the service that indicates the time at which the blob immutability policy will expire.
+	ImmutabilityPolicyExpiresOn *time.Time
 
 	// Indicates the immutability policy mode of the blob.
-	XMSImmutabilityPolicyMode *ImmutabilityPolicyMode
-
-	// UTC date/time value generated by the service that indicates the time at which the blob immutability policy will expire.
-	XMSImmutabilityPolicyUntilDate *time.Time
+	ImmutabilityPolicyMode *ImmutabilityPolicyMode
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientSetLegalHoldResponse contains the response from method BlobClient.SetLegalHold.
 type BlobClientSetLegalHoldResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Specifies the legal hold status to set on the blob.
-	XMSLegalHold *bool
+	LegalHold *bool
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientSetMetadataResponse contains the response from method BlobClient.SetMetadata.
 type BlobClientSetMetadataResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlobClientSetPropertiesResponse contains the response from method BlobClient.SetProperties.
 type BlobClientSetPropertiesResponse struct {
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -918,51 +924,55 @@ type BlobClientSetPropertiesResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientSetTagsResponse contains the response from method BlobClient.SetTags.
 type BlobClientSetTagsResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientSetTierResponse contains the response from method BlobClient.SetTier.
 type BlobClientSetTierResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlobClientStartCopyFromURLResponse contains the response from method BlobClient.StartCopyFromURL.
 type BlobClientStartCopyFromURLResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
+	// pass to Abort Copy Blob to abort a pending copy.
+	CopyID *string
+
+	// State of the copy operation identified by x-ms-copy-id.
+	CopyStatus *CopyStatus
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -972,44 +982,40 @@ type BlobClientStartCopyFromURLResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
-	// pass to Abort Copy Blob to abort a pending copy.
-	XMSCopyID *string
-
-	// State of the copy operation identified by x-ms-copy-id.
-	XMSCopyStatus *CopyStatus
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlobClientUndeleteResponse contains the response from method BlobClient.Undelete.
 type BlobClientUndeleteResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlockBlobClientCommitBlockListResponse contains the response from method BlockBlobClient.CommitBlockList.
 type BlockBlobClientCommitBlockListResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1020,43 +1026,43 @@ type BlockBlobClientCommitBlockListResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlockBlobClientGetBlockListResponse contains the response from method BlockBlobClient.GetBlockList.
 type BlockBlobClientGetBlockListResponse struct {
 	// Contains the committed and uncommitted blocks in a block blob.
 	BlockList
+
+	// The size of the blob in bytes.
+	BlobContentLength *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
 
 	// Content-Type header
 	ContentType *string
@@ -1070,17 +1076,11 @@ type BlockBlobClientGetBlockListResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The size of the blob in bytes.
-	XMSBlobContentLength *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlockBlobClientQueryResponse contains the response from method BlockBlobClient.Query.
@@ -1088,11 +1088,31 @@ type BlockBlobClientQueryResponse struct {
 	// Indicates that the service supports requests for partial blob content.
 	AcceptRanges *string
 
+	// The number of committed blocks present in the blob. This header is returned only for append blobs.
+	BlobCommittedBlockCount *int32
+
+	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
+	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
+	// with the latter calculated from the requested range
+	BlobContentMD5 []byte
+
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// The type of the blob.
+	BlobType *BlobType
+
 	// Body contains the streaming response.
 	Body io.ReadCloser
 
 	// This header is returned if it was previously specified for the blob.
 	CacheControl *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
 
 	// This header returns the value that was specified for the 'x-ms-blob-content-disposition' header. The Content-Disposition
 	// response header field conveys additional information about how to process the response payload, and also can be used to
@@ -1120,100 +1140,86 @@ type BlockBlobClientQueryResponse struct {
 	// Content-Type header
 	ContentType *string
 
-	// UTC date/time value generated by the service that indicates the time at which the response was initiated
-	Date *time.Time
-
-	// The ETag contains a value that you can use to perform operations conditionally.
-	ETag *azcore.ETag
-
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// The number of committed blocks present in the blob. This header is returned only for append blobs.
-	XMSBlobCommittedBlockCount *int32
-
-	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
-	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
-	// with the latter calculated from the requested range
-	XMSBlobContentMD5 []byte
-
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// The type of the blob.
-	XMSBlobType *BlobType
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// Conclusion time of the last attempted Copy Blob operation where this blob was the destination blob. This value can specify
 	// the time of a completed, aborted, or failed copy attempt. This header does not appear if a copy is pending, if this blob
 	// has never been the destination in a Copy Blob operation, or if this blob has been modified after a concluded Copy Blob
 	// operation using Set Blob Properties, Put Blob, or Put Block List.
-	XMSCopyCompletionTime *time.Time
+	CopyCompletionTime *time.Time
 
 	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
 	// pass to Abort Copy Blob to abort a pending copy.
-	XMSCopyID *string
+	CopyID *string
 
 	// Contains the number of bytes copied and the total bytes in the source in the last attempted Copy Blob operation where this
 	// blob was the destination blob. Can show between 0 and Content-Length bytes copied. This header does not appear if this
 	// blob has never been the destination in a Copy Blob operation, or if this blob has been modified after a concluded Copy
 	// Blob operation using Set Blob Properties, Put Blob, or Put Block List
-	XMSCopyProgress *string
+	CopyProgress *string
 
 	// URL up to 2 KB in length that specifies the source blob or file used in the last attempted Copy Blob operation where this
 	// blob was the destination blob. This header does not appear if this blob has never been the destination in a Copy Blob operation,
 	// or if this blob has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or Put Block
 	// List.
-	XMSCopySource *string
+	CopySource *string
 
 	// State of the copy operation identified by x-ms-copy-id.
-	XMSCopyStatus *CopyStatus
+	CopyStatus *CopyStatus
 
 	// Only appears when x-ms-copy-status is failed or pending. Describes the cause of the last fatal or non-fatal copy operation
 	// failure. This header does not appear if this blob has never been the destination in a Copy Blob operation, or if this blob
 	// has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or Put Block List
-	XMSCopyStatusDescription *string
+	CopyStatusDescription *string
+
+	// UTC date/time value generated by the service that indicates the time at which the response was initiated
+	Date *time.Time
+
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
+	Duration *LeaseDuration
+
+	// The ETag contains a value that you can use to perform operations conditionally.
+	ETag *azcore.ETag
 
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
-	XMSLeaseDuration *LeaseDuration
-
-	// Lease state of the blob.
-	XMSLeaseState *LeaseState
-
-	// The lease status of the blob.
-	XMSLeaseStatus *LeaseStatus
-
-	// The metadata headers.
-	XMSMeta *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// Lease state of the blob.
+	LeaseState *LeaseState
+
+	// The lease status of the blob.
+	LeaseStatus *LeaseStatus
+
+	// The metadata headers.
+	Metadata *string
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlockBlobClientStageBlockFromURLResponse contains the response from method BlockBlobClient.StageBlockFromURL.
 type BlockBlobClientStageBlockFromURLResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1221,34 +1227,34 @@ type BlockBlobClientStageBlockFromURLResponse struct {
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlockBlobClientStageBlockResponse contains the response from method BlockBlobClient.StageBlock.
 type BlockBlobClientStageBlockResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1256,37 +1262,34 @@ type BlockBlobClientStageBlockResponse struct {
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Indicates the response body contains a structured message and specifies the message schema version and properties.
-	XMSStructuredBody *string
+	StructuredBodyType *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // BlockBlobClientUploadBlobFromURLResponse contains the response from method BlockBlobClient.UploadBlobFromURL.
 type BlockBlobClientUploadBlobFromURLResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1297,38 +1300,38 @@ type BlockBlobClientUploadBlobFromURLResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // BlockBlobClientUploadResponse contains the response from method BlockBlobClient.Upload.
 type BlockBlobClientUploadResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1339,41 +1342,41 @@ type BlockBlobClientUploadResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Indicates the response body contains a structured message and specifies the message schema version and properties.
-	XMSStructuredBody *string
+	StructuredBodyType *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // ContainerClientAcquireLeaseResponse contains the response from method ContainerClient.AcquireLease.
 type ContainerClientAcquireLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1383,21 +1386,21 @@ type ContainerClientAcquireLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Uniquely identifies a blobs' lease
-	XMSLeaseID *string
+	LeaseID *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientBreakLeaseResponse contains the response from method ContainerClient.BreakLease.
 type ContainerClientBreakLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1407,21 +1410,21 @@ type ContainerClientBreakLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Approximate time remaining in the lease period, in seconds.
-	XMSLeaseTime *int32
+	LeaseTime *int32
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientChangeLeaseResponse contains the response from method ContainerClient.ChangeLease.
 type ContainerClientChangeLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1431,21 +1434,21 @@ type ContainerClientChangeLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Uniquely identifies a blobs' lease
-	XMSLeaseID *string
+	LeaseID *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientCreateResponse contains the response from method ContainerClient.Create.
 type ContainerClientCreateResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1455,29 +1458,26 @@ type ContainerClientCreateResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientDeleteResponse contains the response from method ContainerClient.Delete.
 type ContainerClientDeleteResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientFindBlobsByTagsResponse contains the response from method ContainerClient.FindBlobsByTags.
@@ -1485,20 +1485,20 @@ type ContainerClientFindBlobsByTagsResponse struct {
 	// The result of a Filter Blobs API call
 	FilterBlobSegment
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientGetAccessPolicyResponse contains the response from method ContainerClient.GetAccessPolicy.
@@ -1506,6 +1506,12 @@ type ContainerClientGetAccessPolicyResponse struct {
 	// Represents an array of signed identifiers
 	SignedIdentifiers
 
+	// The public access setting for the container.
+	Access *PublicAccessType
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
@@ -1518,94 +1524,88 @@ type ContainerClientGetAccessPolicyResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The public access setting for the container.
-	XMSBlobPublicAccess *PublicAccessType
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientGetAccountInfoResponse contains the response from method ContainerClient.GetAccountInfo.
 type ContainerClientGetAccountInfoResponse struct {
+	// Identifies the account kind
+	AccountKind *AccountKind
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// Identifies the account kind
-	XMSAccountKind *AccountKind
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Version 2019-07-07 and newer. Indicates if the account has a hierarchical namespace enabled.
-	XMSIsHnsEnabled *bool
+	IsHierarchicalNamespaceEnabled *bool
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Identifies the sku name of the account
-	XMSSKUName *SKUName
+	SKUName *SKUName
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientGetPropertiesResponse contains the response from method ContainerClient.GetProperties.
 type ContainerClientGetPropertiesResponse struct {
+	// The public access setting for the container.
+	Access *PublicAccessType
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
+
+	// The default encryption scope for the container.
+	DefaultEncryptionScope *string
+
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
+	Duration *LeaseDuration
 
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
+	// Indicates whether the container has an immutability policy set on it.
+	HasImmutabilityPolicy *bool
+
+	// Indicates whether the container has a legal hold.
+	HasLegalHold *bool
+
+	// Indicates whether version level worm is enabled on a container
+	IsImmutableStorageWithVersioningEnabled *bool
+
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The public access setting for the container.
-	XMSBlobPublicAccess *PublicAccessType
+	// Lease state of the blob.
+	LeaseState *LeaseState
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
+	// The lease status of the blob.
+	LeaseStatus *LeaseStatus
 
-	// The default encryption scope for the container.
-	XMSDefaultEncryptionScope *string
+	// The metadata headers.
+	Metadata *string
 
 	// If a blob has a lease and the lease is of infinite duration then the value of this header is set to true, otherwise it
 	// is set to false.
-	XMSDenyEncryptionScopeOverride *bool
-
-	// Indicates whether the container has an immutability policy set on it.
-	XMSHasImmutabilityPolicy *bool
-
-	// Indicates whether the container has a legal hold.
-	XMSHasLegalHold *bool
-
-	// Indicates whether version level worm is enabled on a container
-	XMSImmutableStorageWithVersioningEnabled *bool
-
-	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
-	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
-	XMSLeaseDuration *LeaseDuration
-
-	// Lease state of the blob.
-	XMSLeaseState *LeaseState
-
-	// The lease status of the blob.
-	XMSLeaseStatus *LeaseStatus
-
-	// The metadata headers.
-	XMSMeta *string
+	PreventEncryptionScopeOverride *bool
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientListBlobFlatSegmentResponse contains the response from method ContainerClient.NewListBlobFlatSegmentPager.
@@ -1613,20 +1613,20 @@ type ContainerClientListBlobFlatSegmentResponse struct {
 	// An enumeration of blobs.
 	ListBlobsFlatSegmentResponse
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientListBlobHierarchySegmentResponse contains the response from method ContainerClient.NewListBlobHierarchySegmentPager.
@@ -1634,24 +1634,27 @@ type ContainerClientListBlobHierarchySegmentResponse struct {
 	// An enumeration of blobs
 	ListBlobsHierarchySegmentResponse
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientReleaseLeaseResponse contains the response from method ContainerClient.ReleaseLease.
 type ContainerClientReleaseLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1661,33 +1664,33 @@ type ContainerClientReleaseLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientRenameResponse contains the response from method ContainerClient.Rename.
 type ContainerClientRenameResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientRenewLeaseResponse contains the response from method ContainerClient.RenewLease.
 type ContainerClientRenewLeaseResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1697,36 +1700,36 @@ type ContainerClientRenewLeaseResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Uniquely identifies a blobs' lease
-	XMSLeaseID *string
+	LeaseID *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientRestoreResponse contains the response from method ContainerClient.Restore.
 type ContainerClientRestoreResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientSetAccessPolicyResponse contains the response from method ContainerClient.SetAccessPolicy.
 type ContainerClientSetAccessPolicyResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1736,18 +1739,18 @@ type ContainerClientSetAccessPolicyResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientSetMetadataResponse contains the response from method ContainerClient.SetMetadata.
 type ContainerClientSetMetadataResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1757,14 +1760,11 @@ type ContainerClientSetMetadataResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ContainerClientSubmitBatchResponse contains the response from method ContainerClient.SubmitBatch.
@@ -1774,17 +1774,26 @@ type ContainerClientSubmitBatchResponse struct {
 
 	// Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed;
 	// boundary=batch_<GUID>
-	ContentType *string
+	MultipartContentType *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientClearPagesResponse contains the response from method PageBlobClient.ClearPages.
 type PageBlobClientClearPagesResponse struct {
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1798,24 +1807,25 @@ type PageBlobClientClearPagesResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientCopyIncrementalResponse contains the response from method PageBlobClient.CopyIncremental.
 type PageBlobClientCopyIncrementalResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
+	// pass to Abort Copy Blob to abort a pending copy.
+	CopyID *string
+
+	// State of the copy operation identified by x-ms-copy-id.
+	CopyStatus *CopyStatus
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1825,25 +1835,18 @@ type PageBlobClientCopyIncrementalResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// String identifier for this copy operation. Use with Get Blob Properties to check the status of this copy operation, or
-	// pass to Abort Copy Blob to abort a pending copy.
-	XMSCopyID *string
-
-	// State of the copy operation identified by x-ms-copy-id.
-	XMSCopyStatus *CopyStatus
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientCreateResponse contains the response from method PageBlobClient.Create.
 type PageBlobClientCreateResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -1854,34 +1857,31 @@ type PageBlobClientCreateResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 
 	// A DateTime value returned by the service that uniquely identifies the blob. The value of this header indicates the blob
 	// version, and may be used in subsequent requests to access this version of the blob.
-	XMSVersionID *string
+	VersionID *string
 }
 
 // PageBlobClientGetPageRangesDiffResponse contains the response from method PageBlobClient.GetPageRangesDiff.
@@ -1889,6 +1889,12 @@ type PageBlobClientGetPageRangesDiffResponse struct {
 	// Represents a page list.
 	PageList
 
+	// The size of the blob in bytes.
+	BlobContentLength *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
@@ -1901,17 +1907,11 @@ type PageBlobClientGetPageRangesDiffResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The size of the blob in bytes.
-	XMSBlobContentLength *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientGetPageRangesResponse contains the response from method PageBlobClient.GetPageRanges.
@@ -1919,6 +1919,12 @@ type PageBlobClientGetPageRangesResponse struct {
 	// Represents a page list.
 	PageList
 
+	// The size of the blob in bytes.
+	BlobContentLength *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
@@ -1931,21 +1937,21 @@ type PageBlobClientGetPageRangesResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The size of the blob in bytes.
-	XMSBlobContentLength *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientResizeResponse contains the response from method PageBlobClient.Resize.
 type PageBlobClientResizeResponse struct {
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1955,21 +1961,21 @@ type PageBlobClientResizeResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientSetSequenceNumberResponse contains the response from method PageBlobClient.SetSequenceNumber.
 type PageBlobClientSetSequenceNumberResponse struct {
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
@@ -1979,21 +1985,24 @@ type PageBlobClientSetSequenceNumberResponse struct {
 	// The date/time that the container was last modified.
 	LastModified *time.Time
 
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientUploadPagesFromURLResponse contains the response from method PageBlobClient.UploadPagesFromURL.
 type PageBlobClientUploadPagesFromURLResponse struct {
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -2004,40 +2013,40 @@ type PageBlobClientUploadPagesFromURLResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // PageBlobClientUploadPagesResponse contains the response from method PageBlobClient.UploadPages.
 type PageBlobClientUploadPagesResponse struct {
+	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
+	BlobSequenceNumber *int64
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// This response header is returned so that the client can check for the integrity of the copied content.
+	ContentCRC64 []byte
+
 	// If the blob has an MD5 hash and this operation is to read the full blob, this response header is returned so that the client
 	// can check for message content integrity.
 	ContentMD5 []byte
@@ -2048,39 +2057,30 @@ type PageBlobClientUploadPagesResponse struct {
 	// The ETag contains a value that you can use to perform operations conditionally.
 	ETag *azcore.ETag
 
-	// The date/time that the container was last modified.
-	LastModified *time.Time
-
-	// The current sequence number for a page blob. This header is not returned for block blobs or append blobs.
-	XMSBlobSequenceNumber *int64
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
-	// This response header is returned so that the client can check for the integrity of the copied content.
-	XMSContentCRC64 []byte
-
 	// The SHA-256 hash of the encryption key used to encrypt the blob. This header is only returned when the blob was encrypted
 	// with a customer-provided key.
-	XMSEncryptionKeySHA256 *string
+	EncryptionKeySHA256 *string
 
 	// If the blob has a MD5 hash, and if request contains range header (Range or x-ms-range), this response header is returned
 	// with the value of the whole blob's MD5 value. This value may or may not be equal to the value returned in Content-MD5 header,
 	// with the latter calculated from the requested range
-	XMSEncryptionScope *string
-
-	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	EncryptionScope *string
 
 	// The value of this header is set to true if the contents of the request are successfully encrypted using the specified algorithm,
 	// and false otherwise.
-	XMSRequestServerEncrypted *bool
+	IsServerEncrypted *bool
+
+	// The date/time that the container was last modified.
+	LastModified *time.Time
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
 
 	// Indicates the response body contains a structured message and specifies the message schema version and properties.
-	XMSStructuredBody *string
+	StructuredBodyType *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientFindBlobsByTagsResponse contains the response from method ServiceClient.FindBlobsByTags.
@@ -2088,44 +2088,44 @@ type ServiceClientFindBlobsByTagsResponse struct {
 	// The result of a Filter Blobs API call
 	FilterBlobSegment
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientGetAccountInfoResponse contains the response from method ServiceClient.GetAccountInfo.
 type ServiceClientGetAccountInfoResponse struct {
+	// Identifies the account kind
+	AccountKind *AccountKind
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// Identifies the account kind
-	XMSAccountKind *AccountKind
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// Version 2019-07-07 and newer. Indicates if the account has a hierarchical namespace enabled.
-	XMSIsHnsEnabled *bool
+	IsHierarchicalNamespaceEnabled *bool
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Identifies the sku name of the account
-	XMSSKUName *SKUName
+	SKUName *SKUName
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientGetPropertiesResponse contains the response from method ServiceClient.GetProperties.
@@ -2133,20 +2133,20 @@ type ServiceClientGetPropertiesResponse struct {
 	// The service properties.
 	BlobServiceProperties
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientGetStatisticsResponse contains the response from method ServiceClient.GetStatistics.
@@ -2154,20 +2154,20 @@ type ServiceClientGetStatisticsResponse struct {
 	// Stats for the storage service.
 	StorageServiceStats
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientGetUserDelegationKeyResponse contains the response from method ServiceClient.GetUserDelegationKey.
@@ -2175,20 +2175,20 @@ type ServiceClientGetUserDelegationKeyResponse struct {
 	// A user delegation key.
 	UserDelegationKey
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientListContainersSegmentResponse contains the response from method ServiceClient.NewListContainersSegmentPager.
@@ -2196,35 +2196,35 @@ type ServiceClientListContainersSegmentResponse struct {
 	// The list container segment response
 	ListContainersSegmentResponse
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// Content-Type header
 	ContentType *string
 
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientSetPropertiesResponse contains the response from method ServiceClient.SetProperties.
 type ServiceClientSetPropertiesResponse struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// UTC date/time value generated by the service that indicates the time at which the response was initiated
 	Date *time.Time
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }
 
 // ServiceClientSubmitBatchResponse contains the response from method ServiceClient.SubmitBatch.
@@ -2232,15 +2232,15 @@ type ServiceClientSubmitBatchResponse struct {
 	// Body contains the streaming response.
 	Body io.ReadCloser
 
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
 	// The media type of the body of the response. For batch requests, this is multipart/mixed; boundary=batchresponse_GUID
 	ContentType *string
 
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	XMSClientRequestID *string
-
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 
 	// Specifies the version of the operation to use for this request.
-	XMSVersion *string
+	Version *string
 }

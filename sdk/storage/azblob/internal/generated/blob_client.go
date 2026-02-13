@@ -74,6 +74,9 @@ func (client *BlobClient) abortCopyFromURLCreateRequest(ctx context.Context, cop
 // abortCopyFromURLHandleResponse handles the AbortCopyFromURL response.
 func (client *BlobClient) abortCopyFromURLHandleResponse(resp *http.Response) (BlobClientAbortCopyFromURLResponse, error) {
 	result := BlobClientAbortCopyFromURLResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -81,14 +84,11 @@ func (client *BlobClient) abortCopyFromURLHandleResponse(resp *http.Response) (B
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -161,6 +161,9 @@ func (client *BlobClient) acquireLeaseCreateRequest(ctx context.Context, duratio
 // acquireLeaseHandleResponse handles the AcquireLease response.
 func (client *BlobClient) acquireLeaseHandleResponse(resp *http.Response) (BlobClientAcquireLeaseResponse, error) {
 	result := BlobClientAcquireLeaseResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -178,17 +181,14 @@ func (client *BlobClient) acquireLeaseHandleResponse(resp *http.Response) (BlobC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
-		result.XMSLeaseID = &val
+		result.LeaseID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -258,6 +258,9 @@ func (client *BlobClient) breakLeaseCreateRequest(ctx context.Context, options *
 // breakLeaseHandleResponse handles the BreakLease response.
 func (client *BlobClient) breakLeaseHandleResponse(resp *http.Response) (BlobClientBreakLeaseResponse, error) {
 	result := BlobClientBreakLeaseResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -275,22 +278,19 @@ func (client *BlobClient) breakLeaseHandleResponse(resp *http.Response) (BlobCli
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-lease-time"); val != "" {
-		xMSLeaseTime32, err := strconv.ParseInt(val, 10, 32)
-		xMSLeaseTime := int32(xMSLeaseTime32)
+		leaseTime32, err := strconv.ParseInt(val, 10, 32)
+		leaseTime := int32(leaseTime32)
 		if err != nil {
 			return BlobClientBreakLeaseResponse{}, err
 		}
-		result.XMSLeaseTime = &xMSLeaseTime
+		result.LeaseTime = &leaseTime
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -361,6 +361,9 @@ func (client *BlobClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 // changeLeaseHandleResponse handles the ChangeLease response.
 func (client *BlobClient) changeLeaseHandleResponse(resp *http.Response) (BlobClientChangeLeaseResponse, error) {
 	result := BlobClientChangeLeaseResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -378,17 +381,14 @@ func (client *BlobClient) changeLeaseHandleResponse(resp *http.Response) (BlobCl
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
-		result.XMSLeaseID = &val
+		result.LeaseID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -507,12 +507,28 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 // copyFromURLHandleResponse handles the CopyFromURL response.
 func (client *BlobClient) copyFromURLHandleResponse(resp *http.Response) (BlobClientCopyFromURLResponse, error) {
 	result := BlobClientCopyFromURLResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return BlobClientCopyFromURLResponse{}, err
+		}
+		result.ContentCRC64 = contentCRC64
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return BlobClientCopyFromURLResponse{}, err
 		}
 		result.ContentMD5 = contentMD5
+	}
+	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
+		result.CopyID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
+		result.CopyStatus = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -524,6 +540,9 @@ func (client *BlobClient) copyFromURLHandleResponse(resp *http.Response) (BlobCl
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -531,33 +550,14 @@ func (client *BlobClient) copyFromURLHandleResponse(resp *http.Response) (BlobCl
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return BlobClientCopyFromURLResponse{}, err
-		}
-		result.XMSContentCRC64 = xMSContentCRC64
-	}
-	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
-		result.XMSCopyID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.XMSCopyStatus = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -640,6 +640,9 @@ func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, optio
 // createSnapshotHandleResponse handles the CreateSnapshot response.
 func (client *BlobClient) createSnapshotHandleResponse(resp *http.Response) (BlobClientCreateSnapshotResponse, error) {
 	result := BlobClientCreateSnapshotResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -650,6 +653,13 @@ func (client *BlobClient) createSnapshotHandleResponse(resp *http.Response) (Blo
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientCreateSnapshotResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -657,27 +667,17 @@ func (client *BlobClient) createSnapshotHandleResponse(resp *http.Response) (Blo
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		xMSRequestServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientCreateSnapshotResponse{}, err
-		}
-		result.XMSRequestServerEncrypted = &xMSRequestServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-snapshot"); val != "" {
-		result.XMSSnapshot = &val
+		result.Snapshot = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -770,6 +770,9 @@ func (client *BlobClient) deleteCreateRequest(ctx context.Context, options *Blob
 // deleteHandleResponse handles the Delete response.
 func (client *BlobClient) deleteHandleResponse(resp *http.Response) (BlobClientDeleteResponse, error) {
 	result := BlobClientDeleteResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -777,14 +780,11 @@ func (client *BlobClient) deleteHandleResponse(resp *http.Response) (BlobClientD
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -841,6 +841,9 @@ func (client *BlobClient) deleteImmutabilityPolicyCreateRequest(ctx context.Cont
 // deleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
 func (client *BlobClient) deleteImmutabilityPolicyHandleResponse(resp *http.Response) (BlobClientDeleteImmutabilityPolicyResponse, error) {
 	result := BlobClientDeleteImmutabilityPolicyResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -848,14 +851,11 @@ func (client *BlobClient) deleteImmutabilityPolicyHandleResponse(resp *http.Resp
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -955,8 +955,43 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
+	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
+		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.BlobCommittedBlockCount = &blobCommittedBlockCount
+	}
+	if val := resp.Header.Get("x-ms-blob-content-md5"); val != "" {
+		blobContentMD5, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.BlobContentMD5 = blobContentMD5
+	}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-blob-type"); val != "" {
+		result.BlobType = (*BlobType)(&val)
+	}
 	if val := resp.Header.Get("Cache-Control"); val != "" {
 		result.CacheControl = &val
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.ContentCRC64 = contentCRC64
 	}
 	if val := resp.Header.Get("Content-Disposition"); val != "" {
 		result.ContentDisposition = &val
@@ -987,6 +1022,35 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
+		copyCompletionTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.CopyCompletionTime = &copyCompletionTime
+	}
+	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
+		result.CopyID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-progress"); val != "" {
+		result.CopyProgress = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-source"); val != "" {
+		result.CopySource = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
+		result.CopyStatus = (*CopyStatus)(&val)
+	}
+	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
+		result.CopyStatusDescription = &val
+	}
+	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
+		creationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.CreationTime = &creationTime
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -994,8 +1058,55 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		}
 		result.Date = &date
 	}
+	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+		result.Duration = (*LeaseDuration)(&val)
+	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
+		immutabilityPolicyExpiresOn, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
+	}
+	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
+		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
+	}
+	if val := resp.Header.Get("x-ms-is-current-version"); val != "" {
+		isCurrentVersion, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.IsCurrentVersion = &isCurrentVersion
+	}
+	if val := resp.Header.Get("x-ms-blob-sealed"); val != "" {
+		isSealed, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.IsSealed = &isSealed
+	}
+	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
+		lastAccessed, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.LastAccessed = &lastAccessed
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1004,164 +1115,53 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
-		xMSBlobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
-		xMSBlobCommittedBlockCount := int32(xMSBlobCommittedBlockCount32)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSBlobCommittedBlockCount = &xMSBlobCommittedBlockCount
-	}
-	if val := resp.Header.Get("x-ms-blob-content-md5"); val != "" {
-		xMSBlobContentMD5, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSBlobContentMD5 = xMSBlobContentMD5
-	}
-	if val := resp.Header.Get("x-ms-blob-sealed"); val != "" {
-		xMSBlobSealed, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSBlobSealed = &xMSBlobSealed
-	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-blob-type"); val != "" {
-		result.XMSBlobType = (*BlobType)(&val)
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSContentCRC64 = xMSContentCRC64
-	}
-	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
-		xMSCopyCompletionTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSCopyCompletionTime = &xMSCopyCompletionTime
-	}
-	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
-		result.XMSCopyID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-progress"); val != "" {
-		result.XMSCopyProgress = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-source"); val != "" {
-		result.XMSCopySource = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.XMSCopyStatus = (*CopyStatus)(&val)
-	}
-	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
-		result.XMSCopyStatusDescription = &val
-	}
-	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
-		xMSCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSCreationTime = &xMSCreationTime
-	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.XMSEncryptionKeySHA256 = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
-	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
-		result.XMSImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
-	}
-	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
-		xMSImmutabilityPolicyUntilDate, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSImmutabilityPolicyUntilDate = &xMSImmutabilityPolicyUntilDate
-	}
-	if val := resp.Header.Get("x-ms-is-current-version"); val != "" {
-		xMSIsCurrentVersion, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSIsCurrentVersion = &xMSIsCurrentVersion
-	}
-	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
-		xMSLastAccessTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSLastAccessTime = &xMSLastAccessTime
-	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.XMSLeaseDuration = (*LeaseDuration)(&val)
-	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.XMSLeaseState = (*LeaseState)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.XMSLeaseStatus = (*LeaseStatus)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-legal-hold"); val != "" {
-		xMSLegalHold, err := strconv.ParseBool(val)
+		legalHold, err := strconv.ParseBool(val)
 		if err != nil {
 			return BlobClientDownloadResponse{}, err
 		}
-		result.XMSLegalHold = &xMSLegalHold
+		result.LegalHold = &legalHold
 	}
 	if val := resp.Header.Get("x-ms-meta"); val != "" {
-		result.XMSMeta = &val
-	}
-	if val := resp.Header.Get("x-ms-or"); val != "" {
-		result.XMSOr = &val
+		result.Metadata = &val
 	}
 	if val := resp.Header.Get("x-ms-or-policy-id"); val != "" {
-		result.XMSOrPolicyID = &val
+		result.ObjectReplicationPolicyID = &val
+	}
+	if val := resp.Header.Get("x-ms-or"); val != "" {
+		result.ObjectReplicationRules = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
-		xMSServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientDownloadResponse{}, err
-		}
-		result.XMSServerEncrypted = &xMSServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
-		result.XMSStructuredBody = &val
+		result.StructuredBodyType = &val
 	}
 	if val := resp.Header.Get("x-ms-structured-content-length"); val != "" {
-		xMSStructuredContentLength, err := strconv.ParseInt(val, 10, 64)
+		structuredContentLength, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return BlobClientDownloadResponse{}, err
 		}
-		result.XMSStructuredContentLength = &xMSStructuredContentLength
+		result.StructuredContentLength = &structuredContentLength
 	}
 	if val := resp.Header.Get("x-ms-tag-count"); val != "" {
-		xMSTagCount, err := strconv.ParseInt(val, 10, 64)
+		tagCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return BlobClientDownloadResponse{}, err
 		}
-		result.XMSTagCount = &xMSTagCount
+		result.TagCount = &tagCount
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -1211,6 +1211,12 @@ func (client *BlobClient) getAccountInfoCreateRequest(ctx context.Context, optio
 // getAccountInfoHandleResponse handles the GetAccountInfo response.
 func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (BlobClientGetAccountInfoResponse, error) {
 	result := BlobClientGetAccountInfoResponse{}
+	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
+		result.AccountKind = (*AccountKind)(&val)
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1218,27 +1224,21 @@ func (client *BlobClient) getAccountInfoHandleResponse(resp *http.Response) (Blo
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
-		result.XMSAccountKind = (*AccountKind)(&val)
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-is-hns-enabled"); val != "" {
-		xMSIsHnsEnabled, err := strconv.ParseBool(val)
+		isHierarchicalNamespaceEnabled, err := strconv.ParseBool(val)
 		if err != nil {
 			return BlobClientGetAccountInfoResponse{}, err
 		}
-		result.XMSIsHnsEnabled = &xMSIsHnsEnabled
+		result.IsHierarchicalNamespaceEnabled = &isHierarchicalNamespaceEnabled
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-sku-name"); val != "" {
-		result.XMSSKUName = (*SKUName)(&val)
+		result.SKUName = (*SKUName)(&val)
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -1324,8 +1324,49 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
+	if val := resp.Header.Get("x-ms-access-tier"); val != "" {
+		result.AccessTier = &val
+	}
+	if val := resp.Header.Get("x-ms-access-tier-change-time"); val != "" {
+		accessTierChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.AccessTierChangeTime = &accessTierChangeTime
+	}
+	if val := resp.Header.Get("x-ms-access-tier-inferred"); val != "" {
+		accessTierInferred, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.AccessTierInferred = &accessTierInferred
+	}
+	if val := resp.Header.Get("x-ms-archive-status"); val != "" {
+		result.ArchiveStatus = (*ArchiveStatus)(&val)
+	}
+	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
+		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
+		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.BlobCommittedBlockCount = &blobCommittedBlockCount
+	}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-blob-type"); val != "" {
+		result.BlobType = (*BlobType)(&val)
+	}
 	if val := resp.Header.Get("Cache-Control"); val != "" {
 		result.CacheControl = &val
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Disposition"); val != "" {
 		result.ContentDisposition = &val
@@ -1350,6 +1391,35 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		}
 		result.ContentMD5 = contentMD5
 	}
+	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
+		copyCompletionTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.CopyCompletionTime = &copyCompletionTime
+	}
+	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
+		result.CopyID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-progress"); val != "" {
+		result.CopyProgress = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-source"); val != "" {
+		result.CopySource = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
+		result.CopyStatus = (*CopyStatus)(&val)
+	}
+	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
+		result.CopyStatusDescription = &val
+	}
+	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
+		creationTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.CreationTime = &creationTime
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1357,8 +1427,72 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		}
 		result.Date = &date
 	}
+	if val := resp.Header.Get("x-ms-copy-destination-snapshot"); val != "" {
+		result.DestinationSnapshot = &val
+	}
+	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+		result.Duration = (*LeaseDuration)(&val)
+	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-expiry-time"); val != "" {
+		expiresOn, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.ExpiresOn = &expiresOn
+	}
+	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
+		immutabilityPolicyExpiresOn, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
+	}
+	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
+		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
+	}
+	if val := resp.Header.Get("x-ms-is-current-version"); val != "" {
+		isCurrentVersion, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.IsCurrentVersion = &isCurrentVersion
+	}
+	if val := resp.Header.Get("x-ms-incremental-copy"); val != "" {
+		isIncrementalCopy, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.IsIncrementalCopy = &isIncrementalCopy
+	}
+	if val := resp.Header.Get("x-ms-blob-sealed"); val != "" {
+		isSealed, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.IsSealed = &isSealed
+	}
+	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
+	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
+		lastAccessed, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientGetPropertiesResponse{}, err
+		}
+		result.LastAccessed = &lastAccessed
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
@@ -1367,180 +1501,46 @@ func (client *BlobClient) getPropertiesHandleResponse(resp *http.Response) (Blob
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-access-tier"); val != "" {
-		result.XMSAccessTier = &val
-	}
-	if val := resp.Header.Get("x-ms-access-tier-change-time"); val != "" {
-		xMSAccessTierChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSAccessTierChangeTime = &xMSAccessTierChangeTime
-	}
-	if val := resp.Header.Get("x-ms-access-tier-inferred"); val != "" {
-		xMSAccessTierInferred, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSAccessTierInferred = &xMSAccessTierInferred
-	}
-	if val := resp.Header.Get("x-ms-archive-status"); val != "" {
-		result.XMSArchiveStatus = (*ArchiveStatus)(&val)
-	}
-	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
-		xMSBlobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
-		xMSBlobCommittedBlockCount := int32(xMSBlobCommittedBlockCount32)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSBlobCommittedBlockCount = &xMSBlobCommittedBlockCount
-	}
-	if val := resp.Header.Get("x-ms-blob-sealed"); val != "" {
-		xMSBlobSealed, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSBlobSealed = &xMSBlobSealed
-	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-blob-type"); val != "" {
-		result.XMSBlobType = (*BlobType)(&val)
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-completion-time"); val != "" {
-		xMSCopyCompletionTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSCopyCompletionTime = &xMSCopyCompletionTime
-	}
-	if val := resp.Header.Get("x-ms-copy-destination-snapshot"); val != "" {
-		result.XMSCopyDestinationSnapshot = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
-		result.XMSCopyID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-progress"); val != "" {
-		result.XMSCopyProgress = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-source"); val != "" {
-		result.XMSCopySource = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.XMSCopyStatus = (*CopyStatus)(&val)
-	}
-	if val := resp.Header.Get("x-ms-copy-status-description"); val != "" {
-		result.XMSCopyStatusDescription = &val
-	}
-	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
-		xMSCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSCreationTime = &xMSCreationTime
-	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.XMSEncryptionKeySHA256 = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
-	if val := resp.Header.Get("x-ms-expiry-time"); val != "" {
-		xMSExpiryTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSExpiryTime = &xMSExpiryTime
-	}
-	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
-		result.XMSImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
-	}
-	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
-		xMSImmutabilityPolicyUntilDate, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSImmutabilityPolicyUntilDate = &xMSImmutabilityPolicyUntilDate
-	}
-	if val := resp.Header.Get("x-ms-incremental-copy"); val != "" {
-		xMSIncrementalCopy, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSIncrementalCopy = &xMSIncrementalCopy
-	}
-	if val := resp.Header.Get("x-ms-is-current-version"); val != "" {
-		xMSIsCurrentVersion, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSIsCurrentVersion = &xMSIsCurrentVersion
-	}
-	if val := resp.Header.Get("x-ms-last-access-time"); val != "" {
-		xMSLastAccessTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSLastAccessTime = &xMSLastAccessTime
-	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.XMSLeaseDuration = (*LeaseDuration)(&val)
-	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.XMSLeaseState = (*LeaseState)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.XMSLeaseStatus = (*LeaseStatus)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-legal-hold"); val != "" {
-		xMSLegalHold, err := strconv.ParseBool(val)
+		legalHold, err := strconv.ParseBool(val)
 		if err != nil {
 			return BlobClientGetPropertiesResponse{}, err
 		}
-		result.XMSLegalHold = &xMSLegalHold
+		result.LegalHold = &legalHold
 	}
 	if val := resp.Header.Get("x-ms-meta"); val != "" {
-		result.XMSMeta = &val
-	}
-	if val := resp.Header.Get("x-ms-or"); val != "" {
-		result.XMSOr = &val
+		result.Metadata = &val
 	}
 	if val := resp.Header.Get("x-ms-or-policy-id"); val != "" {
-		result.XMSOrPolicyID = &val
+		result.ObjectReplicationPolicyID = &val
+	}
+	if val := resp.Header.Get("x-ms-or"); val != "" {
+		result.ObjectReplicationRules = &val
 	}
 	if val := resp.Header.Get("x-ms-rehydrate-priority"); val != "" {
-		result.XMSRehydratePriority = (*RehydratePriority)(&val)
+		result.RehydratePriority = (*RehydratePriority)(&val)
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
-		xMSServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientGetPropertiesResponse{}, err
-		}
-		result.XMSServerEncrypted = &xMSServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-tag-count"); val != "" {
-		xMSTagCount, err := strconv.ParseInt(val, 10, 64)
+		tagCount, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
 			return BlobClientGetPropertiesResponse{}, err
 		}
-		result.XMSTagCount = &xMSTagCount
+		result.TagCount = &tagCount
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -1615,6 +1615,9 @@ func (client *BlobClient) getTagsCreateRequest(ctx context.Context, options *Blo
 // getTagsHandleResponse handles the GetTags response.
 func (client *BlobClient) getTagsHandleResponse(resp *http.Response) (BlobClientGetTagsResponse, error) {
 	result := BlobClientGetTagsResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -1625,14 +1628,11 @@ func (client *BlobClient) getTagsHandleResponse(resp *http.Response) (BlobClient
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.BlobTags); err != nil {
 		return BlobClientGetTagsResponse{}, err
@@ -1705,6 +1705,9 @@ func (client *BlobClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 // releaseLeaseHandleResponse handles the ReleaseLease response.
 func (client *BlobClient) releaseLeaseHandleResponse(resp *http.Response) (BlobClientReleaseLeaseResponse, error) {
 	result := BlobClientReleaseLeaseResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1722,14 +1725,11 @@ func (client *BlobClient) releaseLeaseHandleResponse(resp *http.Response) (BlobC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -1798,6 +1798,9 @@ func (client *BlobClient) renewLeaseCreateRequest(ctx context.Context, leaseID s
 // renewLeaseHandleResponse handles the RenewLease response.
 func (client *BlobClient) renewLeaseHandleResponse(resp *http.Response) (BlobClientRenewLeaseResponse, error) {
 	result := BlobClientRenewLeaseResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1815,17 +1818,14 @@ func (client *BlobClient) renewLeaseHandleResponse(resp *http.Response) (BlobCli
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
-		result.XMSLeaseID = &val
+		result.LeaseID = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -1880,6 +1880,9 @@ func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 // setExpiryHandleResponse handles the SetExpiry response.
 func (client *BlobClient) setExpiryHandleResponse(resp *http.Response) (BlobClientSetExpiryResponse, error) {
 	result := BlobClientSetExpiryResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1897,14 +1900,11 @@ func (client *BlobClient) setExpiryHandleResponse(resp *http.Response) (BlobClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -1969,6 +1969,9 @@ func (client *BlobClient) setImmutabilityPolicyCreateRequest(ctx context.Context
 // setImmutabilityPolicyHandleResponse handles the SetImmutabilityPolicy response.
 func (client *BlobClient) setImmutabilityPolicyHandleResponse(resp *http.Response) (BlobClientSetImmutabilityPolicyResponse, error) {
 	result := BlobClientSetImmutabilityPolicyResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1976,24 +1979,21 @@ func (client *BlobClient) setImmutabilityPolicyHandleResponse(resp *http.Respons
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
-		result.XMSImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
-	}
 	if val := resp.Header.Get("x-ms-immutability-policy-until-date"); val != "" {
-		xMSImmutabilityPolicyUntilDate, err := time.Parse(time.RFC1123, val)
+		immutabilityPolicyExpiresOn, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return BlobClientSetImmutabilityPolicyResponse{}, err
 		}
-		result.XMSImmutabilityPolicyUntilDate = &xMSImmutabilityPolicyUntilDate
+		result.ImmutabilityPolicyExpiresOn = &immutabilityPolicyExpiresOn
+	}
+	if val := resp.Header.Get("x-ms-immutability-policy-mode"); val != "" {
+		result.ImmutabilityPolicyMode = (*ImmutabilityPolicyMode)(&val)
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -2051,6 +2051,9 @@ func (client *BlobClient) setLegalHoldCreateRequest(ctx context.Context, legalHo
 // setLegalHoldHandleResponse handles the SetLegalHold response.
 func (client *BlobClient) setLegalHoldHandleResponse(resp *http.Response) (BlobClientSetLegalHoldResponse, error) {
 	result := BlobClientSetLegalHoldResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2058,21 +2061,18 @@ func (client *BlobClient) setLegalHoldHandleResponse(resp *http.Response) (BlobC
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-legal-hold"); val != "" {
-		xMSLegalHold, err := strconv.ParseBool(val)
+		legalHold, err := strconv.ParseBool(val)
 		if err != nil {
 			return BlobClientSetLegalHoldResponse{}, err
 		}
-		result.XMSLegalHold = &xMSLegalHold
+		result.LegalHold = &legalHold
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -2155,6 +2155,9 @@ func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options 
 // setMetadataHandleResponse handles the SetMetadata response.
 func (client *BlobClient) setMetadataHandleResponse(resp *http.Response) (BlobClientSetMetadataResponse, error) {
 	result := BlobClientSetMetadataResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2165,6 +2168,19 @@ func (client *BlobClient) setMetadataHandleResponse(resp *http.Response) (BlobCl
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientSetMetadataResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2172,30 +2188,14 @@ func (client *BlobClient) setMetadataHandleResponse(resp *http.Response) (BlobCl
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.XMSEncryptionKeySHA256 = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		xMSRequestServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return BlobClientSetMetadataResponse{}, err
-		}
-		result.XMSRequestServerEncrypted = &xMSRequestServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -2281,6 +2281,16 @@ func (client *BlobClient) setPropertiesCreateRequest(ctx context.Context, option
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *BlobClient) setPropertiesHandleResponse(resp *http.Response) (BlobClientSetPropertiesResponse, error) {
 	result := BlobClientSetPropertiesResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return BlobClientSetPropertiesResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2298,21 +2308,11 @@ func (client *BlobClient) setPropertiesHandleResponse(resp *http.Response) (Blob
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return BlobClientSetPropertiesResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -2394,6 +2394,9 @@ func (client *BlobClient) setTagsCreateRequest(ctx context.Context, tags BlobTag
 // setTagsHandleResponse handles the SetTags response.
 func (client *BlobClient) setTagsHandleResponse(resp *http.Response) (BlobClientSetTagsResponse, error) {
 	result := BlobClientSetTagsResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2401,14 +2404,11 @@ func (client *BlobClient) setTagsHandleResponse(resp *http.Response) (BlobClient
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -2477,6 +2477,9 @@ func (client *BlobClient) setTierCreateRequest(ctx context.Context, tier AccessT
 // setTierHandleResponse handles the SetTier response.
 func (client *BlobClient) setTierHandleResponse(resp *http.Response) (BlobClientSetTierResponse, error) {
 	result := BlobClientSetTierResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2484,14 +2487,11 @@ func (client *BlobClient) setTierHandleResponse(resp *http.Response) (BlobClient
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -2602,6 +2602,15 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 // startCopyFromURLHandleResponse handles the StartCopyFromURL response.
 func (client *BlobClient) startCopyFromURLHandleResponse(resp *http.Response) (BlobClientStartCopyFromURLResponse, error) {
 	result := BlobClientStartCopyFromURLResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
+		result.CopyID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
+		result.CopyStatus = (*CopyStatus)(&val)
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2619,23 +2628,14 @@ func (client *BlobClient) startCopyFromURLHandleResponse(resp *http.Response) (B
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
-		result.XMSCopyID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.XMSCopyStatus = (*CopyStatus)(&val)
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -2685,6 +2685,9 @@ func (client *BlobClient) undeleteCreateRequest(ctx context.Context, options *Bl
 // undeleteHandleResponse handles the Undelete response.
 func (client *BlobClient) undeleteHandleResponse(resp *http.Response) (BlobClientUndeleteResponse, error) {
 	result := BlobClientUndeleteResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -2692,14 +2695,11 @@ func (client *BlobClient) undeleteHandleResponse(resp *http.Response) (BlobClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }

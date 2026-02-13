@@ -111,6 +111,23 @@ func (client *PageBlobClient) clearPagesCreateRequest(ctx context.Context, range
 // clearPagesHandleResponse handles the ClearPages response.
 func (client *PageBlobClient) clearPagesHandleResponse(resp *http.Response) (PageBlobClientClearPagesResponse, error) {
 	result := PageBlobClientClearPagesResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientClearPagesResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return PageBlobClientClearPagesResponse{}, err
+		}
+		result.ContentCRC64 = contentCRC64
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -135,28 +152,11 @@ func (client *PageBlobClient) clearPagesHandleResponse(resp *http.Response) (Pag
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientClearPagesResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PageBlobClientClearPagesResponse{}, err
-		}
-		result.XMSContentCRC64 = xMSContentCRC64
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -229,6 +229,15 @@ func (client *PageBlobClient) copyIncrementalCreateRequest(ctx context.Context, 
 // copyIncrementalHandleResponse handles the CopyIncremental response.
 func (client *PageBlobClient) copyIncrementalHandleResponse(resp *http.Response) (PageBlobClientCopyIncrementalResponse, error) {
 	result := PageBlobClientCopyIncrementalResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
+		result.CopyID = &val
+	}
+	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
+		result.CopyStatus = (*CopyStatus)(&val)
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -246,20 +255,11 @@ func (client *PageBlobClient) copyIncrementalHandleResponse(resp *http.Response)
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-id"); val != "" {
-		result.XMSCopyID = &val
-	}
-	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.XMSCopyStatus = (*CopyStatus)(&val)
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -382,6 +382,9 @@ func (client *PageBlobClient) createCreateRequest(ctx context.Context, size int6
 // createHandleResponse handles the Create response.
 func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlobClientCreateResponse, error) {
 	result := PageBlobClientCreateResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -399,6 +402,19 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return PageBlobClientCreateResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -406,30 +422,14 @@ func (client *PageBlobClient) createHandleResponse(resp *http.Response) (PageBlo
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.XMSEncryptionKeySHA256 = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		xMSRequestServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return PageBlobClientCreateResponse{}, err
-		}
-		result.XMSRequestServerEncrypted = &xMSRequestServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
-		result.XMSVersionID = &val
+		result.VersionID = &val
 	}
 	return result, nil
 }
@@ -511,6 +511,16 @@ func (client *PageBlobClient) getPageRangesCreateRequest(ctx context.Context, op
 // getPageRangesHandleResponse handles the GetPageRanges response.
 func (client *PageBlobClient) getPageRangesHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesResponse, error) {
 	result := PageBlobClientGetPageRangesResponse{}
+	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
+		blobContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientGetPageRangesResponse{}, err
+		}
+		result.BlobContentLength = &blobContentLength
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -531,21 +541,11 @@ func (client *PageBlobClient) getPageRangesHandleResponse(resp *http.Response) (
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
-		xMSBlobContentLength, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientGetPageRangesResponse{}, err
-		}
-		result.XMSBlobContentLength = &xMSBlobContentLength
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.PageList); err != nil {
 		return PageBlobClientGetPageRangesResponse{}, err
@@ -637,6 +637,16 @@ func (client *PageBlobClient) getPageRangesDiffCreateRequest(ctx context.Context
 // getPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
 func (client *PageBlobClient) getPageRangesDiffHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesDiffResponse, error) {
 	result := PageBlobClientGetPageRangesDiffResponse{}
+	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
+		blobContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientGetPageRangesDiffResponse{}, err
+		}
+		result.BlobContentLength = &blobContentLength
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -657,21 +667,11 @@ func (client *PageBlobClient) getPageRangesDiffHandleResponse(resp *http.Respons
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
-		xMSBlobContentLength, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientGetPageRangesDiffResponse{}, err
-		}
-		result.XMSBlobContentLength = &xMSBlobContentLength
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.PageList); err != nil {
 		return PageBlobClientGetPageRangesDiffResponse{}, err
@@ -757,6 +757,16 @@ func (client *PageBlobClient) resizeCreateRequest(ctx context.Context, size int6
 // resizeHandleResponse handles the Resize response.
 func (client *PageBlobClient) resizeHandleResponse(resp *http.Response) (PageBlobClientResizeResponse, error) {
 	result := PageBlobClientResizeResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientResizeResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -774,21 +784,11 @@ func (client *PageBlobClient) resizeHandleResponse(resp *http.Response) (PageBlo
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientResizeResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -864,6 +864,16 @@ func (client *PageBlobClient) setSequenceNumberCreateRequest(ctx context.Context
 // setSequenceNumberHandleResponse handles the SetSequenceNumber response.
 func (client *PageBlobClient) setSequenceNumberHandleResponse(resp *http.Response) (PageBlobClientSetSequenceNumberResponse, error) {
 	result := PageBlobClientSetSequenceNumberResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientSetSequenceNumberResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -881,21 +891,11 @@ func (client *PageBlobClient) setSequenceNumberHandleResponse(resp *http.Respons
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientSetSequenceNumberResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -1006,6 +1006,23 @@ func (client *PageBlobClient) uploadPagesCreateRequest(ctx context.Context, body
 // uploadPagesHandleResponse handles the UploadPages response.
 func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (PageBlobClientUploadPagesResponse, error) {
 	result := PageBlobClientUploadPagesResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientUploadPagesResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return PageBlobClientUploadPagesResponse{}, err
+		}
+		result.ContentCRC64 = contentCRC64
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -1023,6 +1040,19 @@ func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (Pa
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return PageBlobClientUploadPagesResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1030,44 +1060,14 @@ func (client *PageBlobClient) uploadPagesHandleResponse(resp *http.Response) (Pa
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientUploadPagesResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PageBlobClientUploadPagesResponse{}, err
-		}
-		result.XMSContentCRC64 = xMSContentCRC64
-	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.XMSEncryptionKeySHA256 = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		xMSRequestServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return PageBlobClientUploadPagesResponse{}, err
-		}
-		result.XMSRequestServerEncrypted = &xMSRequestServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
-		result.XMSStructuredBody = &val
+		result.StructuredBodyType = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -1202,6 +1202,23 @@ func (client *PageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 // uploadPagesFromURLHandleResponse handles the UploadPagesFromURL response.
 func (client *PageBlobClient) uploadPagesFromURLHandleResponse(resp *http.Response) (PageBlobClientUploadPagesFromURLResponse, error) {
 	result := PageBlobClientUploadPagesFromURLResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return PageBlobClientUploadPagesFromURLResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return PageBlobClientUploadPagesFromURLResponse{}, err
+		}
+		result.ContentCRC64 = contentCRC64
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
@@ -1219,6 +1236,19 @@ func (client *PageBlobClient) uploadPagesFromURLHandleResponse(resp *http.Respon
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
+	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+		result.EncryptionKeySHA256 = &val
+	}
+	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+		result.EncryptionScope = &val
+	}
+	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+		isServerEncrypted, err := strconv.ParseBool(val)
+		if err != nil {
+			return PageBlobClientUploadPagesFromURLResponse{}, err
+		}
+		result.IsServerEncrypted = &isServerEncrypted
+	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -1226,41 +1256,11 @@ func (client *PageBlobClient) uploadPagesFromURLHandleResponse(resp *http.Respon
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		xMSBlobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return PageBlobClientUploadPagesFromURLResponse{}, err
-		}
-		result.XMSBlobSequenceNumber = &xMSBlobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
-		xMSContentCRC64, err := base64.StdEncoding.DecodeString(val)
-		if err != nil {
-			return PageBlobClientUploadPagesFromURLResponse{}, err
-		}
-		result.XMSContentCRC64 = xMSContentCRC64
-	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
-		result.XMSEncryptionKeySHA256 = &val
-	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
-		result.XMSEncryptionScope = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
-		xMSRequestServerEncrypted, err := strconv.ParseBool(val)
-		if err != nil {
-			return PageBlobClientUploadPagesFromURLResponse{}, err
-		}
-		result.XMSRequestServerEncrypted = &xMSRequestServerEncrypted
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }

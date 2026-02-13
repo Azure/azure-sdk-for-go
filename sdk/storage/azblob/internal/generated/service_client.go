@@ -81,6 +81,9 @@ func (client *ServiceClient) findBlobsByTagsCreateRequest(ctx context.Context, f
 // findBlobsByTagsHandleResponse handles the FindBlobsByTags response.
 func (client *ServiceClient) findBlobsByTagsHandleResponse(resp *http.Response) (ServiceClientFindBlobsByTagsResponse, error) {
 	result := ServiceClientFindBlobsByTagsResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -91,14 +94,11 @@ func (client *ServiceClient) findBlobsByTagsHandleResponse(resp *http.Response) 
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.FilterBlobSegment); err != nil {
 		return ServiceClientFindBlobsByTagsResponse{}, err
@@ -151,6 +151,12 @@ func (client *ServiceClient) getAccountInfoCreateRequest(ctx context.Context, op
 // getAccountInfoHandleResponse handles the GetAccountInfo response.
 func (client *ServiceClient) getAccountInfoHandleResponse(resp *http.Response) (ServiceClientGetAccountInfoResponse, error) {
 	result := ServiceClientGetAccountInfoResponse{}
+	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
+		result.AccountKind = (*AccountKind)(&val)
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -158,27 +164,21 @@ func (client *ServiceClient) getAccountInfoHandleResponse(resp *http.Response) (
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-account-kind"); val != "" {
-		result.XMSAccountKind = (*AccountKind)(&val)
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-is-hns-enabled"); val != "" {
-		xMSIsHnsEnabled, err := strconv.ParseBool(val)
+		isHierarchicalNamespaceEnabled, err := strconv.ParseBool(val)
 		if err != nil {
 			return ServiceClientGetAccountInfoResponse{}, err
 		}
-		result.XMSIsHnsEnabled = &xMSIsHnsEnabled
+		result.IsHierarchicalNamespaceEnabled = &isHierarchicalNamespaceEnabled
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-sku-name"); val != "" {
-		result.XMSSKUName = (*SKUName)(&val)
+		result.SKUName = (*SKUName)(&val)
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -230,6 +230,9 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 // getPropertiesHandleResponse handles the GetProperties response.
 func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (ServiceClientGetPropertiesResponse, error) {
 	result := ServiceClientGetPropertiesResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -240,14 +243,11 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.BlobServiceProperties); err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
@@ -302,6 +302,9 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 // getStatisticsHandleResponse handles the GetStatistics response.
 func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (ServiceClientGetStatisticsResponse, error) {
 	result := ServiceClientGetStatisticsResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -312,14 +315,11 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceStats); err != nil {
 		return ServiceClientGetStatisticsResponse{}, err
@@ -380,6 +380,9 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
 func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Response) (ServiceClientGetUserDelegationKeyResponse, error) {
 	result := ServiceClientGetUserDelegationKeyResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -390,14 +393,11 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.UserDelegationKey); err != nil {
 		return ServiceClientGetUserDelegationKeyResponse{}, err
@@ -468,6 +468,9 @@ func (client *ServiceClient) listContainersSegmentCreateRequest(ctx context.Cont
 // listContainersSegmentHandleResponse handles the ListContainersSegment response.
 func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Response) (ServiceClientListContainersSegmentResponse, error) {
 	result := ServiceClientListContainersSegmentResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
@@ -478,14 +481,11 @@ func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Resp
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListContainersSegmentResponse); err != nil {
 		return ServiceClientListContainersSegmentResponse{}, err
@@ -544,6 +544,9 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 // setPropertiesHandleResponse handles the SetProperties response.
 func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (ServiceClientSetPropertiesResponse, error) {
 	result := ServiceClientSetPropertiesResponse{}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -551,14 +554,11 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }
@@ -620,17 +620,17 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 // submitBatchHandleResponse handles the SubmitBatch response.
 func (client *ServiceClient) submitBatchHandleResponse(resp *http.Response) (ServiceClientSubmitBatchResponse, error) {
 	result := ServiceClientSubmitBatchResponse{Body: resp.Body}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.XMSClientRequestID = &val
-	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.XMSVersion = &val
+		result.Version = &val
 	}
 	return result, nil
 }

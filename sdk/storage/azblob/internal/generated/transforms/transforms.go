@@ -36,11 +36,7 @@ func applyReplacements(fileNames []string, replacements []replacement) {
 
 func main() {
 	// Replace ETag fields in models and responses
-	applyReplacements([]string{"models.go"}, []replacement{
-		{`Etag\s+\*string`, `ETag *azcore.ETag`},
-	})
-
-	applyReplacements([]string{"responses.go"}, []replacement{
+	applyReplacements([]string{"models.go", "responses.go"}, []replacement{
 		{`"time"`, "\"time\"\n\t\"github.com/Azure/azure-sdk-for-go/sdk/azcore\""},
 		{`ETag\s+\*string`, `ETag *azcore.ETag`},
 	})

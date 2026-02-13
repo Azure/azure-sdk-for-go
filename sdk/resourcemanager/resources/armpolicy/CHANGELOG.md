@@ -9,13 +9,8 @@
 - Enum `AliasType` has been removed
 - Enum `AssignmentScopeValidation` has been removed
 - Enum `ExemptionCategory` has been removed
-- Function `*ClientFactory.NewDataPolicyManifestsClient` has been removed
 - Function `*ClientFactory.NewExemptionsClient` has been removed
-- Function `*ClientFactory.NewVariableValuesClient` has been removed
 - Function `*ClientFactory.NewVariablesClient` has been removed
-- Function `NewDataPolicyManifestsClient` has been removed
-- Function `*DataPolicyManifestsClient.GetByPolicyMode` has been removed
-- Function `*DataPolicyManifestsClient.NewListPager` has been removed
 - Function `NewExemptionsClient` has been removed
 - Function `*ExemptionsClient.CreateOrUpdate` has been removed
 - Function `*ExemptionsClient.Delete` has been removed
@@ -25,15 +20,6 @@
 - Function `*ExemptionsClient.NewListForResourcePager` has been removed
 - Function `*ExemptionsClient.NewListPager` has been removed
 - Function `*ExemptionsClient.Update` has been removed
-- Function `NewVariableValuesClient` has been removed
-- Function `*VariableValuesClient.CreateOrUpdate` has been removed
-- Function `*VariableValuesClient.CreateOrUpdateAtManagementGroup` has been removed
-- Function `*VariableValuesClient.Delete` has been removed
-- Function `*VariableValuesClient.DeleteAtManagementGroup` has been removed
-- Function `*VariableValuesClient.Get` has been removed
-- Function `*VariableValuesClient.GetAtManagementGroup` has been removed
-- Function `*VariableValuesClient.NewListForManagementGroupPager` has been removed
-- Function `*VariableValuesClient.NewListPager` has been removed
 - Function `NewVariablesClient` has been removed
 - Function `*VariablesClient.CreateOrUpdate` has been removed
 - Function `*VariablesClient.CreateOrUpdateAtManagementGroup` has been removed
@@ -48,11 +34,6 @@
 - Struct `AliasPathMetadata` has been removed
 - Struct `AliasPattern` has been removed
 - Struct `DataEffect` has been removed
-- Struct `DataManifestCustomResourceFunctionDefinition` has been removed
-- Struct `DataManifestResourceFunctionsDefinition` has been removed
-- Struct `DataPolicyManifest` has been removed
-- Struct `DataPolicyManifestListResult` has been removed
-- Struct `DataPolicyManifestProperties` has been removed
 - Struct `Exemption` has been removed
 - Struct `ExemptionListResult` has been removed
 - Struct `ExemptionProperties` has been removed
@@ -63,10 +44,6 @@
 - Struct `VariableColumn` has been removed
 - Struct `VariableListResult` has been removed
 - Struct `VariableProperties` has been removed
-- Struct `VariableValue` has been removed
-- Struct `VariableValueColumnValue` has been removed
-- Struct `VariableValueListResult` has been removed
-- Struct `VariableValueProperties` has been removed
 - Field `Expand` of struct `AssignmentsClientGetByIDOptions` has been removed
 
 ### Features Added

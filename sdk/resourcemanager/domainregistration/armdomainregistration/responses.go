@@ -76,8 +76,7 @@ type DomainsClientListResponse struct {
 
 // DomainsClientRenewResponse contains the response from method DomainsClient.Renew.
 type DomainsClientRenewResponse struct {
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
+	// placeholder for future response values
 }
 
 // DomainsClientTransferOutResponse contains the response from method DomainsClient.TransferOut.
@@ -96,9 +95,6 @@ type DomainsClientUpdateOwnershipIdentifierResponse struct {
 type DomainsClientUpdateResponse struct {
 	// Information about a domain.
 	Domain
-
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
 }
 
 // ProviderClientListOperationsResponse contains the response from method ProviderClient.NewListOperationsPager.

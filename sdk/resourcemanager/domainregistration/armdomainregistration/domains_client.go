@@ -853,8 +853,7 @@ func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string
 		err = runtime.NewResponseError(httpResp)
 		return DomainsClientRenewResponse{}, err
 	}
-	resp, err := client.renewHandleResponse(httpResp)
-	return resp, err
+	return DomainsClientRenewResponse{}, nil
 }
 
 // renewCreateRequest creates the Renew request.
@@ -880,20 +879,6 @@ func (client *DomainsClient) renewCreateRequest(ctx context.Context, resourceGro
 	reqQP.Set("api-version", "2024-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
-}
-
-// renewHandleResponse handles the Renew response.
-func (client *DomainsClient) renewHandleResponse(resp *http.Response) (DomainsClientRenewResponse, error) {
-	result := DomainsClientRenewResponse{}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return DomainsClientRenewResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	return result, nil
 }
 
 // TransferOut - Transfer out domain to another registrar
@@ -1027,14 +1012,6 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 // updateHandleResponse handles the Update response.
 func (client *DomainsClient) updateHandleResponse(resp *http.Response) (DomainsClientUpdateResponse, error) {
 	result := DomainsClientUpdateResponse{}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return DomainsClientUpdateResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
 		return DomainsClientUpdateResponse{}, err
 	}

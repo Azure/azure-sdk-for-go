@@ -661,9 +661,6 @@ func (d *DomainsServerTransport) dispatchRenew(req *http.Request) (*http.Respons
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
-	}
 	return resp, nil
 }
 
@@ -733,9 +730,6 @@ func (d *DomainsServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Domain, req)
 	if err != nil {
 		return nil, err
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
 	}
 	return resp, nil
 }

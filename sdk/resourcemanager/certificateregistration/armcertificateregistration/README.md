@@ -1,6 +1,6 @@
-# Azure Certificateregistration Module for Go
+# Azure Certificate Registration Module for Go
 
-The `armcertificateregistration` module provides operations for working with Azure Certificateregistration.
+The `armcertificateregistration` module provides operations for working with Azure Certificate Registration.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/certificateregistration/armcertificateregistration)
 
@@ -15,7 +15,7 @@ The `armcertificateregistration` module provides operations for working with Azu
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Certificateregistration module:
+Install the Azure Certificate Registration module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/certificateregistration/armcertificateregistration
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/certificateregistra
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Certificateregistration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Certificate Registration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Certificateregistration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Certificate Registration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcertificateregistration.NewClientFactory(<subscription ID>, cred, nil)

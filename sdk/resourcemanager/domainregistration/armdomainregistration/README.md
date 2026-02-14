@@ -1,6 +1,6 @@
-# Azure Domainregistration Module for Go
+# Azure Domain Registration Module for Go
 
-The `armdomainregistration` module provides operations for working with Azure Domainregistration.
+The `armdomainregistration` module provides operations for working with Azure Domain Registration.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/domainregistration/armdomainregistration)
 
@@ -15,7 +15,7 @@ The `armdomainregistration` module provides operations for working with Azure Do
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Domainregistration module:
+Install the Azure Domain Registration module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainregistration/armdomainregistration
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainregistration/
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Domainregistration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Domain Registration.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Domainregistration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Domain Registration module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armdomainregistration.NewClientFactory(<subscription ID>, cred, nil)

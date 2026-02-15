@@ -226,6 +226,7 @@ func (f *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResp
 }
 
 // GetProperties gets the properties of a file.
+// GetProperties uses the blob endpoint, which may cause issues with file identification in flat namespace (FNS) accounts - Use GetPathProperties instead, which calls the DFS endpoint.
 func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	opts := path.FormatGetPropertiesOptions(options)
 	var respFromCtx *http.Response
@@ -237,6 +238,14 @@ func (f *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 	}
 	newResp := path.FormatGetPropertiesResponse(&resp, respFromCtx)
 	return newResp, err
+}
+
+// GetPathProperties gets the properties of a file using the DFS endpoint.
+func (f *Client) GetPathProperties(ctx context.Context, options *GetPathPropertiesOptions) (GetPathPropertiesResponse, error) {
+	opts, lac, mac := path.FormatGetPathPropertiesOptions(options)
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // Rename renames a file. The original file will no longer exist and the client will be stale.

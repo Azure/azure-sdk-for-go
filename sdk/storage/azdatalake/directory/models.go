@@ -123,6 +123,9 @@ type RenameOptions = path.RenameOptions
 // GetPropertiesOptions contains the optional parameters for the GetProperties method.
 type GetPropertiesOptions = path.GetPropertiesOptions
 
+// GetPathPropertiesOptions contains the optional parameters for the GetPathProperties method.
+type GetPathPropertiesOptions = path.GetPathPropertiesOptions
+
 // SetAccessControlOptions contains the optional parameters when calling the SetAccessControl operation.
 type SetAccessControlOptions = path.SetAccessControlOptions
 

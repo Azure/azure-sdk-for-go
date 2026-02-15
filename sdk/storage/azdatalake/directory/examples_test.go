@@ -57,7 +57,7 @@ func Example_directory_HTTPHeaders() {
 	}, nil)
 	handleError(err)
 
-	get, err := dirClient.GetProperties(context.TODO(), nil)
+	get, err := dirClient.GetPathProperties(context.TODO(), nil)
 	handleError(err)
 
 	fmt.Println(get.ContentType)
@@ -90,6 +90,39 @@ func Example_dir_Client_SetMetadata() {
 	for k, v := range get.Metadata {
 		fmt.Print(k + "=" + *v + "\n")
 	}
+}
+
+// This example shows how to use GetPathProperties to get directory properties via the DFS endpoint.
+// GetPathProperties is recommended over GetProperties for directory identification in flat namespace (FNS) accounts.
+func Example_directory_GetPathProperties() {
+	// make sure you create the filesystem and directory before running this example
+	accountName, accountKey := os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"), os.Getenv("AZURE_STORAGE_ACCOUNT_KEY")
+	
+	// Create a directory client
+	u := fmt.Sprintf("https://%s.dfs.core.windows.net/fs/dir1", accountName)
+	credential, err := azdatalake.NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	
+	dirClient, err := directory.NewClientWithSharedKeyCredential(u, credential, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Get directory properties using DFS endpoint
+	response, err := dirClient.GetPathProperties(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// The ResourceType field helps identify if this is a directory or file
+	fmt.Printf("Resource Type: %s\n", *response.ResourceType)
+	fmt.Printf("Content Length: %d\n", *response.ContentLength)
+	fmt.Printf("Last Modified: %s\n", response.LastModified.Format(time.RFC3339))
 }
 
 // make sure you create the filesystem before running this example

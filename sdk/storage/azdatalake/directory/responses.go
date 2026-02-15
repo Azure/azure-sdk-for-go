@@ -40,6 +40,9 @@ type GetAccessControlResponse = path.GetAccessControlResponse
 // GetPropertiesResponse contains the response fields for the GetProperties operation.
 type GetPropertiesResponse = path.GetPropertiesResponse
 
+// GetPathPropertiesResponse contains the response fields for the GetPathProperties operation.
+type GetPathPropertiesResponse = path.GetPathPropertiesResponse
+
 // SetMetadataResponse contains the response fields for the SetMetadata operation.
 type SetMetadataResponse = path.SetMetadataResponse
 

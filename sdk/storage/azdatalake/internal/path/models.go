@@ -157,6 +157,26 @@ func FormatGetAccessControlOptions(o *GetAccessControlOptions) (*generated.PathC
 	}, leaseAccessConditions, modifiedAccessConditions
 }
 
+// GetPathPropertiesOptions contains the optional parameters for the GetPathProperties method.
+type GetPathPropertiesOptions struct {
+	// AccessConditions contains parameters for accessing the path.
+	AccessConditions *AccessConditions
+}
+
+func FormatGetPathPropertiesOptions(o *GetPathPropertiesOptions) (*generated.PathClientGetPropertiesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+	action := generated.PathGetPropertiesActionGetStatus
+	if o == nil {
+		return &generated.PathClientGetPropertiesOptions{
+			Action: &action,
+		}, nil, nil
+	}
+	// call path formatter since we're hitting dfs in this operation
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatPathAccessConditions(o.AccessConditions)
+	return &generated.PathClientGetPropertiesOptions{
+		Action: &action,
+	}, leaseAccessConditions, modifiedAccessConditions
+}
+
 // CPKInfo contains CPK related information.
 type CPKInfo struct {
 	// EncryptionAlgorithm is the algorithm used to encrypt the data.

@@ -3,6 +3,7 @@
 ## 1.4.5-beta.1 (Unreleased)
 
 ### Features Added
+* Added `GetPathProperties` method to `directory.Client` and `file.Client` that uses DFS endpoint for property retrieval
 
 ### Breaking Changes
 

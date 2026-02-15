@@ -2879,6 +2879,50 @@ func (s *RecordedTestSuite) TestDirGetPropertiesWithCPK() {
 	}
 }
 
+func (s *RecordedTestSuite) TestDirGetPathProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	dirName := testcommon.GenerateDirName(testName)
+	dirClient, err := testcommon.GetDirClient(filesystemName, dirName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	// Create a directory
+	resp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Test GetPathProperties using the DFS endpoint
+	response, err := dirClient.GetPathProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+
+	// Verify that we get the expected resource type for a directory
+	_require.NotNil(response.ResourceType)
+	_require.Equal("directory", *response.ResourceType)
+
+	// Test GetPathProperties with access conditions
+	getPathPropertiesOpts := &directory.GetPathPropertiesOptions{
+		AccessConditions: &directory.AccessConditions{
+			ModifiedAccessConditions: &directory.ModifiedAccessConditions{
+				IfMatch: response.ETag,
+			},
+		},
+	}
+	response2, err := dirClient.GetPathProperties(context.Background(), getPathPropertiesOpts)
+	_require.NoError(err)
+	_require.NotNil(response2)
+	_require.Equal("directory", *response2.ResourceType)
+}
+
 func (s *UnrecordedTestSuite) TestDirCreateDeleteUsingOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

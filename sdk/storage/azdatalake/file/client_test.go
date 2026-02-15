@@ -5450,6 +5450,50 @@ func (s *RecordedTestSuite) TestFileGetPropertiesWithCPK() {
 	}
 }
 
+func (s *RecordedTestSuite) TestFileGetPathProperties() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	// Create a file
+	resp, err := fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	// Test GetPathProperties using the DFS endpoint
+	response, err := fClient.GetPathProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(response)
+	
+	// Verify that we get the expected resource type for a file
+	_require.NotNil(response.ResourceType)
+	_require.Equal("file", *response.ResourceType)
+	
+	// Test GetPathProperties with access conditions
+	getPathPropertiesOpts := &file.GetPathPropertiesOptions{
+		AccessConditions: &file.AccessConditions{
+			ModifiedAccessConditions: &file.ModifiedAccessConditions{
+				IfMatch: response.ETag,
+			},
+		},
+	}
+	response2, err := fClient.GetPathProperties(context.Background(), getPathPropertiesOpts)
+	_require.NoError(err)
+	_require.NotNil(response2)
+	_require.Equal("file", *response2.ResourceType)
+}
+
 func (s *UnrecordedTestSuite) TestFileCreateDeleteUsingOAuth() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

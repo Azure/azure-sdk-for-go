@@ -3,6 +3,7 @@
 ## 1.4.5-beta.1 (Unreleased)
 
 ### Features Added
+* Added error code `PathIsTooDeep` which is returned when a path contains more than 63 path segments.
 
 ### Breaking Changes
 

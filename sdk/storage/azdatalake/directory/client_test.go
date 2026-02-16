@@ -5,13 +5,14 @@ package directory_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"net/http"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -3005,4 +3006,37 @@ func (s *UnrecordedTestSuite) TestDirectoryClientOnAuthenticationFailure() {
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.Error(err, "Expected authentication error")
 	_require.Contains(err.Error(), "ClientSecretCredential")
+}
+
+func (s *UnrecordedTestSuite) TestCreateDirWithPathTooDeep() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a path with more than 63 path segments (each segment separated by '/')
+	// Azure Storage has a limit of 63 path segments, this includes account, container name
+	// Generate a path with 61 segments to exceed the limit
+	deepPath := ""
+	for i := 1; i <= 61; i++ {
+		if i > 1 {
+			deepPath += "/"
+		}
+		deepPath += "seg" + strconv.Itoa(i)
+		dirClient := fsClient.NewDirectoryClient(deepPath)
+
+		_, err = dirClient.Create(context.Background(), nil)
+		if i == 61 {
+			_require.Error(err)
+			testcommon.ValidateErrorCode(_require, err, datalakeerror.PathIsTooDeep)
+		} else {
+			_require.NoError(err)
+		}
+	}
 }

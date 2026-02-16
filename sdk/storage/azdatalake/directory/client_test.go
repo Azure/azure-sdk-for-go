@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"net/http"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -3020,8 +3021,13 @@ func (s *RecordedTestSuite) TestCreateDirWithPathTooDeep() {
 	_require.NoError(err)
 
 	// Create a path with more than 63 path segments (each segment separated by '/')
-	// This path has 64 segments which exceeds the limit
-	deepPath := "WnJVxt/buOHZM/CLA5Vh/NNxGrs/rCKKGH/3WX6fU/XaB8Uo/OMiX5O/5sQG3e/6THm63/kNt8gn/8ezYHe/jhEKrh/dVXp1W/mtZjgo/kMxWtK/eoHpsw/01oWTc/l8YgB5/Ea8Z50/15WY/zWSkxZ/l1xIvi/3sRgEd/BpYtWF/fNZzvp/cYJko8/LCLC0i/K5BmrZ/7aeqad/vq2B/6t6eoJ/756f6f/xgVlZs/sX0Pwv/xx6Znv/KEEFIr/Xi6ekz/PaKaB2/z0pd2E/GTMb1M/VAreQF/2SB8OV/lFys1a/s1Wp2h/xcCuVo/MOjTb1/z2jHC4/25zC13/MMhQ4g/P1rVat/AA6K2Y/yCmFAY/3yNTvo/XwHHER/0mPcNH/CfjaTj/WAIgjp/1svYCa/eol4sq/LJoEyr"
+	// Azure Storage has a limit of 63 path segments
+	// Generate a path with 64 segments to exceed the limit
+	segments := make([]string, 64)
+	for i := 0; i < 64; i++ {
+		segments[i] = "seg" + strconv.Itoa(i)
+	}
+	deepPath := strings.Join(segments, "/")
 	dirClient := fsClient.NewDirectoryClient(deepPath)
 
 	// Attempt to create directory with a path that is too deep (more than 63 segments)

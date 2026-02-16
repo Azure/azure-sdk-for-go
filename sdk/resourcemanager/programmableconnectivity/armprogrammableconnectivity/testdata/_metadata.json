@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2024-01-15-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.ProgrammableConnectivity": "2024-01-15-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

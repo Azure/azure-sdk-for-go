@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-12-01-preview",
-  "emitterVersion": "0.9.0"
+  "apiVersions": {
+    "Microsoft.Cdn": "2025-12-01-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

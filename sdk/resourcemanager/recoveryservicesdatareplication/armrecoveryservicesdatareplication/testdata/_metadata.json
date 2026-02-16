@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2024-09-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.DataReplication": "2024-09-01"
+  },
+  "emitterVersion": "0.10.0"
 }

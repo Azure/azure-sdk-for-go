@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2023-11-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.Fabric": "2023-11-01"
+  },
+  "emitterVersion": "0.10.0"
 }

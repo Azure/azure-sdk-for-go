@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2024-10-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "ArizeAi.ObservabilityEval": "2024-10-01"
+  },
+  "emitterVersion": "0.10.0"
 }

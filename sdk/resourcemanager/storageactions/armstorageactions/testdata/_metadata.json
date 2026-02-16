@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2023-01-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.StorageActions": "2023-01-01"
+  },
+  "emitterVersion": "0.10.0"
 }

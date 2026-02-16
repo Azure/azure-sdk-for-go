@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-07-01-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.AzureFleet": "2025-07-01-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

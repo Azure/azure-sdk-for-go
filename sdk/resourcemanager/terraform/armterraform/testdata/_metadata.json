@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2023-07-01-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.AzureTerraform": "2023-07-01-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

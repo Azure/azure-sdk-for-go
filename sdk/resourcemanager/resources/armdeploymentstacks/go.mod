@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentstacks/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeploymentstacks
 
 go 1.24.0
 

@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-05-31-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.OnlineExperimentation": "2025-05-31-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

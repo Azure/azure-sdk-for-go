@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-06-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.Edge": "2025-06-01"
+  },
+  "emitterVersion": "0.10.0"
 }

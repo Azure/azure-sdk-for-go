@@ -18,3 +18,10 @@ pipelines:
           lastModifiedDate: 2025-04-25
         spotbugs:
           lastModifiedDate: 2025-02-04
+  7994:
+    retail:
+      source:
+        psscriptanalyzer:
+          lastModifiedDate: 2026-02-17
+        armory:
+          lastModifiedDate: 2026-02-17

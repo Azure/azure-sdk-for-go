@@ -3008,7 +3008,7 @@ func (s *UnrecordedTestSuite) TestDirectoryClientOnAuthenticationFailure() {
 	_require.Contains(err.Error(), "ClientSecretCredential")
 }
 
-func (s *UnrecordedTestSuite) TestCreateDirWithPathTooDeep() {
+func (s *RecordedTestSuite) TestCreateDirWithPathTooDeep() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

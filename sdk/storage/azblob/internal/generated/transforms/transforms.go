@@ -36,11 +36,6 @@ func applyReplacements(fileNames []string, replacements []replacement) {
 
 // can do in generator??
 func main() {
-	// switch ImmutabilityPolicyMode to ImmutabilityPolicySetting
-	applyReplacements([]string{"options.go"}, []replacement{
-		{`ImmutabilityPolicyMode\s+\*ImmutabilityPolicyMode`, `ImmutabilityPolicyMode *ImmutabilityPolicySetting`},
-	})
-
 	// Replace ETag fields in models and responses
 	applyReplacements([]string{"models.go", "responses.go"}, []replacement{
 		{`"time"`, "\"time\"\n\t\"github.com/Azure/azure-sdk-for-go/sdk/azcore\""},

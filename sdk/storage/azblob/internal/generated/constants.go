@@ -350,6 +350,24 @@ func PossibleImmutabilityPolicyModeValues() []ImmutabilityPolicyMode {
 	}
 }
 
+// ImmutabilityPolicySetting - The immutability policy mode used in requests and responses.
+type ImmutabilityPolicySetting string
+
+const (
+	// ImmutabilityPolicySettingLocked - The immutability policy is locked.
+	ImmutabilityPolicySettingLocked ImmutabilityPolicySetting = "locked"
+	// ImmutabilityPolicySettingUnlocked - The immutability policy is unlocked.
+	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "unlocked"
+)
+
+// PossibleImmutabilityPolicySettingValues returns the possible values for the ImmutabilityPolicySetting const type.
+func PossibleImmutabilityPolicySettingValues() []ImmutabilityPolicySetting {
+	return []ImmutabilityPolicySetting{
+		ImmutabilityPolicySettingLocked,
+		ImmutabilityPolicySettingUnlocked,
+	}
+}
+
 // LeaseDuration - The lease duration.
 type LeaseDuration string
 

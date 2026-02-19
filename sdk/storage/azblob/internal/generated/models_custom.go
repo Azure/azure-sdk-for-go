@@ -276,21 +276,6 @@ type SequenceNumberAccessConditions struct {
 	IfSequenceNumberLessThanOrEqualTo *int64
 }
 
-type ImmutabilityPolicySetting string
-
-const (
-	ImmutabilityPolicySettingLocked   ImmutabilityPolicySetting = "Locked"
-	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "Unlocked"
-)
-
-// PossibleImmutabilityPolicySettingValues returns the possible values for the ImmutabilityPolicySetting const type.
-func PossibleImmutabilityPolicySettingValues() []ImmutabilityPolicySetting {
-	return []ImmutabilityPolicySetting{
-		ImmutabilityPolicySettingLocked,
-		ImmutabilityPolicySettingUnlocked,
-	}
-}
-
 type CopyStatusType string
 
 const (

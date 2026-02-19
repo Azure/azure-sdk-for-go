@@ -241,7 +241,7 @@ type AppendBlobClientCreateOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -425,7 +425,7 @@ type BlobClientCopyFromURLOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -802,6 +802,56 @@ type BlobClientSetExpiryOptions struct {
 	Timeout *int32
 }
 
+// BlobClientSetHTTPHeadersOptions contains the optional parameters for the BlobClient.SetHTTPHeaders method.
+type BlobClientSetHTTPHeadersOptions struct {
+	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
+	BlobCacheControl *string
+
+	// Optional. Sets the blob's content disposition. If specified, this property is stored with the blob and returned with a
+	// read request.
+	BlobContentDisposition *string
+
+	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
+	// request.
+	BlobContentEncoding *string
+
+	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
+	// request.
+	BlobContentLanguage *string
+
+	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
+	// were validated when each was uploaded.
+	BlobContentMD5 []byte
+
+	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
+	BlobContentType *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// A condition that must be met in order for the request to be processed.
+	IfMatch *azcore.ETag
+
+	// A date-time value. A request is made under the condition that the resource has been modified since the specified date-time.
+	IfModifiedSince *time.Time
+
+	// A condition that must be met in order for the request to be processed.
+	IfNoneMatch *azcore.ETag
+
+	// Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+	IfTags *string
+
+	// A date-time value. A request is made under the condition that the resource has not been modified since the specified date-time.
+	IfUnmodifiedSince *time.Time
+
+	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+	LeaseID *string
+
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
+	// Timeouts for Blob Service Operations.</a>
+	Timeout *int32
+}
+
 // BlobClientSetImmutabilityPolicyOptions contains the optional parameters for the BlobClient.SetImmutabilityPolicy method.
 type BlobClientSetImmutabilityPolicyOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
@@ -811,7 +861,7 @@ type BlobClientSetImmutabilityPolicyOptions struct {
 	IfUnmodifiedSince *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
 	// information on working with blob snapshots, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob">Creating
@@ -888,56 +938,6 @@ type BlobClientSetMetadataOptions struct {
 
 	// The metadata headers.
 	Metadata *string
-
-	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
-	// Timeouts for Blob Service Operations.</a>
-	Timeout *int32
-}
-
-// BlobClientSetPropertiesOptions contains the optional parameters for the BlobClient.SetProperties method.
-type BlobClientSetPropertiesOptions struct {
-	// Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
-	BlobCacheControl *string
-
-	// Optional. Sets the blob's content disposition. If specified, this property is stored with the blob and returned with a
-	// read request.
-	BlobContentDisposition *string
-
-	// Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentEncoding *string
-
-	// Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read
-	// request.
-	BlobContentLanguage *string
-
-	// Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks
-	// were validated when each was uploaded.
-	BlobContentMD5 []byte
-
-	// Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
-	BlobContentType *string
-
-	// An opaque, globally-unique, client-generated string identifier for the request.
-	ClientRequestID *string
-
-	// A condition that must be met in order for the request to be processed.
-	IfMatch *azcore.ETag
-
-	// A date-time value. A request is made under the condition that the resource has been modified since the specified date-time.
-	IfModifiedSince *time.Time
-
-	// A condition that must be met in order for the request to be processed.
-	IfNoneMatch *azcore.ETag
-
-	// Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
-	IfTags *string
-
-	// A date-time value. A request is made under the condition that the resource has not been modified since the specified date-time.
-	IfUnmodifiedSince *time.Time
-
-	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-	LeaseID *string
 
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
@@ -1039,7 +1039,7 @@ type BlobClientStartCopyFromURLOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -1156,7 +1156,7 @@ type BlockBlobClientCommitBlockListOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -1546,7 +1546,7 @@ type BlockBlobClientUploadOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -1680,8 +1680,8 @@ type ContainerClientDeleteOptions struct {
 	Timeout *int32
 }
 
-// ContainerClientFindBlobsByTagsOptions contains the optional parameters for the ContainerClient.FindBlobsByTags method.
-type ContainerClientFindBlobsByTagsOptions struct {
+// ContainerClientFilterBlobsOptions contains the optional parameters for the ContainerClient.FilterBlobs method.
+type ContainerClientFilterBlobsOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
 	ClientRequestID *string
 
@@ -2062,7 +2062,7 @@ type PageBlobClientCreateOptions struct {
 	ImmutabilityPolicyExpiry *time.Time
 
 	// Specifies the immutability policy mode to set on the blob.
-	ImmutabilityPolicyMode *ImmutabilityPolicyMode
+	ImmutabilityPolicyMode *ImmutabilityPolicySetting
 
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -2228,8 +2228,9 @@ type PageBlobClientResizeOptions struct {
 	Timeout *int32
 }
 
-// PageBlobClientSetSequenceNumberOptions contains the optional parameters for the PageBlobClient.SetSequenceNumber method.
-type PageBlobClientSetSequenceNumberOptions struct {
+// PageBlobClientUpdateSequenceNumberOptions contains the optional parameters for the PageBlobClient.UpdateSequenceNumber
+// method.
+type PageBlobClientUpdateSequenceNumberOptions struct {
 	// Set for page blobs only. The sequence number is a user-controlled value that you can use to track requests. The value of
 	// the sequence number must be between 0 and 2^63 - 1.
 	BlobSequenceNumber *int64
@@ -2416,8 +2417,8 @@ type PageBlobClientUploadPagesOptions struct {
 	TransactionalContentMD5 []byte
 }
 
-// ServiceClientFindBlobsByTagsOptions contains the optional parameters for the ServiceClient.FindBlobsByTags method.
-type ServiceClientFindBlobsByTagsOptions struct {
+// ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
+type ServiceClientFilterBlobsOptions struct {
 	// An opaque, globally-unique, client-generated string identifier for the request.
 	ClientRequestID *string
 

@@ -130,6 +130,27 @@ func PossibleBlobCopySourceTagsValues() []BlobCopySourceTags {
 	}
 }
 
+// BlobGeoReplicationStatus - The geo replication status.
+type BlobGeoReplicationStatus string
+
+const (
+	// BlobGeoReplicationStatusBootstrap - The geo replication is bootstrap.
+	BlobGeoReplicationStatusBootstrap BlobGeoReplicationStatus = "bootstrap"
+	// BlobGeoReplicationStatusLive - The geo replication is live.
+	BlobGeoReplicationStatusLive BlobGeoReplicationStatus = "live"
+	// BlobGeoReplicationStatusUnavailable - The geo replication is unavailable.
+	BlobGeoReplicationStatusUnavailable BlobGeoReplicationStatus = "unavailable"
+)
+
+// PossibleBlobGeoReplicationStatusValues returns the possible values for the BlobGeoReplicationStatus const type.
+func PossibleBlobGeoReplicationStatusValues() []BlobGeoReplicationStatus {
+	return []BlobGeoReplicationStatus{
+		BlobGeoReplicationStatusBootstrap,
+		BlobGeoReplicationStatusLive,
+		BlobGeoReplicationStatusUnavailable,
+	}
+}
+
 // BlobType - The blob type.
 type BlobType string
 
@@ -218,6 +239,8 @@ func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
 type DeleteType string
 
 const (
+	// DeleteTypeNone - Deprecated
+	DeleteTypeNone DeleteType = "None"
 	// DeleteTypePermanent - Permanently delete the blob.
 	DeleteTypePermanent DeleteType = "Permanent"
 )
@@ -225,6 +248,7 @@ const (
 // PossibleDeleteTypeValues returns the possible values for the DeleteType const type.
 func PossibleDeleteTypeValues() []DeleteType {
 	return []DeleteType{
+		DeleteTypeNone,
 		DeleteTypePermanent,
 	}
 }
@@ -236,12 +260,15 @@ type EncryptionAlgorithmType string
 const (
 	// EncryptionAlgorithmTypeAES256 - The AES256 encryption algorithm.
 	EncryptionAlgorithmTypeAES256 EncryptionAlgorithmType = "AES256"
+	// EncryptionAlgorithmTypeNone - Deprecated
+	EncryptionAlgorithmTypeNone EncryptionAlgorithmType = "None"
 )
 
 // PossibleEncryptionAlgorithmTypeValues returns the possible values for the EncryptionAlgorithmType const type.
 func PossibleEncryptionAlgorithmTypeValues() []EncryptionAlgorithmType {
 	return []EncryptionAlgorithmType{
 		EncryptionAlgorithmTypeAES256,
+		EncryptionAlgorithmTypeNone,
 	}
 }
 
@@ -299,27 +326,6 @@ func PossibleFilterBlobsIncludeItemValues() []FilterBlobsIncludeItem {
 	return []FilterBlobsIncludeItem{
 		FilterBlobsIncludeItemNone,
 		FilterBlobsIncludeItemVersions,
-	}
-}
-
-// GeoReplicationStatusType - The geo replication status.
-type GeoReplicationStatusType string
-
-const (
-	// GeoReplicationStatusTypeBootstrap - The geo replication is bootstrap.
-	GeoReplicationStatusTypeBootstrap GeoReplicationStatusType = "bootstrap"
-	// GeoReplicationStatusTypeLive - The geo replication is live.
-	GeoReplicationStatusTypeLive GeoReplicationStatusType = "live"
-	// GeoReplicationStatusTypeUnavailable - The geo replication is unavailable.
-	GeoReplicationStatusTypeUnavailable GeoReplicationStatusType = "unavailable"
-)
-
-// PossibleGeoReplicationStatusTypeValues returns the possible values for the GeoReplicationStatusType const type.
-func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
-	return []GeoReplicationStatusType{
-		GeoReplicationStatusTypeBootstrap,
-		GeoReplicationStatusTypeLive,
-		GeoReplicationStatusTypeUnavailable,
 	}
 }
 
@@ -423,6 +429,8 @@ const (
 	ListBlobsIncludeItemLegalHold ListBlobsIncludeItem = "legalhold"
 	// ListBlobsIncludeItemMetadata - The include metadata.
 	ListBlobsIncludeItemMetadata ListBlobsIncludeItem = "metadata"
+	// ListBlobsIncludeItemPermissions - Deprecated
+	ListBlobsIncludeItemPermissions ListBlobsIncludeItem = "permissions"
 	// ListBlobsIncludeItemSnapshots - The include snapshots.
 	ListBlobsIncludeItemSnapshots ListBlobsIncludeItem = "snapshots"
 	// ListBlobsIncludeItemTags - The include tags.
@@ -442,6 +450,7 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 		ListBlobsIncludeItemImmutabilityPolicy,
 		ListBlobsIncludeItemLegalHold,
 		ListBlobsIncludeItemMetadata,
+		ListBlobsIncludeItemPermissions,
 		ListBlobsIncludeItemSnapshots,
 		ListBlobsIncludeItemTags,
 		ListBlobsIncludeItemUncommittedBlobs,
@@ -534,6 +543,30 @@ func PossiblePublicAccessTypeValues() []PublicAccessType {
 	}
 }
 
+// QueryFormatType - The query format type.
+type QueryFormatType string
+
+const (
+	// QueryFormatTypeArrow - The query format type is Apache Arrow.
+	QueryFormatTypeArrow QueryFormatType = "arrow"
+	// QueryFormatTypeDelimited - The query format type is delimited.
+	QueryFormatTypeDelimited QueryFormatType = "delimited"
+	// QueryFormatTypeJSON - The query format type is JSON.
+	QueryFormatTypeJSON QueryFormatType = "json"
+	// QueryFormatTypeParquet - The query format type is Parquet.
+	QueryFormatTypeParquet QueryFormatType = "parquet"
+)
+
+// PossibleQueryFormatTypeValues returns the possible values for the QueryFormatType const type.
+func PossibleQueryFormatTypeValues() []QueryFormatType {
+	return []QueryFormatType{
+		QueryFormatTypeArrow,
+		QueryFormatTypeDelimited,
+		QueryFormatTypeJSON,
+		QueryFormatTypeParquet,
+	}
+}
+
 // QueryRequestType - The query request, note only SQL supported
 type QueryRequestType string
 
@@ -546,30 +579,6 @@ const (
 func PossibleQueryRequestTypeValues() []QueryRequestType {
 	return []QueryRequestType{
 		QueryRequestTypeSQL,
-	}
-}
-
-// QueryType - The query format type.
-type QueryType string
-
-const (
-	// QueryTypeArrow - The query format type is Apache Arrow.
-	QueryTypeArrow QueryType = "arrow"
-	// QueryTypeDelimited - The query format type is delimited.
-	QueryTypeDelimited QueryType = "delimited"
-	// QueryTypeJSON - The query format type is JSON.
-	QueryTypeJSON QueryType = "json"
-	// QueryTypeParquet - The query format type is Parquet.
-	QueryTypeParquet QueryType = "parquet"
-)
-
-// PossibleQueryTypeValues returns the possible values for the QueryType const type.
-func PossibleQueryTypeValues() []QueryType {
-	return []QueryType{
-		QueryTypeArrow,
-		QueryTypeDelimited,
-		QueryTypeJSON,
-		QueryTypeParquet,
 	}
 }
 

@@ -190,7 +190,7 @@ func (pb *Client) ClearPages(ctx context.Context, rnge blob.HTTPRange, options *
 // NewGetPageRangesPager returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
 func (pb *Client) NewGetPageRangesPager(o *GetPageRangesOptions) *runtime.Pager[GetPageRangesResponse] {
-	opts, leaseAccessConditions, modifiedAccessConditions := o.format()
+	opts := o.format()
 
 	return runtime.NewPager(runtime.PagingHandler[GetPageRangesResponse]{
 		More: func(page GetPageRangesResponse) bool {
@@ -200,10 +200,10 @@ func (pb *Client) NewGetPageRangesPager(o *GetPageRangesOptions) *runtime.Pager[
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = pb.generated().GetPageRangesCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+				req, err = pb.generated().GetPageRangesCreateRequest(ctx, opts)
 			} else {
 				opts.Marker = page.NextMarker
-				req, err = pb.generated().GetPageRangesCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+				req, err = pb.generated().GetPageRangesCreateRequest(ctx, opts)
 			}
 			if err != nil {
 				return GetPageRangesResponse{}, err
@@ -223,7 +223,7 @@ func (pb *Client) NewGetPageRangesPager(o *GetPageRangesOptions) *runtime.Pager[
 // NewGetPageRangesDiffPager gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
 func (pb *Client) NewGetPageRangesDiffPager(o *GetPageRangesDiffOptions) *runtime.Pager[GetPageRangesDiffResponse] {
-	opts, leaseAccessConditions, modifiedAccessConditions := o.format()
+	opts := o.format()
 
 	return runtime.NewPager(runtime.PagingHandler[GetPageRangesDiffResponse]{
 		More: func(page GetPageRangesDiffResponse) bool {
@@ -233,10 +233,10 @@ func (pb *Client) NewGetPageRangesDiffPager(o *GetPageRangesDiffOptions) *runtim
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = pb.generated().GetPageRangesDiffCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+				req, err = pb.generated().GetPageRangesDiffCreateRequest(ctx, opts)
 			} else {
 				opts.Marker = page.NextMarker
-				req, err = pb.generated().GetPageRangesDiffCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions)
+				req, err = pb.generated().GetPageRangesDiffCreateRequest(ctx, opts)
 			}
 			if err != nil {
 				return GetPageRangesDiffResponse{}, err
@@ -261,7 +261,7 @@ func (pb *Client) Resize(ctx context.Context, size int64, options *ResizeOptions
 
 // UpdateSequenceNumber sets the page blob's sequence number.
 func (pb *Client) UpdateSequenceNumber(ctx context.Context, options *UpdateSequenceNumberOptions) (UpdateSequenceNumberResponse, error) {
-	return pb.generated().SetSequenceNumber(ctx, *options.ActionType, options.format())
+	return pb.generated().UpdateSequenceNumber(ctx, *options.ActionType, options.format())
 }
 
 // StartCopyIncremental begins an operation to start an incremental copy from one-page blob's snapshot to this page blob.

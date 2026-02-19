@@ -245,18 +245,21 @@ type GetPageRangesOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *GetPageRangesOptions) format() (*generated.PageBlobClientGetPageRangesOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *GetPageRangesOptions) format() *generated.PageBlobClientGetPageRangesOptions {
 	if o == nil {
-		return &generated.PageBlobClientGetPageRangesOptions{}, nil, nil
+		return &generated.PageBlobClientGetPageRangesOptions{}
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &generated.PageBlobClientGetPageRangesOptions{
-		Marker:     o.Marker,
-		Maxresults: o.MaxResults,
-		Range:      exported.FormatHTTPRange(o.Range),
-		Snapshot:   o.Snapshot,
-	}, leaseAccessConditions, modifiedAccessConditions
+		Marker:            o.Marker,
+		Maxresults:        o.MaxResults,
+		Range:             exported.FormatHTTPRange(o.Range),
+		Snapshot:          o.Snapshot,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -296,20 +299,23 @@ type GetPageRangesDiffOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *GetPageRangesDiffOptions) format() (*generated.PageBlobClientGetPageRangesDiffOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *GetPageRangesDiffOptions) format() *generated.PageBlobClientGetPageRangesDiffOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
 	return &generated.PageBlobClientGetPageRangesDiffOptions{
-		Marker:          o.Marker,
-		Maxresults:      o.MaxResults,
-		PrevSnapshotURL: o.PrevSnapshotURL,
-		Prevsnapshot:    o.PrevSnapshot,
-		Range:           exported.FormatHTTPRange(o.Range),
-		Snapshot:        o.Snapshot,
-	}, leaseAccessConditions, modifiedAccessConditions
+		Marker:            o.Marker,
+		Maxresults:        o.MaxResults,
+		PrevSnapshotURL:   o.PrevSnapshotURL,
+		Prevsnapshot:      o.PrevSnapshot,
+		Range:             exported.FormatHTTPRange(o.Range),
+		Snapshot:          o.Snapshot,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
+	}
 
 }
 
@@ -350,12 +356,12 @@ type UpdateSequenceNumberOptions struct {
 	AccessConditions *blob.AccessConditions
 }
 
-func (o *UpdateSequenceNumberOptions) format() *generated.PageBlobClientSetSequenceNumberOptions {
+func (o *UpdateSequenceNumberOptions) format() *generated.PageBlobClientUpdateSequenceNumberOptions {
 	if o == nil {
 		return nil
 	}
 
-	options := &generated.PageBlobClientSetSequenceNumberOptions{
+	options := &generated.PageBlobClientUpdateSequenceNumberOptions{
 		BlobSequenceNumber: o.SequenceNumber,
 		LeaseID:            o.AccessConditions.LeaseAccessConditions.LeaseID,
 		IfMatch:            o.AccessConditions.ModifiedAccessConditions.IfMatch,

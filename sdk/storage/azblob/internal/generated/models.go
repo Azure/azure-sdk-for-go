@@ -220,30 +220,6 @@ type BlobProperties struct {
 	TagCount *int32 `xml:"TagCount"`
 }
 
-// BlobServiceProperties - The service properties.
-type BlobServiceProperties struct {
-	// The CORS properties.
-	Cors []*CORSRule `xml:"Cors>CORSRule"`
-
-	// The default service version.
-	DefaultServiceVersion *string `xml:"DefaultServiceVersion"`
-
-	// The delete retention policy.
-	DeleteRetentionPolicy *RetentionPolicy `xml:"DeleteRetentionPolicy"`
-
-	// The hour metrics properties.
-	HourMetrics *Metrics `xml:"HourMetrics"`
-
-	// The logging properties.
-	Logging *Logging `xml:"Logging"`
-
-	// The minute metrics properties.
-	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
-
-	// The static website properties.
-	StaticWebsite *StaticWebsite `xml:"StaticWebsite"`
-}
-
 // BlobTag - The blob tags.
 type BlobTag struct {
 	// REQUIRED; The key of the tag.
@@ -283,7 +259,7 @@ type BlockLookupList struct {
 	Committed [][]byte `xml:"committed"`
 
 	// The latest blocks
-	Latest [][]byte `xml:"latest"`
+	Latest []*string `xml:"latest"`
 
 	// The uncommitted blocks
 	Uncommitted [][]byte `xml:"uncommitted"`
@@ -437,7 +413,7 @@ type GeoReplication struct {
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// REQUIRED; The status of the secondary location
-	Status *GeoReplicationStatusType `xml:"Status"`
+	Status *BlobGeoReplicationStatus `xml:"Status"`
 }
 
 // JSONTextConfiguration - Represents the JSON text configuration.
@@ -592,7 +568,7 @@ type ParquetConfiguration struct {
 // QueryFormat - The query format settings.
 type QueryFormat struct {
 	// REQUIRED; The query type.
-	Type *QueryType `xml:"Type"`
+	Type *QueryFormatType `xml:"Type"`
 
 	// The Apache Arrow configuration.
 	ArrowConfiguration *ArrowConfiguration `xml:"ArrowConfiguration"`
@@ -668,6 +644,30 @@ type StaticWebsite struct {
 
 	// The index document.
 	IndexDocument *string `xml:"IndexDocument"`
+}
+
+// StorageServiceProperties - The service properties.
+type StorageServiceProperties struct {
+	// The CORS properties.
+	CORS []*CORSRule `xml:"Cors>CORSRule"`
+
+	// The default service version.
+	DefaultServiceVersion *string `xml:"DefaultServiceVersion"`
+
+	// The delete retention policy.
+	DeleteRetentionPolicy *RetentionPolicy `xml:"DeleteRetentionPolicy"`
+
+	// The hour metrics properties.
+	HourMetrics *Metrics `xml:"HourMetrics"`
+
+	// The logging properties.
+	Logging *Logging `xml:"Logging"`
+
+	// The minute metrics properties.
+	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
+
+	// The static website properties.
+	StaticWebsite *StaticWebsite `xml:"StaticWebsite"`
 }
 
 // StorageServiceStats - Stats for the storage service.

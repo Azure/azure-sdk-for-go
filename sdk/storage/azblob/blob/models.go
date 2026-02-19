@@ -210,7 +210,6 @@ func (o *DeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
 		return nil
 	}
-
 	return &generated.BlobClientDeleteOptions{
 		DeleteSnapshots:   o.DeleteSnapshots,
 		BlobDeleteType:    o.BlobDeleteType, // None by default
@@ -285,11 +284,11 @@ type SetHTTPHeadersOptions struct {
 	AccessConditions *AccessConditions
 }
 
-func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) *generated.BlobClientSetPropertiesOptions {
+func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) *generated.BlobClientSetHTTPHeadersOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.BlobClientSetPropertiesOptions{
+	return &generated.BlobClientSetHTTPHeadersOptions{
 		BlobCacheControl:       httpHeaders.BlobCacheControl,
 		BlobContentDisposition: httpHeaders.BlobContentDisposition,
 		BlobContentEncoding:    httpHeaders.BlobContentEncoding,
@@ -313,7 +312,7 @@ type SetMetadataOptions struct {
 	CPKScopeInfo     *CPKScopeInfo
 }
 
-func (o *SetMetadataOptions) format() *generated.BlobClientSetMetadataOptions {
+func (o *SetMetadataOptions) format(metadata map[string]*string) *generated.BlobClientSetMetadataOptions {
 	if o == nil {
 		return nil
 	}
@@ -327,6 +326,7 @@ func (o *SetMetadataOptions) format() *generated.BlobClientSetMetadataOptions {
 		EncryptionKey:       o.CPKInfo.EncryptionKey,
 		EncryptionKeySHA256: o.CPKInfo.EncryptionKeySHA256,
 		EncryptionScope:     o.CPKScopeInfo.EncryptionScope,
+		Metadata:            metadata,
 	}
 }
 

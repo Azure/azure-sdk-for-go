@@ -176,13 +176,13 @@ func (b *Client) GetProperties(ctx context.Context, options *GetPropertiesOption
 // SetHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (b *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, o *SetHTTPHeadersOptions) (SetHTTPHeadersResponse, error) {
-	return b.generated().SetProperties(ctx, o.format(httpHeaders))
+	return b.generated().SetHTTPHeaders(ctx, o.format(httpHeaders))
 }
 
 // SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
 func (b *Client) SetMetadata(ctx context.Context, metadata map[string]*string, o *SetMetadataOptions) (SetMetadataResponse, error) {
-	return b.generated().SetMetadata(ctx, metadata, o.format())
+	return b.generated().SetMetadata(ctx, o.format(metadata))
 }
 
 // CreateSnapshot creates a read-only snapshot of a blob.

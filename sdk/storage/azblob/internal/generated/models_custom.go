@@ -275,3 +275,48 @@ type SequenceNumberAccessConditions struct {
 	// Specify this header value to operate only on a blob if it has a sequence number less than or equal to the specified.
 	IfSequenceNumberLessThanOrEqualTo *int64
 }
+
+type ImmutabilityPolicySetting string
+
+const (
+	ImmutabilityPolicySettingLocked   ImmutabilityPolicySetting = "Locked"
+	ImmutabilityPolicySettingUnlocked ImmutabilityPolicySetting = "Unlocked"
+)
+
+// PossibleImmutabilityPolicySettingValues returns the possible values for the ImmutabilityPolicySetting const type.
+func PossibleImmutabilityPolicySettingValues() []ImmutabilityPolicySetting {
+	return []ImmutabilityPolicySetting{
+		ImmutabilityPolicySettingLocked,
+		ImmutabilityPolicySettingUnlocked,
+	}
+}
+
+type CopyStatusType string
+
+const (
+	CopyStatusTypeAborted CopyStatusType = "aborted"
+	CopyStatusTypeFailed  CopyStatusType = "failed"
+	CopyStatusTypePending CopyStatusType = "pending"
+	CopyStatusTypeSuccess CopyStatusType = "success"
+)
+
+// PossibleCopyStatusTypeValues returns the possible values for the CopyStatusType const type.
+func PossibleCopyStatusTypeValues() []CopyStatusType {
+	return []CopyStatusType{
+		CopyStatusTypeAborted,
+		CopyStatusTypeFailed,
+		CopyStatusTypePending,
+		CopyStatusTypeSuccess,
+	}
+}
+
+// ContainerCPKScopeInfo contains a group of parameters for the ContainerClient.Create method.
+type ContainerCPKScopeInfo struct {
+	// Optional. Version 2019-07-07 and later. Specifies the default encryption scope to set on the container and use for all
+	// future writes.
+	DefaultEncryptionScope *string
+
+	// Optional. Version 2019-07-07 and newer. If true, prevents any request from specifying a different encryption scope than
+	// the scope set on the container.
+	PreventEncryptionScopeOverride *bool
+}

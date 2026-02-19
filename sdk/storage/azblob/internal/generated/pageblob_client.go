@@ -793,35 +793,35 @@ func (client *PageBlobClient) resizeHandleResponse(resp *http.Response) (PageBlo
 	return result, nil
 }
 
-// SetSequenceNumber - The Update Sequence Number operation sets the blob's sequence number. The operation will fail if the
-// specified sequence number is less than the current sequence number of the blob.
+// UpdateSequenceNumber - The Update Sequence Number operation sets the blob's sequence number. The operation will fail if
+// the specified sequence number is less than the current sequence number of the blob.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
 //   - sequenceNumberAction - Required if the x-ms-blob-sequence-number header is set for the request. This property applies to
 //     page blobs only. This property indicates how the service should modify the blob's sequence number
-//   - options - PageBlobClientSetSequenceNumberOptions contains the optional parameters for the PageBlobClient.SetSequenceNumber
+//   - options - PageBlobClientUpdateSequenceNumberOptions contains the optional parameters for the PageBlobClient.UpdateSequenceNumber
 //     method.
-func (client *PageBlobClient) SetSequenceNumber(ctx context.Context, sequenceNumberAction SequenceNumberActionType, options *PageBlobClientSetSequenceNumberOptions) (PageBlobClientSetSequenceNumberResponse, error) {
+func (client *PageBlobClient) UpdateSequenceNumber(ctx context.Context, sequenceNumberAction SequenceNumberActionType, options *PageBlobClientUpdateSequenceNumberOptions) (PageBlobClientUpdateSequenceNumberResponse, error) {
 	var err error
-	req, err := client.setSequenceNumberCreateRequest(ctx, sequenceNumberAction, options)
+	req, err := client.updateSequenceNumberCreateRequest(ctx, sequenceNumberAction, options)
 	if err != nil {
-		return PageBlobClientSetSequenceNumberResponse{}, err
+		return PageBlobClientUpdateSequenceNumberResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return PageBlobClientSetSequenceNumberResponse{}, err
+		return PageBlobClientUpdateSequenceNumberResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return PageBlobClientSetSequenceNumberResponse{}, err
+		return PageBlobClientUpdateSequenceNumberResponse{}, err
 	}
-	resp, err := client.setSequenceNumberHandleResponse(httpResp)
+	resp, err := client.updateSequenceNumberHandleResponse(httpResp)
 	return resp, err
 }
 
-// setSequenceNumberCreateRequest creates the SetSequenceNumber request.
-func (client *PageBlobClient) setSequenceNumberCreateRequest(ctx context.Context, sequenceNumberAction SequenceNumberActionType, options *PageBlobClientSetSequenceNumberOptions) (*policy.Request, error) {
+// updateSequenceNumberCreateRequest creates the UpdateSequenceNumber request.
+func (client *PageBlobClient) updateSequenceNumberCreateRequest(ctx context.Context, sequenceNumberAction SequenceNumberActionType, options *PageBlobClientUpdateSequenceNumberOptions) (*policy.Request, error) {
 	urlPath := "/?comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
@@ -861,13 +861,13 @@ func (client *PageBlobClient) setSequenceNumberCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// setSequenceNumberHandleResponse handles the SetSequenceNumber response.
-func (client *PageBlobClient) setSequenceNumberHandleResponse(resp *http.Response) (PageBlobClientSetSequenceNumberResponse, error) {
-	result := PageBlobClientSetSequenceNumberResponse{}
+// updateSequenceNumberHandleResponse handles the UpdateSequenceNumber response.
+func (client *PageBlobClient) updateSequenceNumberHandleResponse(resp *http.Response) (PageBlobClientUpdateSequenceNumberResponse, error) {
+	result := PageBlobClientUpdateSequenceNumberResponse{}
 	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
 		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
 		if err != nil {
-			return PageBlobClientSetSequenceNumberResponse{}, err
+			return PageBlobClientUpdateSequenceNumberResponse{}, err
 		}
 		result.BlobSequenceNumber = &blobSequenceNumber
 	}
@@ -877,7 +877,7 @@ func (client *PageBlobClient) setSequenceNumberHandleResponse(resp *http.Respons
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PageBlobClientSetSequenceNumberResponse{}, err
+			return PageBlobClientUpdateSequenceNumberResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -887,7 +887,7 @@ func (client *PageBlobClient) setSequenceNumberHandleResponse(resp *http.Respons
 	if val := resp.Header.Get("Last-Modified"); val != "" {
 		lastModified, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return PageBlobClientSetSequenceNumberResponse{}, err
+			return PageBlobClientUpdateSequenceNumberResponse{}, err
 		}
 		result.LastModified = &lastModified
 	}

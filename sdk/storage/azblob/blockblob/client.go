@@ -19,7 +19,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
@@ -228,14 +227,6 @@ func (bb *Client) StageBlockFromURL(ctx context.Context, base64BlockID string, s
 // blocks together. Any blocks not specified in the block list and permanently deleted.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block-list.
 func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, options *CommitBlockListOptions) (CommitBlockListResponse, error) {
-	// this is a code smell in the generated code
-	blockIds := make([]*string, len(base64BlockIDs))
-	for k, v := range base64BlockIDs {
-		blockIds[k] = to.Ptr(v)
-	}
-
-	blockLookupList := generated.BlockLookupList{Latest: blockIds}
-
 	if options != nil {
 		// If user attempts to pass in their own checksum, errors out.
 		if options.TransactionalContentMD5 != nil || options.TransactionalContentCRC64 != nil {
@@ -243,7 +234,7 @@ func (bb *Client) CommitBlockList(ctx context.Context, base64BlockIDs []string, 
 		}
 	}
 
-	return bb.generated().CommitBlockList(ctx, blockLookupList, options.format())
+	return bb.generated().CommitBlockList(ctx, generated.BlockLookupList{Latest: base64BlockIDs}, options.format())
 }
 
 // GetBlockList returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.

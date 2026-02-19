@@ -1909,6 +1909,123 @@ func (client *BlobClient) setExpiryHandleResponse(resp *http.Response) (BlobClie
 	return result, nil
 }
 
+// SetHTTPHeaders - The Set HTTP Headers operation sets system properties on the blob.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-04-06
+//   - options - BlobClientSetHTTPHeadersOptions contains the optional parameters for the BlobClient.SetHTTPHeaders method.
+func (client *BlobClient) SetHTTPHeaders(ctx context.Context, options *BlobClientSetHTTPHeadersOptions) (BlobClientSetHTTPHeadersResponse, error) {
+	var err error
+	req, err := client.setHTTPHeadersCreateRequest(ctx, options)
+	if err != nil {
+		return BlobClientSetHTTPHeadersResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BlobClientSetHTTPHeadersResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return BlobClientSetHTTPHeadersResponse{}, err
+	}
+	resp, err := client.setHTTPHeadersHandleResponse(httpResp)
+	return resp, err
+}
+
+// setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
+func (client *BlobClient) setHTTPHeadersCreateRequest(ctx context.Context, options *BlobClientSetHTTPHeadersOptions) (*policy.Request, error) {
+	urlPath := "/?comp=properties"
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
+	}
+	if options != nil && options.IfModifiedSince != nil {
+		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
+	}
+	if options != nil && options.IfUnmodifiedSince != nil {
+		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
+	}
+	if options != nil && options.BlobCacheControl != nil {
+		req.Raw().Header["x-ms-blob-cache-control"] = []string{*options.BlobCacheControl}
+	}
+	if options != nil && options.BlobContentDisposition != nil {
+		req.Raw().Header["x-ms-blob-content-disposition"] = []string{*options.BlobContentDisposition}
+	}
+	if options != nil && options.BlobContentEncoding != nil {
+		req.Raw().Header["x-ms-blob-content-encoding"] = []string{*options.BlobContentEncoding}
+	}
+	if options != nil && options.BlobContentLanguage != nil {
+		req.Raw().Header["x-ms-blob-content-language"] = []string{*options.BlobContentLanguage}
+	}
+	if options != nil && options.BlobContentMD5 != nil {
+		req.Raw().Header["x-ms-blob-content-md5"] = []string{base64.StdEncoding.EncodeToString(options.BlobContentMD5)}
+	}
+	if options != nil && options.BlobContentType != nil {
+		req.Raw().Header["x-ms-blob-content-type"] = []string{*options.BlobContentType}
+	}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	}
+	if options != nil && options.IfTags != nil {
+		req.Raw().Header["x-ms-if-tags"] = []string{*options.IfTags}
+	}
+	if options != nil && options.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
+	return req, nil
+}
+
+// setHTTPHeadersHandleResponse handles the SetHTTPHeaders response.
+func (client *BlobClient) setHTTPHeadersHandleResponse(resp *http.Response) (BlobClientSetHTTPHeadersResponse, error) {
+	result := BlobClientSetHTTPHeadersResponse{}
+	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
+		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return BlobClientSetHTTPHeadersResponse{}, err
+		}
+		result.BlobSequenceNumber = &blobSequenceNumber
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientSetHTTPHeadersResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientSetHTTPHeadersResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	return result, nil
+}
+
 // SetImmutabilityPolicy - Set the immutability policy of a blob
 // If the operation fails it returns an *azcore.ResponseError type.
 //
@@ -2196,123 +2313,6 @@ func (client *BlobClient) setMetadataHandleResponse(resp *http.Response) (BlobCl
 	}
 	if val := resp.Header.Get("x-ms-version-id"); val != "" {
 		result.VersionID = &val
-	}
-	return result, nil
-}
-
-// SetProperties - The Set HTTP Headers operation sets system properties on the blob.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-06
-//   - options - BlobClientSetPropertiesOptions contains the optional parameters for the BlobClient.SetProperties method.
-func (client *BlobClient) SetProperties(ctx context.Context, options *BlobClientSetPropertiesOptions) (BlobClientSetPropertiesResponse, error) {
-	var err error
-	req, err := client.setPropertiesCreateRequest(ctx, options)
-	if err != nil {
-		return BlobClientSetPropertiesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return BlobClientSetPropertiesResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobClientSetPropertiesResponse{}, err
-	}
-	resp, err := client.setPropertiesHandleResponse(httpResp)
-	return resp, err
-}
-
-// setPropertiesCreateRequest creates the SetProperties request.
-func (client *BlobClient) setPropertiesCreateRequest(ctx context.Context, options *BlobClientSetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/?comp=properties"
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
-	}
-	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{options.IfModifiedSince.Format(time.RFC1123)}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
-	}
-	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{options.IfUnmodifiedSince.Format(time.RFC1123)}
-	}
-	if options != nil && options.BlobCacheControl != nil {
-		req.Raw().Header["x-ms-blob-cache-control"] = []string{*options.BlobCacheControl}
-	}
-	if options != nil && options.BlobContentDisposition != nil {
-		req.Raw().Header["x-ms-blob-content-disposition"] = []string{*options.BlobContentDisposition}
-	}
-	if options != nil && options.BlobContentEncoding != nil {
-		req.Raw().Header["x-ms-blob-content-encoding"] = []string{*options.BlobContentEncoding}
-	}
-	if options != nil && options.BlobContentLanguage != nil {
-		req.Raw().Header["x-ms-blob-content-language"] = []string{*options.BlobContentLanguage}
-	}
-	if options != nil && options.BlobContentMD5 != nil {
-		req.Raw().Header["x-ms-blob-content-md5"] = []string{base64.StdEncoding.EncodeToString(options.BlobContentMD5)}
-	}
-	if options != nil && options.BlobContentType != nil {
-		req.Raw().Header["x-ms-blob-content-type"] = []string{*options.BlobContentType}
-	}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
-	}
-	if options != nil && options.IfTags != nil {
-		req.Raw().Header["x-ms-if-tags"] = []string{*options.IfTags}
-	}
-	if options != nil && options.LeaseID != nil {
-		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
-	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
-	return req, nil
-}
-
-// setPropertiesHandleResponse handles the SetProperties response.
-func (client *BlobClient) setPropertiesHandleResponse(resp *http.Response) (BlobClientSetPropertiesResponse, error) {
-	result := BlobClientSetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-blob-sequence-number"); val != "" {
-		blobSequenceNumber, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			return BlobClientSetPropertiesResponse{}, err
-		}
-		result.BlobSequenceNumber = &blobSequenceNumber
-	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
-	}
-	if val := resp.Header.Get("Date"); val != "" {
-		date, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientSetPropertiesResponse{}, err
-		}
-		result.Date = &date
-	}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = (*azcore.ETag)(&val)
-	}
-	if val := resp.Header.Get("Last-Modified"); val != "" {
-		lastModified, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return BlobClientSetPropertiesResponse{}, err
-		}
-		result.LastModified = &lastModified
-	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
-	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
-		result.Version = &val
 	}
 	return result, nil
 }

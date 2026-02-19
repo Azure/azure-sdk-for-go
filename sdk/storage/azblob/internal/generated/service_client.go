@@ -23,33 +23,33 @@ type ServiceClient struct {
 	url      string
 }
 
-// FindBlobsByTags - The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given
-// search expression.
+// FilterBlobs - The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search
+// expression.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
 //   - filterExpression - Filters the results to return only to return only blobs whose tags match the specified expression.
-//   - options - ServiceClientFindBlobsByTagsOptions contains the optional parameters for the ServiceClient.FindBlobsByTags method.
-func (client *ServiceClient) FindBlobsByTags(ctx context.Context, filterExpression string, options *ServiceClientFindBlobsByTagsOptions) (ServiceClientFindBlobsByTagsResponse, error) {
+//   - options - ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
+func (client *ServiceClient) FilterBlobs(ctx context.Context, filterExpression string, options *ServiceClientFilterBlobsOptions) (ServiceClientFilterBlobsResponse, error) {
 	var err error
-	req, err := client.findBlobsByTagsCreateRequest(ctx, filterExpression, options)
+	req, err := client.filterBlobsCreateRequest(ctx, filterExpression, options)
 	if err != nil {
-		return ServiceClientFindBlobsByTagsResponse{}, err
+		return ServiceClientFilterBlobsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ServiceClientFindBlobsByTagsResponse{}, err
+		return ServiceClientFilterBlobsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ServiceClientFindBlobsByTagsResponse{}, err
+		return ServiceClientFilterBlobsResponse{}, err
 	}
-	resp, err := client.findBlobsByTagsHandleResponse(httpResp)
+	resp, err := client.filterBlobsHandleResponse(httpResp)
 	return resp, err
 }
 
-// findBlobsByTagsCreateRequest creates the FindBlobsByTags request.
-func (client *ServiceClient) findBlobsByTagsCreateRequest(ctx context.Context, filterExpression string, options *ServiceClientFindBlobsByTagsOptions) (*policy.Request, error) {
+// filterBlobsCreateRequest creates the FilterBlobs request.
+func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, filterExpression string, options *ServiceClientFilterBlobsOptions) (*policy.Request, error) {
 	urlPath := "/?comp=blobs"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
@@ -78,9 +78,9 @@ func (client *ServiceClient) findBlobsByTagsCreateRequest(ctx context.Context, f
 	return req, nil
 }
 
-// findBlobsByTagsHandleResponse handles the FindBlobsByTags response.
-func (client *ServiceClient) findBlobsByTagsHandleResponse(resp *http.Response) (ServiceClientFindBlobsByTagsResponse, error) {
-	result := ServiceClientFindBlobsByTagsResponse{}
+// filterBlobsHandleResponse handles the FilterBlobs response.
+func (client *ServiceClient) filterBlobsHandleResponse(resp *http.Response) (ServiceClientFilterBlobsResponse, error) {
+	result := ServiceClientFilterBlobsResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -90,7 +90,7 @@ func (client *ServiceClient) findBlobsByTagsHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ServiceClientFindBlobsByTagsResponse{}, err
+			return ServiceClientFilterBlobsResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -101,7 +101,7 @@ func (client *ServiceClient) findBlobsByTagsHandleResponse(resp *http.Response) 
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.FilterBlobSegment); err != nil {
-		return ServiceClientFindBlobsByTagsResponse{}, err
+		return ServiceClientFilterBlobsResponse{}, err
 	}
 	return result, nil
 }
@@ -249,7 +249,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val
 	}
-	if err := runtime.UnmarshalAsXML(resp, &result.BlobServiceProperties); err != nil {
+	if err := runtime.UnmarshalAsXML(resp, &result.StorageServiceProperties); err != nil {
 		return ServiceClientGetPropertiesResponse{}, err
 	}
 	return result, nil
@@ -500,7 +500,7 @@ func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Resp
 // Generated from API version 2026-04-06
 //   - storageServiceProperties - The storage service properties to set.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
-func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties BlobServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
+func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
 	var err error
 	req, err := client.setPropertiesCreateRequest(ctx, storageServiceProperties, options)
 	if err != nil {
@@ -519,7 +519,7 @@ func (client *ServiceClient) SetProperties(ctx context.Context, storageServicePr
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties BlobServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
+func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (*policy.Request, error) {
 	urlPath := "/?restype=service&comp=properties"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {

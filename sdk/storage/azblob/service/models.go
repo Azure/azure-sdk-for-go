@@ -292,11 +292,11 @@ type FilterBlobsOptions struct {
 	MaxResults *int32
 }
 
-func (o *FilterBlobsOptions) format() *generated.ServiceClientFindBlobsByTagsOptions {
+func (o *FilterBlobsOptions) format() *generated.ServiceClientFilterBlobsOptions {
 	if o == nil {
 		return nil
 	}
-	return &generated.ServiceClientFindBlobsByTagsOptions{
+	return &generated.ServiceClientFilterBlobsOptions{
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 	}
@@ -311,20 +311,21 @@ type BatchDeleteOptions struct {
 	Snapshot  *string
 }
 
-func (o *BatchDeleteOptions) format() (*generated.BlobClientDeleteOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	basics := generated.BlobClientDeleteOptions{
-		DeleteSnapshots: o.DeleteSnapshots,
-		DeleteType:      o.BlobDeleteType, // None by default
-		Snapshot:        o.Snapshot,
-		VersionID:       o.VersionID,
+	return &generated.BlobClientDeleteOptions{
+		DeleteSnapshots:   o.DeleteSnapshots,
+		BlobDeleteType:    o.BlobDeleteType, // None by default
+		Snapshot:          o.Snapshot,
+		VersionID:         o.VersionID,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
+		IfMatch:           o.AccessConditions.ModifiedAccessConditions.IfMatch,
+		IfModifiedSince:   o.AccessConditions.ModifiedAccessConditions.IfModifiedSince,
+		IfNoneMatch:       o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+		IfUnmodifiedSince: o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, modifiedAccessConditions
 }
 
 // BatchSetTierOptions contains the optional parameters for the BatchBuilder.SetTier method.
@@ -334,19 +335,17 @@ type BatchSetTierOptions struct {
 	Snapshot  *string
 }
 
-func (o *BatchSetTierOptions) format() (*generated.BlobClientSetTierOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
+func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-
-	basics := generated.BlobClientSetTierOptions{
+	// Notes: no mapping for o.AccessConditions.ModifiedAccessConditions
+	return &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 		Snapshot:          o.Snapshot,
 		VersionID:         o.VersionID,
+		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,
 	}
-
-	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &basics, leaseAccessConditions, modifiedAccessConditions
 }
 
 // SubmitBatchOptions contains the optional parameters for the Client.SubmitBatch method.

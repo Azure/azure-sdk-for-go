@@ -211,22 +211,6 @@ func (b *BlobProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	return nil
 }
 
-// MarshalXML implements the xml.Marshaller interface for type BlobServiceProperties.
-func (b BlobServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
-	start.Name.Local = "StorageServiceProperties"
-	type alias BlobServiceProperties
-	aux := &struct {
-		*alias
-		Cors *[]*CORSRule `xml:"Cors>CORSRule"`
-	}{
-		alias: (*alias)(&b),
-	}
-	if b.Cors != nil {
-		aux.Cors = &b.Cors
-	}
-	return enc.EncodeElement(aux, start)
-}
-
 // MarshalXML implements the xml.Marshaller interface for type BlobTag.
 func (b BlobTag) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Tag"
@@ -316,9 +300,9 @@ func (b BlockLookupList) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	type alias BlockLookupList
 	aux := &struct {
 		*alias
-		Committed   *[][]byte `xml:"committed"`
-		Latest      *[][]byte `xml:"latest"`
-		Uncommitted *[][]byte `xml:"uncommitted"`
+		Committed   *[][]byte  `xml:"committed"`
+		Latest      *[]*string `xml:"latest"`
+		Uncommitted *[][]byte  `xml:"uncommitted"`
 	}{
 		alias: (*alias)(&b),
 	}
@@ -526,6 +510,22 @@ func (s SignedIdentifiers) MarshalXML(enc *xml.Encoder, start xml.StartElement) 
 	}
 	if s.Items != nil {
 		aux.Items = &s.Items
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.
+func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "StorageServiceProperties"
+	type alias StorageServiceProperties
+	aux := &struct {
+		*alias
+		CORS *[]*CORSRule `xml:"Cors>CORSRule"`
+	}{
+		alias: (*alias)(&s),
+	}
+	if s.CORS != nil {
+		aux.CORS = &s.CORS
 	}
 	return enc.EncodeElement(aux, start)
 }

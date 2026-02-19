@@ -186,7 +186,7 @@ func (o *SealOptions) format() *generated.AppendBlobClientSealOptions {
 	if o == nil {
 		return nil
 	}
-	// NOTE: o.AppendPositionAccessConditions.MaxSize does not exist for Seal operation
+	// NOTE: no mapping for o.AppendPositionAccessConditions.MaxSize
 	return &generated.AppendBlobClientSealOptions{
 		AppendPosition:    o.AppendPositionAccessConditions.AppendPosition,
 		LeaseID:           o.AccessConditions.LeaseAccessConditions.LeaseID,

@@ -457,34 +457,33 @@ func (client *ContainerClient) deleteHandleResponse(resp *http.Response) (Contai
 	return result, nil
 }
 
-// FindBlobsByTags - The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search
-// expression. Filter blobs searches within the given container.
+// FilterBlobs - The Filter Blobs operation enables callers to list blobs in a container whose tags match a given search expression.
+// Filter blobs searches within the given container.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2026-04-06
 //   - filterExpression - Filters the results to return only to return only blobs whose tags match the specified expression.
-//   - options - ContainerClientFindBlobsByTagsOptions contains the optional parameters for the ContainerClient.FindBlobsByTags
-//     method.
-func (client *ContainerClient) FindBlobsByTags(ctx context.Context, filterExpression string, options *ContainerClientFindBlobsByTagsOptions) (ContainerClientFindBlobsByTagsResponse, error) {
+//   - options - ContainerClientFilterBlobsOptions contains the optional parameters for the ContainerClient.FilterBlobs method.
+func (client *ContainerClient) FilterBlobs(ctx context.Context, filterExpression string, options *ContainerClientFilterBlobsOptions) (ContainerClientFilterBlobsResponse, error) {
 	var err error
-	req, err := client.findBlobsByTagsCreateRequest(ctx, filterExpression, options)
+	req, err := client.filterBlobsCreateRequest(ctx, filterExpression, options)
 	if err != nil {
-		return ContainerClientFindBlobsByTagsResponse{}, err
+		return ContainerClientFilterBlobsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ContainerClientFindBlobsByTagsResponse{}, err
+		return ContainerClientFilterBlobsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ContainerClientFindBlobsByTagsResponse{}, err
+		return ContainerClientFilterBlobsResponse{}, err
 	}
-	resp, err := client.findBlobsByTagsHandleResponse(httpResp)
+	resp, err := client.filterBlobsHandleResponse(httpResp)
 	return resp, err
 }
 
-// findBlobsByTagsCreateRequest creates the FindBlobsByTags request.
-func (client *ContainerClient) findBlobsByTagsCreateRequest(ctx context.Context, filterExpression string, options *ContainerClientFindBlobsByTagsOptions) (*policy.Request, error) {
+// filterBlobsCreateRequest creates the FilterBlobs request.
+func (client *ContainerClient) filterBlobsCreateRequest(ctx context.Context, filterExpression string, options *ContainerClientFilterBlobsOptions) (*policy.Request, error) {
 	urlPath := "/?restype=container&comp=blobs"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
@@ -513,9 +512,9 @@ func (client *ContainerClient) findBlobsByTagsCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// findBlobsByTagsHandleResponse handles the FindBlobsByTags response.
-func (client *ContainerClient) findBlobsByTagsHandleResponse(resp *http.Response) (ContainerClientFindBlobsByTagsResponse, error) {
-	result := ContainerClientFindBlobsByTagsResponse{}
+// filterBlobsHandleResponse handles the FilterBlobs response.
+func (client *ContainerClient) filterBlobsHandleResponse(resp *http.Response) (ContainerClientFilterBlobsResponse, error) {
+	result := ContainerClientFilterBlobsResponse{}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -525,7 +524,7 @@ func (client *ContainerClient) findBlobsByTagsHandleResponse(resp *http.Response
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
-			return ContainerClientFindBlobsByTagsResponse{}, err
+			return ContainerClientFilterBlobsResponse{}, err
 		}
 		result.Date = &date
 	}
@@ -536,7 +535,7 @@ func (client *ContainerClient) findBlobsByTagsHandleResponse(resp *http.Response
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.FilterBlobSegment); err != nil {
-		return ContainerClientFindBlobsByTagsResponse{}, err
+		return ContainerClientFilterBlobsResponse{}, err
 	}
 	return result, nil
 }

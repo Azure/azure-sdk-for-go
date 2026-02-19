@@ -302,7 +302,7 @@ func (s *Client) GetSASURL(resources sas.AccountResourceTypes, permissions sas.A
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 // To specify a container, eg. "@container=’containerName’ and Name = ‘C’"
 func (s *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
-	return s.generated().FindBlobsByTags(ctx, where, o.format())
+	return s.generated().FilterBlobs(ctx, where, o.format())
 }
 
 // NewBatchBuilder creates an instance of BatchBuilder using the same auth policy as the client.

@@ -203,11 +203,10 @@ func (c *Client) GetProperties(ctx context.Context, o *GetPropertiesOptions) (Ge
 	return c.generated().GetProperties(ctx, o.format())
 }
 
-// TODO why is metadata optional???
 // SetMetadata sets the container's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
 func (c *Client) SetMetadata(ctx context.Context, o *SetMetadataOptions) (SetMetadataResponse, error) {
-	return c.generated().SetMetadata(ctx, o.Metadata, o.format())
+	return c.generated().SetMetadata(ctx, o.format())
 }
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
@@ -227,8 +226,7 @@ func (c *Client) SetAccessPolicy(ctx context.Context, o *SetAccessPolicyOptions)
 			}
 		}
 	}
-	resp, err := c.generated().SetAccessPolicy(ctx, o.ContainerACL, o.format())
-	return resp, err
+	return c.generated().SetAccessPolicy(ctx, generated.SignedIdentifiers{Items: o.ContainerACL}, o.format())
 }
 
 // GetAccountInfo provides account level information
@@ -387,7 +385,7 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 	rsc := streaming.NopCloser(reader)
 	multipartContentType := "multipart/mixed; boundary=" + batchID
 
-	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), multipartContentType, rsc, options.format())
+	resp, err := c.generated().SubmitBatch(ctx, int64(len(batchReq)), generated.SubmitBatchRequest{Body: streaming.MultipartContent{ContentType: multipartContentType, Body: rsc}}, options.format())
 	if err != nil {
 		return SubmitBatchResponse{}, err
 	}
@@ -409,5 +407,5 @@ func (c *Client) SubmitBatch(ctx context.Context, bb *BatchBuilder, options *Sub
 // https://docs.microsoft.com/en-us/rest/api/storageservices/find-blobs-by-tags-container
 // eg. "dog='germanshepherd' and penguin='emperorpenguin'"
 func (c *Client) FilterBlobs(ctx context.Context, where string, o *FilterBlobsOptions) (FilterBlobsResponse, error) {
-	return c.generated().FindBlobsByTags(ctx, where, o.format())
+	return c.generated().FilterBlobs(ctx, where, o.format())
 }

@@ -544,7 +544,7 @@ func (client *BlockBlobClient) queryHandleResponse(resp *http.Response) (BlockBl
 //   - contentLength - The length of the request.
 //   - body - The body of the request.
 //   - options - BlockBlobClientStageBlockOptions contains the optional parameters for the BlockBlobClient.StageBlock method.
-func (client *BlockBlobClient) StageBlock(ctx context.Context, blockID []byte, contentLength int64, body io.ReadSeekCloser, options *BlockBlobClientStageBlockOptions) (BlockBlobClientStageBlockResponse, error) {
+func (client *BlockBlobClient) StageBlock(ctx context.Context, blockID string, contentLength int64, body io.ReadSeekCloser, options *BlockBlobClientStageBlockOptions) (BlockBlobClientStageBlockResponse, error) {
 	var err error
 	req, err := client.stageBlockCreateRequest(ctx, blockID, contentLength, body, options)
 	if err != nil {
@@ -563,14 +563,14 @@ func (client *BlockBlobClient) StageBlock(ctx context.Context, blockID []byte, c
 }
 
 // stageBlockCreateRequest creates the StageBlock request.
-func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, blockID []byte, contentLength int64, body io.ReadSeekCloser, options *BlockBlobClientStageBlockOptions) (*policy.Request, error) {
+func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, blockID string, contentLength int64, body io.ReadSeekCloser, options *BlockBlobClientStageBlockOptions) (*policy.Request, error) {
 	urlPath := "/?comp=block"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("blockid", base64.StdEncoding.EncodeToString(blockID))
+	reqQP.Set("blockid", blockID)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
@@ -678,7 +678,7 @@ func (client *BlockBlobClient) stageBlockHandleResponse(resp *http.Response) (Bl
 //   - sourceURL - Specify a URL to the copy source.
 //   - options - BlockBlobClientStageBlockFromURLOptions contains the optional parameters for the BlockBlobClient.StageBlockFromURL
 //     method.
-func (client *BlockBlobClient) StageBlockFromURL(ctx context.Context, blockID []byte, contentLength int64, sourceURL string, options *BlockBlobClientStageBlockFromURLOptions) (BlockBlobClientStageBlockFromURLResponse, error) {
+func (client *BlockBlobClient) StageBlockFromURL(ctx context.Context, blockID string, contentLength int64, sourceURL string, options *BlockBlobClientStageBlockFromURLOptions) (BlockBlobClientStageBlockFromURLResponse, error) {
 	var err error
 	req, err := client.stageBlockFromURLCreateRequest(ctx, blockID, contentLength, sourceURL, options)
 	if err != nil {
@@ -697,14 +697,14 @@ func (client *BlockBlobClient) StageBlockFromURL(ctx context.Context, blockID []
 }
 
 // stageBlockFromURLCreateRequest creates the StageBlockFromURL request.
-func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Context, blockID []byte, contentLength int64, sourceURL string, options *BlockBlobClientStageBlockFromURLOptions) (*policy.Request, error) {
+func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Context, blockID string, contentLength int64, sourceURL string, options *BlockBlobClientStageBlockFromURLOptions) (*policy.Request, error) {
 	urlPath := "/?comp=block"
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.url, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("blockid", base64.StdEncoding.EncodeToString(blockID))
+	reqQP.Set("blockid", blockID)
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}

@@ -260,11 +260,10 @@ func (o *CommitBlockListOptions) format() *generated.BlockBlobClientCommitBlockL
 	if o == nil {
 		return nil
 	}
-	// TODO figure out request id
+	// Note: no mapping for o.RequestID
 	return &generated.BlockBlobClientCommitBlockListOptions{
 		BlobTagsString:            shared.SerializeBlobTagsToStrPtr(o.Tags),
 		Metadata:                  o.Metadata,
-		RequestID:                 o.RequestID,
 		Tier:                      o.Tier,
 		Timeout:                   o.Timeout,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,

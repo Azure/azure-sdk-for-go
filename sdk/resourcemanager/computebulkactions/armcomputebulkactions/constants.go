@@ -519,7 +519,7 @@ type LocalStorageDiskType string
 const (
 	// LocalStorageDiskTypeHDD - HDD DiskType.
 	LocalStorageDiskTypeHDD LocalStorageDiskType = "HDD"
-	// LocalStorageDiskTypeSSD - SDD DiskType.
+	// LocalStorageDiskTypeSSD - SSD DiskType.
 	LocalStorageDiskTypeSSD LocalStorageDiskType = "SSD"
 )
 

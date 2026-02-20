@@ -506,7 +506,7 @@ type BlobClientDownloadResponse struct {
 	// The lease status of the blob.
 	LeaseStatus *LeaseStatus
 
-	// Specifies the legal hold status to set on the blob.
+	// Indicates whether the blob has a legal hold.
 	LegalHold *bool
 
 	// The metadata headers.
@@ -711,7 +711,7 @@ type BlobClientGetPropertiesResponse struct {
 	// The lease status of the blob.
 	LeaseStatus *LeaseStatus
 
-	// Specifies the legal hold status to set on the blob.
+	// Indicates whether the blob has a legal hold.
 	LegalHold *bool
 
 	// The metadata headers.

@@ -2573,7 +2573,6 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 	if options != nil && options.RehydratePriority != nil {
 		req.Raw().Header["x-ms-rehydrate-priority"] = []string{string(*options.RehydratePriority)}
 	}
-	req.Raw().Header["x-ms-requires-sync"] = []string{"true"}
 	if options != nil && options.SealBlob != nil {
 		req.Raw().Header["x-ms-seal-blob"] = []string{strconv.FormatBool(*options.SealBlob)}
 	}

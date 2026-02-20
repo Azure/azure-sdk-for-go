@@ -534,7 +534,6 @@ func (s StorageServiceProperties) MarshalXML(enc *xml.Encoder, start xml.StartEl
 func (s SubmitBatchRequest) toMultipartFormData() (map[string]any, error) {
 	objectMap := make(map[string]any)
 	objectMap["body"] = s.Body
-	objectMap["name"] = s.Name
 	return objectMap, nil
 }
 

@@ -73,7 +73,7 @@ type BlobItem struct {
 	Snapshot *string `xml:"Snapshot"`
 
 	// The tags of the blob.
-	BlobTags *BlobTags `xml:"BlobTags"`
+	BlobTags *BlobTags `xml:"Tags"`
 
 	// Whether the blob has versions only.
 	HasVersionsOnly *bool `xml:"HasVersionsOnly"`
@@ -316,7 +316,7 @@ type ContainerItem struct {
 // ContainerProperties - The properties of a container.
 type ContainerProperties struct {
 	// REQUIRED; The ETag of the container.
-	ETag *azcore.ETag `xml:"ETag"`
+	ETag *azcore.ETag `xml:"Etag"`
 
 	// REQUIRED; The date-time the container was last modified in RFC1123 format.
 	LastModified *time.Time `xml:"Last-Modified"`
@@ -385,7 +385,7 @@ type FilterBlobItem struct {
 	IsCurrentVersion *bool `xml:"IsCurrentVersion"`
 
 	// The metadata of the blob.
-	Tags *BlobTags `xml:"tags"`
+	Tags *BlobTags `xml:"Tags"`
 
 	// The version ID of the blob.
 	VersionID *string `xml:"VersionId"`
@@ -679,9 +679,6 @@ type StorageServiceStats struct {
 type SubmitBatchRequest struct {
 	// REQUIRED
 	Body streaming.MultipartContent
-
-	// REQUIRED
-	Name string
 }
 
 // UserDelegationKey - A user delegation key.

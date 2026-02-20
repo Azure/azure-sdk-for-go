@@ -9,8 +9,8 @@ For a comprehensive overview of this repository, see the [README.md](https://git
 ### Key Documentation
 - [Main README](https://github.com/Azure/azure-sdk-for-go/blob/main/README.md) - Getting started, package information, and repository structure
 - [Contributing Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md) - Contribution guidelines and PR requirements
-- [Developer Setup](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md) - Environment setup for SDK development
-- [Release Documentation](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/release.md) - Package release process
+- [Developer Setup](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/setup.md) - Environment setup for SDK development
+- [Release Documentation](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/release.md) - Package release process
 - [Copilot Instructions](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/copilot-instructions.md) - Copilot-specific guidance
 
 ### Go Version Support
@@ -49,7 +49,7 @@ AI agents should **NOT** perform the following actions without human approval:
 
 #### Code Generation
 - **Regenerating SDK code**: Most packages in `sdk/` are generated from [Azure API specs](https://github.com/Azure/azure-rest-api-specs) using AutoRest or TypeSpec and should not be manually modified
-- **AutoRest/TypeSpec changes**: SDK generation from specifications requires specific tools and workflows (see [code generation docs](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/code-generation.md))
+- **AutoRest/TypeSpec changes**: SDK generation from specifications requires specific tools and workflows (see [code generation docs](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/generate.md))
 
 #### Security and Compliance
 - **CODEOWNERS modifications**: Changes require following [CODEOWNERS validation workflow](https://github.com/Azure/azure-sdk-for-go/blob/main/eng/common/instructions/azsdk-tools/validate-codeowners.instructions.md)
@@ -214,15 +214,14 @@ When working with tests:
 - [API Design Guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) - API design principles
 
 ### Documentation
-- [Developer Setup](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/developer_setup.md) - Machine setup for development
-- [Release Guidelines](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/release.md) - Package release process
-- [Migration Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/MIGRATION_GUIDE.md) - Migrating from track 1 to track 2
-- [Breaking Changes Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/sdk-breaking-changes-guide.md) - Handling breaking changes
+- [Developer Setup](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/setup.md) - Machine setup for development
+- [Release Guidelines](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/release.md) - Package release process
+- [Migration Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/ARM/MIGRATION_GUIDE.md) - Migrating from track 1 to track 2
+- [Breaking Changes Guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/breaking-changes/sdk-breaking-changes-guide.md) - Handling breaking changes
 
 ### Tools and Automation
-- [Code Generation](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/code-generation.md) - SDK generation from specs
+- [Code Generation](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/generate.md) - SDK generation from specs
 - [Engineering System](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/eng_sys.md) - Build and CI/CD systems
-- [SDK Automation](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/sdk-automation-tsg.md) - Automation troubleshooting
 
 ## Version History
 

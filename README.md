@@ -22,7 +22,7 @@ To get started with a module, see the README.md file located in the module's pro
 > Projects are highly encouraged to use the latest version of Go. This ensures your product has all the latest security fixes and is included in [Go's support lifecycle](https://go.dev/doc/devel/release).
 
 > [!WARNING]
-> The [root azure-sdk-for-go Go module](https://godoc.org/github.com/Azure/azure-sdk-for-go) which contains subpaths of `/services/**/mgmt/**` (also known as track 1) is [deprecated and no longer recieving support](https://azure.github.io/azure-sdk/releases/deprecated/go.html). See [the migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/MIGRATION_GUIDE.md) to learn how to migrate to the current version.
+> The [root azure-sdk-for-go Go module](https://godoc.org/github.com/Azure/azure-sdk-for-go) which contains subpaths of `/services/**/mgmt/**` (also known as track 1) is [deprecated and no longer recieving support](https://azure.github.io/azure-sdk/releases/deprecated/go.html). See [the migration guide](https://github.com/Azure/azure-sdk-for-go/blob/main/documentation/development/ARM/MIGRATION_GUIDE.md) to learn how to migrate to the current version.
 
 ## Packages available
 

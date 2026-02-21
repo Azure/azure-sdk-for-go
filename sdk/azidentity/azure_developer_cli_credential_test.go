@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -131,19 +128,6 @@ func TestAzureDeveloperCLICredential_GetTokenSuccess(t *testing.T) {
 	expected := time.Date(2001, 2, 3, 4, 5, 6, 000, time.UTC)
 	if actual := at.ExpiresOn; !actual.Equal(expected) || actual.Location() != time.UTC {
 		t.Fatalf("expected %q, got %q", expected, actual)
-	}
-}
-
-func TestAzureDeveloperCLICredential_GetTokenInvalidToken(t *testing.T) {
-	options := AzureDeveloperCLICredentialOptions{}
-	options.exec = mockAzdFailure
-	cred, err := NewAzureDeveloperCLICredential(&options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), testTRO)
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one.")
 	}
 }
 

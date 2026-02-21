@@ -13,8 +13,8 @@ type CancelOccurrenceRequest struct {
 	ResourceIDs []*string
 }
 
-// CancelOperationsRequest - This is the request to cancel running operations in scheduled actions using the operation ids
-type CancelOperationsRequest struct {
+// CancelOperationsContent - This is the request to cancel running operations in scheduled actions using the operation ids
+type CancelOperationsContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -101,8 +101,8 @@ type Error struct {
 	Target *string
 }
 
-// ExecuteCreateRequest - The ExecuteCreateRequest request for create operations
-type ExecuteCreateRequest struct {
+// ExecuteCreateContent - The ExecuteCreateRequest request for create operations
+type ExecuteCreateContent struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 
@@ -113,8 +113,8 @@ type ExecuteCreateRequest struct {
 	Correlationid *string
 }
 
-// ExecuteDeallocateRequest - The ExecuteDeallocateRequest request for executeDeallocate operations
-type ExecuteDeallocateRequest struct {
+// ExecuteDeallocateContent - The ExecuteDeallocateRequest request for executeDeallocate operations
+type ExecuteDeallocateContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -125,8 +125,8 @@ type ExecuteDeallocateRequest struct {
 	Resources *Resources
 }
 
-// ExecuteDeleteRequest - The ExecuteDeleteRequest for delete VM operation
-type ExecuteDeleteRequest struct {
+// ExecuteDeleteContent - The ExecuteDeleteRequest for delete VM operation
+type ExecuteDeleteContent struct {
 	// REQUIRED; The execution parameters for the request
 	ExecutionParameters *ExecutionParameters
 
@@ -140,8 +140,8 @@ type ExecuteDeleteRequest struct {
 	ForceDeletion *bool
 }
 
-// ExecuteHibernateRequest - The ExecuteHibernateRequest request for executeHibernate operations
-type ExecuteHibernateRequest struct {
+// ExecuteHibernateContent - The ExecuteHibernateRequest request for executeHibernate operations
+type ExecuteHibernateContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -152,8 +152,8 @@ type ExecuteHibernateRequest struct {
 	Resources *Resources
 }
 
-// ExecuteStartRequest - The ExecuteStartRequest request for executeStart operations
-type ExecuteStartRequest struct {
+// ExecuteStartContent - The ExecuteStartRequest request for executeStart operations
+type ExecuteStartContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -173,8 +173,8 @@ type ExecutionParameters struct {
 	RetryPolicy *RetryPolicy
 }
 
-// GetOperationErrorsRequest - This is the request to get errors per vm operations
-type GetOperationErrorsRequest struct {
+// GetOperationErrorsContent - This is the request to get errors per vm operations
+type GetOperationErrorsContent struct {
 	// REQUIRED; The list of operation ids to query errors of
 	OperationIDs []*string
 }
@@ -185,8 +185,8 @@ type GetOperationErrorsResponse struct {
 	Results []*OperationErrorsResult
 }
 
-// GetOperationStatusRequest - This is the request to get operation status using operationids
-type GetOperationStatusRequest struct {
+// GetOperationStatusContent - This is the request to get operation status using operationids
+type GetOperationStatusContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -244,11 +244,11 @@ type Occurrence struct {
 	// The resource-specific properties for this resource.
 	Properties *OccurrenceProperties
 
-	// READ-ONLY; The name of the Occurrence
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -284,11 +284,11 @@ type OccurrenceExtensionResource struct {
 	// The resource-specific properties for this resource.
 	Properties *OccurrenceExtensionProperties
 
-	// READ-ONLY; The name of the OccurrenceProperties
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -396,7 +396,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -655,11 +655,11 @@ type ScheduledAction struct {
 	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The name of the ScheduledAction
-	Name *string
-
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -726,13 +726,13 @@ type ScheduledActionResource struct {
 // ScheduledActionResources - The scheduled action extension
 type ScheduledActionResources struct {
 	// The resource-specific properties for this resource.
-	Properties *ScheduledActionProperties
-
-	// READ-ONLY; The name of the ScheduledActionResources
-	Name *string
+	Properties *ScheduledActionsExtensionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
@@ -783,6 +783,37 @@ type ScheduledActionUpdateProperties struct {
 	StartTime *time.Time
 }
 
+// ScheduledActionsExtensionProperties - Scheduled action extension properties
+type ScheduledActionsExtensionProperties struct {
+	// REQUIRED; The action the scheduled action should perform in the resources
+	ActionType *ScheduledActionType
+
+	// REQUIRED; The notification settings for the scheduled action
+	NotificationSettings []*NotificationProperties
+
+	// REQUIRED; The type of resource the scheduled action is targeting
+	ResourceType *ResourceType
+
+	// REQUIRED; The schedule the scheduled action is supposed to follow
+	Schedule *ScheduledActionsSchedule
+
+	// REQUIRED; The time which the scheduled action is supposed to start running
+	StartTime *time.Time
+
+	// Tell if the scheduled action is disabled or not
+	Disabled *bool
+
+	// The time when the scheduled action is supposed to stop scheduling
+	EndTime *time.Time
+
+	// READ-ONLY; The status of the last provisioning operation performed on the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The notification settings for the scheduled action at a resource level. Resource level notification settings
+	// are scope to specific resources only and submitted through attach requests.
+	ResourceNotificationSettings []*NotificationProperties
+}
+
 // ScheduledActionsSchedule - Specify the schedule in which the scheduled action is supposed to follow
 type ScheduledActionsSchedule struct {
 	// REQUIRED; The days of the month the scheduled action is supposed to run on. If empty, it means it will run on every day
@@ -824,8 +855,8 @@ type StartResourceOperationResponse struct {
 	Results []*ResourceOperation
 }
 
-// SubmitDeallocateRequest - The deallocate request for resources
-type SubmitDeallocateRequest struct {
+// SubmitDeallocateContent - The deallocate request for resources
+type SubmitDeallocateContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -839,8 +870,8 @@ type SubmitDeallocateRequest struct {
 	Schedule *Schedule
 }
 
-// SubmitHibernateRequest - This is the request for hibernate
-type SubmitHibernateRequest struct {
+// SubmitHibernateContent - This is the request for hibernate
+type SubmitHibernateContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 
@@ -854,8 +885,8 @@ type SubmitHibernateRequest struct {
 	Schedule *Schedule
 }
 
-// SubmitStartRequest - This is the request for start
-type SubmitStartRequest struct {
+// SubmitStartContent - This is the request for start
+type SubmitStartContent struct {
 	// REQUIRED; CorrelationId item
 	Correlationid *string
 

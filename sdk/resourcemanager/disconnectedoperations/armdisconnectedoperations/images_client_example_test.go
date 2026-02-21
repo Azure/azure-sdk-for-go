@@ -37,7 +37,7 @@ func ExampleImagesClient_Get() {
 	// 			ReleaseVersion: to.Ptr("2.0.0"),
 	// 			ReleaseDisplayName: to.Ptr("release 1"),
 	// 			ReleaseNotes: to.Ptr("notes"),
-	// 			ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2025-05-14"); return t}()),
+	// 			ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-05-14"); return t}()),
 	// 			ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
 	// 			CompatibleVersions: []*string{
 	// 			},
@@ -91,7 +91,7 @@ func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 		// 					ReleaseVersion: to.Ptr("2.0.0"),
 		// 					ReleaseDisplayName: to.Ptr("release 1"),
 		// 					ReleaseNotes: to.Ptr("notes"),
-		// 					ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2025-05-14"); return t}()),
+		// 					ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-05-14"); return t}()),
 		// 					ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
 		// 					CompatibleVersions: []*string{
 		// 					},
@@ -138,7 +138,7 @@ func ExampleImagesClient_ListDownloadURI() {
 	// 		ReleaseVersion: to.Ptr("vbccjpcosofti"),
 	// 		ReleaseDisplayName: to.Ptr("thttwzm"),
 	// 		ReleaseNotes: to.Ptr("jswqauqfnwxk"),
-	// 		ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2024-12-05"); return t}()),
+	// 		ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-12-05"); return t}()),
 	// 		CompatibleVersions: []*string{
 	// 			to.Ptr("czxghshqcn"),
 	// 		},

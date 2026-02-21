@@ -22,6 +22,12 @@ type AccountCapabilityHostsClientGetResponse struct {
 	CapabilityHost
 }
 
+// AccountCapabilityHostsClientListResponse contains the response from method AccountCapabilityHostsClient.NewListPager.
+type AccountCapabilityHostsClientListResponse struct {
+	// A paginated list of Capability Host entities.
+	CapabilityHostResourceArmPaginatedResult
+}
+
 // AccountConnectionsClientCreateResponse contains the response from method AccountConnectionsClient.Create.
 type AccountConnectionsClientCreateResponse struct {
 	// Connection base resource schema.
@@ -392,8 +398,8 @@ type PrivateLinkResourcesClientListResponse struct {
 
 // ProjectCapabilityHostsClientCreateOrUpdateResponse contains the response from method ProjectCapabilityHostsClient.BeginCreateOrUpdate.
 type ProjectCapabilityHostsClientCreateOrUpdateResponse struct {
-	// Azure Resource Manager resource envelope.
-	CapabilityHost
+	// Azure Resource Manager resource envelope for Project CapabilityHost.
+	ProjectCapabilityHost
 }
 
 // ProjectCapabilityHostsClientDeleteResponse contains the response from method ProjectCapabilityHostsClient.BeginDelete.
@@ -403,8 +409,14 @@ type ProjectCapabilityHostsClientDeleteResponse struct {
 
 // ProjectCapabilityHostsClientGetResponse contains the response from method ProjectCapabilityHostsClient.Get.
 type ProjectCapabilityHostsClientGetResponse struct {
-	// Azure Resource Manager resource envelope.
-	CapabilityHost
+	// Azure Resource Manager resource envelope for Project CapabilityHost.
+	ProjectCapabilityHost
+}
+
+// ProjectCapabilityHostsClientListResponse contains the response from method ProjectCapabilityHostsClient.NewListPager.
+type ProjectCapabilityHostsClientListResponse struct {
+	// A paginated list of Project Capability Host entities.
+	ProjectCapabilityHostResourceArmPaginatedResult
 }
 
 // ProjectConnectionsClientCreateResponse contains the response from method ProjectConnectionsClient.Create.
@@ -465,6 +477,30 @@ type ProjectsClientUpdateResponse struct {
 	// Cognitive Services project is an Azure resource representing the provisioned account's project, it's type, location and
 	// SKU.
 	Project
+}
+
+// QuotaTiersClientCreateOrUpdateResponse contains the response from method QuotaTiersClient.CreateOrUpdate.
+type QuotaTiersClientCreateOrUpdateResponse struct {
+	// The quota tier information for the subscription
+	QuotaTier
+}
+
+// QuotaTiersClientGetResponse contains the response from method QuotaTiersClient.Get.
+type QuotaTiersClientGetResponse struct {
+	// The quota tier information for the subscription
+	QuotaTier
+}
+
+// QuotaTiersClientListBySubscriptionResponse contains the response from method QuotaTiersClient.NewListBySubscriptionPager.
+type QuotaTiersClientListBySubscriptionResponse struct {
+	// The list of Quota Tiers response.
+	QuotaTierListResult
+}
+
+// QuotaTiersClientUpdateResponse contains the response from method QuotaTiersClient.Update.
+type QuotaTiersClientUpdateResponse struct {
+	// The quota tier information for the subscription
+	QuotaTier
 }
 
 // RaiBlocklistItemsClientBatchAddResponse contains the response from method RaiBlocklistItemsClient.BatchAdd.
@@ -557,6 +593,29 @@ type RaiPoliciesClientGetResponse struct {
 type RaiPoliciesClientListResponse struct {
 	// The list of cognitive services RaiPolicies.
 	RaiPolicyListResult
+}
+
+// RaiTopicsClientCreateOrUpdateResponse contains the response from method RaiTopicsClient.CreateOrUpdate.
+type RaiTopicsClientCreateOrUpdateResponse struct {
+	// Cognitive Services Rai Topic.
+	RaiTopic
+}
+
+// RaiTopicsClientDeleteResponse contains the response from method RaiTopicsClient.BeginDelete.
+type RaiTopicsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiTopicsClientGetResponse contains the response from method RaiTopicsClient.Get.
+type RaiTopicsClientGetResponse struct {
+	// Cognitive Services Rai Topic.
+	RaiTopic
+}
+
+// RaiTopicsClientListResponse contains the response from method RaiTopicsClient.NewListPager.
+type RaiTopicsClientListResponse struct {
+	// The list of cognitive services RAI Topics.
+	RaiTopicResult
 }
 
 // ResourceSKUsClientListResponse contains the response from method ResourceSKUsClient.NewListPager.

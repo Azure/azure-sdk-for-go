@@ -390,6 +390,12 @@ type BillingContainerProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// BrokerStateStoreDestinationConfiguration - The configuration for a MQTT broker state store destination.
+type BrokerStateStoreDestinationConfiguration struct {
+	// REQUIRED; The MQTT broker state store destination key.
+	Key *string
+}
+
 // DataPoint - Defines the data point properties.
 type DataPoint struct {
 	// REQUIRED; The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on
@@ -422,6 +428,143 @@ type Dataset struct {
 	Topic *Topic
 }
 
+// DatasetBrokerStateStoreDestination - The type for a MQTT broker state store destination.
+type DatasetBrokerStateStoreDestination struct {
+	// REQUIRED; The MQTT broker state store destination configuration.
+	Configuration *BrokerStateStoreDestinationConfiguration
+
+	// CONSTANT; The MQTT broker state store destination target.
+	// Field has constant value DatasetDestinationTargetBrokerStateStore, any specified value is ignored.
+	Target *DatasetDestinationTarget
+}
+
+// GetDatasetDestination implements the DatasetDestinationClassification interface for type DatasetBrokerStateStoreDestination.
+func (d *DatasetBrokerStateStoreDestination) GetDatasetDestination() *DatasetDestination {
+	return &DatasetDestination{
+		Target: d.Target,
+	}
+}
+
+// DatasetDestination - The type of the destination.
+type DatasetDestination struct {
+	// Target destination.
+	Target *DatasetDestinationTarget
+}
+
+// GetDatasetDestination implements the DatasetDestinationClassification interface for type DatasetDestination.
+func (d *DatasetDestination) GetDatasetDestination() *DatasetDestination { return d }
+
+// DatasetMqttDestination - The type for a MQTT destination.
+type DatasetMqttDestination struct {
+	// REQUIRED; The MQTT destination configuration.
+	Configuration *MqttDestinationConfiguration
+
+	// CONSTANT; The MQTT destination type.
+	// Field has constant value DatasetDestinationTargetMqtt, any specified value is ignored.
+	Target *DatasetDestinationTarget
+}
+
+// GetDatasetDestination implements the DatasetDestinationClassification interface for type DatasetMqttDestination.
+func (d *DatasetMqttDestination) GetDatasetDestination() *DatasetDestination {
+	return &DatasetDestination{
+		Target: d.Target,
+	}
+}
+
+// DatasetStorageDestination - The type for a storage destination.
+type DatasetStorageDestination struct {
+	// REQUIRED; The storage destination configuration.
+	Configuration *StorageDestinationConfiguration
+
+	// CONSTANT; The storage destination type.
+	// Field has constant value DatasetDestinationTargetStorage, any specified value is ignored.
+	Target *DatasetDestinationTarget
+}
+
+// GetDatasetDestination implements the DatasetDestinationClassification interface for type DatasetStorageDestination.
+func (d *DatasetStorageDestination) GetDatasetDestination() *DatasetDestination {
+	return &DatasetDestination{
+		Target: d.Target,
+	}
+}
+
+// DeviceMessagingEndpoint - Device messaging endpoint model.
+type DeviceMessagingEndpoint struct {
+	// REQUIRED; The endpoint address to connect to.
+	Address *string
+
+	// Type of connection used for the messaging endpoint.
+	EndpointType *string
+}
+
+// DeviceRef - Defines which device and endpoint to use for this asset
+type DeviceRef struct {
+	// REQUIRED; Name of the device resource
+	DeviceName *string
+
+	// REQUIRED; The name of endpoint to use
+	EndpointName *string
+}
+
+// DeviceStatus - Defines the device status properties.
+type DeviceStatus struct {
+	// READ-ONLY; Defines the device status config properties.
+	Config *StatusConfig
+
+	// READ-ONLY; Defines the device status for inbound/outbound endpoints.
+	Endpoints *DeviceStatusEndpoints
+}
+
+// DeviceStatusEndpoint - Defines the device status properties.
+type DeviceStatusEndpoint struct {
+	// READ-ONLY; Defines the error related to this endpoint.
+	Error *StatusError
+}
+
+// DeviceStatusEndpoints - Defines the device status for inbound/outbound endpoints.
+type DeviceStatusEndpoints struct {
+	// READ-ONLY; KeyValue pair representing status of inbound endpoints.
+	Inbound map[string]*DeviceStatusEndpoint
+}
+
+// DiscoveredInboundEndpoints - An endpoint to connect to the device.
+type DiscoveredInboundEndpoints struct {
+	// REQUIRED; The endpoint address & port. This can be either an IP address (e.g., 192.168.1.1) or a fully qualified domain
+	// name (FQDN, e.g., server.example.com).
+	Address *string
+
+	// REQUIRED; Type of connection endpoint.
+	EndpointType *string
+
+	// Stringified JSON that contains configuration to be used by the connector (e.g., OPC UA, ONVIF).
+	AdditionalConfiguration *string
+
+	// The timestamp (in UTC) when the endpoint was discovered.
+	LastUpdatedOn *time.Time
+
+	// List of supported authentication methods supported by device for Inbound connections.
+	SupportedAuthenticationMethods []*AuthenticationMethod
+
+	// Protocol version associated with the endpoint e.g. 1 or 2 for endpointType Microsoft.HTTP, and 3.5 or 5.0 for endpointType
+	// Microsoft.Mqtt etc.
+	Version *string
+}
+
+// DiscoveredMessagingEndpoints - Connection endpoint URL a device can use to connect to a service.
+type DiscoveredMessagingEndpoints struct {
+	// Set of endpoints to connect to the device.
+	Inbound map[string]*DiscoveredInboundEndpoints
+
+	// Set of endpoints a device can connect to.
+	Outbound *DiscoveredOutboundEndpoints
+}
+
+// DiscoveredOutboundEndpoints - Property bag contains the device's outbound endpoints
+type DiscoveredOutboundEndpoints struct {
+	// REQUIRED; Endpoints the device can connect to.
+	Assigned map[string]*DeviceMessagingEndpoint
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -449,6 +592,22 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorDetails - Defines the error details properties.
+type ErrorDetails struct {
+	// READ-ONLY; Multi-part error code for classification and root causing of errors (ex: 400.200.100.432).
+	Code *string
+
+	// READ-ONLY; Unique identifier for the transaction to aid in debugging.
+	CorrelationID *string
+
+	// READ-ONLY; Human-readable helpful detailed text context for debugging (ex: “The following mechanisms are supported...”).
+	Info *string
+
+	// READ-ONLY; Human-readable helpful error message to provide additional context for error (ex: “Authentication method not
+	// supported”).
+	Message *string
+}
+
 // Event - Defines the event properties.
 type Event struct {
 	// REQUIRED; The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the
@@ -469,6 +628,49 @@ type Event struct {
 	Topic *Topic
 }
 
+// EventDestination - The type of the destination.
+type EventDestination struct {
+	// Target destination.
+	Target *EventDestinationTarget
+}
+
+// GetEventDestination implements the EventDestinationClassification interface for type EventDestination.
+func (e *EventDestination) GetEventDestination() *EventDestination { return e }
+
+// EventMqttDestination - The type for a MQTT destination.
+type EventMqttDestination struct {
+	// REQUIRED; The MQTT destination configuration.
+	Configuration *MqttDestinationConfiguration
+
+	// CONSTANT; The MQTT destination type.
+	// Field has constant value EventDestinationTargetMqtt, any specified value is ignored.
+	Target *EventDestinationTarget
+}
+
+// GetEventDestination implements the EventDestinationClassification interface for type EventMqttDestination.
+func (e *EventMqttDestination) GetEventDestination() *EventDestination {
+	return &EventDestination{
+		Target: e.Target,
+	}
+}
+
+// EventStorageDestination - The type for a storage destination.
+type EventStorageDestination struct {
+	// REQUIRED; The storage destination configuration.
+	Configuration *StorageDestinationConfiguration
+
+	// CONSTANT; The storage destination type.
+	// Field has constant value EventDestinationTargetStorage, any specified value is ignored.
+	Target *EventDestinationTarget
+}
+
+// GetEventDestination implements the EventDestinationClassification interface for type EventStorageDestination.
+func (e *EventStorageDestination) GetEventDestination() *EventDestination {
+	return &EventDestination{
+		Target: e.Target,
+	}
+}
+
 // ExtendedLocation - The extended location.
 type ExtendedLocation struct {
 	// REQUIRED; The extended location name.
@@ -476,6 +678,89 @@ type ExtendedLocation struct {
 
 	// REQUIRED; The extended location type.
 	Type *string
+}
+
+// HostAuthentication - Definition of the client authentication mechanism to the host.
+type HostAuthentication struct {
+	// REQUIRED; Defines the method to authenticate the user of the client at the server.
+	Method *AuthenticationMethod
+
+	// Defines the username and password references when UsernamePassword user authentication mode is selected.
+	UsernamePasswordCredentials *UsernamePasswordCredentials
+
+	// Defines the certificate reference when Certificate user authentication mode is selected.
+	X509Credentials *X509CertificateCredentials
+}
+
+// InboundEndpoints - An endpoint to connect to the device.
+type InboundEndpoints struct {
+	// REQUIRED; The endpoint address & port. This can be either an IP address (e.g., 192.168.1.1) or a fully qualified domain
+	// name (FQDN, e.g., server.example.com).
+	Address *string
+
+	// REQUIRED; Type of connection endpoint.
+	EndpointType *string
+
+	// Stringified JSON that contains configuration to be used by the connector (e.g., OPC UA, ONVIF).
+	AdditionalConfiguration *string
+
+	// Defines the client authentication mechanism to the server.
+	Authentication *HostAuthentication
+
+	// Defines server trust settings for the endpoint.
+	TrustSettings *TrustSettings
+
+	// Protocol version associated with the endpoint e.g. 1 or 2 for endpointType Microsoft.HTTP, and 3.5 or 5.0 for endpointType
+	// Microsoft.Mqtt etc.
+	Version *string
+}
+
+// ManagementAction - Defines the action properties.
+type ManagementAction struct {
+	// REQUIRED; Name of the action.
+	Name *string
+
+	// REQUIRED; The target URI on which a client can invoke the specific action.
+	TargetURI *string
+
+	// Stringified JSON that contains connector-specific configuration for the action.
+	ActionConfiguration *string
+
+	// The type of the action.
+	ActionType *ManagementActionType
+
+	// Response timeout for the action.
+	TimeoutInSeconds *int32
+
+	// The MQTT topic path on which a client will receive the request for the action.
+	Topic *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// ManagementGroup - Defines the management group properties.
+type ManagementGroup struct {
+	// REQUIRED; Name of the management group.
+	Name *string
+
+	// Array of actions that are part of the management group. Each action can have an individual configuration.
+	Actions []*ManagementAction
+
+	// Reference to a data source for a given management group.
+	DataSource *string
+
+	// Default response timeout for all actions that are part of the management group.
+	DefaultTimeoutInSeconds *int32
+
+	// Default MQTT topic path on which a client will receive the request for all actions that are part of the management group.
+	DefaultTopic *string
+
+	// Stringified JSON that contains connector-specific configuration for the management group.
+	ManagementGroupConfiguration *string
+
+	// URI or type definition ID.
+	TypeRef *string
 }
 
 // MessageSchemaReference - Defines the message schema reference properties.
@@ -488,6 +773,1144 @@ type MessageSchemaReference struct {
 
 	// READ-ONLY; The message schema version.
 	SchemaVersion *string
+}
+
+// Messaging - The namespace messaging endpoints model.
+type Messaging struct {
+	// Dictionary of messaging endpoints.
+	Endpoints map[string]*MessagingEndpoint
+}
+
+// MessagingEndpoint - Namespace messaging endpoint model used by a device to connect to a service.
+type MessagingEndpoint struct {
+	// REQUIRED; The endpoint address to connect to.
+	Address *string
+
+	// Type of connection used for messaging endpoint.
+	EndpointType *string
+
+	// The messaging endpoint Azure resource Id.
+	ResourceID *string
+}
+
+// MessagingEndpoints - Connection endpoint URL a device can use to connect to a service.
+type MessagingEndpoints struct {
+	// Set of endpoints to connect to the device.
+	Inbound map[string]*InboundEndpoints
+
+	// Set of endpoints a device can connect to.
+	Outbound *OutboundEndpoints
+}
+
+// MqttDestinationConfiguration - The configuration for a MQTT destination.
+type MqttDestinationConfiguration struct {
+	// REQUIRED; The MQTT topic.
+	Topic *string
+
+	// The MQTT QoS setting. Defaults to QoS 1.
+	Qos *MqttDestinationQos
+
+	// When set to 'Keep', messages published to an MQTT broker will have the retain flag set. Default: 'Never'.
+	Retain *TopicRetainType
+
+	// The MQTT TTL setting.
+	TTL *int64
+}
+
+// Namespace definition.
+type Namespace struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *SystemAssignedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *NamespaceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NamespaceAsset - Asset definition.
+type NamespaceAsset struct {
+	// REQUIRED; The extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *NamespaceAssetProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NamespaceAssetListResult - The response of a NamespaceAsset list operation.
+type NamespaceAssetListResult struct {
+	// REQUIRED; The NamespaceAsset items on this page
+	Value []*NamespaceAsset
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NamespaceAssetProperties - Defines the asset properties.
+type NamespaceAssetProperties struct {
+	// REQUIRED; Reference to the device that provides data for this asset. Must provide device name & endpoint on the device
+	// to use.
+	DeviceRef *DeviceRef
+
+	// URIs or type definition IDs.
+	AssetTypeRefs []*string
+
+	// A set of key-value pairs that contain custom attributes set by the customer.
+	Attributes map[string]any
+
+	// Array of datasets that are part of the asset. Each dataset describes the data points that make up the set.
+	Datasets []*NamespaceDataset
+
+	// Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own
+	// configuration that overrides the default settings here.
+	DefaultDatasetsConfiguration *string
+
+	// Default destinations for a dataset.
+	DefaultDatasetsDestinations []DatasetDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
+	DefaultEventsConfiguration *string
+
+	// Default destinations for an event.
+	DefaultEventsDestinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all management groups. Each management group
+	// can have its own configuration that overrides the default settings here.
+	DefaultManagementGroupsConfiguration *string
+
+	// Stringified JSON that contains connector-specific default configuration for all streams. Each stream can have its own configuration
+	// that overrides the default settings here.
+	DefaultStreamsConfiguration *string
+
+	// Default destinations for a stream.
+	DefaultStreamsDestinations []StreamDestinationClassification
+
+	// Human-readable description of the asset.
+	Description *string
+
+	// Reference to a list of discovered assets. Populated only if the asset has been created from discovery flow. Discovered
+	// asset names must be provided.
+	DiscoveredAssetRefs []*string
+
+	// Human-readable display name.
+	DisplayName *string
+
+	// Asset documentation reference.
+	DocumentationURI *string
+
+	// Enabled/disabled status of the asset.
+	Enabled *bool
+
+	// Array of event groups that are part of the asset. Each event group can have per-event group configuration.
+	EventGroups []*NamespaceEventGroup
+
+	// Asset ID provided by the customer.
+	ExternalAssetID *string
+
+	// Asset hardware revision number.
+	HardwareRevision *string
+
+	// Array of management groups that are part of the asset. Each management group can have a per-group configuration.
+	ManagementGroups []*ManagementGroup
+
+	// Asset manufacturer.
+	Manufacturer *string
+
+	// Asset manufacturer URI.
+	ManufacturerURI *string
+
+	// Asset model.
+	Model *string
+
+	// Asset product code.
+	ProductCode *string
+
+	// Asset serial number.
+	SerialNumber *string
+
+	// Asset software revision number.
+	SoftwareRevision *string
+
+	// Array of streams that are part of the asset. Each stream can have a per-stream configuration.
+	Streams []*NamespaceStream
+
+	// READ-ONLY; A timestamp (in UTC) that is updated each time the resource is modified.
+	LastTransitionTime *time.Time
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for
+	// custom resources.
+	Status *NamespaceAssetStatus
+
+	// READ-ONLY; Globally unique, immutable, non-reusable ID.
+	UUID *string
+
+	// READ-ONLY; An integer that is incremented each time the resource is modified.
+	Version *int64
+}
+
+// NamespaceAssetStatus - Defines the asset status properties.
+type NamespaceAssetStatus struct {
+	// READ-ONLY; Defines the asset status config properties.
+	Config *StatusConfig
+
+	// READ-ONLY; Array of dataset statuses that describe the status of each dataset.
+	Datasets []*NamespaceAssetStatusDataset
+
+	// READ-ONLY; Array of event group statuses that describe the status of each event group.
+	EventGroups []*NamespaceAssetStatusEventGroup
+
+	// READ-ONLY; Array of management group statuses that describe the status of each management group.
+	ManagementGroups []*NamespaceAssetStatusManagementGroup
+
+	// READ-ONLY; Array of stream statuses that describe the status of each stream.
+	Streams []*NamespaceAssetStatusStream
+}
+
+// NamespaceAssetStatusDataset - Defines the asset status dataset properties.
+type NamespaceAssetStatusDataset struct {
+	// READ-ONLY; The name of the dataset. Must be unique within the status.datasets array. This name is used to correlate between
+	// the spec and status dataset information.
+	Name *string
+
+	// READ-ONLY; Object to transfer and persist errors that originate from the edge.
+	Error *StatusError
+
+	// READ-ONLY; The message schema reference object.
+	MessageSchemaReference *NamespaceMessageSchemaReference
+}
+
+// NamespaceAssetStatusEvent - Defines the asset status event properties.
+type NamespaceAssetStatusEvent struct {
+	// READ-ONLY; The name of the event. Must be unique within the status.events array. This name is used to correlate between
+	// the spec and status event information.
+	Name *string
+
+	// READ-ONLY; Object to transfer and persist errors that originate from the edge.
+	Error *StatusError
+
+	// READ-ONLY; The message schema reference object.
+	MessageSchemaReference *NamespaceMessageSchemaReference
+}
+
+// NamespaceAssetStatusEventGroup - Defines the asset status event group properties.
+type NamespaceAssetStatusEventGroup struct {
+	// READ-ONLY; The name of the event group. Must be unique within the status.eventGroups array. This name is used to correlate
+	// between the spec and status event group information.
+	Name *string
+
+	// READ-ONLY; Array of event statuses that describe the status of each event in the event group.
+	Events []*NamespaceAssetStatusEvent
+}
+
+// NamespaceAssetStatusManagementAction - Defines the asset status action properties.
+type NamespaceAssetStatusManagementAction struct {
+	// READ-ONLY; The name of the action. Must be unique within the status.actions array. This name is used to correlate between
+	// the spec and status event information.
+	Name *string
+
+	// READ-ONLY; Object to transfer and persist errors that originate from the edge.
+	Error *StatusError
+
+	// READ-ONLY; The request message schema reference object for the action.
+	RequestMessageSchemaReference *NamespaceMessageSchemaReference
+
+	// READ-ONLY; The response message schema reference object for the action.
+	ResponseMessageSchemaReference *NamespaceMessageSchemaReference
+}
+
+// NamespaceAssetStatusManagementGroup - Defines the asset status management group properties.
+type NamespaceAssetStatusManagementGroup struct {
+	// READ-ONLY; The name of the management group. Must be unique within the status.managementGroups array. This name is used
+	// to correlate between the spec and status event information.
+	Name *string
+
+	// READ-ONLY; Array of action statuses that describe the status of each action.
+	Actions []*NamespaceAssetStatusManagementAction
+}
+
+// NamespaceAssetStatusStream - Defines the asset status stream properties.
+type NamespaceAssetStatusStream struct {
+	// READ-ONLY; The name of the stream. Must be unique within the status.streams array. This name is used to correlate between
+	// the spec and status event information.
+	Name *string
+
+	// READ-ONLY; Object to transfer and persist errors that originate from the edge.
+	Error *StatusError
+
+	// READ-ONLY; The message schema reference object.
+	MessageSchemaReference *NamespaceMessageSchemaReference
+}
+
+// NamespaceAssetUpdate - The type used for update operations of the NamespaceAsset.
+type NamespaceAssetUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *NamespaceAssetUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// NamespaceAssetUpdateProperties - The updatable properties of the NamespaceAsset.
+type NamespaceAssetUpdateProperties struct {
+	// URIs or type definition IDs.
+	AssetTypeRefs []*string
+
+	// A set of key-value pairs that contain custom attributes set by the customer.
+	Attributes map[string]any
+
+	// Array of datasets that are part of the asset. Each dataset describes the data points that make up the set.
+	Datasets []*NamespaceDataset
+
+	// Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own
+	// configuration that overrides the default settings here.
+	DefaultDatasetsConfiguration *string
+
+	// Default destinations for a dataset.
+	DefaultDatasetsDestinations []DatasetDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
+	DefaultEventsConfiguration *string
+
+	// Default destinations for an event.
+	DefaultEventsDestinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all management groups. Each management group
+	// can have its own configuration that overrides the default settings here.
+	DefaultManagementGroupsConfiguration *string
+
+	// Stringified JSON that contains connector-specific default configuration for all streams. Each stream can have its own configuration
+	// that overrides the default settings here.
+	DefaultStreamsConfiguration *string
+
+	// Default destinations for a stream.
+	DefaultStreamsDestinations []StreamDestinationClassification
+
+	// Human-readable description of the asset.
+	Description *string
+
+	// Human-readable display name.
+	DisplayName *string
+
+	// Asset documentation reference.
+	DocumentationURI *string
+
+	// Enabled/disabled status of the asset.
+	Enabled *bool
+
+	// Array of event groups that are part of the asset. Each event group can have per-event group configuration.
+	EventGroups []*NamespaceEventGroup
+
+	// Asset hardware revision number.
+	HardwareRevision *string
+
+	// Array of management groups that are part of the asset. Each management group can have a per-group configuration.
+	ManagementGroups []*ManagementGroup
+
+	// Asset manufacturer.
+	Manufacturer *string
+
+	// Asset manufacturer URI.
+	ManufacturerURI *string
+
+	// Asset model.
+	Model *string
+
+	// Asset product code.
+	ProductCode *string
+
+	// Asset serial number.
+	SerialNumber *string
+
+	// Asset software revision number.
+	SoftwareRevision *string
+
+	// Array of streams that are part of the asset. Each stream can have a per-stream configuration.
+	Streams []*NamespaceStream
+}
+
+// NamespaceDataset - Defines the dataset properties.
+type NamespaceDataset struct {
+	// REQUIRED; Name of the dataset.
+	Name *string
+
+	// Array of data points that are part of the dataset. Each data point can have per-data point configuration.
+	DataPoints []*NamespaceDatasetDataPoint
+
+	// Reference to a data source for a given dataset.
+	DataSource *string
+
+	// Stringified JSON that contains connector-specific JSON string that describes configuration for the specific dataset.
+	DatasetConfiguration *string
+
+	// Destinations for a dataset.
+	Destinations []DatasetDestinationClassification
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDatasetDataPoint - Defines the dataset data point properties.
+type NamespaceDatasetDataPoint struct {
+	// REQUIRED; The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on
+	// the asset.
+	DataSource *string
+
+	// REQUIRED; The name of the data point.
+	Name *string
+
+	// Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	DataPointConfiguration *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDevice - Device definition.
+type NamespaceDevice struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// The resource-specific properties for this resource.
+	Properties *NamespaceDeviceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Tag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NamespaceDeviceListResult - The response of a NamespaceDevice list operation.
+type NamespaceDeviceListResult struct {
+	// REQUIRED; The NamespaceDevice items on this page
+	Value []*NamespaceDevice
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NamespaceDeviceProperties - Defines the device properties.
+type NamespaceDeviceProperties struct {
+	// A set of key-value pairs that contain custom attributes set by the customer.
+	Attributes map[string]any
+
+	// Reference to a device. Populated only if the device had been created from discovery flow. Discovered device name must be
+	// provided.
+	DiscoveredDeviceRef *string
+
+	// Indicates if the resource is enabled or not.
+	Enabled *bool
+
+	// Property bag containing the device's unassigned and assigned endpoints.
+	Endpoints *MessagingEndpoints
+
+	// The Device ID provided by the customer.
+	ExternalDeviceID *string
+
+	// Device manufacturer.
+	Manufacturer *string
+
+	// Device model.
+	Model *string
+
+	// Device operating system.
+	OperatingSystem *string
+
+	// Device operating system version.
+	OperatingSystemVersion *string
+
+	// READ-ONLY; A timestamp (in UTC) that is updated each time the resource is modified.
+	LastTransitionTime *time.Time
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Device status updates.
+	Status *DeviceStatus
+
+	// READ-ONLY; A unique identifier for the device.
+	UUID *string
+
+	// READ-ONLY; An integer that is incremented each time the resource is modified.
+	Version *int64
+}
+
+// NamespaceDeviceUpdate - The type used for update operations of the NamespaceDevice.
+type NamespaceDeviceUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *NamespaceDeviceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// NamespaceDeviceUpdateProperties - The updatable properties of the NamespaceDevice.
+type NamespaceDeviceUpdateProperties struct {
+	// A set of key-value pairs that contain custom attributes set by the customer.
+	Attributes map[string]any
+
+	// Indicates if the resource and identity are enabled or not. A disabled device cannot authenticate with Microsoft Entra ID.
+	Enabled *bool
+
+	// Property bag containing the device's unassigned and assigned endpoints.
+	Endpoints *MessagingEndpoints
+
+	// Device operating system version.
+	OperatingSystemVersion *string
+}
+
+// NamespaceDiscoveredAsset - Discovered asset definition.
+type NamespaceDiscoveredAsset struct {
+	// REQUIRED; The extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *NamespaceDiscoveredAssetProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NamespaceDiscoveredAssetListResult - The response of a NamespaceDiscoveredAsset list operation.
+type NamespaceDiscoveredAssetListResult struct {
+	// REQUIRED; The NamespaceDiscoveredAsset items on this page
+	Value []*NamespaceDiscoveredAsset
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NamespaceDiscoveredAssetProperties - Defines the discovered asset properties.
+type NamespaceDiscoveredAssetProperties struct {
+	// REQUIRED; Reference to the device that provides data for this asset. Must provide device name & endpoint on the device
+	// to use.
+	DeviceRef *DeviceRef
+
+	// REQUIRED; Identifier used to detect changes in the asset.
+	DiscoveryID *string
+
+	// REQUIRED; An integer that is incremented each time the resource is modified.
+	Version *int64
+
+	// URIs or type definition IDs.
+	AssetTypeRefs []*string
+
+	// A set of key-value pairs that contain custom attributes.
+	Attributes map[string]any
+
+	// Array of datasets that are part of the asset. Each dataset spec describes the data points that make up the set.
+	Datasets []*NamespaceDiscoveredDataset
+
+	// Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own
+	// configuration that overrides the default settings here.
+	DefaultDatasetsConfiguration *string
+
+	// Default destinations for a dataset.
+	DefaultDatasetsDestinations []DatasetDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
+	DefaultEventsConfiguration *string
+
+	// Default destinations for an event.
+	DefaultEventsDestinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all management groups. Each management group
+	// can have its own configuration that overrides the default settings here.
+	DefaultManagementGroupsConfiguration *string
+
+	// Stringified JSON that contains connector-specific default configuration for all streams. Each stream can have its own configuration
+	// that overrides the default settings here.
+	DefaultStreamsConfiguration *string
+
+	// Default destinations for a stream.
+	DefaultStreamsDestinations []StreamDestinationClassification
+
+	// Human-readable description of the asset.
+	Description *string
+
+	// Human-readable display name.
+	DisplayName *string
+
+	// Asset documentation reference.
+	DocumentationURI *string
+
+	// Array of event groups that are part of the asset. Each event group can have per-event group configuration.
+	EventGroups []*NamespaceDiscoveredEventGroup
+
+	// Asset ID provided by the customer.
+	ExternalAssetID *string
+
+	// Asset hardware revision number.
+	HardwareRevision *string
+
+	// Array of management groups that are part of the asset. Each management group can have a per-group configuration.
+	ManagementGroups []*NamespaceDiscoveredManagementGroup
+
+	// Asset manufacturer.
+	Manufacturer *string
+
+	// Asset manufacturer URI.
+	ManufacturerURI *string
+
+	// Asset model.
+	Model *string
+
+	// Asset product code.
+	ProductCode *string
+
+	// Asset serial number.
+	SerialNumber *string
+
+	// Asset software revision number.
+	SoftwareRevision *string
+
+	// Array of streams that are part of the asset. Each stream can have a per-stream configuration.
+	Streams []*NamespaceDiscoveredStream
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// NamespaceDiscoveredAssetUpdate - The type used for update operations of the NamespaceDiscoveredAsset.
+type NamespaceDiscoveredAssetUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *NamespaceDiscoveredAssetUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// NamespaceDiscoveredAssetUpdateProperties - The updatable properties of the NamespaceDiscoveredAsset.
+type NamespaceDiscoveredAssetUpdateProperties struct {
+	// URIs or type definition IDs.
+	AssetTypeRefs []*string
+
+	// A set of key-value pairs that contain custom attributes.
+	Attributes map[string]any
+
+	// Array of datasets that are part of the asset. Each dataset spec describes the data points that make up the set.
+	Datasets []*NamespaceDiscoveredDataset
+
+	// Stringified JSON that contains connector-specific default configuration for all datasets. Each dataset can have its own
+	// configuration that overrides the default settings here.
+	DefaultDatasetsConfiguration *string
+
+	// Default destinations for a dataset.
+	DefaultDatasetsDestinations []DatasetDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all events. Each event can have its own configuration
+	// that overrides the default settings here.
+	DefaultEventsConfiguration *string
+
+	// Default destinations for an event.
+	DefaultEventsDestinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific default configuration for all management groups. Each management group
+	// can have its own configuration that overrides the default settings here.
+	DefaultManagementGroupsConfiguration *string
+
+	// Stringified JSON that contains connector-specific default configuration for all streams. Each stream can have its own configuration
+	// that overrides the default settings here.
+	DefaultStreamsConfiguration *string
+
+	// Default destinations for a stream.
+	DefaultStreamsDestinations []StreamDestinationClassification
+
+	// Human-readable description of the asset.
+	Description *string
+
+	// Reference to the device that provides data for this asset. Must provide device name & endpoint on the device to use.
+	DeviceRef *DeviceRef
+
+	// Identifier used to detect changes in the asset.
+	DiscoveryID *string
+
+	// Human-readable display name.
+	DisplayName *string
+
+	// Asset documentation reference.
+	DocumentationURI *string
+
+	// Array of event groups that are part of the asset. Each event group can have per-event group configuration.
+	EventGroups []*NamespaceDiscoveredEventGroup
+
+	// Asset hardware revision number.
+	HardwareRevision *string
+
+	// Array of management groups that are part of the asset. Each management group can have a per-group configuration.
+	ManagementGroups []*NamespaceDiscoveredManagementGroup
+
+	// Asset manufacturer.
+	Manufacturer *string
+
+	// Asset manufacturer URI.
+	ManufacturerURI *string
+
+	// Asset model.
+	Model *string
+
+	// Asset product code.
+	ProductCode *string
+
+	// Asset serial number.
+	SerialNumber *string
+
+	// Asset software revision number.
+	SoftwareRevision *string
+
+	// Array of streams that are part of the asset. Each stream can have a per-stream configuration.
+	Streams []*NamespaceDiscoveredStream
+
+	// An integer that is incremented each time the resource is modified.
+	Version *int64
+}
+
+// NamespaceDiscoveredDataset - Defines the dataset properties.
+type NamespaceDiscoveredDataset struct {
+	// REQUIRED; Name of the dataset.
+	Name *string
+
+	// Array of data points that are part of the dataset. Each data point can have per-data point configuration.
+	DataPoints []*NamespaceDiscoveredDatasetDataPoint
+
+	// Reference to a data source for a given dataset.
+	DataSource *string
+
+	// Stringified JSON that contains connector-specific properties that describes configuration for the specific dataset.
+	DatasetConfiguration *string
+
+	// Destinations for a dataset.
+	Destinations []DatasetDestinationClassification
+
+	// Timestamp (in UTC) indicating when the dataset was added or modified.
+	LastUpdatedOn *time.Time
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDiscoveredDatasetDataPoint - Defines the discovered dataset data point properties.
+type NamespaceDiscoveredDatasetDataPoint struct {
+	// REQUIRED; The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on
+	// the asset.
+	DataSource *string
+
+	// REQUIRED; The name of the data point.
+	Name *string
+
+	// Stringified JSON that contains connector-specific configuration for the data point. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	DataPointConfiguration *string
+
+	// UTC timestamp indicating when the data point was added or modified.
+	LastUpdatedOn *time.Time
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDiscoveredDevice - Discovered device definition.
+type NamespaceDiscoveredDevice struct {
+	// REQUIRED; The extended location.
+	ExtendedLocation *ExtendedLocation
+
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *NamespaceDiscoveredDeviceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NamespaceDiscoveredDeviceListResult - The response of a NamespaceDiscoveredDevice list operation.
+type NamespaceDiscoveredDeviceListResult struct {
+	// REQUIRED; The NamespaceDiscoveredDevice items on this page
+	Value []*NamespaceDiscoveredDevice
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NamespaceDiscoveredDeviceProperties - Defines the discovered device properties.
+type NamespaceDiscoveredDeviceProperties struct {
+	// REQUIRED; Identifier used to detect changes in the discovered device.
+	DiscoveryID *string
+
+	// REQUIRED; An integer that is incremented each time the resource is modified.
+	Version *int64
+
+	// A set of key-value pairs that contain custom attributes.
+	Attributes map[string]any
+
+	// Endpoints for discovered devices.
+	Endpoints *DiscoveredMessagingEndpoints
+
+	// A device ID that represents the device in a system external to Azure. Unique within scope of an Azure tenant.
+	ExternalDeviceID *string
+
+	// Device manufacturer.
+	Manufacturer *string
+
+	// Device model.
+	Model *string
+
+	// Device operating system name.
+	OperatingSystem *string
+
+	// Device operating system version.
+	OperatingSystemVersion *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// NamespaceDiscoveredDeviceUpdate - The type used for update operations of the NamespaceDiscoveredDevice.
+type NamespaceDiscoveredDeviceUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *NamespaceDiscoveredDeviceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// NamespaceDiscoveredDeviceUpdateProperties - The updatable properties of the NamespaceDiscoveredDevice.
+type NamespaceDiscoveredDeviceUpdateProperties struct {
+	// A set of key-value pairs that contain custom attributes.
+	Attributes map[string]any
+
+	// Identifier used to detect changes in the discovered device.
+	DiscoveryID *string
+
+	// Endpoints for discovered devices.
+	Endpoints *DiscoveredMessagingEndpoints
+
+	// A device ID that represents the device in a system external to Azure. Unique within scope of an Azure tenant.
+	ExternalDeviceID *string
+
+	// Device operating system version.
+	OperatingSystemVersion *string
+
+	// An integer that is incremented each time the resource is modified.
+	Version *int64
+}
+
+// NamespaceDiscoveredEvent - Defines the event properties.
+type NamespaceDiscoveredEvent struct {
+	// REQUIRED; The name of the event.
+	Name *string
+
+	// Reference to a data source for a given event.
+	DataSource *string
+
+	// Destinations for an event.
+	Destinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	EventConfiguration *string
+
+	// UTC timestamp indicating when the event was added or modified.
+	LastUpdatedOn *time.Time
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDiscoveredEventGroup - Defines the discovered event group properties.
+type NamespaceDiscoveredEventGroup struct {
+	// REQUIRED; The name of the event group.
+	Name *string
+
+	// The address of the notifier of the event group in the asset (e.g. URL) so that a client can access the event group on the
+	// asset.
+	DataSource *string
+
+	// Destinations for events. Default destinations when destinations is not defined at the event level.
+	DefaultDestinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific configuration for the event group. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	EventGroupConfiguration *string
+
+	// Array of events that are part of the event group.
+	Events []*NamespaceDiscoveredEvent
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDiscoveredManagementAction - Defines the action properties.
+type NamespaceDiscoveredManagementAction struct {
+	// REQUIRED; Name of the action.
+	Name *string
+
+	// REQUIRED; The target URI on which a client can invoke the specific action.
+	TargetURI *string
+
+	// Stringified JSON that contains connector-specific configuration for the action.
+	ActionConfiguration *string
+
+	// The type of the action.
+	ActionType *NamespaceDiscoveredManagementActionType
+
+	// Timestamp (in UTC) indicating when the management action was added or modified.
+	LastUpdatedOn *time.Time
+
+	// Response timeout for the action.
+	TimeoutInSeconds *int32
+
+	// The MQTT topic path on which a client will receive the request for the action.
+	Topic *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDiscoveredManagementGroup - Defines the management group properties.
+type NamespaceDiscoveredManagementGroup struct {
+	// REQUIRED; Name of the management group.
+	Name *string
+
+	// Array of actions that are part of the management group. Each action can have an individual configuration.
+	Actions []*NamespaceDiscoveredManagementAction
+
+	// Reference to a data source for a given management group.
+	DataSource *string
+
+	// Default response timeout for all actions that are part of the management group.
+	DefaultTimeoutInSeconds *int32
+
+	// Default MQTT topic path on which a client will receive the request for all actions that are part of the management group.
+	DefaultTopic *string
+
+	// Timestamp (in UTC) indicating when the management group was added or modified.
+	LastUpdatedOn *time.Time
+
+	// Stringified JSON that contains connector-specific configuration for the management group.
+	ManagementGroupConfiguration *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceDiscoveredStream - Defines the stream properties.
+type NamespaceDiscoveredStream struct {
+	// REQUIRED; Name of the stream definition.
+	Name *string
+
+	// Destinations for a stream.
+	Destinations []StreamDestinationClassification
+
+	// Timestamp (in UTC) indicating when the stream was added or modified.
+	LastUpdatedOn *time.Time
+
+	// Stringified JSON that contains connector-specific configuration for the specific stream.
+	StreamConfiguration *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceEvent - Defines the event properties.
+type NamespaceEvent struct {
+	// REQUIRED; The name of the event.
+	Name *string
+
+	// Reference to a data source for a given event.
+	DataSource *string
+
+	// Destinations for an event.
+	Destinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific configuration for the event. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	EventConfiguration *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceEventGroup - Defines the event group properties.
+type NamespaceEventGroup struct {
+	// REQUIRED; The name of the event group.
+	Name *string
+
+	// The address of the notifier of the event group in the asset (e.g. URL) so that a client can access the event group on the
+	// asset.
+	DataSource *string
+
+	// Destinations for events. Default destinations when destinations is not defined at the event level.
+	DefaultDestinations []EventDestinationClassification
+
+	// Stringified JSON that contains connector-specific configuration for the event group. For OPC UA, this could include configuration
+	// like, publishingInterval, samplingInterval, and queueSize.
+	EventGroupConfiguration *string
+
+	// Array of events that are part of the event group.
+	Events []*NamespaceEvent
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceListResult - The response of a Namespace list operation.
+type NamespaceListResult struct {
+	// REQUIRED; The Namespace items on this page
+	Value []*Namespace
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NamespaceMessageSchemaReference - Defines the message schema reference properties.
+type NamespaceMessageSchemaReference struct {
+	// READ-ONLY; The message schema name.
+	SchemaName *string
+
+	// READ-ONLY; The message schema registry namespace.
+	SchemaRegistryNamespace *string
+
+	// READ-ONLY; The message schema version.
+	SchemaVersion *string
+}
+
+// NamespaceMigrateRequest - Request body for the migrate resources operation in to Namespace resource.
+type NamespaceMigrateRequest struct {
+	// List of asset resources to be migrated.
+	ResourceIDs []*string
+
+	// Scope of the migrate resources operation.
+	Scope *Scope
+}
+
+// NamespaceProperties - The namespace properties model.
+type NamespaceProperties struct {
+	// Assigned and unassigned messaging endpoints.
+	Messaging *Messaging
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Globally unique, immutable, non-reusable ID.
+	UUID *string
+}
+
+// NamespaceStream - Defines the stream properties.
+type NamespaceStream struct {
+	// REQUIRED; Name of the stream definition.
+	Name *string
+
+	// Destinations for a stream.
+	Destinations []StreamDestinationClassification
+
+	// Stringified JSON that contains connector-specific configuration for the specific stream.
+	StreamConfiguration *string
+
+	// URI or type definition ID.
+	TypeRef *string
+}
+
+// NamespaceUpdate - The type used for update operations of the Namespace.
+type NamespaceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *SystemAssignedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *NamespaceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// NamespaceUpdateProperties - The updatable properties of the Namespace.
+type NamespaceUpdateProperties struct {
+	// Assigned and unassigned messaging endpoints.
+	Messaging *Messaging
 }
 
 // Operation - REST API Operation
@@ -513,7 +1936,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -571,6 +1994,279 @@ type OperationStatusResult struct {
 	ResourceID *string
 }
 
+// OutboundEndpoints - Property bag contains the device's outbound endpoints
+type OutboundEndpoints struct {
+	// REQUIRED; Endpoints the device can connect to.
+	Assigned map[string]*DeviceMessagingEndpoint
+
+	// Set of most recently removed endpoints.
+	Unassigned map[string]*DeviceMessagingEndpoint
+}
+
+// Schema definition.
+type Schema struct {
+	// The resource-specific properties for this resource.
+	Properties *SchemaProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SchemaListResult - The response of a Schema list operation.
+type SchemaListResult struct {
+	// REQUIRED; The Schema items on this page
+	Value []*Schema
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SchemaProperties - Defines the schema properties.
+type SchemaProperties struct {
+	// REQUIRED; Format of the schema.
+	Format *Format
+
+	// REQUIRED; Type of the schema.
+	SchemaType *SchemaType
+
+	// Human-readable description of the schema.
+	Description *string
+
+	// Human-readable display name.
+	DisplayName *string
+
+	// Schema tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Globally unique, immutable, non-reusable id.
+	UUID *string
+}
+
+// SchemaRegistry - Schema registry definition.
+type SchemaRegistry struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *SystemAssignedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *SchemaRegistryProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SchemaRegistryListResult - The response of a SchemaRegistry list operation.
+type SchemaRegistryListResult struct {
+	// REQUIRED; The SchemaRegistry items on this page
+	Value []*SchemaRegistry
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SchemaRegistryProperties - Defines the schema registry properties.
+type SchemaRegistryProperties struct {
+	// REQUIRED; Schema registry namespace. Uniquely identifies a schema registry within a tenant.
+	Namespace *string
+
+	// REQUIRED; The Storage Account's Container URL where schemas will be stored.
+	StorageAccountContainerURL *string
+
+	// Human-readable description of the schema registry.
+	Description *string
+
+	// Human-readable display name.
+	DisplayName *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Globally unique, immutable, non-reusable id.
+	UUID *string
+}
+
+// SchemaRegistryUpdate - The type used for update operations of the SchemaRegistry.
+type SchemaRegistryUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *SystemAssignedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *SchemaRegistryUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// SchemaRegistryUpdateProperties - The updatable properties of the SchemaRegistry.
+type SchemaRegistryUpdateProperties struct {
+	// Human-readable description of the schema registry.
+	Description *string
+
+	// Human-readable display name.
+	DisplayName *string
+}
+
+// SchemaVersion - Schema version's definition.
+type SchemaVersion struct {
+	// The resource-specific properties for this resource.
+	Properties *SchemaVersionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SchemaVersionListResult - The response of a SchemaVersion list operation.
+type SchemaVersionListResult struct {
+	// REQUIRED; The SchemaVersion items on this page
+	Value []*SchemaVersion
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SchemaVersionProperties - Defines the schema version properties.
+type SchemaVersionProperties struct {
+	// REQUIRED; Schema content.
+	SchemaContent *string
+
+	// Human-readable description of the schema.
+	Description *string
+
+	// READ-ONLY; Hash of the schema content.
+	Hash *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Globally unique, immutable, non-reusable id.
+	UUID *string
+}
+
+// StatusConfig - Defines the status config properties.
+type StatusConfig struct {
+	// READ-ONLY; Object to transfer and persist errors that originate from the edge.
+	Error *StatusError
+
+	// READ-ONLY; A read-only timestamp indicating the last time the configuration has been modified from the perspective of the
+	// current actual (edge) state of the CRD. Edge would be the only writer of this value and would sync back up to the cloud.
+	LastTransitionTime *time.Time
+
+	// READ-ONLY; A read-only incremental counter indicating the number of times the configuration has been modified from the
+	// perspective of the current actual (edge) state of the CRD. Edge would be the only writer of this value and would sync back
+	// up to the cloud. In steady state, this should equal version.
+	Version *int64
+}
+
+// StatusError - Defines the status config error properties.
+type StatusError struct {
+	// READ-ONLY; Error code for classification of errors (ex: '400', '404', '500', etc.).
+	Code *string
+
+	// READ-ONLY; Array of error details that describe the status of each error.
+	Details []*ErrorDetails
+
+	// READ-ONLY; Human-readable helpful error message to provide additional context for error (e.g.,: “Capability ID 'foo' does
+	// not exist”).
+	Message *string
+}
+
+// StorageDestinationConfiguration - The configuration for a storage destination.
+type StorageDestinationConfiguration struct {
+	// REQUIRED; The storage destination path.
+	Path *string
+}
+
+// StreamDestination - The type of the destination.
+type StreamDestination struct {
+	// Target destination.
+	Target *StreamDestinationTarget
+}
+
+// GetStreamDestination implements the StreamDestinationClassification interface for type StreamDestination.
+func (s *StreamDestination) GetStreamDestination() *StreamDestination { return s }
+
+// StreamMqttDestination - The type for a MQTT destination.
+type StreamMqttDestination struct {
+	// REQUIRED; The MQTT destination configuration.
+	Configuration *MqttDestinationConfiguration
+
+	// CONSTANT; The MQTT destination type.
+	// Field has constant value StreamDestinationTargetMqtt, any specified value is ignored.
+	Target *StreamDestinationTarget
+}
+
+// GetStreamDestination implements the StreamDestinationClassification interface for type StreamMqttDestination.
+func (s *StreamMqttDestination) GetStreamDestination() *StreamDestination {
+	return &StreamDestination{
+		Target: s.Target,
+	}
+}
+
+// StreamStorageDestination - The type for a storage destination.
+type StreamStorageDestination struct {
+	// REQUIRED; The storage destination configuration.
+	Configuration *StorageDestinationConfiguration
+
+	// CONSTANT; The storage destination type.
+	// Field has constant value StreamDestinationTargetStorage, any specified value is ignored.
+	Target *StreamDestinationTarget
+}
+
+// GetStreamDestination implements the StreamDestinationClassification interface for type StreamStorageDestination.
+func (s *StreamStorageDestination) GetStreamDestination() *StreamDestination {
+	return &StreamDestination{
+		Target: s.Target,
+	}
+}
+
+// SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
+type SystemAssignedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *SystemAssignedServiceIdentityType
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -601,6 +2297,12 @@ type Topic struct {
 	Retain *TopicRetainType
 }
 
+// TrustSettings - Defines server trust settings for an endpoint.
+type TrustSettings struct {
+	// Defines a secret reference for certificates to trust.
+	TrustList *string
+}
+
 // UsernamePasswordCredentials - The credentials for authentication mode UsernamePassword.
 type UsernamePasswordCredentials struct {
 	// REQUIRED; The name of the secret containing the password.
@@ -608,6 +2310,18 @@ type UsernamePasswordCredentials struct {
 
 	// REQUIRED; The name of the secret containing the username.
 	UsernameSecretName *string
+}
+
+// X509CertificateCredentials - The x509 certificate for authentication mode Certificate.
+type X509CertificateCredentials struct {
+	// REQUIRED; The name of the secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
+	CertificateSecretName *string
+
+	// The name of the secret containing the combined intermediate certificates in PEM format.
+	IntermediateCertificatesSecretName *string
+
+	// The name of the secret containing the certificate private key in PEM or DER format.
+	KeySecretName *string
 }
 
 // X509Credentials - The x509 certificate for authentication mode Certificate.

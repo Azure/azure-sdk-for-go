@@ -65,8 +65,6 @@ function New-APIViewFromCI {
         [Parameter(Mandatory=$True)]
         [string] $ArtifactPath,
         [Parameter(Mandatory=$True)]
-        [string] $ApiKey,
-        [Parameter(Mandatory=$True)]
         [string] $SourceBranch,
         [Parameter(Mandatory=$True)]
         [string] $DefaultBranch,
@@ -90,7 +88,6 @@ function New-APIViewFromCI {
     &($createReviewScript) `
         -ArtifactList $artifactList `
         -ArtifactPath $ArtifactPath `
-        -APIKey $ApiKey `
         -SourceBranch $SourceBranch `
         -DefaultBranch $DefaultBranch `
         -ConfigFileDir $ConfigFileDir `

@@ -109,6 +109,9 @@ type CertificateProfileProperties struct {
 type CheckNameAvailability struct {
 	// REQUIRED; Trusted signing account name.
 	Name *string
+
+	// REQUIRED; The type of the resource, "Microsoft.CodeSigning/codeSigningAccounts".
+	Type *string
 }
 
 // CheckNameAvailabilityResult - The CheckNameAvailability operation response.
@@ -208,7 +211,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string

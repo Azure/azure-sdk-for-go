@@ -33,17 +33,17 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewClient creates a new instance of Client.
-func (c *ClientFactory) NewClient() *Client {
-	return &Client{
+// NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient.
+func (c *ClientFactory) NewDeploymentOperationsClient() *DeploymentOperationsClient {
+	return &DeploymentOperationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewDeploymentOperationsClient creates a new instance of DeploymentOperationsClient.
-func (c *ClientFactory) NewDeploymentOperationsClient() *DeploymentOperationsClient {
-	return &DeploymentOperationsClient{
+// NewDeploymentsClient creates a new instance of DeploymentsClient.
+func (c *ClientFactory) NewDeploymentsClient() *DeploymentsClient {
+	return &DeploymentsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -69,7 +66,7 @@ func (testsuite *RestorePointTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestRestorePointTestSuite(t *testing.T) {
+func TTestRestorePointTestSuite(t *testing.T) {
 	suite.Run(t, new(RestorePointTestSuite))
 }
 

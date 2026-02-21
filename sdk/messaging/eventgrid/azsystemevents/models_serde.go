@@ -7,9 +7,8 @@ package azsystemevents
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type ACSCallEndReasonProperties.
@@ -7166,7 +7165,7 @@ func (i *IOTHubDeviceTelemetryEventData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InternalACSMessageChannelEventError.
+// MarshalJSON implements the json.Marshaller interface for type internalACSMessageChannelEventError.
 func (i internalACSMessageChannelEventError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "channelCode", i.ChannelCode)
@@ -7174,7 +7173,7 @@ func (i internalACSMessageChannelEventError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type InternalACSMessageChannelEventError.
+// UnmarshalJSON implements the json.Unmarshaller interface for type internalACSMessageChannelEventError.
 func (i *internalACSMessageChannelEventError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
@@ -7197,7 +7196,7 @@ func (i *internalACSMessageChannelEventError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type InternalACSRouterCommunicationError.
+// MarshalJSON implements the json.Marshaller interface for type internalACSRouterCommunicationError.
 func (i internalACSRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", i.Code)
@@ -7208,7 +7207,7 @@ func (i internalACSRouterCommunicationError) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type InternalACSRouterCommunicationError.
+// UnmarshalJSON implements the json.Unmarshaller interface for type internalACSRouterCommunicationError.
 func (i *internalACSRouterCommunicationError) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {

@@ -407,7 +407,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -487,6 +487,33 @@ type OrganizationResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// OrganizationResourceUpdate - The type used for update operations of the OrganizationResource.
+type OrganizationResourceUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *OrganizationResourceUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// OrganizationResourceUpdateProperties - The updatable properties of the OrganizationResource.
+type OrganizationResourceUpdateProperties struct {
+	// Details of the company.
+	CompanyDetails *CompanyDetails
+
+	// Marketplace details of the resource.
+	MarketplaceDetails *MarketplaceDetails
+
+	// Neon Organization properties
+	PartnerOrganizationProperties *PartnerOrganizationProperties
+
+	// Neon Project Properties
+	ProjectProperties *ProjectProperties
+
+	// Details of the user.
+	UserDetails *UserDetails
 }
 
 // PartnerOrganizationProperties - Properties specific to Partner's organization

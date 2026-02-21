@@ -215,7 +215,7 @@ func (w *WebSiteManagementServerTransport) dispatchCheckNameAvailability(req *ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/checknameavailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.ResourceNameAvailabilityRequest](req)
@@ -263,7 +263,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetSourceControl(req *http.Re
 	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	sourceControlTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("sourceControlType")])
@@ -292,7 +292,7 @@ func (w *WebSiteManagementServerTransport) dispatchGetSubscriptionDeploymentLoca
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/deploymentLocations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := w.srv.GetSubscriptionDeploymentLocations(req.Context(), nil)
@@ -319,7 +319,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListAseRegionsPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/aseRegions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := w.srv.NewListAseRegionsPager(nil)
@@ -352,7 +352,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListBillingMetersPager(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/billingMeters`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -403,7 +403,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListCustomHostNameSitesPag
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/customhostnameSites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -448,7 +448,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/geoRegions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -481,13 +481,22 @@ func (w *WebSiteManagementServerTransport) dispatchNewListGeoRegionsPager(req *h
 		if err != nil {
 			return nil, err
 		}
+		customModeWorkersEnabledUnescaped, err := url.QueryUnescape(qp.Get("customModeWorkersEnabled "))
+		if err != nil {
+			return nil, err
+		}
+		customModeWorkersEnabledParam, err := parseOptional(customModeWorkersEnabledUnescaped, strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
 		var options *armappservice.WebSiteManagementClientListGeoRegionsOptions
-		if sKUParam != nil || linuxWorkersEnabledParam != nil || xenonWorkersEnabledParam != nil || linuxDynamicWorkersEnabledParam != nil {
+		if sKUParam != nil || linuxWorkersEnabledParam != nil || xenonWorkersEnabledParam != nil || linuxDynamicWorkersEnabledParam != nil || customModeWorkersEnabledParam != nil {
 			options = &armappservice.WebSiteManagementClientListGeoRegionsOptions{
 				SKU:                        sKUParam,
 				LinuxWorkersEnabled:        linuxWorkersEnabledParam,
 				XenonWorkersEnabled:        xenonWorkersEnabledParam,
 				LinuxDynamicWorkersEnabled: linuxDynamicWorkersEnabledParam,
+				CustomModeWorkersEnabled:   customModeWorkersEnabledParam,
 			}
 		}
 		resp := w.srv.NewListGeoRegionsPager(options)
@@ -520,7 +529,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListPremierAddOnOffersPage
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/premieraddonoffers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := w.srv.NewListPremierAddOnOffersPager(nil)
@@ -551,7 +560,7 @@ func (w *WebSiteManagementServerTransport) dispatchListSKUs(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := w.srv.ListSKUs(req.Context(), nil)
@@ -578,7 +587,7 @@ func (w *WebSiteManagementServerTransport) dispatchNewListSiteIdentifiersAssigne
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/listSitesAssignedToHostName`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armappservice.NameIdentifier](req)
@@ -640,7 +649,7 @@ func (w *WebSiteManagementServerTransport) dispatchMove(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/moveResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmMoveResourceEnvelope](req)
@@ -673,7 +682,7 @@ func (w *WebSiteManagementServerTransport) dispatchRegionalCheckNameAvailability
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checknameavailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.DnlResourceNameAvailabilityRequest](req)
@@ -729,7 +738,7 @@ func (w *WebSiteManagementServerTransport) dispatchUpdateSourceControl(req *http
 	const regexStr = `/providers/Microsoft\.Web/sourcecontrols/(?P<sourceControlType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.SourceControl](req)
@@ -762,7 +771,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidate(req *http.Request) (
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.ValidateRequest](req)
@@ -795,7 +804,7 @@ func (w *WebSiteManagementServerTransport) dispatchValidateMove(req *http.Reques
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMoveResources`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.CsmMoveResourceEnvelope](req)
@@ -828,7 +837,7 @@ func (w *WebSiteManagementServerTransport) dispatchVerifyHostingEnvironmentVnet(
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/verifyHostingEnvironmentVnet`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armappservice.VnetParameters](req)

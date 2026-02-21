@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -20,14 +17,18 @@ import (
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // Delegation SAS not supported for queues service
 type QueueSignatureValues struct {
-	Version     string    `param:"sv"`  // If not specified, this defaults to Version
-	Protocol    Protocol  `param:"spr"` // See the Protocol* constants
-	StartTime   time.Time `param:"st"`  // Not specified if IsZero
-	ExpiryTime  time.Time `param:"se"`  // Not specified if IsZero
-	Permissions string    `param:"sp"`  // Create by initializing a QueuePermissions and then call String()
-	IPRange     IPRange   `param:"sip"`
-	Identifier  string    `param:"si"`
-	QueueName   string
+	Version                     string    `param:"sv"`  // If not specified, this defaults to Version
+	Protocol                    Protocol  `param:"spr"` // See the Protocol* constants
+	StartTime                   time.Time `param:"st"`  // Not specified if IsZero
+	ExpiryTime                  time.Time `param:"se"`  // Not specified if IsZero
+	Permissions                 string    `param:"sp"`  // Create by initializing a QueuePermissions and then call String()
+	IPRange                     IPRange   `param:"sip"`
+	Identifier                  string    `param:"si"`
+	QueueName                   string
+	AuthorizedObjectID          string // saoid
+	UnauthorizedObjectID        string // suoid
+	CorrelationID               string // scid
+	SignedDelegatedUserObjectID string // sduoid
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -78,6 +79,82 @@ func (v QueueSignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCr
 		signature:  signature,
 		identifier: signedIdentifier,
 	}
+
+	return p, nil
+}
+
+// SignWithUserDelegation uses an account's UserDelegationCredential to sign this signature values to produce the proper SAS query parameters.
+func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *UserDelegationCredential) (QueryParameters, error) {
+	if userDelegationCredential == nil {
+		return QueryParameters{}, fmt.Errorf("cannot sign SAS query without User Delegation Key")
+	}
+
+	if v.ExpiryTime.IsZero() || v.Permissions == "" {
+		return QueryParameters{}, errors.New("user delegation SAS is missing at least one of these: ExpiryTime or Permissions")
+	}
+
+	perms, err := parseQueuePermissions(v.Permissions)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+	v.Permissions = perms.String()
+
+	if v.Version == "" {
+		v.Version = Version
+	}
+	startTime, expiryTime := formatTimesForSigning(v.StartTime, v.ExpiryTime)
+
+	udk := exported.GetUDKParams(userDelegationCredential)
+	udkStart := formatTime(udk.SignedStart, "")
+	udkExpiry := formatTime(udk.SignedExpiry, "")
+
+	stringToSign := strings.Join([]string{
+		v.Permissions,
+		startTime,
+		expiryTime,
+		getCanonicalName(exported.GetAccountName(userDelegationCredential), v.QueueName),
+		*udk.SignedOID,
+		*udk.SignedTID,
+		udkStart,
+		udkExpiry,
+		*udk.SignedService,
+		*udk.SignedVersion,
+		v.AuthorizedObjectID,
+		v.UnauthorizedObjectID,
+		v.CorrelationID,
+		"",
+		v.SignedDelegatedUserObjectID,
+		v.IPRange.String(),
+		string(v.Protocol),
+		v.Version},
+		"\n")
+
+	signature, err := exported.ComputeUDCHMACSHA256(userDelegationCredential, stringToSign)
+	if err != nil {
+		return QueryParameters{}, err
+	}
+
+	p := QueryParameters{
+		version:                     v.Version,
+		protocol:                    v.Protocol,
+		startTime:                   v.StartTime,
+		expiryTime:                  v.ExpiryTime,
+		permissions:                 v.Permissions,
+		ipRange:                     v.IPRange,
+		signature:                   signature,
+		identifier:                  v.Identifier,
+		authorizedObjectID:          v.AuthorizedObjectID,
+		unauthorizedObjectID:        v.UnauthorizedObjectID,
+		correlationID:               v.CorrelationID,
+		signedDelegatedUserObjectID: v.SignedDelegatedUserObjectID,
+	}
+
+	p.signedOID = *udk.SignedOID
+	p.signedTID = *udk.SignedTID
+	p.signedStart = *udk.SignedStart
+	p.signedExpiry = *udk.SignedExpiry
+	p.signedService = *udk.SignedService
+	p.signedVersion = *udk.SignedVersion
 
 	return p, nil
 }

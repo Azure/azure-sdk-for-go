@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -61,14 +58,20 @@ func TestParseResourceType(t *testing.T) {
 		"/": {
 			err: true,
 		},
+		"//": {
+			err: true,
+		},
+		"/ /": {
+			err: true,
+		},
 	}
 	for input, expected := range resourceTypeData {
 		resourceType, err := ParseResourceType(input)
 		if err != nil && !expected.err {
 			t.Fatalf("unexpected error: %+v", err)
 		}
-		if expected.err {
-			continue
+		if err == nil && expected.err {
+			t.Fatalf("expected error for %q, but got result %v", input, resourceType)
 		}
 		if resourceType.Namespace != expected.namespace {
 			t.Fatalf("expecting %s, but got %s", expected.namespace, resourceType.Namespace)

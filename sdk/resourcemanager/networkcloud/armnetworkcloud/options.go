@@ -56,7 +56,12 @@ type AgentPoolsClientGetOptions struct {
 // AgentPoolsClientListByKubernetesClusterOptions contains the optional parameters for the AgentPoolsClient.NewListByKubernetesClusterPager
 // method.
 type AgentPoolsClientListByKubernetesClusterOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // BareMetalMachineKeySetsClientBeginCreateOrUpdateOptions contains the optional parameters for the BareMetalMachineKeySetsClient.BeginCreateOrUpdate
@@ -112,7 +117,12 @@ type BareMetalMachineKeySetsClientGetOptions struct {
 // BareMetalMachineKeySetsClientListByClusterOptions contains the optional parameters for the BareMetalMachineKeySetsClient.NewListByClusterPager
 // method.
 type BareMetalMachineKeySetsClientListByClusterOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // BareMetalMachinesClientBeginCordonOptions contains the optional parameters for the BareMetalMachinesClient.BeginCordon
@@ -203,6 +213,13 @@ type BareMetalMachinesClientBeginRunDataExtractsOptions struct {
 	ResumeToken string
 }
 
+// BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunDataExtractsRestricted
+// method.
+type BareMetalMachinesClientBeginRunDataExtractsRestrictedOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // BareMetalMachinesClientBeginRunReadCommandsOptions contains the optional parameters for the BareMetalMachinesClient.BeginRunReadCommands
 // method.
 type BareMetalMachinesClientBeginRunReadCommandsOptions struct {
@@ -246,13 +263,23 @@ type BareMetalMachinesClientGetOptions struct {
 // BareMetalMachinesClientListByResourceGroupOptions contains the optional parameters for the BareMetalMachinesClient.NewListByResourceGroupPager
 // method.
 type BareMetalMachinesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // BareMetalMachinesClientListBySubscriptionOptions contains the optional parameters for the BareMetalMachinesClient.NewListBySubscriptionPager
 // method.
 type BareMetalMachinesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // BmcKeySetsClientBeginCreateOrUpdateOptions contains the optional parameters for the BmcKeySetsClient.BeginCreateOrUpdate
@@ -305,7 +332,12 @@ type BmcKeySetsClientGetOptions struct {
 
 // BmcKeySetsClientListByClusterOptions contains the optional parameters for the BmcKeySetsClient.NewListByClusterPager method.
 type BmcKeySetsClientListByClusterOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // CloudServicesNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudServicesNetworksClient.BeginCreateOrUpdate
@@ -361,13 +393,23 @@ type CloudServicesNetworksClientGetOptions struct {
 // CloudServicesNetworksClientListByResourceGroupOptions contains the optional parameters for the CloudServicesNetworksClient.NewListByResourceGroupPager
 // method.
 type CloudServicesNetworksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // CloudServicesNetworksClientListBySubscriptionOptions contains the optional parameters for the CloudServicesNetworksClient.NewListBySubscriptionPager
 // method.
 type CloudServicesNetworksClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ClusterManagersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClusterManagersClient.BeginCreateOrUpdate
@@ -407,13 +449,23 @@ type ClusterManagersClientGetOptions struct {
 // ClusterManagersClientListByResourceGroupOptions contains the optional parameters for the ClusterManagersClient.NewListByResourceGroupPager
 // method.
 type ClusterManagersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ClusterManagersClientListBySubscriptionOptions contains the optional parameters for the ClusterManagersClient.NewListBySubscriptionPager
 // method.
 type ClusterManagersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ClusterManagersClientUpdateOptions contains the optional parameters for the ClusterManagersClient.Update method.
@@ -508,13 +560,23 @@ type ClustersClientGetOptions struct {
 // ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
 // method.
 type ClustersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ClustersClientListBySubscriptionOptions contains the optional parameters for the ClustersClient.NewListBySubscriptionPager
 // method.
 type ClustersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // ConsolesClientBeginCreateOrUpdateOptions contains the optional parameters for the ConsolesClient.BeginCreateOrUpdate method.
@@ -567,7 +629,12 @@ type ConsolesClientGetOptions struct {
 // ConsolesClientListByVirtualMachineOptions contains the optional parameters for the ConsolesClient.NewListByVirtualMachinePager
 // method.
 type ConsolesClientListByVirtualMachineOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // KubernetesClusterFeaturesClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesClusterFeaturesClient.BeginCreateOrUpdate
@@ -624,7 +691,12 @@ type KubernetesClusterFeaturesClientGetOptions struct {
 // KubernetesClusterFeaturesClientListByKubernetesClusterOptions contains the optional parameters for the KubernetesClusterFeaturesClient.NewListByKubernetesClusterPager
 // method.
 type KubernetesClusterFeaturesClientListByKubernetesClusterOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // KubernetesClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the KubernetesClustersClient.BeginCreateOrUpdate
@@ -687,13 +759,23 @@ type KubernetesClustersClientGetOptions struct {
 // KubernetesClustersClientListByResourceGroupOptions contains the optional parameters for the KubernetesClustersClient.NewListByResourceGroupPager
 // method.
 type KubernetesClustersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // KubernetesClustersClientListBySubscriptionOptions contains the optional parameters for the KubernetesClustersClient.NewListBySubscriptionPager
 // method.
 type KubernetesClustersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // L2NetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the L2NetworksClient.BeginCreateOrUpdate
@@ -733,13 +815,23 @@ type L2NetworksClientGetOptions struct {
 // L2NetworksClientListByResourceGroupOptions contains the optional parameters for the L2NetworksClient.NewListByResourceGroupPager
 // method.
 type L2NetworksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // L2NetworksClientListBySubscriptionOptions contains the optional parameters for the L2NetworksClient.NewListBySubscriptionPager
 // method.
 type L2NetworksClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // L2NetworksClientUpdateOptions contains the optional parameters for the L2NetworksClient.Update method.
@@ -790,13 +882,23 @@ type L3NetworksClientGetOptions struct {
 // L3NetworksClientListByResourceGroupOptions contains the optional parameters for the L3NetworksClient.NewListByResourceGroupPager
 // method.
 type L3NetworksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // L3NetworksClientListBySubscriptionOptions contains the optional parameters for the L3NetworksClient.NewListBySubscriptionPager
 // method.
 type L3NetworksClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // L3NetworksClientUpdateOptions contains the optional parameters for the L3NetworksClient.Update method.
@@ -863,7 +965,12 @@ type MetricsConfigurationsClientGetOptions struct {
 // MetricsConfigurationsClientListByClusterOptions contains the optional parameters for the MetricsConfigurationsClient.NewListByClusterPager
 // method.
 type MetricsConfigurationsClientListByClusterOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -932,12 +1039,22 @@ type RacksClientGetOptions struct {
 // RacksClientListByResourceGroupOptions contains the optional parameters for the RacksClient.NewListByResourceGroupPager
 // method.
 type RacksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // RacksClientListBySubscriptionOptions contains the optional parameters for the RacksClient.NewListBySubscriptionPager method.
 type RacksClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // StorageAppliancesClientBeginCreateOrUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginCreateOrUpdate
@@ -987,6 +1104,13 @@ type StorageAppliancesClientBeginEnableRemoteVendorManagementOptions struct {
 	StorageApplianceEnableRemoteVendorManagementParameters *StorageApplianceEnableRemoteVendorManagementParameters
 }
 
+// StorageAppliancesClientBeginRunReadCommandsOptions contains the optional parameters for the StorageAppliancesClient.BeginRunReadCommands
+// method.
+type StorageAppliancesClientBeginRunReadCommandsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // StorageAppliancesClientBeginUpdateOptions contains the optional parameters for the StorageAppliancesClient.BeginUpdate
 // method.
 type StorageAppliancesClientBeginUpdateOptions struct {
@@ -1010,13 +1134,23 @@ type StorageAppliancesClientGetOptions struct {
 // StorageAppliancesClientListByResourceGroupOptions contains the optional parameters for the StorageAppliancesClient.NewListByResourceGroupPager
 // method.
 type StorageAppliancesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // StorageAppliancesClientListBySubscriptionOptions contains the optional parameters for the StorageAppliancesClient.NewListBySubscriptionPager
 // method.
 type StorageAppliancesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // TrunkedNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the TrunkedNetworksClient.BeginCreateOrUpdate
@@ -1056,13 +1190,23 @@ type TrunkedNetworksClientGetOptions struct {
 // TrunkedNetworksClientListByResourceGroupOptions contains the optional parameters for the TrunkedNetworksClient.NewListByResourceGroupPager
 // method.
 type TrunkedNetworksClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // TrunkedNetworksClientListBySubscriptionOptions contains the optional parameters for the TrunkedNetworksClient.NewListBySubscriptionPager
 // method.
 type TrunkedNetworksClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // TrunkedNetworksClientUpdateOptions contains the optional parameters for the TrunkedNetworksClient.Update method.
@@ -1074,6 +1218,16 @@ type TrunkedNetworksClientUpdateOptions struct {
 	// Set to '*' to allow a new record set to be created, but to prevent updating an existing resource. Other values will result
 	// in error from server as they are not supported.
 	IfNoneMatch *string
+}
+
+// VirtualMachinesClientBeginAssignRelayOptions contains the optional parameters for the VirtualMachinesClient.BeginAssignRelay
+// method.
+type VirtualMachinesClientBeginAssignRelayOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The request body.
+	VirtualMachineAssignRelayParameters *VirtualMachineAssignRelayParameters
 }
 
 // VirtualMachinesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualMachinesClient.BeginCreateOrUpdate
@@ -1155,13 +1309,23 @@ type VirtualMachinesClientGetOptions struct {
 // VirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the VirtualMachinesClient.NewListByResourceGroupPager
 // method.
 type VirtualMachinesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // VirtualMachinesClientListBySubscriptionOptions contains the optional parameters for the VirtualMachinesClient.NewListBySubscriptionPager
 // method.
 type VirtualMachinesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // VolumesClientBeginCreateOrUpdateOptions contains the optional parameters for the VolumesClient.BeginCreateOrUpdate method.
@@ -1200,13 +1364,23 @@ type VolumesClientGetOptions struct {
 // VolumesClientListByResourceGroupOptions contains the optional parameters for the VolumesClient.NewListByResourceGroupPager
 // method.
 type VolumesClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // VolumesClientListBySubscriptionOptions contains the optional parameters for the VolumesClient.NewListBySubscriptionPager
 // method.
 type VolumesClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
+	// The opaque token that the server returns to indicate where to continue listing resources from. This is used for paging
+	// through large result sets.
+	SkipToken *string
+
+	// The maximum number of resources to return from the operation. Example: '$top=10'.
+	Top *int32
 }
 
 // VolumesClientUpdateOptions contains the optional parameters for the VolumesClient.Update method.

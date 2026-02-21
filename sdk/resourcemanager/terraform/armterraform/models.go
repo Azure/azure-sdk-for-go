@@ -11,14 +11,14 @@ type BaseExportModel struct {
 	// REQUIRED; The parameter type
 	Type *Type
 
-	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
-	// to make it valid
+	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
+	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
 
-	// Mask sensitive attributes in the Terraform configuration
+	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
 
-	// The target Azure Terraform Provider
+	// The target Azure Terraform provider. Defaults to `azurerm`.
 	TargetProvider *TargetProvider
 }
 
@@ -52,36 +52,37 @@ type ErrorDetail struct {
 	Target *string
 }
 
-// ExportQuery - Export parameter for resources queried by ARG (Azure Resource Graph)
+// ExportQuery - Uses ARG (Azure Resource Graph) query to choose resources to be exported.
 type ExportQuery struct {
-	// REQUIRED; The ARG where predicate. Note that you can combine multiple conditions in one `where` predicate, e.g. `resourceGroup
-	// =~ "my-rg" and type =~ "microsoft.network/virtualnetworks"`
+	// REQUIRED; The ARG where predicate. Multiple predicates can be combined using `and` operator. Example: `resourceGroup =~
+	// "my-rg" and type =~ "microsoft.network/virtualnetworks"`. The default ARG table is `Resources`, use 'table' property to
+	// query a different table.
 	Query *string
 
-	// CONSTANT; The parameter type
+	// CONSTANT; Has to be `ExportQuery` to distinguish from other types.
 	// Field has constant value TypeExportQuery, any specified value is ignored.
 	Type *Type
 
-	// The ARG Scope Filter parameter
+	// The ARG Scope Filter parameter.
 	AuthorizationScopeFilter *AuthorizationScopeFilter
 
-	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
-	// to make it valid
+	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
+	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
 
-	// Mask sensitive attributes in the Terraform configuration
+	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
 
-	// The name pattern of the Terraform resources
+	// The id prefix for the exported Terraform resources. Defaults to `res-`.
 	NamePattern *string
 
-	// Whether to recursively list child resources of the query result
+	// Recursively includes child resources. Defaults to `false`.
 	Recursive *bool
 
-	// The ARG table name
+	// The ARG table name. Defaults to 'Resources'.
 	Table *string
 
-	// The target Azure Terraform Provider
+	// The target Azure Terraform provider. Defaults to `azurerm`.
 	TargetProvider *TargetProvider
 }
 
@@ -95,32 +96,33 @@ func (e *ExportQuery) GetBaseExportModel() *BaseExportModel {
 	}
 }
 
-// ExportResource - Export parameter for individual resources.
+// ExportResource - Specified resources to be exported by their ids.
 type ExportResource struct {
-	// REQUIRED; The id of the resource to be exported
+	// REQUIRED; The id(s) of the resource to be exported. Example: `["/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/my-rg"].
 	ResourceIDs []*string
 
-	// CONSTANT; The parameter type
+	// CONSTANT; Has to be `ExportResource` to distinguish from other types.
 	// Field has constant value TypeExportResource, any specified value is ignored.
 	Type *Type
 
-	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
-	// to make it valid
+	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
+	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
 
-	// Mask sensitive attributes in the Terraform configuration
+	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
 
-	// The name pattern of the Terraform resources
+	// The id prefix for the exported Terraform resources. Defaults to `res-`.
 	NamePattern *string
 
-	// The Terraform resource name. Only works when `resourceIds` contains only one item.
+	// The Terraform id of the exported resource. Only effective when `resourceIds` contains only one item. Defaults to `res-0`.
 	ResourceName *string
 
-	// The Terraform resource type. Only works when `resourceIds` contains only one item.
+	// The Terraform resource type to map to. Only effective when `resourceIds` has one item. Example: `azurerm_virtual_network`.
+	// Automatic type mapping will be performed if not provided.
 	ResourceType *string
 
-	// The target Azure Terraform Provider
+	// The target Azure Terraform provider. Defaults to `azurerm`.
 	TargetProvider *TargetProvider
 }
 
@@ -136,24 +138,24 @@ func (e *ExportResource) GetBaseExportModel() *BaseExportModel {
 
 // ExportResourceGroup - Export parameter for a resource group
 type ExportResourceGroup struct {
-	// REQUIRED; The name of the resource group to be exported
+	// REQUIRED; The name of the resource group to be exported.
 	ResourceGroupName *string
 
-	// CONSTANT; The parameter type
+	// CONSTANT; Has to be `ExportResourceGroup` to distinguish from other types.
 	// Field has constant value TypeExportResourceGroup, any specified value is ignored.
 	Type *Type
 
-	// Whether to output all non-computed properties in the generated Terraform configuration? This probably needs manual modifications
-	// to make it valid
+	// Whether to output all non-computed properties in the generated Terraform configuration. If set to `false` empty-valued
+	// properties will be omitted from the configuration. Defaults to `true`.
 	FullProperties *bool
 
-	// Mask sensitive attributes in the Terraform configuration
+	// Mask sensitive attributes in the Terraform configuration. Defaults to `true`.
 	MaskSensitive *bool
 
-	// The name pattern of the Terraform resources
+	// The id prefix for the exported Terraform resources. Defaults to `res-`.
 	NamePattern *string
 
-	// The target Azure Terraform Provider
+	// The target Azure Terraform provider. Defaults to `azurerm`.
 	TargetProvider *TargetProvider
 }
 
@@ -169,16 +171,17 @@ func (e *ExportResourceGroup) GetBaseExportModel() *BaseExportModel {
 
 // ExportResult - The Terraform export result
 type ExportResult struct {
-	// The Terraform configuration content
+	// The exported Terraform HCL configuration.
 	Configuration *string
 
-	// A list of errors derived during exporting each resource
+	// A list of errors encountered during export operation.
 	Errors []*ErrorDetail
 
-	// The Terraform import blocks for the current export, which users can use to run "terraform plan" with to import the resources
+	// The Terraform import blocks for the configuration, necessary for managing existing Azure resources in Terraform.
 	Import *string
 
-	// A list of Azure resources which are not exported to Terraform due to there is no corresponding resources in Terraform
+	// A list of Azure resources which could not be exported to Terraform. The most common cause is lack of Terraform provider
+	// support. Change the provider type to `azapi` for bigger set of supported resources.
 	SkippedResources []*string
 }
 
@@ -205,7 +208,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -233,8 +236,11 @@ type OperationListResult struct {
 	NextLink *string
 }
 
-// OperationStatus - The status of the LRO operation.
+// OperationStatus - The status of the LRO (Long Running Operation) and the export result.
 type OperationStatus struct {
+	// REQUIRED; The unique identifier for the operationStatus resource
+	ID *string
+
 	// REQUIRED; The operation status
 	Status *ResourceProvisioningState
 

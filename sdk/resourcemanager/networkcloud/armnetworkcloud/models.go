@@ -13,6 +13,33 @@ type AADConfiguration struct {
 	AdminGroupObjectIDs []*string
 }
 
+// ActionState represents the state of an action taken against a resource. This can be used to represent both explicitly and
+// implicitly defined action types.
+type ActionState struct {
+	// READ-ONLY; The representation of the action for which this is a status. Matches ARM resource action format when the action
+	// is an ARM-based action.
+	ActionType *string
+
+	// READ-ONLY; The correlation ID for the original action request. Omitted if there is no related correlation ID.
+	CorrelationID *string
+
+	// READ-ONLY; The timestamp of when the action reached its final, terminal state. Uses ISO 8601 format.
+	EndTime *string
+
+	// READ-ONLY; The description providing additional context for the status value. May be empty or contain guidance in the case
+	// of a failure.
+	Message *string
+
+	// READ-ONLY; The timestamp of when the action began, in ISO 8601 format.
+	StartTime *string
+
+	// READ-ONLY; The status of the action.
+	Status *ActionStateStatus
+
+	// READ-ONLY; The ordered list of the individual steps which make up the action.
+	StepStates []*StepState
+}
+
 // AdministrativeCredentials represents the admin credentials for the device requiring password-based authentication.
 type AdministrativeCredentials struct {
 	// REQUIRED; The password of the administrator of the device used during initialization.
@@ -366,6 +393,9 @@ type BareMetalMachineKeySetProperties struct {
 	// The name of the group that users will be assigned to on the operating system of the machines.
 	OSGroupName *string
 
+	// The name of the access level to apply when the privilege level is set to Other.
+	PrivilegeLevelName *string
+
 	// READ-ONLY; The more detailed status of the key set.
 	DetailedStatus *BareMetalMachineKeySetDetailedStatus
 
@@ -449,8 +479,17 @@ type BareMetalMachineProperties struct {
 	// The cluster version that has been applied to this machine during deployment or a version update.
 	MachineClusterVersion *string
 
+	// READ-ONLY; The current state of any in progress or completed actions. The most recent known instance of each action type
+	// is shown.
+	ActionStates []*ActionState
+
 	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
 	AssociatedResourceIDs []*string
+
+	// READ-ONLY; The CA certificate information issued by the platform for connecting to TLS interfaces for the bare metal machine.
+	// Callers add this certificate to the trusted CA store on the Kubernetes control plane
+	// nodes to allow secure communication with the bare metal machine.
+	CaCertificate *CertificateInfo
 
 	// READ-ONLY; The resource ID of the cluster this bare metal machine is associated with.
 	ClusterID *string
@@ -531,8 +570,15 @@ type BareMetalMachineReplaceParameters struct {
 	// The OS-level hostname assigned to this machine.
 	MachineName *string
 
+	// The safeguard mode to use for the replace action, where None indicates to bypass safeguards and All indicates to utilize
+	// all safeguards.
+	SafeguardMode *BareMetalMachineReplaceSafeguardMode
+
 	// The serial number of the bare metal machine.
 	SerialNumber *string
+
+	// The indicator of whether to bypass clearing storage while replacing a bare metal machine.
+	StoragePolicy *BareMetalMachineReplaceStoragePolicy
 }
 
 // BareMetalMachineRunCommandParameters represents the body of the request to execute a script on the bare metal machine.
@@ -694,6 +740,15 @@ type BmcKeySetProperties struct {
 	UserListStatus []*KeySetUserStatus
 }
 
+// CertificateInfo represents the non-private information of an X.509 Certificate.
+type CertificateInfo struct {
+	// READ-ONLY; The hash value of the X.509 Certificate.
+	Hash *string
+
+	// READ-ONLY; The textual value of the X.509 Certificate.
+	Value *string
+}
+
 // CloudServicesNetwork - Upon creation, the additional services that are provided by the platform will be allocated and represented
 // in the status of this resource. All resources associated with this cloud services network
 // will be part of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused
@@ -753,6 +808,9 @@ type CloudServicesNetworkPatchProperties struct {
 
 	// The indicator of whether the platform default endpoints are allowed for the egress traffic.
 	EnableDefaultEgressEndpoints *CloudServicesNetworkEnableDefaultEgressEndpoints
+
+	// The storage options for the cloud services network.
+	StorageOptions *CloudServicesNetworkStorageOptionsPatch
 }
 
 // CloudServicesNetworkProperties represents properties of the cloud services network.
@@ -762,6 +820,9 @@ type CloudServicesNetworkProperties struct {
 
 	// The indicator of whether the platform default endpoints are allowed for the egress traffic.
 	EnableDefaultEgressEndpoints *CloudServicesNetworkEnableDefaultEgressEndpoints
+
+	// The storage options for the cloud services network.
+	StorageOptions *CloudServicesNetworkStorageOptions
 
 	// READ-ONLY; The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
 	AssociatedResourceIDs []*string
@@ -788,9 +849,55 @@ type CloudServicesNetworkProperties struct {
 	// READ-ONLY; The provisioning state of the cloud services network.
 	ProvisioningState *CloudServicesNetworkProvisioningState
 
+	// READ-ONLY; The storage status for the cloud services network.
+	StorageStatus *CloudServicesNetworkStorageStatus
+
 	// READ-ONLY; Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
 	// Hybrid AKS virtual machines, that are currently using this cloud services network.
 	VirtualMachinesAssociatedIDs []*string
+}
+
+// CloudServicesNetworkStorageOptions represents the storage options for the cloud services network.
+type CloudServicesNetworkStorageOptions struct {
+	// The indicator to enable shared storage on the cloud services network. If not specified, the allocation will align with
+	// the standard storage enablement.
+	Mode *CloudServicesNetworkStorageMode
+
+	// The requested storage allocation for the volume in Mebibytes.
+	SizeMiB *int64
+
+	// The resource ID of the storage appliance that hosts the storage.
+	StorageApplianceID *string
+}
+
+// CloudServicesNetworkStorageOptionsPatch represents the patchable storage options for the cloud services network.
+type CloudServicesNetworkStorageOptionsPatch struct {
+	// The indicator to enable shared storage on the cloud services network.
+	Mode *CloudServicesNetworkStorageMode
+
+	// The requested storage allocation for the volume in Mebibytes.
+	SizeMiB *int64
+
+	// The resource ID of the storage appliance that hosts the storage.
+	StorageApplianceID *string
+}
+
+// CloudServicesNetworkStorageStatus represents the storage status of the cloud services network.
+type CloudServicesNetworkStorageStatus struct {
+	// READ-ONLY; The indicator of if shared storage is enabled on the cloud services network.
+	Mode *CloudServicesNetworkStorageMode
+
+	// READ-ONLY; The size in Mebibytes of the storage allocation.
+	SizeMiB *int64
+
+	// READ-ONLY; The status of the storage allocation for the cloud services network.
+	Status *CloudServicesNetworkStorageStatusStatus
+
+	// READ-ONLY; The description for the status of the shared storage.
+	StatusMessage *string
+
+	// READ-ONLY; The resource ID of the volume created to host the shared storage.
+	VolumeID *string
 }
 
 // Cluster represents the on-premises Network Cloud cluster.
@@ -960,17 +1067,13 @@ type ClusterManagerProperties struct {
 	// The resource ID of the Log Analytics workspace that is used for the logs collection.
 	AnalyticsWorkspaceID *string
 
-	// Field deprecated, this value will no longer influence the cluster manager allocation process and will be removed in a future
-	// version. The Azure availability zones within the region that will be used
-	// to support the cluster manager resource.
+	// The Azure availability zones within the region that will be used to support the cluster manager resource.
 	AvailabilityZones []*string
 
 	// The configuration of the managed resource group associated with the resource.
 	ManagedResourceGroupConfiguration *ManagedResourceGroupConfiguration
 
-	// Field deprecated, this value will no longer influence the cluster manager allocation process and will be removed in a future
-	// version. The size of the Azure virtual machines to use for hosting the
-	// cluster manager resource.
+	// The size of the Azure virtual machines to use for hosting the cluster manager resource.
 	VMSize *string
 
 	// READ-ONLY; The list of the cluster versions the manager supports. It is used as input in clusterVersion property of a cluster
@@ -1093,7 +1196,8 @@ type ClusterPatchProperties struct {
 	// The customer-provided location information to identify where the cluster resides.
 	ClusterLocation *string
 
-	// The service principal to be used by the cluster during Arc Appliance installation.
+	// Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster during
+	// Arc Appliance installation.
 	ClusterServicePrincipal *ServicePrincipalInformation
 
 	// The settings for commands run in this cluster, such as bare metal machine run read only commands and data extracts.
@@ -1145,7 +1249,8 @@ type ClusterProperties struct {
 	// The customer-provided location information to identify where the cluster resides.
 	ClusterLocation *string
 
-	// The service principal to be used by the cluster during Arc Appliance installation.
+	// Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster during
+	// Arc Appliance installation.
 	ClusterServicePrincipal *ServicePrincipalInformation
 
 	// The settings for commands run in this cluster, such as bare metal machine run read only commands and data extracts.
@@ -1174,6 +1279,10 @@ type ClusterProperties struct {
 
 	// The settings for how security vulnerability scanning is applied to the cluster.
 	VulnerabilityScanningSettings *VulnerabilityScanningSettings
+
+	// READ-ONLY; The current state of any in progress or completed actions. The most recent known instance of each action type
+	// is shown.
+	ActionStates []*ActionState
 
 	// READ-ONLY; The list of cluster runtime version upgrades available for this cluster.
 	AvailableUpgradeVersions []*ClusterAvailableUpgradeVersion
@@ -1261,6 +1370,19 @@ type ClusterUpdateVersionParameters struct {
 	TargetClusterVersion *string
 }
 
+// CommandOutputOverride represents an overridden value for the command output settings.
+type CommandOutputOverride struct {
+	// The selection of the managed identity to use with this storage account container. The identity type must be either system
+	// assigned or user assigned.
+	AssociatedIdentity *IdentitySelector
+
+	// The type of command output for the override.
+	CommandOutputType *CommandOutputType
+
+	// The URL of the storage account container that is to be used by the specified identities.
+	ContainerURL *string
+}
+
 // CommandOutputSettings represents the settings for commands run within the cluster such as bare metal machine run read-only
 // commands.
 type CommandOutputSettings struct {
@@ -1270,6 +1392,11 @@ type CommandOutputSettings struct {
 
 	// The URL of the storage account container that is to be used by the specified identities.
 	ContainerURL *string
+
+	// The list of optional overrides allowing for association of storage containers and identities to specific types of command
+	// output. If a type is not overridden, the default identity and storage
+	// container will be utilized.
+	Overrides []*CommandOutputOverride
 }
 
 // Console represents the console of an on-premises Network Cloud virtual machine.
@@ -2199,18 +2326,18 @@ type NetworkAttachment struct {
 	// attachment) for a single machine may be specified as True.
 	DefaultGateway *DefaultGateway
 
-	// The IPv4 address of the virtual machine.
-	// This field is used only if the attached network has IPAllocationType of IPV4 or DualStack.
-	// If IPAllocationMethod is: Static - this field must contain a user specified IPv4 address from within the subnet specified
-	// in the attached network. Dynamic - this field is read-only, but will be
-	// populated with an address from within the subnet specified in the attached network. Disabled - this field will be empty.
+	// The IPv4 address of the virtual machine. This field is used only if the attached network has IPAllocationType of IPV4 or
+	// DualStack. If IPAllocationMethod is: Static - this field must contain a user
+	// specified IPv4 address from within the subnet specified in the attached network. Dynamic - this field is read-only, but
+	// will be populated with an address from within the subnet specified in the
+	// attached network. Disabled - this field will be empty.
 	IPv4Address *string
 
-	// The IPv6 address of the virtual machine.
-	// This field is used only if the attached network has IPAllocationType of IPV6 or DualStack.
-	// If IPAllocationMethod is: Static - this field must contain an IPv6 address range from within the range specified in the
-	// attached network. Dynamic - this field is read-only, but will be populated with
-	// an range from within the subnet specified in the attached network. Disabled - this field will be empty.
+	// The IPv6 address of the virtual machine. This field is used only if the attached network has IPAllocationType of IPV6 or
+	// DualStack. If IPAllocationMethod is: Static - this field must contain an IPv6
+	// address range from within the range specified in the attached network. Dynamic - this field is read-only, but will be populated
+	// with an range from within the subnet specified in the attached network.
+	// Disabled - this field will be empty.
 	IPv6Address *string
 
 	// The associated network's interface name. If specified, the network attachment name has a maximum length of 15 characters
@@ -2609,6 +2736,9 @@ type SecretArchiveReference struct {
 	// READ-ONLY; The resource ID of the key vault containing the secret.
 	KeyVaultID *string
 
+	// READ-ONLY; The URI of the key containing the secret.
+	KeyVaultURI *string
+
 	// READ-ONLY; The name of the secret in the key vault.
 	SecretName *string
 
@@ -2697,6 +2827,25 @@ type ServicePrincipalInformation struct {
 	TenantID *string
 }
 
+// StepState represents the state of a step in an action.
+type StepState struct {
+	// READ-ONLY; The timestamp for when processing of the step reached its terminal state, in ISO 8601 format.
+	EndTime *string
+
+	// READ-ONLY; The message providing additional context for the status value. May be empty, or contain diagnostic information
+	// in the case of a failure.
+	Message *string
+
+	// READ-ONLY; The timestamp for when processing of the step began, in ISO 8601 format.
+	StartTime *string
+
+	// READ-ONLY; The status of the step. A value of Completed or Failed indicates a terminal state for the step.
+	Status *StepStateStatus
+
+	// READ-ONLY; The name for the step.
+	StepName *string
+}
+
 // StorageAppliance represents on-premises Network Cloud storage appliance.
 type StorageAppliance struct {
 	// REQUIRED; The extended location of the cluster associated with the resource.
@@ -2725,6 +2874,15 @@ type StorageAppliance struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// StorageApplianceCommandSpecification represents the command and optional arguments to run.
+type StorageApplianceCommandSpecification struct {
+	// REQUIRED; The command to execute.
+	Command *string
+
+	// The list of strings that will be passed to the script in order as separate arguments.
+	Arguments []*string
 }
 
 // StorageApplianceConfigurationData represents configuration for the storage application.
@@ -2794,13 +2952,18 @@ type StorageApplianceProperties struct {
 	// REQUIRED; The SKU for the storage appliance.
 	StorageApplianceSKUID *string
 
+	// READ-ONLY; The CA certificate information issued by the platform for connecting to TLS interfaces for the storage appliance.
+	// Callers add this certificate to their trusted CA store to allow secure communication
+	// with the storage appliance.
+	CaCertificate *CertificateInfo
+
 	// READ-ONLY; The total capacity of the storage appliance. Measured in GiB.
 	Capacity *int64
 
-	// READ-ONLY; The amount of storage consumed.
+	// READ-ONLY; The amount of storage consumed. Measured in GiB.
 	CapacityUsed *int64
 
-	// READ-ONLY; The resource ID of the cluster this storage appliance is associated with. Measured in GiB.
+	// READ-ONLY; The resource ID of the cluster this storage appliance is associated with.
 	ClusterID *string
 
 	// READ-ONLY; The detailed status of the storage appliance.
@@ -2833,6 +2996,16 @@ type StorageApplianceProperties struct {
 
 	// READ-ONLY; The version of the storage appliance.
 	Version *string
+}
+
+// StorageApplianceRunReadCommandsParameters represents the body of request containing list of read-only commands to run on
+// the storage appliance.
+type StorageApplianceRunReadCommandsParameters struct {
+	// REQUIRED; The list of read-only commands to be executed directly against the target storage appliance.
+	Commands []*StorageApplianceCommandSpecification
+
+	// REQUIRED; The maximum time the commands are allowed to run.
+	LimitTimeSeconds *int64
 }
 
 // StorageApplianceSKUProperties - StorageApplianceSkuProperties represents the properties of the storage appliance SKU.
@@ -3019,6 +3192,9 @@ type VirtualMachine struct {
 	// REQUIRED; The list of the resource properties.
 	Properties *VirtualMachineProperties
 
+	// The identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -3038,6 +3214,18 @@ type VirtualMachine struct {
 	Type *string
 }
 
+// VirtualMachineAssignRelayParameters represents the body of the request to update the relay used for a Microsoft.HybridCompute
+// machine associated with the virtual machine.
+type VirtualMachineAssignRelayParameters struct {
+	// REQUIRED; The resourceId of the Microsoft.HybridCompute machine resource to assign relay usage.
+	MachineID *string
+
+	// The indicator of which relay type the machine should be assigned to use. Platform indicates the use of a platform-dedicated
+	// relay. Public indicates the use of the standard public relay for Arc
+	// services.
+	RelayType *RelayType
+}
+
 // VirtualMachineList represents a list of virtual machines.
 type VirtualMachineList struct {
 	// The link used to get the next page of operations.
@@ -3049,6 +3237,9 @@ type VirtualMachineList struct {
 
 // VirtualMachinePatchParameters represents the body of the request to patch the virtual machine.
 type VirtualMachinePatchParameters struct {
+	// The identity for the resource.
+	Identity *ManagedServiceIdentity
+
 	// The list of the resource properties.
 	Properties *VirtualMachinePatchProperties
 
@@ -3119,8 +3310,12 @@ type VirtualMachineProperties struct {
 	// The list of network attachments to the virtual machine.
 	NetworkAttachments []*NetworkAttachment
 
-	// The Base64 encoded cloud-init network data.
+	// Field Deprecated: The Base64 encoded cloud-init network data. The networkDataContent property will be used in preference
+	// to this property.
 	NetworkData *string
+
+	// The Base64 encoded cloud-init network data.
+	NetworkDataContent *string
 
 	// The scheduling hints for the virtual machine.
 	PlacementHints []*VirtualMachinePlacementHint
@@ -3129,8 +3324,12 @@ type VirtualMachineProperties struct {
 	// for the adminUsername.
 	SSHPublicKeys []*SSHPublicKey
 
-	// The Base64 encoded cloud-init user data.
+	// Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be used in preference to this
+	// property.
 	UserData *string
+
+	// The Base64 encoded cloud-init user data.
+	UserDataContent *string
 
 	// The type of the device model to use.
 	VMDeviceModel *VirtualMachineDeviceModelType
@@ -3213,8 +3412,14 @@ type VolumePatchParameters struct {
 
 // VolumeProperties represents properties of the volume resource.
 type VolumeProperties struct {
-	// REQUIRED; The size of the allocation for this volume in Mebibytes.
+	// REQUIRED; The requested storage allocation for the volume in Mebibytes.
 	SizeMiB *int64
+
+	// The resource ID of the storage appliance that hosts the volume.
+	StorageApplianceID *string
+
+	// READ-ONLY; The allocated size of the volume in Mebibytes.
+	AllocatedSizeMiB *int64
 
 	// READ-ONLY; The list of resource IDs that attach the volume. It may include virtual machines and Hybrid AKS clusters.
 	AttachedTo []*string

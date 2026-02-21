@@ -129,8 +129,10 @@ func PossibleAgentPoolModeValues() []AgentPoolMode {
 type AgentPoolSSHAccess string
 
 const (
-	// AgentPoolSSHAccessDisabled - SSH service will be turned off on the node.
+	// AgentPoolSSHAccessDisabled - SSH service will be turned off on the node. More information can be found under https://aka.ms/aks/ssh/disable
 	AgentPoolSSHAccessDisabled AgentPoolSSHAccess = "Disabled"
+	// AgentPoolSSHAccessEntraID - SSH to node with EntraId integration. More information can be found under https://aka.ms/aks/ssh/aad
+	AgentPoolSSHAccessEntraID AgentPoolSSHAccess = "EntraId"
 	// AgentPoolSSHAccessLocalUser - Can SSH onto the node as a local user using private key.
 	AgentPoolSSHAccessLocalUser AgentPoolSSHAccess = "LocalUser"
 )
@@ -139,6 +141,7 @@ const (
 func PossibleAgentPoolSSHAccessValues() []AgentPoolSSHAccess {
 	return []AgentPoolSSHAccess{
 		AgentPoolSSHAccessDisabled,
+		AgentPoolSSHAccessEntraID,
 		AgentPoolSSHAccessLocalUser,
 	}
 }
@@ -925,7 +928,37 @@ func PossibleManagedGatewayTypeValues() []ManagedGatewayType {
 	}
 }
 
-// Mode - Specify which proxy mode to use ('IPTABLES' or 'IPVS')
+// MeshMembershipProvisioningState - The provisioning state of the last accepted operation.
+type MeshMembershipProvisioningState string
+
+const (
+	// MeshMembershipProvisioningStateCanceled - Resource creation was canceled.
+	MeshMembershipProvisioningStateCanceled MeshMembershipProvisioningState = "Canceled"
+	// MeshMembershipProvisioningStateCreating - The Mesh Membership is being created.
+	MeshMembershipProvisioningStateCreating MeshMembershipProvisioningState = "Creating"
+	// MeshMembershipProvisioningStateDeleting - The Mesh Membership is being deleted.
+	MeshMembershipProvisioningStateDeleting MeshMembershipProvisioningState = "Deleting"
+	// MeshMembershipProvisioningStateFailed - Resource creation failed.
+	MeshMembershipProvisioningStateFailed MeshMembershipProvisioningState = "Failed"
+	// MeshMembershipProvisioningStateSucceeded - Resource has been created.
+	MeshMembershipProvisioningStateSucceeded MeshMembershipProvisioningState = "Succeeded"
+	// MeshMembershipProvisioningStateUpdating - The Mesh Membership is being updated.
+	MeshMembershipProvisioningStateUpdating MeshMembershipProvisioningState = "Updating"
+)
+
+// PossibleMeshMembershipProvisioningStateValues returns the possible values for the MeshMembershipProvisioningState const type.
+func PossibleMeshMembershipProvisioningStateValues() []MeshMembershipProvisioningState {
+	return []MeshMembershipProvisioningState{
+		MeshMembershipProvisioningStateCanceled,
+		MeshMembershipProvisioningStateCreating,
+		MeshMembershipProvisioningStateDeleting,
+		MeshMembershipProvisioningStateFailed,
+		MeshMembershipProvisioningStateSucceeded,
+		MeshMembershipProvisioningStateUpdating,
+	}
+}
+
+// Mode - Specify which proxy mode to use ('IPTABLES', 'IPVS' or 'NFTABLES')
 type Mode string
 
 const (
@@ -933,6 +966,8 @@ const (
 	ModeIPTABLES Mode = "IPTABLES"
 	// ModeIPVS - IPVS proxy mode. Must be using Kubernetes version >= 1.22.
 	ModeIPVS Mode = "IPVS"
+	// ModeNFTABLES - NFTables proxy mode. Must be using Kubernetes version >= 1.33.
+	ModeNFTABLES Mode = "NFTABLES"
 )
 
 // PossibleModeValues returns the possible values for the Mode const type.
@@ -940,6 +975,7 @@ func PossibleModeValues() []Mode {
 	return []Mode{
 		ModeIPTABLES,
 		ModeIPVS,
+		ModeNFTABLES,
 	}
 }
 
@@ -1217,6 +1253,10 @@ const (
 	OSSKUAzureLinux3 OSSKU = "AzureLinux3"
 	// OSSKUCBLMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
 	OSSKUCBLMariner OSSKU = "CBLMariner"
+	// OSSKUFlatcar - Use Flatcar Container Linux as the OS for node images. Flatcar is a container-optimized, security-focused
+	// Linux OS, with an immutable filesystem and part of the Cloud Native Computing Foundation (CNCF). For more information about
+	// Flatcar Container Linux for AKS, see aka.ms/aks/flatcar-container-linux-for-aks
+	OSSKUFlatcar OSSKU = "Flatcar"
 	// OSSKUMariner - Deprecated OSSKU. Microsoft recommends that new deployments choose 'AzureLinux' instead.
 	OSSKUMariner OSSKU = "Mariner"
 	// OSSKUUbuntu - Use Ubuntu as the OS for node images.
@@ -1247,6 +1287,7 @@ func PossibleOSSKUValues() []OSSKU {
 		OSSKUAzureLinux,
 		OSSKUAzureLinux3,
 		OSSKUCBLMariner,
+		OSSKUFlatcar,
 		OSSKUMariner,
 		OSSKUUbuntu,
 		OSSKUUbuntu2204,
@@ -1434,6 +1475,25 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{
 		ProtocolTCP,
 		ProtocolUDP,
+	}
+}
+
+// ProxyRedirectionMechanism - Mode of traffic redirection.
+type ProxyRedirectionMechanism string
+
+const (
+	// ProxyRedirectionMechanismCNIChaining - Istio will install a chained CNI plugin to redirect traffic (recommended).
+	ProxyRedirectionMechanismCNIChaining ProxyRedirectionMechanism = "CNIChaining"
+	// ProxyRedirectionMechanismInitContainers - Istio will inject an init container into each pod to redirect traffic (requires
+	// NET_ADMIN and NET_RAW).
+	ProxyRedirectionMechanismInitContainers ProxyRedirectionMechanism = "InitContainers"
+)
+
+// PossibleProxyRedirectionMechanismValues returns the possible values for the ProxyRedirectionMechanism const type.
+func PossibleProxyRedirectionMechanismValues() []ProxyRedirectionMechanism {
+	return []ProxyRedirectionMechanism{
+		ProxyRedirectionMechanismCNIChaining,
+		ProxyRedirectionMechanismInitContainers,
 	}
 }
 
@@ -1857,8 +1917,13 @@ type WorkloadRuntime string
 const (
 	// WorkloadRuntimeKataMshvVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods (Preview).
 	// Due to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
-	// that support Nested Virtualization such as Dv3 series.
+	// that support Nested Virtualization such as Dv3 series. This naming convention will be deprecated in future releases in
+	// favor of KataVmIsolation.
 	WorkloadRuntimeKataMshvVMIsolation WorkloadRuntime = "KataMshvVmIsolation"
+	// WorkloadRuntimeKataVMIsolation - Nodes can use (Kata + Cloud Hypervisor + Hyper-V) to enable Nested VM-based pods. Due
+	// to the use Hyper-V, AKS node OS itself is a nested VM (the root OS) of Hyper-V. Thus it can only be used with VM series
+	// that support Nested Virtualization such as Dv3 series.
+	WorkloadRuntimeKataVMIsolation WorkloadRuntime = "KataVmIsolation"
 	// WorkloadRuntimeOCIContainer - Nodes will use Kubelet to run standard OCI container workloads.
 	WorkloadRuntimeOCIContainer WorkloadRuntime = "OCIContainer"
 	// WorkloadRuntimeWasmWasi - Nodes will use Krustlet to run WASM workloads using the WASI provider (Preview).
@@ -1869,6 +1934,7 @@ const (
 func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
 	return []WorkloadRuntime{
 		WorkloadRuntimeKataMshvVMIsolation,
+		WorkloadRuntimeKataVMIsolation,
 		WorkloadRuntimeOCIContainer,
 		WorkloadRuntimeWasmWasi,
 	}

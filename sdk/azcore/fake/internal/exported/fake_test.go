@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -68,7 +65,10 @@ func unmarshal[T any](resp *http.Response) (T, error) {
 	if err != nil {
 		return t, err
 	}
-	resp.Body.Close()
+
+	if err := resp.Body.Close(); err != nil {
+		return t, err
+	}
 
 	err = json.Unmarshal(body, &t)
 	return t, err

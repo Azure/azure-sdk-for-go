@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 //go:build go1.16
-// +build go1.16
 
 // Package checkpoints provides a CheckpointStore using Azure Blob Storage.
 //

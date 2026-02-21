@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -1526,7 +1523,9 @@ func TestDoForClient(t *testing.T) {
 
 			resp, err := doForClient(client, req)
 			require.NoError(t, err)
-			defer resp.Body.Close()
+			defer func() {
+				_ = resp.Body.Close()
+			}()
 
 			require.Equal(t, http.StatusOK, resp.StatusCode)
 

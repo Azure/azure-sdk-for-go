@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -8,13 +5,14 @@ package directory_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 	"net/http"
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -32,12 +30,13 @@ var proposedLeaseIDs = []*string{to.Ptr("c820a799-76d7-4ee2-6e15-546f19325c2c"),
 func Test(t *testing.T) {
 	recordMode := recording.GetRecordMode()
 	t.Logf("Running datalake Tests in %s mode\n", recordMode)
-	if recordMode == recording.LiveMode {
+	switch recordMode {
+	case recording.LiveMode:
 		suite.Run(t, &RecordedTestSuite{})
 		suite.Run(t, &UnrecordedTestSuite{})
-	} else if recordMode == recording.PlaybackMode {
+	case recording.PlaybackMode:
 		suite.Run(t, &RecordedTestSuite{})
-	} else if recordMode == recording.RecordingMode {
+	case recording.RecordingMode:
 		suite.Run(t, &RecordedTestSuite{})
 	}
 }
@@ -3007,4 +3006,37 @@ func (s *UnrecordedTestSuite) TestDirectoryClientOnAuthenticationFailure() {
 	_, err = dirClient.GetProperties(context.Background(), nil)
 	_require.Error(err, "Expected authentication error")
 	_require.Contains(err.Error(), "ClientSecretCredential")
+}
+
+func (s *RecordedTestSuite) TestCreateDirWithPathTooDeep() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Create a path with more than 63 path segments (each segment separated by '/')
+	// Azure Storage has a limit of 63 path segments, this includes account, container name
+	// Generate a path with 61 segments to exceed the limit
+	deepPath := ""
+	for i := 1; i <= 61; i++ {
+		if i > 1 {
+			deepPath += "/"
+		}
+		deepPath += "seg" + strconv.Itoa(i)
+		dirClient := fsClient.NewDirectoryClient(deepPath)
+
+		_, err = dirClient.Create(context.Background(), nil)
+		if i == 61 {
+			_require.Error(err)
+			testcommon.ValidateErrorCode(_require, err, datalakeerror.PathIsTooDeep)
+		} else {
+			_require.NoError(err)
+		}
+	}
 }

@@ -332,6 +332,13 @@ type AzureFirewallsClientBeginListLearnedPrefixesOptions struct {
 	ResumeToken string
 }
 
+// AzureFirewallsClientBeginPacketCaptureOperationOptions contains the optional parameters for the AzureFirewallsClient.BeginPacketCaptureOperation
+// method.
+type AzureFirewallsClientBeginPacketCaptureOperationOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // AzureFirewallsClientBeginPacketCaptureOptions contains the optional parameters for the AzureFirewallsClient.BeginPacketCapture
 // method.
 type AzureFirewallsClientBeginPacketCaptureOptions struct {
@@ -2344,6 +2351,20 @@ type PublicIPAddressesClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions contains the optional parameters for the PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP
+// method.
+type PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions contains the optional parameters for the PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress
+// method.
+type PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // PublicIPAddressesClientGetCloudServicePublicIPAddressOptions contains the optional parameters for the PublicIPAddressesClient.GetCloudServicePublicIPAddress
 // method.
 type PublicIPAddressesClientGetCloudServicePublicIPAddressOptions struct {
@@ -3071,6 +3092,12 @@ type SecurityPerimeterProfilesClientListOptions struct {
 	Top *int32
 }
 
+// SecurityPerimeterServiceTagsClientListOptions contains the optional parameters for the SecurityPerimeterServiceTagsClient.NewListPager
+// method.
+type SecurityPerimeterServiceTagsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SecurityPerimetersClientBeginDeleteOptions contains the optional parameters for the SecurityPerimetersClient.BeginDelete
 // method.
 type SecurityPerimetersClientBeginDeleteOptions struct {
@@ -3312,6 +3339,65 @@ type ServiceEndpointPolicyDefinitionsClientGetOptions struct {
 // ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions contains the optional parameters for the ServiceEndpointPolicyDefinitionsClient.NewListByResourceGroupPager
 // method.
 type ServiceEndpointPolicyDefinitionsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceGatewaysClient.BeginCreateOrUpdate
+// method.
+type ServiceGatewaysClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServiceGatewaysClientBeginDeleteOptions contains the optional parameters for the ServiceGatewaysClient.BeginDelete method.
+type ServiceGatewaysClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServiceGatewaysClientBeginUpdateAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.BeginUpdateAddressLocations
+// method.
+type ServiceGatewaysClientBeginUpdateAddressLocationsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServiceGatewaysClientBeginUpdateServicesOptions contains the optional parameters for the ServiceGatewaysClient.BeginUpdateServices
+// method.
+type ServiceGatewaysClientBeginUpdateServicesOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServiceGatewaysClientGetAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.NewGetAddressLocationsPager
+// method.
+type ServiceGatewaysClientGetAddressLocationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientGetOptions contains the optional parameters for the ServiceGatewaysClient.Get method.
+type ServiceGatewaysClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientGetServicesOptions contains the optional parameters for the ServiceGatewaysClient.NewGetServicesPager
+// method.
+type ServiceGatewaysClientGetServicesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientListAllOptions contains the optional parameters for the ServiceGatewaysClient.NewListAllPager method.
+type ServiceGatewaysClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientListOptions contains the optional parameters for the ServiceGatewaysClient.NewListPager method.
+type ServiceGatewaysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGatewaysClientUpdateTagsOptions contains the optional parameters for the ServiceGatewaysClient.UpdateTags method.
+type ServiceGatewaysClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3651,6 +3737,12 @@ type VPNServerConfigurationsClientListByResourceGroupOptions struct {
 // VPNServerConfigurationsClientListOptions contains the optional parameters for the VPNServerConfigurationsClient.NewListPager
 // method.
 type VPNServerConfigurationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VPNServerConfigurationsClientListRadiusSecretsOptions contains the optional parameters for the VPNServerConfigurationsClient.ListRadiusSecrets
+// method.
+type VPNServerConfigurationsClientListRadiusSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4053,6 +4145,43 @@ type VirtualHubsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// VirtualNetworkAppliancesClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkAppliancesClient.BeginCreateOrUpdate
+// method.
+type VirtualNetworkAppliancesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkAppliancesClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkAppliancesClient.BeginDelete
+// method.
+type VirtualNetworkAppliancesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VirtualNetworkAppliancesClientGetOptions contains the optional parameters for the VirtualNetworkAppliancesClient.Get method.
+type VirtualNetworkAppliancesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkAppliancesClientListAllOptions contains the optional parameters for the VirtualNetworkAppliancesClient.NewListAllPager
+// method.
+type VirtualNetworkAppliancesClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkAppliancesClientListOptions contains the optional parameters for the VirtualNetworkAppliancesClient.NewListPager
+// method.
+type VirtualNetworkAppliancesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkAppliancesClientUpdateTagsOptions contains the optional parameters for the VirtualNetworkAppliancesClient.UpdateTags
+// method.
+type VirtualNetworkAppliancesClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate
 // method.
 type VirtualNetworkGatewayConnectionsClientBeginCreateOrUpdateOptions struct {
@@ -4381,6 +4510,12 @@ type VirtualNetworkGatewaysClientListConnectionsOptions struct {
 // VirtualNetworkGatewaysClientListOptions contains the optional parameters for the VirtualNetworkGatewaysClient.NewListPager
 // method.
 type VirtualNetworkGatewaysClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewaysClientListRadiusSecretsOptions contains the optional parameters for the VirtualNetworkGatewaysClient.ListRadiusSecrets
+// method.
+type VirtualNetworkGatewaysClientListRadiusSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 

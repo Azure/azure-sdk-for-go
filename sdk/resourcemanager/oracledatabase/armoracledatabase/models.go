@@ -258,7 +258,7 @@ type AutonomousDatabaseBaseProperties struct {
 	Role *RoleType
 
 	// The list of scheduled operations.
-	ScheduledOperations *ScheduledOperationsType
+	ScheduledOperationsList []*ScheduledOperationsType
 
 	// Client subnet
 	SubnetID *string
@@ -551,7 +551,7 @@ type AutonomousDatabaseCloneProperties struct {
 	Role *RoleType
 
 	// The list of scheduled operations.
-	ScheduledOperations *ScheduledOperationsType
+	ScheduledOperationsList []*ScheduledOperationsType
 
 	// The source of the database.
 	Source *SourceType
@@ -774,7 +774,7 @@ func (a *AutonomousDatabaseCloneProperties) GetAutonomousDatabaseBaseProperties(
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
-		ScheduledOperations:                      a.ScheduledOperations,
+		ScheduledOperationsList:                  a.ScheduledOperationsList,
 		ServiceConsoleURL:                        a.ServiceConsoleURL,
 		SubnetID:                                 a.SubnetID,
 		SupportedRegionsToCloneTo:                a.SupportedRegionsToCloneTo,
@@ -912,7 +912,7 @@ type AutonomousDatabaseCrossRegionDisasterRecoveryProperties struct {
 	Role *RoleType
 
 	// The list of scheduled operations.
-	ScheduledOperations *ScheduledOperationsType
+	ScheduledOperationsList []*ScheduledOperationsType
 
 	// The name of the region where source Autonomous Database exists.
 	SourceLocation *string
@@ -1125,7 +1125,7 @@ func (a *AutonomousDatabaseCrossRegionDisasterRecoveryProperties) GetAutonomousD
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
-		ScheduledOperations:                      a.ScheduledOperations,
+		ScheduledOperationsList:                  a.ScheduledOperationsList,
 		ServiceConsoleURL:                        a.ServiceConsoleURL,
 		SubnetID:                                 a.SubnetID,
 		SupportedRegionsToCloneTo:                a.SupportedRegionsToCloneTo,
@@ -1257,7 +1257,7 @@ type AutonomousDatabaseFromBackupTimestampProperties struct {
 	Role *RoleType
 
 	// The list of scheduled operations.
-	ScheduledOperations *ScheduledOperationsType
+	ScheduledOperationsList []*ScheduledOperationsType
 
 	// Client subnet
 	SubnetID *string
@@ -1470,7 +1470,7 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
-		ScheduledOperations:                      a.ScheduledOperations,
+		ScheduledOperationsList:                  a.ScheduledOperationsList,
 		ServiceConsoleURL:                        a.ServiceConsoleURL,
 		SubnetID:                                 a.SubnetID,
 		SupportedRegionsToCloneTo:                a.SupportedRegionsToCloneTo,
@@ -1491,6 +1491,12 @@ func (a *AutonomousDatabaseFromBackupTimestampProperties) GetAutonomousDatabaseB
 		VnetID:                                   a.VnetID,
 		WhitelistedIPs:                           a.WhitelistedIPs,
 	}
+}
+
+// AutonomousDatabaseLifecycleAction - Autonomous Database Action Object
+type AutonomousDatabaseLifecycleAction struct {
+	// REQUIRED; Autonomous Database lifecycle action
+	Action *AutonomousDatabaseLifecycleActionEnum
 }
 
 // AutonomousDatabaseListResult - The response of a AutonomousDatabase list operation.
@@ -1634,7 +1640,7 @@ type AutonomousDatabaseProperties struct {
 	Role *RoleType
 
 	// The list of scheduled operations.
-	ScheduledOperations *ScheduledOperationsType
+	ScheduledOperationsList []*ScheduledOperationsType
 
 	// Client subnet
 	SubnetID *string
@@ -1841,7 +1847,7 @@ func (a *AutonomousDatabaseProperties) GetAutonomousDatabaseBaseProperties() *Au
 		RemoteDisasterRecoveryConfiguration:      a.RemoteDisasterRecoveryConfiguration,
 		Role:                                     a.Role,
 		SQLWebDeveloperURL:                       a.SQLWebDeveloperURL,
-		ScheduledOperations:                      a.ScheduledOperations,
+		ScheduledOperationsList:                  a.ScheduledOperationsList,
 		ServiceConsoleURL:                        a.ServiceConsoleURL,
 		SubnetID:                                 a.SubnetID,
 		SupportedRegionsToCloneTo:                a.SupportedRegionsToCloneTo,
@@ -1960,7 +1966,7 @@ type AutonomousDatabaseUpdateProperties struct {
 	Role *RoleType
 
 	// The list of scheduled operations.
-	ScheduledOperations *ScheduledOperationsTypeUpdate
+	ScheduledOperationsList []*ScheduledOperationsTypeUpdate
 
 	// The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate
 	// strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
@@ -2131,6 +2137,9 @@ type CloudExadataInfrastructureProperties struct {
 	// READ-ONLY; The estimated total time required in minutes for all patching operations (database server, storage server, and
 	// network switch patching).
 	EstimatedPatchingTime *EstimatedPatchingTime
+
+	// READ-ONLY; The exascale config details for the cloud Exadata infrastructure
+	ExascaleConfig *ExascaleConfigDetails
 
 	// READ-ONLY; The OCID of the last maintenance run.
 	LastMaintenanceRunID *string
@@ -2307,6 +2316,9 @@ type CloudVMClusterProperties struct {
 	// The domain name for the cloud VM cluster.
 	Domain *string
 
+	// Exadata Database Storage Vault ID
+	ExascaleDbStorageVaultID *string
+
 	// Array of mount path and size.
 	FileSystemConfigurationDetails []*FileSystemConfigurationDetails
 
@@ -2400,6 +2412,9 @@ type CloudVMClusterProperties struct {
 	// READ-ONLY; The model name of the Exadata hardware running the cloud VM cluster.
 	Shape *string
 
+	// READ-ONLY; Specifies whether the type of storage management for the VM cluster is ASM or Exascale.
+	StorageManagementType *ExadataVMClusterStorageManagementType
+
 	// READ-ONLY; Cluster subnet ocid
 	SubnetOcid *string
 
@@ -2460,6 +2475,12 @@ type CloudVMClusterUpdateProperties struct {
 	StorageSizeInGbs *int32
 }
 
+// ConfigureExascaleCloudExadataInfrastructureDetails - The exascale config request details for the Cloud Exadata infrastructure.
+type ConfigureExascaleCloudExadataInfrastructureDetails struct {
+	// REQUIRED; Storage size needed for Exascale in GBs.
+	TotalStorageInGbs *int32
+}
+
 // ConnectionStringType - Connection strings to connect to an Oracle Autonomous Database.
 type ConnectionStringType struct {
 	// Returns all connection strings that can be used to connect to the Autonomous Database.
@@ -2515,6 +2536,15 @@ type ConnectionURLType struct {
 type CustomerContact struct {
 	// REQUIRED; The email address used by Oracle to send notifications regarding databases and infrastructure.
 	Email *string
+}
+
+// DNSForwardingRule - DNS forwarding rule properties
+type DNSForwardingRule struct {
+	// REQUIRED; Comma-separated domain names
+	DomainNames *string
+
+	// REQUIRED; Forwarding ip address
+	ForwardingIPAddress *string
 }
 
 // DNSPrivateView - DnsPrivateView resource definition
@@ -2895,6 +2925,311 @@ type DbServerProperties struct {
 	VMClusterIDs []*string
 }
 
+// DbSystem resource definition
+type DbSystem struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *DbSystemProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DbSystemBaseProperties - DbSystem resource base model.
+type DbSystemBaseProperties struct {
+	// REQUIRED; The hostname for the DB system.
+	Hostname *string
+
+	// REQUIRED; Azure Network Anchor ID
+	NetworkAnchorID *string
+
+	// REQUIRED; Azure Resource Anchor ID
+	ResourceAnchorID *string
+
+	// REQUIRED; The public key portion of one or more key pairs used for SSH access to the DB system.
+	SSHPublicKeys []*string
+
+	// REQUIRED; The shape of the DB system. The shape determines resources to allocate to the DB system. For virtual machine
+	// shapes, the number of CPU cores and memory. For bare metal and Exadata shapes, the number of CPU cores, storage, and memory.
+	Shape *string
+
+	// The cluster name for Exadata and 2-node RAC virtual machine DB systems. The cluster name must begin with an alphabetic
+	// character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters
+	// and is not case sensitive.
+	ClusterName *string
+
+	// The number of compute servers for the DB system.
+	ComputeCount *int32
+
+	// The compute model for Base Database Service. This is required if using the `computeCount` parameter. If using `cpuCoreCount`
+	// then it is an error to specify `computeModel` to a non-null value. The ECPU compute model is the recommended model, and
+	// the OCPU compute model is legacy.
+	ComputeModel *ComputeModel
+
+	// The DB system options.
+	DbSystemOptions *DbSystemOptions
+
+	// The type of redundancy configured for the DB system. NORMAL is 2-way redundancy. HIGH is 3-way redundancy.
+	DiskRedundancy *DiskRedundancyType
+
+	// The user-friendly name for the DB system. The name does not have to be unique.
+	DisplayName *string
+
+	// The domain name for the DB system.
+	DomainV2 *string
+
+	// Size in GB of the initial data volume that will be created and attached to a virtual machine DB system. You can scale up
+	// storage after provisioning, as needed. Note that the total storage size attached will be more than the amount you specify
+	// to allow for REDO/RECO space and software volume.
+	InitialDataStorageSizeInGb *int32
+
+	// The Oracle license model that applies to all the databases on the DB system. The default is LicenseIncluded.
+	LicenseModelV2 *LicenseModel
+
+	// The number of nodes in the DB system. For RAC DB systems, the value is greater than 1.
+	NodeCount *int32
+
+	// The source of the database: Use `None` for creating a new database. The default is `None`.
+	Source *DbSystemSourceType
+
+	// The block storage volume performance level. Valid values are Balanced and HighPerformance. See [Block Volume Performance](/Content/Block/Concepts/blockvolumeperformance.htm)
+	// for more information.
+	StorageVolumePerformanceMode *StorageVolumePerformanceMode
+
+	// The time zone of the DB system, e.g., UTC, to set the timeZone as UTC.
+	TimeZone *string
+
+	// READ-ONLY; The data storage size, in gigabytes, that is currently available to the DB system. Applies only for virtual
+	// machine DB systems.
+	DataStorageSizeInGbs *int32
+
+	// READ-ONLY; The OCID of a grid infrastructure software image. This is a database software image of the type GRID_IMAGE.
+	GridImageOcid *string
+
+	// READ-ONLY; Additional information about the current lifecycle state.
+	LifecycleDetails *string
+
+	// READ-ONLY; The current state of the DB system.
+	LifecycleState *DbSystemLifecycleState
+
+	// READ-ONLY; The port number configured for the listener on the DB system.
+	ListenerPort *int32
+
+	// READ-ONLY; Memory allocated to the DB system, in gigabytes.
+	MemorySizeInGbs *int32
+
+	// READ-ONLY; HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
+	OciURL *string
+
+	// READ-ONLY; The OCID of the DB system.
+	Ocid *string
+
+	// READ-ONLY; dbSystem provisioning state
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The FQDN of the DNS record for the SCAN IP addresses that are associated with the DB system.
+	ScanDNSName *string
+
+	// READ-ONLY; The list of Single Client Access Name (SCAN) IP addresses associated with the DB system. SCAN IP addresses are
+	// typically used for load balancing and are not assigned to any interface. Oracle Clusterware directs the requests to the
+	// appropriate nodes in the cluster. Note: For a single-node DB system, this list is empty.
+	ScanIPs []*string
+
+	// READ-ONLY; The Oracle Database version of the DB system.
+	Version *string
+}
+
+// GetDbSystemBaseProperties implements the DbSystemBasePropertiesClassification interface for type DbSystemBaseProperties.
+func (d *DbSystemBaseProperties) GetDbSystemBaseProperties() *DbSystemBaseProperties { return d }
+
+// DbSystemListResult - The response of a DbSystem list operation.
+type DbSystemListResult struct {
+	// REQUIRED; The DbSystem items on this page
+	Value []*DbSystem
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DbSystemOptions resource properties.
+type DbSystemOptions struct {
+	// The storage option used in DB system. ASM - Automatic storage management, LVM - Logical Volume management.
+	StorageManagement *StorageManagementType
+}
+
+// DbSystemProperties - DbSystem resource model.
+type DbSystemProperties struct {
+	// REQUIRED; The Oracle Database Edition that applies to all the databases on the DB system. Exadata DB systems and 2-node
+	// RAC DB systems require EnterpriseEditionExtremePerformance.
+	DatabaseEdition *DbSystemDatabaseEditionType
+
+	// REQUIRED; A valid Oracle Database version. For a list of supported versions, use the ListDbVersions operation.
+	DbVersion *string
+
+	// REQUIRED; The hostname for the DB system.
+	Hostname *string
+
+	// REQUIRED; Azure Network Anchor ID
+	NetworkAnchorID *string
+
+	// REQUIRED; Azure Resource Anchor ID
+	ResourceAnchorID *string
+
+	// REQUIRED; The public key portion of one or more key pairs used for SSH access to the DB system.
+	SSHPublicKeys []*string
+
+	// REQUIRED; The shape of the DB system. The shape determines resources to allocate to the DB system. For virtual machine
+	// shapes, the number of CPU cores and memory. For bare metal and Exadata shapes, the number of CPU cores, storage, and memory.
+	Shape *string
+
+	// CONSTANT; The source of the database for creating a new database.
+	// Field has constant value DbSystemSourceTypeNone, any specified value is ignored.
+	Source *DbSystemSourceType
+
+	// A strong password for SYS, SYSTEM, and PDB Admin. The password must be at least nine characters and contain at least two
+	// uppercase, two lowercase, two numbers, and two special characters. The special characters must be _, #, or -.
+	AdminPassword *string
+
+	// The cluster name for Exadata and 2-node RAC virtual machine DB systems. The cluster name must begin with an alphabetic
+	// character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters
+	// and is not case sensitive.
+	ClusterName *string
+
+	// The number of compute servers for the DB system.
+	ComputeCount *int32
+
+	// The compute model for Base Database Service. This is required if using the `computeCount` parameter. If using `cpuCoreCount`
+	// then it is an error to specify `computeModel` to a non-null value. The ECPU compute model is the recommended model, and
+	// the OCPU compute model is legacy.
+	ComputeModel *ComputeModel
+
+	// The DB system options.
+	DbSystemOptions *DbSystemOptions
+
+	// The type of redundancy configured for the DB system. NORMAL is 2-way redundancy. HIGH is 3-way redundancy.
+	DiskRedundancy *DiskRedundancyType
+
+	// The user-friendly name for the DB system. The name does not have to be unique.
+	DisplayName *string
+
+	// The domain name for the DB system.
+	DomainV2 *string
+
+	// Size in GB of the initial data volume that will be created and attached to a virtual machine DB system. You can scale up
+	// storage after provisioning, as needed. Note that the total storage size attached will be more than the amount you specify
+	// to allow for REDO/RECO space and software volume.
+	InitialDataStorageSizeInGb *int32
+
+	// The Oracle license model that applies to all the databases on the DB system. The default is LicenseIncluded.
+	LicenseModelV2 *LicenseModel
+
+	// The number of nodes in the DB system. For RAC DB systems, the value is greater than 1.
+	NodeCount *int32
+
+	// The name of the pluggable database. The name must begin with an alphabetic character and can contain a maximum of thirty
+	// alphanumeric characters. Special characters are not permitted. Pluggable database should not be same as database name.
+	PdbName *string
+
+	// The block storage volume performance level. Valid values are Balanced and HighPerformance. See [Block Volume Performance](/Content/Block/Concepts/blockvolumeperformance.htm)
+	// for more information.
+	StorageVolumePerformanceMode *StorageVolumePerformanceMode
+
+	// The time zone of the DB system, e.g., UTC, to set the timeZone as UTC.
+	TimeZone *string
+
+	// READ-ONLY; The data storage size, in gigabytes, that is currently available to the DB system. Applies only for virtual
+	// machine DB systems.
+	DataStorageSizeInGbs *int32
+
+	// READ-ONLY; The OCID of a grid infrastructure software image. This is a database software image of the type GRID_IMAGE.
+	GridImageOcid *string
+
+	// READ-ONLY; Additional information about the current lifecycle state.
+	LifecycleDetails *string
+
+	// READ-ONLY; The current state of the DB system.
+	LifecycleState *DbSystemLifecycleState
+
+	// READ-ONLY; The port number configured for the listener on the DB system.
+	ListenerPort *int32
+
+	// READ-ONLY; Memory allocated to the DB system, in gigabytes.
+	MemorySizeInGbs *int32
+
+	// READ-ONLY; HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
+	OciURL *string
+
+	// READ-ONLY; The OCID of the DB system.
+	Ocid *string
+
+	// READ-ONLY; dbSystem provisioning state
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; The FQDN of the DNS record for the SCAN IP addresses that are associated with the DB system.
+	ScanDNSName *string
+
+	// READ-ONLY; The list of Single Client Access Name (SCAN) IP addresses associated with the DB system. SCAN IP addresses are
+	// typically used for load balancing and are not assigned to any interface. Oracle Clusterware directs the requests to the
+	// appropriate nodes in the cluster. Note: For a single-node DB system, this list is empty.
+	ScanIPs []*string
+
+	// READ-ONLY; The Oracle Database version of the DB system.
+	Version *string
+}
+
+// GetDbSystemBaseProperties implements the DbSystemBasePropertiesClassification interface for type DbSystemProperties.
+func (d *DbSystemProperties) GetDbSystemBaseProperties() *DbSystemBaseProperties {
+	return &DbSystemBaseProperties{
+		ClusterName:                  d.ClusterName,
+		ComputeCount:                 d.ComputeCount,
+		ComputeModel:                 d.ComputeModel,
+		DataStorageSizeInGbs:         d.DataStorageSizeInGbs,
+		DbSystemOptions:              d.DbSystemOptions,
+		DiskRedundancy:               d.DiskRedundancy,
+		DisplayName:                  d.DisplayName,
+		DomainV2:                     d.DomainV2,
+		GridImageOcid:                d.GridImageOcid,
+		Hostname:                     d.Hostname,
+		InitialDataStorageSizeInGb:   d.InitialDataStorageSizeInGb,
+		LicenseModelV2:               d.LicenseModelV2,
+		LifecycleDetails:             d.LifecycleDetails,
+		LifecycleState:               d.LifecycleState,
+		ListenerPort:                 d.ListenerPort,
+		MemorySizeInGbs:              d.MemorySizeInGbs,
+		NetworkAnchorID:              d.NetworkAnchorID,
+		NodeCount:                    d.NodeCount,
+		OciURL:                       d.OciURL,
+		Ocid:                         d.Ocid,
+		ProvisioningState:            d.ProvisioningState,
+		ResourceAnchorID:             d.ResourceAnchorID,
+		SSHPublicKeys:                d.SSHPublicKeys,
+		ScanDNSName:                  d.ScanDNSName,
+		ScanIPs:                      d.ScanIPs,
+		Shape:                        d.Shape,
+		Source:                       d.Source,
+		StorageVolumePerformanceMode: d.StorageVolumePerformanceMode,
+		TimeZone:                     d.TimeZone,
+		Version:                      d.Version,
+	}
+}
+
 // DbSystemShape resource definition
 type DbSystemShape struct {
 	// The resource-specific properties for this resource.
@@ -2994,8 +3329,75 @@ type DbSystemShapeProperties struct {
 	// The runtime minimum number of CPU cores that can be enabled on the DB system for this shape.
 	RuntimeMinimumCoreCount *int32
 
+	// The shapeAttributes of the DB system shape..
+	ShapeAttributes []*string
+
 	// The family of the shape used for the DB system.
 	ShapeFamily *string
+}
+
+// DbSystemUpdate - The type used for update operations of the DbSystem.
+type DbSystemUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *DbSystemUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+}
+
+// DbSystemUpdateProperties - The updatable properties of the DbSystem.
+type DbSystemUpdateProperties struct {
+	// FLAG; CONSTANT; The source of the database for creating a new database.
+	// Field has constant value DbSystemSourceTypeNone, any specified value is ignored.
+	Source *DbSystemSourceType
+}
+
+// DbVersion - Oracle Database DbVersion resource definition
+type DbVersion struct {
+	// The resource-specific properties for this resource.
+	Properties *DbVersionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DbVersionListResult - The response of a DbVersion list operation.
+type DbVersionListResult struct {
+	// REQUIRED; The DbVersion items on this page
+	Value []*DbVersion
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DbVersionProperties - DbVersion resource model
+type DbVersionProperties struct {
+	// REQUIRED; A valid Oracle Database version.
+	Version *string
+
+	// True if this version of the Oracle Database software is the latest version for a release.
+	IsLatestForMajorVersion *bool
+
+	// True if this version of the Oracle Database software is the preview version.
+	IsPreviewDbVersion *bool
+
+	// True if this version of the Oracle Database software is supported for Upgrade.
+	IsUpgradeSupported *bool
+
+	// True if this version of the Oracle Database software supports pluggable databases.
+	SupportsPdb *bool
 }
 
 // DefinedFileSystemConfiguration - Predefined configurations for the file system
@@ -3167,6 +3569,9 @@ type ExadbVMClusterProperties struct {
 	// The TCPS Single Client Access Name (SCAN) port. The default port is 2484.
 	ScanListenerPortTCPSSL *int32
 
+	// The type of Exascale storage used for Exadata VM cluster.
+	ShapeAttribute *ShapeAttribute
+
 	// Operating system version of the image.
 	SystemVersion *string
 
@@ -3263,6 +3668,15 @@ type ExadbVMClusterUpdate struct {
 type ExadbVMClusterUpdateProperties struct {
 	// The number of nodes in the Exadata VM cluster on Exascale Infrastructure.
 	NodeCount *int32
+}
+
+// ExascaleConfigDetails - The exascale config response details for the cloud Exadata infrastructure
+type ExascaleConfigDetails struct {
+	// REQUIRED; Storage size needed for Exascale in GBs.
+	TotalStorageInGbs *int32
+
+	// Available storage size for Exascale in GBs.
+	AvailableStorageInGbs *int32
 }
 
 // ExascaleDbNode - The DbNode resource belonging to ExadbVmCluster
@@ -3400,8 +3814,14 @@ type ExascaleDbStorageVaultProperties struct {
 	// Exadata Database Storage Vault description.
 	Description *string
 
+	// Cloud Exadata infrastructure ID
+	ExadataInfrastructureID *string
+
 	// The time zone that you want to use for the Exadata Database Storage Vault
 	TimeZone *string
+
+	// READ-ONLY; The shapeAttribute of the Exadata VM cluster(s) associated with the Exadata Database Storage Vault.
+	AttachedShapeAttributes []*ShapeAttribute
 
 	// READ-ONLY; Response exadata Database Storage Details
 	HighCapacityDatabaseStorage *ExascaleDbStorageDetails
@@ -3646,6 +4066,129 @@ type Month struct {
 	Name *MonthName
 }
 
+// NetworkAnchor - Network Anchor resource model.
+type NetworkAnchor struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *NetworkAnchorProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkAnchorListResult - The response of a NetworkAnchor list operation.
+type NetworkAnchorListResult struct {
+	// REQUIRED; The NetworkAnchor items on this page
+	Value []*NetworkAnchor
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// NetworkAnchorProperties - Network Anchor properties
+type NetworkAnchorProperties struct {
+	// REQUIRED; Corresponding resource anchor Azure ID
+	ResourceAnchorID *string
+
+	// REQUIRED; Client subnet
+	SubnetID *string
+
+	// DNS forwarding rules
+	DNSForwardingRules []*DNSForwardingRule
+
+	// Comma-separated list of CIDRs that are allowed to send requests to the DNS listening endpoint
+	DNSListeningEndpointAllowedCidrs *string
+
+	// Indicates whether the Oracle DNS forwarding endpoint is enabled
+	IsOracleDNSForwardingEndpointEnabled *bool
+
+	// Indicates whether the Oracle DNS listening endpoint is enabled
+	IsOracleDNSListeningEndpointEnabled *bool
+
+	// Indicates whether DNS zone sync from OCI to Azure is enabled
+	IsOracleToAzureDNSZoneSyncEnabled *bool
+
+	// OCI backup subnet cidr block.
+	OciBackupCidrBlock *string
+
+	// OCI DNS label. This is optional if DNS config is provided.
+	OciVcnDNSLabel *string
+
+	// READ-ONLY; Delegated Azure subnet cidr block.
+	CidrBlock *string
+
+	// READ-ONLY; DNS forwarding endpoint IP address
+	DNSForwardingEndpointIPAddress *string
+
+	// READ-ONLY; Deep link to OCI console DNS Forwarding endpoint NSG rules
+	DNSForwardingEndpointNsgRulesURL *string
+
+	// READ-ONLY; Deep link to OCI console DNS Forwarding rules page
+	DNSForwardingRulesURL *string
+
+	// READ-ONLY; DNS listening endpoint IP address
+	DNSListeningEndpointIPAddress *string
+
+	// READ-ONLY; Deep link to OCI console DNS Listening endpoint NSG rules
+	DNSListeningEndpointNsgRulesURL *string
+
+	// READ-ONLY; Oracle Cloud Infrastructure subnet OCID
+	OciSubnetID *string
+
+	// READ-ONLY; Oracle Cloud Infrastructure VCN OCID
+	OciVcnID *string
+
+	// READ-ONLY; NetworkAnchor provisioning state
+	ProvisioningState *AzureResourceProvisioningState
+
+	// READ-ONLY; VNET for network connectivity
+	VnetID *string
+}
+
+// NetworkAnchorUpdate - The type used for update operations of the NetworkAnchor.
+type NetworkAnchorUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *NetworkAnchorUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+}
+
+// NetworkAnchorUpdateProperties - The updatable properties of the NetworkAnchor.
+type NetworkAnchorUpdateProperties struct {
+	// Indicates whether the Oracle DNS forwarding endpoint is enabled
+	IsOracleDNSForwardingEndpointEnabled *bool
+
+	// Indicates whether the Oracle DNS listening endpoint is enabled
+	IsOracleDNSListeningEndpointEnabled *bool
+
+	// Indicates whether DNS zone sync from OCI to Azure is enabled
+	IsOracleToAzureDNSZoneSyncEnabled *bool
+
+	// OCI backup subnet cidr block.
+	OciBackupCidrBlock *string
+}
+
 // NsgCidr - A rule for allowing inbound (INGRESS) IP packets
 type NsgCidr struct {
 	// REQUIRED; Conceptually, this is the range of IP addresses that a packet coming into the instance can come from.
@@ -3678,7 +4221,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string
@@ -3912,6 +4455,55 @@ type ProfileType struct {
 type RemoveVirtualMachineFromExadbVMClusterDetails struct {
 	// REQUIRED; The list of ExaCS DB nodes for the Exadata VM cluster on Exascale Infrastructure to be removed.
 	DbNodes []*DbNodeDetails
+}
+
+// ResourceAnchor - Resource Anchor model.
+type ResourceAnchor struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ResourceAnchorProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ResourceAnchorListResult - The response of a ResourceAnchor list operation.
+type ResourceAnchorListResult struct {
+	// REQUIRED; The ResourceAnchor items on this page
+	Value []*ResourceAnchor
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ResourceAnchorProperties - Resource Anchor properties.
+type ResourceAnchorProperties struct {
+	// READ-ONLY; Oracle Cloud Infrastructure compartment Id (ocid) which was created or linked by customer with resource anchor.
+	// This compartmentId is different from where resource Anchor lives
+	LinkedCompartmentID *string
+
+	// READ-ONLY; ResourceAnchor provisioning state
+	ProvisioningState *AzureResourceProvisioningState
+}
+
+// ResourceAnchorUpdate - The type used for update operations of the ResourceAnchor.
+type ResourceAnchorUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
 }
 
 // RestoreAutonomousDatabaseDetails - Details to restore an Oracle Autonomous Database.

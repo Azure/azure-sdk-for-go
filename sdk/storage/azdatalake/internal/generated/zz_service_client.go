@@ -25,7 +25,7 @@ type ServiceClient struct {
 
 // NewListFileSystemsPager - List filesystems and their properties in given account.
 //
-// Generated from API version 2025-05-05
+// Generated from API version 2026-02-06
 //   - options - ServiceClientListFileSystemsOptions contains the optional parameters for the ServiceClient.NewListFileSystemsPager
 //     method.
 //
@@ -54,7 +54,7 @@ func (client *ServiceClient) ListFileSystemsCreateRequest(ctx context.Context, o
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{ServiceVersion}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 

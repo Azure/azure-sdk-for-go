@@ -10,7 +10,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/openai/openai-go"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/openai/openai-go/v3"
+	"github.com/openai/openai-go/v3/azure"
 )
 
 // Example_vision demonstrates how to use Azure OpenAI's Vision capabilities for image analysis.
@@ -23,6 +25,7 @@ import (
 // The example uses environment variables for configuration:
 // - AOAI_VISION_MODEL: The deployment name of your vision-capable model (e.g., gpt-4-vision)
 // - AOAI_VISION_ENDPOINT: Your Azure OpenAI endpoint URL
+// - AZURE_OPENAI_API_VERSION: Azure OpenAI service API version to use. See https://learn.microsoft.com/azure/ai-foundry/openai/api-version-lifecycle?tabs=go for information about API versions.
 //
 // Vision capabilities are useful for:
 // - Image description and analysis
@@ -31,19 +34,21 @@ import (
 // - Accessibility features
 // - Image-based search and retrieval
 func Example_vision() {
-	if !CheckRequiredEnvVars("AOAI_VISION_MODEL", "AOAI_VISION_ENDPOINT") {
-		fmt.Fprintf(os.Stderr, "Skipping example, environment variables missing\n")
-		return
-	}
-
 	model := os.Getenv("AOAI_VISION_MODEL") // ex: gpt-4o"
 	endpoint := os.Getenv("AOAI_VISION_ENDPOINT")
+	apiVersion := os.Getenv("AZURE_OPENAI_API_VERSION")
 
-	client, err := CreateOpenAIClientWithToken(endpoint, "")
+	tokenCredential, err := azidentity.NewDefaultAzureCredential(nil)
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", err)
 		return
 	}
+
+	client := openai.NewClient(
+		azure.WithEndpoint(endpoint, apiVersion),
+		azure.WithTokenCredential(tokenCredential),
+	)
 
 	imageURL := "https://www.bing.com/th?id=OHR.BradgateFallow_EN-US3932725763_1920x1080.jpg"
 

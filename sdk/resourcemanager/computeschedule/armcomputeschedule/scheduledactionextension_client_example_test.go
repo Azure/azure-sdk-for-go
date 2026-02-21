@@ -37,13 +37,13 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 	ScheduledActionResourcesListResult: armcomputeschedule.ScheduledActionResourcesListResult{
 		// 		Value: []*armcomputeschedule.ScheduledActionResources{
 		// 			{
-		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
+		// 				Properties: &armcomputeschedule.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
 		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
 		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse("15:04:05.999999999Z07:00", "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
 		// 						TimeZone: to.Ptr("g"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),
@@ -73,6 +73,14 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 					},
 		// 					Disabled: to.Ptr(true),
 		// 					ProvisioningState: to.Ptr(armcomputeschedule.ProvisioningStateSucceeded),
+		// 					ResourceNotificationSettings: []*armcomputeschedule.NotificationProperties{
+		// 						{
+		// 							Destination: to.Ptr("hjnstepnzzdg"),
+		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
+		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
+		// 							Disabled: to.Ptr(true),
+		// 						},
+		// 					},
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
 		// 				Name: to.Ptr("lktvylsmyrhgllrxisfdeqd"),
@@ -119,13 +127,13 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager_scheduledActionExte
 		// 	ScheduledActionResourcesListResult: armcomputeschedule.ScheduledActionResourcesListResult{
 		// 		Value: []*armcomputeschedule.ScheduledActionResources{
 		// 			{
-		// 				Properties: &armcomputeschedule.ScheduledActionProperties{
+		// 				Properties: &armcomputeschedule.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armcomputeschedule.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armcomputeschedule.ScheduledActionTypeStart),
 		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
 		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
 		// 					Schedule: &armcomputeschedule.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse("15:04:05.999999999Z07:00", "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
 		// 						TimeZone: to.Ptr("g"),
 		// 						RequestedWeekDays: []*armcomputeschedule.WeekDay{
 		// 							to.Ptr(armcomputeschedule.WeekDayMonday),

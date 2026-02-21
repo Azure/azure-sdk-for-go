@@ -50,18 +50,14 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 
 		var messages []string
 
-	Loop:
 		for {
 			select {
 			case msg := <-messagesCh:
 				messages = append(messages, msg)
-				break
 			default:
-				break Loop
+				return messages
 			}
 		}
-
-		return messages
 	}
 }
 

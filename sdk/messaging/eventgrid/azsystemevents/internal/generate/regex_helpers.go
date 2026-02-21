@@ -7,14 +7,10 @@
 package main
 
 import (
-	"bufio"
-	"bytes"
 	"fmt"
 	"os"
 	"regexp"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents/internal/gopls"
 )
 
 // DeleteType removes a type from models.go and it's associated marshalling functions from models_serde.go.
@@ -39,70 +35,22 @@ func DeleteType(model string) error {
 	})
 }
 
-// SwapType changes the declared type for the symbol, which is expected to be a field
-func SwapType(sym *gopls.Symbol, newType string) error {
-	if sym.Type != gopls.SymbolTypeField {
-		return fmt.Errorf("can only swap types for a field, not a %s", sym.Type)
-	}
-
-	lineNum, err := sym.StartLine()
-
-	if err != nil {
-		return err
-	}
-
-	file, err := os.Open(sym.File)
-
-	if err != nil {
-		return err
-	}
-
-	defer file.Close()
-
-	b := strings.Builder{}
-	scanner := bufio.NewScanner(file)
-
-	i := int64(0)
-	for scanner.Scan() {
-		i++
-
-		if lineNum == i {
-			// splitting something like "FieldName string"
-			parts := strings.SplitN(scanner.Text(), " ", 2)
-			b.WriteString(parts[0] + " " + newType + "\n")
-		} else {
-			b.WriteString(scanner.Text() + "\n")
-		}
-	}
-
-	if err := file.Close(); err != nil {
-		return err
-	}
-
-	return os.WriteFile(sym.File, []byte(b.String()), 0600)
-}
-
-func UseCustomUnpopulate(filename string, symbolName string, newFuncCall string) error {
+// UseCustomUnpopulate replaces the serde code for a type with your own custom unpopulate function
+// Used to handle the cases where we want to convert references to a custom error type to our package level `Error`
+// type.
+// symbolName - the name of the type and the field (ACSMessageReceivedEventData.Error)
+// newFuncCall - the name of the Go function you're replacing the unmarshalling code with. This'll be a real Go
+// function you have defined in custom_events.go, like `unmarshalInternalACSMessageChannelEventError`
+func UseCustomUnpopulate(modelsSerdeGo string, symbolName string, newFuncCall string) string {
 	parts := strings.Split(symbolName, ".")
-	buff, err := os.ReadFile(filename)
-
-	if err != nil {
-		return err
-	}
 
 	re := regexp.MustCompile(
 		// ex: 'func (a *AcsAdvancedMessageReceivedEventData) UnmarshalJSON(data []byte) error {'
-		`(?s)(func \([a-zA-Z]+? \*` + parts[0] + `\) UnmarshalJSON\(data \[\]byte\) error \{.+?` +
+		`(?is)(func \([a-zA-Z]+? \*` + parts[0] + `\) UnmarshalJSON\(data \[\]byte\) error \{.+?` +
 			// ex: 'err = unpopulate(val, "Content", &a.Content)'
 			`err = )unpopulate(\(val, "` + parts[1] + `")`)
 
-	newBuff := re.ReplaceAll(buff, []byte("$1 "+newFuncCall+"$2"))
-
-	if bytes.Equal(newBuff, buff) {
-		return fmt.Errorf("Replacement didn't change any text for %s -> %s", symbolName, newFuncCall)
-	}
-
-	return os.WriteFile(filename, newBuff, 0600)
+	return re.ReplaceAllString(modelsSerdeGo, "$1 "+newFuncCall+"$2")
 }
 
 func Replace(filename string, purpose string, repl func(string) (string, error)) error {

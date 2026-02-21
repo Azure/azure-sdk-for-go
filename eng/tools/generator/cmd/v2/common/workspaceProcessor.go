@@ -20,8 +20,7 @@ func GetSDKRepo(sdkRepoParam, sdkRepoURL string) (repo.SDKRepository, error) {
 	var sdkRepo repo.SDKRepository
 	// create sdk git repo ref
 	if commitIDRegex.Match([]byte(sdkRepoParam)) {
-		sdkRepo, err = repo.CloneSDKRepository(sdkRepoURL, sdkRepoParam)
-		if err != nil {
+		if sdkRepo, err = repo.CloneSDKRepository(sdkRepoURL, sdkRepoParam); err != nil {
 			return nil, fmt.Errorf("failed to get sdk repo: %+v", err)
 		}
 	} else {
@@ -30,8 +29,7 @@ func GetSDKRepo(sdkRepoParam, sdkRepoURL string) (repo.SDKRepository, error) {
 			return nil, fmt.Errorf("failed to get the directory of azure-sdk-for-go: %v", err)
 		}
 
-		sdkRepo, err = repo.OpenSDKRepository(path)
-		if err != nil {
+		if sdkRepo, err = repo.OpenSDKRepository(path); err != nil {
 			return nil, fmt.Errorf("failed to get sdk repo: %+v", err)
 		}
 	}

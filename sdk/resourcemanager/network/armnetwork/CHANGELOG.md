@@ -1,5 +1,141 @@
 # Release History
 
+## 9.0.0 (2026-02-19)
+### Breaking Changes
+
+- `FirewallPolicyIntrusionDetectionProfileTypeAdvanced`, `FirewallPolicyIntrusionDetectionProfileTypeBasic`, `FirewallPolicyIntrusionDetectionProfileTypeStandard` from enum `FirewallPolicyIntrusionDetectionProfileType` has been removed
+
+### Features Added
+
+- New value `ActionTypeCAPTCHA` added to enum type `ActionType`
+- New value `FirewallPolicyIntrusionDetectionProfileTypeCore`, `FirewallPolicyIntrusionDetectionProfileTypeEmerging`, `FirewallPolicyIntrusionDetectionProfileTypeOff` added to enum type `FirewallPolicyIntrusionDetectionProfileType`
+- New value `WebApplicationFirewallActionCAPTCHA` added to enum type `WebApplicationFirewallAction`
+- New enum type `AddressUpdateAction` with values `AddressUpdateActionFullUpdate`, `AddressUpdateActionPartialUpdate`
+- New enum type `ServiceGatewaySKUName` with values `ServiceGatewaySKUNameStandard`
+- New enum type `ServiceGatewaySKUTier` with values `ServiceGatewaySKUTierRegional`
+- New enum type `ServiceType` with values `ServiceTypeInbound`, `ServiceTypeInboundOutbound`, `ServiceTypeOutbound`
+- New enum type `ServiceUpdateAction` with values `ServiceUpdateActionFullUpdate`, `ServiceUpdateActionPartialUpdate`
+- New enum type `UpdateAction` with values `UpdateActionFullUpdate`, `UpdateActionPartialUpdate`
+- New function `*ClientFactory.NewServiceGatewaysClient() *ServiceGatewaysClient`
+- New function `*ClientFactory.NewVirtualNetworkAppliancesClient() *VirtualNetworkAppliancesClient`
+- New function `NewServiceGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceGatewaysClient, error)`
+- New function `*ServiceGatewaysClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGateway, options *ServiceGatewaysClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServiceGatewaysClientCreateOrUpdateResponse], error)`
+- New function `*ServiceGatewaysClient.BeginDelete(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*runtime.Poller[ServiceGatewaysClientDeleteResponse], error)`
+- New function `*ServiceGatewaysClient.Get(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientGetOptions) (ServiceGatewaysClientGetResponse, error)`
+- New function `*ServiceGatewaysClient.NewGetAddressLocationsPager(resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientGetAddressLocationsOptions) *runtime.Pager[ServiceGatewaysClientGetAddressLocationsResponse]`
+- New function `*ServiceGatewaysClient.NewGetServicesPager(resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientGetServicesOptions) *runtime.Pager[ServiceGatewaysClientGetServicesResponse]`
+- New function `*ServiceGatewaysClient.NewListAllPager(options *ServiceGatewaysClientListAllOptions) *runtime.Pager[ServiceGatewaysClientListAllResponse]`
+- New function `*ServiceGatewaysClient.NewListPager(resourceGroupName string, options *ServiceGatewaysClientListOptions) *runtime.Pager[ServiceGatewaysClientListResponse]`
+- New function `*ServiceGatewaysClient.BeginUpdateAddressLocations(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, options *ServiceGatewaysClientBeginUpdateAddressLocationsOptions) (*runtime.Poller[ServiceGatewaysClientUpdateAddressLocationsResponse], error)`
+- New function `*ServiceGatewaysClient.BeginUpdateServices(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, options *ServiceGatewaysClientBeginUpdateServicesOptions) (*runtime.Poller[ServiceGatewaysClientUpdateServicesResponse], error)`
+- New function `*ServiceGatewaysClient.UpdateTags(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters TagsObject, options *ServiceGatewaysClientUpdateTagsOptions) (ServiceGatewaysClientUpdateTagsResponse, error)`
+- New function `NewVirtualNetworkAppliancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkAppliancesClient, error)`
+- New function `*VirtualNetworkAppliancesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, parameters VirtualNetworkAppliance, options *VirtualNetworkAppliancesClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworkAppliancesClientCreateOrUpdateResponse], error)`
+- New function `*VirtualNetworkAppliancesClient.BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkAppliancesClientDeleteResponse], error)`
+- New function `*VirtualNetworkAppliancesClient.Get(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientGetOptions) (VirtualNetworkAppliancesClientGetResponse, error)`
+- New function `*VirtualNetworkAppliancesClient.NewListAllPager(options *VirtualNetworkAppliancesClientListAllOptions) *runtime.Pager[VirtualNetworkAppliancesClientListAllResponse]`
+- New function `*VirtualNetworkAppliancesClient.NewListPager(resourceGroupName string, options *VirtualNetworkAppliancesClientListOptions) *runtime.Pager[VirtualNetworkAppliancesClientListResponse]`
+- New function `*VirtualNetworkAppliancesClient.UpdateTags(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, parameters TagsObject, options *VirtualNetworkAppliancesClientUpdateTagsOptions) (VirtualNetworkAppliancesClientUpdateTagsResponse, error)`
+- New struct `GetServiceGatewayAddressLocationsResult`
+- New struct `GetServiceGatewayServicesResult`
+- New struct `RouteTargetAddressPropertiesFormat`
+- New struct `ServiceGateway`
+- New struct `ServiceGatewayAddress`
+- New struct `ServiceGatewayAddressLocation`
+- New struct `ServiceGatewayAddressLocationResponse`
+- New struct `ServiceGatewayListResult`
+- New struct `ServiceGatewayPropertiesFormat`
+- New struct `ServiceGatewaySKU`
+- New struct `ServiceGatewayService`
+- New struct `ServiceGatewayServicePropertiesFormat`
+- New struct `ServiceGatewayServiceRequest`
+- New struct `ServiceGatewayUpdateAddressLocationsRequest`
+- New struct `ServiceGatewayUpdateServicesRequest`
+- New struct `VirtualNetworkAppliance`
+- New struct `VirtualNetworkApplianceIPConfiguration`
+- New struct `VirtualNetworkApplianceIPConfigurationProperties`
+- New struct `VirtualNetworkApplianceListResult`
+- New struct `VirtualNetworkAppliancePropertiesFormat`
+- New field `ServiceGateway` in struct `NatGatewayPropertiesFormat`
+- New field `CaptchaCookieExpirationInMins` in struct `PolicySettings`
+- New field `ServiceGateway` in struct `SubnetPropertiesFormat`
+
+
+## 8.0.0 (2025-12-25)
+### Breaking Changes
+
+- `ApplicationGatewayWafRuleSensitivityTypesNone` from enum `ApplicationGatewayWafRuleSensitivityTypes` has been removed
+- `SensitivityTypeNone` from enum `SensitivityType` has been removed
+
+### Features Added
+
+- New enum type `ApplicationGatewayClientAuthVerificationModes` with values `ApplicationGatewayClientAuthVerificationModesPassthrough`, `ApplicationGatewayClientAuthVerificationModesStrict`
+- New enum type `ApplicationGatewayUnAuthorizedRequestAction` with values `ApplicationGatewayUnAuthorizedRequestActionAllow`, `ApplicationGatewayUnAuthorizedRequestActionDeny`
+- New enum type `DdosDetectionMode` with values `DdosDetectionModeTrafficThreshold`
+- New enum type `DdosTrafficType` with values `DdosTrafficTypeTCP`, `DdosTrafficTypeTCPSyn`, `DdosTrafficTypeUDP`
+- New enum type `IsRollback` with values `IsRollbackFalse`, `IsRollbackTrue`
+- New enum type `PrivateEndpointIPVersionType` with values `PrivateEndpointIPVersionTypeDualStack`, `PrivateEndpointIPVersionTypeIPv4`, `PrivateEndpointIPVersionTypeIPv6`
+- New function `*PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP(context.Context, string, string, DisassociateCloudServicePublicIPRequest, *PublicIPAddressesClientBeginDisassociateCloudServiceReservedPublicIPOptions) (*runtime.Poller[PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse], error)`
+- New function `*PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress(context.Context, string, string, ReserveCloudServicePublicIPAddressRequest, *PublicIPAddressesClientBeginReserveCloudServicePublicIPAddressOptions) (*runtime.Poller[PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse], error)`
+- New struct `ApplicationGatewayEntraJWTValidationConfig`
+- New struct `ApplicationGatewayEntraJWTValidationConfigPropertiesFormat`
+- New struct `DdosDetectionRule`
+- New struct `DdosDetectionRulePropertiesFormat`
+- New struct `DisassociateCloudServicePublicIPRequest`
+- New struct `ReserveCloudServicePublicIPAddressRequest`
+- New struct `TrafficDetectionRule`
+- New field `VerifyClientAuthMode` in struct `ApplicationGatewayClientAuthConfiguration`
+- New field `EntraJWTValidationConfigs` in struct `ApplicationGatewayPropertiesFormat`
+- New field `EntraJWTValidationConfig` in struct `ApplicationGatewayRequestRoutingRulePropertiesFormat`
+- New field `DetectionRules`, `FrontEndIPConfiguration` in struct `DdosCustomPolicyPropertiesFormat`
+- New field `RecordTypes` in struct `FlowLogProperties`
+- New field `RecordTypes` in struct `FlowLogPropertiesFormat`
+- New field `IPVersionType` in struct `PrivateEndpointProperties`
+
+
+## 7.2.0 (2025-11-20)
+### Features Added
+
+- New enum type `AccessMode` with values `AccessModeDefault`, `AccessModeRestricted`
+- New enum type `ConnectionAuthenticationType` with values `ConnectionAuthenticationTypeCertificate`, `ConnectionAuthenticationTypePSK`
+- New enum type `LoadBalancerScope` with values `LoadBalancerScopePrivate`, `LoadBalancerScopePublic`
+- New enum type `RouteTableUsageMode` with values `RouteTableUsageModeManagedOnly`, `RouteTableUsageModeUseExisting`
+- New struct `CertificateAuthentication`
+- New field `EnableL4ClientIPPreservation` in struct `ApplicationGatewayBackendSettingsPropertiesFormat`
+- New field `EnableProbeProxyProtocolHeader` in struct `ApplicationGatewayOnDemandProbe`
+- New field `EnableProbeProxyProtocolHeader` in struct `ApplicationGatewayProbePropertiesFormat`
+- New field `Scope` in struct `LoadBalancerPropertiesFormat`
+- New field `RouteTableUsageMode` in struct `ManagerRoutingConfigurationPropertiesFormat`
+- New field `AccessMode` in struct `PrivateLinkServiceProperties`
+- New field `AuthenticationType`, `CertificateAuthentication` in struct `VirtualNetworkGatewayConnectionPropertiesFormat`
+
+
+## 7.1.0 (2025-10-23)
+### Features Added
+
+- New value `TransportProtocolQuic` added to enum type `TransportProtocol`
+- New enum type `AzureFirewallPacketCaptureOperationType` with values `AzureFirewallPacketCaptureOperationTypeStart`, `AzureFirewallPacketCaptureOperationTypeStatus`, `AzureFirewallPacketCaptureOperationTypeStop`
+- New enum type `AzureFirewallPacketCaptureResponseCode` with values `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureCompleted`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureFailed`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureInProgress`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureNotInProgress`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartFailed`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartFailedToUpload`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartFailure`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStartSucceeded`, `AzureFirewallPacketCaptureResponseCodeAzureFirewallPacketCaptureStopSucceeded`, `AzureFirewallPacketCaptureResponseCodeNotImplemented`
+- New enum type `NvaNicType` with values `NvaNicTypeAdditionalPrivateNic`, `NvaNicTypeAdditionalPublicNic`, `NvaNicTypePrivateNic`, `NvaNicTypePublicNic`
+- New function `*AzureFirewallsClient.BeginPacketCaptureOperation(context.Context, string, string, FirewallPacketCaptureParameters, *AzureFirewallsClientBeginPacketCaptureOperationOptions) (*runtime.Poller[AzureFirewallsClientPacketCaptureOperationResponse], error)`
+- New function `*ClientFactory.NewSecurityPerimeterServiceTagsClient() *SecurityPerimeterServiceTagsClient`
+- New function `NewSecurityPerimeterServiceTagsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SecurityPerimeterServiceTagsClient, error)`
+- New function `*SecurityPerimeterServiceTagsClient.NewListPager(string, *SecurityPerimeterServiceTagsClientListOptions) *runtime.Pager[SecurityPerimeterServiceTagsClientListResponse]`
+- New function `*VPNServerConfigurationsClient.ListRadiusSecrets(context.Context, string, string, *VPNServerConfigurationsClientListRadiusSecretsOptions) (VPNServerConfigurationsClientListRadiusSecretsResponse, error)`
+- New function `*VirtualNetworkGatewaysClient.ListRadiusSecrets(context.Context, string, string, *VirtualNetworkGatewaysClientListRadiusSecretsOptions) (VirtualNetworkGatewaysClientListRadiusSecretsResponse, error)`
+- New struct `AzureFirewallPacketCaptureResponse`
+- New struct `NspServiceTagsListResult`
+- New struct `NspServiceTagsResource`
+- New struct `NvaInVnetSubnetReferenceProperties`
+- New struct `NvaInterfaceConfigurationsProperties`
+- New struct `RadiusAuthServer`
+- New struct `RadiusAuthServerListResult`
+- New field `DedicatedBackendConnection`, `SniName`, `ValidateCertChainAndExpiry`, `ValidateSNI` in struct `ApplicationGatewayBackendHTTPSettingsPropertiesFormat`
+- New field `ExtendedLocation` in struct `AzureFirewall`
+- New field `Operation` in struct `FirewallPacketCaptureParameters`
+- New field `NvaInterfaceConfigurations`, `PrivateIPAddress` in struct `VirtualAppliancePropertiesFormat`
+
+
 ## 7.0.0 (2025-05-22)
 ### Breaking Changes
 

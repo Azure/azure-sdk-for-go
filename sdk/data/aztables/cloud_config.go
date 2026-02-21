@@ -11,13 +11,15 @@ import "github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 const ServiceName cloud.ServiceName = "data/aztables"
 
 func init() {
+	// for Azure Table Storage endpoints, these values are ignored as the audience is always "https://storage.azure.com"
+	// for Cosmos endpoints, we will use the audiences as specified here
 	cloud.AzureChina.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://storage.azure.cn",
+		Audience: "https://cosmos.azure.cn",
 	}
 	cloud.AzureGovernment.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://storage.azure.us",
+		Audience: "https://cosmos.azure.us",
 	}
 	cloud.AzurePublic.Services[ServiceName] = cloud.ServiceConfiguration{
-		Audience: "https://storage.azure.com",
+		Audience: "https://cosmos.azure.com",
 	}
 }

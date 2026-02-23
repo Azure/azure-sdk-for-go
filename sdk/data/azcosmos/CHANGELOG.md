@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `ReadMany` API to read multiple items from a container in a single operation. See [PR 25516](https://github.com/Azure/azure-sdk-for-go/pull/25516)
+
 ### Breaking Changes
 
 ### Bugs Fixed

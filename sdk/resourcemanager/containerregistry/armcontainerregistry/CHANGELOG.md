@@ -1,5 +1,213 @@
 # Release History
 
+## 3.0.0-beta.2 (2026-02-23)
+### Breaking Changes
+
+- Enum `Architecture` has been removed
+- Enum `BaseImageDependencyType` has been removed
+- Enum `BaseImageTriggerType` has been removed
+- Enum `OS` has been removed
+- Enum `RunStatus` has been removed
+- Enum `RunType` has been removed
+- Enum `SecretObjectType` has been removed
+- Enum `SourceControlType` has been removed
+- Enum `SourceRegistryLoginMode` has been removed
+- Enum `SourceTriggerEvent` has been removed
+- Enum `StepType` has been removed
+- Enum `TaskStatus` has been removed
+- Enum `TokenType` has been removed
+- Enum `UpdateTriggerPayloadType` has been removed
+- Enum `Variant` has been removed
+- Function `NewAgentPoolsClient` has been removed
+- Function `*AgentPoolsClient.BeginCreate` has been removed
+- Function `*AgentPoolsClient.BeginDelete` has been removed
+- Function `*AgentPoolsClient.Get` has been removed
+- Function `*AgentPoolsClient.GetQueueStatus` has been removed
+- Function `*AgentPoolsClient.NewListPager` has been removed
+- Function `*AgentPoolsClient.BeginUpdate` has been removed
+- Function `*ClientFactory.NewAgentPoolsClient` has been removed
+- Function `*ClientFactory.NewRunsClient` has been removed
+- Function `*ClientFactory.NewTaskRunsClient` has been removed
+- Function `*ClientFactory.NewTasksClient` has been removed
+- Function `*DockerBuildRequest.GetRunRequest` has been removed
+- Function `*DockerBuildStep.GetTaskStepProperties` has been removed
+- Function `*DockerBuildStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `*EncodedTaskRunRequest.GetRunRequest` has been removed
+- Function `*EncodedTaskStep.GetTaskStepProperties` has been removed
+- Function `*EncodedTaskStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `*FileTaskRunRequest.GetRunRequest` has been removed
+- Function `*FileTaskStep.GetTaskStepProperties` has been removed
+- Function `*FileTaskStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `*RegistriesClient.GetBuildSourceUploadURL` has been removed
+- Function `*RegistriesClient.ScheduleRun` has been removed
+- Function `*RunRequest.GetRunRequest` has been removed
+- Function `NewRunsClient` has been removed
+- Function `*RunsClient.Cancel` has been removed
+- Function `*RunsClient.Get` has been removed
+- Function `*RunsClient.GetLogSasURL` has been removed
+- Function `*RunsClient.NewListPager` has been removed
+- Function `*RunsClient.Update` has been removed
+- Function `*TaskRunRequest.GetRunRequest` has been removed
+- Function `NewTaskRunsClient` has been removed
+- Function `*TaskRunsClient.BeginCreate` has been removed
+- Function `*TaskRunsClient.Delete` has been removed
+- Function `*TaskRunsClient.Get` has been removed
+- Function `*TaskRunsClient.GetDetails` has been removed
+- Function `*TaskRunsClient.NewListPager` has been removed
+- Function `*TaskRunsClient.BeginUpdate` has been removed
+- Function `*TaskStepProperties.GetTaskStepProperties` has been removed
+- Function `*TaskStepUpdateParameters.GetTaskStepUpdateParameters` has been removed
+- Function `NewTasksClient` has been removed
+- Function `*TasksClient.Create` has been removed
+- Function `*TasksClient.Delete` has been removed
+- Function `*TasksClient.Get` has been removed
+- Function `*TasksClient.GetDetails` has been removed
+- Function `*TasksClient.NewListPager` has been removed
+- Function `*TasksClient.Update` has been removed
+- Struct `AgentPool` has been removed
+- Struct `AgentPoolListResult` has been removed
+- Struct `AgentPoolProperties` has been removed
+- Struct `AgentPoolPropertiesUpdateParameters` has been removed
+- Struct `AgentPoolQueueStatus` has been removed
+- Struct `AgentPoolUpdateParameters` has been removed
+- Struct `AgentProperties` has been removed
+- Struct `Argument` has been removed
+- Struct `AuthInfo` has been removed
+- Struct `AuthInfoUpdateParameters` has been removed
+- Struct `BaseImageDependency` has been removed
+- Struct `BaseImageTrigger` has been removed
+- Struct `BaseImageTriggerUpdateParameters` has been removed
+- Struct `Credentials` has been removed
+- Struct `CustomRegistryCredentials` has been removed
+- Struct `DockerBuildRequest` has been removed
+- Struct `DockerBuildStep` has been removed
+- Struct `DockerBuildStepUpdateParameters` has been removed
+- Struct `EncodedTaskRunRequest` has been removed
+- Struct `EncodedTaskStep` has been removed
+- Struct `EncodedTaskStepUpdateParameters` has been removed
+- Struct `FileTaskRunRequest` has been removed
+- Struct `FileTaskStep` has been removed
+- Struct `FileTaskStepUpdateParameters` has been removed
+- Struct `ImageDescriptor` has been removed
+- Struct `ImageUpdateTrigger` has been removed
+- Struct `OverrideTaskStepProperties` has been removed
+- Struct `PlatformProperties` has been removed
+- Struct `PlatformUpdateParameters` has been removed
+- Struct `Run` has been removed
+- Struct `RunGetLogResult` has been removed
+- Struct `RunListResult` has been removed
+- Struct `RunProperties` has been removed
+- Struct `RunUpdateParameters` has been removed
+- Struct `SecretObject` has been removed
+- Struct `SetValue` has been removed
+- Struct `SourceProperties` has been removed
+- Struct `SourceRegistryCredentials` has been removed
+- Struct `SourceTrigger` has been removed
+- Struct `SourceTriggerDescriptor` has been removed
+- Struct `SourceTriggerUpdateParameters` has been removed
+- Struct `SourceUpdateParameters` has been removed
+- Struct `SourceUploadDefinition` has been removed
+- Struct `Task` has been removed
+- Struct `TaskListResult` has been removed
+- Struct `TaskProperties` has been removed
+- Struct `TaskPropertiesUpdateParameters` has been removed
+- Struct `TaskRun` has been removed
+- Struct `TaskRunListResult` has been removed
+- Struct `TaskRunProperties` has been removed
+- Struct `TaskRunPropertiesUpdateParameters` has been removed
+- Struct `TaskRunRequest` has been removed
+- Struct `TaskRunUpdateParameters` has been removed
+- Struct `TaskUpdateParameters` has been removed
+- Struct `TimerTrigger` has been removed
+- Struct `TimerTriggerDescriptor` has been removed
+- Struct `TimerTriggerUpdateParameters` has been removed
+- Struct `TriggerProperties` has been removed
+- Struct `TriggerUpdateParameters` has been removed
+
+### Features Added
+
+- New enum type `EndpointProtocol` with values `EndpointProtocolIPv4`, `EndpointProtocolIPv4AndIPv6`
+- New enum type `MetadataSearch` with values `MetadataSearchDisabled`, `MetadataSearchEnabled`
+- New enum type `PackageSourceType` with values `PackageSourceTypeRemote`
+- New enum type `PipelineOptions` with values `PipelineOptionsContinueOnErrors`, `PipelineOptionsDeleteSourceBlobOnSuccess`, `PipelineOptionsOverwriteBlobs`, `PipelineOptionsOverwriteTags`
+- New enum type `PipelineRunSourceType` with values `PipelineRunSourceTypeAzureStorageBlob`
+- New enum type `PipelineRunTargetType` with values `PipelineRunTargetTypeAzureStorageBlob`
+- New enum type `PipelineSourceType` with values `PipelineSourceTypeAzureStorageBlobContainer`
+- New enum type `RegionalEndpoints` with values `RegionalEndpointsDisabled`, `RegionalEndpointsEnabled`
+- New enum type `StorageAccessMode` with values `StorageAccessModeManagedIdentity`, `StorageAccessModeSasToken`
+- New enum type `SyncState` with values `SyncStateFailed`, `SyncStateNotActivated`, `SyncStatePending`, `SyncStateSucceeded`, `SyncStateSyncing`, `SyncStateTimedOut`
+- New enum type `SyncTrigger` with values `SyncTriggerInitialSync`, `SyncTriggerManualResync`, `SyncTriggerRecoveryService`, `SyncTriggerSyncTokenUpdate`
+- New function `NewArchiveVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ArchiveVersionsClient, error)`
+- New function `*ArchiveVersionsClient.BeginCreate(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginCreateOptions) (*runtime.Poller[ArchiveVersionsClientCreateResponse], error)`
+- New function `*ArchiveVersionsClient.BeginDelete(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientBeginDeleteOptions) (*runtime.Poller[ArchiveVersionsClientDeleteResponse], error)`
+- New function `*ArchiveVersionsClient.Get(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveVersionName string, options *ArchiveVersionsClientGetOptions) (ArchiveVersionsClientGetResponse, error)`
+- New function `*ArchiveVersionsClient.NewListPager(resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchiveVersionsClientListOptions) *runtime.Pager[ArchiveVersionsClientListResponse]`
+- New function `NewArchivesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ArchivesClient, error)`
+- New function `*ArchivesClient.BeginCreate(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveCreateParameters Archive, options *ArchivesClientBeginCreateOptions) (*runtime.Poller[ArchivesClientCreateResponse], error)`
+- New function `*ArchivesClient.BeginDelete(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchivesClientBeginDeleteOptions) (*runtime.Poller[ArchivesClientDeleteResponse], error)`
+- New function `*ArchivesClient.Get(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchivesClientGetOptions) (ArchivesClientGetResponse, error)`
+- New function `*ArchivesClient.NewListPager(resourceGroupName string, registryName string, packageType string, options *ArchivesClientListOptions) *runtime.Pager[ArchivesClientListResponse]`
+- New function `*ArchivesClient.Update(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveUpdateParameters ArchiveUpdateParameters, options *ArchivesClientUpdateOptions) (ArchivesClientUpdateResponse, error)`
+- New function `*ClientFactory.NewArchiveVersionsClient() *ArchiveVersionsClient`
+- New function `*ClientFactory.NewArchivesClient() *ArchivesClient`
+- New function `*ClientFactory.NewExportPipelinesClient() *ExportPipelinesClient`
+- New function `*ClientFactory.NewImportPipelinesClient() *ImportPipelinesClient`
+- New function `*ClientFactory.NewPipelineRunsClient() *PipelineRunsClient`
+- New function `*ConnectedRegistriesClient.Resync(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientResyncOptions) (ConnectedRegistriesClientResyncResponse, error)`
+- New function `NewExportPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExportPipelinesClient, error)`
+- New function `*ExportPipelinesClient.BeginCreate(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesClientBeginCreateOptions) (*runtime.Poller[ExportPipelinesClientCreateResponse], error)`
+- New function `*ExportPipelinesClient.BeginDelete(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesClientBeginDeleteOptions) (*runtime.Poller[ExportPipelinesClientDeleteResponse], error)`
+- New function `*ExportPipelinesClient.Get(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesClientGetOptions) (ExportPipelinesClientGetResponse, error)`
+- New function `*ExportPipelinesClient.NewListPager(resourceGroupName string, registryName string, options *ExportPipelinesClientListOptions) *runtime.Pager[ExportPipelinesClientListResponse]`
+- New function `NewImportPipelinesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImportPipelinesClient, error)`
+- New function `*ImportPipelinesClient.BeginCreate(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, importPipelineCreateParameters ImportPipeline, options *ImportPipelinesClientBeginCreateOptions) (*runtime.Poller[ImportPipelinesClientCreateResponse], error)`
+- New function `*ImportPipelinesClient.BeginDelete(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, options *ImportPipelinesClientBeginDeleteOptions) (*runtime.Poller[ImportPipelinesClientDeleteResponse], error)`
+- New function `*ImportPipelinesClient.Get(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, options *ImportPipelinesClientGetOptions) (ImportPipelinesClientGetResponse, error)`
+- New function `*ImportPipelinesClient.NewListPager(resourceGroupName string, registryName string, options *ImportPipelinesClientListOptions) *runtime.Pager[ImportPipelinesClientListResponse]`
+- New function `NewPipelineRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PipelineRunsClient, error)`
+- New function `*PipelineRunsClient.BeginCreate(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, pipelineRunCreateParameters PipelineRun, options *PipelineRunsClientBeginCreateOptions) (*runtime.Poller[PipelineRunsClientCreateResponse], error)`
+- New function `*PipelineRunsClient.BeginDelete(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientBeginDeleteOptions) (*runtime.Poller[PipelineRunsClientDeleteResponse], error)`
+- New function `*PipelineRunsClient.Get(ctx context.Context, resourceGroupName string, registryName string, pipelineRunName string, options *PipelineRunsClientGetOptions) (PipelineRunsClientGetResponse, error)`
+- New function `*PipelineRunsClient.NewListPager(resourceGroupName string, registryName string, options *PipelineRunsClientListOptions) *runtime.Pager[PipelineRunsClientListResponse]`
+- New struct `Archive`
+- New struct `ArchiveListResult`
+- New struct `ArchivePackageSourceProperties`
+- New struct `ArchiveProperties`
+- New struct `ArchiveUpdateParameters`
+- New struct `ArchiveUpdateProperties`
+- New struct `ArchiveVersion`
+- New struct `ArchiveVersionListResult`
+- New struct `ArchiveVersionProperties`
+- New struct `ExportPipeline`
+- New struct `ExportPipelineListResult`
+- New struct `ExportPipelineProperties`
+- New struct `ExportPipelineTargetProperties`
+- New struct `ImportPipeline`
+- New struct `ImportPipelineListResult`
+- New struct `ImportPipelineProperties`
+- New struct `ImportPipelineSourceProperties`
+- New struct `PipelineRun`
+- New struct `PipelineRunListResult`
+- New struct `PipelineRunProperties`
+- New struct `PipelineRunRequest`
+- New struct `PipelineRunResponse`
+- New struct `PipelineRunSourceProperties`
+- New struct `PipelineRunTargetProperties`
+- New struct `PipelineSourceTriggerDescriptor`
+- New struct `PipelineSourceTriggerProperties`
+- New struct `PipelineTriggerDescriptor`
+- New struct `PipelineTriggerProperties`
+- New struct `ProgressProperties`
+- New struct `RegistrySyncResult`
+- New struct `SoftDeletePolicy`
+- New field `Identity` in struct `CacheRule`
+- New field `Identity` in struct `CacheRuleUpdateParameters`
+- New field `RegistrySyncResult` in struct `ConnectedRegistryProperties`
+- New field `SoftDeletePolicy` in struct `Policies`
+- New field `EndpointProtocol`, `MetadataSearch`, `RegionalEndpointHostNames`, `RegionalEndpoints` in struct `RegistryProperties`
+- New field `EndpointProtocol`, `MetadataSearch`, `RegionalEndpoints` in struct `RegistryPropertiesUpdateParameters`
+
+
 ## 3.0.0 (2026-01-28)
 ### Breaking Changes
 - Registry Task related clients, functions and types has been moved to new package: ‎`sdk/resourcemanager/containerregistry/armcontainerregistrytasks`.

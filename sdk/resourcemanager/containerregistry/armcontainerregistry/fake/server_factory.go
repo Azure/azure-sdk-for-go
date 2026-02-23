@@ -15,6 +15,12 @@ import (
 
 // ServerFactory is a fake server for instances of the armcontainerregistry.ClientFactory type.
 type ServerFactory struct {
+	// ArchiveVersionsServer contains the fakes for client ArchiveVersionsClient
+	ArchiveVersionsServer ArchiveVersionsServer
+
+	// ArchivesServer contains the fakes for client ArchivesClient
+	ArchivesServer ArchivesServer
+
 	// CacheRulesServer contains the fakes for client CacheRulesClient
 	CacheRulesServer CacheRulesServer
 
@@ -24,8 +30,17 @@ type ServerFactory struct {
 	// CredentialSetsServer contains the fakes for client CredentialSetsClient
 	CredentialSetsServer CredentialSetsServer
 
+	// ExportPipelinesServer contains the fakes for client ExportPipelinesClient
+	ExportPipelinesServer ExportPipelinesServer
+
+	// ImportPipelinesServer contains the fakes for client ImportPipelinesClient
+	ImportPipelinesServer ImportPipelinesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// PipelineRunsServer contains the fakes for client PipelineRunsClient
+	PipelineRunsServer PipelineRunsServer
 
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
@@ -60,10 +75,15 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                *ServerFactory
 	trMu                               sync.Mutex
+	trArchiveVersionsServer            *ArchiveVersionsServerTransport
+	trArchivesServer                   *ArchivesServerTransport
 	trCacheRulesServer                 *CacheRulesServerTransport
 	trConnectedRegistriesServer        *ConnectedRegistriesServerTransport
 	trCredentialSetsServer             *CredentialSetsServerTransport
+	trExportPipelinesServer            *ExportPipelinesServerTransport
+	trImportPipelinesServer            *ImportPipelinesServerTransport
 	trOperationsServer                 *OperationsServerTransport
+	trPipelineRunsServer               *PipelineRunsServerTransport
 	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
 	trRegistriesServer                 *RegistriesServerTransport
 	trReplicationsServer               *ReplicationsServerTransport
@@ -85,6 +105,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ArchiveVersionsClient":
+		initServer(s, &s.trArchiveVersionsServer, func() *ArchiveVersionsServerTransport {
+			return NewArchiveVersionsServerTransport(&s.srv.ArchiveVersionsServer)
+		})
+		resp, err = s.trArchiveVersionsServer.Do(req)
+	case "ArchivesClient":
+		initServer(s, &s.trArchivesServer, func() *ArchivesServerTransport { return NewArchivesServerTransport(&s.srv.ArchivesServer) })
+		resp, err = s.trArchivesServer.Do(req)
 	case "CacheRulesClient":
 		initServer(s, &s.trCacheRulesServer, func() *CacheRulesServerTransport { return NewCacheRulesServerTransport(&s.srv.CacheRulesServer) })
 		resp, err = s.trCacheRulesServer.Do(req)
@@ -98,9 +126,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCredentialSetsServerTransport(&s.srv.CredentialSetsServer)
 		})
 		resp, err = s.trCredentialSetsServer.Do(req)
+	case "ExportPipelinesClient":
+		initServer(s, &s.trExportPipelinesServer, func() *ExportPipelinesServerTransport {
+			return NewExportPipelinesServerTransport(&s.srv.ExportPipelinesServer)
+		})
+		resp, err = s.trExportPipelinesServer.Do(req)
+	case "ImportPipelinesClient":
+		initServer(s, &s.trImportPipelinesServer, func() *ImportPipelinesServerTransport {
+			return NewImportPipelinesServerTransport(&s.srv.ImportPipelinesServer)
+		})
+		resp, err = s.trImportPipelinesServer.Do(req)
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PipelineRunsClient":
+		initServer(s, &s.trPipelineRunsServer, func() *PipelineRunsServerTransport { return NewPipelineRunsServerTransport(&s.srv.PipelineRunsServer) })
+		resp, err = s.trPipelineRunsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/ScopeMapCreate.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapCreate.json
 func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapDelete.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapDelete.json
 func ExampleScopeMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleScopeMapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapGet.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapGet.json
 func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleScopeMapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapList.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapList.json
 func ExampleScopeMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleScopeMapsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapUpdate.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapUpdate.json
 func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

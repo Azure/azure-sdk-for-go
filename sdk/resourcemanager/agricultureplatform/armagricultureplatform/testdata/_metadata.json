@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2024-06-01-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.AgriculturePlatform": "2024-06-01-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

@@ -108,7 +108,7 @@ func (client *CloudHsmClusterRestoreStatusClient) getHandleResponse(resp *http.R
 		result.Location = &val
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.XMSRequestID = &val
+		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreResult); err != nil {
 		return CloudHsmClusterRestoreStatusClientGetResponse{}, err

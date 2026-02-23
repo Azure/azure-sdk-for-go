@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-10-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.DeviceRegistry": "2025-10-01"
+  },
+  "emitterVersion": "0.10.0"
 }

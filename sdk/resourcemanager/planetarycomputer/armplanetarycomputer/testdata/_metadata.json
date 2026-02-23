@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-02-11-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.Spatio": "2025-02-11-preview"
+  },
+  "emitterVersion": "0.10.0"
 }

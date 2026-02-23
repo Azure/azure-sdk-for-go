@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2024-12-01",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.HybridConnectivity": "2024-12-01"
+  },
+  "emitterVersion": "0.10.0"
 }

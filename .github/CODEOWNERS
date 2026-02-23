@@ -82,6 +82,9 @@
 /sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @chlowell @gracewilcox @jhendrixMSFT
 
 # PRLabel: %Monitor
+/sdk/monitor/ingestion/azlogs/                                     @Azure/azure-sdk-write-monitor-data-plane
+
+# PRLabel: %Monitor
 /sdk/monitor/query/azmetrics/                                      @Azure/azure-sdk-write-monitor-query-metrics
 
 # AzureSdkOwners:                                                  @gracewilcox

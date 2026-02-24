@@ -1,5 +1,22 @@
 # Release History
 
+## 1.3.0-beta.4 (2026-02-24)
+### Breaking Changes
+
+- Struct `ClusterListPersistedScriptActionsResult` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ScriptActionPersistedGetResponseSpec` has been removed
+- Struct `TrackedResource` has been removed
+- Field `Value` of struct `ConfigurationsClientGetResponse` has been removed
+
+### Features Added
+
+- New struct `ClusterConfiguration`
+- New anonymous field `ClusterConfiguration` in struct `ConfigurationsClientGetResponse`
+
+
 ## 1.3.0-beta.3 (2025-10-23)
 ### Features Added
 

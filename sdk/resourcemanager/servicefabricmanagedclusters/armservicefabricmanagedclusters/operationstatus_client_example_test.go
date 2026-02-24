@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01-preview/OperationStatusFailed_example.json
+// Generated from example definition: 2026-02-01/OperationStatusFailed_example.json
 func ExampleOperationStatusClient_Get_errorResponseDescribingWhyTheOperationFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleOperationStatusClient_Get_errorResponseDescribingWhyTheOperationFail
 	// }
 }
 
-// Generated from example definition: 2025-10-01-preview/OperationStatusSucceeded_example.json
+// Generated from example definition: 2026-02-01/OperationStatusSucceeded_example.json
 func ExampleOperationStatusClient_Get_okTheRequestHasSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

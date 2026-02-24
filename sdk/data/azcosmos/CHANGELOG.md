@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Improved the performance of the built-in ReadMany implementation (when no QueryEngine is present). See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
+
 ### Breaking Changes
 
 ### Bugs Fixed

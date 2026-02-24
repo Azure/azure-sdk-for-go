@@ -31,6 +31,8 @@ time values in various formats used by Azure services.
 
 * Fixed potential panic when decoding base64 strings.
 * Fixed an issue in resource identifier parsing which prevented it from returning an error for malformed resource IDs.
+* Retry policy now propagates errors returned by retryableRequestBody.realClose().
+  When both a request error and a close error occur, the errors are combined using errors.Join.
 
 ## 1.19.1 (2025-09-11)
 

@@ -1,0 +1,4 @@
+directory: specification/hdinsight/HDInsight.Management
+commit: cc722f04e7af3b9bff9ac541dcb8dde4ef6bf476
+repo: i-specs
+additionalDirectories: 

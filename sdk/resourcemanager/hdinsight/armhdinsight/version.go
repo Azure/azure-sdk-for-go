@@ -6,5 +6,5 @@ package armhdinsight
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight"
-	moduleVersion = "v1.3.0-beta.3"
+	moduleVersion = "v1.3.0-beta.4"
 )

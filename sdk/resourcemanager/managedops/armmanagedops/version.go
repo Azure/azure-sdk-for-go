@@ -6,5 +6,5 @@ package armmanagedops
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managedops/armmanagedops"
-	moduleVersion = "v0.1.0"
+	moduleVersion = "v0.1.1"
 )

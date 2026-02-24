@@ -5,12 +5,15 @@
 ### Features Added
 
 * Adds support for float 16 datatype for vector embedding policy. See [PR 25707](https://github.com/Azure/azure-sdk-for-go/pull/25707)
+* Improved the performance of the built-in ReadMany implementation (when no QueryEngine is present). See [PR 26007](https://github.com/Azure/azure-sdk-for-go/pull/26007)
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+* Small performance optimizations to API's using query engine. See [PR 25669](https://github.com/Azure/azure-sdk-for-go/pull/25669)
 
 ## 1.5.0-beta.4 (2025-11-24)
 
@@ -63,7 +66,7 @@
 
 ### Features Added
 
-* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and <https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway> for more details.
+* Added limited support for cross-partition queries that can be served by the gateway. See [PR 23926](https://github.com/Azure/azure-sdk-for-go/pull/23926) and this [querying with Cosmos document](https://learn.microsoft.com/rest/api/cosmos-db/querying-cosmosdb-resources-using-the-rest-api#queries-that-cannot-be-served-by-gateway) for more details.
 
 ### Other Changes
 
@@ -116,7 +119,7 @@
 ### Features Added
 
 * Added regional routing support through ClientOptions.PreferredRegions
-* Added cross-region availability and failover mechanics supporting [Azure Cosmos DB SDK multiregional environment behavior](https://learn.microsoft.com/azure/cosmos-db/nosql/troubleshoot-sdk-availability)
+* Added availability logic and failover mechanics to support cross-regional retries and resiliency enhancements
 * Added extended logging for requests, responses, and client configuration
 
 ### Breaking Changes

@@ -28,7 +28,7 @@ type AvailablePrivateEndpointTypesClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvailablePrivateEndpointTypesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAvailablePrivateEndpointTypesClient(subscriptionID string, credential az
 // NewListPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this
 // region.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-05-01
 //   - location - The location of the domain name.
 //   - options - AvailablePrivateEndpointTypesClientListOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListPager
 //     method.
@@ -87,7 +87,7 @@ func (client *AvailablePrivateEndpointTypesClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -105,7 +105,7 @@ func (client *AvailablePrivateEndpointTypesClient) listHandleResponse(resp *http
 // NewListByResourceGroupPager - Returns all of the resource types that can be linked to a Private Endpoint in this subscription
 // in this region.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-05-01
 //   - location - The location of the domain name.
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailablePrivateEndpointTypesClientListByResourceGroupOptions contains the optional parameters for the AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager
@@ -153,7 +153,7 @@ func (client *AvailablePrivateEndpointTypesClient) listByResourceGroupCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

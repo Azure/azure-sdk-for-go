@@ -44,7 +44,8 @@ func NewCloudHsmClusterRestoreStatusClient(subscriptionID string, credential azc
 //
 // Generated from API version 2025-03-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudHsmClusterName - Name of the Cloud HSM Cluster
+//   - cloudHsmClusterName - The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must
+//     be between 3 and 23 characters in length.
 //   - jobID - Identifier for the restore operation
 //   - options - CloudHsmClusterRestoreStatusClientGetOptions contains the optional parameters for the CloudHsmClusterRestoreStatusClient.Get
 //     method.

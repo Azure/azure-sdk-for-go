@@ -49,10 +49,11 @@ func NewVMIngestionClient(subscriptionID string, credential azcore.TokenCredenti
 	return client, nil
 }
 
-// Details - List the vm ingestion details that will be monitored by the Elastic monitor resource.
+// Details - List detailed information about VM ingestion that will be monitored by the Elastic monitor resource, ensuring
+// optimal observability and performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-03-01
+// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - VMIngestionClientDetailsOptions contains the optional parameters for the VMIngestionClient.Details method.
@@ -79,7 +80,7 @@ func (client *VMIngestionClient) Details(ctx context.Context, resourceGroupName 
 }
 
 // detailsCreateRequest creates the Details request.
-func (client *VMIngestionClient) detailsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *VMIngestionClientDetailsOptions) (*policy.Request, error) {
+func (client *VMIngestionClient) detailsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *VMIngestionClientDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/vmIngestionDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -98,7 +99,7 @@ func (client *VMIngestionClient) detailsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01")
+	reqQP.Set("api-version", "2025-06-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

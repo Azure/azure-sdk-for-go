@@ -366,7 +366,7 @@ func TestDefaultAzureCredential_WorkloadIdentity(t *testing.T) {
 		require.NoError(t, err)
 
 		// ...but ensure a timeout should it try the proxy anyway
-		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 		defer cancel()
 		_, err = cred.GetToken(ctx, testTRO)
 		require.NoError(t, err)

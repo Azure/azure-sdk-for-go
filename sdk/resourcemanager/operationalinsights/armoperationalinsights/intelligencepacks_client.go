@@ -27,7 +27,7 @@ type IntelligencePacksClient struct {
 // NewIntelligencePacksClient creates a new instance of IntelligencePacksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIntelligencePacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntelligencePacksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewIntelligencePacksClient(subscriptionID string, credential azcore.TokenCr
 // Disable - Disables an intelligence pack for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - intelligencePackName - The name of the intelligence pack to be disabled.
@@ -71,7 +71,7 @@ func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGrou
 }
 
 // disableCreateRequest creates the Disable request.
-func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientDisableOptions) (*policy.Request, error) {
+func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, _ *IntelligencePacksClientDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -94,7 +94,7 @@ func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -102,7 +102,7 @@ func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context,
 // Enable - Enables an intelligence pack for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - intelligencePackName - The name of the intelligence pack to be enabled.
@@ -130,7 +130,7 @@ func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroup
 }
 
 // enableCreateRequest creates the Enable request.
-func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientEnableOptions) (*policy.Request, error) {
+func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, _ *IntelligencePacksClientEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Enable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,7 +153,7 @@ func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -161,7 +161,7 @@ func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, 
 // List - Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - IntelligencePacksClientListOptions contains the optional parameters for the IntelligencePacksClient.List method.
@@ -188,7 +188,7 @@ func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupNa
 }
 
 // listCreateRequest creates the List request.
-func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IntelligencePacksClientListOptions) (*policy.Request, error) {
+func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *IntelligencePacksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,7 +207,7 @@ func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

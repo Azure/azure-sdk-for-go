@@ -27,7 +27,7 @@ type SenderUsernamesClient struct {
 // NewSenderUsernamesClient creates a new instance of SenderUsernamesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSenderUsernamesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SenderUsernamesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewSenderUsernamesClient(subscriptionID string, credential azcore.TokenCred
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -75,7 +75,7 @@ func (client *SenderUsernamesClient) CreateOrUpdate(ctx context.Context, resourc
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, parameters SenderUsernameResource, options *SenderUsernamesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, parameters SenderUsernameResource, _ *SenderUsernamesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -102,7 +102,7 @@ func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -123,7 +123,7 @@ func (client *SenderUsernamesClient) createOrUpdateHandleResponse(resp *http.Res
 // Delete - Operation to delete a SenderUsernames resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -151,7 +151,7 @@ func (client *SenderUsernamesClient) Delete(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, options *SenderUsernamesClientDeleteOptions) (*policy.Request, error) {
+func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, _ *SenderUsernamesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,7 +178,7 @@ func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -187,7 +187,7 @@ func (client *SenderUsernamesClient) deleteCreateRequest(ctx context.Context, re
 // Get - Get a valid sender username for a domains resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -216,7 +216,7 @@ func (client *SenderUsernamesClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, options *SenderUsernamesClientGetOptions) (*policy.Request, error) {
+func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, senderUsername string, _ *SenderUsernamesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames/{senderUsername}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -243,7 +243,7 @@ func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,7 +260,7 @@ func (client *SenderUsernamesClient) getHandleResponse(resp *http.Response) (Sen
 
 // NewListByDomainsPager - List all valid sender usernames for a domains resource.
 //
-// Generated from API version 2023-04-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - emailServiceName - The name of the EmailService resource.
 //   - domainName - The name of the Domains resource.
@@ -290,7 +290,7 @@ func (client *SenderUsernamesClient) NewListByDomainsPager(resourceGroupName str
 }
 
 // listByDomainsCreateRequest creates the ListByDomains request.
-func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, options *SenderUsernamesClientListByDomainsOptions) (*policy.Request, error) {
+func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, _ *SenderUsernamesClientListByDomainsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -313,7 +313,7 @@ func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

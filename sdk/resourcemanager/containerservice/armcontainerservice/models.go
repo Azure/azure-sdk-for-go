@@ -309,15 +309,6 @@ type AgentPoolUpgradeSettings struct {
 	// including best practices, see: https://learn.microsoft.com/en-us/azure/aks/upgrade-cluster
 	MaxUnavailable *string
 
-	// This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is the percentage
-	// of the total agent pool size at the time of the upgrade. For
-	// percentages, fractional nodes are rounded up. If node capacity constraints prevent full surging, AKS would attempt a slower
-	// upgrade with fewer surge nodes. The upgrade will proceed only if the
-	// available surge capacity meets or exceeds minSurge. If minSurge not specified, the default is 50% of the maxSurge, for
-	// example, if maxSurge = 10%, the default is 5%, if maxSurge = 10, the default is
-	// 5.
-	MinSurge *string
-
 	// The soak duration for a node. The amount of time (in minutes) to wait after draining a node and before reimaging it and
 	// moving on to next node. If not specified, the default is 0 minutes.
 	NodeSoakDurationInMinutes *int32
@@ -1268,6 +1259,9 @@ type MachineProperties struct {
 	// The network properties of the machine
 	Network *MachineNetworkProperties
 
+	// The version of node image.
+	NodeImageVersion *string
+
 	// The operating system and disk used by the machine.
 	OperatingSystem *MachineOSProfile
 
@@ -1275,7 +1269,7 @@ type MachineProperties struct {
 	Priority *ScaleSetPriority
 
 	// The security settings of the machine.
-	Security *AgentPoolSecurityProfile
+	Security *MachineSecurityProfile
 
 	// The tags to be persisted on the machine.
 	Tags map[string]*string
@@ -1285,9 +1279,6 @@ type MachineProperties struct {
 	// subsequent request to enable optimistic concurrency per the normal eTag convention.
 	ETag *string
 
-	// READ-ONLY; The version of node image.
-	NodeImageVersion *string
-
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string
 
@@ -1296,6 +1287,27 @@ type MachineProperties struct {
 
 	// READ-ONLY; Contains read-only information about the machine.
 	Status *MachineStatus
+}
+
+// MachineSecurityProfile - The security settings of the machine.
+type MachineSecurityProfile struct {
+	// Whether to enable host based OS and data drive encryption. This is only supported on certain VM sizes and in certain Azure
+	// regions. For more information, see:
+	// https://docs.microsoft.com/azure/aks/enable-host-encryption
+	EnableEncryptionAtHost *bool
+
+	// Secure Boot is a feature of Trusted Launch which ensures that only signed operating systems and drivers can boot. For more
+	// details, see aka.ms/aks/trustedlaunch. If not specified, the default is
+	// false.
+	EnableSecureBoot *bool
+
+	// vTPM is a Trusted Launch feature for configuring a dedicated secure vault for keys and measurements held locally on the
+	// node. For more details, see aka.ms/aks/trustedlaunch. If not specified, the
+	// default is false.
+	EnableVTPM *bool
+
+	// SSH access method of an agent pool.
+	SSHAccess *AgentPoolSSHAccess
 }
 
 // MachineStatus - Contains read-only information about the machine.

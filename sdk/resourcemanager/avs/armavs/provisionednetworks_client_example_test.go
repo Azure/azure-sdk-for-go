@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/ProvisionedNetworks_Get.json
+// Generated from example definition: 2025-09-01/ProvisionedNetworks_Get.json
 func ExampleProvisionedNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleProvisionedNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/ProvisionedNetworks_List.json
+// Generated from example definition: 2025-09-01/ProvisionedNetworks_List.json
 func ExampleProvisionedNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

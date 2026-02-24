@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -41,13 +40,13 @@ const (
 		require.NoError(t, err)
 
 		err = validatePackagePath(packageDir)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("Non-existent path", func(t *testing.T) {
 		err := validatePackagePath("/non/existent/path")
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "does not exist")
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "does not exist")
 	})
 
 	t.Run("Directory without go.mod file", func(t *testing.T) {
@@ -62,8 +61,8 @@ const (
 		require.NoError(t, err)
 
 		err = validatePackagePath(noGoModDir)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "does not contain a go.mod file")
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "does not contain a go.mod file")
 	})
 
 	t.Run("Directory without version.go file", func(t *testing.T) {
@@ -78,8 +77,8 @@ const (
 		require.NoError(t, err)
 
 		err = validatePackagePath(noVersionDir)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "does not contain a version.go file")
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "does not contain a version.go file")
 	})
 
 	t.Run("File instead of directory", func(t *testing.T) {
@@ -89,7 +88,7 @@ const (
 		require.NoError(t, err)
 
 		err = validatePackagePath(filePath)
-		assert.Error(t, err)
-		assert.Contains(t, err.Error(), "does not exist or is not a directory")
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "does not exist or is not a directory")
 	})
 }

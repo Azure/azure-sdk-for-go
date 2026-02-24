@@ -43,7 +43,7 @@ func NewIdentityBindingsClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Creates or updates an identity binding in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-02-preview
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - identityBindingName - The name of the identity binding.
@@ -71,7 +71,7 @@ func (client *IdentityBindingsClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Creates or updates an identity binding in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-02-preview
+// Generated from API version 2025-10-02-preview
 func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, options *IdentityBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IdentityBindingsClient.BeginCreateOrUpdate"
@@ -117,7 +117,7 @@ func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-02-preview")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -129,7 +129,7 @@ func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deletes an identity binding in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-02-preview
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - identityBindingName - The name of the identity binding.
@@ -156,7 +156,7 @@ func (client *IdentityBindingsClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes an identity binding in the specified managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-02-preview
+// Generated from API version 2025-10-02-preview
 func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IdentityBindingsClient.BeginDelete"
@@ -202,7 +202,7 @@ func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-02-preview")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -211,7 +211,7 @@ func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets the specified Identity Binding.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-02-preview
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - identityBindingName - The name of the identity binding.
@@ -262,7 +262,7 @@ func (client *IdentityBindingsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-02-preview")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +279,7 @@ func (client *IdentityBindingsClient) getHandleResponse(resp *http.Response) (Id
 
 // NewListByManagedClusterPager - Gets a list of identity bindings in the specified managed cluster.
 //
-// Generated from API version 2025-09-02-preview
+// Generated from API version 2025-10-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
 //   - options - IdentityBindingsClientListByManagedClusterOptions contains the optional parameters for the IdentityBindingsClient.NewListByManagedClusterPager
@@ -327,7 +327,7 @@ func (client *IdentityBindingsClient) listByManagedClusterCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-02-preview")
+	reqQP.Set("api-version", "2025-10-02-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

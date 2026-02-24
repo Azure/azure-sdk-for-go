@@ -5,266 +5,6 @@
 
 package armdeployments
 
-// ClientCalculateTemplateHashResponse contains the response from method Client.CalculateTemplateHash.
-type ClientCalculateTemplateHashResponse struct {
-	// Result of the request to calculate template hash. It contains a string of minified template and its hash.
-	TemplateHashResult
-}
-
-// ClientCancelAtManagementGroupScopeResponse contains the response from method Client.CancelAtManagementGroupScope.
-type ClientCancelAtManagementGroupScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientCancelAtScopeResponse contains the response from method Client.CancelAtScope.
-type ClientCancelAtScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientCancelAtSubscriptionScopeResponse contains the response from method Client.CancelAtSubscriptionScope.
-type ClientCancelAtSubscriptionScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientCancelAtTenantScopeResponse contains the response from method Client.CancelAtTenantScope.
-type ClientCancelAtTenantScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientCancelResponse contains the response from method Client.Cancel.
-type ClientCancelResponse struct {
-	// placeholder for future response values
-}
-
-// ClientCheckExistenceAtManagementGroupScopeResponse contains the response from method Client.CheckExistenceAtManagementGroupScope.
-type ClientCheckExistenceAtManagementGroupScopeResponse struct {
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ClientCheckExistenceAtScopeResponse contains the response from method Client.CheckExistenceAtScope.
-type ClientCheckExistenceAtScopeResponse struct {
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ClientCheckExistenceAtSubscriptionScopeResponse contains the response from method Client.CheckExistenceAtSubscriptionScope.
-type ClientCheckExistenceAtSubscriptionScopeResponse struct {
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ClientCheckExistenceAtTenantScopeResponse contains the response from method Client.CheckExistenceAtTenantScope.
-type ClientCheckExistenceAtTenantScopeResponse struct {
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ClientCheckExistenceResponse contains the response from method Client.CheckExistence.
-type ClientCheckExistenceResponse struct {
-	// Success indicates if the operation succeeded or failed.
-	Success bool
-}
-
-// ClientCreateOrUpdateAtManagementGroupScopeResponse contains the response from method Client.BeginCreateOrUpdateAtManagementGroupScope.
-type ClientCreateOrUpdateAtManagementGroupScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientCreateOrUpdateAtScopeResponse contains the response from method Client.BeginCreateOrUpdateAtScope.
-type ClientCreateOrUpdateAtScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientCreateOrUpdateAtSubscriptionScopeResponse contains the response from method Client.BeginCreateOrUpdateAtSubscriptionScope.
-type ClientCreateOrUpdateAtSubscriptionScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientCreateOrUpdateAtTenantScopeResponse contains the response from method Client.BeginCreateOrUpdateAtTenantScope.
-type ClientCreateOrUpdateAtTenantScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientCreateOrUpdateResponse contains the response from method Client.BeginCreateOrUpdate.
-type ClientCreateOrUpdateResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientDeleteAtManagementGroupScopeResponse contains the response from method Client.BeginDeleteAtManagementGroupScope.
-type ClientDeleteAtManagementGroupScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientDeleteAtScopeResponse contains the response from method Client.BeginDeleteAtScope.
-type ClientDeleteAtScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientDeleteAtSubscriptionScopeResponse contains the response from method Client.BeginDeleteAtSubscriptionScope.
-type ClientDeleteAtSubscriptionScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientDeleteAtTenantScopeResponse contains the response from method Client.BeginDeleteAtTenantScope.
-type ClientDeleteAtTenantScopeResponse struct {
-	// placeholder for future response values
-}
-
-// ClientDeleteResponse contains the response from method Client.BeginDelete.
-type ClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ClientExportTemplateAtManagementGroupScopeResponse contains the response from method Client.ExportTemplateAtManagementGroupScope.
-type ClientExportTemplateAtManagementGroupScopeResponse struct {
-	// The deployment export result.
-	DeploymentExportResult
-}
-
-// ClientExportTemplateAtScopeResponse contains the response from method Client.ExportTemplateAtScope.
-type ClientExportTemplateAtScopeResponse struct {
-	// The deployment export result.
-	DeploymentExportResult
-}
-
-// ClientExportTemplateAtSubscriptionScopeResponse contains the response from method Client.ExportTemplateAtSubscriptionScope.
-type ClientExportTemplateAtSubscriptionScopeResponse struct {
-	// The deployment export result.
-	DeploymentExportResult
-}
-
-// ClientExportTemplateAtTenantScopeResponse contains the response from method Client.ExportTemplateAtTenantScope.
-type ClientExportTemplateAtTenantScopeResponse struct {
-	// The deployment export result.
-	DeploymentExportResult
-}
-
-// ClientExportTemplateResponse contains the response from method Client.ExportTemplate.
-type ClientExportTemplateResponse struct {
-	// The deployment export result.
-	DeploymentExportResult
-}
-
-// ClientGetAtManagementGroupScopeResponse contains the response from method Client.GetAtManagementGroupScope.
-type ClientGetAtManagementGroupScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientGetAtScopeResponse contains the response from method Client.GetAtScope.
-type ClientGetAtScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientGetAtSubscriptionScopeResponse contains the response from method Client.GetAtSubscriptionScope.
-type ClientGetAtSubscriptionScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientGetAtTenantScopeResponse contains the response from method Client.GetAtTenantScope.
-type ClientGetAtTenantScopeResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientGetResponse contains the response from method Client.Get.
-type ClientGetResponse struct {
-	// Deployment information.
-	DeploymentExtended
-}
-
-// ClientListAtManagementGroupScopeResponse contains the response from method Client.NewListAtManagementGroupScopePager.
-type ClientListAtManagementGroupScopeResponse struct {
-	// List of deployments.
-	DeploymentListResult
-}
-
-// ClientListAtScopeResponse contains the response from method Client.NewListAtScopePager.
-type ClientListAtScopeResponse struct {
-	// List of deployments.
-	DeploymentListResult
-}
-
-// ClientListAtSubscriptionScopeResponse contains the response from method Client.NewListAtSubscriptionScopePager.
-type ClientListAtSubscriptionScopeResponse struct {
-	// List of deployments.
-	DeploymentListResult
-}
-
-// ClientListAtTenantScopeResponse contains the response from method Client.NewListAtTenantScopePager.
-type ClientListAtTenantScopeResponse struct {
-	// List of deployments.
-	DeploymentListResult
-}
-
-// ClientListByResourceGroupResponse contains the response from method Client.NewListByResourceGroupPager.
-type ClientListByResourceGroupResponse struct {
-	// List of deployments.
-	DeploymentListResult
-}
-
-// ClientValidateAtManagementGroupScopeResponse contains the response from method Client.BeginValidateAtManagementGroupScope.
-type ClientValidateAtManagementGroupScopeResponse struct {
-	// Information from validate template deployment response.
-	DeploymentValidateResult
-}
-
-// ClientValidateAtScopeResponse contains the response from method Client.BeginValidateAtScope.
-type ClientValidateAtScopeResponse struct {
-	// Information from validate template deployment response.
-	DeploymentValidateResult
-}
-
-// ClientValidateAtSubscriptionScopeResponse contains the response from method Client.BeginValidateAtSubscriptionScope.
-type ClientValidateAtSubscriptionScopeResponse struct {
-	// Information from validate template deployment response.
-	DeploymentValidateResult
-}
-
-// ClientValidateAtTenantScopeResponse contains the response from method Client.BeginValidateAtTenantScope.
-type ClientValidateAtTenantScopeResponse struct {
-	// Information from validate template deployment response.
-	DeploymentValidateResult
-}
-
-// ClientValidateResponse contains the response from method Client.BeginValidate.
-type ClientValidateResponse struct {
-	// Information from validate template deployment response.
-	DeploymentValidateResult
-}
-
-// ClientWhatIfAtManagementGroupScopeResponse contains the response from method Client.BeginWhatIfAtManagementGroupScope.
-type ClientWhatIfAtManagementGroupScopeResponse struct {
-	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
-	WhatIfOperationResult
-}
-
-// ClientWhatIfAtSubscriptionScopeResponse contains the response from method Client.BeginWhatIfAtSubscriptionScope.
-type ClientWhatIfAtSubscriptionScopeResponse struct {
-	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
-	WhatIfOperationResult
-}
-
-// ClientWhatIfAtTenantScopeResponse contains the response from method Client.BeginWhatIfAtTenantScope.
-type ClientWhatIfAtTenantScopeResponse struct {
-	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
-	WhatIfOperationResult
-}
-
-// ClientWhatIfResponse contains the response from method Client.BeginWhatIf.
-type ClientWhatIfResponse struct {
-	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
-	WhatIfOperationResult
-}
-
 // DeploymentOperationsClientGetAtManagementGroupScopeResponse contains the response from method DeploymentOperationsClient.GetAtManagementGroupScope.
 type DeploymentOperationsClientGetAtManagementGroupScopeResponse struct {
 	// Deployment operation information.
@@ -323,4 +63,264 @@ type DeploymentOperationsClientListAtTenantScopeResponse struct {
 type DeploymentOperationsClientListResponse struct {
 	// List of deployment operations.
 	DeploymentOperationsListResult
+}
+
+// DeploymentsClientCalculateTemplateHashResponse contains the response from method DeploymentsClient.CalculateTemplateHash.
+type DeploymentsClientCalculateTemplateHashResponse struct {
+	// Result of the request to calculate template hash. It contains a string of minified template and its hash.
+	TemplateHashResult
+}
+
+// DeploymentsClientCancelAtManagementGroupScopeResponse contains the response from method DeploymentsClient.CancelAtManagementGroupScope.
+type DeploymentsClientCancelAtManagementGroupScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientCancelAtScopeResponse contains the response from method DeploymentsClient.CancelAtScope.
+type DeploymentsClientCancelAtScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientCancelAtSubscriptionScopeResponse contains the response from method DeploymentsClient.CancelAtSubscriptionScope.
+type DeploymentsClientCancelAtSubscriptionScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientCancelAtTenantScopeResponse contains the response from method DeploymentsClient.CancelAtTenantScope.
+type DeploymentsClientCancelAtTenantScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientCancelResponse contains the response from method DeploymentsClient.Cancel.
+type DeploymentsClientCancelResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientCheckExistenceAtManagementGroupScopeResponse contains the response from method DeploymentsClient.CheckExistenceAtManagementGroupScope.
+type DeploymentsClientCheckExistenceAtManagementGroupScopeResponse struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// DeploymentsClientCheckExistenceAtScopeResponse contains the response from method DeploymentsClient.CheckExistenceAtScope.
+type DeploymentsClientCheckExistenceAtScopeResponse struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// DeploymentsClientCheckExistenceAtSubscriptionScopeResponse contains the response from method DeploymentsClient.CheckExistenceAtSubscriptionScope.
+type DeploymentsClientCheckExistenceAtSubscriptionScopeResponse struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// DeploymentsClientCheckExistenceAtTenantScopeResponse contains the response from method DeploymentsClient.CheckExistenceAtTenantScope.
+type DeploymentsClientCheckExistenceAtTenantScopeResponse struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// DeploymentsClientCheckExistenceResponse contains the response from method DeploymentsClient.CheckExistence.
+type DeploymentsClientCheckExistenceResponse struct {
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse contains the response from method DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope.
+type DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientCreateOrUpdateAtScopeResponse contains the response from method DeploymentsClient.BeginCreateOrUpdateAtScope.
+type DeploymentsClientCreateOrUpdateAtScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse contains the response from method DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope.
+type DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientCreateOrUpdateAtTenantScopeResponse contains the response from method DeploymentsClient.BeginCreateOrUpdateAtTenantScope.
+type DeploymentsClientCreateOrUpdateAtTenantScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.BeginCreateOrUpdate.
+type DeploymentsClientCreateOrUpdateResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientDeleteAtManagementGroupScopeResponse contains the response from method DeploymentsClient.BeginDeleteAtManagementGroupScope.
+type DeploymentsClientDeleteAtManagementGroupScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientDeleteAtScopeResponse contains the response from method DeploymentsClient.BeginDeleteAtScope.
+type DeploymentsClientDeleteAtScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientDeleteAtSubscriptionScopeResponse contains the response from method DeploymentsClient.BeginDeleteAtSubscriptionScope.
+type DeploymentsClientDeleteAtSubscriptionScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientDeleteAtTenantScopeResponse contains the response from method DeploymentsClient.BeginDeleteAtTenantScope.
+type DeploymentsClientDeleteAtTenantScopeResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.BeginDelete.
+type DeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DeploymentsClientExportTemplateAtManagementGroupScopeResponse contains the response from method DeploymentsClient.ExportTemplateAtManagementGroupScope.
+type DeploymentsClientExportTemplateAtManagementGroupScopeResponse struct {
+	// The deployment export result.
+	DeploymentExportResult
+}
+
+// DeploymentsClientExportTemplateAtScopeResponse contains the response from method DeploymentsClient.ExportTemplateAtScope.
+type DeploymentsClientExportTemplateAtScopeResponse struct {
+	// The deployment export result.
+	DeploymentExportResult
+}
+
+// DeploymentsClientExportTemplateAtSubscriptionScopeResponse contains the response from method DeploymentsClient.ExportTemplateAtSubscriptionScope.
+type DeploymentsClientExportTemplateAtSubscriptionScopeResponse struct {
+	// The deployment export result.
+	DeploymentExportResult
+}
+
+// DeploymentsClientExportTemplateAtTenantScopeResponse contains the response from method DeploymentsClient.ExportTemplateAtTenantScope.
+type DeploymentsClientExportTemplateAtTenantScopeResponse struct {
+	// The deployment export result.
+	DeploymentExportResult
+}
+
+// DeploymentsClientExportTemplateResponse contains the response from method DeploymentsClient.ExportTemplate.
+type DeploymentsClientExportTemplateResponse struct {
+	// The deployment export result.
+	DeploymentExportResult
+}
+
+// DeploymentsClientGetAtManagementGroupScopeResponse contains the response from method DeploymentsClient.GetAtManagementGroupScope.
+type DeploymentsClientGetAtManagementGroupScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientGetAtScopeResponse contains the response from method DeploymentsClient.GetAtScope.
+type DeploymentsClientGetAtScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientGetAtSubscriptionScopeResponse contains the response from method DeploymentsClient.GetAtSubscriptionScope.
+type DeploymentsClientGetAtSubscriptionScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientGetAtTenantScopeResponse contains the response from method DeploymentsClient.GetAtTenantScope.
+type DeploymentsClientGetAtTenantScopeResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientGetResponse contains the response from method DeploymentsClient.Get.
+type DeploymentsClientGetResponse struct {
+	// Deployment information.
+	DeploymentExtended
+}
+
+// DeploymentsClientListAtManagementGroupScopeResponse contains the response from method DeploymentsClient.NewListAtManagementGroupScopePager.
+type DeploymentsClientListAtManagementGroupScopeResponse struct {
+	// List of deployments.
+	DeploymentListResult
+}
+
+// DeploymentsClientListAtScopeResponse contains the response from method DeploymentsClient.NewListAtScopePager.
+type DeploymentsClientListAtScopeResponse struct {
+	// List of deployments.
+	DeploymentListResult
+}
+
+// DeploymentsClientListAtSubscriptionScopeResponse contains the response from method DeploymentsClient.NewListAtSubscriptionScopePager.
+type DeploymentsClientListAtSubscriptionScopeResponse struct {
+	// List of deployments.
+	DeploymentListResult
+}
+
+// DeploymentsClientListAtTenantScopeResponse contains the response from method DeploymentsClient.NewListAtTenantScopePager.
+type DeploymentsClientListAtTenantScopeResponse struct {
+	// List of deployments.
+	DeploymentListResult
+}
+
+// DeploymentsClientListByResourceGroupResponse contains the response from method DeploymentsClient.NewListByResourceGroupPager.
+type DeploymentsClientListByResourceGroupResponse struct {
+	// List of deployments.
+	DeploymentListResult
+}
+
+// DeploymentsClientValidateAtManagementGroupScopeResponse contains the response from method DeploymentsClient.BeginValidateAtManagementGroupScope.
+type DeploymentsClientValidateAtManagementGroupScopeResponse struct {
+	// Information from validate template deployment response.
+	DeploymentValidateResult
+}
+
+// DeploymentsClientValidateAtScopeResponse contains the response from method DeploymentsClient.BeginValidateAtScope.
+type DeploymentsClientValidateAtScopeResponse struct {
+	// Information from validate template deployment response.
+	DeploymentValidateResult
+}
+
+// DeploymentsClientValidateAtSubscriptionScopeResponse contains the response from method DeploymentsClient.BeginValidateAtSubscriptionScope.
+type DeploymentsClientValidateAtSubscriptionScopeResponse struct {
+	// Information from validate template deployment response.
+	DeploymentValidateResult
+}
+
+// DeploymentsClientValidateAtTenantScopeResponse contains the response from method DeploymentsClient.BeginValidateAtTenantScope.
+type DeploymentsClientValidateAtTenantScopeResponse struct {
+	// Information from validate template deployment response.
+	DeploymentValidateResult
+}
+
+// DeploymentsClientValidateResponse contains the response from method DeploymentsClient.BeginValidate.
+type DeploymentsClientValidateResponse struct {
+	// Information from validate template deployment response.
+	DeploymentValidateResult
+}
+
+// DeploymentsClientWhatIfAtManagementGroupScopeResponse contains the response from method DeploymentsClient.BeginWhatIfAtManagementGroupScope.
+type DeploymentsClientWhatIfAtManagementGroupScopeResponse struct {
+	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
+	WhatIfOperationResult
+}
+
+// DeploymentsClientWhatIfAtSubscriptionScopeResponse contains the response from method DeploymentsClient.BeginWhatIfAtSubscriptionScope.
+type DeploymentsClientWhatIfAtSubscriptionScopeResponse struct {
+	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
+	WhatIfOperationResult
+}
+
+// DeploymentsClientWhatIfAtTenantScopeResponse contains the response from method DeploymentsClient.BeginWhatIfAtTenantScope.
+type DeploymentsClientWhatIfAtTenantScopeResponse struct {
+	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
+	WhatIfOperationResult
+}
+
+// DeploymentsClientWhatIfResponse contains the response from method DeploymentsClient.BeginWhatIf.
+type DeploymentsClientWhatIfResponse struct {
+	// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
+	WhatIfOperationResult
 }

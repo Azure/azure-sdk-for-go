@@ -12,10 +12,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v7"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v9"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayUpdate.json
 func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetworkGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkScalableGatewayUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkScalableGatewayUpdate.json
 func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetworkScalableGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,9 +264,16 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	poller, err := clientFactory.NewVirtualNetworkGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "ergw", armnetwork.VirtualNetworkGateway{
 		Location: to.Ptr("centralus"),
 		Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
-			Active:                          to.Ptr(false),
-			AllowRemoteVnetTraffic:          to.Ptr(false),
-			AllowVirtualWanTraffic:          to.Ptr(false),
+			Active:                 to.Ptr(false),
+			AdminState:             to.Ptr(armnetwork.AdminStateEnabled),
+			AllowRemoteVnetTraffic: to.Ptr(false),
+			AllowVirtualWanTraffic: to.Ptr(false),
+			AutoScaleConfiguration: &armnetwork.VirtualNetworkGatewayAutoScaleConfiguration{
+				Bounds: &armnetwork.VirtualNetworkGatewayAutoScaleBounds{
+					Max: to.Ptr[int32](3),
+					Min: to.Ptr[int32](2),
+				},
+			},
 			DisableIPSecReplayProtection:    to.Ptr(false),
 			EnableBgp:                       to.Ptr(false),
 			EnableBgpRouteTranslationForNat: to.Ptr(false),
@@ -275,7 +282,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 				{
 					Name: to.Ptr("gwipconfig1"),
 					Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+						PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
 						PublicIPAddress: &armnetwork.SubResource{
 							ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
 						},
@@ -284,46 +291,13 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 						},
 					},
 				}},
-			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-				{
-					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule1"),
-					Name: to.Ptr("natRule1"),
-					Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-						Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-						ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-							{
-								AddressSpace: to.Ptr("50.0.0.0/24"),
-							}},
-						InternalMappings: []*armnetwork.VPNNatRuleMapping{
-							{
-								AddressSpace: to.Ptr("10.10.0.0/24"),
-							}},
-						IPConfigurationID: to.Ptr(""),
-						Mode:              to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
-					},
-				},
-				{
-					ID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule2"),
-					Name: to.Ptr("natRule2"),
-					Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-						Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-						ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-							{
-								AddressSpace: to.Ptr("30.0.0.0/24"),
-							}},
-						InternalMappings: []*armnetwork.VPNNatRuleMapping{
-							{
-								AddressSpace: to.Ptr("20.10.0.0/24"),
-							}},
-						IPConfigurationID: to.Ptr(""),
-						Mode:              to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
-					},
-				}},
+			NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{},
 			SKU: &armnetwork.VirtualNetworkGatewaySKU{
 				Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameErGwScale),
 				Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierErGwScale),
 			},
-			VPNType: to.Ptr(armnetwork.VPNTypePolicyBased),
+			VirtualNetworkGatewayPolicyGroups: []*armnetwork.VirtualNetworkGatewayPolicyGroup{},
+			VPNType:                           to.Ptr(armnetwork.VPNTypePolicyBased),
 		},
 	}, nil)
 	if err != nil {
@@ -344,6 +318,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// 	Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
 	// 		Active: to.Ptr(false),
+	// 		AdminState: to.Ptr(armnetwork.AdminStateEnabled),
 	// 		AllowRemoteVnetTraffic: to.Ptr(false),
 	// 		AllowVirtualWanTraffic: to.Ptr(false),
 	// 		AutoScaleConfiguration: &armnetwork.VirtualNetworkGatewayAutoScaleConfiguration{
@@ -373,54 +348,21 @@ func ExampleVirtualNetworkGatewaysClient_BeginCreateOrUpdate_updateVirtualNetwor
 	// 				},
 	// 		}},
 	// 		NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule1"),
-	// 				Name: to.Ptr("natRule1"),
-	// 				Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-	// 					Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-	// 					ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("50.0.0.0/24"),
-	// 					}},
-	// 					InternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("10.10.0.0/24"),
-	// 					}},
-	// 					IPConfigurationID: to.Ptr(""),
-	// 					Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
-	// 				},
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule2"),
-	// 				Name: to.Ptr("natRule2"),
-	// 				Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-	// 					Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-	// 					ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("30.0.0.0/24"),
-	// 					}},
-	// 					InternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("20.10.0.0/24"),
-	// 					}},
-	// 					IPConfigurationID: to.Ptr(""),
-	// 					Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
-	// 				},
-	// 		}},
+	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		SKU: &armnetwork.VirtualNetworkGatewaySKU{
 	// 			Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameErGwScale),
-	// 			Capacity: to.Ptr[int32](0),
 	// 			Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierErGwScale),
 	// 		},
-	// 		VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
+	// 		VirtualNetworkGatewayPolicyGroups: []*armnetwork.VirtualNetworkGatewayPolicyGroup{
+	// 		},
 	// 		VPNType: to.Ptr(armnetwork.VPNTypePolicyBased),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGet.json
 func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +506,7 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkGateway() {
 	// 					}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkScalableGatewayGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkScalableGatewayGet.json
 func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,6 +532,7 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() 
 	// 	Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
 	// 	Properties: &armnetwork.VirtualNetworkGatewayPropertiesFormat{
 	// 		Active: to.Ptr(false),
+	// 		AdminState: to.Ptr(armnetwork.AdminStateEnabled),
 	// 		AllowRemoteVnetTraffic: to.Ptr(false),
 	// 		AllowVirtualWanTraffic: to.Ptr(false),
 	// 		AutoScaleConfiguration: &armnetwork.VirtualNetworkGatewayAutoScaleConfiguration{
@@ -601,7 +544,6 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() 
 	// 		DisableIPSecReplayProtection: to.Ptr(false),
 	// 		EnableBgp: to.Ptr(false),
 	// 		EnableBgpRouteTranslationForNat: to.Ptr(false),
-	// 		EnablePrivateIPAddress: to.Ptr(false),
 	// 		GatewayType: to.Ptr(armnetwork.VirtualNetworkGatewayTypeExpressRoute),
 	// 		IPConfigurations: []*armnetwork.VirtualNetworkGatewayIPConfiguration{
 	// 			{
@@ -609,7 +551,7 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() 
 	// 				Name: to.Ptr("gwipconfig1"),
 	// 				Etag: to.Ptr("W/\"00000000-0000-0000-0000-000000000000\""),
 	// 				Properties: &armnetwork.VirtualNetworkGatewayIPConfigurationPropertiesFormat{
-	// 					PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodStatic),
+	// 					PrivateIPAllocationMethod: to.Ptr(armnetwork.IPAllocationMethodDynamic),
 	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 					PublicIPAddress: &armnetwork.SubResource{
 	// 						ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/gwpip"),
@@ -620,56 +562,21 @@ func ExampleVirtualNetworkGatewaysClient_Get_getVirtualNetworkScalableGateway() 
 	// 				},
 	// 		}},
 	// 		NatRules: []*armnetwork.VirtualNetworkGatewayNatRule{
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule1"),
-	// 				Name: to.Ptr("natRule1"),
-	// 				Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-	// 				Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-	// 					Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-	// 					ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("50.0.0.0/24"),
-	// 					}},
-	// 					InternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("10.10.0.0/24"),
-	// 					}},
-	// 					Mode: to.Ptr(armnetwork.VPNNatRuleModeEgressSnat),
-	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 				},
-	// 			},
-	// 			{
-	// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/ergw/natRules/natRule2"),
-	// 				Name: to.Ptr("natRule2"),
-	// 				Etag: to.Ptr("W/\"00ae2b69-88e7-4b3a-b66a-cfa2244e0801\""),
-	// 				Properties: &armnetwork.VirtualNetworkGatewayNatRuleProperties{
-	// 					Type: to.Ptr(armnetwork.VPNNatRuleTypeStatic),
-	// 					ExternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("30.0.0.0/24"),
-	// 					}},
-	// 					InternalMappings: []*armnetwork.VPNNatRuleMapping{
-	// 						{
-	// 							AddressSpace: to.Ptr("20.10.0.0/24"),
-	// 					}},
-	// 					Mode: to.Ptr(armnetwork.VPNNatRuleModeIngressSnat),
-	// 					ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
-	// 				},
-	// 		}},
+	// 		},
 	// 		ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		SKU: &armnetwork.VirtualNetworkGatewaySKU{
 	// 			Name: to.Ptr(armnetwork.VirtualNetworkGatewaySKUNameErGwScale),
-	// 			Capacity: to.Ptr[int32](2),
 	// 			Tier: to.Ptr(armnetwork.VirtualNetworkGatewaySKUTierErGwScale),
 	// 		},
-	// 		VPNGatewayGeneration: to.Ptr(armnetwork.VPNGatewayGenerationNone),
+	// 		VirtualNetworkGatewayPolicyGroups: []*armnetwork.VirtualNetworkGatewayPolicyGroup{
+	// 		},
 	// 		VPNType: to.Ptr(armnetwork.VPNTypePolicyBased),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayDelete.json
 func ExampleVirtualNetworkGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -690,7 +597,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayUpdateTags.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayUpdateTags.json
 func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -790,7 +697,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginUpdateTags() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayList.json
 func ExampleVirtualNetworkGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1026,7 +933,7 @@ func ExampleVirtualNetworkGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewaysListConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewaysListConnections.json
 func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1081,7 +988,7 @@ func ExampleVirtualNetworkGatewaysClient_NewListConnectionsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayReset.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayReset.json
 func ExampleVirtualNetworkGatewaysClient_BeginReset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1164,7 +1071,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginReset() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayResetVpnClientSharedKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayResetVpnClientSharedKey.json
 func ExampleVirtualNetworkGatewaysClient_BeginResetVPNClientSharedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1185,7 +1092,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginResetVPNClientSharedKey() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGenerateVpnClientPackage.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGenerateVpnClientPackage.json
 func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1210,7 +1117,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGeneratevpnclientpackage() {
 	// res.Value = ""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGenerateVpnProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGenerateVpnProfile.json
 func ExampleVirtualNetworkGatewaysClient_BeginGenerateVPNProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1235,7 +1142,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGenerateVPNProfile() {
 	// res.Value = ""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetVPNProfilePackageURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1260,7 +1167,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetVPNProfilePackageURL() {
 	// res.Value = ""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetBGPPeerStatus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetBGPPeerStatus.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetBgpPeerStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1286,7 +1193,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetBgpPeerStatus() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewaySupportedVpnDevice.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewaySupportedVpnDevice.json
 func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1307,7 +1214,7 @@ func ExampleVirtualNetworkGatewaysClient_SupportedVPNDevices() {
 	// res.Value = "<?xml version=\"1.0\" encoding=\"utf-8\"?><RpVpnDeviceList version=\"1.0\"><Vendor name=\"Cisco\"><DeviceFamily name=\"ISR\"><FirmwareVersion name=\"IOS 15.1 (Preview)\" /></DeviceFamily><DeviceFamily name=\"ASA (Adaptive Security Appliance)\"><FirmwareVersion name=\"ASA_9.8.x_ActivePassive_NoBGP_NoCustomPolicies\"/><FirmwareVersion name=\"ASA_9.8(x)_CustomPolicies\" /></DeviceFamily></Vendor><Vendor name=\"Juniper\"><DeviceFamily name=\"Juniper_SRX_GA\"><FirmwareVersion name=\"Juniper_SRX_12.x_GA\" /></DeviceFamily><DeviceFamily name=\"Juniper_SSG_GA\"><FirmwareVersion name=\"Juniper_SSG_ScreenOS-6.2.x_GA\"/></DeviceFamily><DeviceFamily name=\"Juniper_JSeries_GA\"><FirmwareVersion name=\"Juniper_JSeries_JunOS12.x._GA\" /></DeviceFamily></Vendor><Vendor name=\"Ubiquiti\"><DeviceFamily name=\"EdgeRouter\"><FirmwareVersion name=\"Ubiquiti_EdgeOS_1.10.x-RouteBased_VTI\" /><FirmwareVersionname=\"Ubiquiti_EdgeOS_1.10.x-RouteBased_BGP\" /></DeviceFamily></Vendor></RpVpnDeviceList>"
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/AllVirtualNetworkGatewayRadiusServerSecretsList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/AllVirtualNetworkGatewayRadiusServerSecretsList.json
 func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1338,7 +1245,7 @@ func ExampleVirtualNetworkGatewaysClient_ListRadiusSecrets() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayLearnedRoutes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayLearnedRoutes.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetLearnedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1364,7 +1271,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetLearnedRoutes() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetAdvertisedRoutes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetAdvertisedRoutes.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1390,7 +1297,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetAdvertisedRoutes() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetResiliencyInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetResiliencyInformation.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetResiliencyInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1416,7 +1323,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetResiliencyInformation() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetRoutesInformation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetRoutesInformation.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetRoutesInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1442,7 +1349,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetRoutesInformation() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewaySetVpnClientIpsecParameters.json
 func ExampleVirtualNetworkGatewaysClient_BeginSetVpnclientIPSecParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1485,7 +1392,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginSetVpnclientIPSecParameters() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetVpnClientIpsecParameters.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientIPSecParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1519,7 +1426,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientIPSecParameters() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayVpnDeviceConfigurationScript.json
 func ExampleVirtualNetworkGatewaysClient_VPNDeviceConfigurationScript() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1544,7 +1451,7 @@ func ExampleVirtualNetworkGatewaysClient_VPNDeviceConfigurationScript() {
 	// res.Value = "! Microsoft Corporation\r\n! ---------------------------------------------------------------------------------------------------------------------\r\n! Sample VPN tunnel configuration template for IOS-based devices\r\n!\r\n! This configuration template applies to Cisco VPN devices running IOS 15.1 or beyond (ISR or ASR)\r\n!\r\n\r\n\r\n		\r\n\r\n! ---------------------------------------------------------------------------------------------------------------------\r\n! ACL rules\r\n!\r\n! Some VPN devices require explicit ACL rules to allow cross-premises traffic:\r\n!\r\n! 1. Allow traffic between on premises address ranges and VNet address ranges\r\n! 2. Allow IKE traffic (UDP:500) between on premises VPN devices and Azure VPN gateway\r\n! 3. Allow IPsec traffic (Proto:ESP) between on premises VPN devices and Azure VPN gateway\r\n!\r\n		\r\naccess-list 101 permit ip 10.1.0.0 0.0.255.255 10.0.0.0 0.0.255.255\r\n\r\n! ---------------------------------------------------------------------------------------------------------------------\r\n! Internet Key Exchange (IKE) configuration\r\n!\r\n! This section specifies the authentication, encryption, hashing, and Diffie-Hellman group parameters for IKE\r\n! main mode or phase 1\r\n!\r\n\r\ncrypto ikev2 proposal SwaggerS2S-proposal\r\n  encryption DES3\r\n  integrity  SHA384\r\n  group      DHGroup24\r\n  lifetime   3600\r\n exit\r\n\r\ncrypto ikev2 policy SwaggerS2S-policy\r\n  proposal SwaggerS2S-proposal\r\n  exit\r\n\r\ncrypto ikev2 keyring SwaggerBranch-keyring\r\n		\r\n		peer 52.173.199.254\r\n		address        52.173.199.254\r\n		pre-shared-key lALEHuppeopJmA94exRNiRr2QzuZ6lOsvzu5IlJUEA6LthbTc8g5MTT86MCsGNMzGkTAaLuLnEJoD1Cn4cIlr94qKZm9drsgllzWvsPNezS71stAkaW1Bb7h6GBnDlDP\r\n  exit\r\n\r\ncrypto ikev2 profile  SwaggerS2S-profile\r\n  match address  local 10.3.0.0\r\n	match identity remote address 52.173.199.254 255.255.255.255\r\n		\r\n  authentication remote pre-share\r\n  authentication local  pre-share\r\n  keyring        SwaggerBranch-keyring\r\n  exit\r\n\r\n! ---------------------------------------------------------------------------------------------------------------------\r\n! IPsec configuration\r\n!\r\n! This section specifies encryption, authentication, tunnel mode properties for the Phase 2 negotiation\r\n!\r\ncrypto ipsec transform-set SwaggerS2S-TransformSet DES3 DES3\r\n mode  tunnel\r\n exit\r\n\r\n! ---------------------------------------------------------------------------------------------------------------------\r\n! Crypto map configuration\r\n!\r\n! This section defines a crypto profile that binds the cross-premises network traffic to the IPsec and IKE\r\n! policy profiles for this connection. Then defines the VTI (virtual tunnel interface) with the crypto\r\n! profile. A random interface number (tunnel 1) was used with a random link local address (169.254.0.1/28)\r\n! for the tunnel interface. If either selection is already used in the VPN device, please select another\r\n! interface number or address.  The only requirement is that they must not overlap with another interface\r\n! on the same VPN device.\r\n!\r\ncrypto ipsec profile SwaggerS2S-IPsecProfile\r\n  set transform-set  SwaggerS2S-TransformSet\r\n  set ikev2-profile  SwaggerS2S-profile\r\n  set pfs            None\r\n  set security-association lifetime 3600\r\n exit\r\n\r\n\r\nint tunnel 52.173.199.254\r\n  ip address 169.254.0.1 255.255.255.252\r\n  ip tcp adjust-mss 1350\r\n  tunnel source 10.3.0.0\r\n  tunnel mode ipsec ipv4\r\n  tunnel destination 52.173.199.254\r\n  tunnel protection ipsec profile SwaggerS2S-IPsecProfile\r\n  exit\r\n\r\n	ip route 10.0.0.0 255.255.0.0 tunnel 52.173.199.254 "
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayStartPacketCaptureFilterData.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayStartPacketCaptureFilterData.json
 func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1572,7 +1479,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCapt
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayStartPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayStartPacketCapture.json
 func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVirtualNetworkGatewayWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1597,7 +1504,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStartPacketCapture_startPacketCapt
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayStopPacketCapture.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayStopPacketCapture.json
 func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1624,7 +1531,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStopPacketCapture() {
 	// res.Value = "\"{\"Status\":\"Successful\",\"Data\":null}\""
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetFailoverAllTestsDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetFailoverAllTestsDetails.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1650,7 +1557,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverAllTestDetails() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetFailoverSingleTestDetails.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1676,7 +1583,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayStartSiteFailoverSimulation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayStartSiteFailoverSimulation.json
 func ExampleVirtualNetworkGatewaysClient_BeginStartExpressRouteSiteFailoverSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1701,7 +1608,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStartExpressRouteSiteFailoverSimul
 	// res.Value = "[object Object]"
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayStopSiteFailoverSimulation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayStopSiteFailoverSimulation.json
 func ExampleVirtualNetworkGatewaysClient_BeginStopExpressRouteSiteFailoverSimulation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1740,7 +1647,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginStopExpressRouteSiteFailoverSimula
 	// res.Value = "[object Object]"
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
 func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientConnectionHealth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1795,7 +1702,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginGetVpnclientConnectionHealth() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewaysDisconnectP2sVpnConnections.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewaysDisconnectP2sVpnConnections.json
 func ExampleVirtualNetworkGatewaysClient_BeginDisconnectVirtualNetworkGatewayVPNConnections() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1820,7 +1727,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginDisconnectVirtualNetworkGatewayVPN
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayPrepareMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayPrepareMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1844,7 +1751,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokePrepareMigration() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayExecuteMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayExecuteMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokeExecuteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1865,7 +1772,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokeExecuteMigration() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayCommitMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayCommitMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokeCommitMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1886,7 +1793,7 @@ func ExampleVirtualNetworkGatewaysClient_BeginInvokeCommitMigration() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/335e0e3a1617a3b244bdd472e3ee2ba5d24344b3/specification/network/resource-manager/Microsoft.Network/stable/2025-01-01/examples/VirtualNetworkGatewayAbortMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/72410da64f6e945db1e1f1af220e077ba5bdb857/specification/network/resource-manager/Microsoft.Network/stable/2025-05-01/examples/VirtualNetworkGatewayAbortMigration.json
 func ExampleVirtualNetworkGatewaysClient_BeginInvokeAbortMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

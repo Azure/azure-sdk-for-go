@@ -238,7 +238,7 @@ func TestProcessor_RunNotConcurrent(t *testing.T) {
 		defer wg.Done()
 
 		if err := proc.Run(ctx); err != nil {
-			require.EqualError(t, err, "the Processor is currently running. Concurrent calls to Run() are not allowed.")
+			require.EqualError(t, err, "the Processor is currently running, concurrent calls to Run() are not allowed")
 			atomic.AddInt32(&errors, 1)
 		}
 	}()
@@ -247,7 +247,7 @@ func TestProcessor_RunNotConcurrent(t *testing.T) {
 		defer wg.Done()
 
 		if err := proc.Run(ctx); err != nil {
-			require.EqualError(t, err, "the Processor is currently running. Concurrent calls to Run() are not allowed.")
+			require.EqualError(t, err, "the Processor is currently running, concurrent calls to Run() are not allowed")
 			atomic.AddInt32(&errors, 1)
 		}
 	}()

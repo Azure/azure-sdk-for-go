@@ -28,7 +28,7 @@ type VirtualApplianceSKUsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualApplianceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualApplianceSKUsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewVirtualApplianceSKUsClient(subscriptionID string, credential azcore.Toke
 // Get - Retrieves a single available sku for network virtual appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-05-01
 //   - skuName - Name of the Sku.
 //   - options - VirtualApplianceSKUsClientGetOptions contains the optional parameters for the VirtualApplianceSKUsClient.Get
 //     method.
@@ -86,7 +86,7 @@ func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -103,7 +103,7 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *http.Response)
 
 // NewListPager - List all SKUs available for a virtual appliance.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-05-01
 //   - options - VirtualApplianceSKUsClientListOptions contains the optional parameters for the VirtualApplianceSKUsClient.NewListPager
 //     method.
 func (client *VirtualApplianceSKUsClient) NewListPager(options *VirtualApplianceSKUsClientListOptions) *runtime.Pager[VirtualApplianceSKUsClientListResponse] {
@@ -141,7 +141,7 @@ func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

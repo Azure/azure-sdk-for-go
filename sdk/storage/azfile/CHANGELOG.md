@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.4-beta.1 (Unreleased)
+## 1.5.5-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.4 (2026-01-12)
+
+### Features Added
+* Added support for User Delegation SAS.
+* Added support for service version 2026-02-06.
 
 ## 1.5.3 (2025-10-16)
 

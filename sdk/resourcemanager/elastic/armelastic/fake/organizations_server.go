@@ -21,8 +21,9 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic/v2"
 	"net/http"
+	"net/url"
 	"reflect"
 	"regexp"
 )
@@ -36,19 +37,27 @@ type OrganizationsServer struct {
 	// GetElasticToAzureSubscriptionMapping is the fake for method OrganizationsClient.GetElasticToAzureSubscriptionMapping
 	// HTTP status codes to indicate success: http.StatusOK
 	GetElasticToAzureSubscriptionMapping func(ctx context.Context, options *armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (resp azfake.Responder[armelastic.OrganizationsClientGetElasticToAzureSubscriptionMappingResponse], errResp azfake.ErrorResponder)
+
+	// BeginResubscribe is the fake for method OrganizationsClient.BeginResubscribe
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResubscribe func(ctx context.Context, resourceGroupName string, monitorName string, options *armelastic.OrganizationsClientBeginResubscribeOptions) (resp azfake.PollerResponder[armelastic.OrganizationsClientResubscribeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewOrganizationsServerTransport creates a new instance of OrganizationsServerTransport with the provided implementation.
 // The returned OrganizationsServerTransport instance is connected to an instance of armelastic.OrganizationsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewOrganizationsServerTransport(srv *OrganizationsServer) *OrganizationsServerTransport {
-	return &OrganizationsServerTransport{srv: srv}
+	return &OrganizationsServerTransport{
+		srv:              srv,
+		beginResubscribe: newTracker[azfake.PollerResponder[armelastic.OrganizationsClientResubscribeResponse]](),
+	}
 }
 
 // OrganizationsServerTransport connects instances of armelastic.OrganizationsClient to instances of OrganizationsServer.
 // Don't use this type directly, use NewOrganizationsServerTransport instead.
 type OrganizationsServerTransport struct {
-	srv *OrganizationsServer
+	srv              *OrganizationsServer
+	beginResubscribe *tracker[azfake.PollerResponder[armelastic.OrganizationsClientResubscribeResponse]]
 }
 
 // Do implements the policy.Transporter interface for OrganizationsServerTransport.
@@ -59,23 +68,44 @@ func (o *OrganizationsServerTransport) Do(req *http.Request) (*http.Response, er
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return o.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "OrganizationsClient.GetAPIKey":
-		resp, err = o.dispatchGetAPIKey(req)
-	case "OrganizationsClient.GetElasticToAzureSubscriptionMapping":
-		resp, err = o.dispatchGetElasticToAzureSubscriptionMapping(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if organizationsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = organizationsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "OrganizationsClient.GetAPIKey":
+				res.resp, res.err = o.dispatchGetAPIKey(req)
+			case "OrganizationsClient.GetElasticToAzureSubscriptionMapping":
+				res.resp, res.err = o.dispatchGetElasticToAzureSubscriptionMapping(req)
+			case "OrganizationsClient.BeginResubscribe":
+				res.resp, res.err = o.dispatchBeginResubscribe(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (o *OrganizationsServerTransport) dispatchGetAPIKey(req *http.Request) (*http.Response, error) {
@@ -85,7 +115,7 @@ func (o *OrganizationsServerTransport) dispatchGetAPIKey(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/getOrganizationApiKey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armelastic.UserEmailID](req)
@@ -120,7 +150,7 @@ func (o *OrganizationsServerTransport) dispatchGetElasticToAzureSubscriptionMapp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/getElasticOrganizationToAzureSubscriptionMapping`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := o.srv.GetElasticToAzureSubscriptionMapping(req.Context(), nil)
@@ -136,4 +166,64 @@ func (o *OrganizationsServerTransport) dispatchGetElasticToAzureSubscriptionMapp
 		return nil, err
 	}
 	return resp, nil
+}
+
+func (o *OrganizationsServerTransport) dispatchBeginResubscribe(req *http.Request) (*http.Response, error) {
+	if o.srv.BeginResubscribe == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResubscribe not implemented")}
+	}
+	beginResubscribe := o.beginResubscribe.get(req)
+	if beginResubscribe == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Elastic/monitors/(?P<monitorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resubscribe`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armelastic.ResubscribeProperties](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		monitorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("monitorName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armelastic.OrganizationsClientBeginResubscribeOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armelastic.OrganizationsClientBeginResubscribeOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := o.srv.BeginResubscribe(req.Context(), resourceGroupNameParam, monitorNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResubscribe = &respr
+		o.beginResubscribe.add(req, beginResubscribe)
+	}
+
+	resp, err := server.PollerResponderNext(beginResubscribe, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		o.beginResubscribe.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResubscribe) {
+		o.beginResubscribe.remove(req)
+	}
+
+	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to OrganizationsServerTransport
+var organizationsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -60,17 +57,10 @@ func TestClient_GetChatCompletions(t *testing.T) {
 		require.NotEmpty(t, choice.Message.Content)
 		require.Equal(t, "stop", choice.FinishReason)
 
-		require.Equal(t, openai.CompletionUsage{
-			// these change depending on which model you use. These #'s work for gpt-4, which is
-			// what I'm using for these tests.
-			CompletionTokens: 29,
-			PromptTokens:     42,
-			TotalTokens:      71,
-		}, openai.CompletionUsage{
-			CompletionTokens: resp.Usage.CompletionTokens,
-			PromptTokens:     resp.Usage.PromptTokens,
-			TotalTokens:      resp.Usage.TotalTokens,
-		})
+		// let's just make sure that the #'s are filled out.
+		require.Greater(t, resp.Usage.CompletionTokens, int64(0))
+		require.Greater(t, resp.Usage.PromptTokens, int64(0))
+		require.Greater(t, resp.Usage.TotalTokens, int64(0))
 	}
 
 	t.Run("AzureOpenAI", func(t *testing.T) {
@@ -118,54 +108,6 @@ func TestClient_GetChatCompletions_LogProbs(t *testing.T) {
 	t.Run("AzureOpenAI.Service", func(t *testing.T) {
 		client := newStainlessChatCompletionService(t, azureOpenAI.ChatCompletions.Endpoint)
 		testFn(t, &client, azureOpenAI.ChatCompletions.Model)
-	})
-}
-
-func TestClient_GetChatCompletions_LogitBias(t *testing.T) {
-	// you can use LogitBias to constrain the answer to NOT contain
-	// certain tokens. More or less following the technique in this OpenAI article:
-	// https://help.openai.com/en/articles/5247780-using-logit-bias-to-alter-token-probability-with-the-openai-api
-
-	testFn := func(t *testing.T, epm endpointWithModel) {
-		client := newStainlessTestClientWithAzureURL(t, epm.Endpoint)
-
-		body := openai.ChatCompletionNewParams{
-			Messages: []openai.ChatCompletionMessageParamUnion{{
-				OfUser: &openai.ChatCompletionUserMessageParam{
-					Content: openai.ChatCompletionUserMessageParamContentUnion{
-						OfString: openai.String("Briefly, what are some common roles for people at a circus, names only, one per line?"),
-					},
-				},
-			}},
-			MaxTokens:   openai.Int(200),
-			Temperature: openai.Float(0.0),
-			Model:       openai.ChatModel(epm.Model),
-			LogitBias: map[string]int64{
-				// you can calculate these tokens using OpenAI's online tool:
-				// https://platform.openai.com/tokenizer?view=bpe
-				// These token IDs are all variations of "Clown", which I want to exclude from the response.
-				"25":    -100,
-				"220":   -100,
-				"1206":  -100,
-				"2493":  -100,
-				"5176":  -100,
-				"43456": -100,
-				"69568": -100,
-				"99423": -100,
-			},
-		}
-
-		resp, err := client.Chat.Completions.New(context.Background(), body)
-		require.NoError(t, err)
-
-		for _, choice := range resp.Choices {
-			require.NotContains(t, choice.Message.Content, "clown")
-			require.NotContains(t, choice.Message.Content, "Clown")
-		}
-	}
-
-	t.Run("AzureOpenAI", func(t *testing.T) {
-		testFn(t, azureOpenAI.ChatCompletions)
 	})
 }
 

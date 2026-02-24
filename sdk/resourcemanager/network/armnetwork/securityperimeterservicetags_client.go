@@ -28,7 +28,7 @@ type SecurityPerimeterServiceTagsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSecurityPerimeterServiceTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecurityPerimeterServiceTagsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewSecurityPerimeterServiceTagsClient(subscriptionID string, credential azc
 // NewListPager - Gets the list of service tags supported by NSP. These service tags can be used to create access rules in
 // NSP.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-05-01
 //   - location - The location of network security perimeter.
 //   - options - SecurityPerimeterServiceTagsClientListOptions contains the optional parameters for the SecurityPerimeterServiceTagsClient.NewListPager
 //     method.
@@ -87,7 +87,7 @@ func (client *SecurityPerimeterServiceTagsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

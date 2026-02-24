@@ -86,6 +86,34 @@ type MonitoredResourcesClientListResponse struct {
 	MonitoredResourceListResponse
 }
 
+// MonitoredSubscriptionsClientCreateorUpdateResponse contains the response from method MonitoredSubscriptionsClient.BeginCreateorUpdate.
+type MonitoredSubscriptionsClientCreateorUpdateResponse struct {
+	// The request to update subscriptions needed to be monitored by the Elastic monitor resource.
+	MonitoredSubscriptionProperties
+}
+
+// MonitoredSubscriptionsClientDeleteResponse contains the response from method MonitoredSubscriptionsClient.BeginDelete.
+type MonitoredSubscriptionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MonitoredSubscriptionsClientGetResponse contains the response from method MonitoredSubscriptionsClient.Get.
+type MonitoredSubscriptionsClientGetResponse struct {
+	// The request to update subscriptions needed to be monitored by the Elastic monitor resource.
+	MonitoredSubscriptionProperties
+}
+
+// MonitoredSubscriptionsClientListResponse contains the response from method MonitoredSubscriptionsClient.NewListPager.
+type MonitoredSubscriptionsClientListResponse struct {
+	MonitoredSubscriptionPropertiesList
+}
+
+// MonitoredSubscriptionsClientUpdateResponse contains the response from method MonitoredSubscriptionsClient.BeginUpdate.
+type MonitoredSubscriptionsClientUpdateResponse struct {
+	// The request to update subscriptions needed to be monitored by the Elastic monitor resource.
+	MonitoredSubscriptionProperties
+}
+
 // MonitorsClientCreateResponse contains the response from method MonitorsClient.BeginCreate.
 type MonitorsClientCreateResponse struct {
 	// Monitor resource.
@@ -115,7 +143,7 @@ type MonitorsClientListResponse struct {
 	MonitorResourceListResponse
 }
 
-// MonitorsClientUpdateResponse contains the response from method MonitorsClient.Update.
+// MonitorsClientUpdateResponse contains the response from method MonitorsClient.BeginUpdate.
 type MonitorsClientUpdateResponse struct {
 	// Monitor resource.
 	MonitorResource
@@ -166,6 +194,12 @@ type OrganizationsClientGetAPIKeyResponse struct {
 type OrganizationsClientGetElasticToAzureSubscriptionMappingResponse struct {
 	// The Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into.
 	OrganizationToAzureSubscriptionMappingResponse
+}
+
+// OrganizationsClientResubscribeResponse contains the response from method OrganizationsClient.BeginResubscribe.
+type OrganizationsClientResubscribeResponse struct {
+	// Monitor resource.
+	MonitorResource
 }
 
 // TagRulesClientCreateOrUpdateResponse contains the response from method TagRulesClient.CreateOrUpdate.

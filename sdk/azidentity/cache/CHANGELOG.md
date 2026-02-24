@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.3 (Unreleased)
+## 0.4.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 0.4.0 (2026-01-13)
+
+### Other Changes
+
+* Linux caches are stored in $XDG_CACHE_HOME by default, falling back to $HOME/.cache
 
 ## 0.3.2 (2025-01-15)
 

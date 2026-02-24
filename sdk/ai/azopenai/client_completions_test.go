@@ -1,6 +1,3 @@
-//go:build go1.21
-// +build go1.21
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -13,11 +10,16 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/openai/openai-go/v3"
 	"github.com/stretchr/testify/require"
 )
 
 func TestClient_GetCompletions(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("Disablng live testing until we find a compatible model")
+	}
+
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	resp, err := client.Completions.New(context.Background(), openai.CompletionNewParams{
@@ -58,6 +60,10 @@ func TestClient_GetCompletions(t *testing.T) {
 }
 
 func TestGetCompletionsStream(t *testing.T) {
+	if recording.GetRecordMode() != recording.PlaybackMode {
+		t.Skip("Disablng live testing until we find a compatible model")
+	}
+
 	client := newStainlessTestClientWithAzureURL(t, azureOpenAI.Completions.Endpoint)
 
 	stream := client.Completions.NewStreaming(context.TODO(), openai.CompletionNewParams{

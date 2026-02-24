@@ -781,7 +781,6 @@ func (a AgentPoolUpgradeSettings) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "maxBlockedNodes", a.MaxBlockedNodes)
 	populate(objectMap, "maxSurge", a.MaxSurge)
 	populate(objectMap, "maxUnavailable", a.MaxUnavailable)
-	populate(objectMap, "minSurge", a.MinSurge)
 	populate(objectMap, "nodeSoakDurationInMinutes", a.NodeSoakDurationInMinutes)
 	populate(objectMap, "undrainableNodeBehavior", a.UndrainableNodeBehavior)
 	return json.Marshal(objectMap)
@@ -807,9 +806,6 @@ func (a *AgentPoolUpgradeSettings) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "maxUnavailable":
 			err = unpopulate(val, "MaxUnavailable", &a.MaxUnavailable)
-			delete(rawMsg, key)
-		case "minSurge":
-			err = unpopulate(val, "MinSurge", &a.MinSurge)
 			delete(rawMsg, key)
 		case "nodeSoakDurationInMinutes":
 			err = unpopulate(val, "NodeSoakDurationInMinutes", &a.NodeSoakDurationInMinutes)
@@ -3265,6 +3261,45 @@ func (m *MachineProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, "Tags", &m.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MachineSecurityProfile.
+func (m MachineSecurityProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enableEncryptionAtHost", m.EnableEncryptionAtHost)
+	populate(objectMap, "enableSecureBoot", m.EnableSecureBoot)
+	populate(objectMap, "enableVTPM", m.EnableVTPM)
+	populate(objectMap, "sshAccess", m.SSHAccess)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MachineSecurityProfile.
+func (m *MachineSecurityProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enableEncryptionAtHost":
+			err = unpopulate(val, "EnableEncryptionAtHost", &m.EnableEncryptionAtHost)
+			delete(rawMsg, key)
+		case "enableSecureBoot":
+			err = unpopulate(val, "EnableSecureBoot", &m.EnableSecureBoot)
+			delete(rawMsg, key)
+		case "enableVTPM":
+			err = unpopulate(val, "EnableVTPM", &m.EnableVTPM)
+			delete(rawMsg, key)
+		case "sshAccess":
+			err = unpopulate(val, "SSHAccess", &m.SSHAccess)
 			delete(rawMsg, key)
 		}
 		if err != nil {

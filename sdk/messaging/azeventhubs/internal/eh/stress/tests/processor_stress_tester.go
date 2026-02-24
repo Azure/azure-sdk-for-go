@@ -169,7 +169,7 @@ func (inf *processorStressTest) Run(ctx context.Context) error {
 		return err
 	}
 
-	defer producerClient.Close(context.Background())
+	defer func() { _ = producerClient.Close(context.Background()) }()
 
 	for round := int64(0); round < inf.rounds; round++ {
 		log.Printf("===== [BEGIN] Round %d/%d ===== ", round, inf.rounds)

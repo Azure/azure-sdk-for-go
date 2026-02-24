@@ -16,28 +16,74 @@ import (
 
 // ServerFactory is a fake server for instances of the armoperationalinsights.ClientFactory type.
 type ServerFactory struct {
+	// AvailableServiceTiersServer contains the fakes for client AvailableServiceTiersClient
 	AvailableServiceTiersServer AvailableServiceTiersServer
-	ClustersServer              ClustersServer
-	DataExportsServer           DataExportsServer
-	DataSourcesServer           DataSourcesServer
-	DeletedWorkspacesServer     DeletedWorkspacesServer
-	GatewaysServer              GatewaysServer
-	IntelligencePacksServer     IntelligencePacksServer
-	LinkedServicesServer        LinkedServicesServer
+
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
+	// DataExportsServer contains the fakes for client DataExportsClient
+	DataExportsServer DataExportsServer
+
+	// DataSourcesServer contains the fakes for client DataSourcesClient
+	DataSourcesServer DataSourcesServer
+
+	// DeletedWorkspacesServer contains the fakes for client DeletedWorkspacesClient
+	DeletedWorkspacesServer DeletedWorkspacesServer
+
+	// GatewaysServer contains the fakes for client GatewaysClient
+	GatewaysServer GatewaysServer
+
+	// IntelligencePacksServer contains the fakes for client IntelligencePacksClient
+	IntelligencePacksServer IntelligencePacksServer
+
+	// LinkedServicesServer contains the fakes for client LinkedServicesClient
+	LinkedServicesServer LinkedServicesServer
+
+	// LinkedStorageAccountsServer contains the fakes for client LinkedStorageAccountsClient
 	LinkedStorageAccountsServer LinkedStorageAccountsServer
-	ManagementGroupsServer      ManagementGroupsServer
-	OperationStatusesServer     OperationStatusesServer
-	OperationsServer            OperationsServer
-	QueriesServer               QueriesServer
-	QueryPacksServer            QueryPacksServer
-	SavedSearchesServer         SavedSearchesServer
-	SchemaServer                SchemaServer
-	SharedKeysServer            SharedKeysServer
+
+	// ManagementGroupsServer contains the fakes for client ManagementGroupsClient
+	ManagementGroupsServer ManagementGroupsServer
+
+	// OperationStatusesServer contains the fakes for client OperationStatusesClient
+	OperationStatusesServer OperationStatusesServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// QueriesServer contains the fakes for client QueriesClient
+	QueriesServer QueriesServer
+
+	// QueryPacksServer contains the fakes for client QueryPacksClient
+	QueryPacksServer QueryPacksServer
+
+	// SavedSearchesServer contains the fakes for client SavedSearchesClient
+	SavedSearchesServer SavedSearchesServer
+
+	// SchemaServer contains the fakes for client SchemaClient
+	SchemaServer SchemaServer
+
+	// SharedKeysServer contains the fakes for client SharedKeysClient
+	SharedKeysServer SharedKeysServer
+
+	// StorageInsightConfigsServer contains the fakes for client StorageInsightConfigsClient
 	StorageInsightConfigsServer StorageInsightConfigsServer
-	TablesServer                TablesServer
-	UsagesServer                UsagesServer
-	WorkspacePurgeServer        WorkspacePurgeServer
-	WorkspacesServer            WorkspacesServer
+
+	// SummaryLogsServer contains the fakes for client SummaryLogsClient
+	SummaryLogsServer SummaryLogsServer
+
+	// TablesServer contains the fakes for client TablesClient
+	TablesServer TablesServer
+
+	// UsagesServer contains the fakes for client UsagesClient
+	UsagesServer UsagesServer
+
+	// WorkspacePurgeServer contains the fakes for client WorkspacePurgeClient
+	WorkspacePurgeServer WorkspacePurgeServer
+
+	// WorkspacesServer contains the fakes for client WorkspacesClient
+	WorkspacesServer WorkspacesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -72,6 +118,7 @@ type ServerFactoryTransport struct {
 	trSchemaServer                *SchemaServerTransport
 	trSharedKeysServer            *SharedKeysServerTransport
 	trStorageInsightConfigsServer *StorageInsightConfigsServerTransport
+	trSummaryLogsServer           *SummaryLogsServerTransport
 	trTablesServer                *TablesServerTransport
 	trUsagesServer                *UsagesServerTransport
 	trWorkspacePurgeServer        *WorkspacePurgeServerTransport
@@ -163,6 +210,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewStorageInsightConfigsServerTransport(&s.srv.StorageInsightConfigsServer)
 		})
 		resp, err = s.trStorageInsightConfigsServer.Do(req)
+	case "SummaryLogsClient":
+		initServer(s, &s.trSummaryLogsServer, func() *SummaryLogsServerTransport { return NewSummaryLogsServerTransport(&s.srv.SummaryLogsServer) })
+		resp, err = s.trSummaryLogsServer.Do(req)
 	case "TablesClient":
 		initServer(s, &s.trTablesServer, func() *TablesServerTransport { return NewTablesServerTransport(&s.srv.TablesServer) })
 		resp, err = s.trTablesServer.Do(req)

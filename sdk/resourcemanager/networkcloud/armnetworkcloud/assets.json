@@ -2,5 +2,5 @@
     "AssetsRepo":  "Azure/azure-sdk-assets",
     "AssetsRepoPrefixPath":  "go",
     "TagPrefix":  "go/resourcemanager/networkcloud/armnetworkcloud",
-    "Tag": "go/resourcemanager/networkcloud/armnetworkcloud_9c69c9711b"
+    "Tag": "go/resourcemanager/networkcloud/armnetworkcloud_6e661278b7"
 }

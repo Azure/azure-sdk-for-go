@@ -42,7 +42,7 @@ func NewGlobalReachConnectionsClient(subscriptionID string, credential azcore.To
 // BeginCreateOrUpdate - Create a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - globalReachConnectionName - Name of the global reach connection
@@ -70,7 +70,7 @@ func (client *GlobalReachConnectionsClient) BeginCreateOrUpdate(ctx context.Cont
 // CreateOrUpdate - Create a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 func (client *GlobalReachConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GlobalReachConnectionsClient.BeginCreateOrUpdate"
@@ -116,7 +116,7 @@ func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,7 +129,7 @@ func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx cont
 // BeginDelete - Delete a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - globalReachConnectionName - Name of the global reach connection
@@ -155,7 +155,7 @@ func (client *GlobalReachConnectionsClient) BeginDelete(ctx context.Context, res
 // Delete - Delete a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 func (client *GlobalReachConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GlobalReachConnectionsClient.BeginDelete"
@@ -201,7 +201,7 @@ func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -209,7 +209,7 @@ func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Cont
 // Get - Get a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - globalReachConnectionName - Name of the global reach connection
@@ -261,7 +261,7 @@ func (client *GlobalReachConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,7 +278,7 @@ func (client *GlobalReachConnectionsClient) getHandleResponse(resp *http.Respons
 
 // NewListPager - List GlobalReachConnection resources by PrivateCloud
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - GlobalReachConnectionsClientListOptions contains the optional parameters for the GlobalReachConnectionsClient.NewListPager
@@ -326,7 +326,7 @@ func (client *GlobalReachConnectionsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

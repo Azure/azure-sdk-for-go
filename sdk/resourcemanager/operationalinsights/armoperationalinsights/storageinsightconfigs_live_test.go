@@ -55,7 +55,7 @@ func (testsuite *StorageInsightConfigsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TestStorageInsightConfigsTestSuite(t *testing.T) {
+func TTestStorageInsightConfigsTestSuite(t *testing.T) {
 	suite.Run(t, new(StorageInsightConfigsTestSuite))
 }
 

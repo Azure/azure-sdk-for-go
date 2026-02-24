@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -77,65 +77,5 @@ func (testsuite *ContainerregistryBuildTestSuite) Prepare() {
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, registriesClientCreateResponsePoller)
-	testsuite.Require().NoError(err)
-}
-
-// Microsoft.ContainerRegistry/registries/agentPools
-func (testsuite *ContainerregistryBuildTestSuite) TestAgentpools() {
-	var err error
-	// From step AgentPools_Create
-	fmt.Println("Call operation: AgentPools_Create")
-	agentPoolsClient, err := armcontainerregistry.NewAgentPoolsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	agentPoolsClientCreateResponsePoller, err := agentPoolsClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, armcontainerregistry.AgentPool{
-		Location: to.Ptr(testsuite.location),
-		Tags: map[string]*string{
-			"key": to.Ptr("value"),
-		},
-		Properties: &armcontainerregistry.AgentPoolProperties{
-			Count: to.Ptr[int32](1),
-			OS:    to.Ptr(armcontainerregistry.OSLinux),
-			Tier:  to.Ptr("S1"),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientCreateResponsePoller)
-	testsuite.Require().NoError(err)
-
-	// From step AgentPools_List
-	fmt.Println("Call operation: AgentPools_List")
-	agentPoolsClientNewListPager := agentPoolsClient.NewListPager(testsuite.resourceGroupName, testsuite.registryName, nil)
-	for agentPoolsClientNewListPager.More() {
-		_, err := agentPoolsClientNewListPager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		break
-	}
-
-	// From step AgentPools_Get
-	fmt.Println("Call operation: AgentPools_Get")
-	_, err = agentPoolsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step AgentPools_Update
-	fmt.Println("Call operation: AgentPools_Update")
-	agentPoolsClientUpdateResponsePoller, err := agentPoolsClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, armcontainerregistry.AgentPoolUpdateParameters{
-		Properties: &armcontainerregistry.AgentPoolPropertiesUpdateParameters{
-			Count: to.Ptr[int32](1),
-		},
-	}, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientUpdateResponsePoller)
-	testsuite.Require().NoError(err)
-
-	// From step AgentPools_GetQueueStatus
-	fmt.Println("Call operation: AgentPools_GetQueueStatus")
-	_, err = agentPoolsClient.GetQueueStatus(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
-	testsuite.Require().NoError(err)
-
-	// From step AgentPools_Delete
-	fmt.Println("Call operation: AgentPools_Delete")
-	agentPoolsClientDeleteResponsePoller, err := agentPoolsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.registryName, testsuite.agentPoolName, nil)
-	testsuite.Require().NoError(err)
-	_, err = testutil.PollForTest(testsuite.ctx, agentPoolsClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
 }

@@ -1,6 +1,3 @@
-//go:build go1.18
-// +build go1.18
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
@@ -38,6 +35,10 @@ type CreateOptions struct {
 	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
 	// when NFS is enabled.
 	EnableSnapshotVirtualDirectoryAccess *bool
+
+	// EnableSMBDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	EnableSMBDirectoryLease *bool
+
 	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
 	PaidBurstingEnabled *bool
 
@@ -70,6 +71,7 @@ func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 		Quota:                                o.Quota,
 		RootSquash:                           o.RootSquash,
 		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
+		EnableSMBDirectoryLease:              o.EnableSMBDirectoryLease,
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
@@ -146,6 +148,8 @@ type SetPropertiesOptions struct {
 	// Specifies whether the snapshot virtual directory should be accessible at the root of share mount point
 	// when NFS is enabled.
 	EnableSnapshotVirtualDirectoryAccess *bool
+	// EnableSMBDirectoryLease contains the information returned from the x-ms-enable-smb-directory-lease header response.
+	EnableSMBDirectoryLease *bool
 	// Optional. Boolean. Default if not specified is false. This property enables paid bursting.
 	PaidBurstingEnabled *bool
 	// Optional. Integer. Default if not specified is the maximum throughput the file share can support. Current maximum for a
@@ -173,6 +177,7 @@ func (o *SetPropertiesOptions) format() (*generated.ShareClientSetPropertiesOpti
 		Quota:                                o.Quota,
 		RootSquash:                           o.RootSquash,
 		EnableSnapshotVirtualDirectoryAccess: o.EnableSnapshotVirtualDirectoryAccess,
+		EnableSMBDirectoryLease:              o.EnableSMBDirectoryLease,
 		PaidBurstingEnabled:                  o.PaidBurstingEnabled,
 		PaidBurstingMaxBandwidthMibps:        o.PaidBurstingMaxBandwidthMibps,
 		PaidBurstingMaxIops:                  o.PaidBurstingMaxIops,
@@ -235,21 +240,23 @@ type SetAccessPolicyOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetAccessPolicyOptions) format() (*generated.ShareClientSetAccessPolicyOptions, []*SignedIdentifier, *LeaseAccessConditions, error) {
+func (o *SetAccessPolicyOptions) format() (*generated.ShareClientSetAccessPolicyOptions, *LeaseAccessConditions, error) {
 	if o == nil {
-		return nil, nil, nil, nil
+		return nil, nil, nil
 	}
 
 	if o.ShareACL != nil {
 		for _, si := range o.ShareACL {
 			err := formatTime(si)
 			if err != nil {
-				return nil, nil, nil, err
+				return nil, nil, err
 			}
 		}
 	}
 
-	return nil, o.ShareACL, o.LeaseAccessConditions, nil
+	return &generated.ShareClientSetAccessPolicyOptions{
+		ShareACL: o.ShareACL,
+	}, o.LeaseAccessConditions, nil
 }
 
 func formatTime(si *SignedIdentifier) error {

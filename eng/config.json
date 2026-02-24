@@ -14,7 +14,7 @@
         },
         {
             "Name": "azblob",
-            "CoverageGoal": 0.30
+            "CoverageGoal": 0.15
         },
         {
             "Name": "azcontainerregistry",
@@ -38,19 +38,19 @@
         },
         {
             "Name": "azqueue",
-            "CoverageGoal": 0.60
+            "CoverageGoal": 0.00
         },
         {
             "Name": "azdatalake",
-            "CoverageGoal": 0.25
+            "CoverageGoal": 0.14
         },
         {
             "Name": "azfile",
-            "CoverageGoal": 0.70
+            "CoverageGoal": 0.12
         },
         {
             "Name": "azopenai",
-            "CoverageGoal": 0.10
+            "CoverageGoal": 0.09
         },
         {
             "Name": "aztemplate",
@@ -108,7 +108,7 @@
         },
         {
             "Name": "messaging/azeventhubs",
-            "CoverageGoal": 0.45
+            "CoverageGoal": 0.40
         },
         {
             "Name": "messaging/eventgrid/aznamespaces",

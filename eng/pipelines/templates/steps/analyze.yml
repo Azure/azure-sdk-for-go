@@ -69,20 +69,26 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
-  - pwsh: |
-      . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
-      New-APIViewFromCI `
-        -ServiceDirectory '${{parameters.ServiceDirectory}}' `
-        -ArtifactPath '$(Build.ArtifactStagingDirectory)' `
-        -ApiKey '$(azuresdk-apiview-apikey)' `
-        -SourceBranch '$(Build.SourceBranchName)' `
-        -DefaultBranch '$(DefaultBranch)' `
-        -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
-        -BuildId $(Build.BuildId) `
-        -RepoName '$(Build.Repository.Name)'
-    displayName: Create API review for Go
-    workingDirectory: $(Pipeline.Workspace)
-    condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true') , ne(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'internal'))
+  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'], 'PullRequest'), not(endsWith(variables['Build.Repository.Name'], '-pr'))) }}:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'APIView prod deployment'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+          New-APIViewFromCI `
+            -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+            -ArtifactPath '$(Build.ArtifactStagingDirectory)' `
+            -SourceBranch '$(Build.SourceBranchName)' `
+            -DefaultBranch '$(DefaultBranch)' `
+            -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
+            -BuildId $(Build.BuildId) `
+            -RepoName '$(Build.Repository.Name)'
+        pwsh: true
+        workingDirectory: $(Pipeline.Workspace)
+      displayName: Create API review for Go
+      condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
 
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml

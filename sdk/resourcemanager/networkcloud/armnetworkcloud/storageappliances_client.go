@@ -45,7 +45,7 @@ func NewStorageAppliancesClient(subscriptionID string, credential azcore.TokenCr
 // requests will be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - storageApplianceParameters - The request body.
@@ -73,7 +73,7 @@ func (client *StorageAppliancesClient) BeginCreateOrUpdate(ctx context.Context, 
 // will be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *StorageAppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceParameters StorageAppliance, options *StorageAppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAppliancesClient.BeginCreateOrUpdate"
@@ -115,7 +115,7 @@ func (client *StorageAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -134,7 +134,7 @@ func (client *StorageAppliancesClient) createOrUpdateCreateRequest(ctx context.C
 // of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - options - StorageAppliancesClientBeginDeleteOptions contains the optional parameters for the StorageAppliancesClient.BeginDelete
@@ -161,7 +161,7 @@ func (client *StorageAppliancesClient) BeginDelete(ctx context.Context, resource
 // resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *StorageAppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, storageApplianceName string, options *StorageAppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAppliancesClient.BeginDelete"
@@ -203,7 +203,7 @@ func (client *StorageAppliancesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -218,7 +218,7 @@ func (client *StorageAppliancesClient) deleteCreateRequest(ctx context.Context, 
 // BeginDisableRemoteVendorManagement - Disable remote vendor management of the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - options - StorageAppliancesClientBeginDisableRemoteVendorManagementOptions contains the optional parameters for the StorageAppliancesClient.BeginDisableRemoteVendorManagement
@@ -244,7 +244,7 @@ func (client *StorageAppliancesClient) BeginDisableRemoteVendorManagement(ctx co
 // DisableRemoteVendorManagement - Disable remote vendor management of the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *StorageAppliancesClient) disableRemoteVendorManagement(ctx context.Context, resourceGroupName string, storageApplianceName string, options *StorageAppliancesClientBeginDisableRemoteVendorManagementOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAppliancesClient.BeginDisableRemoteVendorManagement"
@@ -286,7 +286,7 @@ func (client *StorageAppliancesClient) disableRemoteVendorManagementCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -295,7 +295,7 @@ func (client *StorageAppliancesClient) disableRemoteVendorManagementCreateReques
 // BeginEnableRemoteVendorManagement - Enable remote vendor management of the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - options - StorageAppliancesClientBeginEnableRemoteVendorManagementOptions contains the optional parameters for the StorageAppliancesClient.BeginEnableRemoteVendorManagement
@@ -321,7 +321,7 @@ func (client *StorageAppliancesClient) BeginEnableRemoteVendorManagement(ctx con
 // EnableRemoteVendorManagement - Enable remote vendor management of the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *StorageAppliancesClient) enableRemoteVendorManagement(ctx context.Context, resourceGroupName string, storageApplianceName string, options *StorageAppliancesClientBeginEnableRemoteVendorManagementOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAppliancesClient.BeginEnableRemoteVendorManagement"
@@ -363,7 +363,7 @@ func (client *StorageAppliancesClient) enableRemoteVendorManagementCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.StorageApplianceEnableRemoteVendorManagementParameters != nil {
@@ -378,7 +378,7 @@ func (client *StorageAppliancesClient) enableRemoteVendorManagementCreateRequest
 // Get - Get properties of the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - options - StorageAppliancesClientGetOptions contains the optional parameters for the StorageAppliancesClient.Get method.
@@ -424,7 +424,7 @@ func (client *StorageAppliancesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -441,7 +441,7 @@ func (client *StorageAppliancesClient) getHandleResponse(resp *http.Response) (S
 
 // NewListByResourceGroupPager - Get a list of storage appliances in the provided resource group.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StorageAppliancesClientListByResourceGroupOptions contains the optional parameters for the StorageAppliancesClient.NewListByResourceGroupPager
 //     method.
@@ -490,7 +490,7 @@ func (client *StorageAppliancesClient) listByResourceGroupCreateRequest(ctx cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -507,7 +507,7 @@ func (client *StorageAppliancesClient) listByResourceGroupHandleResponse(resp *h
 
 // NewListBySubscriptionPager - Get a list of storage appliances in the provided subscription.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - options - StorageAppliancesClientListBySubscriptionOptions contains the optional parameters for the StorageAppliancesClient.NewListBySubscriptionPager
 //     method.
 func (client *StorageAppliancesClient) NewListBySubscriptionPager(options *StorageAppliancesClientListBySubscriptionOptions) *runtime.Pager[StorageAppliancesClientListBySubscriptionResponse] {
@@ -551,7 +551,7 @@ func (client *StorageAppliancesClient) listBySubscriptionCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -569,7 +569,7 @@ func (client *StorageAppliancesClient) listBySubscriptionHandleResponse(resp *ht
 // BeginRunReadCommands - Run one or more read-only commands on the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - storageApplianceRunReadCommandsParameters - The request body.
@@ -596,7 +596,7 @@ func (client *StorageAppliancesClient) BeginRunReadCommands(ctx context.Context,
 // RunReadCommands - Run one or more read-only commands on the provided storage appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *StorageAppliancesClient) runReadCommands(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceRunReadCommandsParameters StorageApplianceRunReadCommandsParameters, options *StorageAppliancesClientBeginRunReadCommandsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAppliancesClient.BeginRunReadCommands"
@@ -638,7 +638,7 @@ func (client *StorageAppliancesClient) runReadCommandsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, storageApplianceRunReadCommandsParameters); err != nil {
@@ -651,7 +651,7 @@ func (client *StorageAppliancesClient) runReadCommandsCreateRequest(ctx context.
 // Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageApplianceName - The name of the storage appliance.
 //   - storageApplianceUpdateParameters - The request body.
@@ -679,7 +679,7 @@ func (client *StorageAppliancesClient) BeginUpdate(ctx context.Context, resource
 // and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-09-01
 func (client *StorageAppliancesClient) update(ctx context.Context, resourceGroupName string, storageApplianceName string, storageApplianceUpdateParameters StorageAppliancePatchParameters, options *StorageAppliancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageAppliancesClient.BeginUpdate"
@@ -721,7 +721,7 @@ func (client *StorageAppliancesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
+	reqQP.Set("api-version", "2025-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

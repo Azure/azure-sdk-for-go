@@ -7,7 +7,7 @@ package armbatch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
-	moduleVersion = "v3.0.0"
+	moduleVersion = "v3.0.1"
 )
 
 // AccessRuleDirection - Direction of Access Rule

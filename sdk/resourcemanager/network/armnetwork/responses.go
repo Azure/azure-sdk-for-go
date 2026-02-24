@@ -2169,6 +2169,12 @@ type PublicIPAddressesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
+// PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse contains the response from method PublicIPAddressesClient.BeginDisassociateCloudServiceReservedPublicIP.
+type PublicIPAddressesClientDisassociateCloudServiceReservedPublicIPResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
+}
+
 // PublicIPAddressesClientGetCloudServicePublicIPAddressResponse contains the response from method PublicIPAddressesClient.GetCloudServicePublicIPAddress.
 type PublicIPAddressesClientGetCloudServicePublicIPAddressResponse struct {
 	// Public IP address resource.
@@ -2221,6 +2227,12 @@ type PublicIPAddressesClientListVirtualMachineScaleSetPublicIPAddressesResponse 
 type PublicIPAddressesClientListVirtualMachineScaleSetVMPublicIPAddressesResponse struct {
 	// Response for ListPublicIpAddresses API service call.
 	PublicIPAddressListResult
+}
+
+// PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse contains the response from method PublicIPAddressesClient.BeginReserveCloudServicePublicIPAddress.
+type PublicIPAddressesClientReserveCloudServicePublicIPAddressResponse struct {
+	// Public IP address resource.
+	PublicIPAddress
 }
 
 // PublicIPAddressesClientUpdateTagsResponse contains the response from method PublicIPAddressesClient.UpdateTags.
@@ -3001,6 +3013,63 @@ type ServiceEndpointPolicyDefinitionsClientListByResourceGroupResponse struct {
 	ServiceEndpointPolicyDefinitionListResult
 }
 
+// ServiceGatewaysClientCreateOrUpdateResponse contains the response from method ServiceGatewaysClient.BeginCreateOrUpdate.
+type ServiceGatewaysClientCreateOrUpdateResponse struct {
+	// ServiceGateway resource.
+	ServiceGateway
+}
+
+// ServiceGatewaysClientDeleteResponse contains the response from method ServiceGatewaysClient.BeginDelete.
+type ServiceGatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceGatewaysClientGetAddressLocationsResponse contains the response from method ServiceGatewaysClient.NewGetAddressLocationsPager.
+type ServiceGatewaysClientGetAddressLocationsResponse struct {
+	// Response for get service gateway address locations.
+	GetServiceGatewayAddressLocationsResult
+}
+
+// ServiceGatewaysClientGetResponse contains the response from method ServiceGatewaysClient.Get.
+type ServiceGatewaysClientGetResponse struct {
+	// ServiceGateway resource.
+	ServiceGateway
+}
+
+// ServiceGatewaysClientGetServicesResponse contains the response from method ServiceGatewaysClient.NewGetServicesPager.
+type ServiceGatewaysClientGetServicesResponse struct {
+	// Response for get service gateway services.
+	GetServiceGatewayServicesResult
+}
+
+// ServiceGatewaysClientListAllResponse contains the response from method ServiceGatewaysClient.NewListAllPager.
+type ServiceGatewaysClientListAllResponse struct {
+	// Response for ListServiceGateways API service call.
+	ServiceGatewayListResult
+}
+
+// ServiceGatewaysClientListResponse contains the response from method ServiceGatewaysClient.NewListPager.
+type ServiceGatewaysClientListResponse struct {
+	// Response for ListServiceGateways API service call.
+	ServiceGatewayListResult
+}
+
+// ServiceGatewaysClientUpdateAddressLocationsResponse contains the response from method ServiceGatewaysClient.BeginUpdateAddressLocations.
+type ServiceGatewaysClientUpdateAddressLocationsResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceGatewaysClientUpdateServicesResponse contains the response from method ServiceGatewaysClient.BeginUpdateServices.
+type ServiceGatewaysClientUpdateServicesResponse struct {
+	// placeholder for future response values
+}
+
+// ServiceGatewaysClientUpdateTagsResponse contains the response from method ServiceGatewaysClient.UpdateTags.
+type ServiceGatewaysClientUpdateTagsResponse struct {
+	// ServiceGateway resource.
+	ServiceGateway
+}
+
 // ServiceTagInformationClientListResponse contains the response from method ServiceTagInformationClient.NewListPager.
 type ServiceTagInformationClientListResponse struct {
 	// Response for Get ServiceTagInformation API service call. Retrieves the list of service tag information resources.
@@ -3647,6 +3716,41 @@ type VirtualHubsClientListResponse struct {
 type VirtualHubsClientUpdateTagsResponse struct {
 	// VirtualHub Resource.
 	VirtualHub
+}
+
+// VirtualNetworkAppliancesClientCreateOrUpdateResponse contains the response from method VirtualNetworkAppliancesClient.BeginCreateOrUpdate.
+type VirtualNetworkAppliancesClientCreateOrUpdateResponse struct {
+	// A virtual network appliance in a resource group.
+	VirtualNetworkAppliance
+}
+
+// VirtualNetworkAppliancesClientDeleteResponse contains the response from method VirtualNetworkAppliancesClient.BeginDelete.
+type VirtualNetworkAppliancesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualNetworkAppliancesClientGetResponse contains the response from method VirtualNetworkAppliancesClient.Get.
+type VirtualNetworkAppliancesClientGetResponse struct {
+	// A virtual network appliance in a resource group.
+	VirtualNetworkAppliance
+}
+
+// VirtualNetworkAppliancesClientListAllResponse contains the response from method VirtualNetworkAppliancesClient.NewListAllPager.
+type VirtualNetworkAppliancesClientListAllResponse struct {
+	// Response for the ListVirtualNetworkAppliance API service call.
+	VirtualNetworkApplianceListResult
+}
+
+// VirtualNetworkAppliancesClientListResponse contains the response from method VirtualNetworkAppliancesClient.NewListPager.
+type VirtualNetworkAppliancesClientListResponse struct {
+	// Response for the ListVirtualNetworkAppliance API service call.
+	VirtualNetworkApplianceListResult
+}
+
+// VirtualNetworkAppliancesClientUpdateTagsResponse contains the response from method VirtualNetworkAppliancesClient.UpdateTags.
+type VirtualNetworkAppliancesClientUpdateTagsResponse struct {
+	// A virtual network appliance in a resource group.
+	VirtualNetworkAppliance
 }
 
 // VirtualNetworkGatewayConnectionsClientCreateOrUpdateResponse contains the response from method VirtualNetworkGatewayConnectionsClient.BeginCreateOrUpdate.

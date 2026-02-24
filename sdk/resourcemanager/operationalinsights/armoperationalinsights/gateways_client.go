@@ -27,7 +27,7 @@ type GatewaysClient struct {
 // NewGatewaysClient creates a new instance of GatewaysClient with the specified values.
 //   - subscriptionID - The ID of the target subscription.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GatewaysClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewGatewaysClient(subscriptionID string, credential azcore.TokenCredential,
 // Delete - Delete a Log Analytics gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-08-01
+// Generated from API version 2025-07-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - gatewayID - The Log Analytics gateway Id.
@@ -70,7 +70,7 @@ func (client *GatewaysClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string, options *GatewaysClientDeleteOptions) (*policy.Request, error) {
+func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, gatewayID string, _ *GatewaysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/gateways/{gatewayId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -93,7 +93,7 @@ func (client *GatewaysClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-08-01")
+	reqQP.Set("api-version", "2025-07-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

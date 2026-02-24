@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_CreateOrUpdate.json
 func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradeProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradeProfileGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleAutoUpgradeProfilesClient_BeginCreateOrUpdate_createAnAutoUpgradePro
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Delete.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Delete.json
 func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileReso
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Delete_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleAutoUpgradeProfilesClient_BeginDelete_deleteAnAutoUpgradeProfileReso
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Get.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Get.json
 func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResource() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_Get_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleAutoUpgradeProfilesClient_Get_getsAnAutoUpgradeProfileResourceGenera
 	// }
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_ListByFleet.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_ListByFleet.json
 func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradeProfileResourcesByFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradePro
 	}
 }
 
-// Generated from example definition: 2025-04-01-preview/AutoUpgradeProfiles_ListByFleet_MaximumSet_Gen.json
+// Generated from example definition: 2025-08-01-preview/AutoUpgradeProfiles_ListByFleet_MaximumSet_Gen.json
 func ExampleAutoUpgradeProfilesClient_NewListByFleetPager_listsTheAutoUpgradeProfileResourcesByFleetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

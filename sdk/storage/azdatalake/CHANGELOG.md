@@ -1,14 +1,20 @@
 # Release History
 
-## 1.4.4-beta.1 (Unreleased)
+## 1.4.5-beta.1 (Unreleased)
 
 ### Features Added
+* Added error code `PathIsTooDeep` which is returned when a path contains more than 63 path segments.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.4 (2026-01-12)
+
+### Features Added
+* Added support for service version 2026-02-06.
 
 ## 1.4.3 (2025-10-16)
 

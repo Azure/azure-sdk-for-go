@@ -38,6 +38,9 @@ const (
 	// VectorDataTypeFloat32 represents 32-bit floating point numbers (default).
 	VectorDataTypeFloat32 VectorDataType = "float32"
 
+	// VectorDataTypeFloat16 represents 16-bit floating point numbers.
+	VectorDataTypeFloat16 VectorDataType = "float16"
+
 	// VectorDataTypeInt8 represents 8-bit signed integers.
 	VectorDataTypeInt8 VectorDataType = "int8"
 

@@ -48,6 +48,14 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
+// NewHardwareSettingsClient creates a new instance of HardwareSettingsClient.
+func (c *ClientFactory) NewHardwareSettingsClient() *HardwareSettingsClient {
+	return &HardwareSettingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewImagesClient creates a new instance of ImagesClient.
 func (c *ClientFactory) NewImagesClient() *ImagesClient {
 	return &ImagesClient{

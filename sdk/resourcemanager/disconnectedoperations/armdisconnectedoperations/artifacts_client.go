@@ -42,7 +42,7 @@ func NewArtifactsClient(subscriptionID string, credential azcore.TokenCredential
 // Get - Get the resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - imageName - The name of the Image
@@ -98,7 +98,7 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,7 +115,7 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (Artifacts
 
 // NewListByParentPager - List by parent
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - imageName - The name of the Image
@@ -168,7 +168,7 @@ func (client *ArtifactsClient) listByParentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -186,7 +186,7 @@ func (client *ArtifactsClient) listByParentHandleResponse(resp *http.Response) (
 // ListDownloadURI - Get artifact download link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - imageName - The name of the Image
@@ -243,7 +243,7 @@ func (client *ArtifactsClient) listDownloadURICreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
+	reqQP.Set("api-version", "2026-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

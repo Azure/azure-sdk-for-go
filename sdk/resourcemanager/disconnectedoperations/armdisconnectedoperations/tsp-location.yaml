@@ -1,5 +1,5 @@
 directory: specification/edge/Microsoft.Edge.DisconnectedOperations.Management
-commit: 217f332d35760fbe2034475504284f5d84bdd968
+commit: 45abbaa58dc7eb9cb64fa4756e1f684904cbeb35
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
 - specification/edge/Microsoft.Edge.Shared

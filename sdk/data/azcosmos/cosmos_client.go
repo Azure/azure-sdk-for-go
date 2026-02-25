@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 const (
@@ -561,6 +562,8 @@ func addDefaultHeaders(req *policy.Request) {
 	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
+	activityID, _ := uuid.New()
+	req.Raw().Header.Set(cosmosHeaderActivityId, activityID.String())
 }
 
 func getAllowedHeaders() []string {

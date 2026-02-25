@@ -856,3 +856,64 @@ func tokenOK() azcore.AccessToken {
 		ExpiresOn: time.Now().Add(time.Hour),
 	}
 }
+
+func TestAddDefaultHeadersSetsActivityId(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	_, err := client.sendGetRequest("/", context.Background(), operationContext, &DeleteDatabaseOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	activityID := verifier.requests[0].headers.Get(cosmosHeaderActivityId)
+	if activityID == "" {
+		t.Fatal("expected x-ms-activity-id header to be set on the request")
+	}
+
+	// Verify it's a valid UUID format (8-4-4-4-12)
+	if len(activityID) != 36 {
+		t.Errorf("expected activity id to be a UUID, but got %v", activityID)
+	}
+}
+
+func TestActivityIdIsUniquePerRequest(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	_, err := client.sendGetRequest("/", context.Background(), operationContext, &DeleteDatabaseOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, &DeleteDatabaseOptions{}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	id1 := verifier.requests[0].headers.Get(cosmosHeaderActivityId)
+	id2 := verifier.requests[1].headers.Get(cosmosHeaderActivityId)
+	if id1 == id2 {
+		t.Errorf("expected unique activity ids per request, but both were %v", id1)
+	}
+}

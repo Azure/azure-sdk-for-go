@@ -549,6 +549,126 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURWithLRequestIntent
 	_require.Equal(destBuffer, sourceData)
 }
 
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewAppendBlobClient(srcBlobName)
+
+	cpk := &testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), &appendblob.CreateOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.AppendBlock(context.Background(), streaming.NopCloser(r), &appendblob.AppendBlockOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	// Create SAS for source
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	sasQuery, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-1 * time.Hour),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true}).String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcURL := srcBlobClient.URL() + "?" + sasQuery.Encode()
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewAppendBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Test AppendBlockFromURL with Source CPK
+	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
+		SourceCustomerProvidedKey: cpk,
+	})
+	_require.NoError(err)
+
+	// Test AppendBlockFromURL validation logic
+	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
+		SourceCustomerProvidedKey: &blob.CPKInfo{
+			EncryptionAlgorithm: to.Ptr(blob.EncryptionAlgorithmTypeAES256),
+		},
+	})
+	_require.Error(err)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewAppendBlobClient(srcBlobName)
+
+	cpk := &testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), &appendblob.CreateOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 4 * 1024 // 4KB
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.AppendBlock(context.Background(), streaming.NopCloser(r), &appendblob.AppendBlockOptions{
+		CPKInfo: cpk,
+	})
+	_require.NoError(err)
+
+	// Create SAS for source
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	sasQuery, err := sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,
+		StartTime:     time.Now().UTC().Add(-1 * time.Hour),
+		ExpiryTime:    time.Now().UTC().Add(1 * time.Hour),
+		Permissions:   to.Ptr(sas.BlobPermissions{Read: true}).String(),
+		ContainerName: containerName,
+		BlobName:      srcBlobName,
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcURL := srcBlobClient.URL() + "?" + sasQuery.Encode()
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewAppendBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	// Test AppendBlockFromURL with Source CPK
+	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
+		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+	})
+	_require.Error(err)
+}
+
 func (s *AppendBlobUnrecordedTestsSuite) TestBlobEncryptionScopeSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

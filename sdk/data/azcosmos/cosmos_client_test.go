@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 func TestNewClientFromConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
@@ -857,13 +858,16 @@ func tokenOK() azcore.AccessToken {
 	}
 }
 
-func TestAddDefaultHeadersSetsActivityId(t *testing.T) {
+func TestAddDefaultHeadersSetsActivityID(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	if err != nil {
+		t.Fatal(err)
+	}
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
@@ -871,7 +875,7 @@ func TestAddDefaultHeadersSetsActivityId(t *testing.T) {
 		resourceAddress: "",
 	}
 
-	_, err := client.sendGetRequest("/", context.Background(), operationContext, &DeleteDatabaseOptions{}, nil)
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -881,19 +885,21 @@ func TestAddDefaultHeadersSetsActivityId(t *testing.T) {
 		t.Fatal("expected x-ms-activity-id header to be set on the request")
 	}
 
-	// Verify it's a valid UUID format (8-4-4-4-12)
-	if len(activityID) != 36 {
-		t.Errorf("expected activity id to be a UUID, but got %v", activityID)
+	if _, err := uuid.Parse(activityID); err != nil {
+		t.Errorf("expected activity id to be a valid UUID, but got %v: %v", activityID, err)
 	}
 }
 
-func TestActivityIdIsUniquePerRequest(t *testing.T) {
+func TestActivityIDIsUniquePerRequest(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 	verifier := pipelineVerifier{}
-	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	if err != nil {
+		t.Fatal(err)
+	}
 	gem := &globalEndpointManager{preferredLocations: []string{}}
 	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
 	operationContext := pipelineRequestOptions{
@@ -901,12 +907,12 @@ func TestActivityIdIsUniquePerRequest(t *testing.T) {
 		resourceAddress: "",
 	}
 
-	_, err := client.sendGetRequest("/", context.Background(), operationContext, &DeleteDatabaseOptions{}, nil)
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	_, err = client.sendGetRequest("/", context.Background(), operationContext, &DeleteDatabaseOptions{}, nil)
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

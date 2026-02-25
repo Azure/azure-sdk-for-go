@@ -562,8 +562,9 @@ func addDefaultHeaders(req *policy.Request) {
 	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	req.Raw().Header.Set(headerXmsVersion, apiVersion)
 	req.Raw().Header.Set(cosmosHeaderSDKSupportedCapabilities, supportedCapabilitiesHeaderValue)
-	activityID, _ := uuid.New()
-	req.Raw().Header.Set(cosmosHeaderActivityId, activityID.String())
+	if activityID, err := uuid.New(); err == nil {
+		req.Raw().Header.Set(cosmosHeaderActivityId, activityID.String())
+	}
 }
 
 func getAllowedHeaders() []string {

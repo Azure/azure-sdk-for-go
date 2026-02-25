@@ -3717,7 +3717,8 @@ func (s *BlobUnrecordedTestsSuite) TestSASURLBlobClient() {
 func (s *BlobRecordedTestsSuite) TestBlobGetAccountInfo() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
-	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	// svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	svcClient, err := testcommon.GetServiceClientFromConnectionString(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	containerName := testcommon.GenerateContainerName(testName)

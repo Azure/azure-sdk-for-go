@@ -1,0 +1,4 @@
+directory: specification/datafactory/DataFactory.Management
+commit: f4745f0e1dea39ff8f4b95aa5cd80a7d62c3b701
+repo: i-specs
+additionalDirectories: 

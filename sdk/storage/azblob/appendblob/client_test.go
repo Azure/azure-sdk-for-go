@@ -603,14 +603,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPK() {
 		SourceCustomerProvidedKey: cpk,
 	})
 	_require.NoError(err)
-
-	// Test AppendBlockFromURL validation logic
-	_, err = destBlobClient.AppendBlockFromURL(context.Background(), srcURL, &appendblob.AppendBlockFromURLOptions{
-		SourceCustomerProvidedKey: &blob.CPKInfo{
-			EncryptionAlgorithm: to.Ptr(blob.EncryptionAlgorithmTypeAES256),
-		},
-	})
-	_require.Error(err)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLSourceCPKFail() {

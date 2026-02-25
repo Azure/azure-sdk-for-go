@@ -33,8 +33,14 @@ type AzureBareMetalInstance struct {
 
 // AzureBareMetalInstanceProperties - Describes the properties of an Azure Bare Metal Instance.
 type AzureBareMetalInstanceProperties struct {
+	// Specifies the Azure Bare Metal Instance unique ID.
+	AzureBareMetalInstanceID *string
+
 	// Specifies the hardware settings for the Azure Bare Metal Instance.
 	HardwareProfile *HardwareProfile
+
+	// Hardware revision of an Azure Bare Metal Instance
+	HwRevision *string
 
 	// Specifies the network settings for the Azure Bare Metal Instance.
 	NetworkProfile *NetworkProfile
@@ -45,38 +51,35 @@ type AzureBareMetalInstanceProperties struct {
 	// ARM ID of another AzureBareMetalInstance that will share a network with this AzureBareMetalInstance
 	PartnerNodeID *string
 
+	// Resource power state
+	PowerState *AzureBareMetalInstancePowerStateEnum
+
+	// Resource proximity placement group
+	ProximityPlacementGroup *string
+
 	// Specifies the storage settings for the Azure Bare Metal Instance disks.
 	StorageProfile *StorageProfile
 
-	// READ-ONLY; Specifies the Azure Bare Metal Instance unique ID.
-	AzureBareMetalInstanceID *string
-
-	// READ-ONLY; Hardware revision of an Azure Bare Metal Instance
-	HwRevision *string
-
-	// READ-ONLY; Resource power state
-	PowerState *AzureBareMetalInstancePowerStateEnum
-
 	// READ-ONLY; State of provisioning of the AzureBareMetalInstance
 	ProvisioningState *AzureBareMetalProvisioningStatesEnum
-
-	// READ-ONLY; Resource proximity placement group
-	ProximityPlacementGroup *string
 }
 
-// AzureBareMetalInstancesListResult - The response from the List Azure Bare Metal Instances operation.
+// AzureBareMetalInstancesListResult - The response of a AzureBareMetalInstance list operation.
 type AzureBareMetalInstancesListResult struct {
-	// The URL to get the next set of Azure Bare Metal Instances.
-	NextLink *string
-
-	// The list of Azure Bare Metal Instances.
+	// REQUIRED; The AzureBareMetalInstance items on this page
 	Value []*AzureBareMetalInstance
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // AzureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties)
 type AzureBareMetalStorageInstance struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// The identity of Azure Bare Metal Storage Instance, if configured.
+	Identity *AzureBareMetalStorageInstanceIdentity
 
 	// AzureBareMetalStorageInstance properties
 	Properties *AzureBareMetalStorageInstanceProperties
@@ -97,6 +100,31 @@ type AzureBareMetalStorageInstance struct {
 	Type *string
 }
 
+// AzureBareMetalStorageInstanceBody - properties of body during PUT/PATCH for an AzureBareMetalStorageInstance.
+type AzureBareMetalStorageInstanceBody struct {
+	// The identity of Azure Bare Metal Storage Instance, if configured.
+	Identity *AzureBareMetalStorageInstanceIdentity
+
+	// Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
+	Tags map[string]*string
+}
+
+// AzureBareMetalStorageInstanceIdentity - Identity for Azure Bare Metal Storage Instance.
+type AzureBareMetalStorageInstanceIdentity struct {
+	// The type of identity used for the Azure Bare Metal Storage Instance. The type 'SystemAssigned' refers to an implicitly
+	// created identity. The type 'None' will remove any identities from the Azure Bare
+	// Metal Storage Instance.
+	Type *ResourceIdentityType
+
+	// READ-ONLY; The principal ID of Azure Bare Metal Storage Instance identity. This property will only be provided for a system
+	// assigned identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID associated with the Azure Bare Metal Storage Instance. This property will only be provided for
+	// a system assigned identity.
+	TenantID *string
+}
+
 // AzureBareMetalStorageInstanceProperties - Describes the properties of an AzureBareMetalStorageInstance.
 type AzureBareMetalStorageInstanceProperties struct {
 	// Specifies the AzureBareMetaStorageInstance unique ID.
@@ -106,13 +134,13 @@ type AzureBareMetalStorageInstanceProperties struct {
 	StorageProperties *StorageProperties
 }
 
-// AzureBareMetalStorageInstancesListResult - The response from the Get AzureBareMetalStorageInstances operation.
+// AzureBareMetalStorageInstancesListResult - The response of a AzureBareMetalStorageInstance list operation.
 type AzureBareMetalStorageInstancesListResult struct {
-	// The URL to get the next set of AzureBareMetalStorage instances.
-	NextLink *string
-
-	// The list of AzureBareMetalStorage instances.
+	// REQUIRED; The AzureBareMetalStorageInstance items on this page
 	Value []*AzureBareMetalStorageInstance
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // Disk - Specifies the disk information fo the Azure Bare Metal Instance
@@ -137,10 +165,10 @@ type ForceState struct {
 
 // HardwareProfile - Specifies the hardware settings for the Azure Bare Metal Instance.
 type HardwareProfile struct {
-	// READ-ONLY; Specifies the Azure Bare Metal Instance SKU.
+	// Specifies the Azure Bare Metal Instance SKU.
 	AzureBareMetalInstanceSize *AzureBareMetalInstanceSizeNamesEnum
 
-	// READ-ONLY; Name of the hardware type (vendor and/or their product name)
+	// Name of the hardware type (vendor and/or their product name)
 	HardwareType *AzureBareMetalHardwareTypeNamesEnum
 }
 
@@ -152,11 +180,11 @@ type NetworkInterface struct {
 
 // NetworkProfile - Specifies the network settings for the Azure Bare Metal Instance disks.
 type NetworkProfile struct {
+	// Specifies the circuit id for connecting to express route.
+	CircuitID *string
+
 	// Specifies the network interfaces for the Azure Bare Metal Instance.
 	NetworkInterfaces []*NetworkInterface
-
-	// READ-ONLY; Specifies the circuit id for connecting to express route.
-	CircuitID *string
 }
 
 // OSProfile - Specifies the operating system settings for the Azure Bare Metal instance.
@@ -164,13 +192,13 @@ type OSProfile struct {
 	// Specifies the host OS name of the Azure Bare Metal instance.
 	ComputerName *string
 
+	// This property allows you to specify the type of the OS.
+	OSType *string
+
 	// Specifies the SSH public key used to access the operating system.
 	SSHPublicKey *string
 
-	// READ-ONLY; This property allows you to specify the type of the OS.
-	OSType *string
-
-	// READ-ONLY; Specifies version of operating system.
+	// Specifies version of operating system.
 	Version *string
 }
 
@@ -258,11 +286,11 @@ type StorageBillingProperties struct {
 
 // StorageProfile - Specifies the storage settings for the Azure Bare Metal instance disks.
 type StorageProfile struct {
+	// IP Address to connect to storage.
+	NfsIPAddress *string
+
 	// Specifies information about the operating system disk used by bare metal instance.
 	OSDisks []*Disk
-
-	// READ-ONLY; IP Address to connect to storage.
-	NfsIPAddress *string
 }
 
 // StorageProperties - described the storage properties of the azure bare metal storage instance
@@ -310,7 +338,7 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
+// Tags field of the AzureBareMetal/AzureBareMetalStorage instance.
 type Tags struct {
 	// Tags field of the AzureBareMetal/AzureBareMetaStorage instance.
 	Tags map[string]*string

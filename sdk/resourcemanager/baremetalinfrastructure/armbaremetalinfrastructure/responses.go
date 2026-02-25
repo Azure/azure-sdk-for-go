@@ -5,6 +5,17 @@
 
 package armbaremetalinfrastructure
 
+// AzureBareMetalInstancesClientCreateResponse contains the response from method AzureBareMetalInstancesClient.Create.
+type AzureBareMetalInstancesClientCreateResponse struct {
+	// AzureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties)
+	AzureBareMetalInstance
+}
+
+// AzureBareMetalInstancesClientDeleteResponse contains the response from method AzureBareMetalInstancesClient.Delete.
+type AzureBareMetalInstancesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
 // AzureBareMetalInstancesClientGetResponse contains the response from method AzureBareMetalInstancesClient.Get.
 type AzureBareMetalInstancesClientGetResponse struct {
 	// AzureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties)
@@ -13,13 +24,13 @@ type AzureBareMetalInstancesClientGetResponse struct {
 
 // AzureBareMetalInstancesClientListByResourceGroupResponse contains the response from method AzureBareMetalInstancesClient.NewListByResourceGroupPager.
 type AzureBareMetalInstancesClientListByResourceGroupResponse struct {
-	// The response from the List Azure Bare Metal Instances operation.
+	// The response of a AzureBareMetalInstance list operation.
 	AzureBareMetalInstancesListResult
 }
 
 // AzureBareMetalInstancesClientListBySubscriptionResponse contains the response from method AzureBareMetalInstancesClient.NewListBySubscriptionPager.
 type AzureBareMetalInstancesClientListBySubscriptionResponse struct {
-	// The response from the List Azure Bare Metal Instances operation.
+	// The response of a AzureBareMetalInstance list operation.
 	AzureBareMetalInstancesListResult
 }
 
@@ -66,13 +77,13 @@ type AzureBareMetalStorageInstancesClientGetResponse struct {
 
 // AzureBareMetalStorageInstancesClientListByResourceGroupResponse contains the response from method AzureBareMetalStorageInstancesClient.NewListByResourceGroupPager.
 type AzureBareMetalStorageInstancesClientListByResourceGroupResponse struct {
-	// The response from the Get AzureBareMetalStorageInstances operation.
+	// The response of a AzureBareMetalStorageInstance list operation.
 	AzureBareMetalStorageInstancesListResult
 }
 
 // AzureBareMetalStorageInstancesClientListBySubscriptionResponse contains the response from method AzureBareMetalStorageInstancesClient.NewListBySubscriptionPager.
 type AzureBareMetalStorageInstancesClientListBySubscriptionResponse struct {
-	// The response from the Get AzureBareMetalStorageInstances operation.
+	// The response of a AzureBareMetalStorageInstance list operation.
 	AzureBareMetalStorageInstancesListResult
 }
 

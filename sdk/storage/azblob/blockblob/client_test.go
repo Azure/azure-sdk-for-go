@@ -6143,3 +6143,147 @@ func (s *BlockBlobUnrecordedTestsSuite) TestBlockBlobClientUploadDownloadFile() 
 	_require.NotNil(gResp.ContentLength)
 	_require.Equal(fileSize, *gResp.ContentLength)
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	// Test UploadBlobFromURL with Source CPK
+	_, err = destBlobClient.UploadBlobFromURL(context.Background(), srcURL, &blockblob.UploadBlobFromURLOptions{
+		SourceCustomerProvidedKey: &cpk,
+	})
+	_require.NoError(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestUploadBlobFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	// Test UploadBlobFromURL with Source CPK
+	_, err = destBlobClient.UploadBlobFromURL(context.Background(), srcURL, &blockblob.UploadBlobFromURLOptions{
+		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+	})
+	_require.Error(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte("blockID"))
+
+	// Test StageBlockFromURL with Source CPK
+	_, err = destBlobClient.StageBlockFromURL(context.Background(), blockID, srcURL, &blockblob.StageBlockFromURLOptions{
+		SourceCustomerProvidedKey: &cpk,
+	})
+	_require.NoError(err)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewBlockBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Upload(context.Background(), testcommon.GetReaderToGeneratedBytes(1024), &blockblob.UploadOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewBlockBlobClient(destBlobName)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte("blockID"))
+
+	// Test StageBlockFromURL with Source CPK
+	_, err = destBlobClient.StageBlockFromURL(context.Background(), blockID, srcURL, &blockblob.StageBlockFromURLOptions{
+		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+	})
+	_require.Error(err)
+}

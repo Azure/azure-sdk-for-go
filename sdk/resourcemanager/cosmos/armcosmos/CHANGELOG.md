@@ -1,5 +1,1629 @@
 # Release History
 
+## 4.0.0-beta.3 (2026-02-26)
+### Breaking Changes
+
+- Function `*CassandraClustersClient.BeginCreateUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, body ClusterResource, options *CassandraClustersClientBeginCreateUpdateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, body ClusterResource, options *BeginCreateUpdateOptions)`
+- Function `*CassandraClustersClient.BeginCreateUpdate` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientCreateUpdateResponse], error)` to `(*runtime.Poller[CreateUpdateResponse], error)`
+- Function `*CassandraClustersClient.BeginDeallocate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersClientBeginDeallocateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, options *BeginDeallocateOptions)`
+- Function `*CassandraClustersClient.BeginDeallocate` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientDeallocateResponse], error)` to `(*runtime.Poller[DeallocateResponse], error)`
+- Function `*CassandraClustersClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, options *BeginDeleteOptions)`
+- Function `*CassandraClustersClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*CassandraClustersClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersClientGetOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, options *GetOptions)`
+- Function `*CassandraClustersClient.Get` return value(s) have been changed from `(CassandraClustersClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*CassandraClustersClient.GetBackup` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, backupID string, options *CassandraClustersClientGetBackupOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, backupID string, options *GetBackupOptions)`
+- Function `*CassandraClustersClient.GetBackup` return value(s) have been changed from `(CassandraClustersClientGetBackupResponse, error)` to `(GetBackupResponse, error)`
+- Function `*CassandraClustersClient.GetCommandAsync` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, commandID string, options *CassandraClustersClientGetCommandAsyncOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, commandID string, options *GetCommandAsyncOptions)`
+- Function `*CassandraClustersClient.GetCommandAsync` return value(s) have been changed from `(CassandraClustersClientGetCommandAsyncResponse, error)` to `(GetCommandAsyncResponse, error)`
+- Function `*CassandraClustersClient.BeginInvokeCommand` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, body CommandPostBody, options *CassandraClustersClientBeginInvokeCommandOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, body CommandPostBody, options *BeginInvokeCommandOptions)`
+- Function `*CassandraClustersClient.BeginInvokeCommand` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientInvokeCommandResponse], error)` to `(*runtime.Poller[InvokeCommandResponse], error)`
+- Function `*CassandraClustersClient.BeginInvokeCommandAsync` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, body CommandAsyncPostBody, options *CassandraClustersClientBeginInvokeCommandAsyncOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, body CommandAsyncPostBody, options *BeginInvokeCommandAsyncOptions)`
+- Function `*CassandraClustersClient.BeginInvokeCommandAsync` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientInvokeCommandAsyncResponse], error)` to `(*runtime.Poller[InvokeCommandAsyncResponse], error)`
+- Function `*CassandraClustersClient.NewListBackupsPager` parameter(s) have been changed from `(resourceGroupName string, clusterName string, options *CassandraClustersClientListBackupsOptions)` to `(resourceGroupName string, clusterName string, options *ListBackupsOptions)`
+- Function `*CassandraClustersClient.NewListBackupsPager` return value(s) have been changed from `(*runtime.Pager[CassandraClustersClientListBackupsResponse])` to `(*runtime.Pager[ListBackupsResponse])`
+- Function `*CassandraClustersClient.NewListByResourceGroupPager` parameter(s) have been changed from `(resourceGroupName string, options *CassandraClustersClientListByResourceGroupOptions)` to `(resourceGroupName string, options *ListByResourceGroupOptions)`
+- Function `*CassandraClustersClient.NewListByResourceGroupPager` return value(s) have been changed from `(*runtime.Pager[CassandraClustersClientListByResourceGroupResponse])` to `(*runtime.Pager[ListByResourceGroupResponse])`
+- Function `*CassandraClustersClient.NewListBySubscriptionPager` parameter(s) have been changed from `(options *CassandraClustersClientListBySubscriptionOptions)` to `(options *ListBySubscriptionOptions)`
+- Function `*CassandraClustersClient.NewListBySubscriptionPager` return value(s) have been changed from `(*runtime.Pager[CassandraClustersClientListBySubscriptionResponse])` to `(*runtime.Pager[ListBySubscriptionResponse])`
+- Function `*CassandraClustersClient.NewListCommandPager` parameter(s) have been changed from `(resourceGroupName string, clusterName string, options *CassandraClustersClientListCommandOptions)` to `(resourceGroupName string, clusterName string, options *ListCommandOptions)`
+- Function `*CassandraClustersClient.NewListCommandPager` return value(s) have been changed from `(*runtime.Pager[CassandraClustersClientListCommandResponse])` to `(*runtime.Pager[ListCommandResponse])`
+- Function `*CassandraClustersClient.BeginStart` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersClientBeginStartOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, options *BeginStartOptions)`
+- Function `*CassandraClustersClient.BeginStart` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientStartResponse], error)` to `(*runtime.Poller[StartResponse], error)`
+- Function `*CassandraClustersClient.Status` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, options *CassandraClustersClientStatusOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, options *StatusOptions)`
+- Function `*CassandraClustersClient.Status` return value(s) have been changed from `(CassandraClustersClientStatusResponse, error)` to `(StatusResponse, error)`
+- Function `*CassandraClustersClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, body ClusterResource, options *CassandraClustersClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, body ClusterResource, options *BeginUpdateOptions)`
+- Function `*CassandraClustersClient.BeginUpdate` return value(s) have been changed from `(*runtime.Poller[CassandraClustersClientUpdateResponse], error)` to `(*runtime.Poller[UpdateResponse], error)`
+- Function `*CassandraDataCentersClient.BeginCreateUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, options *CassandraDataCentersClientBeginCreateUpdateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, options *BeginCreateUpdateOptions)`
+- Function `*CassandraDataCentersClient.BeginCreateUpdate` return value(s) have been changed from `(*runtime.Poller[CassandraDataCentersClientCreateUpdateResponse], error)` to `(*runtime.Poller[CreateUpdateResponse], error)`
+- Function `*CassandraDataCentersClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, options *CassandraDataCentersClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, options *BeginDeleteOptions)`
+- Function `*CassandraDataCentersClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[CassandraDataCentersClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*CassandraDataCentersClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, options *CassandraDataCentersClientGetOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, options *GetOptions)`
+- Function `*CassandraDataCentersClient.Get` return value(s) have been changed from `(CassandraDataCentersClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*CassandraDataCentersClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, clusterName string, options *CassandraDataCentersClientListOptions)` to `(resourceGroupName string, clusterName string, options *ListOptions)`
+- Function `*CassandraDataCentersClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[CassandraDataCentersClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*CassandraDataCentersClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, options *CassandraDataCentersClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, options *BeginUpdateOptions)`
+- Function `*CassandraDataCentersClient.BeginUpdate` return value(s) have been changed from `(*runtime.Poller[CassandraDataCentersClientUpdateResponse], error)` to `(*runtime.Poller[UpdateResponse], error)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraKeyspace` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, createUpdateCassandraKeyspaceParameters CassandraKeyspaceCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, createUpdateCassandraKeyspaceParameters CassandraKeyspaceCreateUpdateParameters, options *BeginCreateUpdateCassandraKeyspaceOptions)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraKeyspace` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse], error)` to `(*runtime.Poller[CreateUpdateCassandraKeyspaceResponse], error)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraTable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, createUpdateCassandraTableParameters CassandraTableCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraTableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, createUpdateCassandraTableParameters CassandraTableCreateUpdateParameters, options *BeginCreateUpdateCassandraTableOptions)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraTable` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraTableResponse], error)` to `(*runtime.Poller[CreateUpdateCassandraTableResponse], error)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraView` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, createUpdateCassandraViewParameters CassandraViewCreateUpdateParameters, options *CassandraResourcesClientBeginCreateUpdateCassandraViewOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, createUpdateCassandraViewParameters CassandraViewCreateUpdateParameters, options *BeginCreateUpdateCassandraViewOptions)`
+- Function `*CassandraResourcesClient.BeginCreateUpdateCassandraView` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientCreateUpdateCassandraViewResponse], error)` to `(*runtime.Poller[CreateUpdateCassandraViewResponse], error)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraKeyspace` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *BeginDeleteCassandraKeyspaceOptions)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraKeyspace` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientDeleteCassandraKeyspaceResponse], error)` to `(*runtime.Poller[DeleteCassandraKeyspaceResponse], error)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraTable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientBeginDeleteCassandraTableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *BeginDeleteCassandraTableOptions)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraTable` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientDeleteCassandraTableResponse], error)` to `(*runtime.Poller[DeleteCassandraTableResponse], error)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraView` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginDeleteCassandraViewOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *BeginDeleteCassandraViewOptions)`
+- Function `*CassandraResourcesClient.BeginDeleteCassandraView` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientDeleteCassandraViewResponse], error)` to `(*runtime.Poller[DeleteCassandraViewResponse], error)`
+- Function `*CassandraResourcesClient.GetCassandraKeyspace` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientGetCassandraKeyspaceOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *GetCassandraKeyspaceOptions)`
+- Function `*CassandraResourcesClient.GetCassandraKeyspace` return value(s) have been changed from `(CassandraResourcesClientGetCassandraKeyspaceResponse, error)` to `(GetCassandraKeyspaceResponse, error)`
+- Function `*CassandraResourcesClient.GetCassandraKeyspaceThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientGetCassandraKeyspaceThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *GetCassandraKeyspaceThroughputOptions)`
+- Function `*CassandraResourcesClient.GetCassandraKeyspaceThroughput` return value(s) have been changed from `(CassandraResourcesClientGetCassandraKeyspaceThroughputResponse, error)` to `(GetCassandraKeyspaceThroughputResponse, error)`
+- Function `*CassandraResourcesClient.GetCassandraTable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientGetCassandraTableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *GetCassandraTableOptions)`
+- Function `*CassandraResourcesClient.GetCassandraTable` return value(s) have been changed from `(CassandraResourcesClientGetCassandraTableResponse, error)` to `(GetCassandraTableResponse, error)`
+- Function `*CassandraResourcesClient.GetCassandraTableThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientGetCassandraTableThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *GetCassandraTableThroughputOptions)`
+- Function `*CassandraResourcesClient.GetCassandraTableThroughput` return value(s) have been changed from `(CassandraResourcesClientGetCassandraTableThroughputResponse, error)` to `(GetCassandraTableThroughputResponse, error)`
+- Function `*CassandraResourcesClient.GetCassandraView` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientGetCassandraViewOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *GetCassandraViewOptions)`
+- Function `*CassandraResourcesClient.GetCassandraView` return value(s) have been changed from `(CassandraResourcesClientGetCassandraViewResponse, error)` to `(GetCassandraViewResponse, error)`
+- Function `*CassandraResourcesClient.GetCassandraViewThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientGetCassandraViewThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *GetCassandraViewThroughputOptions)`
+- Function `*CassandraResourcesClient.GetCassandraViewThroughput` return value(s) have been changed from `(CassandraResourcesClientGetCassandraViewThroughputResponse, error)` to `(GetCassandraViewThroughputResponse, error)`
+- Function `*CassandraResourcesClient.NewListCassandraKeyspacesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *CassandraResourcesClientListCassandraKeyspacesOptions)` to `(resourceGroupName string, accountName string, options *ListCassandraKeyspacesOptions)`
+- Function `*CassandraResourcesClient.NewListCassandraKeyspacesPager` return value(s) have been changed from `(*runtime.Pager[CassandraResourcesClientListCassandraKeyspacesResponse])` to `(*runtime.Pager[ListCassandraKeyspacesResponse])`
+- Function `*CassandraResourcesClient.NewListCassandraTablesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraTablesOptions)` to `(resourceGroupName string, accountName string, keyspaceName string, options *ListCassandraTablesOptions)`
+- Function `*CassandraResourcesClient.NewListCassandraTablesPager` return value(s) have been changed from `(*runtime.Pager[CassandraResourcesClientListCassandraTablesResponse])` to `(*runtime.Pager[ListCassandraTablesResponse])`
+- Function `*CassandraResourcesClient.NewListCassandraViewsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientListCassandraViewsOptions)` to `(resourceGroupName string, accountName string, keyspaceName string, options *ListCassandraViewsOptions)`
+- Function `*CassandraResourcesClient.NewListCassandraViewsPager` return value(s) have been changed from `(*runtime.Pager[CassandraResourcesClientListCassandraViewsResponse])` to `(*runtime.Pager[ListCassandraViewsResponse])`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *BeginMigrateCassandraKeyspaceToAutoscaleOptions)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateCassandraKeyspaceToAutoscaleResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *BeginMigrateCassandraKeyspaceToManualThroughputOptions)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateCassandraKeyspaceToManualThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraTableToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *BeginMigrateCassandraTableToAutoscaleOptions)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraTableToAutoscale` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateCassandraTableToAutoscaleResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *BeginMigrateCassandraTableToManualThroughputOptions)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateCassandraTableToManualThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *BeginMigrateCassandraViewToAutoscaleOptions)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateCassandraViewToAutoscaleResponse], error)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *BeginMigrateCassandraViewToManualThroughputOptions)`
+- Function `*CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateCassandraViewToManualThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateCassandraKeyspaceThroughputOptions)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse], error)` to `(*runtime.Poller[UpdateCassandraKeyspaceThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraTableThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateCassandraTableThroughputOptions)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraTableThroughput` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientUpdateCassandraTableThroughputResponse], error)` to `(*runtime.Poller[UpdateCassandraTableThroughputResponse], error)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraViewThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateCassandraViewThroughputOptions)`
+- Function `*CassandraResourcesClient.BeginUpdateCassandraViewThroughput` return value(s) have been changed from `(*runtime.Poller[CassandraResourcesClientUpdateCassandraViewThroughputResponse], error)` to `(*runtime.Poller[UpdateCassandraViewThroughputResponse], error)`
+- Function `*ChaosFaultClient.BeginEnableDisable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, chaosFault string, chaosFaultRequest ChaosFaultResource, options *ChaosFaultClientBeginEnableDisableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, chaosFault string, chaosFaultRequest ChaosFaultResource, options *BeginEnableDisableOptions)`
+- Function `*ChaosFaultClient.BeginEnableDisable` return value(s) have been changed from `(*runtime.Poller[ChaosFaultClientEnableDisableResponse], error)` to `(*runtime.Poller[EnableDisableResponse], error)`
+- Function `*ChaosFaultClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, chaosFault string, options *ChaosFaultClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, chaosFault string, options *GetOptions)`
+- Function `*ChaosFaultClient.Get` return value(s) have been changed from `(ChaosFaultClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*ChaosFaultClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *ChaosFaultClientListOptions)` to `(resourceGroupName string, accountName string, options *ListOptions)`
+- Function `*ChaosFaultClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[ChaosFaultClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*CollectionClient.NewListMetricDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionClientListMetricDefinitionsOptions)` to `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *ListMetricDefinitionsOptions)`
+- Function `*CollectionClient.NewListMetricDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[CollectionClientListMetricDefinitionsResponse])` to `(*runtime.Pager[ListMetricDefinitionsResponse])`
+- Function `*CollectionClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *CollectionClientListMetricsOptions)` to `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *ListMetricsOptions)`
+- Function `*CollectionClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[CollectionClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*CollectionClient.NewListUsagesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionClientListUsagesOptions)` to `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *ListUsagesOptions)`
+- Function `*CollectionClient.NewListUsagesPager` return value(s) have been changed from `(*runtime.Pager[CollectionClientListUsagesResponse])` to `(*runtime.Pager[ListUsagesResponse])`
+- Function `*CollectionPartitionClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionClientListMetricsOptions)` to `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, filter string, options *ListMetricsOptions)`
+- Function `*CollectionPartitionClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[CollectionPartitionClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*CollectionPartitionClient.NewListUsagesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *CollectionPartitionClientListUsagesOptions)` to `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, options *ListUsagesOptions)`
+- Function `*CollectionPartitionClient.NewListUsagesPager` return value(s) have been changed from `(*runtime.Pager[CollectionPartitionClientListUsagesResponse])` to `(*runtime.Pager[ListUsagesResponse])`
+- Function `*CollectionPartitionRegionClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionPartitionRegionClientListMetricsOptions)` to `(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *ListMetricsOptions)`
+- Function `*CollectionPartitionRegionClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[CollectionPartitionRegionClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*CollectionRegionClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionRegionClientListMetricsOptions)` to `(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *ListMetricsOptions)`
+- Function `*CollectionRegionClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[CollectionRegionClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*DataTransferJobsClient.Cancel` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientCancelOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *CancelOptions)`
+- Function `*DataTransferJobsClient.Cancel` return value(s) have been changed from `(DataTransferJobsClientCancelResponse, error)` to `(CancelResponse, error)`
+- Function `*DataTransferJobsClient.Complete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientCompleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *CompleteOptions)`
+- Function `*DataTransferJobsClient.Complete` return value(s) have been changed from `(DataTransferJobsClientCompleteResponse, error)` to `(CompleteResponse, error)`
+- Function `*DataTransferJobsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, jobName string, jobCreateParameters CreateJobRequest, options *DataTransferJobsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, jobName string, jobCreateParameters CreateJobRequest, options *CreateOptions)`
+- Function `*DataTransferJobsClient.Create` return value(s) have been changed from `(DataTransferJobsClientCreateResponse, error)` to `(CreateResponse, error)`
+- Function `*DataTransferJobsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *GetOptions)`
+- Function `*DataTransferJobsClient.Get` return value(s) have been changed from `(DataTransferJobsClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*DataTransferJobsClient.NewListByDatabaseAccountPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *DataTransferJobsClientListByDatabaseAccountOptions)` to `(resourceGroupName string, accountName string, options *ListByDatabaseAccountOptions)`
+- Function `*DataTransferJobsClient.NewListByDatabaseAccountPager` return value(s) have been changed from `(*runtime.Pager[DataTransferJobsClientListByDatabaseAccountResponse])` to `(*runtime.Pager[ListByDatabaseAccountResponse])`
+- Function `*DataTransferJobsClient.Pause` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientPauseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *PauseOptions)`
+- Function `*DataTransferJobsClient.Pause` return value(s) have been changed from `(DataTransferJobsClientPauseResponse, error)` to `(PauseResponse, error)`
+- Function `*DataTransferJobsClient.Resume` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *DataTransferJobsClientResumeOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *ResumeOptions)`
+- Function `*DataTransferJobsClient.Resume` return value(s) have been changed from `(DataTransferJobsClientResumeResponse, error)` to `(ResumeResponse, error)`
+- Function `*DatabaseAccountRegionClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, region string, filter string, options *DatabaseAccountRegionClientListMetricsOptions)` to `(resourceGroupName string, accountName string, region string, filter string, options *ListMetricsOptions)`
+- Function `*DatabaseAccountRegionClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[DatabaseAccountRegionClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*DatabaseAccountsClient.CheckNameExists` parameter(s) have been changed from `(ctx context.Context, accountName string, options *DatabaseAccountsClientCheckNameExistsOptions)` to `(ctx context.Context, accountName string, options *CheckNameExistsOptions)`
+- Function `*DatabaseAccountsClient.CheckNameExists` return value(s) have been changed from `(DatabaseAccountsClientCheckNameExistsResponse, error)` to `(CheckNameExistsResponse, error)`
+- Function `*DatabaseAccountsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *DatabaseAccountsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, createUpdateParameters DatabaseAccountCreateUpdateParameters, options *BeginCreateOrUpdateOptions)`
+- Function `*DatabaseAccountsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CreateOrUpdateResponse], error)`
+- Function `*DatabaseAccountsClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, options *BeginDeleteOptions)`
+- Function `*DatabaseAccountsClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*DatabaseAccountsClient.BeginFailoverPriorityChange` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *DatabaseAccountsClientBeginFailoverPriorityChangeOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, failoverParameters FailoverPolicies, options *BeginFailoverPriorityChangeOptions)`
+- Function `*DatabaseAccountsClient.BeginFailoverPriorityChange` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientFailoverPriorityChangeResponse], error)` to `(*runtime.Poller[FailoverPriorityChangeResponse], error)`
+- Function `*DatabaseAccountsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, options *GetOptions)`
+- Function `*DatabaseAccountsClient.Get` return value(s) have been changed from `(DatabaseAccountsClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*DatabaseAccountsClient.GetReadOnlyKeys` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientGetReadOnlyKeysOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, options *GetReadOnlyKeysOptions)`
+- Function `*DatabaseAccountsClient.GetReadOnlyKeys` return value(s) have been changed from `(DatabaseAccountsClientGetReadOnlyKeysResponse, error)` to `(GetReadOnlyKeysResponse, error)`
+- Function `*DatabaseAccountsClient.NewListByResourceGroupPager` parameter(s) have been changed from `(resourceGroupName string, options *DatabaseAccountsClientListByResourceGroupOptions)` to `(resourceGroupName string, options *ListByResourceGroupOptions)`
+- Function `*DatabaseAccountsClient.NewListByResourceGroupPager` return value(s) have been changed from `(*runtime.Pager[DatabaseAccountsClientListByResourceGroupResponse])` to `(*runtime.Pager[ListByResourceGroupResponse])`
+- Function `*DatabaseAccountsClient.ListConnectionStrings` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListConnectionStringsOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, options *ListConnectionStringsOptions)`
+- Function `*DatabaseAccountsClient.ListConnectionStrings` return value(s) have been changed from `(DatabaseAccountsClientListConnectionStringsResponse, error)` to `(ListConnectionStringsResponse, error)`
+- Function `*DatabaseAccountsClient.ListKeys` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListKeysOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, options *ListKeysOptions)`
+- Function `*DatabaseAccountsClient.ListKeys` return value(s) have been changed from `(DatabaseAccountsClientListKeysResponse, error)` to `(ListKeysResponse, error)`
+- Function `*DatabaseAccountsClient.NewListMetricDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *DatabaseAccountsClientListMetricDefinitionsOptions)` to `(resourceGroupName string, accountName string, options *ListMetricDefinitionsOptions)`
+- Function `*DatabaseAccountsClient.NewListMetricDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[DatabaseAccountsClientListMetricDefinitionsResponse])` to `(*runtime.Pager[ListMetricDefinitionsResponse])`
+- Function `*DatabaseAccountsClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, filter string, options *DatabaseAccountsClientListMetricsOptions)` to `(resourceGroupName string, accountName string, filter string, options *ListMetricsOptions)`
+- Function `*DatabaseAccountsClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[DatabaseAccountsClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*DatabaseAccountsClient.NewListPager` parameter(s) have been changed from `(options *DatabaseAccountsClientListOptions)` to `(options *ListOptions)`
+- Function `*DatabaseAccountsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[DatabaseAccountsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*DatabaseAccountsClient.ListReadOnlyKeys` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, options *DatabaseAccountsClientListReadOnlyKeysOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, options *ListReadOnlyKeysOptions)`
+- Function `*DatabaseAccountsClient.ListReadOnlyKeys` return value(s) have been changed from `(DatabaseAccountsClientListReadOnlyKeysResponse, error)` to `(ListReadOnlyKeysResponse, error)`
+- Function `*DatabaseAccountsClient.NewListUsagesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *DatabaseAccountsClientListUsagesOptions)` to `(resourceGroupName string, accountName string, options *ListUsagesOptions)`
+- Function `*DatabaseAccountsClient.NewListUsagesPager` return value(s) have been changed from `(*runtime.Pager[DatabaseAccountsClientListUsagesResponse])` to `(*runtime.Pager[ListUsagesResponse])`
+- Function `*DatabaseAccountsClient.BeginOfflineRegion` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOfflineRegionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOffline RegionForOnlineOffline, options *BeginOfflineRegionOptions)`
+- Function `*DatabaseAccountsClient.BeginOfflineRegion` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientOfflineRegionResponse], error)` to `(*runtime.Poller[OfflineRegionResponse], error)`
+- Function `*DatabaseAccountsClient.BeginOnlineRegion` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *DatabaseAccountsClientBeginOnlineRegionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, regionParameterForOnline RegionForOnlineOffline, options *BeginOnlineRegionOptions)`
+- Function `*DatabaseAccountsClient.BeginOnlineRegion` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientOnlineRegionResponse], error)` to `(*runtime.Poller[OnlineRegionResponse], error)`
+- Function `*DatabaseAccountsClient.BeginRegenerateKey` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *DatabaseAccountsClientBeginRegenerateKeyOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, keyToRegenerate DatabaseAccountRegenerateKeyParameters, options *BeginRegenerateKeyOptions)`
+- Function `*DatabaseAccountsClient.BeginRegenerateKey` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientRegenerateKeyResponse], error)` to `(*runtime.Poller[RegenerateKeyResponse], error)`
+- Function `*DatabaseAccountsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *DatabaseAccountsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, updateParameters DatabaseAccountUpdateParameters, options *BeginUpdateOptions)`
+- Function `*DatabaseAccountsClient.BeginUpdate` return value(s) have been changed from `(*runtime.Poller[DatabaseAccountsClientUpdateResponse], error)` to `(*runtime.Poller[UpdateResponse], error)`
+- Function `*DatabaseClient.NewListMetricDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListMetricDefinitionsOptions)` to `(resourceGroupName string, accountName string, databaseRid string, options *ListMetricDefinitionsOptions)`
+- Function `*DatabaseClient.NewListMetricDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[DatabaseClientListMetricDefinitionsResponse])` to `(*runtime.Pager[ListMetricDefinitionsResponse])`
+- Function `*DatabaseClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, filter string, options *DatabaseClientListMetricsOptions)` to `(resourceGroupName string, accountName string, databaseRid string, filter string, options *ListMetricsOptions)`
+- Function `*DatabaseClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[DatabaseClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*DatabaseClient.NewListUsagesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, options *DatabaseClientListUsagesOptions)` to `(resourceGroupName string, accountName string, databaseRid string, options *ListUsagesOptions)`
+- Function `*DatabaseClient.NewListUsagesPager` return value(s) have been changed from `(*runtime.Pager[DatabaseClientListUsagesResponse])` to `(*runtime.Pager[ListUsagesResponse])`
+- Function `*GraphResourcesClient.BeginCreateUpdateGraph` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, graphName string, createUpdateGraphParameters GraphResourceCreateUpdateParameters, options *GraphResourcesClientBeginCreateUpdateGraphOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, graphName string, createUpdateGraphParameters GraphResourceCreateUpdateParameters, options *BeginCreateUpdateGraphOptions)`
+- Function `*GraphResourcesClient.BeginCreateUpdateGraph` return value(s) have been changed from `(*runtime.Poller[GraphResourcesClientCreateUpdateGraphResponse], error)` to `(*runtime.Poller[CreateUpdateGraphResponse], error)`
+- Function `*GraphResourcesClient.BeginDeleteGraphResource` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, graphName string, options *GraphResourcesClientBeginDeleteGraphResourceOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, graphName string, options *BeginDeleteGraphResourceOptions)`
+- Function `*GraphResourcesClient.BeginDeleteGraphResource` return value(s) have been changed from `(*runtime.Poller[GraphResourcesClientDeleteGraphResourceResponse], error)` to `(*runtime.Poller[DeleteGraphResourceResponse], error)`
+- Function `*GraphResourcesClient.GetGraph` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, graphName string, options *GraphResourcesClientGetGraphOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, graphName string, options *GetGraphOptions)`
+- Function `*GraphResourcesClient.GetGraph` return value(s) have been changed from `(GraphResourcesClientGetGraphResponse, error)` to `(GetGraphResponse, error)`
+- Function `*GraphResourcesClient.NewListGraphsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *GraphResourcesClientListGraphsOptions)` to `(resourceGroupName string, accountName string, options *ListGraphsOptions)`
+- Function `*GraphResourcesClient.NewListGraphsPager` return value(s) have been changed from `(*runtime.Pager[GraphResourcesClientListGraphsResponse])` to `(*runtime.Pager[ListGraphsResponse])`
+- Function `*GremlinResourcesClient.BeginCreateUpdateGremlinDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, options *BeginCreateUpdateGremlinDatabaseOptions)`
+- Function `*GremlinResourcesClient.BeginCreateUpdateGremlinDatabase` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientCreateUpdateGremlinDatabaseResponse], error)` to `(*runtime.Poller[CreateUpdateGremlinDatabaseResponse], error)`
+- Function `*GremlinResourcesClient.BeginCreateUpdateGremlinGraph` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, options *BeginCreateUpdateGremlinGraphOptions)`
+- Function `*GremlinResourcesClient.BeginCreateUpdateGremlinGraph` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientCreateUpdateGremlinGraphResponse], error)` to `(*runtime.Poller[CreateUpdateGremlinGraphResponse], error)`
+- Function `*GremlinResourcesClient.BeginDeleteGremlinDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginDeleteGremlinDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginDeleteGremlinDatabaseOptions)`
+- Function `*GremlinResourcesClient.BeginDeleteGremlinDatabase` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientDeleteGremlinDatabaseResponse], error)` to `(*runtime.Poller[DeleteGremlinDatabaseResponse], error)`
+- Function `*GremlinResourcesClient.BeginDeleteGremlinGraph` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginDeleteGremlinGraphOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *BeginDeleteGremlinGraphOptions)`
+- Function `*GremlinResourcesClient.BeginDeleteGremlinGraph` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientDeleteGremlinGraphResponse], error)` to `(*runtime.Poller[DeleteGremlinGraphResponse], error)`
+- Function `*GremlinResourcesClient.GetGremlinDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientGetGremlinDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GetGremlinDatabaseOptions)`
+- Function `*GremlinResourcesClient.GetGremlinDatabase` return value(s) have been changed from `(GremlinResourcesClientGetGremlinDatabaseResponse, error)` to `(GetGremlinDatabaseResponse, error)`
+- Function `*GremlinResourcesClient.GetGremlinDatabaseThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientGetGremlinDatabaseThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GetGremlinDatabaseThroughputOptions)`
+- Function `*GremlinResourcesClient.GetGremlinDatabaseThroughput` return value(s) have been changed from `(GremlinResourcesClientGetGremlinDatabaseThroughputResponse, error)` to `(GetGremlinDatabaseThroughputResponse, error)`
+- Function `*GremlinResourcesClient.GetGremlinGraph` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientGetGremlinGraphOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GetGremlinGraphOptions)`
+- Function `*GremlinResourcesClient.GetGremlinGraph` return value(s) have been changed from `(GremlinResourcesClientGetGremlinGraphResponse, error)` to `(GetGremlinGraphResponse, error)`
+- Function `*GremlinResourcesClient.GetGremlinGraphThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientGetGremlinGraphThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GetGremlinGraphThroughputOptions)`
+- Function `*GremlinResourcesClient.GetGremlinGraphThroughput` return value(s) have been changed from `(GremlinResourcesClientGetGremlinGraphThroughputResponse, error)` to `(GetGremlinGraphThroughputResponse, error)`
+- Function `*GremlinResourcesClient.NewListGremlinDatabasesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *GremlinResourcesClientListGremlinDatabasesOptions)` to `(resourceGroupName string, accountName string, options *ListGremlinDatabasesOptions)`
+- Function `*GremlinResourcesClient.NewListGremlinDatabasesPager` return value(s) have been changed from `(*runtime.Pager[GremlinResourcesClientListGremlinDatabasesResponse])` to `(*runtime.Pager[ListGremlinDatabasesResponse])`
+- Function `*GremlinResourcesClient.NewListGremlinGraphsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientListGremlinGraphsOptions)` to `(resourceGroupName string, accountName string, databaseName string, options *ListGremlinGraphsOptions)`
+- Function `*GremlinResourcesClient.NewListGremlinGraphsPager` return value(s) have been changed from `(*runtime.Pager[GremlinResourcesClientListGremlinGraphsResponse])` to `(*runtime.Pager[ListGremlinGraphsResponse])`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginMigrateGremlinDatabaseToAutoscaleOptions)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateGremlinDatabaseToAutoscaleResponse], error)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginMigrateGremlinDatabaseToManualThroughputOptions)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateGremlinDatabaseToManualThroughputResponse], error)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *BeginMigrateGremlinGraphToAutoscaleOptions)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateGremlinGraphToAutoscaleResponse], error)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *BeginMigrateGremlinGraphToManualThroughputOptions)`
+- Function `*GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateGremlinGraphToManualThroughputResponse], error)`
+- Function `*GremlinResourcesClient.BeginRetrieveContinuousBackupInformation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *BeginRetrieveContinuousBackupInformationOptions)`
+- Function `*GremlinResourcesClient.BeginRetrieveContinuousBackupInformation` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientRetrieveContinuousBackupInformationResponse], error)` to `(*runtime.Poller[RetrieveContinuousBackupInformationResponse], error)`
+- Function `*GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateGremlinDatabaseThroughputOptions)`
+- Function `*GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse], error)` to `(*runtime.Poller[UpdateGremlinDatabaseThroughputResponse], error)`
+- Function `*GremlinResourcesClient.BeginUpdateGremlinGraphThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateGremlinGraphThroughputOptions)`
+- Function `*GremlinResourcesClient.BeginUpdateGremlinGraphThroughput` return value(s) have been changed from `(*runtime.Poller[GremlinResourcesClientUpdateGremlinGraphThroughputResponse], error)` to `(*runtime.Poller[UpdateGremlinGraphThroughputResponse], error)`
+- Function `*LocationsClient.Get` parameter(s) have been changed from `(ctx context.Context, location string, options *LocationsClientGetOptions)` to `(ctx context.Context, location string, options *GetOptions)`
+- Function `*LocationsClient.Get` return value(s) have been changed from `(LocationsClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*LocationsClient.NewListPager` parameter(s) have been changed from `(options *LocationsClientListOptions)` to `(options *ListOptions)`
+- Function `*LocationsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[LocationsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *BeginCreateUpdateMongoDBCollectionOptions)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse], error)` to `(*runtime.Poller[CreateUpdateMongoDBCollectionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoDBDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *BeginCreateUpdateMongoDBDatabaseOptions)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoDBDatabase` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse], error)` to `(*runtime.Poller[CreateUpdateMongoDBDatabaseResponse], error)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoRoleDefinition` parameter(s) have been changed from `(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, createUpdateMongoRoleDefinitionParameters MongoRoleDefinitionCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, mongoRoleDefinitionID string, createUpdateMongoRoleDefinitionParameters MongoRoleDefinitionCreateUpdateParameters, options *BeginCreateUpdateMongoRoleDefinitionOptions)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoRoleDefinition` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse], error)` to `(*runtime.Poller[CreateUpdateMongoRoleDefinitionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoUserDefinition` parameter(s) have been changed from `(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, createUpdateMongoUserDefinitionParameters MongoUserDefinitionCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, mongoUserDefinitionID string, createUpdateMongoUserDefinitionParameters MongoUserDefinitionCreateUpdateParameters, options *BeginCreateUpdateMongoUserDefinitionOptions)`
+- Function `*MongoDBResourcesClient.BeginCreateUpdateMongoUserDefinition` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse], error)` to `(*runtime.Poller[CreateUpdateMongoUserDefinitionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoDBCollection` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *BeginDeleteMongoDBCollectionOptions)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoDBCollection` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientDeleteMongoDBCollectionResponse], error)` to `(*runtime.Poller[DeleteMongoDBCollectionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoDBDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginDeleteMongoDBDatabaseOptions)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoDBDatabase` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientDeleteMongoDBDatabaseResponse], error)` to `(*runtime.Poller[DeleteMongoDBDatabaseResponse], error)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoRoleDefinition` parameter(s) have been changed from `(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, options *MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, mongoRoleDefinitionID string, options *BeginDeleteMongoRoleDefinitionOptions)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoRoleDefinition` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientDeleteMongoRoleDefinitionResponse], error)` to `(*runtime.Poller[DeleteMongoRoleDefinitionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoUserDefinition` parameter(s) have been changed from `(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, options *MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, mongoUserDefinitionID string, options *BeginDeleteMongoUserDefinitionOptions)`
+- Function `*MongoDBResourcesClient.BeginDeleteMongoUserDefinition` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientDeleteMongoUserDefinitionResponse], error)` to `(*runtime.Poller[DeleteMongoUserDefinitionResponse], error)`
+- Function `*MongoDBResourcesClient.GetMongoDBCollection` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientGetMongoDBCollectionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *GetMongoDBCollectionOptions)`
+- Function `*MongoDBResourcesClient.GetMongoDBCollection` return value(s) have been changed from `(MongoDBResourcesClientGetMongoDBCollectionResponse, error)` to `(GetMongoDBCollectionResponse, error)`
+- Function `*MongoDBResourcesClient.GetMongoDBCollectionThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientGetMongoDBCollectionThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *GetMongoDBCollectionThroughputOptions)`
+- Function `*MongoDBResourcesClient.GetMongoDBCollectionThroughput` return value(s) have been changed from `(MongoDBResourcesClientGetMongoDBCollectionThroughputResponse, error)` to `(GetMongoDBCollectionThroughputResponse, error)`
+- Function `*MongoDBResourcesClient.GetMongoDBDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientGetMongoDBDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GetMongoDBDatabaseOptions)`
+- Function `*MongoDBResourcesClient.GetMongoDBDatabase` return value(s) have been changed from `(MongoDBResourcesClientGetMongoDBDatabaseResponse, error)` to `(GetMongoDBDatabaseResponse, error)`
+- Function `*MongoDBResourcesClient.GetMongoDBDatabaseThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientGetMongoDBDatabaseThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GetMongoDBDatabaseThroughputOptions)`
+- Function `*MongoDBResourcesClient.GetMongoDBDatabaseThroughput` return value(s) have been changed from `(MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse, error)` to `(GetMongoDBDatabaseThroughputResponse, error)`
+- Function `*MongoDBResourcesClient.GetMongoRoleDefinition` parameter(s) have been changed from `(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, options *MongoDBResourcesClientGetMongoRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, mongoRoleDefinitionID string, options *GetMongoRoleDefinitionOptions)`
+- Function `*MongoDBResourcesClient.GetMongoRoleDefinition` return value(s) have been changed from `(MongoDBResourcesClientGetMongoRoleDefinitionResponse, error)` to `(GetMongoRoleDefinitionResponse, error)`
+- Function `*MongoDBResourcesClient.GetMongoUserDefinition` parameter(s) have been changed from `(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, options *MongoDBResourcesClientGetMongoUserDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, mongoUserDefinitionID string, options *GetMongoUserDefinitionOptions)`
+- Function `*MongoDBResourcesClient.GetMongoUserDefinition` return value(s) have been changed from `(MongoDBResourcesClientGetMongoUserDefinitionResponse, error)` to `(GetMongoUserDefinitionResponse, error)`
+- Function `*MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, mergeParameters MergeParameters, options *MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, mergeParameters MergeParameters, options *BeginListMongoDBCollectionPartitionMergeOptions)`
+- Function `*MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse], error)` to `(*runtime.Poller[ListMongoDBCollectionPartitionMergeResponse], error)`
+- Function `*MongoDBResourcesClient.NewListMongoDBCollectionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientListMongoDBCollectionsOptions)` to `(resourceGroupName string, accountName string, databaseName string, options *ListMongoDBCollectionsOptions)`
+- Function `*MongoDBResourcesClient.NewListMongoDBCollectionsPager` return value(s) have been changed from `(*runtime.Pager[MongoDBResourcesClientListMongoDBCollectionsResponse])` to `(*runtime.Pager[ListMongoDBCollectionsResponse])`
+- Function `*MongoDBResourcesClient.NewListMongoDBDatabasesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoDBDatabasesOptions)` to `(resourceGroupName string, accountName string, options *ListMongoDBDatabasesOptions)`
+- Function `*MongoDBResourcesClient.NewListMongoDBDatabasesPager` return value(s) have been changed from `(*runtime.Pager[MongoDBResourcesClientListMongoDBDatabasesResponse])` to `(*runtime.Pager[ListMongoDBDatabasesResponse])`
+- Function `*MongoDBResourcesClient.NewListMongoRoleDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoRoleDefinitionsOptions)` to `(resourceGroupName string, accountName string, options *ListMongoRoleDefinitionsOptions)`
+- Function `*MongoDBResourcesClient.NewListMongoRoleDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[MongoDBResourcesClientListMongoRoleDefinitionsResponse])` to `(*runtime.Pager[ListMongoRoleDefinitionsResponse])`
+- Function `*MongoDBResourcesClient.NewListMongoUserDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *MongoDBResourcesClientListMongoUserDefinitionsOptions)` to `(resourceGroupName string, accountName string, options *ListMongoUserDefinitionsOptions)`
+- Function `*MongoDBResourcesClient.NewListMongoUserDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[MongoDBResourcesClientListMongoUserDefinitionsResponse])` to `(*runtime.Pager[ListMongoUserDefinitionsResponse])`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *BeginMigrateMongoDBCollectionToAutoscaleOptions)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateMongoDBCollectionToAutoscaleResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *BeginMigrateMongoDBCollectionToManualThroughputOptions)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateMongoDBCollectionToManualThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginMigrateMongoDBDatabaseToAutoscaleOptions)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToAutoscale` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateMongoDBDatabaseToAutoscaleResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginMigrateMongoDBDatabaseToManualThroughputOptions)`
+- Function `*MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateMongoDBDatabaseToManualThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMongoDBContainerRedistributeThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, redistributeThroughputParameters RedistributeThroughputParameters, options *MongoDBResourcesClientBeginMongoDBContainerRedistributeThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, redistributeThroughputParameters RedistributeThroughputParameters, options *BeginMongoDBContainerRedistributeThroughputOptions)`
+- Function `*MongoDBResourcesClient.BeginMongoDBContainerRedistributeThroughput` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse], error)` to `(*runtime.Poller[MongoDBContainerRedistributeThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, retrieveThroughputParameters RetrieveThroughputParameters, options *MongoDBResourcesClientBeginMongoDBContainerRetrieveThroughputDistributionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, retrieveThroughputParameters RetrieveThroughputParameters, options *BeginMongoDBContainerRetrieveThroughputDistributionOptions)`
+- Function `*MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse], error)` to `(*runtime.Poller[MongoDBContainerRetrieveThroughputDistributionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMongoDBDatabasePartitionMerge` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, mergeParameters MergeParameters, options *MongoDBResourcesClientBeginMongoDBDatabasePartitionMergeOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, mergeParameters MergeParameters, options *BeginMongoDBDatabasePartitionMergeOptions)`
+- Function `*MongoDBResourcesClient.BeginMongoDBDatabasePartitionMerge` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMongoDBDatabasePartitionMergeResponse], error)` to `(*runtime.Poller[MongoDBDatabasePartitionMergeResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, redistributeThroughputParameters RedistributeThroughputParameters, options *MongoDBResourcesClientBeginMongoDBDatabaseRedistributeThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, redistributeThroughputParameters RedistributeThroughputParameters, options *BeginMongoDBDatabaseRedistributeThroughputOptions)`
+- Function `*MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse], error)` to `(*runtime.Poller[MongoDBDatabaseRedistributeThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, retrieveThroughputParameters RetrieveThroughputParameters, options *MongoDBResourcesClientBeginMongoDBDatabaseRetrieveThroughputDistributionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, retrieveThroughputParameters RetrieveThroughputParameters, options *BeginMongoDBDatabaseRetrieveThroughputDistributionOptions)`
+- Function `*MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse], error)` to `(*runtime.Poller[MongoDBDatabaseRetrieveThroughputDistributionResponse], error)`
+- Function `*MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, location ContinuousBackupRestoreLocation, options *MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, location ContinuousBackupRestoreLocation, options *BeginRetrieveContinuousBackupInformationOptions)`
+- Function `*MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientRetrieveContinuousBackupInformationResponse], error)` to `(*runtime.Poller[RetrieveContinuousBackupInformationResponse], error)`
+- Function `*MongoDBResourcesClient.BeginUpdateMongoDBCollectionThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateMongoDBCollectionThroughputOptions)`
+- Function `*MongoDBResourcesClient.BeginUpdateMongoDBCollectionThroughput` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse], error)` to `(*runtime.Poller[UpdateMongoDBCollectionThroughputResponse], error)`
+- Function `*MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateMongoDBDatabaseThroughputOptions)`
+- Function `*MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput` return value(s) have been changed from `(*runtime.Poller[MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse], error)` to `(*runtime.Poller[UpdateMongoDBDatabaseThroughputResponse], error)`
+- Function `*OperationsClient.NewListPager` parameter(s) have been changed from `(options *OperationsClientListOptions)` to `(options *ListOptions)`
+- Function `*OperationsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[OperationsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*PartitionKeyRangeIDClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDClientListMetricsOptions)` to `(resourceGroupName string, accountName string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *ListMetricsOptions)`
+- Function `*PartitionKeyRangeIDClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[PartitionKeyRangeIDClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*PartitionKeyRangeIDRegionClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *PartitionKeyRangeIDRegionClientListMetricsOptions)` to `(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, partitionKeyRangeID string, filter string, options *ListMetricsOptions)`
+- Function `*PartitionKeyRangeIDRegionClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[PartitionKeyRangeIDRegionClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*PercentileClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, filter string, options *PercentileClientListMetricsOptions)` to `(resourceGroupName string, accountName string, filter string, options *ListMetricsOptions)`
+- Function `*PercentileClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[PercentileClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*PercentileSourceTargetClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string, options *PercentileSourceTargetClientListMetricsOptions)` to `(resourceGroupName string, accountName string, sourceRegion string, targetRegion string, filter string, options *ListMetricsOptions)`
+- Function `*PercentileSourceTargetClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[PercentileSourceTargetClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*PercentileTargetClient.NewListMetricsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, targetRegion string, filter string, options *PercentileTargetClientListMetricsOptions)` to `(resourceGroupName string, accountName string, targetRegion string, filter string, options *ListMetricsOptions)`
+- Function `*PercentileTargetClient.NewListMetricsPager` return value(s) have been changed from `(*runtime.Pager[PercentileTargetClientListMetricsResponse])` to `(*runtime.Pager[ListMetricsResponse])`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *BeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` return value(s) have been changed from `(*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CreateOrUpdateResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *BeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *GetOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` return value(s) have been changed from `(PrivateEndpointConnectionsClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*PrivateEndpointConnectionsClient.NewListByDatabaseAccountPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *PrivateEndpointConnectionsClientListByDatabaseAccountOptions)` to `(resourceGroupName string, accountName string, options *ListByDatabaseAccountOptions)`
+- Function `*PrivateEndpointConnectionsClient.NewListByDatabaseAccountPager` return value(s) have been changed from `(*runtime.Pager[PrivateEndpointConnectionsClientListByDatabaseAccountResponse])` to `(*runtime.Pager[ListByDatabaseAccountResponse])`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, groupName string, options *PrivateLinkResourcesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, groupName string, options *GetOptions)`
+- Function `*PrivateLinkResourcesClient.Get` return value(s) have been changed from `(PrivateLinkResourcesClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*PrivateLinkResourcesClient.NewListByDatabaseAccountPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *PrivateLinkResourcesClientListByDatabaseAccountOptions)` to `(resourceGroupName string, accountName string, options *ListByDatabaseAccountOptions)`
+- Function `*PrivateLinkResourcesClient.NewListByDatabaseAccountPager` return value(s) have been changed from `(*runtime.Pager[PrivateLinkResourcesClientListByDatabaseAccountResponse])` to `(*runtime.Pager[ListByDatabaseAccountResponse])`
+- Function `*RestorableDatabaseAccountsClient.GetByLocation` parameter(s) have been changed from `(ctx context.Context, location string, instanceID string, options *RestorableDatabaseAccountsClientGetByLocationOptions)` to `(ctx context.Context, location string, instanceID string, options *GetByLocationOptions)`
+- Function `*RestorableDatabaseAccountsClient.GetByLocation` return value(s) have been changed from `(RestorableDatabaseAccountsClientGetByLocationResponse, error)` to `(GetByLocationResponse, error)`
+- Function `*RestorableDatabaseAccountsClient.NewListByLocationPager` parameter(s) have been changed from `(location string, options *RestorableDatabaseAccountsClientListByLocationOptions)` to `(location string, options *ListByLocationOptions)`
+- Function `*RestorableDatabaseAccountsClient.NewListByLocationPager` return value(s) have been changed from `(*runtime.Pager[RestorableDatabaseAccountsClientListByLocationResponse])` to `(*runtime.Pager[ListByLocationResponse])`
+- Function `*RestorableDatabaseAccountsClient.NewListPager` parameter(s) have been changed from `(options *RestorableDatabaseAccountsClientListOptions)` to `(options *ListOptions)`
+- Function `*RestorableDatabaseAccountsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableDatabaseAccountsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableGremlinDatabasesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableGremlinDatabasesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableGremlinDatabasesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableGremlinDatabasesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableGremlinGraphsClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableGremlinGraphsClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableGremlinGraphsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableGremlinGraphsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableGremlinResourcesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableGremlinResourcesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableGremlinResourcesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableGremlinResourcesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableMongodbCollectionsClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableMongodbCollectionsClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableMongodbCollectionsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableMongodbCollectionsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableMongodbDatabasesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableMongodbDatabasesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableMongodbDatabasesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableMongodbDatabasesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableMongodbResourcesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableMongodbResourcesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableMongodbResourcesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableMongodbResourcesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableSQLContainersClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableSQLContainersClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableSQLContainersClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableSQLContainersClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableSQLDatabasesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableSQLDatabasesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableSQLDatabasesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableSQLDatabasesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableSQLResourcesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableSQLResourcesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableSQLResourcesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableSQLResourcesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableTableResourcesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableTableResourcesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableTableResourcesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableTableResourcesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*RestorableTablesClient.NewListPager` parameter(s) have been changed from `(location string, instanceID string, options *RestorableTablesClientListOptions)` to `(location string, instanceID string, options *ListOptions)`
+- Function `*RestorableTablesClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[RestorableTablesClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*SQLResourcesClient.BeginCreateUpdateClientEncryptionKey` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, options *BeginCreateUpdateClientEncryptionKeyOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateClientEncryptionKey` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateClientEncryptionKeyResponse], error)` to `(*runtime.Poller[CreateUpdateClientEncryptionKeyResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLContainer` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLContainerOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, options *BeginCreateUpdateSQLContainerOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLContainer` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLContainerResponse], error)` to `(*runtime.Poller[CreateUpdateSQLContainerResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, options *BeginCreateUpdateSQLDatabaseOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLDatabase` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLDatabaseResponse], error)` to `(*runtime.Poller[CreateUpdateSQLDatabaseResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment` parameter(s) have been changed from `(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, options *BeginCreateUpdateSQLRoleAssignmentOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLRoleAssignment` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse], error)` to `(*runtime.Poller[CreateUpdateSQLRoleAssignmentResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition` parameter(s) have been changed from `(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, options *BeginCreateUpdateSQLRoleDefinitionOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLRoleDefinition` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse], error)` to `(*runtime.Poller[CreateUpdateSQLRoleDefinitionResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, options *BeginCreateUpdateSQLStoredProcedureOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLStoredProcedure` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLStoredProcedureResponse], error)` to `(*runtime.Poller[CreateUpdateSQLStoredProcedureResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLTrigger` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, options *BeginCreateUpdateSQLTriggerOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLTrigger` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLTriggerResponse], error)` to `(*runtime.Poller[CreateUpdateSQLTriggerResponse], error)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, options *BeginCreateUpdateSQLUserDefinedFunctionOptions)`
+- Function `*SQLResourcesClient.BeginCreateUpdateSQLUserDefinedFunction` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse], error)` to `(*runtime.Poller[CreateUpdateSQLUserDefinedFunctionResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLContainer` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginDeleteSQLContainerOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *BeginDeleteSQLContainerOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLContainer` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLContainerResponse], error)` to `(*runtime.Poller[DeleteSQLContainerResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginDeleteSQLDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginDeleteSQLDatabaseOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLDatabase` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLDatabaseResponse], error)` to `(*runtime.Poller[DeleteSQLDatabaseResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLRoleAssignment` parameter(s) have been changed from `(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *BeginDeleteSQLRoleAssignmentOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLRoleAssignment` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLRoleAssignmentResponse], error)` to `(*runtime.Poller[DeleteSQLRoleAssignmentResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLRoleDefinition` parameter(s) have been changed from `(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *BeginDeleteSQLRoleDefinitionOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLRoleDefinition` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLRoleDefinitionResponse], error)` to `(*runtime.Poller[DeleteSQLRoleDefinitionResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLStoredProcedure` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *BeginDeleteSQLStoredProcedureOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLStoredProcedure` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLStoredProcedureResponse], error)` to `(*runtime.Poller[DeleteSQLStoredProcedureResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLTrigger` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientBeginDeleteSQLTriggerOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *BeginDeleteSQLTriggerOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLTrigger` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLTriggerResponse], error)` to `(*runtime.Poller[DeleteSQLTriggerResponse], error)`
+- Function `*SQLResourcesClient.BeginDeleteSQLUserDefinedFunction` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *BeginDeleteSQLUserDefinedFunctionOptions)`
+- Function `*SQLResourcesClient.BeginDeleteSQLUserDefinedFunction` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientDeleteSQLUserDefinedFunctionResponse], error)` to `(*runtime.Poller[DeleteSQLUserDefinedFunctionResponse], error)`
+- Function `*SQLResourcesClient.GetClientEncryptionKey` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, options *SQLResourcesClientGetClientEncryptionKeyOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, options *GetClientEncryptionKeyOptions)`
+- Function `*SQLResourcesClient.GetClientEncryptionKey` return value(s) have been changed from `(SQLResourcesClientGetClientEncryptionKeyResponse, error)` to `(GetClientEncryptionKeyResponse, error)`
+- Function `*SQLResourcesClient.GetSQLContainer` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientGetSQLContainerOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *GetSQLContainerOptions)`
+- Function `*SQLResourcesClient.GetSQLContainer` return value(s) have been changed from `(SQLResourcesClientGetSQLContainerResponse, error)` to `(GetSQLContainerResponse, error)`
+- Function `*SQLResourcesClient.GetSQLContainerThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientGetSQLContainerThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *GetSQLContainerThroughputOptions)`
+- Function `*SQLResourcesClient.GetSQLContainerThroughput` return value(s) have been changed from `(SQLResourcesClientGetSQLContainerThroughputResponse, error)` to `(GetSQLContainerThroughputResponse, error)`
+- Function `*SQLResourcesClient.GetSQLDatabase` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientGetSQLDatabaseOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GetSQLDatabaseOptions)`
+- Function `*SQLResourcesClient.GetSQLDatabase` return value(s) have been changed from `(SQLResourcesClientGetSQLDatabaseResponse, error)` to `(GetSQLDatabaseResponse, error)`
+- Function `*SQLResourcesClient.GetSQLDatabaseThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientGetSQLDatabaseThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GetSQLDatabaseThroughputOptions)`
+- Function `*SQLResourcesClient.GetSQLDatabaseThroughput` return value(s) have been changed from `(SQLResourcesClientGetSQLDatabaseThroughputResponse, error)` to `(GetSQLDatabaseThroughputResponse, error)`
+- Function `*SQLResourcesClient.GetSQLRoleAssignment` parameter(s) have been changed from `(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, options *SQLResourcesClientGetSQLRoleAssignmentOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GetSQLRoleAssignmentOptions)`
+- Function `*SQLResourcesClient.GetSQLRoleAssignment` return value(s) have been changed from `(SQLResourcesClientGetSQLRoleAssignmentResponse, error)` to `(GetSQLRoleAssignmentResponse, error)`
+- Function `*SQLResourcesClient.GetSQLRoleDefinition` parameter(s) have been changed from `(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, options *SQLResourcesClientGetSQLRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GetSQLRoleDefinitionOptions)`
+- Function `*SQLResourcesClient.GetSQLRoleDefinition` return value(s) have been changed from `(SQLResourcesClientGetSQLRoleDefinitionResponse, error)` to `(GetSQLRoleDefinitionResponse, error)`
+- Function `*SQLResourcesClient.GetSQLStoredProcedure` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *SQLResourcesClientGetSQLStoredProcedureOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, options *GetSQLStoredProcedureOptions)`
+- Function `*SQLResourcesClient.GetSQLStoredProcedure` return value(s) have been changed from `(SQLResourcesClientGetSQLStoredProcedureResponse, error)` to `(GetSQLStoredProcedureResponse, error)`
+- Function `*SQLResourcesClient.GetSQLTrigger` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *SQLResourcesClientGetSQLTriggerOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, options *GetSQLTriggerOptions)`
+- Function `*SQLResourcesClient.GetSQLTrigger` return value(s) have been changed from `(SQLResourcesClientGetSQLTriggerResponse, error)` to `(GetSQLTriggerResponse, error)`
+- Function `*SQLResourcesClient.GetSQLUserDefinedFunction` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *SQLResourcesClientGetSQLUserDefinedFunctionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, options *GetSQLUserDefinedFunctionOptions)`
+- Function `*SQLResourcesClient.GetSQLUserDefinedFunction` return value(s) have been changed from `(SQLResourcesClientGetSQLUserDefinedFunctionResponse, error)` to `(GetSQLUserDefinedFunctionResponse, error)`
+- Function `*SQLResourcesClient.NewListClientEncryptionKeysPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListClientEncryptionKeysOptions)` to `(resourceGroupName string, accountName string, databaseName string, options *ListClientEncryptionKeysOptions)`
+- Function `*SQLResourcesClient.NewListClientEncryptionKeysPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListClientEncryptionKeysResponse])` to `(*runtime.Pager[ListClientEncryptionKeysResponse])`
+- Function `*SQLResourcesClient.BeginListSQLContainerPartitionMerge` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, mergeParameters MergeParameters, options *SQLResourcesClientBeginListSQLContainerPartitionMergeOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, mergeParameters MergeParameters, options *BeginListSQLContainerPartitionMergeOptions)`
+- Function `*SQLResourcesClient.BeginListSQLContainerPartitionMerge` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientListSQLContainerPartitionMergeResponse], error)` to `(*runtime.Poller[ListSQLContainerPartitionMergeResponse], error)`
+- Function `*SQLResourcesClient.NewListSQLContainersPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientListSQLContainersOptions)` to `(resourceGroupName string, accountName string, databaseName string, options *ListSQLContainersOptions)`
+- Function `*SQLResourcesClient.NewListSQLContainersPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLContainersResponse])` to `(*runtime.Pager[ListSQLContainersResponse])`
+- Function `*SQLResourcesClient.NewListSQLDatabasesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLDatabasesOptions)` to `(resourceGroupName string, accountName string, options *ListSQLDatabasesOptions)`
+- Function `*SQLResourcesClient.NewListSQLDatabasesPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLDatabasesResponse])` to `(*runtime.Pager[ListSQLDatabasesResponse])`
+- Function `*SQLResourcesClient.NewListSQLRoleAssignmentsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleAssignmentsOptions)` to `(resourceGroupName string, accountName string, options *ListSQLRoleAssignmentsOptions)`
+- Function `*SQLResourcesClient.NewListSQLRoleAssignmentsPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLRoleAssignmentsResponse])` to `(*runtime.Pager[ListSQLRoleAssignmentsResponse])`
+- Function `*SQLResourcesClient.NewListSQLRoleDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *SQLResourcesClientListSQLRoleDefinitionsOptions)` to `(resourceGroupName string, accountName string, options *ListSQLRoleDefinitionsOptions)`
+- Function `*SQLResourcesClient.NewListSQLRoleDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLRoleDefinitionsResponse])` to `(*runtime.Pager[ListSQLRoleDefinitionsResponse])`
+- Function `*SQLResourcesClient.NewListSQLStoredProceduresPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLStoredProceduresOptions)` to `(resourceGroupName string, accountName string, databaseName string, containerName string, options *ListSQLStoredProceduresOptions)`
+- Function `*SQLResourcesClient.NewListSQLStoredProceduresPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLStoredProceduresResponse])` to `(*runtime.Pager[ListSQLStoredProceduresResponse])`
+- Function `*SQLResourcesClient.NewListSQLTriggersPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLTriggersOptions)` to `(resourceGroupName string, accountName string, databaseName string, containerName string, options *ListSQLTriggersOptions)`
+- Function `*SQLResourcesClient.NewListSQLTriggersPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLTriggersResponse])` to `(*runtime.Pager[ListSQLTriggersResponse])`
+- Function `*SQLResourcesClient.NewListSQLUserDefinedFunctionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientListSQLUserDefinedFunctionsOptions)` to `(resourceGroupName string, accountName string, databaseName string, containerName string, options *ListSQLUserDefinedFunctionsOptions)`
+- Function `*SQLResourcesClient.NewListSQLUserDefinedFunctionsPager` return value(s) have been changed from `(*runtime.Pager[SQLResourcesClientListSQLUserDefinedFunctionsResponse])` to `(*runtime.Pager[ListSQLUserDefinedFunctionsResponse])`
+- Function `*SQLResourcesClient.BeginMigrateSQLContainerToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *BeginMigrateSQLContainerToAutoscaleOptions)`
+- Function `*SQLResourcesClient.BeginMigrateSQLContainerToAutoscale` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientMigrateSQLContainerToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateSQLContainerToAutoscaleResponse], error)`
+- Function `*SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, options *BeginMigrateSQLContainerToManualThroughputOptions)`
+- Function `*SQLResourcesClient.BeginMigrateSQLContainerToManualThroughput` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientMigrateSQLContainerToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateSQLContainerToManualThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginMigrateSQLDatabaseToAutoscaleOptions)`
+- Function `*SQLResourcesClient.BeginMigrateSQLDatabaseToAutoscale` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateSQLDatabaseToAutoscaleResponse], error)`
+- Function `*SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *BeginMigrateSQLDatabaseToManualThroughputOptions)`
+- Function `*SQLResourcesClient.BeginMigrateSQLDatabaseToManualThroughput` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateSQLDatabaseToManualThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginRetrieveContinuousBackupInformation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, options *BeginRetrieveContinuousBackupInformationOptions)`
+- Function `*SQLResourcesClient.BeginRetrieveContinuousBackupInformation` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientRetrieveContinuousBackupInformationResponse], error)` to `(*runtime.Poller[RetrieveContinuousBackupInformationResponse], error)`
+- Function `*SQLResourcesClient.BeginSQLContainerRedistributeThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, redistributeThroughputParameters RedistributeThroughputParameters, options *SQLResourcesClientBeginSQLContainerRedistributeThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, redistributeThroughputParameters RedistributeThroughputParameters, options *BeginSQLContainerRedistributeThroughputOptions)`
+- Function `*SQLResourcesClient.BeginSQLContainerRedistributeThroughput` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientSQLContainerRedistributeThroughputResponse], error)` to `(*runtime.Poller[SQLContainerRedistributeThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, retrieveThroughputParameters RetrieveThroughputParameters, options *SQLResourcesClientBeginSQLContainerRetrieveThroughputDistributionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, retrieveThroughputParameters RetrieveThroughputParameters, options *BeginSQLContainerRetrieveThroughputDistributionOptions)`
+- Function `*SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse], error)` to `(*runtime.Poller[SQLContainerRetrieveThroughputDistributionResponse], error)`
+- Function `*SQLResourcesClient.BeginSQLDatabasePartitionMerge` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, mergeParameters MergeParameters, options *SQLResourcesClientBeginSQLDatabasePartitionMergeOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, mergeParameters MergeParameters, options *BeginSQLDatabasePartitionMergeOptions)`
+- Function `*SQLResourcesClient.BeginSQLDatabasePartitionMerge` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientSQLDatabasePartitionMergeResponse], error)` to `(*runtime.Poller[SQLDatabasePartitionMergeResponse], error)`
+- Function `*SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, redistributeThroughputParameters RedistributeThroughputParameters, options *SQLResourcesClientBeginSQLDatabaseRedistributeThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, redistributeThroughputParameters RedistributeThroughputParameters, options *BeginSQLDatabaseRedistributeThroughputOptions)`
+- Function `*SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientSQLDatabaseRedistributeThroughputResponse], error)` to `(*runtime.Poller[SQLDatabaseRedistributeThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, retrieveThroughputParameters RetrieveThroughputParameters, options *SQLResourcesClientBeginSQLDatabaseRetrieveThroughputDistributionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, retrieveThroughputParameters RetrieveThroughputParameters, options *BeginSQLDatabaseRetrieveThroughputDistributionOptions)`
+- Function `*SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse], error)` to `(*runtime.Poller[SQLDatabaseRetrieveThroughputDistributionResponse], error)`
+- Function `*SQLResourcesClient.BeginUpdateSQLContainerThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateSQLContainerThroughputOptions)`
+- Function `*SQLResourcesClient.BeginUpdateSQLContainerThroughput` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientUpdateSQLContainerThroughputResponse], error)` to `(*runtime.Poller[UpdateSQLContainerThroughputResponse], error)`
+- Function `*SQLResourcesClient.BeginUpdateSQLDatabaseThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateSQLDatabaseThroughputOptions)`
+- Function `*SQLResourcesClient.BeginUpdateSQLDatabaseThroughput` return value(s) have been changed from `(*runtime.Poller[SQLResourcesClientUpdateSQLDatabaseThroughputResponse], error)` to `(*runtime.Poller[UpdateSQLDatabaseThroughputResponse], error)`
+- Function `*ServiceClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters, options *ServiceClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters, options *BeginCreateOptions)`
+- Function `*ServiceClient.BeginCreate` return value(s) have been changed from `(*runtime.Poller[ServiceClientCreateResponse], error)` to `(*runtime.Poller[CreateResponse], error)`
+- Function `*ServiceClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *ServiceClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *BeginDeleteOptions)`
+- Function `*ServiceClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[ServiceClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*ServiceClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *ServiceClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *GetOptions)`
+- Function `*ServiceClient.Get` return value(s) have been changed from `(ServiceClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*ServiceClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *ServiceClientListOptions)` to `(resourceGroupName string, accountName string, options *ListOptions)`
+- Function `*ServiceClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[ServiceClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*TableResourcesClient.BeginCreateUpdateTable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *TableResourcesClientBeginCreateUpdateTableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, createUpdateTableParameters TableCreateUpdateParameters, options *BeginCreateUpdateTableOptions)`
+- Function `*TableResourcesClient.BeginCreateUpdateTable` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientCreateUpdateTableResponse], error)` to `(*runtime.Poller[CreateUpdateTableResponse], error)`
+- Function `*TableResourcesClient.BeginCreateUpdateTableRoleAssignment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateTableRoleAssignmentParameters TableRoleAssignmentResource, options *TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateTableRoleAssignmentParameters TableRoleAssignmentResource, options *BeginCreateUpdateTableRoleAssignmentOptions)`
+- Function `*TableResourcesClient.BeginCreateUpdateTableRoleAssignment` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientCreateUpdateTableRoleAssignmentResponse], error)` to `(*runtime.Poller[CreateUpdateTableRoleAssignmentResponse], error)`
+- Function `*TableResourcesClient.BeginCreateUpdateTableRoleDefinition` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateTableRoleDefinitionParameters TableRoleDefinitionResource, options *TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateTableRoleDefinitionParameters TableRoleDefinitionResource, options *BeginCreateUpdateTableRoleDefinitionOptions)`
+- Function `*TableResourcesClient.BeginCreateUpdateTableRoleDefinition` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientCreateUpdateTableRoleDefinitionResponse], error)` to `(*runtime.Poller[CreateUpdateTableRoleDefinitionResponse], error)`
+- Function `*TableResourcesClient.BeginDeleteTable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginDeleteTableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *BeginDeleteTableOptions)`
+- Function `*TableResourcesClient.BeginDeleteTable` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientDeleteTableResponse], error)` to `(*runtime.Poller[DeleteTableResponse], error)`
+- Function `*TableResourcesClient.BeginDeleteTableRoleAssignment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *TableResourcesClientBeginDeleteTableRoleAssignmentOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *BeginDeleteTableRoleAssignmentOptions)`
+- Function `*TableResourcesClient.BeginDeleteTableRoleAssignment` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientDeleteTableRoleAssignmentResponse], error)` to `(*runtime.Poller[DeleteTableRoleAssignmentResponse], error)`
+- Function `*TableResourcesClient.BeginDeleteTableRoleDefinition` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *TableResourcesClientBeginDeleteTableRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *BeginDeleteTableRoleDefinitionOptions)`
+- Function `*TableResourcesClient.BeginDeleteTableRoleDefinition` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientDeleteTableRoleDefinitionResponse], error)` to `(*runtime.Poller[DeleteTableRoleDefinitionResponse], error)`
+- Function `*TableResourcesClient.GetTable` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientGetTableOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *GetTableOptions)`
+- Function `*TableResourcesClient.GetTable` return value(s) have been changed from `(TableResourcesClientGetTableResponse, error)` to `(GetTableResponse, error)`
+- Function `*TableResourcesClient.GetTableRoleAssignment` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *TableResourcesClientGetTableRoleAssignmentOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GetTableRoleAssignmentOptions)`
+- Function `*TableResourcesClient.GetTableRoleAssignment` return value(s) have been changed from `(TableResourcesClientGetTableRoleAssignmentResponse, error)` to `(GetTableRoleAssignmentResponse, error)`
+- Function `*TableResourcesClient.GetTableRoleDefinition` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *TableResourcesClientGetTableRoleDefinitionOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GetTableRoleDefinitionOptions)`
+- Function `*TableResourcesClient.GetTableRoleDefinition` return value(s) have been changed from `(TableResourcesClientGetTableRoleDefinitionResponse, error)` to `(GetTableRoleDefinitionResponse, error)`
+- Function `*TableResourcesClient.GetTableThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientGetTableThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *GetTableThroughputOptions)`
+- Function `*TableResourcesClient.GetTableThroughput` return value(s) have been changed from `(TableResourcesClientGetTableThroughputResponse, error)` to `(GetTableThroughputResponse, error)`
+- Function `*TableResourcesClient.NewListTableRoleAssignmentsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *TableResourcesClientListTableRoleAssignmentsOptions)` to `(resourceGroupName string, accountName string, options *ListTableRoleAssignmentsOptions)`
+- Function `*TableResourcesClient.NewListTableRoleAssignmentsPager` return value(s) have been changed from `(*runtime.Pager[TableResourcesClientListTableRoleAssignmentsResponse])` to `(*runtime.Pager[ListTableRoleAssignmentsResponse])`
+- Function `*TableResourcesClient.NewListTableRoleDefinitionsPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *TableResourcesClientListTableRoleDefinitionsOptions)` to `(resourceGroupName string, accountName string, options *ListTableRoleDefinitionsOptions)`
+- Function `*TableResourcesClient.NewListTableRoleDefinitionsPager` return value(s) have been changed from `(*runtime.Pager[TableResourcesClientListTableRoleDefinitionsResponse])` to `(*runtime.Pager[ListTableRoleDefinitionsResponse])`
+- Function `*TableResourcesClient.NewListTablesPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *TableResourcesClientListTablesOptions)` to `(resourceGroupName string, accountName string, options *ListTablesOptions)`
+- Function `*TableResourcesClient.NewListTablesPager` return value(s) have been changed from `(*runtime.Pager[TableResourcesClientListTablesResponse])` to `(*runtime.Pager[ListTablesResponse])`
+- Function `*TableResourcesClient.BeginMigrateTableToAutoscale` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToAutoscaleOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *BeginMigrateTableToAutoscaleOptions)`
+- Function `*TableResourcesClient.BeginMigrateTableToAutoscale` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientMigrateTableToAutoscaleResponse], error)` to `(*runtime.Poller[MigrateTableToAutoscaleResponse], error)`
+- Function `*TableResourcesClient.BeginMigrateTableToManualThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableResourcesClientBeginMigrateTableToManualThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *BeginMigrateTableToManualThroughputOptions)`
+- Function `*TableResourcesClient.BeginMigrateTableToManualThroughput` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientMigrateTableToManualThroughputResponse], error)` to `(*runtime.Poller[MigrateTableToManualThroughputResponse], error)`
+- Function `*TableResourcesClient.BeginRetrieveContinuousBackupInformation` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, options *TableResourcesClientBeginRetrieveContinuousBackupInformationOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, location ContinuousBackupRestoreLocation, options *BeginRetrieveContinuousBackupInformationOptions)`
+- Function `*TableResourcesClient.BeginRetrieveContinuousBackupInformation` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientRetrieveContinuousBackupInformationResponse], error)` to `(*runtime.Poller[RetrieveContinuousBackupInformationResponse], error)`
+- Function `*TableResourcesClient.BeginUpdateTableThroughput` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *TableResourcesClientBeginUpdateTableThroughputOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, tableName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *BeginUpdateTableThroughputOptions)`
+- Function `*TableResourcesClient.BeginUpdateTableThroughput` return value(s) have been changed from `(*runtime.Poller[TableResourcesClientUpdateTableThroughputResponse], error)` to `(*runtime.Poller[UpdateTableThroughputResponse], error)`
+- Function `*ThroughputPoolAccountClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, body ThroughputPoolAccountResource, options *ThroughputPoolAccountClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, body ThroughputPoolAccountResource, options *BeginCreateOptions)`
+- Function `*ThroughputPoolAccountClient.BeginCreate` return value(s) have been changed from `(*runtime.Poller[ThroughputPoolAccountClientCreateResponse], error)` to `(*runtime.Poller[CreateResponse], error)`
+- Function `*ThroughputPoolAccountClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *ThroughputPoolAccountClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *BeginDeleteOptions)`
+- Function `*ThroughputPoolAccountClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[ThroughputPoolAccountClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*ThroughputPoolAccountClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *ThroughputPoolAccountClientGetOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *GetOptions)`
+- Function `*ThroughputPoolAccountClient.Get` return value(s) have been changed from `(ThroughputPoolAccountClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*ThroughputPoolAccountsClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, throughputPoolName string, options *ThroughputPoolAccountsClientListOptions)` to `(resourceGroupName string, throughputPoolName string, options *ListOptions)`
+- Function `*ThroughputPoolAccountsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[ThroughputPoolAccountsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*ThroughputPoolClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolResource, options *ThroughputPoolClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolResource, options *BeginCreateOrUpdateOptions)`
+- Function `*ThroughputPoolClient.BeginCreateOrUpdate` return value(s) have been changed from `(*runtime.Poller[ThroughputPoolClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CreateOrUpdateResponse], error)`
+- Function `*ThroughputPoolClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, options *ThroughputPoolClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, options *BeginDeleteOptions)`
+- Function `*ThroughputPoolClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[ThroughputPoolClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*ThroughputPoolClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, options *ThroughputPoolClientGetOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, options *GetOptions)`
+- Function `*ThroughputPoolClient.Get` return value(s) have been changed from `(ThroughputPoolClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*ThroughputPoolClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, throughputPoolName string, options *ThroughputPoolClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, throughputPoolName string, body ThroughputPoolUpdate, options *BeginUpdateOptions)`
+- Function `*ThroughputPoolClient.BeginUpdate` return value(s) have been changed from `(*runtime.Poller[ThroughputPoolClientUpdateResponse], error)` to `(*runtime.Poller[UpdateResponse], error)`
+- Function `*ThroughputPoolsClient.NewListByResourceGroupPager` parameter(s) have been changed from `(resourceGroupName string, options *ThroughputPoolsClientListByResourceGroupOptions)` to `(resourceGroupName string, options *ListByResourceGroupOptions)`
+- Function `*ThroughputPoolsClient.NewListByResourceGroupPager` return value(s) have been changed from `(*runtime.Pager[ThroughputPoolsClientListByResourceGroupResponse])` to `(*runtime.Pager[ListByResourceGroupResponse])`
+- Function `*ThroughputPoolsClient.NewListPager` parameter(s) have been changed from `(options *ThroughputPoolsClientListOptions)` to `(options *ListOptions)`
+- Function `*ThroughputPoolsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[ThroughputPoolsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*NotebookWorkspacesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, notebookCreateUpdateParameters NotebookWorkspaceCreateUpdateParameters, options *NotebookWorkspacesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, notebookCreateUpdateParameters NotebookWorkspaceCreateUpdateParameters, options *BeginCreateOrUpdateOptions)`
+- Function `*NotebookWorkspacesClient.BeginCreateOrUpdate` return value(s) have been changed from `(*runtime.Poller[NotebookWorkspacesClientCreateOrUpdateResponse], error)` to `(*runtime.Poller[CreateOrUpdateResponse], error)`
+- Function `*NotebookWorkspacesClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *BeginDeleteOptions)`
+- Function `*NotebookWorkspacesClient.BeginDelete` return value(s) have been changed from `(*runtime.Poller[NotebookWorkspacesClientDeleteResponse], error)` to `(*runtime.Poller[DeleteResponse], error)`
+- Function `*NotebookWorkspacesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *GetOptions)`
+- Function `*NotebookWorkspacesClient.Get` return value(s) have been changed from `(NotebookWorkspacesClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*NotebookWorkspacesClient.NewListByDatabaseAccountPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *NotebookWorkspacesClientListByDatabaseAccountOptions)` to `(resourceGroupName string, accountName string, options *ListByDatabaseAccountOptions)`
+- Function `*NotebookWorkspacesClient.NewListByDatabaseAccountPager` return value(s) have been changed from `(*runtime.Pager[NotebookWorkspacesClientListByDatabaseAccountResponse])` to `(*runtime.Pager[ListByDatabaseAccountResponse])`
+- Function `*NotebookWorkspacesClient.ListConnectionInfo` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientListConnectionInfoOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *ListConnectionInfoOptions)`
+- Function `*NotebookWorkspacesClient.ListConnectionInfo` return value(s) have been changed from `(NotebookWorkspacesClientListConnectionInfoResponse, error)` to `(ListConnectionInfoResponse, error)`
+- Function `*NotebookWorkspacesClient.BeginRegenerateAuthToken` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginRegenerateAuthTokenOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *BeginRegenerateAuthTokenOptions)`
+- Function `*NotebookWorkspacesClient.BeginRegenerateAuthToken` return value(s) have been changed from `(*runtime.Poller[NotebookWorkspacesClientRegenerateAuthTokenResponse], error)` to `(*runtime.Poller[RegenerateAuthTokenResponse], error)`
+- Function `*NotebookWorkspacesClient.BeginStart` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *NotebookWorkspacesClientBeginStartOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, notebookWorkspaceName NotebookWorkspaceName, options *BeginStartOptions)`
+- Function `*NotebookWorkspacesClient.BeginStart` return value(s) have been changed from `(*runtime.Poller[NotebookWorkspacesClientStartResponse], error)` to `(*runtime.Poller[StartResponse], error)`
+- Function `*NetworkSecurityPerimeterConfigurationsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *GetOptions)`
+- Function `*NetworkSecurityPerimeterConfigurationsClient.Get` return value(s) have been changed from `(NetworkSecurityPerimeterConfigurationsClientGetResponse, error)` to `(GetResponse, error)`
+- Function `*NetworkSecurityPerimeterConfigurationsClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, accountName string, options *NetworkSecurityPerimeterConfigurationsClientListOptions)` to `(resourceGroupName string, accountName string, options *ListOptions)`
+- Function `*NetworkSecurityPerimeterConfigurationsClient.NewListPager` return value(s) have been changed from `(*runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListResponse])` to `(*runtime.Pager[ListResponse])`
+- Function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *BeginReconcileOptions)`
+- Function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile` return value(s) have been changed from `(*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)` to `(*runtime.Poller[ReconcileResponse], error)`
+- Type of `AccessRuleProperties.Subscriptions` has been changed from `[]*AccessRulePropertiesSubscriptionsItem` to `[]*AccessRulePropertiesSubscription`
+- Type of `DataTransferJobProperties.Error` has been changed from `*ErrorResponseAutoGenerated` to `*ErrorResponse`
+- Type of `DataTransferRegionalServiceResource.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `DataTransferServiceResourceProperties.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `GraphAPIComputeRegionalServiceResource.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `GraphAPIComputeServiceResourceProperties.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `MaterializedViewsBuilderRegionalServiceResource.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `MaterializedViewsBuilderServiceResourceProperties.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `SQLDedicatedGatewayRegionalServiceResource.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `SQLDedicatedGatewayServiceResourceProperties.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `ServiceResourceProperties.Status` has been changed from `*ServiceStatus` to `*ServiceResourceStatus`
+- Type of `TableRoleDefinitionResourceProperties.Permissions` has been changed from `[]*PermissionAutoGenerated` to `[]*Permission`
+- Enum `NodeStatus` has been removed
+- Enum `ServiceStatus` has been removed
+- Function `*BaseCosmosDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink` has been removed
+- Function `*BaseCosmosDataTransferDataSourceSink.GetDataTransferDataSourceSink` has been removed
+- Function `*CassandraDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink` has been removed
+- Function `*MongoDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink` has been removed
+- Function `*SQLDataTransferDataSourceSink.GetBaseCosmosDataTransferDataSourceSink` has been removed
+- Struct `ARMProxyResource` has been removed
+- Struct `ARMResourceProperties` has been removed
+- Struct `AccessRulePropertiesSubscriptionsItem` has been removed
+- Struct `CassandraClustersClientBeginCreateUpdateOptions` has been removed
+- Struct `CassandraClustersClientBeginDeallocateOptions` has been removed
+- Struct `CassandraClustersClientBeginDeleteOptions` has been removed
+- Struct `CassandraClustersClientBeginInvokeCommandAsyncOptions` has been removed
+- Struct `CassandraClustersClientBeginInvokeCommandOptions` has been removed
+- Struct `CassandraClustersClientBeginStartOptions` has been removed
+- Struct `CassandraClustersClientBeginUpdateOptions` has been removed
+- Struct `CassandraClustersClientCreateUpdateResponse` has been removed
+- Struct `CassandraClustersClientDeallocateResponse` has been removed
+- Struct `CassandraClustersClientDeleteResponse` has been removed
+- Struct `CassandraClustersClientGetBackupOptions` has been removed
+- Struct `CassandraClustersClientGetBackupResponse` has been removed
+- Struct `CassandraClustersClientGetCommandAsyncOptions` has been removed
+- Struct `CassandraClustersClientGetCommandAsyncResponse` has been removed
+- Struct `CassandraClustersClientGetOptions` has been removed
+- Struct `CassandraClustersClientGetResponse` has been removed
+- Struct `CassandraClustersClientInvokeCommandAsyncResponse` has been removed
+- Struct `CassandraClustersClientInvokeCommandResponse` has been removed
+- Struct `CassandraClustersClientListBackupsOptions` has been removed
+- Struct `CassandraClustersClientListBackupsResponse` has been removed
+- Struct `CassandraClustersClientListByResourceGroupOptions` has been removed
+- Struct `CassandraClustersClientListByResourceGroupResponse` has been removed
+- Struct `CassandraClustersClientListBySubscriptionOptions` has been removed
+- Struct `CassandraClustersClientListBySubscriptionResponse` has been removed
+- Struct `CassandraClustersClientListCommandOptions` has been removed
+- Struct `CassandraClustersClientListCommandResponse` has been removed
+- Struct `CassandraClustersClientStartResponse` has been removed
+- Struct `CassandraClustersClientStatusOptions` has been removed
+- Struct `CassandraClustersClientStatusResponse` has been removed
+- Struct `CassandraClustersClientUpdateResponse` has been removed
+- Struct `CassandraDataCentersClientBeginCreateUpdateOptions` has been removed
+- Struct `CassandraDataCentersClientBeginDeleteOptions` has been removed
+- Struct `CassandraDataCentersClientBeginUpdateOptions` has been removed
+- Struct `CassandraDataCentersClientCreateUpdateResponse` has been removed
+- Struct `CassandraDataCentersClientDeleteResponse` has been removed
+- Struct `CassandraDataCentersClientGetOptions` has been removed
+- Struct `CassandraDataCentersClientGetResponse` has been removed
+- Struct `CassandraDataCentersClientListOptions` has been removed
+- Struct `CassandraDataCentersClientListResponse` has been removed
+- Struct `CassandraDataCentersClientUpdateResponse` has been removed
+- Struct `CassandraResourcesClientBeginCreateUpdateCassandraKeyspaceOptions` has been removed
+- Struct `CassandraResourcesClientBeginCreateUpdateCassandraTableOptions` has been removed
+- Struct `CassandraResourcesClientBeginCreateUpdateCassandraViewOptions` has been removed
+- Struct `CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions` has been removed
+- Struct `CassandraResourcesClientBeginDeleteCassandraTableOptions` has been removed
+- Struct `CassandraResourcesClientBeginDeleteCassandraViewOptions` has been removed
+- Struct `CassandraResourcesClientBeginMigrateCassandraKeyspaceToAutoscaleOptions` has been removed
+- Struct `CassandraResourcesClientBeginMigrateCassandraKeyspaceToManualThroughputOptions` has been removed
+- Struct `CassandraResourcesClientBeginMigrateCassandraTableToAutoscaleOptions` has been removed
+- Struct `CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions` has been removed
+- Struct `CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions` has been removed
+- Struct `CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions` has been removed
+- Struct `CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions` has been removed
+- Struct `CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions` has been removed
+- Struct `CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraTableResponse` has been removed
+- Struct `CassandraResourcesClientCreateUpdateCassandraViewResponse` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraKeyspaceResponse` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraTableResponse` has been removed
+- Struct `CassandraResourcesClientDeleteCassandraViewResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraKeyspaceOptions` has been removed
+- Struct `CassandraResourcesClientGetCassandraKeyspaceResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraKeyspaceThroughputOptions` has been removed
+- Struct `CassandraResourcesClientGetCassandraKeyspaceThroughputResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraTableOptions` has been removed
+- Struct `CassandraResourcesClientGetCassandraTableResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraTableThroughputOptions` has been removed
+- Struct `CassandraResourcesClientGetCassandraTableThroughputResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraViewOptions` has been removed
+- Struct `CassandraResourcesClientGetCassandraViewResponse` has been removed
+- Struct `CassandraResourcesClientGetCassandraViewThroughputOptions` has been removed
+- Struct `CassandraResourcesClientGetCassandraViewThroughputResponse` has been removed
+- Struct `CassandraResourcesClientListCassandraKeyspacesOptions` has been removed
+- Struct `CassandraResourcesClientListCassandraKeyspacesResponse` has been removed
+- Struct `CassandraResourcesClientListCassandraTablesOptions` has been removed
+- Struct `CassandraResourcesClientListCassandraTablesResponse` has been removed
+- Struct `CassandraResourcesClientListCassandraViewsOptions` has been removed
+- Struct `CassandraResourcesClientListCassandraViewsResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse` has been removed
+- Struct `CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraTableThroughputResponse` has been removed
+- Struct `CassandraResourcesClientUpdateCassandraViewThroughputResponse` has been removed
+- Struct `ChaosFaultClientBeginEnableDisableOptions` has been removed
+- Struct `ChaosFaultClientEnableDisableResponse` has been removed
+- Struct `ChaosFaultClientGetOptions` has been removed
+- Struct `ChaosFaultClientGetResponse` has been removed
+- Struct `ChaosFaultClientListOptions` has been removed
+- Struct `ChaosFaultClientListResponse` has been removed
+- Struct `CollectionClientListMetricDefinitionsOptions` has been removed
+- Struct `CollectionClientListMetricDefinitionsResponse` has been removed
+- Struct `CollectionClientListMetricsOptions` has been removed
+- Struct `CollectionClientListMetricsResponse` has been removed
+- Struct `CollectionClientListUsagesOptions` has been removed
+- Struct `CollectionClientListUsagesResponse` has been removed
+- Struct `CollectionPartitionClientListMetricsOptions` has been removed
+- Struct `CollectionPartitionClientListMetricsResponse` has been removed
+- Struct `CollectionPartitionClientListUsagesOptions` has been removed
+- Struct `CollectionPartitionClientListUsagesResponse` has been removed
+- Struct `CollectionPartitionRegionClientListMetricsOptions` has been removed
+- Struct `CollectionPartitionRegionClientListMetricsResponse` has been removed
+- Struct `CollectionRegionClientListMetricsOptions` has been removed
+- Struct `CollectionRegionClientListMetricsResponse` has been removed
+- Struct `CommandOutput` has been removed
+- Struct `DataTransferJobsClientCancelOptions` has been removed
+- Struct `DataTransferJobsClientCancelResponse` has been removed
+- Struct `DataTransferJobsClientCompleteOptions` has been removed
+- Struct `DataTransferJobsClientCompleteResponse` has been removed
+- Struct `DataTransferJobsClientCreateOptions` has been removed
+- Struct `DataTransferJobsClientCreateResponse` has been removed
+- Struct `DataTransferJobsClientGetOptions` has been removed
+- Struct `DataTransferJobsClientGetResponse` has been removed
+- Struct `DataTransferJobsClientListByDatabaseAccountOptions` has been removed
+- Struct `DataTransferJobsClientListByDatabaseAccountResponse` has been removed
+- Struct `DataTransferJobsClientPauseOptions` has been removed
+- Struct `DataTransferJobsClientPauseResponse` has been removed
+- Struct `DataTransferJobsClientResumeOptions` has been removed
+- Struct `DataTransferJobsClientResumeResponse` has been removed
+- Struct `DataTransferServiceResource` has been removed
+- Struct `DatabaseAccountRegionClientListMetricsOptions` has been removed
+- Struct `DatabaseAccountRegionClientListMetricsResponse` has been removed
+- Struct `DatabaseAccountsClientBeginCreateOrUpdateOptions` has been removed
+- Struct `DatabaseAccountsClientBeginDeleteOptions` has been removed
+- Struct `DatabaseAccountsClientBeginFailoverPriorityChangeOptions` has been removed
+- Struct `DatabaseAccountsClientBeginOfflineRegionOptions` has been removed
+- Struct `DatabaseAccountsClientBeginOnlineRegionOptions` has been removed
+- Struct `DatabaseAccountsClientBeginRegenerateKeyOptions` has been removed
+- Struct `DatabaseAccountsClientBeginUpdateOptions` has been removed
+- Struct `DatabaseAccountsClientCheckNameExistsOptions` has been removed
+- Struct `DatabaseAccountsClientCheckNameExistsResponse` has been removed
+- Struct `DatabaseAccountsClientCreateOrUpdateResponse` has been removed
+- Struct `DatabaseAccountsClientDeleteResponse` has been removed
+- Struct `DatabaseAccountsClientFailoverPriorityChangeResponse` has been removed
+- Struct `DatabaseAccountsClientGetOptions` has been removed
+- Struct `DatabaseAccountsClientGetReadOnlyKeysOptions` has been removed
+- Struct `DatabaseAccountsClientGetReadOnlyKeysResponse` has been removed
+- Struct `DatabaseAccountsClientGetResponse` has been removed
+- Struct `DatabaseAccountsClientListByResourceGroupOptions` has been removed
+- Struct `DatabaseAccountsClientListByResourceGroupResponse` has been removed
+- Struct `DatabaseAccountsClientListConnectionStringsOptions` has been removed
+- Struct `DatabaseAccountsClientListConnectionStringsResponse` has been removed
+- Struct `DatabaseAccountsClientListKeysOptions` has been removed
+- Struct `DatabaseAccountsClientListKeysResponse` has been removed
+- Struct `DatabaseAccountsClientListMetricDefinitionsOptions` has been removed
+- Struct `DatabaseAccountsClientListMetricDefinitionsResponse` has been removed
+- Struct `DatabaseAccountsClientListMetricsOptions` has been removed
+- Struct `DatabaseAccountsClientListMetricsResponse` has been removed
+- Struct `DatabaseAccountsClientListOptions` has been removed
+- Struct `DatabaseAccountsClientListReadOnlyKeysOptions` has been removed
+- Struct `DatabaseAccountsClientListReadOnlyKeysResponse` has been removed
+- Struct `DatabaseAccountsClientListResponse` has been removed
+- Struct `DatabaseAccountsClientListUsagesOptions` has been removed
+- Struct `DatabaseAccountsClientListUsagesResponse` has been removed
+- Struct `DatabaseAccountsClientOfflineRegionResponse` has been removed
+- Struct `DatabaseAccountsClientOnlineRegionResponse` has been removed
+- Struct `DatabaseAccountsClientRegenerateKeyResponse` has been removed
+- Struct `DatabaseAccountsClientUpdateResponse` has been removed
+- Struct `DatabaseClientListMetricDefinitionsOptions` has been removed
+- Struct `DatabaseClientListMetricDefinitionsResponse` has been removed
+- Struct `DatabaseClientListMetricsOptions` has been removed
+- Struct `DatabaseClientListMetricsResponse` has been removed
+- Struct `DatabaseClientListUsagesOptions` has been removed
+- Struct `DatabaseClientListUsagesResponse` has been removed
+- Struct `ErrorResponseAutoGenerated` has been removed
+- Struct `ExtendedResourceProperties` has been removed
+- Struct `GraphAPIComputeServiceResource` has been removed
+- Struct `GraphResourcesClientBeginCreateUpdateGraphOptions` has been removed
+- Struct `GraphResourcesClientBeginDeleteGraphResourceOptions` has been removed
+- Struct `GraphResourcesClientCreateUpdateGraphResponse` has been removed
+- Struct `GraphResourcesClientDeleteGraphResourceResponse` has been removed
+- Struct `GraphResourcesClientGetGraphOptions` has been removed
+- Struct `GraphResourcesClientGetGraphResponse` has been removed
+- Struct `GraphResourcesClientListGraphsOptions` has been removed
+- Struct `GraphResourcesClientListGraphsResponse` has been removed
+- Struct `GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions` has been removed
+- Struct `GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions` has been removed
+- Struct `GremlinResourcesClientBeginDeleteGremlinDatabaseOptions` has been removed
+- Struct `GremlinResourcesClientBeginDeleteGremlinGraphOptions` has been removed
+- Struct `GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions` has been removed
+- Struct `GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions` has been removed
+- Struct `GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions` has been removed
+- Struct `GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions` has been removed
+- Struct `GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions` has been removed
+- Struct `GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions` has been removed
+- Struct `GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinDatabaseResponse` has been removed
+- Struct `GremlinResourcesClientCreateUpdateGremlinGraphResponse` has been removed
+- Struct `GremlinResourcesClientDeleteGremlinDatabaseResponse` has been removed
+- Struct `GremlinResourcesClientDeleteGremlinGraphResponse` has been removed
+- Struct `GremlinResourcesClientGetGremlinDatabaseOptions` has been removed
+- Struct `GremlinResourcesClientGetGremlinDatabaseResponse` has been removed
+- Struct `GremlinResourcesClientGetGremlinDatabaseThroughputOptions` has been removed
+- Struct `GremlinResourcesClientGetGremlinDatabaseThroughputResponse` has been removed
+- Struct `GremlinResourcesClientGetGremlinGraphOptions` has been removed
+- Struct `GremlinResourcesClientGetGremlinGraphResponse` has been removed
+- Struct `GremlinResourcesClientGetGremlinGraphThroughputOptions` has been removed
+- Struct `GremlinResourcesClientGetGremlinGraphThroughputResponse` has been removed
+- Struct `GremlinResourcesClientListGremlinDatabasesOptions` has been removed
+- Struct `GremlinResourcesClientListGremlinDatabasesResponse` has been removed
+- Struct `GremlinResourcesClientListGremlinGraphsOptions` has been removed
+- Struct `GremlinResourcesClientListGremlinGraphsResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse` has been removed
+- Struct `GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse` has been removed
+- Struct `GremlinResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse` has been removed
+- Struct `GremlinResourcesClientUpdateGremlinGraphThroughputResponse` has been removed
+- Struct `LocationsClientGetOptions` has been removed
+- Struct `LocationsClientGetResponse` has been removed
+- Struct `LocationsClientListOptions` has been removed
+- Struct `LocationsClientListResponse` has been removed
+- Struct `ManagedCassandraARMResourceProperties` has been removed
+- Struct `MaterializedViewsBuilderServiceResource` has been removed
+- Struct `MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions` has been removed
+- Struct `MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions` has been removed
+- Struct `MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMongoDBContainerRedistributeThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMongoDBContainerRetrieveThroughputDistributionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMongoDBDatabasePartitionMergeOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMongoDBDatabaseRedistributeThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientBeginMongoDBDatabaseRetrieveThroughputDistributionOptions` has been removed
+- Struct `MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions` has been removed
+- Struct `MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse` has been removed
+- Struct `MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoDBCollectionResponse` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoDBDatabaseResponse` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoRoleDefinitionResponse` has been removed
+- Struct `MongoDBResourcesClientDeleteMongoUserDefinitionResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBCollectionOptions` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBCollectionResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBCollectionThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBCollectionThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBDatabaseOptions` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBDatabaseResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBDatabaseThroughputOptions` has been removed
+- Struct `MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoRoleDefinitionOptions` has been removed
+- Struct `MongoDBResourcesClientGetMongoRoleDefinitionResponse` has been removed
+- Struct `MongoDBResourcesClientGetMongoUserDefinitionOptions` has been removed
+- Struct `MongoDBResourcesClientGetMongoUserDefinitionResponse` has been removed
+- Struct `MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse` has been removed
+- Struct `MongoDBResourcesClientListMongoDBCollectionsOptions` has been removed
+- Struct `MongoDBResourcesClientListMongoDBCollectionsResponse` has been removed
+- Struct `MongoDBResourcesClientListMongoDBDatabasesOptions` has been removed
+- Struct `MongoDBResourcesClientListMongoDBDatabasesResponse` has been removed
+- Struct `MongoDBResourcesClientListMongoRoleDefinitionsOptions` has been removed
+- Struct `MongoDBResourcesClientListMongoRoleDefinitionsResponse` has been removed
+- Struct `MongoDBResourcesClientListMongoUserDefinitionsOptions` has been removed
+- Struct `MongoDBResourcesClientListMongoUserDefinitionsResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse` has been removed
+- Struct `MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse` has been removed
+- Struct `MongoDBResourcesClientMongoDBDatabasePartitionMergeResponse` has been removed
+- Struct `MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse` has been removed
+- Struct `MongoDBResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse` has been removed
+- Struct `MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationsClientGetOptions` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationsClientGetResponse` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationsClientListOptions` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationsClientListResponse` has been removed
+- Struct `NetworkSecurityPerimeterConfigurationsClientReconcileResponse` has been removed
+- Struct `NotebookWorkspacesClientBeginCreateOrUpdateOptions` has been removed
+- Struct `NotebookWorkspacesClientBeginDeleteOptions` has been removed
+- Struct `NotebookWorkspacesClientBeginRegenerateAuthTokenOptions` has been removed
+- Struct `NotebookWorkspacesClientBeginStartOptions` has been removed
+- Struct `NotebookWorkspacesClientCreateOrUpdateResponse` has been removed
+- Struct `NotebookWorkspacesClientDeleteResponse` has been removed
+- Struct `NotebookWorkspacesClientGetOptions` has been removed
+- Struct `NotebookWorkspacesClientGetResponse` has been removed
+- Struct `NotebookWorkspacesClientListByDatabaseAccountOptions` has been removed
+- Struct `NotebookWorkspacesClientListByDatabaseAccountResponse` has been removed
+- Struct `NotebookWorkspacesClientListConnectionInfoOptions` has been removed
+- Struct `NotebookWorkspacesClientListConnectionInfoResponse` has been removed
+- Struct `NotebookWorkspacesClientRegenerateAuthTokenResponse` has been removed
+- Struct `NotebookWorkspacesClientStartResponse` has been removed
+- Struct `OperationsClientListOptions` has been removed
+- Struct `OperationsClientListResponse` has been removed
+- Struct `OptionsResource` has been removed
+- Struct `PartitionKeyRangeIDClientListMetricsOptions` has been removed
+- Struct `PartitionKeyRangeIDClientListMetricsResponse` has been removed
+- Struct `PartitionKeyRangeIDRegionClientListMetricsOptions` has been removed
+- Struct `PartitionKeyRangeIDRegionClientListMetricsResponse` has been removed
+- Struct `PercentileClientListMetricsOptions` has been removed
+- Struct `PercentileClientListMetricsResponse` has been removed
+- Struct `PercentileSourceTargetClientListMetricsOptions` has been removed
+- Struct `PercentileSourceTargetClientListMetricsResponse` has been removed
+- Struct `PercentileTargetClientListMetricsOptions` has been removed
+- Struct `PercentileTargetClientListMetricsResponse` has been removed
+- Struct `PermissionAutoGenerated` has been removed
+- Struct `PhysicalPartitionThroughputInfoProperties` has been removed
+- Struct `PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientBeginDeleteOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientCreateOrUpdateResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientDeleteResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientGetOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientGetResponse` has been removed
+- Struct `PrivateEndpointConnectionsClientListByDatabaseAccountOptions` has been removed
+- Struct `PrivateEndpointConnectionsClientListByDatabaseAccountResponse` has been removed
+- Struct `PrivateLinkResourcesClientGetOptions` has been removed
+- Struct `PrivateLinkResourcesClientGetResponse` has been removed
+- Struct `PrivateLinkResourcesClientListByDatabaseAccountOptions` has been removed
+- Struct `PrivateLinkResourcesClientListByDatabaseAccountResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `RegionalServiceResource` has been removed
+- Struct `Resource` has been removed
+- Struct `RestorableDatabaseAccountsClientGetByLocationOptions` has been removed
+- Struct `RestorableDatabaseAccountsClientGetByLocationResponse` has been removed
+- Struct `RestorableDatabaseAccountsClientListByLocationOptions` has been removed
+- Struct `RestorableDatabaseAccountsClientListByLocationResponse` has been removed
+- Struct `RestorableDatabaseAccountsClientListOptions` has been removed
+- Struct `RestorableDatabaseAccountsClientListResponse` has been removed
+- Struct `RestorableGremlinDatabasesClientListOptions` has been removed
+- Struct `RestorableGremlinDatabasesClientListResponse` has been removed
+- Struct `RestorableGremlinGraphsClientListOptions` has been removed
+- Struct `RestorableGremlinGraphsClientListResponse` has been removed
+- Struct `RestorableGremlinResourcesClientListOptions` has been removed
+- Struct `RestorableGremlinResourcesClientListResponse` has been removed
+- Struct `RestorableMongodbCollectionsClientListOptions` has been removed
+- Struct `RestorableMongodbCollectionsClientListResponse` has been removed
+- Struct `RestorableMongodbDatabasesClientListOptions` has been removed
+- Struct `RestorableMongodbDatabasesClientListResponse` has been removed
+- Struct `RestorableMongodbResourcesClientListOptions` has been removed
+- Struct `RestorableMongodbResourcesClientListResponse` has been removed
+- Struct `RestorableSQLContainersClientListOptions` has been removed
+- Struct `RestorableSQLContainersClientListResponse` has been removed
+- Struct `RestorableSQLDatabasesClientListOptions` has been removed
+- Struct `RestorableSQLDatabasesClientListResponse` has been removed
+- Struct `RestorableSQLResourcesClientListOptions` has been removed
+- Struct `RestorableSQLResourcesClientListResponse` has been removed
+- Struct `RestorableTableResourcesClientListOptions` has been removed
+- Struct `RestorableTableResourcesClientListResponse` has been removed
+- Struct `RestorableTablesClientListOptions` has been removed
+- Struct `RestorableTablesClientListResponse` has been removed
+- Struct `RestoreParametersBase` has been removed
+- Struct `SQLDedicatedGatewayServiceResource` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLContainerOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLTriggerOptions` has been removed
+- Struct `SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLContainerOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLDatabaseOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLStoredProcedureOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLTriggerOptions` has been removed
+- Struct `SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions` has been removed
+- Struct `SQLResourcesClientBeginListSQLContainerPartitionMergeOptions` has been removed
+- Struct `SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions` has been removed
+- Struct `SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions` has been removed
+- Struct `SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions` has been removed
+- Struct `SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions` has been removed
+- Struct `SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions` has been removed
+- Struct `SQLResourcesClientBeginSQLContainerRedistributeThroughputOptions` has been removed
+- Struct `SQLResourcesClientBeginSQLContainerRetrieveThroughputDistributionOptions` has been removed
+- Struct `SQLResourcesClientBeginSQLDatabasePartitionMergeOptions` has been removed
+- Struct `SQLResourcesClientBeginSQLDatabaseRedistributeThroughputOptions` has been removed
+- Struct `SQLResourcesClientBeginSQLDatabaseRetrieveThroughputDistributionOptions` has been removed
+- Struct `SQLResourcesClientBeginUpdateSQLContainerThroughputOptions` has been removed
+- Struct `SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions` has been removed
+- Struct `SQLResourcesClientCreateUpdateClientEncryptionKeyResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLContainerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLDatabaseResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLStoredProcedureResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLTriggerResponse` has been removed
+- Struct `SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLContainerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLDatabaseResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLRoleAssignmentResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLRoleDefinitionResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLStoredProcedureResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLTriggerResponse` has been removed
+- Struct `SQLResourcesClientDeleteSQLUserDefinedFunctionResponse` has been removed
+- Struct `SQLResourcesClientGetClientEncryptionKeyOptions` has been removed
+- Struct `SQLResourcesClientGetClientEncryptionKeyResponse` has been removed
+- Struct `SQLResourcesClientGetSQLContainerOptions` has been removed
+- Struct `SQLResourcesClientGetSQLContainerResponse` has been removed
+- Struct `SQLResourcesClientGetSQLContainerThroughputOptions` has been removed
+- Struct `SQLResourcesClientGetSQLContainerThroughputResponse` has been removed
+- Struct `SQLResourcesClientGetSQLDatabaseOptions` has been removed
+- Struct `SQLResourcesClientGetSQLDatabaseResponse` has been removed
+- Struct `SQLResourcesClientGetSQLDatabaseThroughputOptions` has been removed
+- Struct `SQLResourcesClientGetSQLDatabaseThroughputResponse` has been removed
+- Struct `SQLResourcesClientGetSQLRoleAssignmentOptions` has been removed
+- Struct `SQLResourcesClientGetSQLRoleAssignmentResponse` has been removed
+- Struct `SQLResourcesClientGetSQLRoleDefinitionOptions` has been removed
+- Struct `SQLResourcesClientGetSQLRoleDefinitionResponse` has been removed
+- Struct `SQLResourcesClientGetSQLStoredProcedureOptions` has been removed
+- Struct `SQLResourcesClientGetSQLStoredProcedureResponse` has been removed
+- Struct `SQLResourcesClientGetSQLTriggerOptions` has been removed
+- Struct `SQLResourcesClientGetSQLTriggerResponse` has been removed
+- Struct `SQLResourcesClientGetSQLUserDefinedFunctionOptions` has been removed
+- Struct `SQLResourcesClientGetSQLUserDefinedFunctionResponse` has been removed
+- Struct `SQLResourcesClientListClientEncryptionKeysOptions` has been removed
+- Struct `SQLResourcesClientListClientEncryptionKeysResponse` has been removed
+- Struct `SQLResourcesClientListSQLContainerPartitionMergeResponse` has been removed
+- Struct `SQLResourcesClientListSQLContainersOptions` has been removed
+- Struct `SQLResourcesClientListSQLContainersResponse` has been removed
+- Struct `SQLResourcesClientListSQLDatabasesOptions` has been removed
+- Struct `SQLResourcesClientListSQLDatabasesResponse` has been removed
+- Struct `SQLResourcesClientListSQLRoleAssignmentsOptions` has been removed
+- Struct `SQLResourcesClientListSQLRoleAssignmentsResponse` has been removed
+- Struct `SQLResourcesClientListSQLRoleDefinitionsOptions` has been removed
+- Struct `SQLResourcesClientListSQLRoleDefinitionsResponse` has been removed
+- Struct `SQLResourcesClientListSQLStoredProceduresOptions` has been removed
+- Struct `SQLResourcesClientListSQLStoredProceduresResponse` has been removed
+- Struct `SQLResourcesClientListSQLTriggersOptions` has been removed
+- Struct `SQLResourcesClientListSQLTriggersResponse` has been removed
+- Struct `SQLResourcesClientListSQLUserDefinedFunctionsOptions` has been removed
+- Struct `SQLResourcesClientListSQLUserDefinedFunctionsResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToAutoscaleResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLContainerToManualThroughputResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse` has been removed
+- Struct `SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse` has been removed
+- Struct `SQLResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Struct `SQLResourcesClientSQLContainerRedistributeThroughputResponse` has been removed
+- Struct `SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse` has been removed
+- Struct `SQLResourcesClientSQLDatabasePartitionMergeResponse` has been removed
+- Struct `SQLResourcesClientSQLDatabaseRedistributeThroughputResponse` has been removed
+- Struct `SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse` has been removed
+- Struct `SQLResourcesClientUpdateSQLContainerThroughputResponse` has been removed
+- Struct `SQLResourcesClientUpdateSQLDatabaseThroughputResponse` has been removed
+- Struct `ServiceClientBeginCreateOptions` has been removed
+- Struct `ServiceClientBeginDeleteOptions` has been removed
+- Struct `ServiceClientCreateResponse` has been removed
+- Struct `ServiceClientDeleteResponse` has been removed
+- Struct `ServiceClientGetOptions` has been removed
+- Struct `ServiceClientGetResponse` has been removed
+- Struct `ServiceClientListOptions` has been removed
+- Struct `ServiceClientListResponse` has been removed
+- Struct `TableResourcesClientBeginCreateUpdateTableOptions` has been removed
+- Struct `TableResourcesClientBeginCreateUpdateTableRoleAssignmentOptions` has been removed
+- Struct `TableResourcesClientBeginCreateUpdateTableRoleDefinitionOptions` has been removed
+- Struct `TableResourcesClientBeginDeleteTableOptions` has been removed
+- Struct `TableResourcesClientBeginDeleteTableRoleAssignmentOptions` has been removed
+- Struct `TableResourcesClientBeginDeleteTableRoleDefinitionOptions` has been removed
+- Struct `TableResourcesClientBeginMigrateTableToAutoscaleOptions` has been removed
+- Struct `TableResourcesClientBeginMigrateTableToManualThroughputOptions` has been removed
+- Struct `TableResourcesClientBeginRetrieveContinuousBackupInformationOptions` has been removed
+- Struct `TableResourcesClientBeginUpdateTableThroughputOptions` has been removed
+- Struct `TableResourcesClientCreateUpdateTableResponse` has been removed
+- Struct `TableResourcesClientCreateUpdateTableRoleAssignmentResponse` has been removed
+- Struct `TableResourcesClientCreateUpdateTableRoleDefinitionResponse` has been removed
+- Struct `TableResourcesClientDeleteTableResponse` has been removed
+- Struct `TableResourcesClientDeleteTableRoleAssignmentResponse` has been removed
+- Struct `TableResourcesClientDeleteTableRoleDefinitionResponse` has been removed
+- Struct `TableResourcesClientGetTableOptions` has been removed
+- Struct `TableResourcesClientGetTableResponse` has been removed
+- Struct `TableResourcesClientGetTableRoleAssignmentOptions` has been removed
+- Struct `TableResourcesClientGetTableRoleAssignmentResponse` has been removed
+- Struct `TableResourcesClientGetTableRoleDefinitionOptions` has been removed
+- Struct `TableResourcesClientGetTableRoleDefinitionResponse` has been removed
+- Struct `TableResourcesClientGetTableThroughputOptions` has been removed
+- Struct `TableResourcesClientGetTableThroughputResponse` has been removed
+- Struct `TableResourcesClientListTableRoleAssignmentsOptions` has been removed
+- Struct `TableResourcesClientListTableRoleAssignmentsResponse` has been removed
+- Struct `TableResourcesClientListTableRoleDefinitionsOptions` has been removed
+- Struct `TableResourcesClientListTableRoleDefinitionsResponse` has been removed
+- Struct `TableResourcesClientListTablesOptions` has been removed
+- Struct `TableResourcesClientListTablesResponse` has been removed
+- Struct `TableResourcesClientMigrateTableToAutoscaleResponse` has been removed
+- Struct `TableResourcesClientMigrateTableToManualThroughputResponse` has been removed
+- Struct `TableResourcesClientRetrieveContinuousBackupInformationResponse` has been removed
+- Struct `TableResourcesClientUpdateTableThroughputResponse` has been removed
+- Struct `ThroughputPoolAccountClientBeginCreateOptions` has been removed
+- Struct `ThroughputPoolAccountClientBeginDeleteOptions` has been removed
+- Struct `ThroughputPoolAccountClientCreateResponse` has been removed
+- Struct `ThroughputPoolAccountClientDeleteResponse` has been removed
+- Struct `ThroughputPoolAccountClientGetOptions` has been removed
+- Struct `ThroughputPoolAccountClientGetResponse` has been removed
+- Struct `ThroughputPoolAccountCreateParameters` has been removed
+- Struct `ThroughputPoolAccountCreateProperties` has been removed
+- Struct `ThroughputPoolAccountsClientListOptions` has been removed
+- Struct `ThroughputPoolAccountsClientListResponse` has been removed
+- Struct `ThroughputPoolClientBeginCreateOrUpdateOptions` has been removed
+- Struct `ThroughputPoolClientBeginDeleteOptions` has been removed
+- Struct `ThroughputPoolClientBeginUpdateOptions` has been removed
+- Struct `ThroughputPoolClientCreateOrUpdateResponse` has been removed
+- Struct `ThroughputPoolClientDeleteResponse` has been removed
+- Struct `ThroughputPoolClientGetOptions` has been removed
+- Struct `ThroughputPoolClientGetResponse` has been removed
+- Struct `ThroughputPoolClientUpdateResponse` has been removed
+- Struct `ThroughputPoolsClientListByResourceGroupOptions` has been removed
+- Struct `ThroughputPoolsClientListByResourceGroupResponse` has been removed
+- Struct `ThroughputPoolsClientListOptions` has been removed
+- Struct `ThroughputPoolsClientListResponse` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New value `StatusCreating` added to enum type `Status`
+- New value `VectorDataTypeFloat16` added to enum type `VectorDataType`
+- New enum type `AllocationState` with values `AllocationStateActive`, `AllocationStateDeallocated`
+- New enum type `CopyJobMode` with values `CopyJobModeOffline`, `CopyJobModeOnline`
+- New enum type `CopyJobStatus` with values `CopyJobStatusCancelled`, `CopyJobStatusCompleted`, `CopyJobStatusFaulted`, `CopyJobStatusPartitioning`, `CopyJobStatusPaused`, `CopyJobStatusPending`, `CopyJobStatusRunning`
+- New enum type `CopyJobType` with values `CopyJobTypeAzureBlobStorageToCassandraRU`, `CopyJobTypeCassandraRUToAzureBlobStorage`, `CopyJobTypeCassandraRUToCassandraRU`, `CopyJobTypeMongoRUToMongoRU`, `CopyJobTypeMongoRUToMongoVCore`, `CopyJobTypeNoSQLRUToNoSQLRU`
+- New enum type `FleetAnalyticsPropertiesStorageLocationType` with values `FleetAnalyticsPropertiesStorageLocationTypeFabricLakehouse`, `FleetAnalyticsPropertiesStorageLocationTypeStorageAccount`
+- New enum type `FleetspacePropertiesFleetspaceAPIKind` with values `FleetspacePropertiesFleetspaceAPIKindNoSQL`
+- New enum type `FleetspacePropertiesThroughputPoolConfigurationServiceTier` with values `FleetspacePropertiesThroughputPoolConfigurationServiceTierBusinessCritical`, `FleetspacePropertiesThroughputPoolConfigurationServiceTierGeneralPurpose`
+- New enum type `GarnetCacheProvisioningState` with values `GarnetCacheProvisioningStateCanceled`, `GarnetCacheProvisioningStateCreating`, `GarnetCacheProvisioningStateDeleting`, `GarnetCacheProvisioningStateFailed`, `GarnetCacheProvisioningStateSucceeded`, `GarnetCacheProvisioningStateUpdating`
+- New enum type `ServiceResourceStatus` with values `ServiceResourceStatusCreating`, `ServiceResourceStatusDeleting`, `ServiceResourceStatusError`, `ServiceResourceStatusRunning`, `ServiceResourceStatusStopped`, `ServiceResourceStatusUpdating`
+- New function `*BaseCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New function `*BlobToCassandraRUCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New function `*CassandraRUToBlobCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New function `*CassandraRUToCassandraRUCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New function `*CassandraResourcesClient.BeginCreateUpdateCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateCassandraRoleAssignmentParameters CassandraRoleAssignmentResource, options *BeginCreateUpdateCassandraRoleAssignmentOptions) (*runtime.Poller[CreateUpdateCassandraRoleAssignmentResponse], error)`
+- New function `*CassandraResourcesClient.BeginCreateUpdateCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateCassandraRoleDefinitionParameters CassandraRoleDefinitionResource, options *BeginCreateUpdateCassandraRoleDefinitionOptions) (*runtime.Poller[CreateUpdateCassandraRoleDefinitionResponse], error)`
+- New function `*CassandraResourcesClient.BeginDeleteCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *BeginDeleteCassandraRoleAssignmentOptions) (*runtime.Poller[DeleteCassandraRoleAssignmentResponse], error)`
+- New function `*CassandraResourcesClient.BeginDeleteCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *BeginDeleteCassandraRoleDefinitionOptions) (*runtime.Poller[DeleteCassandraRoleDefinitionResponse], error)`
+- New function `*CassandraResourcesClient.GetCassandraRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GetCassandraRoleAssignmentOptions) (GetCassandraRoleAssignmentResponse, error)`
+- New function `*CassandraResourcesClient.GetCassandraRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GetCassandraRoleDefinitionOptions) (GetCassandraRoleDefinitionResponse, error)`
+- New function `*CassandraResourcesClient.NewListCassandraRoleAssignmentsPager(resourceGroupName string, accountName string, options *ListCassandraRoleAssignmentsOptions) *runtime.Pager[ListCassandraRoleAssignmentsResponse]`
+- New function `*CassandraResourcesClient.NewListCassandraRoleDefinitionsPager(resourceGroupName string, accountName string, options *ListCassandraRoleDefinitionsOptions) *runtime.Pager[ListCassandraRoleDefinitionsResponse]`
+- New function `*ClientFactory.NewCopyJobsClient() *CopyJobsClient`
+- New function `*ClientFactory.NewFleetAnalyticsClient() *FleetAnalyticsClient`
+- New function `*ClientFactory.NewFleetClient() *FleetClient`
+- New function `*ClientFactory.NewFleetspaceAccountClient() *FleetspaceAccountClient`
+- New function `*ClientFactory.NewFleetspaceClient() *FleetspaceClient`
+- New function `*ClientFactory.NewGarnetClustersClient() *GarnetClustersClient`
+- New function `*ClientFactory.NewMongoMIResourcesClient() *MongoMIResourcesClient`
+- New function `NewCopyJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CopyJobsClient, error)`
+- New function `*CopyJobsClient.Cancel(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *CancelOptions) (CancelResponse, error)`
+- New function `*CopyJobsClient.Complete(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *CompleteOptions) (CompleteResponse, error)`
+- New function `*CopyJobsClient.Create(ctx context.Context, resourceGroupName string, accountName string, jobName string, jobCreateParameters CopyJobGetResults, options *CreateOptions) (CreateResponse, error)`
+- New function `*CopyJobsClient.Get(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *GetOptions) (GetResponse, error)`
+- New function `*CopyJobsClient.NewListByDatabaseAccountPager(resourceGroupName string, accountName string, options *ListByDatabaseAccountOptions) *runtime.Pager[ListByDatabaseAccountResponse]`
+- New function `*CopyJobsClient.Pause(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *PauseOptions) (PauseResponse, error)`
+- New function `*CopyJobsClient.Resume(ctx context.Context, resourceGroupName string, accountName string, jobName string, options *ResumeOptions) (ResumeResponse, error)`
+- New function `NewFleetAnalyticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetAnalyticsClient, error)`
+- New function `*FleetAnalyticsClient.Create(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, body FleetAnalyticsResource, options *CreateOptions) (CreateResponse, error)`
+- New function `*FleetAnalyticsClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *BeginDeleteOptions) (*runtime.Poller[DeleteResponse], error)`
+- New function `*FleetAnalyticsClient.Get(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *GetOptions) (GetResponse, error)`
+- New function `*FleetAnalyticsClient.NewListPager(resourceGroupName string, fleetName string, options *ListOptions) *runtime.Pager[ListResponse]`
+- New function `NewFleetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetClient, error)`
+- New function `*FleetClient.Create(ctx context.Context, resourceGroupName string, fleetName string, body FleetResource, options *CreateOptions) (CreateResponse, error)`
+- New function `*FleetClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, options *BeginDeleteOptions) (*runtime.Poller[DeleteResponse], error)`
+- New function `*FleetClient.Get(ctx context.Context, resourceGroupName string, fleetName string, options *GetOptions) (GetResponse, error)`
+- New function `*FleetClient.NewListByResourceGroupPager(resourceGroupName string, options *ListByResourceGroupOptions) *runtime.Pager[ListByResourceGroupResponse]`
+- New function `*FleetClient.NewListPager(options *ListOptions) *runtime.Pager[ListResponse]`
+- New function `*FleetClient.Update(ctx context.Context, resourceGroupName string, fleetName string, body FleetResourceUpdate, options *UpdateOptions) (UpdateResponse, error)`
+- New function `NewFleetspaceAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetspaceAccountClient, error)`
+- New function `*FleetspaceAccountClient.BeginCreate(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, body FleetspaceAccountResource, options *BeginCreateOptions) (*runtime.Poller[CreateResponse], error)`
+- New function `*FleetspaceAccountClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, options *BeginDeleteOptions) (*runtime.Poller[DeleteResponse], error)`
+- New function `*FleetspaceAccountClient.Get(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, options *GetOptions) (GetResponse, error)`
+- New function `*FleetspaceAccountClient.NewListPager(resourceGroupName string, fleetName string, fleetspaceName string, options *ListOptions) *runtime.Pager[ListResponse]`
+- New function `NewFleetspaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetspaceClient, error)`
+- New function `*FleetspaceClient.BeginCreate(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceResource, options *BeginCreateOptions) (*runtime.Poller[CreateResponse], error)`
+- New function `*FleetspaceClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, options *BeginDeleteOptions) (*runtime.Poller[DeleteResponse], error)`
+- New function `*FleetspaceClient.Get(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, options *GetOptions) (GetResponse, error)`
+- New function `*FleetspaceClient.NewListPager(resourceGroupName string, fleetName string, options *ListOptions) *runtime.Pager[ListResponse]`
+- New function `*FleetspaceClient.BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, options *BeginUpdateOptions) (*runtime.Poller[UpdateResponse], error)`
+- New function `NewGarnetClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GarnetClustersClient, error)`
+- New function `*GarnetClustersClient.BeginCreateUpdate(ctx context.Context, resourceGroupName string, clusterName string, body GarnetClusterResource, options *BeginCreateUpdateOptions) (*runtime.Poller[CreateUpdateResponse], error)`
+- New function `*GarnetClustersClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *BeginDeleteOptions) (*runtime.Poller[DeleteResponse], error)`
+- New function `*GarnetClustersClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *GetOptions) (GetResponse, error)`
+- New function `*GarnetClustersClient.NewListByResourceGroupPager(resourceGroupName string, options *ListByResourceGroupOptions) *runtime.Pager[ListByResourceGroupResponse]`
+- New function `*GarnetClustersClient.NewListBySubscriptionPager(options *ListBySubscriptionOptions) *runtime.Pager[ListBySubscriptionResponse]`
+- New function `*GarnetClustersClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, body GarnetClusterResourcePatch, options *BeginUpdateOptions) (*runtime.Poller[UpdateResponse], error)`
+- New function `*GremlinResourcesClient.BeginCreateUpdateGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, options *BeginCreateUpdateGremlinRoleAssignmentOptions) (*runtime.Poller[CreateUpdateGremlinRoleAssignmentResponse], error)`
+- New function `*GremlinResourcesClient.BeginCreateUpdateGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, options *BeginCreateUpdateGremlinRoleDefinitionOptions) (*runtime.Poller[CreateUpdateGremlinRoleDefinitionResponse], error)`
+- New function `*GremlinResourcesClient.BeginDeleteGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *BeginDeleteGremlinRoleAssignmentOptions) (*runtime.Poller[DeleteGremlinRoleAssignmentResponse], error)`
+- New function `*GremlinResourcesClient.BeginDeleteGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *BeginDeleteGremlinRoleDefinitionOptions) (*runtime.Poller[DeleteGremlinRoleDefinitionResponse], error)`
+- New function `*GremlinResourcesClient.GetGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GetGremlinRoleAssignmentOptions) (GetGremlinRoleAssignmentResponse, error)`
+- New function `*GremlinResourcesClient.GetGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GetGremlinRoleDefinitionOptions) (GetGremlinRoleDefinitionResponse, error)`
+- New function `*GremlinResourcesClient.NewListGremlinRoleAssignmentsPager(resourceGroupName string, accountName string, options *ListGremlinRoleAssignmentsOptions) *runtime.Pager[ListGremlinRoleAssignmentsResponse]`
+- New function `*GremlinResourcesClient.NewListGremlinRoleDefinitionsPager(resourceGroupName string, accountName string, options *ListGremlinRoleDefinitionsOptions) *runtime.Pager[ListGremlinRoleDefinitionsResponse]`
+- New function `NewMongoMIResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MongoMIResourcesClient, error)`
+- New function `*MongoMIResourcesClient.BeginCreateUpdateMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateMongoMIRoleAssignmentParameters MongoMIRoleAssignmentResource, options *BeginCreateUpdateMongoMIRoleAssignmentOptions) (*runtime.Poller[CreateUpdateMongoMIRoleAssignmentResponse], error)`
+- New function `*MongoMIResourcesClient.BeginCreateUpdateMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateMongoMIRoleDefinitionParameters MongoMIRoleDefinitionResource, options *BeginCreateUpdateMongoMIRoleDefinitionOptions) (*runtime.Poller[CreateUpdateMongoMIRoleDefinitionResponse], error)`
+- New function `*MongoMIResourcesClient.BeginDeleteMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *BeginDeleteMongoMIRoleAssignmentOptions) (*runtime.Poller[DeleteMongoMIRoleAssignmentResponse], error)`
+- New function `*MongoMIResourcesClient.BeginDeleteMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *BeginDeleteMongoMIRoleDefinitionOptions) (*runtime.Poller[DeleteMongoMIRoleDefinitionResponse], error)`
+- New function `*MongoMIResourcesClient.GetMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GetMongoMIRoleAssignmentOptions) (GetMongoMIRoleAssignmentResponse, error)`
+- New function `*MongoMIResourcesClient.GetMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GetMongoMIRoleDefinitionOptions) (GetMongoMIRoleDefinitionResponse, error)`
+- New function `*MongoMIResourcesClient.NewListMongoMIRoleAssignmentsPager(resourceGroupName string, accountName string, options *ListMongoMIRoleAssignmentsOptions) *runtime.Pager[ListMongoMIRoleAssignmentsResponse]`
+- New function `*MongoMIResourcesClient.NewListMongoMIRoleDefinitionsPager(resourceGroupName string, accountName string, options *ListMongoMIRoleDefinitionsOptions) *runtime.Pager[ListMongoMIRoleDefinitionsResponse]`
+- New function `*MongoRUToMongoRUCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New function `*MongoRUToMongoVCoreCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New function `*NoSQLRUToNoSQLRUCopyJobProperties.GetBaseCopyJobProperties() *BaseCopyJobProperties`
+- New struct `AccessRulePropertiesSubscription`
+- New struct `AzureBlobContainer`
+- New struct `AzureBlobSourceSinkDetails`
+- New struct `BeginCreateOrUpdateOptions`
+- New struct `BeginCreateUpdateCassandraKeyspaceOptions`
+- New struct `BeginCreateUpdateCassandraTableOptions`
+- New struct `BeginCreateUpdateCassandraViewOptions`
+- New struct `BeginCreateUpdateClientEncryptionKeyOptions`
+- New struct `BeginCreateUpdateGraphOptions`
+- New struct `BeginCreateUpdateGremlinDatabaseOptions`
+- New struct `BeginCreateUpdateGremlinGraphOptions`
+- New struct `BeginCreateUpdateMongoDBCollectionOptions`
+- New struct `BeginCreateUpdateMongoDBDatabaseOptions`
+- New struct `BeginCreateUpdateMongoRoleDefinitionOptions`
+- New struct `BeginCreateUpdateMongoUserDefinitionOptions`
+- New struct `BeginCreateUpdateSQLContainerOptions`
+- New struct `BeginCreateUpdateSQLDatabaseOptions`
+- New struct `BeginCreateUpdateSQLRoleAssignmentOptions`
+- New struct `BeginCreateUpdateSQLRoleDefinitionOptions`
+- New struct `BeginCreateUpdateSQLStoredProcedureOptions`
+- New struct `BeginCreateUpdateSQLTriggerOptions`
+- New struct `BeginCreateUpdateSQLUserDefinedFunctionOptions`
+- New struct `BeginCreateUpdateTableOptions`
+- New struct `BeginCreateUpdateTableRoleAssignmentOptions`
+- New struct `BeginCreateUpdateTableRoleDefinitionOptions`
+- New struct `BeginDeallocateOptions`
+- New struct `BeginDeleteCassandraKeyspaceOptions`
+- New struct `BeginDeleteCassandraTableOptions`
+- New struct `BeginDeleteCassandraViewOptions`
+- New struct `BeginDeleteGraphResourceOptions`
+- New struct `BeginDeleteGremlinDatabaseOptions`
+- New struct `BeginDeleteGremlinGraphOptions`
+- New struct `BeginDeleteMongoDBCollectionOptions`
+- New struct `BeginDeleteMongoDBDatabaseOptions`
+- New struct `BeginDeleteMongoRoleDefinitionOptions`
+- New struct `BeginDeleteMongoUserDefinitionOptions`
+- New struct `BeginDeleteSQLContainerOptions`
+- New struct `BeginDeleteSQLDatabaseOptions`
+- New struct `BeginDeleteSQLRoleAssignmentOptions`
+- New struct `BeginDeleteSQLRoleDefinitionOptions`
+- New struct `BeginDeleteSQLStoredProcedureOptions`
+- New struct `BeginDeleteSQLTriggerOptions`
+- New struct `BeginDeleteSQLUserDefinedFunctionOptions`
+- New struct `BeginDeleteTableOptions`
+- New struct `BeginDeleteTableRoleAssignmentOptions`
+- New struct `BeginDeleteTableRoleDefinitionOptions`
+- New struct `BeginEnableDisableOptions`
+- New struct `BeginFailoverPriorityChangeOptions`
+- New struct `BeginInvokeCommandAsyncOptions`
+- New struct `BeginInvokeCommandOptions`
+- New struct `BeginListMongoDBCollectionPartitionMergeOptions`
+- New struct `BeginListSQLContainerPartitionMergeOptions`
+- New struct `BeginMigrateCassandraKeyspaceToAutoscaleOptions`
+- New struct `BeginMigrateCassandraKeyspaceToManualThroughputOptions`
+- New struct `BeginMigrateCassandraTableToAutoscaleOptions`
+- New struct `BeginMigrateCassandraTableToManualThroughputOptions`
+- New struct `BeginMigrateCassandraViewToAutoscaleOptions`
+- New struct `BeginMigrateCassandraViewToManualThroughputOptions`
+- New struct `BeginMigrateGremlinDatabaseToAutoscaleOptions`
+- New struct `BeginMigrateGremlinDatabaseToManualThroughputOptions`
+- New struct `BeginMigrateGremlinGraphToAutoscaleOptions`
+- New struct `BeginMigrateGremlinGraphToManualThroughputOptions`
+- New struct `BeginMigrateMongoDBCollectionToAutoscaleOptions`
+- New struct `BeginMigrateMongoDBCollectionToManualThroughputOptions`
+- New struct `BeginMigrateMongoDBDatabaseToAutoscaleOptions`
+- New struct `BeginMigrateMongoDBDatabaseToManualThroughputOptions`
+- New struct `BeginMigrateSQLContainerToAutoscaleOptions`
+- New struct `BeginMigrateSQLContainerToManualThroughputOptions`
+- New struct `BeginMigrateSQLDatabaseToAutoscaleOptions`
+- New struct `BeginMigrateSQLDatabaseToManualThroughputOptions`
+- New struct `BeginMigrateTableToAutoscaleOptions`
+- New struct `BeginMigrateTableToManualThroughputOptions`
+- New struct `BeginMongoDBContainerRedistributeThroughputOptions`
+- New struct `BeginMongoDBContainerRetrieveThroughputDistributionOptions`
+- New struct `BeginMongoDBDatabasePartitionMergeOptions`
+- New struct `BeginMongoDBDatabaseRedistributeThroughputOptions`
+- New struct `BeginMongoDBDatabaseRetrieveThroughputDistributionOptions`
+- New struct `BeginOfflineRegionOptions`
+- New struct `BeginOnlineRegionOptions`
+- New struct `BeginReconcileOptions`
+- New struct `BeginRegenerateAuthTokenOptions`
+- New struct `BeginRegenerateKeyOptions`
+- New struct `BeginRetrieveContinuousBackupInformationOptions`
+- New struct `BeginSQLContainerRedistributeThroughputOptions`
+- New struct `BeginSQLContainerRetrieveThroughputDistributionOptions`
+- New struct `BeginSQLDatabasePartitionMergeOptions`
+- New struct `BeginSQLDatabaseRedistributeThroughputOptions`
+- New struct `BeginSQLDatabaseRetrieveThroughputDistributionOptions`
+- New struct `BeginStartOptions`
+- New struct `BeginUpdateCassandraKeyspaceThroughputOptions`
+- New struct `BeginUpdateCassandraTableThroughputOptions`
+- New struct `BeginUpdateCassandraViewThroughputOptions`
+- New struct `BeginUpdateGremlinDatabaseThroughputOptions`
+- New struct `BeginUpdateGremlinGraphThroughputOptions`
+- New struct `BeginUpdateMongoDBCollectionThroughputOptions`
+- New struct `BeginUpdateMongoDBDatabaseThroughputOptions`
+- New struct `BeginUpdateSQLContainerThroughputOptions`
+- New struct `BeginUpdateSQLDatabaseThroughputOptions`
+- New struct `BeginUpdateTableThroughputOptions`
+- New struct `BlobToCassandraRUCopyJobProperties`
+- New struct `BlobToCassandraRUCopyJobTask`
+- New struct `CassandraRUToBlobCopyJobProperties`
+- New struct `CassandraRUToBlobCopyJobTask`
+- New struct `CassandraRUToCassandraRUCopyJobProperties`
+- New struct `CassandraRUToCassandraRUCopyJobTask`
+- New struct `CassandraRoleAssignmentListResult`
+- New struct `CassandraRoleAssignmentResource`
+- New struct `CassandraRoleAssignmentResourceProperties`
+- New struct `CassandraRoleDefinitionListResult`
+- New struct `CassandraRoleDefinitionResource`
+- New struct `CassandraRoleDefinitionResourceProperties`
+- New struct `CheckNameExistsOptions`
+- New struct `CheckNameExistsResponse`
+- New struct `CopyJobFeedResults`
+- New struct `CopyJobGetResults`
+- New struct `CopyJobProperties`
+- New struct `CreateOrUpdateResponse`
+- New struct `CreateUpdateCassandraKeyspaceResponse`
+- New struct `CreateUpdateCassandraTableResponse`
+- New struct `CreateUpdateCassandraViewResponse`
+- New struct `CreateUpdateClientEncryptionKeyResponse`
+- New struct `CreateUpdateGraphResponse`
+- New struct `CreateUpdateGremlinDatabaseResponse`
+- New struct `CreateUpdateGremlinGraphResponse`
+- New struct `CreateUpdateMongoDBCollectionResponse`
+- New struct `CreateUpdateMongoDBDatabaseResponse`
+- New struct `CreateUpdateMongoRoleDefinitionResponse`
+- New struct `CreateUpdateMongoUserDefinitionResponse`
+- New struct `CreateUpdateSQLContainerResponse`
+- New struct `CreateUpdateSQLDatabaseResponse`
+- New struct `CreateUpdateSQLRoleAssignmentResponse`
+- New struct `CreateUpdateSQLRoleDefinitionResponse`
+- New struct `CreateUpdateSQLStoredProcedureResponse`
+- New struct `CreateUpdateSQLTriggerResponse`
+- New struct `CreateUpdateSQLUserDefinedFunctionResponse`
+- New struct `CreateUpdateTableResponse`
+- New struct `CreateUpdateTableRoleAssignmentResponse`
+- New struct `CreateUpdateTableRoleDefinitionResponse`
+- New struct `DBCassandraTable`
+- New struct `DBMongoCollection`
+- New struct `DBMongoVCoreCollection`
+- New struct `DBNoSQLContainer`
+- New struct `DBSourceSinkDetails`
+- New struct `DataMaskingPolicy`
+- New struct `DataMaskingPolicyExcludedPath`
+- New struct `DataMaskingPolicyIncludedPath`
+- New struct `DeallocateResponse`
+- New struct `DeleteCassandraKeyspaceResponse`
+- New struct `DeleteCassandraTableResponse`
+- New struct `DeleteCassandraViewResponse`
+- New struct `DeleteGraphResourceResponse`
+- New struct `DeleteGremlinDatabaseResponse`
+- New struct `DeleteGremlinGraphResponse`
+- New struct `DeleteMongoDBCollectionResponse`
+- New struct `DeleteMongoDBDatabaseResponse`
+- New struct `DeleteMongoRoleDefinitionResponse`
+- New struct `DeleteMongoUserDefinitionResponse`
+- New struct `DeleteSQLContainerResponse`
+- New struct `DeleteSQLDatabaseResponse`
+- New struct `DeleteSQLRoleAssignmentResponse`
+- New struct `DeleteSQLRoleDefinitionResponse`
+- New struct `DeleteSQLStoredProcedureResponse`
+- New struct `DeleteSQLTriggerResponse`
+- New struct `DeleteSQLUserDefinedFunctionResponse`
+- New struct `DeleteTableResponse`
+- New struct `DeleteTableRoleAssignmentResponse`
+- New struct `DeleteTableRoleDefinitionResponse`
+- New struct `EnableDisableResponse`
+- New struct `FailoverPriorityChangeResponse`
+- New struct `FleetAnalyticsListResult`
+- New struct `FleetAnalyticsProperties`
+- New struct `FleetAnalyticsResource`
+- New struct `FleetListResult`
+- New struct `FleetResource`
+- New struct `FleetResourceProperties`
+- New struct `FleetResourceUpdate`
+- New struct `FleetspaceAccountListResult`
+- New struct `FleetspaceAccountProperties`
+- New struct `FleetspaceAccountPropertiesGlobalDatabaseAccountProperties`
+- New struct `FleetspaceAccountResource`
+- New struct `FleetspaceListResult`
+- New struct `FleetspaceProperties`
+- New struct `FleetspacePropertiesThroughputPoolConfiguration`
+- New struct `FleetspaceResource`
+- New struct `FleetspaceUpdate`
+- New struct `FullTextIndexPath`
+- New struct `FullTextPath`
+- New struct `FullTextPolicy`
+- New struct `GarnetClusterEndpoint`
+- New struct `GarnetClusterProperties`
+- New struct `GarnetClusterResource`
+- New struct `GarnetClusterResourcePatch`
+- New struct `GarnetClusterResourcePatchProperties`
+- New struct `GetBackupOptions`
+- New struct `GetBackupResponse`
+- New struct `GetByLocationOptions`
+- New struct `GetByLocationResponse`
+- New struct `GetCassandraKeyspaceOptions`
+- New struct `GetCassandraKeyspaceResponse`
+- New struct `GetCassandraKeyspaceThroughputOptions`
+- New struct `GetCassandraKeyspaceThroughputResponse`
+- New struct `GetCassandraTableOptions`
+- New struct `GetCassandraTableResponse`
+- New struct `GetCassandraTableThroughputOptions`
+- New struct `GetCassandraTableThroughputResponse`
+- New struct `GetCassandraViewOptions`
+- New struct `GetCassandraViewResponse`
+- New struct `GetCassandraViewThroughputOptions`
+- New struct `GetCassandraViewThroughputResponse`
+- New struct `GetClientEncryptionKeyOptions`
+- New struct `GetClientEncryptionKeyResponse`
+- New struct `GetCommandAsyncOptions`
+- New struct `GetCommandAsyncResponse`
+- New struct `GetGraphOptions`
+- New struct `GetGraphResponse`
+- New struct `GetGremlinDatabaseOptions`
+- New struct `GetGremlinDatabaseResponse`
+- New struct `GetGremlinDatabaseThroughputOptions`
+- New struct `GetGremlinDatabaseThroughputResponse`
+- New struct `GetGremlinGraphOptions`
+- New struct `GetGremlinGraphResponse`
+- New struct `GetGremlinGraphThroughputOptions`
+- New struct `GetGremlinGraphThroughputResponse`
+- New struct `GetMongoDBCollectionOptions`
+- New struct `GetMongoDBCollectionResponse`
+- New struct `GetMongoDBCollectionThroughputOptions`
+- New struct `GetMongoDBCollectionThroughputResponse`
+- New struct `GetMongoDBDatabaseOptions`
+- New struct `GetMongoDBDatabaseResponse`
+- New struct `GetMongoDBDatabaseThroughputOptions`
+- New struct `GetMongoDBDatabaseThroughputResponse`
+- New struct `GetMongoRoleDefinitionOptions`
+- New struct `GetMongoRoleDefinitionResponse`
+- New struct `GetMongoUserDefinitionOptions`
+- New struct `GetMongoUserDefinitionResponse`
+- New struct `GetReadOnlyKeysOptions`
+- New struct `GetReadOnlyKeysResponse`
+- New struct `GetSQLContainerOptions`
+- New struct `GetSQLContainerResponse`
+- New struct `GetSQLContainerThroughputOptions`
+- New struct `GetSQLContainerThroughputResponse`
+- New struct `GetSQLDatabaseOptions`
+- New struct `GetSQLDatabaseResponse`
+- New struct `GetSQLDatabaseThroughputOptions`
+- New struct `GetSQLDatabaseThroughputResponse`
+- New struct `GetSQLRoleAssignmentOptions`
+- New struct `GetSQLRoleAssignmentResponse`
+- New struct `GetSQLRoleDefinitionOptions`
+- New struct `GetSQLRoleDefinitionResponse`
+- New struct `GetSQLStoredProcedureOptions`
+- New struct `GetSQLStoredProcedureResponse`
+- New struct `GetSQLTriggerOptions`
+- New struct `GetSQLTriggerResponse`
+- New struct `GetSQLUserDefinedFunctionOptions`
+- New struct `GetSQLUserDefinedFunctionResponse`
+- New struct `GetTableOptions`
+- New struct `GetTableResponse`
+- New struct `GetTableRoleAssignmentOptions`
+- New struct `GetTableRoleAssignmentResponse`
+- New struct `GetTableRoleDefinitionOptions`
+- New struct `GetTableRoleDefinitionResponse`
+- New struct `GetTableThroughputOptions`
+- New struct `GetTableThroughputResponse`
+- New struct `GremlinRoleAssignmentListResult`
+- New struct `GremlinRoleAssignmentResource`
+- New struct `GremlinRoleAssignmentResourceProperties`
+- New struct `GremlinRoleDefinitionListResult`
+- New struct `GremlinRoleDefinitionResource`
+- New struct `GremlinRoleDefinitionResourceProperties`
+- New struct `InvokeCommandAsyncResponse`
+- New struct `InvokeCommandResponse`
+- New struct `ListBackupsOptions`
+- New struct `ListBackupsResponse`
+- New struct `ListByLocationOptions`
+- New struct `ListByLocationResponse`
+- New struct `ListCassandraKeyspacesOptions`
+- New struct `ListCassandraKeyspacesResponse`
+- New struct `ListCassandraTablesOptions`
+- New struct `ListCassandraTablesResponse`
+- New struct `ListCassandraViewsOptions`
+- New struct `ListCassandraViewsResponse`
+- New struct `ListClientEncryptionKeysOptions`
+- New struct `ListClientEncryptionKeysResponse`
+- New struct `ListCommandOptions`
+- New struct `ListCommandResponse`
+- New struct `ListConnectionInfoOptions`
+- New struct `ListConnectionInfoResponse`
+- New struct `ListConnectionStringsOptions`
+- New struct `ListConnectionStringsResponse`
+- New struct `ListGarnetClusters`
+- New struct `ListGraphsOptions`
+- New struct `ListGraphsResponse`
+- New struct `ListGremlinDatabasesOptions`
+- New struct `ListGremlinDatabasesResponse`
+- New struct `ListGremlinGraphsOptions`
+- New struct `ListGremlinGraphsResponse`
+- New struct `ListKeysOptions`
+- New struct `ListKeysResponse`
+- New struct `ListMetricDefinitionsOptions`
+- New struct `ListMetricDefinitionsResponse`
+- New struct `ListMetricsOptions`
+- New struct `ListMetricsResponse`
+- New struct `ListMongoDBCollectionPartitionMergeResponse`
+- New struct `ListMongoDBCollectionsOptions`
+- New struct `ListMongoDBCollectionsResponse`
+- New struct `ListMongoDBDatabasesOptions`
+- New struct `ListMongoDBDatabasesResponse`
+- New struct `ListMongoRoleDefinitionsOptions`
+- New struct `ListMongoRoleDefinitionsResponse`
+- New struct `ListMongoUserDefinitionsOptions`
+- New struct `ListMongoUserDefinitionsResponse`
+- New struct `ListReadOnlyKeysOptions`
+- New struct `ListReadOnlyKeysResponse`
+- New struct `ListSQLContainerPartitionMergeResponse`
+- New struct `ListSQLContainersOptions`
+- New struct `ListSQLContainersResponse`
+- New struct `ListSQLDatabasesOptions`
+- New struct `ListSQLDatabasesResponse`
+- New struct `ListSQLRoleAssignmentsOptions`
+- New struct `ListSQLRoleAssignmentsResponse`
+- New struct `ListSQLRoleDefinitionsOptions`
+- New struct `ListSQLRoleDefinitionsResponse`
+- New struct `ListSQLStoredProceduresOptions`
+- New struct `ListSQLStoredProceduresResponse`
+- New struct `ListSQLTriggersOptions`
+- New struct `ListSQLTriggersResponse`
+- New struct `ListSQLUserDefinedFunctionsOptions`
+- New struct `ListSQLUserDefinedFunctionsResponse`
+- New struct `ListTableRoleAssignmentsOptions`
+- New struct `ListTableRoleAssignmentsResponse`
+- New struct `ListTableRoleDefinitionsOptions`
+- New struct `ListTableRoleDefinitionsResponse`
+- New struct `ListTablesOptions`
+- New struct `ListTablesResponse`
+- New struct `ListUsagesOptions`
+- New struct `ListUsagesResponse`
+- New struct `MaterializedViewDetails`
+- New struct `MaterializedViewsProperties`
+- New struct `MigrateCassandraKeyspaceToAutoscaleResponse`
+- New struct `MigrateCassandraKeyspaceToManualThroughputResponse`
+- New struct `MigrateCassandraTableToAutoscaleResponse`
+- New struct `MigrateCassandraTableToManualThroughputResponse`
+- New struct `MigrateCassandraViewToAutoscaleResponse`
+- New struct `MigrateCassandraViewToManualThroughputResponse`
+- New struct `MigrateGremlinDatabaseToAutoscaleResponse`
+- New struct `MigrateGremlinDatabaseToManualThroughputResponse`
+- New struct `MigrateGremlinGraphToAutoscaleResponse`
+- New struct `MigrateGremlinGraphToManualThroughputResponse`
+- New struct `MigrateMongoDBCollectionToAutoscaleResponse`
+- New struct `MigrateMongoDBCollectionToManualThroughputResponse`
+- New struct `MigrateMongoDBDatabaseToAutoscaleResponse`
+- New struct `MigrateMongoDBDatabaseToManualThroughputResponse`
+- New struct `MigrateSQLContainerToAutoscaleResponse`
+- New struct `MigrateSQLContainerToManualThroughputResponse`
+- New struct `MigrateSQLDatabaseToAutoscaleResponse`
+- New struct `MigrateSQLDatabaseToManualThroughputResponse`
+- New struct `MigrateTableToAutoscaleResponse`
+- New struct `MigrateTableToManualThroughputResponse`
+- New struct `MongoDBContainerRedistributeThroughputResponse`
+- New struct `MongoDBContainerRetrieveThroughputDistributionResponse`
+- New struct `MongoDBDatabasePartitionMergeResponse`
+- New struct `MongoDBDatabaseRedistributeThroughputResponse`
+- New struct `MongoDBDatabaseRetrieveThroughputDistributionResponse`
+- New struct `MongoMIRoleAssignmentListResult`
+- New struct `MongoMIRoleAssignmentResource`
+- New struct `MongoMIRoleAssignmentResourceProperties`
+- New struct `MongoMIRoleDefinitionListResult`
+- New struct `MongoMIRoleDefinitionResource`
+- New struct `MongoMIRoleDefinitionResourceProperties`
+- New struct `MongoRUToMongoRUCopyJobProperties`
+- New struct `MongoRUToMongoRUCopyJobTask`
+- New struct `MongoRUToMongoVCoreCopyJobProperties`
+- New struct `MongoRUToMongoVCoreCopyJobTask`
+- New struct `MongoVCoreSourceSinkDetails`
+- New struct `NoSQLRUToNoSQLRUCopyJobProperties`
+- New struct `NoSQLRUToNoSQLRUCopyJobTask`
+- New struct `OfflineRegionResponse`
+- New struct `OnlineRegionResponse`
+- New struct `ReconcileResponse`
+- New struct `RegenerateAuthTokenResponse`
+- New struct `RegenerateKeyResponse`
+- New struct `RetrieveContinuousBackupInformationResponse`
+- New struct `SQLContainerRedistributeThroughputResponse`
+- New struct `SQLContainerRetrieveThroughputDistributionResponse`
+- New struct `SQLDatabasePartitionMergeResponse`
+- New struct `SQLDatabaseRedistributeThroughputResponse`
+- New struct `SQLDatabaseRetrieveThroughputDistributionResponse`
+- New struct `StartResponse`
+- New struct `StatusOptions`
+- New struct `StatusResponse`
+- New struct `UpdateCassandraKeyspaceThroughputResponse`
+- New struct `UpdateCassandraTableThroughputResponse`
+- New struct `UpdateCassandraViewThroughputResponse`
+- New struct `UpdateGremlinDatabaseThroughputResponse`
+- New struct `UpdateGremlinGraphThroughputResponse`
+- New struct `UpdateMongoDBCollectionThroughputResponse`
+- New struct `UpdateMongoDBDatabaseThroughputResponse`
+- New struct `UpdateSQLContainerThroughputResponse`
+- New struct `UpdateSQLDatabaseThroughputResponse`
+- New struct `UpdateTableThroughputResponse`
+- New field `SystemData` in struct `CassandraKeyspaceGetResults`
+- New field `NextLink` in struct `CassandraKeyspaceListResult`
+- New field `SystemData` in struct `CassandraTableGetResults`
+- New field `NextLink` in struct `CassandraTableListResult`
+- New field `SystemData` in struct `CassandraViewGetResults`
+- New field `NextLink` in struct `CassandraViewListResult`
+- New field `SystemData` in struct `ClientEncryptionKeyGetResults`
+- New field `NextLink` in struct `ClientEncryptionKeysListResult`
+- New field `SystemData` in struct `ClusterResource`
+- New field `SystemData` in struct `DataCenterResource`
+- New field `SystemData` in struct `DataTransferJobGetResults`
+- New field `EnableAllVersionsAndDeletesChangeFeed` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `EnableAllVersionsAndDeletesChangeFeed`, `KeyVaultKeyURIVersion`, `ThroughputPoolDedicatedRUs`, `ThroughputPoolMaxConsumableRUs` in struct `DatabaseAccountGetProperties`
+- New field `EnableAllVersionsAndDeletesChangeFeed` in struct `DatabaseAccountUpdateProperties`
+- New field `NextLink` in struct `DatabaseAccountsListResult`
+- New field `SystemData` in struct `GraphResourceGetResults`
+- New field `NextLink` in struct `GraphResourcesListResult`
+- New field `SystemData` in struct `GremlinDatabaseGetResults`
+- New field `NextLink` in struct `GremlinDatabaseListResult`
+- New field `SystemData` in struct `GremlinGraphGetResults`
+- New field `NextLink` in struct `GremlinGraphListResult`
+- New field `FullTextIndexes` in struct `IndexingPolicy`
+- New field `NextLink` in struct `ListBackups`
+- New field `NextLink` in struct `ListClusters`
+- New field `NextLink` in struct `ListCommands`
+- New field `NextLink` in struct `ListDataCenters`
+- New field `SystemData` in struct `LocationGetResult`
+- New field `NextLink` in struct `LocationListResult`
+- New field `ThroughputBucketForBuild` in struct `MaterializedViewDefinition`
+- New field `NextLink` in struct `MetricDefinitionsListResult`
+- New field `NextLink` in struct `MetricListResult`
+- New field `SystemData` in struct `MongoDBCollectionGetResults`
+- New field `NextLink` in struct `MongoDBCollectionListResult`
+- New field `SystemData` in struct `MongoDBDatabaseGetResults`
+- New field `NextLink` in struct `MongoDBDatabaseListResult`
+- New field `SystemData` in struct `MongoRoleDefinitionGetResults`
+- New field `NextLink` in struct `MongoRoleDefinitionListResult`
+- New field `SystemData` in struct `MongoUserDefinitionGetResults`
+- New field `NextLink` in struct `MongoUserDefinitionListResult`
+- New field `RemoteAccountName` in struct `MongoVCoreDataTransferDataSourceSink`
+- New field `SystemData` in struct `NotebookWorkspace`
+- New field `NextLink` in struct `NotebookWorkspaceListResult`
+- New field `NextLink` in struct `PartitionMetricListResult`
+- New field `NextLink` in struct `PartitionUsagesResult`
+- New field `NextLink` in struct `PercentileMetricListResult`
+- New field `ID` in struct `Permission`
+- New field `TargetThroughput` in struct `PhysicalPartitionThroughputInfoResource`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+- New field `SystemData` in struct `RestorableDatabaseAccountGetResult`
+- New field `NextLink` in struct `RestorableDatabaseAccountsListResult`
+- New field `NextLink` in struct `RestorableGremlinDatabasesListResult`
+- New field `NextLink` in struct `RestorableGremlinGraphsListResult`
+- New field `NextLink` in struct `RestorableGremlinResourcesListResult`
+- New field `NextLink` in struct `RestorableMongodbCollectionsListResult`
+- New field `NextLink` in struct `RestorableMongodbDatabasesListResult`
+- New field `NextLink` in struct `RestorableMongodbResourcesListResult`
+- New field `DataMaskingPolicy`, `FullTextPolicy`, `MaterializedViews`, `MaterializedViewsProperties` in struct `RestorableSQLContainerPropertiesResourceContainer`
+- New field `NextLink` in struct `RestorableSQLContainersListResult`
+- New field `NextLink` in struct `RestorableSQLDatabasesListResult`
+- New field `NextLink` in struct `RestorableSQLResourcesListResult`
+- New field `NextLink` in struct `RestorableTableResourcesListResult`
+- New field `NextLink` in struct `RestorableTablesListResult`
+- New field `DataMaskingPolicy`, `FullTextPolicy`, `MaterializedViews`, `MaterializedViewsProperties` in struct `SQLContainerGetPropertiesResource`
+- New field `SystemData` in struct `SQLContainerGetResults`
+- New field `NextLink` in struct `SQLContainerListResult`
+- New field `DataMaskingPolicy`, `FullTextPolicy`, `MaterializedViews`, `MaterializedViewsProperties` in struct `SQLContainerResource`
+- New field `SystemData` in struct `SQLDatabaseGetResults`
+- New field `NextLink` in struct `SQLDatabaseListResult`
+- New field `SystemData` in struct `SQLRoleAssignmentGetResults`
+- New field `NextLink` in struct `SQLRoleAssignmentListResult`
+- New field `SystemData` in struct `SQLRoleDefinitionGetResults`
+- New field `NextLink` in struct `SQLRoleDefinitionListResult`
+- New field `SystemData` in struct `SQLStoredProcedureGetResults`
+- New field `NextLink` in struct `SQLStoredProcedureListResult`
+- New field `SystemData` in struct `SQLTriggerGetResults`
+- New field `NextLink` in struct `SQLTriggerListResult`
+- New field `SystemData` in struct `SQLUserDefinedFunctionGetResults`
+- New field `NextLink` in struct `SQLUserDefinedFunctionListResult`
+- New field `SystemData` in struct `ServiceResource`
+- New field `NextLink` in struct `ServiceResourceListResult`
+- New field `SystemData` in struct `TableGetResults`
+- New field `NextLink` in struct `TableListResult`
+- New field `IsDefaultBucket` in struct `ThroughputBucketResource`
+- New field `SystemData` in struct `ThroughputSettingsGetResults`
+- New field `NextLink` in struct `UsagesResult`
+- New field `IndexingSearchListSize`, `QuantizationByteSize`, `VectorIndexShardKey` in struct `VectorIndex`
+
+
 ## 3.4.0 (2025-11-12)
 ### Features Added
 

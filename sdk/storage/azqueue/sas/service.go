@@ -29,6 +29,7 @@ type QueueSignatureValues struct {
 	UnauthorizedObjectID        string // suoid
 	CorrelationID               string // scid
 	SignedDelegatedUserObjectID string // sduoid
+	SignedDelegatedUserTenantId string // skdutid
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -107,7 +108,10 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 	udk := exported.GetUDKParams(userDelegationCredential)
 	udkStart := formatTime(udk.SignedStart, "")
 	udkExpiry := formatTime(udk.SignedExpiry, "")
-
+	var signedDelegatedUserTenantId string
+	if udk.SignedDelegatedUserTid != nil {
+		signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
+	}
 	stringToSign := strings.Join([]string{
 		v.Permissions,
 		startTime,
@@ -122,7 +126,7 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 		v.AuthorizedObjectID,
 		v.UnauthorizedObjectID,
 		v.CorrelationID,
-		"",
+		signedDelegatedUserTenantId,
 		v.SignedDelegatedUserObjectID,
 		v.IPRange.String(),
 		string(v.Protocol),
@@ -155,6 +159,9 @@ func (v QueueSignatureValues) SignWithUserDelegation(userDelegationCredential *U
 	p.signedExpiry = *udk.SignedExpiry
 	p.signedService = *udk.SignedService
 	p.signedVersion = *udk.SignedVersion
+	if udk.SignedDelegatedUserTid != nil {
+		p.signedDelegatedUserTenantId = *udk.SignedDelegatedUserTid
+	}
 
 	return p, nil
 }

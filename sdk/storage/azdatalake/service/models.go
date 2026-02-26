@@ -4,14 +4,16 @@
 package service
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/filesystem"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"time"
+
+	blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
-import blobSAS "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 
 // CreateFileSystemOptions contains the optional parameters for the FileSystem Create method.
 type CreateFileSystemOptions = filesystem.CreateOptions
@@ -21,7 +23,8 @@ type DeleteFileSystemOptions = filesystem.DeleteOptions
 
 // GetUserDelegationCredentialOptions contains optional parameters for GetUserDelegationKey method.
 type GetUserDelegationCredentialOptions struct {
-	// placeholder for future options
+	// The delegated user tenant id in Azure AD
+	DelegatedUserTenantId *string
 }
 
 func (o *GetUserDelegationCredentialOptions) format() *generated_blob.ServiceClientGetUserDelegationKeyOptions {

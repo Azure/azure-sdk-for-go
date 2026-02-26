@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-02-25)
+## 1.0.0 (2026-02-26)
 ### Features Added
 
 - New enum type `AutoRenew` with values `AutoRenewDisabled`, `AutoRenewEnabled`

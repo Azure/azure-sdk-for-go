@@ -64,7 +64,7 @@ func ExampleImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json.json
+// Generated from example definition: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
 func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

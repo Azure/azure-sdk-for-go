@@ -28,7 +28,8 @@ func ExampleClient_BeginCreateOrUpdate() {
 			BillingModel:     to.Ptr(armdisconnectedoperations.BillingModelCapacity),
 			ConnectionIntent: to.Ptr(armdisconnectedoperations.ConnectionIntentDisconnected),
 			BillingConfiguration: &armdisconnectedoperations.BillingConfiguration{
-				AutoRenew: to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+				AutoRenew:     to.Ptr(armdisconnectedoperations.AutoRenewEnabled),
+				BillingStatus: to.Ptr(armdisconnectedoperations.BillingStatusEnabled),
 				Current: &armdisconnectedoperations.BillingPeriod{
 					Cores:        to.Ptr[int32](12),
 					PricingModel: to.Ptr(armdisconnectedoperations.PricingModelTrial),

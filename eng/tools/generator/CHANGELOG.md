@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.6 (2026-02-26)
+
+### Other Changes
+
+- Refined dependency upgrade logic to use `go get` instead of `go get -u` to prevent unintended upgrades of other dependencies.
+
 ## 0.4.5 (2026-02-02)
 
 ### Bugs Fixed

@@ -5,6 +5,10 @@ package service
 
 import (
 	"context"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -17,9 +21,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated_blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"net/http"
-	"strings"
-	"time"
 )
 
 // FOR SERVICE CLIENT WE STORE THE GENERATED BLOB LAYER IN ORDER TO USE FS LISTING AND THE TRANSFORMS IT HAS
@@ -177,6 +178,9 @@ func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, 
 	}
 
 	getUserDelegationKeyOptions := o.format()
+	if o != nil && o.DelegatedUserTenantId != nil {
+		info.DelegatedUserTid = o.DelegatedUserTenantId
+	}
 	udk, err := s.generatedServiceClientWithBlob().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
 	if err != nil {
 		return nil, exported.ConvertToDFSError(err)

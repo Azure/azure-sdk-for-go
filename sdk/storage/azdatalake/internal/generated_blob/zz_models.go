@@ -6,8 +6,9 @@
 package generated_blob
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessPolicy - An Access policy
@@ -314,6 +315,9 @@ type KeyInfo struct {
 
 	// REQUIRED; The date-time the key is active in ISO 8601 UTC time
 	Start *string `xml:"Start"`
+
+	// The delegated user tenant id in Azure AD
+	DelegatedUserTid *string `xml:"DelegatedUserTid"`
 }
 
 // ListBlobsFlatSegmentResponse - An enumeration of blobs

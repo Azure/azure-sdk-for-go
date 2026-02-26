@@ -1,5 +1,331 @@
 # Release History
 
+## 11.0.0 (2026-02-26)
+### Breaking Changes
+
+- Type of `JiraObjectDataset.TypeProperties` has been changed from `*GenericDatasetTypeProperties` to `*JiraTableDatasetTypeProperties`
+- Enum `BlobEventTypes` has been removed
+- Enum `CassandraSourceReadConsistencyLevels` has been removed
+- Enum `ExpressionV2Type` has been removed
+- Function `*AmazonMWSSource.GetCopySource` has been removed
+- Function `*AmazonMWSSource.GetTabularSource` has been removed
+- Function `*AmazonRdsForSQLServerSource.GetCopySource` has been removed
+- Function `*AmazonRdsForSQLServerSource.GetTabularSource` has been removed
+- Function `*AmazonRedshiftSource.GetCopySource` has been removed
+- Function `*AmazonRedshiftSource.GetTabularSource` has been removed
+- Function `*AppendVariableActivity.GetActivity` has been removed
+- Function `*AppendVariableActivity.GetControlActivity` has been removed
+- Function `*AzureMariaDBSource.GetCopySource` has been removed
+- Function `*AzureMariaDBSource.GetTabularSource` has been removed
+- Function `*AzureMySQLSource.GetCopySource` has been removed
+- Function `*AzureMySQLSource.GetTabularSource` has been removed
+- Function `*AzurePostgreSQLSource.GetCopySource` has been removed
+- Function `*AzurePostgreSQLSource.GetTabularSource` has been removed
+- Function `*AzureSQLSource.GetCopySource` has been removed
+- Function `*AzureSQLSource.GetTabularSource` has been removed
+- Function `*AzureTableSource.GetTabularSource` has been removed
+- Function `*BlobEventsTrigger.GetMultiplePipelineTrigger` has been removed
+- Function `*BlobEventsTrigger.GetTrigger` has been removed
+- Function `*BlobTrigger.GetMultiplePipelineTrigger` has been removed
+- Function `*BlobTrigger.GetTrigger` has been removed
+- Function `*CassandraSource.GetCopySource` has been removed
+- Function `*CassandraSource.GetTabularSource` has been removed
+- Function `*ConcurSource.GetCopySource` has been removed
+- Function `*ConcurSource.GetTabularSource` has been removed
+- Function `*ControlActivity.GetActivity` has been removed
+- Function `*ControlActivity.GetControlActivity` has been removed
+- Function `*CouchbaseSource.GetCopySource` has been removed
+- Function `*CouchbaseSource.GetTabularSource` has been removed
+- Function `*CustomEventsTrigger.GetMultiplePipelineTrigger` has been removed
+- Function `*CustomEventsTrigger.GetTrigger` has been removed
+- Function `*Db2Source.GetCopySource` has been removed
+- Function `*Db2Source.GetTabularSource` has been removed
+- Function `*DrillSource.GetCopySource` has been removed
+- Function `*DrillSource.GetTabularSource` has been removed
+- Function `*DynamicsAXSource.GetCopySource` has been removed
+- Function `*DynamicsAXSource.GetTabularSource` has been removed
+- Function `*EloquaSource.GetCopySource` has been removed
+- Function `*EloquaSource.GetTabularSource` has been removed
+- Function `*ExecutePipelineActivity.GetActivity` has been removed
+- Function `*ExecutePipelineActivity.GetControlActivity` has been removed
+- Function `*FailActivity.GetActivity` has been removed
+- Function `*FailActivity.GetControlActivity` has been removed
+- Function `*FilterActivity.GetActivity` has been removed
+- Function `*FilterActivity.GetControlActivity` has been removed
+- Function `*ForEachActivity.GetControlActivity` has been removed
+- Function `*GoogleAdWordsSource.GetCopySource` has been removed
+- Function `*GoogleAdWordsSource.GetTabularSource` has been removed
+- Function `*GoogleBigQuerySource.GetCopySource` has been removed
+- Function `*GoogleBigQuerySource.GetTabularSource` has been removed
+- Function `*GoogleBigQueryV2Source.GetCopySource` has been removed
+- Function `*GoogleBigQueryV2Source.GetTabularSource` has been removed
+- Function `*GreenplumSource.GetCopySource` has been removed
+- Function `*GreenplumSource.GetTabularSource` has been removed
+- Function `*HBaseSource.GetCopySource` has been removed
+- Function `*HBaseSource.GetTabularSource` has been removed
+- Function `*HiveSource.GetCopySource` has been removed
+- Function `*HiveSource.GetTabularSource` has been removed
+- Function `*HubspotSource.GetCopySource` has been removed
+- Function `*HubspotSource.GetTabularSource` has been removed
+- Function `*IfConditionActivity.GetActivity` has been removed
+- Function `*IfConditionActivity.GetControlActivity` has been removed
+- Function `*ImpalaSource.GetCopySource` has been removed
+- Function `*ImpalaSource.GetTabularSource` has been removed
+- Function `*InformixSource.GetCopySource` has been removed
+- Function `*InformixSource.GetTabularSource` has been removed
+- Function `*JiraSource.GetCopySource` has been removed
+- Function `*JiraSource.GetTabularSource` has been removed
+- Function `*MagentoSource.GetCopySource` has been removed
+- Function `*MagentoSource.GetTabularSource` has been removed
+- Function `*MariaDBSource.GetCopySource` has been removed
+- Function `*MariaDBSource.GetTabularSource` has been removed
+- Function `*MarketoSource.GetCopySource` has been removed
+- Function `*MarketoSource.GetTabularSource` has been removed
+- Function `*MultiplePipelineTrigger.GetMultiplePipelineTrigger` has been removed
+- Function `*MultiplePipelineTrigger.GetTrigger` has been removed
+- Function `*MySQLSource.GetCopySource` has been removed
+- Function `*MySQLSource.GetTabularSource` has been removed
+- Function `*OdbcSource.GetCopySource` has been removed
+- Function `*OdbcSource.GetTabularSource` has been removed
+- Function `*OracleServiceCloudSource.GetCopySource` has been removed
+- Function `*OracleServiceCloudSource.GetTabularSource` has been removed
+- Function `*PaypalSource.GetCopySource` has been removed
+- Function `*PaypalSource.GetTabularSource` has been removed
+- Function `*PhoenixSource.GetCopySource` has been removed
+- Function `*PhoenixSource.GetTabularSource` has been removed
+- Function `*PostgreSQLSource.GetCopySource` has been removed
+- Function `*PostgreSQLSource.GetTabularSource` has been removed
+- Function `*PostgreSQLV2Source.GetCopySource` has been removed
+- Function `*PostgreSQLV2Source.GetTabularSource` has been removed
+- Function `*PrestoSource.GetCopySource` has been removed
+- Function `*PrestoSource.GetTabularSource` has been removed
+- Function `*QuickBooksSource.GetCopySource` has been removed
+- Function `*QuickBooksSource.GetTabularSource` has been removed
+- Function `*ResponsysSource.GetCopySource` has been removed
+- Function `*ResponsysSource.GetTabularSource` has been removed
+- Function `*SQLDWSource.GetCopySource` has been removed
+- Function `*SQLDWSource.GetTabularSource` has been removed
+- Function `*SQLMISource.GetCopySource` has been removed
+- Function `*SQLMISource.GetTabularSource` has been removed
+- Function `*SQLServerSource.GetCopySource` has been removed
+- Function `*SQLServerSource.GetTabularSource` has been removed
+- Function `*SQLSource.GetCopySource` has been removed
+- Function `*SQLSource.GetTabularSource` has been removed
+- Function `*SalesforceMarketingCloudSource.GetCopySource` has been removed
+- Function `*SalesforceMarketingCloudSource.GetTabularSource` has been removed
+- Function `*SalesforceSource.GetCopySource` has been removed
+- Function `*SalesforceSource.GetTabularSource` has been removed
+- Function `*SalesforceV2Source.GetCopySource` has been removed
+- Function `*SalesforceV2Source.GetTabularSource` has been removed
+- Function `*SapBwSource.GetCopySource` has been removed
+- Function `*SapBwSource.GetTabularSource` has been removed
+- Function `*SapCloudForCustomerSource.GetCopySource` has been removed
+- Function `*SapCloudForCustomerSource.GetTabularSource` has been removed
+- Function `*SapEccSource.GetCopySource` has been removed
+- Function `*SapEccSource.GetTabularSource` has been removed
+- Function `*SapHanaSource.GetCopySource` has been removed
+- Function `*SapHanaSource.GetTabularSource` has been removed
+- Function `*SapOdpSource.GetCopySource` has been removed
+- Function `*SapOdpSource.GetTabularSource` has been removed
+- Function `*SapOpenHubSource.GetCopySource` has been removed
+- Function `*SapOpenHubSource.GetTabularSource` has been removed
+- Function `*SapTableSource.GetCopySource` has been removed
+- Function `*SapTableSource.GetTabularSource` has been removed
+- Function `*ScheduleTrigger.GetMultiplePipelineTrigger` has been removed
+- Function `*ServiceNowSource.GetCopySource` has been removed
+- Function `*ServiceNowSource.GetTabularSource` has been removed
+- Function `*ServiceNowV2Source.GetCopySource` has been removed
+- Function `*ServiceNowV2Source.GetTabularSource` has been removed
+- Function `*SetVariableActivity.GetActivity` has been removed
+- Function `*SetVariableActivity.GetControlActivity` has been removed
+- Function `*ShopifySource.GetCopySource` has been removed
+- Function `*ShopifySource.GetTabularSource` has been removed
+- Function `*SparkSource.GetCopySource` has been removed
+- Function `*SparkSource.GetTabularSource` has been removed
+- Function `*SquareSource.GetCopySource` has been removed
+- Function `*SquareSource.GetTabularSource` has been removed
+- Function `*SwitchActivity.GetActivity` has been removed
+- Function `*SwitchActivity.GetControlActivity` has been removed
+- Function `*SybaseSource.GetCopySource` has been removed
+- Function `*SybaseSource.GetTabularSource` has been removed
+- Function `*TabularSource.GetCopySource` has been removed
+- Function `*TabularSource.GetTabularSource` has been removed
+- Function `*TeradataSource.GetCopySource` has been removed
+- Function `*TeradataSource.GetTabularSource` has been removed
+- Function `*TriggerDependencyReference.GetDependencyReference` has been removed
+- Function `*TriggerDependencyReference.GetTriggerDependencyReference` has been removed
+- Function `*TumblingWindowTriggerDependencyReference.GetTriggerDependencyReference` has been removed
+- Function `*UntilActivity.GetActivity` has been removed
+- Function `*UntilActivity.GetControlActivity` has been removed
+- Function `*ValidationActivity.GetActivity` has been removed
+- Function `*ValidationActivity.GetControlActivity` has been removed
+- Function `*VerticaSource.GetCopySource` has been removed
+- Function `*VerticaSource.GetTabularSource` has been removed
+- Function `*WaitActivity.GetActivity` has been removed
+- Function `*WaitActivity.GetControlActivity` has been removed
+- Function `*WarehouseSource.GetCopySource` has been removed
+- Function `*WarehouseSource.GetTabularSource` has been removed
+- Function `*WebHookActivity.GetControlActivity` has been removed
+- Function `*XeroSource.GetCopySource` has been removed
+- Function `*XeroSource.GetTabularSource` has been removed
+- Function `*ZohoSource.GetCopySource` has been removed
+- Function `*ZohoSource.GetTabularSource` has been removed
+- Function `*NetezzaSource.GetCopySource` has been removed
+- Function `*NetezzaSource.GetTabularSource` has been removed
+- Struct `AmazonMWSSource` has been removed
+- Struct `AmazonRdsForSQLServerSource` has been removed
+- Struct `AmazonRedshiftSource` has been removed
+- Struct `AppendVariableActivity` has been removed
+- Struct `AppendVariableActivityTypeProperties` has been removed
+- Struct `AzureMariaDBSource` has been removed
+- Struct `AzureMySQLSource` has been removed
+- Struct `AzurePostgreSQLSource` has been removed
+- Struct `AzureSQLSource` has been removed
+- Struct `BlobEventsTrigger` has been removed
+- Struct `BlobEventsTriggerTypeProperties` has been removed
+- Struct `BlobTrigger` has been removed
+- Struct `BlobTriggerTypeProperties` has been removed
+- Struct `CassandraSource` has been removed
+- Struct `ConcurSource` has been removed
+- Struct `CouchbaseSource` has been removed
+- Struct `CustomEventsTrigger` has been removed
+- Struct `CustomEventsTriggerTypeProperties` has been removed
+- Struct `Db2Source` has been removed
+- Struct `DrillSource` has been removed
+- Struct `DynamicsAXSource` has been removed
+- Struct `EloquaSource` has been removed
+- Struct `ExecutePipelineActivity` has been removed
+- Struct `ExecutePipelineActivityPolicy` has been removed
+- Struct `ExecutePipelineActivityTypeProperties` has been removed
+- Struct `ExpressionV2` has been removed
+- Struct `FailActivity` has been removed
+- Struct `FailActivityTypeProperties` has been removed
+- Struct `FilterActivity` has been removed
+- Struct `FilterActivityTypeProperties` has been removed
+- Struct `GoogleAdWordsSource` has been removed
+- Struct `GoogleBigQuerySource` has been removed
+- Struct `GoogleBigQueryV2Source` has been removed
+- Struct `GreenplumSource` has been removed
+- Struct `HBaseSource` has been removed
+- Struct `HiveSource` has been removed
+- Struct `HubspotSource` has been removed
+- Struct `IfConditionActivity` has been removed
+- Struct `IfConditionActivityTypeProperties` has been removed
+- Struct `ImpalaSource` has been removed
+- Struct `InformixSource` has been removed
+- Struct `JiraSource` has been removed
+- Struct `MagentoSource` has been removed
+- Struct `MariaDBSource` has been removed
+- Struct `MarketoSource` has been removed
+- Struct `MySQLSource` has been removed
+- Struct `NetezzaPartitionSettings` has been removed
+- Struct `NetezzaSource` has been removed
+- Struct `OdbcSource` has been removed
+- Struct `OracleServiceCloudSource` has been removed
+- Struct `PaypalSource` has been removed
+- Struct `PhoenixSource` has been removed
+- Struct `PostgreSQLSource` has been removed
+- Struct `PostgreSQLV2Source` has been removed
+- Struct `PrestoSource` has been removed
+- Struct `QuickBooksSource` has been removed
+- Struct `RedshiftUnloadSettings` has been removed
+- Struct `ResponsysSource` has been removed
+- Struct `SQLDWSource` has been removed
+- Struct `SQLMISource` has been removed
+- Struct `SQLPartitionSettings` has been removed
+- Struct `SQLServerSource` has been removed
+- Struct `SQLSource` has been removed
+- Struct `SalesforceMarketingCloudSource` has been removed
+- Struct `SalesforceSource` has been removed
+- Struct `SalesforceV2Source` has been removed
+- Struct `SapBwSource` has been removed
+- Struct `SapCloudForCustomerSource` has been removed
+- Struct `SapEccSource` has been removed
+- Struct `SapHanaPartitionSettings` has been removed
+- Struct `SapHanaSource` has been removed
+- Struct `SapOdpSource` has been removed
+- Struct `SapOpenHubSource` has been removed
+- Struct `SapTablePartitionSettings` has been removed
+- Struct `SapTableSource` has been removed
+- Struct `ServiceNowSource` has been removed
+- Struct `ServiceNowV2Source` has been removed
+- Struct `SetVariableActivity` has been removed
+- Struct `SetVariableActivityTypeProperties` has been removed
+- Struct `ShopifySource` has been removed
+- Struct `SparkSource` has been removed
+- Struct `SquareSource` has been removed
+- Struct `SwitchActivity` has been removed
+- Struct `SwitchActivityTypeProperties` has been removed
+- Struct `SwitchCase` has been removed
+- Struct `SybaseSource` has been removed
+- Struct `TeradataPartitionSettings` has been removed
+- Struct `TeradataSource` has been removed
+- Struct `UntilActivity` has been removed
+- Struct `UntilActivityTypeProperties` has been removed
+- Struct `ValidationActivity` has been removed
+- Struct `ValidationActivityTypeProperties` has been removed
+- Struct `VerticaSource` has been removed
+- Struct `WaitActivity` has been removed
+- Struct `WaitActivityTypeProperties` has been removed
+- Struct `WarehouseSource` has been removed
+- Struct `XeroSource` has been removed
+- Struct `ZohoSource` has been removed
+
+### Features Added
+
+- New enum type `AmazonRdsForOracleAuthenticationType` with values `AmazonRdsForOracleAuthenticationTypeBasic`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `HDInsightClusterAuthenticationType` with values `HDInsightClusterAuthenticationTypeBasicAuth`, `HDInsightClusterAuthenticationTypeSystemAssignedManagedIdentity`, `HDInsightClusterAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `HDInsightOndemandClusterResourceGroupAuthenticationType` with values `HDInsightOndemandClusterResourceGroupAuthenticationTypeServicePrincipalKey`, `HDInsightOndemandClusterResourceGroupAuthenticationTypeSystemAssignedManagedIdentity`, `HDInsightOndemandClusterResourceGroupAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `ImpalaThriftTransportProtocol` with values `ImpalaThriftTransportProtocolBinary`, `ImpalaThriftTransportProtocolHTTP`
+- New enum type `InteractiveCapabilityStatus` with values `InteractiveCapabilityStatusDisabled`, `InteractiveCapabilityStatusDisabling`, `InteractiveCapabilityStatusEnabled`, `InteractiveCapabilityStatusEnabling`
+- New enum type `LakehouseAuthenticationType` with values `LakehouseAuthenticationTypeServicePrincipal`, `LakehouseAuthenticationTypeSystemAssignedManagedIdentity`, `LakehouseAuthenticationTypeUserAssignedManagedIdentity`
+- New enum type `NetezzaSecurityLevelType` with values `NetezzaSecurityLevelTypeOnlyUnSecured`, `NetezzaSecurityLevelTypePreferredUnSecured`
+- New enum type `WarehouseAuthenticationType` with values `WarehouseAuthenticationTypeServicePrincipal`, `WarehouseAuthenticationTypeSystemAssignedManagedIdentity`, `WarehouseAuthenticationTypeUserAssignedManagedIdentity`
+- New function `*ClientFactory.NewIntegrationRuntimeClient() *IntegrationRuntimeClient`
+- New function `*DatabricksJobActivity.GetActivity() *Activity`
+- New function `*DatabricksJobActivity.GetExecutionActivity() *ExecutionActivity`
+- New function `NewIntegrationRuntimeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeClient, error)`
+- New function `*IntegrationRuntimeClient.BeginDisableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeClientBeginDisableInteractiveQueryOptions) (*runtime.Poller[IntegrationRuntimeClientDisableInteractiveQueryResponse], error)`
+- New function `*IntegrationRuntimeClient.BeginEnableInteractiveQuery(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, enableInteractiveQueryRequest EnableInteractiveQueryRequest, options *IntegrationRuntimeClientBeginEnableInteractiveQueryOptions) (*runtime.Poller[IntegrationRuntimeClientEnableInteractiveQueryResponse], error)`
+- New struct `DatabricksJobActivity`
+- New struct `DatabricksJobActivityTypeProperties`
+- New struct `EnableInteractiveQueryRequest`
+- New struct `InteractiveQueryProperties`
+- New struct `JiraTableDatasetTypeProperties`
+- New struct `SystemData`
+- New field `AuthenticationType`, `CryptoChecksumClient`, `CryptoChecksumTypesClient`, `EnableBulkLoad`, `EncryptionClient`, `EncryptionTypesClient`, `FetchSize`, `FetchTswtzAsTimestamp`, `InitialLobFetchSize`, `InitializationString`, `Server`, `StatementCacheSize`, `SupportV1DataTypes`, `Username` in struct `AmazonRdsForLinkedServiceTypeProperties`
+- New field `NumberPrecision`, `NumberScale` in struct `AmazonRdsForOracleSource`
+- New field `DataSecurityMode` in struct `AzureDatabricksLinkedServiceTypeProperties`
+- New field `SystemData` in struct `ChangeDataCaptureResource`
+- New field `SystemData` in struct `CredentialResource`
+- New field `SystemData` in struct `DataFlowResource`
+- New field `SystemData` in struct `DatasetResource`
+- New field `SystemData` in struct `Factory`
+- New field `SystemData` in struct `GlobalParameterResource`
+- New field `ClusterAuthType`, `Credential` in struct `HDInsightLinkedServiceTypeProperties`
+- New field `ClusterResourceGroupAuthType` in struct `HDInsightOnDemandLinkedServiceTypeProperties`
+- New field `EnableServerCertificateValidation` in struct `HiveLinkedServiceTypeProperties`
+- New field `EnableServerCertificateValidation`, `ThriftTransportProtocol` in struct `ImpalaLinkedServiceTypeProperties`
+- New field `SystemData` in struct `IntegrationRuntimeResource`
+- New field `AuthenticationType`, `Credential` in struct `LakeHouseLinkedServiceTypeProperties`
+- New field `SystemData` in struct `LinkedServiceResource`
+- New field `TreatDecimalAsString` in struct `LookupActivityTypeProperties`
+- New field `InteractiveQuery` in struct `ManagedIntegrationRuntimeTypeProperties`
+- New field `SystemData` in struct `ManagedPrivateEndpointResource`
+- New field `SystemData` in struct `ManagedVirtualNetworkResource`
+- New field `Database`, `Port`, `SecurityLevel`, `Server`, `UID` in struct `NetezzaLinkedServiceTypeProperties`
+- New field `NumberPrecision`, `NumberScale` in struct `OracleSource`
+- New field `SystemData` in struct `PipelineResource`
+- New field `SystemData` in struct `PrivateEndpointConnectionResource`
+- New field `RefreshToken` in struct `QuickBooksLinkedServiceTypeProperties`
+- New field `TreatDecimalAsString` in struct `ScriptActivityTypeProperties`
+- New field `UseUTCTimestamps` in struct `SnowflakeLinkedV2ServiceTypeProperties`
+- New field `EnableServerCertificateValidation` in struct `SparkLinkedServiceTypeProperties`
+- New field `SystemData` in struct `TriggerResource`
+- New field `AuthenticationType`, `Credential` in struct `WarehouseLinkedServiceTypeProperties`
+
+
 ## 10.0.0 (2025-04-24)
 ### Breaking Changes
 

@@ -1882,7 +1882,7 @@ func (l *LdapSearchScopeOpt) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ListQuotaReportResponse.
 func (l ListQuotaReportResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "value", l.Value)
+	populate(objectMap, "quotaReportRecords", l.QuotaReportRecords)
 	return json.Marshal(objectMap)
 }
 
@@ -1895,8 +1895,35 @@ func (l *ListQuotaReportResponse) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "value":
-			err = unpopulate(val, "Value", &l.Value)
+		case "quotaReportRecords":
+			err = unpopulate(val, "QuotaReportRecords", &l.QuotaReportRecords)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", l, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListQuotaReportResult.
+func (l ListQuotaReportResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", l.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ListQuotaReportResult.
+func (l *ListQuotaReportResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", l, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &l.Properties)
 			delete(rawMsg, key)
 		}
 		if err != nil {

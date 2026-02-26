@@ -418,23 +418,25 @@ func ExampleVolumesClient_BeginListQuotaReport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientListQuotaReportResponse{
-	// 	ListQuotaReportResponse: &armnetapp.ListQuotaReportResponse{
-	// 		Value: []*armnetapp.QuotaReport{
-	// 			{
-	// 				IsDerivedQuota: to.Ptr(false),
-	// 				PercentageUsed: to.Ptr[float32](5),
-	// 				QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
-	// 				QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
-	// 				QuotaTarget: to.Ptr("1013"),
-	// 				QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
-	// 			},
-	// 			{
-	// 				IsDerivedQuota: to.Ptr(false),
-	// 				PercentageUsed: to.Ptr[float32](5),
-	// 				QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
-	// 				QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
-	// 				QuotaTarget: to.Ptr("1012"),
-	// 				QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualGroupQuota),
+	// 	ListQuotaReportResult: &armnetapp.ListQuotaReportResult{
+	// 		Properties: &armnetapp.ListQuotaReportResponse{
+	// 			QuotaReportRecords: []*armnetapp.QuotaReport{
+	// 				{
+	// 					IsDerivedQuota: to.Ptr(false),
+	// 					PercentageUsed: to.Ptr[float32](5),
+	// 					QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
+	// 					QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
+	// 					QuotaTarget: to.Ptr("1013"),
+	// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualUserQuota),
+	// 				},
+	// 				{
+	// 					IsDerivedQuota: to.Ptr(false),
+	// 					PercentageUsed: to.Ptr[float32](5),
+	// 					QuotaLimitTotalInKiBs: to.Ptr[int64](204914688),
+	// 					QuotaLimitUsedInKiBs: to.Ptr[int64](8192),
+	// 					QuotaTarget: to.Ptr("1012"),
+	// 					QuotaType: to.Ptr(armnetapp.QuotaTypeIndividualGroupQuota),
+	// 				},
 	// 			},
 	// 		},
 	// 	},

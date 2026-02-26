@@ -1,6 +1,6 @@
 # Release History
 
-## 9.0.0 (2026-02-12)
+## 9.0.0 (2026-02-26)
 ### Breaking Changes
 
 - Type of `VolumeQuotaRulesProperties.QuotaType` has been changed from `*Type` to `*QuotaType`
@@ -21,6 +21,7 @@
 - New function `*RansomwareReportsClient.NewListPager(resourceGroupName string, accountName string, poolName string, volumeName string, options *RansomwareReportsClientListOptions) *runtime.Pager[RansomwareReportsClientListResponse]`
 - New function `*VolumesClient.BeginListQuotaReport(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, options *VolumesClientBeginListQuotaReportOptions) (*runtime.Poller[VolumesClientListQuotaReportResponse], error)`
 - New struct `ListQuotaReportResponse`
+- New struct `ListQuotaReportResult`
 - New struct `QuotaReport`
 - New struct `QuotaReportFilterRequest`
 - New struct `RansomwareProtectionPatchSettings`

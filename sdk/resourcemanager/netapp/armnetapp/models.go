@@ -779,7 +779,13 @@ type LdapSearchScopeOpt struct {
 // ListQuotaReportResponse - Quota Report for volume
 type ListQuotaReportResponse struct {
 	// List of quota reports
-	Value []*QuotaReport
+	QuotaReportRecords []*QuotaReport
+}
+
+// ListQuotaReportResult - * Result of ListQuotaReportResponse
+type ListQuotaReportResult struct {
+	// Represents the properties of the ListQuotaReport.
+	Properties *ListQuotaReportResponse
 }
 
 // ListReplications - List Replications

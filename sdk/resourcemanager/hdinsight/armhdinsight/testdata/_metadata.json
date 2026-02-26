@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.HDInsight": "2025-01-15-preview"
+  },
+  "emitterVersion": "0.10.0"
+}

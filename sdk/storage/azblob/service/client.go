@@ -109,6 +109,9 @@ func (s *Client) GetUserDelegationCredential(ctx context.Context, info KeyInfo, 
 	}
 
 	getUserDelegationKeyOptions := o.format()
+	if o != nil && o.DelegatedUserTenantId != nil {
+		info.DelegatedUserTid = o.DelegatedUserTenantId
+	}
 	udk, err := s.generated().GetUserDelegationKey(ctx, info, getUserDelegationKeyOptions)
 	if err != nil {
 		return nil, err

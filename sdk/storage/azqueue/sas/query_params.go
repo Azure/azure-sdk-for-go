@@ -135,6 +135,7 @@ type QueryParameters struct {
 	unauthorizedObjectID        string    `param:"suoid"`
 	correlationID               string    `param:"scid"`
 	signedDelegatedUserObjectID string    `param:"sduoid"`
+	signedDelegatedUserTenantId string    `param:"skdutid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string

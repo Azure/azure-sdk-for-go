@@ -23,7 +23,10 @@ type UserDelegationCredential = exported.UserDelegationCredential
 type KeyInfo = generated.KeyInfo
 
 // GetUserDelegationCredentialOptions contains optional parameters for GetUserDelegationKey method.
-type GetUserDelegationCredentialOptions struct{}
+type GetUserDelegationCredentialOptions struct {
+	// The delegated user tenant id in Azure AD
+	DelegatedUserTenantId *string
+}
 
 func (o *GetUserDelegationCredentialOptions) format() *generated.ServiceClientGetUserDelegationKeyOptions {
 	return nil

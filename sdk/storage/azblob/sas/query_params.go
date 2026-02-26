@@ -5,11 +5,12 @@ package sas
 
 import (
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"net"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 )
@@ -143,6 +144,7 @@ type QueryParameters struct {
 	correlationID               string    `param:"scid"`
 	encryptionScope             string    `param:"ses"`
 	signedDelegatedUserObjectID string    `param:"sduoid"`
+	signedDelegatedUserTenantId string    `param:"skdutid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
@@ -291,6 +293,11 @@ func (p *QueryParameters) SignedDirectoryDepth() string {
 // SignedDelegatedUserObjectID returns SignedDelegatedUserObjectID
 func (p *QueryParameters) SignedDelegatedUserObjectID() string {
 	return p.signedDelegatedUserObjectID
+}
+
+// SignedDelegatedUserTenantId returns SignedDelegatedUserTenantId
+func (p *QueryParameters) SignedDelegatedUserTenantId() string {
+	return p.signedDelegatedUserTenantId
 }
 
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.

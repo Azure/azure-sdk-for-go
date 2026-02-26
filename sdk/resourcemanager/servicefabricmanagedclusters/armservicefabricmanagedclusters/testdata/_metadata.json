@@ -1,4 +1,6 @@
 {
-  "apiVersion": "2025-10-01-preview",
-  "emitterVersion": "0.9.1"
+  "apiVersions": {
+    "Microsoft.ServiceFabric": "2026-02-01"
+  },
+  "emitterVersion": "0.10.0"
 }

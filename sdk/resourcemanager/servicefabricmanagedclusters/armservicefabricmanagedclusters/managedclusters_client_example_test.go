@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01-preview/ManagedClusterPutOperation_example_max.json
+// Generated from example definition: 2026-02-01/ManagedClusterPutOperation_example_max.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,6 +167,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 			ZonalResiliency:             to.Ptr(true),
 			ZonalUpdateMode:             to.Ptr(armservicefabricmanagedclusters.ZonalUpdateModeFast),
 			EnableOutboundOnlyNodeTypes: to.Ptr(true),
+			SkipManagedNsgAssignment:    to.Ptr(true),
 		},
 		SKU: &armservicefabricmanagedclusters.SKU{
 			Name: to.Ptr(armservicefabricmanagedclusters.SKUNameBasic),
@@ -341,6 +342,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// 			ZonalResiliency: to.Ptr(true),
 	// 			ZonalUpdateMode: to.Ptr(armservicefabricmanagedclusters.ZonalUpdateModeFast),
 	// 			EnableOutboundOnlyNodeTypes: to.Ptr(true),
+	// 			SkipManagedNsgAssignment: to.Ptr(true),
 	// 		},
 	// 		SKU: &armservicefabricmanagedclusters.SKU{
 	// 			Name: to.Ptr(armservicefabricmanagedclusters.SKUNameBasic),
@@ -351,7 +353,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumPara
 	// }
 }
 
-// Generated from example definition: 2025-10-01-preview/ManagedClusterPutOperation_example_min.json
+// Generated from example definition: 2026-02-01/ManagedClusterPutOperation_example_min.json
 func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,7 +442,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumPara
 	// }
 }
 
-// Generated from example definition: 2025-10-01-preview/ManagedClusterDeleteOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterDeleteOperation_example.json
 func ExampleManagedClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,7 +463,7 @@ func ExampleManagedClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01-preview/ManagedClusterGetOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterGetOperation_example.json
 func ExampleManagedClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -545,59 +547,7 @@ func ExampleManagedClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01-preview/faultSimulation/ManagedClusterGetFaultSimulation_example.json
-func ExampleManagedClustersClient_GetFaultSimulation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewManagedClustersClient().GetFaultSimulation(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.FaultSimulationIDContent{
-		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armservicefabricmanagedclusters.ManagedClustersClientGetFaultSimulationResponse{
-	// 	FaultSimulation: &armservicefabricmanagedclusters.FaultSimulation{
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
-	// 		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T18:11:11.3471742Z"); return t}()),
-	// 		Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-	// 		Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
-	// 			OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
-	// 			NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
-	// 				{
-	// 					OperationID: to.Ptr("714f0003-80d8-464a-a019-69e6bf89ed4c"),
-	// 					NodeTypeName: to.Ptr("BE"),
-	// 					OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-	// 					Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-	// 				},
-	// 			},
-	// 			Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-	// 				Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-	// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
-	// 				},
-	// 				FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-	// 				Force: to.Ptr(false),
-	// 				Zones: []*string{
-	// 					to.Ptr("2"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-01-preview/ManagedClusterListByResourceGroupOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterListByResourceGroupOperation_example.json
 func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +661,7 @@ func ExampleManagedClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01-preview/ManagedClusterListBySubscriptionOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterListBySubscriptionOperation_example.json
 func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -825,157 +775,7 @@ func ExampleManagedClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01-preview/faultSimulation/ManagedClusterListFaultSimulation_example.json
-func ExampleManagedClustersClient_NewListFaultSimulationPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewManagedClustersClient().NewListFaultSimulationPager("resRg", "myCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armservicefabricmanagedclusters.ManagedClustersClientListFaultSimulationResponse{
-		// 	FaultSimulationListResult: armservicefabricmanagedclusters.FaultSimulationListResult{
-		// 		Value: []*armservicefabricmanagedclusters.FaultSimulation{
-		// 			{
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
-		// 				SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T21:27:55.4452675Z"); return t}()),
-		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
-		// 					OperationID: to.Ptr("b7997d2f-1f07-4245-b197-137b196ecaf3"),
-		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
-		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
-		// 						{
-		// 							OperationID: to.Ptr("bff10003-af96-465c-b849-99c18e1f4af6"),
-		// 							NodeTypeName: to.Ptr("BE"),
-		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-		// 						},
-		// 						{
-		// 							OperationID: to.Ptr("6021d3c9-6def-4e9e-b133-d58ac1c3a4cc"),
-		// 							NodeTypeName: to.Ptr("FE"),
-		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
-		// 						},
-		// 					},
-		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-		// 							ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
-		// 						},
-		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-		// 						Force: to.Ptr(false),
-		// 						Zones: []*string{
-		// 							to.Ptr("3"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T21:24:13.082339Z"); return t}()),
-		// 				SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T18:11:11.3471742Z"); return t}()),
-		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
-		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
-		// 					OperationID: to.Ptr("3e22a9a7-13c1-450b-af5e-2c739b963bdf"),
-		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
-		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
-		// 						{
-		// 							OperationID: to.Ptr("391d0003-0d46-474c-9839-cbc345938704"),
-		// 							NodeTypeName: to.Ptr("BE"),
-		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
-		// 						},
-		// 						{
-		// 							OperationID: to.Ptr("cf4ac1d7-e588-491e-9e6f-ce15a17bf389"),
-		// 							NodeTypeName: to.Ptr("FE"),
-		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
-		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
-		// 						},
-		// 					},
-		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
-		// 							ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
-		// 						},
-		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-		// 						Force: to.Ptr(false),
-		// 						Zones: []*string{
-		// 							to.Ptr("2"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-10-01-preview/faultSimulation/ManagedClusterStartFaultSimulation_example.json
-func ExampleManagedClustersClient_BeginStartFaultSimulation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginStartFaultSimulation(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.FaultSimulationContentWrapper{
-		Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
-			FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
-			Zones: []*string{
-				to.Ptr("2"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-10-01-preview/faultSimulation/ManagedClusterStopFaultSimulation_example.json
-func ExampleManagedClustersClient_BeginStopFaultSimulation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedClustersClient().BeginStopFaultSimulation(ctx, "resRg", "myCluster", armservicefabricmanagedclusters.FaultSimulationIDContent{
-		SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-10-01-preview/ManagedClusterPatchOperation_example.json
+// Generated from example definition: 2026-02-01/ManagedClusterPatchOperation_example.json
 func ExampleManagedClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

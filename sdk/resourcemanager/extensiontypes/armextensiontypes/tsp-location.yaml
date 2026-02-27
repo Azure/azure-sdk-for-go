@@ -1,0 +1,4 @@
+directory: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/extensionTypes
+commit: 63f7b002bb032b239b9a9943e764f8eb0260a8e4
+repo: i-specs
+additionalDirectories: 

@@ -1,5 +1,62 @@
 # Release History
 
+## 2.4.0-beta.2 (2026-02-04)
+### Breaking Changes
+
+- `TLSVersionOne0`, `TLSVersionOne1`, `TLSVersionOne2` from enum `TLSVersion` has been removed
+- Operation `*DomainEventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*DomainEventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Operation `*DomainTopicEventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*DomainTopicEventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Operation `*EventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*EventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Operation `*PartnerTopicEventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*PartnerTopicEventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Operation `*SystemTopicEventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*SystemTopicEventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Operation `*TopicEventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*TopicEventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Operation `*NamespaceTopicEventSubscriptionsClient.GetDeliveryAttributes` has supported pagination, use `*NamespaceTopicEventSubscriptionsClient.NewGetDeliveryAttributesPager` instead.
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+- Field `EventSubscription` of struct `DomainEventSubscriptionsClientUpdateResponse` has been removed
+- Field `EventSubscription` of struct `DomainTopicEventSubscriptionsClientUpdateResponse` has been removed
+- Field `DomainTopic` of struct `DomainTopicsClientCreateOrUpdateResponse` has been removed
+- Field `Domain` of struct `DomainsClientCreateOrUpdateResponse` has been removed
+- Field `Domain` of struct `DomainsClientUpdateResponse` has been removed
+- Field `EventSubscription` of struct `EventSubscriptionsClientCreateOrUpdateResponse` has been removed
+- Field `PartnerNamespace` of struct `PartnerNamespacesClientCreateOrUpdateResponse` has been removed
+- Field `PartnerNamespace` of struct `PartnerNamespacesClientUpdateResponse` has been removed
+- Field `PartnerRegistration` of struct `PartnerRegistrationsClientCreateOrUpdateResponse` has been removed
+- Field `PartnerRegistration` of struct `PartnerRegistrationsClientUpdateResponse` has been removed
+- Field `EventSubscription` of struct `PartnerTopicEventSubscriptionsClientUpdateResponse` has been removed
+- Field `EventSubscription` of struct `SystemTopicEventSubscriptionsClientCreateOrUpdateResponse` has been removed
+- Field `EventSubscription` of struct `SystemTopicEventSubscriptionsClientUpdateResponse` has been removed
+- Field `SystemTopic` of struct `SystemTopicsClientUpdateResponse` has been removed
+- Field `EventSubscription` of struct `TopicEventSubscriptionsClientUpdateResponse` has been removed
+- Field `Topic` of struct `TopicsClientCreateOrUpdateResponse` has been removed
+- Field `Topic` of struct `TopicsClientUpdateResponse` has been removed
+
+### Features Added
+
+- New value `TLSVersion10`, `TLSVersion11`, `TLSVersion12` added to enum type `TLSVersion`
+- New enum type `ConfidentialComputeMode` with values `ConfidentialComputeModeDisabled`, `ConfidentialComputeModeEnabled`
+- New enum type `KeyEncryptionIdentityType` with values `KeyEncryptionIdentityTypeSystemAssigned`, `KeyEncryptionIdentityTypeUserAssigned`
+- New enum type `KeyEncryptionKeyStatus` with values `KeyEncryptionKeyStatusActive`, `KeyEncryptionKeyStatusRevoked`
+- New struct `ConfidentialCompute`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `KeyEncryption`
+- New struct `KeyEncryptionKeyIdentity`
+- New struct `PlatformCapabilities`
+- New field `NextLink` in struct `EventTypesListResult`
+- New field `SystemData` in struct `NetworkSecurityPerimeterConfiguration`
+- New field `NextLink` in struct `OperationsListResult`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `Encryption`, `PlatformCapabilities` in struct `SystemTopicProperties`
+- New field `Encryption`, `PlatformCapabilities` in struct `TopicProperties`
+- New field `SystemData` in struct `TopicTypeInfo`
+- New field `NextLink` in struct `TopicTypesListResult`
+
+
 ## 2.4.0-beta.1 (2025-07-24)
 ### Features Added
 

@@ -10,10 +10,10 @@ package armdatafactory
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *Activity, *AppendVariableActivity, *AzureDataExplorerCommandActivity, *AzureFunctionActivity, *AzureMLBatchExecutionActivity,
 // - *AzureMLExecutePipelineActivity, *AzureMLUpdateResourceActivity, *ControlActivity, *CopyActivity, *CustomActivity, *DataLakeAnalyticsUSQLActivity,
-// - *DatabricksNotebookActivity, *DatabricksSparkJarActivity, *DatabricksSparkPythonActivity, *DeleteActivity, *ExecuteDataFlowActivity,
-// - *ExecutePipelineActivity, *ExecuteSSISPackageActivity, *ExecuteWranglingDataflowActivity, *ExecutionActivity, *FailActivity,
-// - *FilterActivity, *ForEachActivity, *GetMetadataActivity, *HDInsightHiveActivity, *HDInsightMapReduceActivity, *HDInsightPigActivity,
-// - *HDInsightSparkActivity, *HDInsightStreamingActivity, *IfConditionActivity, *LookupActivity, *SQLServerStoredProcedureActivity,
+// - *DatabricksJobActivity, *DatabricksNotebookActivity, *DatabricksSparkJarActivity, *DatabricksSparkPythonActivity, *DeleteActivity,
+// - *ExecuteDataFlowActivity, *ExecutePipelineActivity, *ExecuteSSISPackageActivity, *ExecuteWranglingDataflowActivity, *ExecutionActivity,
+// - *FailActivity, *FilterActivity, *ForEachActivity, *GetMetadataActivity, *HDInsightHiveActivity, *HDInsightMapReduceActivity,
+// - *HDInsightPigActivity, *HDInsightSparkActivity, *HDInsightStreamingActivity, *IfConditionActivity, *LookupActivity, *SQLServerStoredProcedureActivity,
 // - *ScriptActivity, *SetVariableActivity, *SwitchActivity, *SynapseNotebookActivity, *SynapseSparkJobDefinitionActivity,
 // - *UntilActivity, *ValidationActivity, *WaitActivity, *WebActivity, *WebHookActivity
 type ActivityClassification interface {
@@ -169,11 +169,11 @@ type DependencyReferenceClassification interface {
 // Call the interface's GetExecutionActivity() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
 // - *AzureDataExplorerCommandActivity, *AzureFunctionActivity, *AzureMLBatchExecutionActivity, *AzureMLExecutePipelineActivity,
-// - *AzureMLUpdateResourceActivity, *CopyActivity, *CustomActivity, *DataLakeAnalyticsUSQLActivity, *DatabricksNotebookActivity,
-// - *DatabricksSparkJarActivity, *DatabricksSparkPythonActivity, *DeleteActivity, *ExecuteDataFlowActivity, *ExecuteSSISPackageActivity,
-// - *ExecutionActivity, *GetMetadataActivity, *HDInsightHiveActivity, *HDInsightMapReduceActivity, *HDInsightPigActivity,
-// - *HDInsightSparkActivity, *HDInsightStreamingActivity, *LookupActivity, *SQLServerStoredProcedureActivity, *ScriptActivity,
-// - *SynapseNotebookActivity, *SynapseSparkJobDefinitionActivity, *WebActivity
+// - *AzureMLUpdateResourceActivity, *CopyActivity, *CustomActivity, *DataLakeAnalyticsUSQLActivity, *DatabricksJobActivity,
+// - *DatabricksNotebookActivity, *DatabricksSparkJarActivity, *DatabricksSparkPythonActivity, *DeleteActivity, *ExecuteDataFlowActivity,
+// - *ExecuteSSISPackageActivity, *ExecutionActivity, *GetMetadataActivity, *HDInsightHiveActivity, *HDInsightMapReduceActivity,
+// - *HDInsightPigActivity, *HDInsightSparkActivity, *HDInsightStreamingActivity, *LookupActivity, *SQLServerStoredProcedureActivity,
+// - *ScriptActivity, *SynapseNotebookActivity, *SynapseSparkJobDefinitionActivity, *WebActivity
 type ExecutionActivityClassification interface {
 	ActivityClassification
 	// GetExecutionActivity returns the ExecutionActivity content of the underlying type.

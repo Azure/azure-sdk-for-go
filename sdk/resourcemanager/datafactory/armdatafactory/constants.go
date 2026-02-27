@@ -5,11 +5,6 @@
 
 package armdatafactory
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory"
-	moduleVersion = "v10.0.0"
-)
-
 // ActivityOnInactiveMarkAs - Status result of the activity when the state is set to Inactive. This is an optional property
 // and if not provided when the activity is inactive, the status will be Succeeded by default.
 type ActivityOnInactiveMarkAs string
@@ -42,6 +37,21 @@ func PossibleActivityStateValues() []ActivityState {
 	return []ActivityState{
 		ActivityStateActive,
 		ActivityStateInactive,
+	}
+}
+
+// AmazonRdsForOracleAuthenticationType - Authentication type for connecting to the AmazonRdsForOracle database. Only used
+// for Version 2.0.
+type AmazonRdsForOracleAuthenticationType string
+
+const (
+	AmazonRdsForOracleAuthenticationTypeBasic AmazonRdsForOracleAuthenticationType = "Basic"
+)
+
+// PossibleAmazonRdsForOracleAuthenticationTypeValues returns the possible values for the AmazonRdsForOracleAuthenticationType const type.
+func PossibleAmazonRdsForOracleAuthenticationTypeValues() []AmazonRdsForOracleAuthenticationType {
+	return []AmazonRdsForOracleAuthenticationType{
+		AmazonRdsForOracleAuthenticationTypeBasic,
 	}
 }
 
@@ -723,6 +733,42 @@ func PossibleHDInsightActivityDebugInfoOptionValues() []HDInsightActivityDebugIn
 	}
 }
 
+// HDInsightClusterAuthenticationType - HDInsight cluster authentication type.
+type HDInsightClusterAuthenticationType string
+
+const (
+	HDInsightClusterAuthenticationTypeBasicAuth                     HDInsightClusterAuthenticationType = "BasicAuth"
+	HDInsightClusterAuthenticationTypeSystemAssignedManagedIdentity HDInsightClusterAuthenticationType = "SystemAssignedManagedIdentity"
+	HDInsightClusterAuthenticationTypeUserAssignedManagedIdentity   HDInsightClusterAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleHDInsightClusterAuthenticationTypeValues returns the possible values for the HDInsightClusterAuthenticationType const type.
+func PossibleHDInsightClusterAuthenticationTypeValues() []HDInsightClusterAuthenticationType {
+	return []HDInsightClusterAuthenticationType{
+		HDInsightClusterAuthenticationTypeBasicAuth,
+		HDInsightClusterAuthenticationTypeSystemAssignedManagedIdentity,
+		HDInsightClusterAuthenticationTypeUserAssignedManagedIdentity,
+	}
+}
+
+// HDInsightOndemandClusterResourceGroupAuthenticationType - HDInsight On-demand cluster resource group authentication type.
+type HDInsightOndemandClusterResourceGroupAuthenticationType string
+
+const (
+	HDInsightOndemandClusterResourceGroupAuthenticationTypeServicePrincipalKey           HDInsightOndemandClusterResourceGroupAuthenticationType = "ServicePrincipalKey"
+	HDInsightOndemandClusterResourceGroupAuthenticationTypeSystemAssignedManagedIdentity HDInsightOndemandClusterResourceGroupAuthenticationType = "SystemAssignedManagedIdentity"
+	HDInsightOndemandClusterResourceGroupAuthenticationTypeUserAssignedManagedIdentity   HDInsightOndemandClusterResourceGroupAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleHDInsightOndemandClusterResourceGroupAuthenticationTypeValues returns the possible values for the HDInsightOndemandClusterResourceGroupAuthenticationType const type.
+func PossibleHDInsightOndemandClusterResourceGroupAuthenticationTypeValues() []HDInsightOndemandClusterResourceGroupAuthenticationType {
+	return []HDInsightOndemandClusterResourceGroupAuthenticationType{
+		HDInsightOndemandClusterResourceGroupAuthenticationTypeServicePrincipalKey,
+		HDInsightOndemandClusterResourceGroupAuthenticationTypeSystemAssignedManagedIdentity,
+		HDInsightOndemandClusterResourceGroupAuthenticationTypeUserAssignedManagedIdentity,
+	}
+}
+
 // HTTPAuthenticationType - The authentication type to be used to connect to the HTTP server.
 type HTTPAuthenticationType string
 
@@ -816,6 +862,22 @@ func PossibleImpalaAuthenticationTypeValues() []ImpalaAuthenticationType {
 		ImpalaAuthenticationTypeAnonymous,
 		ImpalaAuthenticationTypeSASLUsername,
 		ImpalaAuthenticationTypeUsernameAndPassword,
+	}
+}
+
+// ImpalaThriftTransportProtocol - The transport protocol to use in the Thrift layer (for V2 only). Default value is Binary.
+type ImpalaThriftTransportProtocol string
+
+const (
+	ImpalaThriftTransportProtocolBinary ImpalaThriftTransportProtocol = "Binary"
+	ImpalaThriftTransportProtocolHTTP   ImpalaThriftTransportProtocol = "HTTP"
+)
+
+// PossibleImpalaThriftTransportProtocolValues returns the possible values for the ImpalaThriftTransportProtocol const type.
+func PossibleImpalaThriftTransportProtocolValues() []ImpalaThriftTransportProtocol {
+	return []ImpalaThriftTransportProtocol{
+		ImpalaThriftTransportProtocolBinary,
+		ImpalaThriftTransportProtocolHTTP,
 	}
 }
 
@@ -1019,6 +1081,45 @@ func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateRe
 	}
 }
 
+// InteractiveCapabilityStatus - The interactive authoring capability status. Must be one of InteractiveCapabilityStatus.
+// The default value is 'Enabling'.
+type InteractiveCapabilityStatus string
+
+const (
+	InteractiveCapabilityStatusDisabled  InteractiveCapabilityStatus = "Disabled"
+	InteractiveCapabilityStatusDisabling InteractiveCapabilityStatus = "Disabling"
+	InteractiveCapabilityStatusEnabled   InteractiveCapabilityStatus = "Enabled"
+	InteractiveCapabilityStatusEnabling  InteractiveCapabilityStatus = "Enabling"
+)
+
+// PossibleInteractiveCapabilityStatusValues returns the possible values for the InteractiveCapabilityStatus const type.
+func PossibleInteractiveCapabilityStatusValues() []InteractiveCapabilityStatus {
+	return []InteractiveCapabilityStatus{
+		InteractiveCapabilityStatusDisabled,
+		InteractiveCapabilityStatusDisabling,
+		InteractiveCapabilityStatusEnabled,
+		InteractiveCapabilityStatusEnabling,
+	}
+}
+
+// LakehouseAuthenticationType - The authentication type to use.
+type LakehouseAuthenticationType string
+
+const (
+	LakehouseAuthenticationTypeServicePrincipal              LakehouseAuthenticationType = "ServicePrincipal"
+	LakehouseAuthenticationTypeSystemAssignedManagedIdentity LakehouseAuthenticationType = "SystemAssignedManagedIdentity"
+	LakehouseAuthenticationTypeUserAssignedManagedIdentity   LakehouseAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleLakehouseAuthenticationTypeValues returns the possible values for the LakehouseAuthenticationType const type.
+func PossibleLakehouseAuthenticationTypeValues() []LakehouseAuthenticationType {
+	return []LakehouseAuthenticationType{
+		LakehouseAuthenticationTypeServicePrincipal,
+		LakehouseAuthenticationTypeSystemAssignedManagedIdentity,
+		LakehouseAuthenticationTypeUserAssignedManagedIdentity,
+	}
+}
+
 // LinkedServiceReferenceType - Linked service reference type.
 type LinkedServiceReferenceType string
 
@@ -1098,6 +1199,24 @@ func PossibleMongoDbAuthenticationTypeValues() []MongoDbAuthenticationType {
 	return []MongoDbAuthenticationType{
 		MongoDbAuthenticationTypeAnonymous,
 		MongoDbAuthenticationTypeBasic,
+	}
+}
+
+// NetezzaSecurityLevelType - Specifies the security level for the driver connection to the data store. PreferredUnSecured
+// : prefer unsecured, allow fallback to secured connection if required. OnlyUnSecured : strictly unsecured,
+// no fallback.
+type NetezzaSecurityLevelType string
+
+const (
+	NetezzaSecurityLevelTypeOnlyUnSecured      NetezzaSecurityLevelType = "OnlyUnSecured"
+	NetezzaSecurityLevelTypePreferredUnSecured NetezzaSecurityLevelType = "PreferredUnSecured"
+)
+
+// PossibleNetezzaSecurityLevelTypeValues returns the possible values for the NetezzaSecurityLevelType const type.
+func PossibleNetezzaSecurityLevelTypeValues() []NetezzaSecurityLevelType {
+	return []NetezzaSecurityLevelType{
+		NetezzaSecurityLevelTypeOnlyUnSecured,
+		NetezzaSecurityLevelTypePreferredUnSecured,
 	}
 }
 
@@ -1996,6 +2115,24 @@ func PossibleVariableTypeValues() []VariableType {
 		VariableTypeArray,
 		VariableTypeBool,
 		VariableTypeString,
+	}
+}
+
+// WarehouseAuthenticationType - The authentication type to use.
+type WarehouseAuthenticationType string
+
+const (
+	WarehouseAuthenticationTypeServicePrincipal              WarehouseAuthenticationType = "ServicePrincipal"
+	WarehouseAuthenticationTypeSystemAssignedManagedIdentity WarehouseAuthenticationType = "SystemAssignedManagedIdentity"
+	WarehouseAuthenticationTypeUserAssignedManagedIdentity   WarehouseAuthenticationType = "UserAssignedManagedIdentity"
+)
+
+// PossibleWarehouseAuthenticationTypeValues returns the possible values for the WarehouseAuthenticationType const type.
+func PossibleWarehouseAuthenticationTypeValues() []WarehouseAuthenticationType {
+	return []WarehouseAuthenticationType{
+		WarehouseAuthenticationTypeServicePrincipal,
+		WarehouseAuthenticationTypeSystemAssignedManagedIdentity,
+		WarehouseAuthenticationTypeUserAssignedManagedIdentity,
 	}
 }
 

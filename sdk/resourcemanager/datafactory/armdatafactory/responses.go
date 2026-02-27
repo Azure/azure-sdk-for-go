@@ -242,6 +242,18 @@ type GlobalParametersClientListByFactoryResponse struct {
 	GlobalParameterListResponse
 }
 
+// IntegrationRuntimeClientDisableInteractiveQueryResponse contains the response from method IntegrationRuntimeClient.BeginDisableInteractiveQuery.
+type IntegrationRuntimeClientDisableInteractiveQueryResponse struct {
+	// Integration runtime resource type.
+	IntegrationRuntimeResource
+}
+
+// IntegrationRuntimeClientEnableInteractiveQueryResponse contains the response from method IntegrationRuntimeClient.BeginEnableInteractiveQuery.
+type IntegrationRuntimeClientEnableInteractiveQueryResponse struct {
+	// Integration runtime resource type.
+	IntegrationRuntimeResource
+}
+
 // IntegrationRuntimeNodesClientDeleteResponse contains the response from method IntegrationRuntimeNodesClient.Delete.
 type IntegrationRuntimeNodesClientDeleteResponse struct {
 	// placeholder for future response values

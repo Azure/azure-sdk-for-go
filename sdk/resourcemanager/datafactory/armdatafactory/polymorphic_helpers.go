@@ -37,6 +37,8 @@ func unmarshalActivityClassification(rawMsg json.RawMessage) (ActivityClassifica
 		b = &CustomActivity{}
 	case "DataLakeAnalyticsU-SQL":
 		b = &DataLakeAnalyticsUSQLActivity{}
+	case "DatabricksJob":
+		b = &DatabricksJobActivity{}
 	case "DatabricksNotebook":
 		b = &DatabricksNotebookActivity{}
 	case "DatabricksSparkJar":

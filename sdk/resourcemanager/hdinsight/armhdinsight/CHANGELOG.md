@@ -1,5 +1,16 @@
 # Release History
 
+## 1.3.0-beta.4 (2026-02-26)
+### Breaking Changes
+
+- Struct `ClusterListPersistedScriptActionsResult` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ScriptActionPersistedGetResponseSpec` has been removed
+- Struct `TrackedResource` has been removed
+
+
 ## 1.3.0-beta.3 (2025-10-23)
 ### Features Added
 

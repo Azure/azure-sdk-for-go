@@ -675,3 +675,9 @@
 
 # Add owners for notifications for specific pipelines
 /eng/common/pipelines/codeowners-linter.yml       @rickwinter
+
+# Add Johnathan Walker as code owner for Event Hubs SDK
+/sdk/messaging/azeventhubs/* @j7nw4r
+
+# Add Johnathan Walker as code owner for Service Bus SDK
+/sdk/messaging/azservicebus/* @j7nw4r

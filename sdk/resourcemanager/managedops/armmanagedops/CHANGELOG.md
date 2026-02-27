@@ -1,5 +1,10 @@
 # Release History
 
+## 0.1.1 (2026-02-24)
+### Other Changes
+
+Update the string fields for enablementStatus to enums
+
 ## 0.1.0 (2026-02-13)
 ### Other Changes
 

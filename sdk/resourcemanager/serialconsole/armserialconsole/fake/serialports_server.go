@@ -12,7 +12,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/serialconsole/armserialconsole/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -27,10 +27,6 @@ type SerialPortsServer struct {
 	// Create is the fake for method SerialPortsClient.Create
 	// HTTP status codes to indicate success: http.StatusCreated
 	Create func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, parameters armserialconsole.SerialPort, options *armserialconsole.SerialPortsClientCreateOptions) (resp azfake.Responder[armserialconsole.SerialPortsClientCreateResponse], errResp azfake.ErrorResponder)
-
-	// Delete is the fake for method SerialPortsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourceType string, parentResource string, serialPort string, options *armserialconsole.SerialPortsClientDeleteOptions) (resp azfake.Responder[armserialconsole.SerialPortsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method SerialPortsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -66,31 +62,48 @@ func (s *SerialPortsServerTransport) Do(req *http.Request) (*http.Response, erro
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SerialPortsClient.Connect":
-		resp, err = s.dispatchConnect(req)
-	case "SerialPortsClient.Create":
-		resp, err = s.dispatchCreate(req)
-	case "SerialPortsClient.Delete":
-		resp, err = s.dispatchDelete(req)
-	case "SerialPortsClient.Get":
-		resp, err = s.dispatchGet(req)
-	case "SerialPortsClient.List":
-		resp, err = s.dispatchList(req)
-	case "SerialPortsClient.ListBySubscriptions":
-		resp, err = s.dispatchListBySubscriptions(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SerialPortsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if serialPortsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = serialPortsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SerialPortsClient.Connect":
+				res.resp, res.err = s.dispatchConnect(req)
+			case "SerialPortsClient.Create":
+				res.resp, res.err = s.dispatchCreate(req)
+			case "SerialPortsClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SerialPortsClient.List":
+				res.resp, res.err = s.dispatchList(req)
+			case "SerialPortsClient.ListBySubscriptions":
+				res.resp, res.err = s.dispatchListBySubscriptions(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SerialPortsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
@@ -100,7 +113,7 @@ func (s *SerialPortsServerTransport) dispatchConnect(req *http.Request) (*http.R
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connect`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
+	if len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -145,7 +158,7 @@ func (s *SerialPortsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
+	if len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armserialconsole.SerialPort](req)
@@ -187,51 +200,6 @@ func (s *SerialPortsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	return resp, nil
 }
 
-func (s *SerialPortsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if s.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceProviderNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceProviderNamespace")])
-	if err != nil {
-		return nil, err
-	}
-	parentResourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResourceType")])
-	if err != nil {
-		return nil, err
-	}
-	parentResourceParam, err := url.PathUnescape(matches[regex.SubexpIndex("parentResource")])
-	if err != nil {
-		return nil, err
-	}
-	serialPortParam, err := url.PathUnescape(matches[regex.SubexpIndex("serialPort")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Delete(req.Context(), resourceGroupNameParam, resourceProviderNamespaceParam, parentResourceTypeParam, parentResourceParam, serialPortParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *SerialPortsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -239,7 +207,7 @@ func (s *SerialPortsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts/(?P<serialPort>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
+	if len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -284,7 +252,7 @@ func (s *SerialPortsServerTransport) dispatchList(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourcegroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResource>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 5 {
+	if len(matches) < 6 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -325,7 +293,7 @@ func (s *SerialPortsServerTransport) dispatchListBySubscriptions(req *http.Reque
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SerialConsole/serialPorts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	respr, errRespr := s.srv.ListBySubscriptions(req.Context(), nil)
@@ -341,4 +309,10 @@ func (s *SerialPortsServerTransport) dispatchListBySubscriptions(req *http.Reque
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SerialPortsServerTransport
+var serialPortsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

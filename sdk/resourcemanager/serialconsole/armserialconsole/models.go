@@ -5,15 +5,25 @@
 
 package armserialconsole
 
+import "time"
+
 // DisableSerialConsoleResult - Returns whether or not Serial Console is disabled.
 type DisableSerialConsoleResult struct {
+	Properties *DisableSerialConsoleResultProperties
+}
+
+type DisableSerialConsoleResultProperties struct {
 	// Whether or not Serial Console is disabled.
 	Disabled *bool
 }
 
 // EnableSerialConsoleResult - Returns whether or not Serial Console is disabled (enabled).
 type EnableSerialConsoleResult struct {
-	// Whether or not Serial Console is disabled (enabled).
+	Properties *EnableSerialConsoleResultProperties
+}
+
+type EnableSerialConsoleResultProperties struct {
+	// Whether or not Serial Console is disabled.
 	Disabled *bool
 }
 
@@ -45,28 +55,34 @@ type OperationsValueItemDisplay struct {
 	Resource    *string
 }
 
-// ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
-// and tags
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+// location
 type ProxyResource struct {
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
-// Resource - The Resource model definition.
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -75,13 +91,16 @@ type SerialPort struct {
 	// The properties of the serial port.
 	Properties *SerialPortProperties
 
-	// READ-ONLY; Resource Id
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
 
-	// READ-ONLY; Resource name
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Resource type
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
@@ -99,12 +118,40 @@ type SerialPortListResult struct {
 
 // SerialPortProperties - The properties of the serial port.
 type SerialPortProperties struct {
+	// Specifies whether the port is currently active.
+	ConnectionState *SerialPortConnectionState
+
 	// Specifies whether the port is enabled for a serial console connection.
 	State *SerialPortState
 }
 
 // Status - Returns whether or not Serial Console is disabled.
 type Status struct {
+	Properties *StatusProperties
+}
+
+type StatusProperties struct {
 	// Whether or not Serial Console is disabled.
 	Disabled *bool
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time
+
+	// The identity that created the resource.
+	CreatedBy *string
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType
 }

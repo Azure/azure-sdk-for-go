@@ -7,20 +7,20 @@ package armserialconsole
 
 // MicrosoftSerialConsoleClientDisableConsoleResponse contains the response from method MicrosoftSerialConsoleClient.DisableConsole.
 type MicrosoftSerialConsoleClientDisableConsoleResponse struct {
-	// Possible types are DisableSerialConsoleResult, GetSerialConsoleSubscriptionNotFound
-	Value any
+	// Returns whether or not Serial Console is disabled.
+	DisableSerialConsoleResult
 }
 
 // MicrosoftSerialConsoleClientEnableConsoleResponse contains the response from method MicrosoftSerialConsoleClient.EnableConsole.
 type MicrosoftSerialConsoleClientEnableConsoleResponse struct {
-	// Possible types are EnableSerialConsoleResult, GetSerialConsoleSubscriptionNotFound
-	Value any
+	// Returns whether or not Serial Console is disabled (enabled).
+	EnableSerialConsoleResult
 }
 
 // MicrosoftSerialConsoleClientGetConsoleStatusResponse contains the response from method MicrosoftSerialConsoleClient.GetConsoleStatus.
 type MicrosoftSerialConsoleClientGetConsoleStatusResponse struct {
-	// Possible types are Status, GetSerialConsoleSubscriptionNotFound
-	Value any
+	// Returns whether or not Serial Console is disabled.
+	Status
 }
 
 // MicrosoftSerialConsoleClientListOperationsResponse contains the response from method MicrosoftSerialConsoleClient.ListOperations.
@@ -39,11 +39,6 @@ type SerialPortsClientConnectResponse struct {
 type SerialPortsClientCreateResponse struct {
 	// Represents the serial port of the parent resource.
 	SerialPort
-}
-
-// SerialPortsClientDeleteResponse contains the response from method SerialPortsClient.Delete.
-type SerialPortsClientDeleteResponse struct {
-	// placeholder for future response values
 }
 
 // SerialPortsClientGetResponse contains the response from method SerialPortsClient.Get.

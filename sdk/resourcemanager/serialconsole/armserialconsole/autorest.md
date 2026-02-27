@@ -5,9 +5,10 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/serialconsole/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/serialconsole/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/232569489d8002597fa04cb0badfc2f5ca372a00/specification/serialconsole/resource-manager/Microsoft.SerialConsole/SerialConsole/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/232569489d8002597fa04cb0badfc2f5ca372a00/specification/serialconsole/resource-manager/Microsoft.SerialConsole/SerialConsole/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.2.0
+module-version: 2.0.0
+tag: package-2024-07
 
 ```

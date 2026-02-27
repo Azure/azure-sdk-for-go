@@ -88,17 +88,9 @@ func (c *ClientFactory) NewSetDefinitionsClient() *SetDefinitionsClient {
 	}
 }
 
-// NewVariableValuesClient creates a new instance of VariableValuesClient.
-func (c *ClientFactory) NewVariableValuesClient() *VariableValuesClient {
-	return &VariableValuesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewVariablesClient creates a new instance of VariablesClient.
-func (c *ClientFactory) NewVariablesClient() *VariablesClient {
-	return &VariablesClient{
+// NewTokensClient creates a new instance of TokensClient.
+func (c *ClientFactory) NewTokensClient() *TokensClient {
+	return &TokensClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

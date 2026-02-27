@@ -37,6 +37,10 @@ type AuthorizationProviderServer struct {
 	// NewListByServicePager is the fake for method AuthorizationProviderClient.NewListByServicePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServicePager func(resourceGroupName string, serviceName string, options *armapimanagement.AuthorizationProviderClientListByServiceOptions) (resp azfake.PagerResponder[armapimanagement.AuthorizationProviderClientListByServiceResponse])
+
+	// RefreshSecret is the fake for method AuthorizationProviderClient.RefreshSecret
+	// HTTP status codes to indicate success: http.StatusOK
+	RefreshSecret func(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *armapimanagement.AuthorizationProviderClientRefreshSecretOptions) (resp azfake.Responder[armapimanagement.AuthorizationProviderClientRefreshSecretResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAuthorizationProviderServerTransport creates a new instance of AuthorizationProviderServerTransport with the provided implementation.
@@ -87,6 +91,8 @@ func (a *AuthorizationProviderServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = a.dispatchGet(req)
 			case "AuthorizationProviderClient.NewListByServicePager":
 				res.resp, res.err = a.dispatchNewListByServicePager(req)
+			case "AuthorizationProviderClient.RefreshSecret":
+				res.resp, res.err = a.dispatchRefreshSecret(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -113,7 +119,7 @@ func (a *AuthorizationProviderServerTransport) dispatchCreateOrUpdate(req *http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armapimanagement.AuthorizationProviderContract](req)
@@ -164,7 +170,7 @@ func (a *AuthorizationProviderServerTransport) dispatchDelete(req *http.Request)
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -201,7 +207,7 @@ func (a *AuthorizationProviderServerTransport) dispatchGet(req *http.Request) (*
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -243,7 +249,7 @@ func (a *AuthorizationProviderServerTransport) dispatchNewListByServicePager(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -313,6 +319,46 @@ func (a *AuthorizationProviderServerTransport) dispatchNewListByServicePager(req
 	}
 	if !server.PagerResponderMore(newListByServicePager) {
 		a.newListByServicePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AuthorizationProviderServerTransport) dispatchRefreshSecret(req *http.Request) (*http.Response, error) {
+	if a.srv.RefreshSecret == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RefreshSecret not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ApiManagement/service/(?P<serviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/authorizationProviders/(?P<authorizationProviderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshSecret`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	serviceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceName")])
+	if err != nil {
+		return nil, err
+	}
+	authorizationProviderIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("authorizationProviderId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.RefreshSecret(req.Context(), resourceGroupNameParam, serviceNameParam, authorizationProviderIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AuthorizationProviderContract, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).ETag; val != nil {
+		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
 }

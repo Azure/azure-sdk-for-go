@@ -193,6 +193,42 @@ type APIGatewayConfigConnectionClientListByGatewayOptions struct {
 	// placeholder for future optional parameters
 }
 
+// APIGatewayHostnameBindingClientBeginCreateOrUpdateOptions contains the optional parameters for the APIGatewayHostnameBindingClient.BeginCreateOrUpdate
+// method.
+type APIGatewayHostnameBindingClientBeginCreateOrUpdateOptions struct {
+	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
+	IfMatch *string
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// APIGatewayHostnameBindingClientBeginDeleteOptions contains the optional parameters for the APIGatewayHostnameBindingClient.BeginDelete
+// method.
+type APIGatewayHostnameBindingClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// APIGatewayHostnameBindingClientBeginRefreshSecretOptions contains the optional parameters for the APIGatewayHostnameBindingClient.BeginRefreshSecret
+// method.
+type APIGatewayHostnameBindingClientBeginRefreshSecretOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// APIGatewayHostnameBindingClientGetOptions contains the optional parameters for the APIGatewayHostnameBindingClient.Get
+// method.
+type APIGatewayHostnameBindingClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIGatewayHostnameBindingClientListByGatewayOptions contains the optional parameters for the APIGatewayHostnameBindingClient.NewListByGatewayPager
+// method.
+type APIGatewayHostnameBindingClientListByGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
 // APIIssueAttachmentClientCreateOrUpdateOptions contains the optional parameters for the APIIssueAttachmentClient.CreateOrUpdate
 // method.
 type APIIssueAttachmentClientCreateOrUpdateOptions struct {
@@ -568,6 +604,46 @@ type APITagDescriptionClientListByServiceOptions struct {
 	Top *int32
 }
 
+// APIToolClientCreateOrUpdateOptions contains the optional parameters for the APIToolClient.CreateOrUpdate method.
+type APIToolClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIToolClientDeleteOptions contains the optional parameters for the APIToolClient.Delete method.
+type APIToolClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIToolClientGetEntityTagOptions contains the optional parameters for the APIToolClient.GetEntityTag method.
+type APIToolClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIToolClientGetOptions contains the optional parameters for the APIToolClient.Get method.
+type APIToolClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIToolClientListByAPIOptions contains the optional parameters for the APIToolClient.NewListByAPIPager method.
+type APIToolClientListByAPIOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | name | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	Filter *string
+
+	// Number of records to skip.
+	Skip *int32
+
+	// Number of records to return.
+	Top *int32
+}
+
+// APIToolClientUpdateOptions contains the optional parameters for the APIToolClient.Update method.
+type APIToolClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // APIVersionSetClientCreateOrUpdateOptions contains the optional parameters for the APIVersionSetClient.CreateOrUpdate method.
 type APIVersionSetClientCreateOrUpdateOptions struct {
 	// ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -765,6 +841,12 @@ type AuthorizationProviderClientListByServiceOptions struct {
 	Top *int32
 }
 
+// AuthorizationProviderClientRefreshSecretOptions contains the optional parameters for the AuthorizationProviderClient.RefreshSecret
+// method.
+type AuthorizationProviderClientRefreshSecretOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AuthorizationServerClientCreateOrUpdateOptions contains the optional parameters for the AuthorizationServerClient.CreateOrUpdate
 // method.
 type AuthorizationServerClientCreateOrUpdateOptions struct {
@@ -943,6 +1025,80 @@ type CertificateClientListByServiceOptions struct {
 // CertificateClientRefreshSecretOptions contains the optional parameters for the CertificateClient.RefreshSecret method.
 type CertificateClientRefreshSecretOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ClientApplicationClientCreateOrUpdateOptions contains the optional parameters for the ClientApplicationClient.CreateOrUpdate
+// method.
+type ClientApplicationClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationClientDeleteOptions contains the optional parameters for the ClientApplicationClient.Delete method.
+type ClientApplicationClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationClientGetEntityTagOptions contains the optional parameters for the ClientApplicationClient.GetEntityTag
+// method.
+type ClientApplicationClientGetEntityTagOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationClientGetOptions contains the optional parameters for the ClientApplicationClient.Get method.
+type ClientApplicationClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationClientListByServiceOptions contains the optional parameters for the ClientApplicationClient.NewListByServicePager
+// method.
+type ClientApplicationClientListByServiceOptions struct {
+	// | Field | Usage | Supported operators | Supported functions |
+	// |-------------|-------------|-------------|-------------|
+	// | displayName | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// | description | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// state | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith |
+	// |
+	Filter *string
+
+	// Number of records to skip.
+	Skip *int32
+
+	// Number of records to return.
+	Top *int32
+}
+
+// ClientApplicationClientListSecretsOptions contains the optional parameters for the ClientApplicationClient.ListSecrets
+// method.
+type ClientApplicationClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationProductLinkClientCreateOptions contains the optional parameters for the ClientApplicationProductLinkClient.Create
+// method.
+type ClientApplicationProductLinkClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationProductLinkClientDeleteOptions contains the optional parameters for the ClientApplicationProductLinkClient.Delete
+// method.
+type ClientApplicationProductLinkClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationProductLinkClientGetOptions contains the optional parameters for the ClientApplicationProductLinkClient.Get
+// method.
+type ClientApplicationProductLinkClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClientApplicationProductLinkClientListByClientApplicationsOptions contains the optional parameters for the ClientApplicationProductLinkClient.NewListByClientApplicationsPager
+// method.
+type ClientApplicationProductLinkClientListByClientApplicationsOptions struct {
+	// Number of records to skip.
+	Skip *int32
+
+	// Number of records to return.
+	Top *int32
 }
 
 // ClientBeginPerformConnectivityCheckAsyncOptions contains the optional parameters for the Client.BeginPerformConnectivityCheckAsync
@@ -2579,6 +2735,13 @@ type ServiceClientBeginMigrateToStv2Options struct {
 	// Optional parameters supplied to migrate service.
 	Parameters *MigrateToStv2Contract
 
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServiceClientBeginRefreshHostnamesOptions contains the optional parameters for the ServiceClient.BeginRefreshHostnames
+// method.
+type ServiceClientBeginRefreshHostnamesOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

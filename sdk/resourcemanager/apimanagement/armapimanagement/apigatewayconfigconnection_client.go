@@ -27,7 +27,7 @@ type APIGatewayConfigConnectionClient struct {
 // NewAPIGatewayConfigConnectionClient creates a new instance of APIGatewayConfigConnectionClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPIGatewayConfigConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIGatewayConfigConnectionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewAPIGatewayConfigConnectionClient(subscriptionID string, credential azcor
 // could take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - gatewayName - The name of the API Management gateway.
 //   - configConnectionName - The name of the API Management gateway config connection.
@@ -73,7 +73,7 @@ func (client *APIGatewayConfigConnectionClient) BeginCreateOrUpdate(ctx context.
 // take several minutes to complete.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 func (client *APIGatewayConfigConnectionClient) createOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, configConnectionName string, parameters GatewayConfigConnectionResource, options *APIGatewayConfigConnectionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "APIGatewayConfigConnectionClient.BeginCreateOrUpdate"
@@ -119,7 +119,7 @@ func (client *APIGatewayConfigConnectionClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -131,7 +131,7 @@ func (client *APIGatewayConfigConnectionClient) createOrUpdateCreateRequest(ctx 
 // BeginDelete - Deletes an existing API Management gateway config connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - gatewayName - The name of the API Management gateway.
 //   - configConnectionName - The name of the API Management gateway config connection.
@@ -159,7 +159,7 @@ func (client *APIGatewayConfigConnectionClient) BeginDelete(ctx context.Context,
 // Delete - Deletes an existing API Management gateway config connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 func (client *APIGatewayConfigConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, configConnectionName string, ifMatch string, options *APIGatewayConfigConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "APIGatewayConfigConnectionClient.BeginDelete"
@@ -205,7 +205,7 @@ func (client *APIGatewayConfigConnectionClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -215,7 +215,7 @@ func (client *APIGatewayConfigConnectionClient) deleteCreateRequest(ctx context.
 // Get - Gets an API Management gateway config connection resource description.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - gatewayName - The name of the API Management gateway.
 //   - configConnectionName - The name of the API Management gateway config connection.
@@ -267,7 +267,7 @@ func (client *APIGatewayConfigConnectionClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -284,7 +284,7 @@ func (client *APIGatewayConfigConnectionClient) getHandleResponse(resp *http.Res
 
 // NewListByGatewayPager - List all API Management gateway config connections within a gateway.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - gatewayName - The name of the API Management gateway.
 //   - options - APIGatewayConfigConnectionClientListByGatewayOptions contains the optional parameters for the APIGatewayConfigConnectionClient.NewListByGatewayPager
@@ -332,7 +332,7 @@ func (client *APIGatewayConfigConnectionClient) listByGatewayCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

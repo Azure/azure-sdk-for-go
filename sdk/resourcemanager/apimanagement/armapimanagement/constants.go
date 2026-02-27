@@ -5,11 +5,6 @@
 
 package armapimanagement
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
-	moduleVersion = "v3.0.0"
-)
-
 // APIGatewaySKUType - Name of the Sku.
 type APIGatewaySKUType string
 
@@ -299,7 +294,7 @@ func PossibleAuthorizationTypeValues() []AuthorizationType {
 	}
 }
 
-// BackendProtocol - Backend communication protocol.
+// BackendProtocol - Backend communication protocol. Required when backend type is 'Single'.
 type BackendProtocol string
 
 const (
@@ -314,6 +309,22 @@ func PossibleBackendProtocolValues() []BackendProtocol {
 	return []BackendProtocol{
 		BackendProtocolHTTP,
 		BackendProtocolSoap,
+	}
+}
+
+// BackendSessionIDSource - Source from where the session id is extracted.
+type BackendSessionIDSource string
+
+const (
+	// BackendSessionIDSourceCookie - The session id is set by APIM gateway in a cookie and is extracted from the cookies in client
+	// requests.
+	BackendSessionIDSourceCookie BackendSessionIDSource = "cookie"
+)
+
+// PossibleBackendSessionIDSourceValues returns the possible values for the BackendSessionIDSource const type.
+func PossibleBackendSessionIDSourceValues() []BackendSessionIDSource {
+	return []BackendSessionIDSource{
+		BackendSessionIDSourceCookie,
 	}
 }
 
@@ -369,6 +380,36 @@ func PossibleBearerTokenSendingMethodsValues() []BearerTokenSendingMethods {
 	}
 }
 
+// CarbonEmissionCategory - Scope 2 carbon emission preference for the backend. When specified, the load balancer will optimize
+// traffic flow by routing to regions that have carbon emission less than or equal to the specified
+// category. However, when all other backends are not available it will route traffic to these regions anyway. This requires
+// the backend to be attributed with 'azureRegion' information.
+type CarbonEmissionCategory string
+
+const (
+	// CarbonEmissionCategoryHigh - Carbon intensity between 501 & 700 (incl) grams CO₂e per KWh
+	CarbonEmissionCategoryHigh CarbonEmissionCategory = "High"
+	// CarbonEmissionCategoryLow - Carbon intensity between 151 & 300 (incl) grams CO₂e per KWh
+	CarbonEmissionCategoryLow CarbonEmissionCategory = "Low"
+	// CarbonEmissionCategoryMedium - Carbon intensity between 301 & 500 (incl) grams CO₂e per KWh
+	CarbonEmissionCategoryMedium CarbonEmissionCategory = "Medium"
+	// CarbonEmissionCategoryVeryHigh - Carbon intensity of more than 700 grams CO₂e per KWh
+	CarbonEmissionCategoryVeryHigh CarbonEmissionCategory = "VeryHigh"
+	// CarbonEmissionCategoryVeryLow - Carbon intensity of less than or equal to 150 grams CO₂e per KWh
+	CarbonEmissionCategoryVeryLow CarbonEmissionCategory = "VeryLow"
+)
+
+// PossibleCarbonEmissionCategoryValues returns the possible values for the CarbonEmissionCategory const type.
+func PossibleCarbonEmissionCategoryValues() []CarbonEmissionCategory {
+	return []CarbonEmissionCategory{
+		CarbonEmissionCategoryHigh,
+		CarbonEmissionCategoryLow,
+		CarbonEmissionCategoryMedium,
+		CarbonEmissionCategoryVeryHigh,
+		CarbonEmissionCategoryVeryLow,
+	}
+}
+
 // CertificateConfigurationStoreName - The System.Security.Cryptography.x509certificates.StoreName certificate store location.
 // Only Root and CertificateAuthority are valid locations.
 type CertificateConfigurationStoreName string
@@ -421,6 +462,34 @@ func PossibleCertificateStatusValues() []CertificateStatus {
 		CertificateStatusCompleted,
 		CertificateStatusFailed,
 		CertificateStatusInProgress,
+	}
+}
+
+// ClientApplicationState - Client application state. The value derives the state of an application based on the statuses
+// of its associated ClientApplicationProductLinks.
+type ClientApplicationState string
+
+const (
+	// ClientApplicationStateActive - If there are no approved ClientApplicationLink, but at least one ClientApplicationLink is
+	// active, the Application is considered active
+	ClientApplicationStateActive ClientApplicationState = "active"
+	// ClientApplicationStateApproved - If at least one ClientApplicationLink is approved, the Application is considered approved
+	ClientApplicationStateApproved ClientApplicationState = "approved"
+	// ClientApplicationStatePending - If there are no associated ClientApplicationLinks or all ClientApplicationLinks are in
+	// a state that doesn't meet the criteria for the states: active, rejected, approved (e.g., a mix of active and rejected without
+	// any approved).
+	ClientApplicationStatePending ClientApplicationState = "pending"
+	// ClientApplicationStateRejected - If all ClientApplicationLinks are rejected, the Application is considered rejected
+	ClientApplicationStateRejected ClientApplicationState = "rejected"
+)
+
+// PossibleClientApplicationStateValues returns the possible values for the ClientApplicationState const type.
+func PossibleClientApplicationStateValues() []ClientApplicationState {
+	return []ClientApplicationState{
+		ClientApplicationStateActive,
+		ClientApplicationStateApproved,
+		ClientApplicationStatePending,
+		ClientApplicationStateRejected,
 	}
 }
 
@@ -903,6 +972,22 @@ func PossibleKeyTypeValues() []KeyType {
 	}
 }
 
+// KeyVaultFetchCode - The last status of the Key Vault certificate fetch process.
+type KeyVaultFetchCode string
+
+const (
+	KeyVaultFetchCodeFailed  KeyVaultFetchCode = "Failed"
+	KeyVaultFetchCodeSuccess KeyVaultFetchCode = "Success"
+)
+
+// PossibleKeyVaultFetchCodeValues returns the possible values for the KeyVaultFetchCode const type.
+func PossibleKeyVaultFetchCodeValues() []KeyVaultFetchCode {
+	return []KeyVaultFetchCode{
+		KeyVaultFetchCodeFailed,
+		KeyVaultFetchCodeSuccess,
+	}
+}
+
 type KeyVaultRefreshState string
 
 const (
@@ -960,6 +1045,37 @@ func PossibleLegacyPortalStatusValues() []LegacyPortalStatus {
 	}
 }
 
+type LlmDiagnosticSettings string
+
+const (
+	// LlmDiagnosticSettingsDisabled - Default LLM logs are disabled.
+	LlmDiagnosticSettingsDisabled LlmDiagnosticSettings = "disabled"
+	// LlmDiagnosticSettingsEnabled - Default LLM logs are enabled.
+	LlmDiagnosticSettingsEnabled LlmDiagnosticSettings = "enabled"
+)
+
+// PossibleLlmDiagnosticSettingsValues returns the possible values for the LlmDiagnosticSettings const type.
+func PossibleLlmDiagnosticSettingsValues() []LlmDiagnosticSettings {
+	return []LlmDiagnosticSettings{
+		LlmDiagnosticSettingsDisabled,
+		LlmDiagnosticSettingsEnabled,
+	}
+}
+
+type LlmMessageLogTypes string
+
+const (
+	// LlmMessageLogTypesAll - Log all messages.
+	LlmMessageLogTypesAll LlmMessageLogTypes = "all"
+)
+
+// PossibleLlmMessageLogTypesValues returns the possible values for the LlmMessageLogTypes const type.
+func PossibleLlmMessageLogTypesValues() []LlmMessageLogTypes {
+	return []LlmMessageLogTypes{
+		LlmMessageLogTypesAll,
+	}
+}
+
 // LoggerType - Logger type.
 type LoggerType string
 
@@ -978,6 +1094,26 @@ func PossibleLoggerTypeValues() []LoggerType {
 		LoggerTypeApplicationInsights,
 		LoggerTypeAzureEventHub,
 		LoggerTypeAzureMonitor,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	ManagedServiceIdentityTypeNone                       ManagedServiceIdentityType = "None"
+	ManagedServiceIdentityTypeSystemAssigned             ManagedServiceIdentityType = "SystemAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeUserAssigned               ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 
@@ -1403,6 +1539,21 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
+type ProductAuthType string
+
+const (
+	ProductAuthTypeApplicationToken ProductAuthType = "application-token"
+	ProductAuthTypeSubscriptionKey  ProductAuthType = "subscription-key"
+)
+
+// PossibleProductAuthTypeValues returns the possible values for the ProductAuthType const type.
+func PossibleProductAuthTypeValues() []ProductAuthType {
+	return []ProductAuthType{
+		ProductAuthTypeApplicationToken,
+		ProductAuthTypeSubscriptionKey,
+	}
+}
+
 // ProductState - whether product is published or not. Published products are discoverable by users of developer portal. Non
 // published products are visible only to administrators. Default state of Product is
 // notPublished.
@@ -1458,6 +1609,27 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
+// ReleaseChannel - Release Channel of this API Management service.
+type ReleaseChannel string
+
+const (
+	// ReleaseChannelDefault - Default Channel of the service.
+	ReleaseChannelDefault ReleaseChannel = "Default"
+	// ReleaseChannelPreview - Preview Channel of the service.
+	ReleaseChannelPreview ReleaseChannel = "Preview"
+	// ReleaseChannelStable - Stable Channel of the service.
+	ReleaseChannelStable ReleaseChannel = "Stable"
+)
+
+// PossibleReleaseChannelValues returns the possible values for the ReleaseChannel const type.
+func PossibleReleaseChannelValues() []ReleaseChannel {
+	return []ReleaseChannel{
+		ReleaseChannelDefault,
+		ReleaseChannelPreview,
+		ReleaseChannelStable,
+	}
+}
+
 // ResourceSKUCapacityScaleType - The scale type applicable to the sku.
 type ResourceSKUCapacityScaleType string
 
@@ -1495,6 +1667,8 @@ const (
 	SKUTypeIsolated SKUType = "Isolated"
 	// SKUTypePremium - Premium SKU of Api Management.
 	SKUTypePremium SKUType = "Premium"
+	// SKUTypePremiumV2 - PremiumV2 SKU of Api Management.
+	SKUTypePremiumV2 SKUType = "PremiumV2"
 	// SKUTypeStandard - Standard SKU of Api Management.
 	SKUTypeStandard SKUType = "Standard"
 	// SKUTypeStandardV2 - StandardV2 SKU of Api Management.
@@ -1510,6 +1684,7 @@ func PossibleSKUTypeValues() []SKUType {
 		SKUTypeDeveloper,
 		SKUTypeIsolated,
 		SKUTypePremium,
+		SKUTypePremiumV2,
 		SKUTypeStandard,
 		SKUTypeStandardV2,
 	}

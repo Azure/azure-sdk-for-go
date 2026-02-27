@@ -167,6 +167,34 @@ type APIGatewayConfigConnectionClientListByGatewayResponse struct {
 	GatewayConfigConnectionListResult
 }
 
+// APIGatewayHostnameBindingClientCreateOrUpdateResponse contains the response from method APIGatewayHostnameBindingClient.BeginCreateOrUpdate.
+type APIGatewayHostnameBindingClientCreateOrUpdateResponse struct {
+	// A single API Management gateway hostname binding resource in List or Get response.
+	GatewayHostnameBindingResource
+}
+
+// APIGatewayHostnameBindingClientDeleteResponse contains the response from method APIGatewayHostnameBindingClient.BeginDelete.
+type APIGatewayHostnameBindingClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIGatewayHostnameBindingClientGetResponse contains the response from method APIGatewayHostnameBindingClient.Get.
+type APIGatewayHostnameBindingClientGetResponse struct {
+	// A single API Management gateway hostname binding resource in List or Get response.
+	GatewayHostnameBindingResource
+}
+
+// APIGatewayHostnameBindingClientListByGatewayResponse contains the response from method APIGatewayHostnameBindingClient.NewListByGatewayPager.
+type APIGatewayHostnameBindingClientListByGatewayResponse struct {
+	// The response of the List API Management gateway hostname binding operation.
+	GatewayHostnameBindingListResult
+}
+
+// APIGatewayHostnameBindingClientRefreshSecretResponse contains the response from method APIGatewayHostnameBindingClient.BeginRefreshSecret.
+type APIGatewayHostnameBindingClientRefreshSecretResponse struct {
+	// placeholder for future response values
+}
+
 // APIIssueAttachmentClientCreateOrUpdateResponse contains the response from method APIIssueAttachmentClient.CreateOrUpdate.
 type APIIssueAttachmentClientCreateOrUpdateResponse struct {
 	// Issue Attachment Contract details.
@@ -545,6 +573,53 @@ type APITagDescriptionClientListByServiceResponse struct {
 	TagDescriptionCollection
 }
 
+// APIToolClientCreateOrUpdateResponse contains the response from method APIToolClient.CreateOrUpdate.
+type APIToolClientCreateOrUpdateResponse struct {
+	// Tool details.
+	ToolContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIToolClientDeleteResponse contains the response from method APIToolClient.Delete.
+type APIToolClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIToolClientGetEntityTagResponse contains the response from method APIToolClient.GetEntityTag.
+type APIToolClientGetEntityTagResponse struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIToolClientGetResponse contains the response from method APIToolClient.Get.
+type APIToolClientGetResponse struct {
+	// Tool details.
+	ToolContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// APIToolClientListByAPIResponse contains the response from method APIToolClient.NewListByAPIPager.
+type APIToolClientListByAPIResponse struct {
+	// Paged Tool list representation.
+	ToolCollection
+}
+
+// APIToolClientUpdateResponse contains the response from method APIToolClient.Update.
+type APIToolClientUpdateResponse struct {
+	// Tool details.
+	ToolContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
 // APIVersionSetClientCreateOrUpdateResponse contains the response from method APIVersionSetClient.CreateOrUpdate.
 type APIVersionSetClientCreateOrUpdateResponse struct {
 	// API Version Set Contract details.
@@ -747,6 +822,15 @@ type AuthorizationProviderClientListByServiceResponse struct {
 	AuthorizationProviderCollection
 }
 
+// AuthorizationProviderClientRefreshSecretResponse contains the response from method AuthorizationProviderClient.RefreshSecret.
+type AuthorizationProviderClientRefreshSecretResponse struct {
+	// Authorization Provider contract.
+	AuthorizationProviderContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
 // AuthorizationServerClientCreateOrUpdateResponse contains the response from method AuthorizationServerClient.CreateOrUpdate.
 type AuthorizationServerClientCreateOrUpdateResponse struct {
 	// External OAuth authorization server settings.
@@ -947,6 +1031,76 @@ type CertificateClientRefreshSecretResponse struct {
 
 	// ETag contains the information returned from the ETag header response.
 	ETag *string
+}
+
+// ClientApplicationClientCreateOrUpdateResponse contains the response from method ClientApplicationClient.CreateOrUpdate.
+type ClientApplicationClientCreateOrUpdateResponse struct {
+	// Client application details.
+	ClientApplicationContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ClientApplicationClientDeleteResponse contains the response from method ClientApplicationClient.Delete.
+type ClientApplicationClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientApplicationClientGetEntityTagResponse contains the response from method ClientApplicationClient.GetEntityTag.
+type ClientApplicationClientGetEntityTagResponse struct {
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ClientApplicationClientGetResponse contains the response from method ClientApplicationClient.Get.
+type ClientApplicationClientGetResponse struct {
+	// Client application details.
+	ClientApplicationContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ClientApplicationClientListByServiceResponse contains the response from method ClientApplicationClient.NewListByServicePager.
+type ClientApplicationClientListByServiceResponse struct {
+	// Paged ClientApplication list representation.
+	ClientApplicationCollection
+}
+
+// ClientApplicationClientListSecretsResponse contains the response from method ClientApplicationClient.ListSecrets.
+type ClientApplicationClientListSecretsResponse struct {
+	// Specifies client application secrets needed to authorize applications API calls
+	ClientApplicationSecretsContract
+}
+
+// ClientApplicationProductLinkClientCreateResponse contains the response from method ClientApplicationProductLinkClient.Create.
+type ClientApplicationProductLinkClientCreateResponse struct {
+	// Specifies Client Application - Product link assignment
+	ClientApplicationProductLinkContract
+}
+
+// ClientApplicationProductLinkClientDeleteResponse contains the response from method ClientApplicationProductLinkClient.Delete.
+type ClientApplicationProductLinkClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClientApplicationProductLinkClientGetResponse contains the response from method ClientApplicationProductLinkClient.Get.
+type ClientApplicationProductLinkClientGetResponse struct {
+	// Specifies Client Application - Product link assignment
+	ClientApplicationProductLinkContract
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+}
+
+// ClientApplicationProductLinkClientListByClientApplicationsResponse contains the response from method ClientApplicationProductLinkClient.NewListByClientApplicationsPager.
+type ClientApplicationProductLinkClientListByClientApplicationsResponse struct {
+	// Paged ClientApplicationProductLinkContract list representation.
+	ClientApplicationProductLinkCollection
 }
 
 // ClientPerformConnectivityCheckAsyncResponse contains the response from method Client.BeginPerformConnectivityCheckAsync.
@@ -2574,6 +2728,12 @@ type ServiceClientListResponse struct {
 
 // ServiceClientMigrateToStv2Response contains the response from method ServiceClient.BeginMigrateToStv2.
 type ServiceClientMigrateToStv2Response struct {
+	// A single API Management service resource in List or Get response.
+	ServiceResource
+}
+
+// ServiceClientRefreshHostnamesResponse contains the response from method ServiceClient.BeginRefreshHostnames.
+type ServiceClientRefreshHostnamesResponse struct {
 	// A single API Management service resource in List or Get response.
 	ServiceResource
 }

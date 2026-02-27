@@ -12,22 +12,34 @@ type AzureBareMetalInstancesClientBeginRestartOptions struct {
 	// processes that may be running on the server
 	ForceParameter *ForceState
 
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AzureBareMetalInstancesClientBeginShutdownOptions contains the optional parameters for the AzureBareMetalInstancesClient.BeginShutdown
 // method.
 type AzureBareMetalInstancesClientBeginShutdownOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AzureBareMetalInstancesClientBeginStartOptions contains the optional parameters for the AzureBareMetalInstancesClient.BeginStart
 // method.
 type AzureBareMetalInstancesClientBeginStartOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// AzureBareMetalInstancesClientCreateOptions contains the optional parameters for the AzureBareMetalInstancesClient.Create
+// method.
+type AzureBareMetalInstancesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureBareMetalInstancesClientDeleteOptions contains the optional parameters for the AzureBareMetalInstancesClient.Delete
+// method.
+type AzureBareMetalInstancesClientDeleteOptions struct {
+	// placeholder for future optional parameters
 }
 
 // AzureBareMetalInstancesClientGetOptions contains the optional parameters for the AzureBareMetalInstancesClient.Get method.

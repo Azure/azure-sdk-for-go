@@ -16,9 +16,14 @@ import (
 
 // ServerFactory is a fake server for instances of the armbaremetalinfrastructure.ClientFactory type.
 type ServerFactory struct {
-	AzureBareMetalInstancesServer        AzureBareMetalInstancesServer
+	// AzureBareMetalInstancesServer contains the fakes for client AzureBareMetalInstancesClient
+	AzureBareMetalInstancesServer AzureBareMetalInstancesServer
+
+	// AzureBareMetalStorageInstancesServer contains the fakes for client AzureBareMetalStorageInstancesClient
 	AzureBareMetalStorageInstancesServer AzureBareMetalStorageInstancesServer
-	OperationsServer                     OperationsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/SnapshotPolicies_Create.json
+// Generated from example definition: 2025-12-01/SnapshotPolicies_Create.json
 func ExampleSnapshotPoliciesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SnapshotPolicies_Delete.json
+// Generated from example definition: 2025-12-01/SnapshotPolicies_Delete.json
 func ExampleSnapshotPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SnapshotPolicies_Get.json
+// Generated from example definition: 2025-12-01/SnapshotPolicies_Get.json
 func ExampleSnapshotPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SnapshotPolicies_List.json
+// Generated from example definition: 2025-12-01/SnapshotPolicies_List.json
 func ExampleSnapshotPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/SnapshotPolicies_ListVolumes.json
+// Generated from example definition: 2025-12-01/SnapshotPolicies_ListVolumes.json
 func ExampleSnapshotPoliciesClient_ListVolumes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,10 +260,10 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	// 				Location: to.Ptr("eastus"),
 	// 				Properties: &armnetapp.VolumeProperties{
 	// 					CreationToken: to.Ptr("my-unique-file-path"),
-	// 					FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 					ProvisioningState: to.Ptr("Succeeded"),
 	// 					ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 					SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 					ThroughputMibps: to.Ptr[float32](128),
 	// 					UsageThreshold: to.Ptr[int64](107374182400),
 	// 				},
@@ -273,7 +273,7 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/SnapshotPolicies_Update.json
+// Generated from example definition: 2025-12-01/SnapshotPolicies_Update.json
 func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

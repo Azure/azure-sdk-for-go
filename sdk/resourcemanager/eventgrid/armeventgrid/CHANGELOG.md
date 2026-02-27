@@ -1,5 +1,36 @@
 # Release History
 
+## 2.4.0-beta.2 (2026-02-06)
+### Breaking Changes
+
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New enum type `ConfidentialComputeMode` with values `ConfidentialComputeModeDisabled`, `ConfidentialComputeModeEnabled`
+- New enum type `KeyEncryptionIdentityType` with values `KeyEncryptionIdentityTypeSystemAssigned`, `KeyEncryptionIdentityTypeUserAssigned`
+- New enum type `KeyEncryptionKeyStatus` with values `KeyEncryptionKeyStatusActive`, `KeyEncryptionKeyStatusRevoked`
+- New struct `ConfidentialCompute`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `KeyEncryption`
+- New struct `KeyEncryptionKeyIdentity`
+- New struct `PlatformCapabilities`
+- New field `NextLink` in struct `EventTypesListResult`
+- New field `SystemData` in struct `NetworkSecurityPerimeterConfiguration`
+- New field `NextLink` in struct `OperationsListResult`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New anonymous field `PrivateEndpointConnection` in struct `PrivateEndpointConnectionsClientDeleteResponse`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `Encryption`, `PlatformCapabilities` in struct `SystemTopicProperties`
+- New field `Encryption`, `PlatformCapabilities` in struct `TopicProperties`
+- New field `SystemData` in struct `TopicTypeInfo`
+- New field `NextLink` in struct `TopicTypesListResult`
+
+
 ## 2.4.0-beta.1 (2025-07-24)
 ### Features Added
 

@@ -1,5 +1,20 @@
 # Release History
 
+## 2.4.0-beta.2 (2026-02-04)
+### Features Added
+
+- New enum type `ConfidentialComputeMode` with values `ConfidentialComputeModeDisabled`, `ConfidentialComputeModeEnabled`
+- New enum type `KeyEncryptionIdentityType` with values `KeyEncryptionIdentityTypeSystemAssigned`, `KeyEncryptionIdentityTypeUserAssigned`
+- New enum type `KeyEncryptionKeyStatus` with values `KeyEncryptionKeyStatusActive`, `KeyEncryptionKeyStatusRevoked`
+- New struct `ConfidentialCompute`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `KeyEncryption`
+- New struct `KeyEncryptionKeyIdentity`
+- New struct `PlatformCapabilities`
+- New field `Encryption`, `PlatformCapabilities` in struct `SystemTopicProperties`
+- New field `Encryption`, `PlatformCapabilities` in struct `TopicProperties`
+
+
 ## 2.4.0-beta.1 (2025-07-24)
 ### Features Added
 

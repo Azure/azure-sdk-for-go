@@ -26,7 +26,7 @@ type VerifiedPartnersClient struct {
 
 // NewVerifiedPartnersClient creates a new instance of VerifiedPartnersClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVerifiedPartnersClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VerifiedPartnersClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,7 +41,7 @@ func NewVerifiedPartnersClient(credential azcore.TokenCredential, options *arm.C
 // Get - Get properties of a verified partner.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - verifiedPartnerName - Name of the verified partner.
 //   - options - VerifiedPartnersClientGetOptions contains the optional parameters for the VerifiedPartnersClient.Get method.
 func (client *VerifiedPartnersClient) Get(ctx context.Context, verifiedPartnerName string, options *VerifiedPartnersClientGetOptions) (VerifiedPartnersClientGetResponse, error) {
@@ -78,7 +78,7 @@ func (client *VerifiedPartnersClient) getCreateRequest(ctx context.Context, veri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -95,7 +95,7 @@ func (client *VerifiedPartnersClient) getHandleResponse(resp *http.Response) (Ve
 
 // NewListPager - Get a list of all verified partners.
 //
-// Generated from API version 2025-04-01-preview
+// Generated from API version 2025-07-15-preview
 //   - options - VerifiedPartnersClientListOptions contains the optional parameters for the VerifiedPartnersClient.NewListPager
 //     method.
 func (client *VerifiedPartnersClient) NewListPager(options *VerifiedPartnersClientListOptions) *runtime.Pager[VerifiedPartnersClientListResponse] {
@@ -135,7 +135,7 @@ func (client *VerifiedPartnersClient) listCreateRequest(ctx context.Context, opt
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-04-01-preview")
+	reqQP.Set("api-version", "2025-07-15-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

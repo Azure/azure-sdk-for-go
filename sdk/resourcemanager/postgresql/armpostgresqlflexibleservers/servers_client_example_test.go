@@ -39,7 +39,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewElasticCluster() {
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 			},
 			Network: &armpostgresqlflexibleservers.Network{
 				PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateDisabled),
@@ -49,7 +49,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewElasticCluster() {
 				StorageSizeGB: to.Ptr[int32](256),
 				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP15),
 			},
-			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion16),
+			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSixteen),
 		},
 		SKU: &armpostgresqlflexibleservers.SKU{
 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -172,7 +172,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInMicrosoftOwnedVi
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 			},
 			Network: &armpostgresqlflexibleservers.Network{
 				PublicNetworkAccess: to.Ptr(armpostgresqlflexibleservers.ServerPublicNetworkAccessStateEnabled),
@@ -182,7 +182,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInMicrosoftOwnedVi
 				StorageSizeGB: to.Ptr[int32](512),
 				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 			},
-			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		},
 		SKU: &armpostgresqlflexibleservers.SKU{
 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -225,7 +225,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInYourOwnVirtualNe
 			},
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeCreate),
 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeSameZone),
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeSameZone),
 			},
 			Network: &armpostgresqlflexibleservers.Network{
 				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet"),
@@ -236,7 +236,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerInYourOwnVirtualNe
 				StorageSizeGB: to.Ptr[int32](512),
 				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 			},
-			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		},
 		SKU: &armpostgresqlflexibleservers.SKU{
 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -389,7 +389,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
 			},
 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 			},
 			Network: &armpostgresqlflexibleservers.Network{
 				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet"),
@@ -400,7 +400,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 				StorageSizeGB: to.Ptr[int32](512),
 				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 			},
-			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		},
 		SKU: &armpostgresqlflexibleservers.SKU{
 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -452,7 +452,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 				PrimaryUserAssignedIdentityID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleprimaryidentity"),
 			},
 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 			},
 			Network: &armpostgresqlflexibleservers.Network{
 				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet"),
@@ -463,7 +463,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithDataEncryption
 				StorageSizeGB: to.Ptr[int32](512),
 				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 			},
-			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		},
 		SKU: &armpostgresqlflexibleservers.SKU{
 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -510,7 +510,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithMicrosoftEntra
 				Type: to.Ptr(armpostgresqlflexibleservers.DataEncryptionTypeSystemManaged),
 			},
 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 			},
 			Network: &armpostgresqlflexibleservers.Network{
 				DelegatedSubnetResourceID:   to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.Network/virtualNetworks/examplevirtualnetwork/subnets/examplesubnet"),
@@ -521,7 +521,7 @@ func ExampleServersClient_BeginCreateOrUpdate_createANewServerWithMicrosoftEntra
 				StorageSizeGB: to.Ptr[int32](512),
 				Tier:          to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 			},
-			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		},
 		SKU: &armpostgresqlflexibleservers.SKU{
 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -599,7 +599,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	// 			},
 	// 			FullyQualifiedDomainName: to.Ptr("exampleserver.postgres.database.azure.com"),
 	// 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-	// 				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+	// 				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 	// 				State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 	// 			},
 	// 			MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
@@ -628,7 +628,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServer() {
 	// 				StorageSizeGB: to.Ptr[int32](128),
 	// 				Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP10),
 	// 			},
-	// 			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+	// 			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 	// 		},
 	// 		SKU: &armpostgresqlflexibleservers.SKU{
 	// 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -679,7 +679,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsnTIntegra
 	// 			},
 	// 			FullyQualifiedDomainName: to.Ptr("exampleserver.postgres.database.azure.com"),
 	// 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-	// 				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+	// 				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 	// 				State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 	// 			},
 	// 			MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
@@ -720,7 +720,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsnTIntegra
 	// 				StorageSizeGB: to.Ptr[int32](512),
 	// 				Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 	// 			},
-	// 			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+	// 			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 	// 		},
 	// 		SKU: &armpostgresqlflexibleservers.SKU{
 	// 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -771,7 +771,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegrate
 	// 			},
 	// 			FullyQualifiedDomainName: to.Ptr("exampleserver.postgres.database.azure.com"),
 	// 			HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-	// 				Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+	// 				Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 	// 				StandbyAvailabilityZone: to.Ptr("2"),
 	// 				State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateHealthy),
 	// 			},
@@ -801,7 +801,7 @@ func ExampleServersClient_Get_getInformationAboutAnExistingServerThatIsIntegrate
 	// 				StorageSizeGB: to.Ptr[int32](512),
 	// 				Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 	// 			},
-	// 			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+	// 			Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 	// 		},
 	// 		SKU: &armpostgresqlflexibleservers.SKU{
 	// 			Name: to.Ptr("Standard_D4ds_v5"),
@@ -866,7 +866,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver1.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 		// 						StandbyAvailabilityZone: to.Ptr("2"),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateHealthy),
 		// 					},
@@ -896,7 +896,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 						StorageSizeGB: to.Ptr[int32](512),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),
@@ -946,7 +946,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver2.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 		// 					},
 		// 					MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
@@ -975,7 +975,7 @@ func ExampleServersClient_NewListByResourceGroupPager() {
 		// 						StorageSizeGB: to.Ptr[int32](128),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP10),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),
@@ -1042,7 +1042,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver1.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 		// 						StandbyAvailabilityZone: to.Ptr("2"),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateHealthy),
 		// 					},
@@ -1072,7 +1072,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 						StorageSizeGB: to.Ptr[int32](512),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),
@@ -1108,7 +1108,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver2.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeZoneRedundant),
 		// 						StandbyAvailabilityZone: to.Ptr("1"),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateHealthy),
 		// 					},
@@ -1138,7 +1138,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 						StorageSizeGB: to.Ptr[int32](128),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP10),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),
@@ -1187,7 +1187,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver3.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 		// 					},
 		// 					MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
@@ -1216,7 +1216,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 						StorageSizeGB: to.Ptr[int32](128),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP10),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),
@@ -1250,7 +1250,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver4.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 		// 					},
 		// 					MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
@@ -1279,7 +1279,7 @@ func ExampleServersClient_NewListBySubscriptionPager() {
 		// 						StorageSizeGB: to.Ptr[int32](512),
 		// 						Throughput: to.Ptr[int32](125),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),
@@ -1705,7 +1705,7 @@ func ExampleServersClient_BeginUpdate_updateAnExistingServerToUpgradeTheMajorVer
 	poller, err := clientFactory.NewServersClient().BeginUpdate(ctx, "exampleresourcegroup", "exampleserver", armpostgresqlflexibleservers.ServerForPatch{
 		Properties: &armpostgresqlflexibleservers.ServerPropertiesForPatch{
 			CreateMode: to.Ptr(armpostgresqlflexibleservers.CreateModeForPatchUpdate),
-			Version:    to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+			Version:    to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		},
 	}, nil)
 	if err != nil {

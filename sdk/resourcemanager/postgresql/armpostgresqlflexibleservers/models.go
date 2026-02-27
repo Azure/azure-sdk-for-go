@@ -684,7 +684,7 @@ type FirewallRuleProperties struct {
 // HighAvailability - High availability properties of a server.
 type HighAvailability struct {
 	// High availability mode for a server.
-	Mode *PostgreSQLFlexibleServerHighAvailabilityMode
+	Mode *HighAvailabilityMode
 
 	// Availability zone associated to the standby server created when high availability is set to SameZone or ZoneRedundant.
 	StandbyAvailabilityZone *string
@@ -696,7 +696,7 @@ type HighAvailability struct {
 // HighAvailabilityForPatch - High availability properties of a server.
 type HighAvailabilityForPatch struct {
 	// High availability mode for a server.
-	Mode *PostgreSQLFlexibleServerHighAvailabilityMode
+	Mode *HighAvailabilityMode
 
 	// Availability zone associated to the standby server created when high availability is set to SameZone or ZoneRedundant.
 	StandbyAvailabilityZone *string

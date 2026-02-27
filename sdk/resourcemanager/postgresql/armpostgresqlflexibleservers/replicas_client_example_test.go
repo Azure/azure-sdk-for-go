@@ -58,7 +58,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					},
 		// 					FullyQualifiedDomainName: to.Ptr("exampleserver.postgres.database.azure.com"),
 		// 					HighAvailability: &armpostgresqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armpostgresqlflexibleservers.PostgreSQLFlexibleServerHighAvailabilityModeDisabled),
+		// 						Mode: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityModeDisabled),
 		// 						State: to.Ptr(armpostgresqlflexibleservers.HighAvailabilityStateNotEnabled),
 		// 					},
 		// 					MaintenanceWindow: &armpostgresqlflexibleservers.MaintenanceWindow{
@@ -85,7 +85,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 						StorageSizeGB: to.Ptr[int32](512),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersion17),
+		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),

@@ -1,21 +1,16 @@
 # Release History
 
-## 6.0.0-beta.1 (2026-02-24)
+## 6.0.0-beta.1 (2026-02-27)
 ### Breaking Changes
 
-- Type of `HighAvailability.Mode` has been changed from `*HighAvailabilityMode` to `*PostgreSQLFlexibleServerHighAvailabilityMode`
-- Type of `HighAvailabilityForPatch.Mode` has been changed from `*HighAvailabilityMode` to `*PostgreSQLFlexibleServerHighAvailabilityMode`
 - Type of `Operation.Properties` has been changed from `map[string]any` to `*OperationProperties`
-- `PostgresMajorVersionEighteen`, `PostgresMajorVersionEleven`, `PostgresMajorVersionFifteen`, `PostgresMajorVersionFourteen`, `PostgresMajorVersionSeventeen`, `PostgresMajorVersionSixteen`, `PostgresMajorVersionThirteen`, `PostgresMajorVersionTwelve` from enum `PostgresMajorVersion` has been removed
-- Field `XMSRequestID` of struct `BackupsLongTermRetentionClientCheckPrerequisitesResponse` has been removed
 
 ### Features Added
 
-- New value `PostgresMajorVersion11`, `PostgresMajorVersion12`, `PostgresMajorVersion13`, `PostgresMajorVersion14`, `PostgresMajorVersion15`, `PostgresMajorVersion16`, `PostgresMajorVersion17`, `PostgresMajorVersion18` added to enum type `PostgresMajorVersion`
+- New value `HighAvailabilityModeDisabled` added to enum type `HighAvailabilityMode`
 - New value `RecommendationTypeEnumVacuumTable` added to enum type `RecommendationTypeEnum`
 - New value `RecommendationTypeParameterEnumVacuumTable` added to enum type `RecommendationTypeParameterEnum`
 - New enum type `NetworkMigrationState` with values `NetworkMigrationStateCancelInProgress`, `NetworkMigrationStateCancelled`, `NetworkMigrationStateFailed`, `NetworkMigrationStateInProgress`, `NetworkMigrationStatePending`, `NetworkMigrationStateSucceeded`
-- New enum type `PostgreSQLFlexibleServerHighAvailabilityMode` with values `PostgreSQLFlexibleServerHighAvailabilityModeDisabled`, `PostgreSQLFlexibleServerHighAvailabilityModeSameZone`, `PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant`
 - New function `*ServersClient.BeginMigrateNetworkMode(ctx context.Context, resourceGroupName string, serverName string, options *ServersClientBeginMigrateNetworkModeOptions) (*runtime.Poller[ServersClientMigrateNetworkModeResponse], error)`
 - New struct `LogSpecification`
 - New struct `MetricSpecification`
@@ -23,8 +18,7 @@
 - New struct `OperationProperties`
 - New struct `ServiceSpecification`
 - New struct `TuningOptionsProperties`
-- New field `RequestID` in struct `BackupsLongTermRetentionClientCheckPrerequisitesResponse`
-- New field `RequestID` in struct `BackupsLongTermRetentionClientStartResponse`
+- New field `XMSRequestID` in struct `BackupsLongTermRetentionClientStartResponse`
 - New field `Properties` in struct `TuningOptions`
 
 

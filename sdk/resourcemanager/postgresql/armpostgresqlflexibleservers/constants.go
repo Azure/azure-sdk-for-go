@@ -349,6 +349,7 @@ func PossibleGeographicallyRedundantBackupSupportValues() []GeographicallyRedund
 type HighAvailabilityMode string
 
 const (
+	HighAvailabilityModeDisabled      HighAvailabilityMode = "Disabled"
 	HighAvailabilityModeSameZone      HighAvailabilityMode = "SameZone"
 	HighAvailabilityModeZoneRedundant HighAvailabilityMode = "ZoneRedundant"
 )
@@ -356,6 +357,7 @@ const (
 // PossibleHighAvailabilityModeValues returns the possible values for the HighAvailabilityMode const type.
 func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
 	return []HighAvailabilityMode{
+		HighAvailabilityModeDisabled,
 		HighAvailabilityModeSameZone,
 		HighAvailabilityModeZoneRedundant,
 	}
@@ -722,49 +724,31 @@ func PossiblePasswordBasedAuthValues() []PasswordBasedAuth {
 	}
 }
 
-// PostgreSQLFlexibleServerHighAvailabilityMode - Modes of high availability supported for this compute.
-type PostgreSQLFlexibleServerHighAvailabilityMode string
-
-const (
-	PostgreSQLFlexibleServerHighAvailabilityModeDisabled      PostgreSQLFlexibleServerHighAvailabilityMode = "Disabled"
-	PostgreSQLFlexibleServerHighAvailabilityModeSameZone      PostgreSQLFlexibleServerHighAvailabilityMode = "SameZone"
-	PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant PostgreSQLFlexibleServerHighAvailabilityMode = "ZoneRedundant"
-)
-
-// PossiblePostgreSQLFlexibleServerHighAvailabilityModeValues returns the possible values for the PostgreSQLFlexibleServerHighAvailabilityMode const type.
-func PossiblePostgreSQLFlexibleServerHighAvailabilityModeValues() []PostgreSQLFlexibleServerHighAvailabilityMode {
-	return []PostgreSQLFlexibleServerHighAvailabilityMode{
-		PostgreSQLFlexibleServerHighAvailabilityModeDisabled,
-		PostgreSQLFlexibleServerHighAvailabilityModeSameZone,
-		PostgreSQLFlexibleServerHighAvailabilityModeZoneRedundant,
-	}
-}
-
 // PostgresMajorVersion - Major version of PostgreSQL database engine.
 type PostgresMajorVersion string
 
 const (
-	PostgresMajorVersion11 PostgresMajorVersion = "11"
-	PostgresMajorVersion12 PostgresMajorVersion = "12"
-	PostgresMajorVersion13 PostgresMajorVersion = "13"
-	PostgresMajorVersion14 PostgresMajorVersion = "14"
-	PostgresMajorVersion15 PostgresMajorVersion = "15"
-	PostgresMajorVersion16 PostgresMajorVersion = "16"
-	PostgresMajorVersion17 PostgresMajorVersion = "17"
-	PostgresMajorVersion18 PostgresMajorVersion = "18"
+	PostgresMajorVersionEighteen  PostgresMajorVersion = "18"
+	PostgresMajorVersionEleven    PostgresMajorVersion = "11"
+	PostgresMajorVersionFifteen   PostgresMajorVersion = "15"
+	PostgresMajorVersionFourteen  PostgresMajorVersion = "14"
+	PostgresMajorVersionSeventeen PostgresMajorVersion = "17"
+	PostgresMajorVersionSixteen   PostgresMajorVersion = "16"
+	PostgresMajorVersionThirteen  PostgresMajorVersion = "13"
+	PostgresMajorVersionTwelve    PostgresMajorVersion = "12"
 )
 
 // PossiblePostgresMajorVersionValues returns the possible values for the PostgresMajorVersion const type.
 func PossiblePostgresMajorVersionValues() []PostgresMajorVersion {
 	return []PostgresMajorVersion{
-		PostgresMajorVersion11,
-		PostgresMajorVersion12,
-		PostgresMajorVersion13,
-		PostgresMajorVersion14,
-		PostgresMajorVersion15,
-		PostgresMajorVersion16,
-		PostgresMajorVersion17,
-		PostgresMajorVersion18,
+		PostgresMajorVersionEighteen,
+		PostgresMajorVersionEleven,
+		PostgresMajorVersionFifteen,
+		PostgresMajorVersionFourteen,
+		PostgresMajorVersionSeventeen,
+		PostgresMajorVersionSixteen,
+		PostgresMajorVersionThirteen,
+		PostgresMajorVersionTwelve,
 	}
 }
 

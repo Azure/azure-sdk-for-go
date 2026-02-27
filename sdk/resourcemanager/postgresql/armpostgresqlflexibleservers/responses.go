@@ -69,7 +69,7 @@ type BackupsLongTermRetentionClientCheckPrerequisitesResponse struct {
 
 	// A unique ID for the current operation, service generated. All the resource providers must return this value in the response
 	// headers to facilitate debugging.
-	RequestID *string
+	XMSRequestID *string
 }
 
 // BackupsLongTermRetentionClientGetResponse contains the response from method BackupsLongTermRetentionClient.Get.
@@ -91,7 +91,7 @@ type BackupsLongTermRetentionClientStartResponse struct {
 
 	// A unique ID for the current operation, service generated. All the resource providers must return this value in the response
 	// headers to facilitate debugging.
-	RequestID *string
+	XMSRequestID *string
 }
 
 // CapabilitiesByLocationClientListResponse contains the response from method CapabilitiesByLocationClient.NewListPager.
@@ -330,7 +330,7 @@ type ServersClientMigrateNetworkModeResponse struct {
 
 	// A unique ID for the current operation, service generated. All the resource providers must return this value in the response
 	// headers to facilitate debugging.
-	RequestID *string
+	XMSRequestID *string
 }
 
 // ServersClientRestartResponse contains the response from method ServersClient.BeginRestart.

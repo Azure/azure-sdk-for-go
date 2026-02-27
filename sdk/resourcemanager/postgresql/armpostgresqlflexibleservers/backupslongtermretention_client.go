@@ -104,7 +104,7 @@ func (client *BackupsLongTermRetentionClient) checkPrerequisitesCreateRequest(ct
 func (client *BackupsLongTermRetentionClient) checkPrerequisitesHandleResponse(resp *http.Response) (BackupsLongTermRetentionClientCheckPrerequisitesResponse, error) {
 	result := BackupsLongTermRetentionClientCheckPrerequisitesResponse{}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
-		result.RequestID = &val
+		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LtrPreBackupResponse); err != nil {
 		return BackupsLongTermRetentionClientCheckPrerequisitesResponse{}, err

@@ -1187,7 +1187,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context
 
 // createInstanceMSDeployOperationCreateRequest creates the CreateInstanceMSDeployOperation request.
 func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -1278,7 +1278,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Con
 
 // createInstanceMSDeployOperationSlotCreateRequest creates the CreateInstanceMSDeployOperationSlot request.
 func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -1371,7 +1371,7 @@ func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resour
 
 // createMSDeployOperationCreateRequest creates the CreateMSDeployOperation request.
 func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateMSDeployOperationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -1457,7 +1457,7 @@ func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, re
 
 // createMSDeployOperationSlotCreateRequest creates the CreateMSDeployOperationSlot request.
 func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateMSDeployOperationSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -10106,7 +10106,7 @@ func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourc
 
 // getInstanceMSDeployLogCreateRequest creates the GetInstanceMSDeployLog request.
 func (client *WebAppsClient) getInstanceMSDeployLogCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, _ *WebAppsClientGetInstanceMSDeployLogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/mSDeploy/log"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -10179,7 +10179,7 @@ func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, res
 
 // getInstanceMSDeployLogSlotCreateRequest creates the GetInstanceMSDeployLogSlot request.
 func (client *WebAppsClient) getInstanceMSDeployLogSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, _ *WebAppsClientGetInstanceMSDeployLogSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/mSDeploy/log"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -10255,7 +10255,7 @@ func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, reso
 
 // getInstanceMsDeployStatusCreateRequest creates the GetInstanceMsDeployStatus request.
 func (client *WebAppsClient) getInstanceMsDeployStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, _ *WebAppsClientGetInstanceMsDeployStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -10328,7 +10328,7 @@ func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, 
 
 // getInstanceMsDeployStatusSlotCreateRequest creates the GetInstanceMsDeployStatusSlot request.
 func (client *WebAppsClient) getInstanceMsDeployStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, _ *WebAppsClientGetInstanceMsDeployStatusSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -10945,7 +10945,7 @@ func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupNa
 
 // getMSDeployLogCreateRequest creates the GetMSDeployLog request.
 func (client *WebAppsClient) getMSDeployLogCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetMSDeployLogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/mSDeploy/log"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -11013,7 +11013,7 @@ func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGro
 
 // getMSDeployLogSlotCreateRequest creates the GetMSDeployLogSlot request.
 func (client *WebAppsClient) getMSDeployLogSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetMSDeployLogSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/mSDeploy/log"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -11084,7 +11084,7 @@ func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGrou
 
 // getMSDeployStatusCreateRequest creates the GetMSDeployStatus request.
 func (client *WebAppsClient) getMSDeployStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetMSDeployStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -11152,7 +11152,7 @@ func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resource
 
 // getMSDeployStatusSlotCreateRequest creates the GetMSDeployStatusSlot request.
 func (client *WebAppsClient) getMSDeployStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetMSDeployStatusSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/mSDeploy"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -20858,6 +20858,7 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, publishingProfileOptions); err != nil {
@@ -20868,12 +20869,9 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 
 // listPublishingProfileXMLWithSecretsHandleResponse handles the ListPublishingProfileXMLWithSecrets response.
 func (client *WebAppsClient) listPublishingProfileXMLWithSecretsHandleResponse(resp *http.Response) (WebAppsClientListPublishingProfileXMLWithSecretsResponse, error) {
-	result := WebAppsClientListPublishingProfileXMLWithSecretsResponse{}
+	result := WebAppsClientListPublishingProfileXMLWithSecretsResponse{Body: resp.Body}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
-	}
-	if err := runtime.UnmarshalAsByteArray(resp, &result.Value, runtime.Base64StdFormat); err != nil {
-		return WebAppsClientListPublishingProfileXMLWithSecretsResponse{}, err
 	}
 	return result, nil
 }
@@ -20939,6 +20937,7 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2025-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	runtime.SkipBodyDownload(req)
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, publishingProfileOptions); err != nil {
@@ -20949,12 +20948,9 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 
 // listPublishingProfileXMLWithSecretsSlotHandleResponse handles the ListPublishingProfileXMLWithSecretsSlot response.
 func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotHandleResponse(resp *http.Response) (WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse, error) {
-	result := WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}
+	result := WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{Body: resp.Body}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
-	}
-	if err := runtime.UnmarshalAsByteArray(resp, &result.Value, runtime.Base64StdFormat); err != nil {
-		return WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
 	return result, nil
 }

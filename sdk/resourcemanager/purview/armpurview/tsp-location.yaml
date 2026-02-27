@@ -1,0 +1,4 @@
+directory: specification/purview/resource-manager/Microsoft.Purview/Purview
+commit: b400ee80cd2c99c0fe0b5cf1e5e33f9dc0f12510
+repo: i-specs
+additionalDirectories: 

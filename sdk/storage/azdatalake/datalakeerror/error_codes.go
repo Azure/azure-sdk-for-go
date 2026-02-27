@@ -5,6 +5,7 @@ package datalakeerror
 
 import (
 	"errors"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -67,6 +68,7 @@ const (
 	PathArchived                                      StorageErrorCode = "PathArchived"
 	PathBeingRehydrated                               StorageErrorCode = "PathBeingRehydrated"
 	PathImmutableDueToPolicy                          StorageErrorCode = "PathImmutableDueToPolicy"
+	PathIsTooDeep                                     StorageErrorCode = "PathIsTooDeep"
 	PathNotArchived                                   StorageErrorCode = "PathNotArchived"
 	PathNotFound                                      StorageErrorCode = "PathNotFound"
 	PathOverwritten                                   StorageErrorCode = "PathOverwritten"

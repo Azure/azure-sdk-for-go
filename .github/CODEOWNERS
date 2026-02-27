@@ -82,6 +82,9 @@
 /sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @chlowell @gracewilcox @jhendrixMSFT
 
 # PRLabel: %Monitor
+/sdk/monitor/ingestion/azlogs/                                     @Azure/azure-sdk-write-monitor-data-plane
+
+# PRLabel: %Monitor
 /sdk/monitor/query/azmetrics/                                      @Azure/azure-sdk-write-monitor-query-metrics
 
 # AzureSdkOwners:                                                  @gracewilcox
@@ -659,6 +662,8 @@
 /.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool
+/eng/scripts/automation_init.sh @lirenhe @tadelesh @JiaqiZhang-Dev
+/eng/scripts/build.ps1          @lirenhe @tadelesh @JiaqiZhang-Dev
 /eng/tools/generator            @lirenhe @tadelesh @JiaqiZhang-Dev
 /eng/tools/internal             @lirenhe @tadelesh @JiaqiZhang-Dev
 /eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev

@@ -1,5 +1,38 @@
 # Release History
 
+## 2.0.0 (2026-02-03)
+### Breaking Changes
+
+- Enum `NetworkOperationStatus` has been removed
+- Struct `AzureAsyncOperationResult` has been removed
+- Struct `BackendPoolListResult` has been removed
+- Struct `BackendPoolUpdateParameters` has been removed
+- Struct `DefaultErrorResponse` has been removed
+- Struct `DefaultErrorResponseError` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `FrontendEndpointUpdateParameters` has been removed
+- Struct `HealthProbeSettingsListResult` has been removed
+- Struct `HealthProbeSettingsUpdateParameters` has been removed
+- Struct `LoadBalancingSettingsListResult` has been removed
+- Struct `LoadBalancingSettingsUpdateParameters` has been removed
+- Struct `Resource` has been removed
+- Struct `RoutingRuleListResult` has been removed
+- Struct `RoutingRuleUpdateParameters` has been removed
+- Struct `RulesEngineUpdateParameters` has been removed
+- Struct `UpdateParameters` has been removed
+
+### Features Added
+
+- New value `ActionTypeCAPTCHA` added to enum type `ActionType`
+- New value `OperatorServiceTagMatch` added to enum type `Operator`
+- New enum type `SensitivityType` with values `SensitivityTypeHigh`, `SensitivityTypeLow`, `SensitivityTypeMedium`
+- New field `DefaultSensitivity` in struct `ManagedRuleDefinition`
+- New field `Sensitivity` in struct `ManagedRuleOverride`
+- New field `CaptchaExpirationInMinutes` in struct `PolicySettings`
+
+
 ## 1.4.0 (2024-04-26)
 ### Features Added
 

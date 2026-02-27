@@ -27,7 +27,7 @@ type ReplicationProtectedItemsClient struct {
 // NewReplicationProtectedItemsClient creates a new instance of ReplicationProtectedItemsClient with the specified values.
 //   - subscriptionID - The subscription Id.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationProtectedItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectedItemsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewReplicationProtectedItemsClient(subscriptionID string, credential azcore
 // BeginAddDisks - Operation to add disks(s) to the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -72,7 +72,7 @@ func (client *ReplicationProtectedItemsClient) BeginAddDisks(ctx context.Context
 // AddDisks - Operation to add disks(s) to the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) addDisks(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, addDisksInput AddDisksInput, options *ReplicationProtectedItemsClientBeginAddDisksOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginAddDisks"
@@ -126,7 +126,7 @@ func (client *ReplicationProtectedItemsClient) addDisksCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, addDisksInput); err != nil {
@@ -138,7 +138,7 @@ func (client *ReplicationProtectedItemsClient) addDisksCreateRequest(ctx context
 // BeginApplyRecoveryPoint - The operation to change the recovery point of a failed over replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - The ARM fabric name.
@@ -167,7 +167,7 @@ func (client *ReplicationProtectedItemsClient) BeginApplyRecoveryPoint(ctx conte
 // ApplyRecoveryPoint - The operation to change the recovery point of a failed over replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) applyRecoveryPoint(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applyRecoveryPointInput ApplyRecoveryPointInput, options *ReplicationProtectedItemsClientBeginApplyRecoveryPointOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginApplyRecoveryPoint"
@@ -221,7 +221,7 @@ func (client *ReplicationProtectedItemsClient) applyRecoveryPointCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, applyRecoveryPointInput); err != nil {
@@ -233,7 +233,7 @@ func (client *ReplicationProtectedItemsClient) applyRecoveryPointCreateRequest(c
 // BeginCreate - The operation to create an ASR replication protected item (Enable replication).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Name of the fabric.
@@ -262,7 +262,7 @@ func (client *ReplicationProtectedItemsClient) BeginCreate(ctx context.Context, 
 // Create - The operation to create an ASR replication protected item (Enable replication).
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) create(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, input EnableProtectionInput, options *ReplicationProtectedItemsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginCreate"
@@ -316,7 +316,7 @@ func (client *ReplicationProtectedItemsClient) createCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -328,7 +328,7 @@ func (client *ReplicationProtectedItemsClient) createCreateRequest(ctx context.C
 // BeginDelete - The operation to disable replication on a replication protected item. This will also remove the item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -357,7 +357,7 @@ func (client *ReplicationProtectedItemsClient) BeginDelete(ctx context.Context, 
 // Delete - The operation to disable replication on a replication protected item. This will also remove the item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, disableProtectionInput DisableProtectionInput, options *ReplicationProtectedItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginDelete"
@@ -411,7 +411,7 @@ func (client *ReplicationProtectedItemsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, disableProtectionInput); err != nil {
 		return nil, err
@@ -422,7 +422,7 @@ func (client *ReplicationProtectedItemsClient) deleteCreateRequest(ctx context.C
 // BeginFailoverCancel - Operation to cancel the failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -450,7 +450,7 @@ func (client *ReplicationProtectedItemsClient) BeginFailoverCancel(ctx context.C
 // FailoverCancel - Operation to cancel the failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) failoverCancel(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginFailoverCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginFailoverCancel"
@@ -504,7 +504,7 @@ func (client *ReplicationProtectedItemsClient) failoverCancelCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -513,7 +513,7 @@ func (client *ReplicationProtectedItemsClient) failoverCancelCreateRequest(ctx c
 // BeginFailoverCommit - Operation to commit the failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -541,7 +541,7 @@ func (client *ReplicationProtectedItemsClient) BeginFailoverCommit(ctx context.C
 // FailoverCommit - Operation to commit the failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) failoverCommit(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginFailoverCommitOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginFailoverCommit"
@@ -595,7 +595,7 @@ func (client *ReplicationProtectedItemsClient) failoverCommitCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -604,7 +604,7 @@ func (client *ReplicationProtectedItemsClient) failoverCommitCreateRequest(ctx c
 // Get - Gets the details of an ASR replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric unique name.
@@ -666,7 +666,7 @@ func (client *ReplicationProtectedItemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -683,7 +683,7 @@ func (client *ReplicationProtectedItemsClient) getHandleResponse(resp *http.Resp
 
 // NewListPager - Gets the list of ASR replication protected items in the vault.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - options - ReplicationProtectedItemsClientListOptions contains the optional parameters for the ReplicationProtectedItemsClient.NewListPager
@@ -734,7 +734,7 @@ func (client *ReplicationProtectedItemsClient) listCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
@@ -754,7 +754,7 @@ func (client *ReplicationProtectedItemsClient) listHandleResponse(resp *http.Res
 
 // NewListByReplicationProtectionContainersPager - Gets the list of ASR replication protected items in the protection container.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -812,7 +812,7 @@ func (client *ReplicationProtectedItemsClient) listByReplicationProtectionContai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -830,7 +830,7 @@ func (client *ReplicationProtectedItemsClient) listByReplicationProtectionContai
 // BeginPlannedFailover - Operation to initiate a planned failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -859,7 +859,7 @@ func (client *ReplicationProtectedItemsClient) BeginPlannedFailover(ctx context.
 // PlannedFailover - Operation to initiate a planned failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) plannedFailover(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput PlannedFailoverInput, options *ReplicationProtectedItemsClientBeginPlannedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginPlannedFailover"
@@ -913,7 +913,7 @@ func (client *ReplicationProtectedItemsClient) plannedFailoverCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, failoverInput); err != nil {
@@ -927,7 +927,7 @@ func (client *ReplicationProtectedItemsClient) plannedFailoverCreateRequest(ctx 
 // clean disable replication for the item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -957,7 +957,7 @@ func (client *ReplicationProtectedItemsClient) BeginPurge(ctx context.Context, r
 // clean disable replication for the item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) purge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginPurgeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginPurge"
@@ -1011,15 +1011,113 @@ func (client *ReplicationProtectedItemsClient) purgeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, nil
+}
+
+// BeginReinstallMobilityService - The operation to reinstall the installed mobility service software on a replication protected
+// item to the latest available version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - resourceName - The name of the recovery services vault.
+//   - fabricName - The name of the fabric containing the protected item.
+//   - protectionContainerName - The name of the container containing the protected item.
+//   - replicatedProtectedItemName - The name of the protected item on which the agent is to be updated.
+//   - updateMobilityServiceRequest - Request to update the mobility service on the protected item.
+//   - options - ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions contains the optional parameters for the
+//     ReplicationProtectedItemsClient.BeginReinstallMobilityService method.
+func (client *ReplicationProtectedItemsClient) BeginReinstallMobilityService(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateMobilityServiceRequest ReinstallMobilityServiceRequest, options *ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions) (*runtime.Poller[ReplicationProtectedItemsClientReinstallMobilityServiceResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reinstallMobilityService(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReplicationProtectedItemsClientReinstallMobilityServiceResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReplicationProtectedItemsClientReinstallMobilityServiceResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ReinstallMobilityService - The operation to reinstall the installed mobility service software on a replication protected
+// item to the latest available version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
+func (client *ReplicationProtectedItemsClient) reinstallMobilityService(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateMobilityServiceRequest ReinstallMobilityServiceRequest, options *ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReplicationProtectedItemsClient.BeginReinstallMobilityService"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reinstallMobilityServiceCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName, updateMobilityServiceRequest, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// reinstallMobilityServiceCreateRequest creates the ReinstallMobilityService request.
+func (client *ReplicationProtectedItemsClient) reinstallMobilityServiceCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateMobilityServiceRequest ReinstallMobilityServiceRequest, _ *ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/reinstallMobilityService"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if fabricName == "" {
+		return nil, errors.New("parameter fabricName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+	if protectionContainerName == "" {
+		return nil, errors.New("parameter protectionContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
+	if replicatedProtectedItemName == "" {
+		return nil, errors.New("parameter replicatedProtectedItemName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{replicatedProtectedItemName}", url.PathEscape(replicatedProtectedItemName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, updateMobilityServiceRequest); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
 // BeginRemoveDisks - Operation to remove disk(s) from the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1048,7 +1146,7 @@ func (client *ReplicationProtectedItemsClient) BeginRemoveDisks(ctx context.Cont
 // RemoveDisks - Operation to remove disk(s) from the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) removeDisks(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, removeDisksInput RemoveDisksInput, options *ReplicationProtectedItemsClientBeginRemoveDisksOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginRemoveDisks"
@@ -1102,7 +1200,7 @@ func (client *ReplicationProtectedItemsClient) removeDisksCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, removeDisksInput); err != nil {
@@ -1115,7 +1213,7 @@ func (client *ReplicationProtectedItemsClient) removeDisksCreateRequest(ctx cont
 // resynchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - The name of the fabric.
@@ -1144,7 +1242,7 @@ func (client *ReplicationProtectedItemsClient) BeginRepairReplication(ctx contex
 // resynchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) repairReplication(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *ReplicationProtectedItemsClientBeginRepairReplicationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginRepairReplication"
@@ -1198,7 +1296,7 @@ func (client *ReplicationProtectedItemsClient) repairReplicationCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1207,7 +1305,7 @@ func (client *ReplicationProtectedItemsClient) repairReplicationCreateRequest(ct
 // BeginReprotect - Operation to reprotect or reverse replicate a failed over replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1236,7 +1334,7 @@ func (client *ReplicationProtectedItemsClient) BeginReprotect(ctx context.Contex
 // Reprotect - Operation to reprotect or reverse replicate a failed over replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) reprotect(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, reprotectInput ReverseReplicationInput, options *ReplicationProtectedItemsClientBeginReprotectOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginReprotect"
@@ -1290,7 +1388,7 @@ func (client *ReplicationProtectedItemsClient) reprotectCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, reprotectInput); err != nil {
@@ -1302,7 +1400,7 @@ func (client *ReplicationProtectedItemsClient) reprotectCreateRequest(ctx contex
 // BeginResolveHealthErrors - Operation to resolve health issues of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1331,7 +1429,7 @@ func (client *ReplicationProtectedItemsClient) BeginResolveHealthErrors(ctx cont
 // ResolveHealthErrors - Operation to resolve health issues of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) resolveHealthErrors(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, resolveHealthInput ResolveHealthInput, options *ReplicationProtectedItemsClientBeginResolveHealthErrorsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginResolveHealthErrors"
@@ -1385,7 +1483,7 @@ func (client *ReplicationProtectedItemsClient) resolveHealthErrorsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resolveHealthInput); err != nil {
@@ -1397,7 +1495,7 @@ func (client *ReplicationProtectedItemsClient) resolveHealthErrorsCreateRequest(
 // BeginSwitchProvider - Operation to initiate a switch provider of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1427,7 +1525,7 @@ func (client *ReplicationProtectedItemsClient) BeginSwitchProvider(ctx context.C
 // SwitchProvider - Operation to initiate a switch provider of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) switchProvider(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, switchProviderInput SwitchProviderInput, options *ReplicationProtectedItemsClientBeginSwitchProviderOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginSwitchProvider"
@@ -1481,7 +1579,7 @@ func (client *ReplicationProtectedItemsClient) switchProviderCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, switchProviderInput); err != nil {
@@ -1493,7 +1591,7 @@ func (client *ReplicationProtectedItemsClient) switchProviderCreateRequest(ctx c
 // BeginTestFailover - Operation to perform a test failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1522,7 +1620,7 @@ func (client *ReplicationProtectedItemsClient) BeginTestFailover(ctx context.Con
 // TestFailover - Operation to perform a test failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) testFailover(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, testfailoverInput TestFailoverInput, options *ReplicationProtectedItemsClientBeginTestFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginTestFailover"
@@ -1576,7 +1674,7 @@ func (client *ReplicationProtectedItemsClient) testFailoverCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, testfailoverInput); err != nil {
@@ -1588,7 +1686,7 @@ func (client *ReplicationProtectedItemsClient) testFailoverCreateRequest(ctx con
 // BeginTestFailoverCleanup - Operation to clean up the test failover of a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1617,7 +1715,7 @@ func (client *ReplicationProtectedItemsClient) BeginTestFailoverCleanup(ctx cont
 // TestFailoverCleanup - Operation to clean up the test failover of a replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) testFailoverCleanup(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, cleanupInput TestFailoverCleanupInput, options *ReplicationProtectedItemsClientBeginTestFailoverCleanupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginTestFailoverCleanup"
@@ -1671,7 +1769,7 @@ func (client *ReplicationProtectedItemsClient) testFailoverCleanupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cleanupInput); err != nil {
@@ -1683,7 +1781,7 @@ func (client *ReplicationProtectedItemsClient) testFailoverCleanupCreateRequest(
 // BeginUnplannedFailover - Operation to initiate a failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Unique fabric name.
@@ -1712,7 +1810,7 @@ func (client *ReplicationProtectedItemsClient) BeginUnplannedFailover(ctx contex
 // UnplannedFailover - Operation to initiate a failover of the replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) unplannedFailover(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, failoverInput UnplannedFailoverInput, options *ReplicationProtectedItemsClientBeginUnplannedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginUnplannedFailover"
@@ -1766,7 +1864,7 @@ func (client *ReplicationProtectedItemsClient) unplannedFailoverCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, failoverInput); err != nil {
@@ -1778,7 +1876,7 @@ func (client *ReplicationProtectedItemsClient) unplannedFailoverCreateRequest(ct
 // BeginUpdate - The operation to update the recovery settings of an ASR replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -1807,7 +1905,7 @@ func (client *ReplicationProtectedItemsClient) BeginUpdate(ctx context.Context, 
 // Update - The operation to update the recovery settings of an ASR replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) update(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateProtectionInput UpdateReplicationProtectedItemInput, options *ReplicationProtectedItemsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginUpdate"
@@ -1861,7 +1959,7 @@ func (client *ReplicationProtectedItemsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateProtectionInput); err != nil {
@@ -1873,7 +1971,7 @@ func (client *ReplicationProtectedItemsClient) updateCreateRequest(ctx context.C
 // BeginUpdateAppliance - The operation to update appliance of an ASR replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -1902,7 +2000,7 @@ func (client *ReplicationProtectedItemsClient) BeginUpdateAppliance(ctx context.
 // UpdateAppliance - The operation to update appliance of an ASR replication protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) updateAppliance(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, applianceUpdateInput UpdateApplianceForReplicationProtectedItemInput, options *ReplicationProtectedItemsClientBeginUpdateApplianceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginUpdateAppliance"
@@ -1956,7 +2054,7 @@ func (client *ReplicationProtectedItemsClient) updateApplianceCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, applianceUpdateInput); err != nil {
@@ -1969,7 +2067,7 @@ func (client *ReplicationProtectedItemsClient) updateApplianceCreateRequest(ctx 
 // protected item to the latest available version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - The name of the fabric containing the protected item.
@@ -2000,7 +2098,7 @@ func (client *ReplicationProtectedItemsClient) BeginUpdateMobilityService(ctx co
 // item to the latest available version.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectedItemsClient) updateMobilityService(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateMobilityServiceRequest UpdateMobilityServiceRequest, options *ReplicationProtectedItemsClientBeginUpdateMobilityServiceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectedItemsClient.BeginUpdateMobilityService"
@@ -2054,7 +2152,7 @@ func (client *ReplicationProtectedItemsClient) updateMobilityServiceCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateMobilityServiceRequest); err != nil {

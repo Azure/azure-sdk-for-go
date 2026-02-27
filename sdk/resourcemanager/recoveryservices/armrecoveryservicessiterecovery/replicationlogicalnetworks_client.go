@@ -27,7 +27,7 @@ type ReplicationLogicalNetworksClient struct {
 // NewReplicationLogicalNetworksClient creates a new instance of ReplicationLogicalNetworksClient with the specified values.
 //   - subscriptionID - The subscription Id.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationLogicalNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationLogicalNetworksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewReplicationLogicalNetworksClient(subscriptionID string, credential azcor
 // Get - Gets the details of a logical network.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Server Id.
@@ -100,7 +100,7 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,7 +117,7 @@ func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Res
 
 // NewListByReplicationFabricsPager - Lists all the logical networks of the Azure Site Recovery fabric.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Server Id.
@@ -170,7 +170,7 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -463,6 +463,13 @@ type ReplicationProtectedItemsClientBeginPurgeOptions struct {
 	ResumeToken string
 }
 
+// ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginReinstallMobilityService
+// method.
+type ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ReplicationProtectedItemsClientBeginRemoveDisksOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginRemoveDisks
 // method.
 type ReplicationProtectedItemsClientBeginRemoveDisksOptions struct {

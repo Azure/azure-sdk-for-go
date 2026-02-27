@@ -27,7 +27,7 @@ type ReplicationProtectionContainerMappingsClient struct {
 // NewReplicationProtectionContainerMappingsClient creates a new instance of ReplicationProtectionContainerMappingsClient with the specified values.
 //   - subscriptionID - The subscription Id.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationProtectionContainerMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectionContainerMappingsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewReplicationProtectionContainerMappingsClient(subscriptionID string, cred
 // BeginCreate - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -72,7 +72,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx cont
 // Create - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionContainerMappingsClient.BeginCreate"
@@ -126,7 +126,7 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creationInput); err != nil {
@@ -138,7 +138,7 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 // BeginDelete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -167,7 +167,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx cont
 // Delete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionContainerMappingsClient.BeginDelete"
@@ -221,7 +221,7 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if err := runtime.MarshalAsJSON(req, removalInput); err != nil {
 		return nil, err
@@ -232,7 +232,7 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 // Get - Gets the details of a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -294,7 +294,7 @@ func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -311,7 +311,7 @@ func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(re
 
 // NewListPager - Lists the protection container mappings in the vault.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.NewListPager
@@ -359,7 +359,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -376,7 +376,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(r
 
 // NewListByReplicationProtectionContainersPager - Lists the protection container mappings for a protection container.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -434,7 +434,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -452,7 +452,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 // BeginPurge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -480,7 +480,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx conte
 // Purge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionContainerMappingsClient.BeginPurge"
@@ -534,7 +534,7 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -542,7 +542,7 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 // BeginUpdate - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -571,7 +571,7 @@ func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx cont
 // Update - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionContainerMappingsClient.BeginUpdate"
@@ -625,7 +625,7 @@ func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateInput); err != nil {

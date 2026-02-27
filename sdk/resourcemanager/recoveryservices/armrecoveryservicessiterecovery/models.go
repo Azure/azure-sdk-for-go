@@ -26,6 +26,27 @@ func (a *A2AAddDisksInput) GetAddDisksProviderSpecificInput() *AddDisksProviderS
 	}
 }
 
+// A2AAgentReinstallBlockingErrorDetails - A2A source agent reinstall blocking error details.
+type A2AAgentReinstallBlockingErrorDetails struct {
+	// error code.
+	ErrorCode *string
+
+	// error message.
+	ErrorMessage *string
+
+	// error message parameters.
+	ErrorMessageParameters map[string]*string
+
+	// error tags.
+	ErrorTags map[string]*string
+
+	// possible causes.
+	PossibleCauses *string
+
+	// recommended action.
+	RecommendedAction *string
+}
+
 // A2AApplyClusterRecoveryPointInput - A2A provider specific input for apply cluster recovery point.
 type A2AApplyClusterRecoveryPointInput struct {
 	// REQUIRED; The class type.
@@ -345,6 +366,9 @@ type A2AEnableProtectionInput struct {
 
 	// The multi vm group name.
 	MultiVMGroupName *string
+
+	// the platform fault domain.
+	PlatformFaultDomain *int32
 
 	// The replication protection cluster Id.
 	ProtectionClusterID *string
@@ -836,11 +860,23 @@ type A2AReplicationDetails struct {
 	// Agent expiry date.
 	AgentExpiryDate *time.Time
 
+	// The agent version to which last agent reinstall was attempted.
+	AgentReinstallAttemptToVersion *string
+
 	// The agent version.
 	AgentVersion *string
 
+	// auto agent upgrade retry count.
+	AutoAgentUpgradeRetryCount *int64
+
 	// A value indicating whether the auto protection is enabled.
 	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk
+
+	// The distro name.
+	DistroName *string
+
+	// The agent os name last agent reinstall was attempted.
+	DistroNameForWhichAgentIsInstalled *string
 
 	// The fabric specific object Id of the virtual machine.
 	FabricObjectID *string
@@ -850,6 +886,18 @@ type A2AReplicationDetails struct {
 
 	// The initial recovery extended location.
 	InitialRecoveryExtendedLocation *ExtendedLocation
+
+	// A value indicating whether replication agent reinstallation is required.
+	IsAgentReinstallRequired *bool
+
+	// A value indicating whether replication agent Upgrade is In-Progress.
+	IsAgentUpgradeInProgress *bool
+
+	// A value indicating whether replication agent Upgrade retry exhausted.
+	IsAgentUpgradeRetryThresholdExhausted *bool
+
+	// A value indicating whether replication agent upgradeable.
+	IsAgentUpgradeable *bool
 
 	// A value indicating if the cluster infra is ready or not.
 	IsClusterInfraReady *bool
@@ -889,8 +937,14 @@ type A2AReplicationDetails struct {
 	// The multi vm group name.
 	MultiVMGroupName *string
 
+	// The OS family name.
+	OSFamilyName *string
+
 	// The type of operating system.
 	OSType *string
+
+	// the platform fault domain.
+	PlatformFaultDomain *int32
 
 	// The primary availability zone.
 	PrimaryAvailabilityZone *string
@@ -909,6 +963,12 @@ type A2AReplicationDetails struct {
 
 	// The replication protection cluster Id.
 	ProtectionClusterID *string
+
+	// value for reason blocking reinstall.
+	ReasonsBlockingReInstall *string
+
+	// whether reinstall is possible or not.
+	ReasonsBlockingReinstallDetails []*A2AAgentReinstallBlockingErrorDetails
 
 	// The recovery availability set.
 	RecoveryAvailabilitySet *string
@@ -1294,6 +1354,9 @@ type A2ASwitchProtectionInput struct {
 	// The recovery disk encryption information.
 	DiskEncryptionInfo *DiskEncryptionInfo
 
+	// the platform fault domain.
+	PlatformFaultDomain *int32
+
 	// The Policy Id.
 	PolicyID *string
 
@@ -1423,6 +1486,12 @@ type A2AUpdateReplicationProtectedItemInput struct {
 
 	// Managed disk update details.
 	ManagedDiskUpdateDetails []*A2AVMManagedDiskUpdateDetails
+
+	// The platform fault domain.
+	PlatformFaultDomain *int32
+
+	// The recovery availability zone.
+	RecoveryAvailabilityZone *string
 
 	// The boot diagnostic storage account.
 	RecoveryBootDiagStorageAccountID *string
@@ -3370,14 +3439,23 @@ type HyperVReplicaAzureDiskInputDetails struct {
 	// The DiskId.
 	DiskID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
 	// The disk type.
 	DiskType *DiskAccountType
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
 
 	// The LogStorageAccountId.
 	LogStorageAccountID *string
 
 	// The logical sector size (in bytes), 512 by default.
 	SectorSizeInBytes *int32
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // HyperVReplicaAzureEnableProtectionInput - HyperVReplicaAzure specific enable protection input.
@@ -3442,6 +3520,9 @@ type HyperVReplicaAzureEnableProtectionInput struct {
 
 	// The target azure VM Name.
 	TargetAzureVMName *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The tags for the target managed disks.
 	TargetManagedDiskTags map[string]*string
@@ -3541,6 +3622,12 @@ type HyperVReplicaAzureManagedDiskDetails struct {
 	// The disk Id.
 	DiskID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
+
 	// The replica disk type.
 	ReplicaDiskType *string
 
@@ -3552,6 +3639,9 @@ type HyperVReplicaAzureManagedDiskDetails struct {
 
 	// The disk type.
 	TargetDiskAccountType *DiskAccountType
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // HyperVReplicaAzurePlannedFailoverProviderInput - HyperVReplicaAzure specific planned failover input.
@@ -3571,6 +3661,9 @@ type HyperVReplicaAzurePlannedFailoverProviderInput struct {
 
 	// Secondary kek certificate pfx.
 	SecondaryKekCertificatePfx *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 }
 
 // GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
@@ -3722,6 +3815,9 @@ type HyperVReplicaAzureReplicationDetails struct {
 	// The target availability zone.
 	TargetAvailabilityZone *string
 
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
+
 	// The tags for the target managed disks.
 	TargetManagedDiskTags map[string]*string
 
@@ -3869,6 +3965,9 @@ type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 
 	// The target availability zone.
 	TargetAvailabilityZone *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The tags for the target managed disks.
 	TargetManagedDiskTags map[string]*string
@@ -5425,6 +5524,27 @@ func (i *InMageRcmAddDisksInput) GetAddDisksProviderSpecificInput() *AddDisksPro
 	}
 }
 
+// InMageRcmAgentReinstallBlockingErrorDetails - InMageRcm source agent reinstall blocking error details.
+type InMageRcmAgentReinstallBlockingErrorDetails struct {
+	// error code.
+	ErrorCode *string
+
+	// error message.
+	ErrorMessage *string
+
+	// error message parameters.
+	ErrorMessageParameters map[string]*string
+
+	// error tags.
+	ErrorTags map[string]*string
+
+	// possible causes.
+	PossibleCauses *string
+
+	// recommended action.
+	RecommendedAction *string
+}
+
 // InMageRcmAgentUpgradeBlockingErrorDetails - InMageRcm source agent upgrade blocking error details.
 type InMageRcmAgentUpgradeBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
@@ -5568,8 +5688,17 @@ type InMageRcmDiskInput struct {
 	// The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
+
 	// The logical sector size (in bytes), 512 by default.
 	SectorSizeInBytes *int32
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // InMageRcmDisksDefaultInput - InMageRcm disk input.
@@ -5583,8 +5712,17 @@ type InMageRcmDisksDefaultInput struct {
 	// The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
+
 	// The logical sector size (in bytes), 512 by default.
 	SectorSizeInBytes *int32
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // InMageRcmEnableProtectionInput - InMageRcm specific enable protection input.
@@ -5633,6 +5771,9 @@ type InMageRcmEnableProtectionInput struct {
 
 	// The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The tags for the target managed disks.
 	TargetManagedDiskTags []*UserCreatedResourceTag
@@ -6199,6 +6340,33 @@ type InMageRcmLastAgentUpgradeErrorDetails struct {
 
 // InMageRcmMobilityAgentDetails - InMageRcm mobility agent details.
 type InMageRcmMobilityAgentDetails struct {
+	// The distro name.
+	DistroName *string
+
+	// Distro name for which agent is installed.
+	DistroNameForWhichAgentIsInstalled *string
+
+	// A value indicating whether replication agent reinstallation is required.
+	IsAgentReinstallRequired *bool
+
+	// A value indicating whether replication agent upgradeable.
+	IsAgentUpgradeable *bool
+
+	// A value indicating whether replication agent reinstallation is required.
+	IsLastReinstallSuccessful *bool
+
+	// The OS family name.
+	OSFamilyName *string
+
+	// READ-ONLY; The last agent reinstall type.
+	AgentReinstallAttemptToVersion *string
+
+	// READ-ONLY; The agent reinstall job Id.
+	AgentReinstallJobID *string
+
+	// READ-ONLY; The agent auto reinstall state.
+	AgentReinstallState []*MobilityAgentReinstallType
+
 	// READ-ONLY; The agent version expiry date.
 	AgentVersionExpiryDate *time.Time
 
@@ -6211,6 +6379,9 @@ type InMageRcmMobilityAgentDetails struct {
 	// READ-ONLY; A value indicating whether agent is upgradeable or not.
 	IsUpgradeable *string
 
+	// READ-ONLY; The last agent reinstall type.
+	LastAgentReinstallType *string
+
 	// READ-ONLY; The time of the last heartbeat received from the agent.
 	LastHeartbeatUTC *time.Time
 
@@ -6222,6 +6393,12 @@ type InMageRcmMobilityAgentDetails struct {
 
 	// READ-ONLY; The latest agent version available.
 	LatestVersion *string
+
+	// READ-ONLY; whether reinstall is possible or not.
+	ReasonsBlockingReinstall []*AgentReinstallBlockedReason
+
+	// READ-ONLY; whether reinstall is possible or not.
+	ReasonsBlockingReinstallDetails []*InMageRcmAgentReinstallBlockingErrorDetails
 
 	// READ-ONLY; The whether update is possible or not.
 	ReasonsBlockingUpgrade []*AgentUpgradeBlockedReason
@@ -6357,8 +6534,14 @@ type InMageRcmProtectedDiskDetails struct {
 	// The custom target Azure disk name.
 	CustomTargetDiskName *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
 	// The disk type.
 	DiskType *DiskAccountType
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
 
 	// The initial replication details.
 	IrDetails *InMageRcmSyncDetails
@@ -6368,6 +6551,9 @@ type InMageRcmProtectedDiskDetails struct {
 
 	// The logical sector size (in bytes), 512 by default.
 	SectorSizeInBytes *int32
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 
 	// READ-ONLY; The disk capacity in bytes.
 	CapacityInBytes *int64
@@ -6489,6 +6675,9 @@ type InMageRcmReplicationDetails struct {
 
 	// The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The target location.
 	TargetLocation *string
@@ -6750,6 +6939,9 @@ type InMageRcmUnplannedFailoverInput struct {
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
 	RecoveryPointID *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -6818,6 +7010,9 @@ type InMageRcmUpdateReplicationProtectedItemInput struct {
 	// The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string
 
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
+
 	// The tags for the target managed disks.
 	TargetManagedDiskTags []*UserCreatedResourceTag
 
@@ -6847,6 +7042,9 @@ type InMageRcmUpdateReplicationProtectedItemInput struct {
 
 	// The OS name selected by user.
 	UserSelectedOSName *string
+
+	// The list of disk update properties.
+	VMDisks []*UpdateDiskInput
 
 	// The list of NIC details.
 	VMNics []*InMageRcmNicInput
@@ -9378,6 +9576,18 @@ type RegisteredClusterNodes struct {
 	MachineID *string
 }
 
+// ReinstallMobilityServiceRequest - Request to Reinstall the mobility service on a protected item.
+type ReinstallMobilityServiceRequest struct {
+	// The properties of the reinstall mobility service request
+	Properties *ReinstallMobilityServiceRequestProperties
+}
+
+// ReinstallMobilityServiceRequestProperties - The properties of an update mobility service request.
+type ReinstallMobilityServiceRequestProperties struct {
+	// The CS run as account Id.
+	RunAsAccountID *string
+}
+
 // RemoveDisksInput - Input for remove disk(s) operation.
 type RemoveDisksInput struct {
 	// Remove disk input properties.
@@ -10672,8 +10882,17 @@ type UpdateDiskInput struct {
 	// REQUIRED; The disk Id.
 	DiskID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
+
 	// The target disk name.
 	TargetDiskName *string
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // UpdateMigrationItemInput - Update migration item input.
@@ -11104,11 +11323,20 @@ type VMwareCbtDiskInput struct {
 	// The DiskEncryptionSet ARM Id.
 	DiskEncryptionSetID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
 	// The disk type.
 	DiskType *DiskAccountType
 
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
+
 	// The logical sector size (in bytes), 512 by default.
 	SectorSizeInBytes *int32
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // VMwareCbtEnableMigrationInput - VMwareCbt specific enable migration input.
@@ -11163,6 +11391,9 @@ type VMwareCbtEnableMigrationInput struct {
 
 	// The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The tags for the target disks.
 	TargetDiskTags map[string]*string
@@ -11235,6 +11466,9 @@ type VMwareCbtMigrateInput struct {
 
 	// The managed run command script input.
 	PostMigrationSteps []*ManagedRunCommandScriptInput
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 }
 
 // GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type VMwareCbtMigrateInput.
@@ -11281,6 +11515,9 @@ type VMwareCbtMigrationDetails struct {
 
 	// The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The tags for the target disks.
 	TargetDiskTags map[string]*string
@@ -11501,14 +11738,23 @@ func (v *VMwareCbtPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyP
 
 // VMwareCbtProtectedDiskDetails - VMwareCbt protected disk details.
 type VMwareCbtProtectedDiskDetails struct {
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
 	// The disk type.
 	DiskType *DiskAccountType
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
 
 	// The logical sector size (in bytes), 512 by default.
 	SectorSizeInBytes *int32
 
 	// The name for the target managed disk.
 	TargetDiskName *string
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 
 	// READ-ONLY; The disk capacity in bytes.
 	CapacityInBytes *int64
@@ -11672,11 +11918,20 @@ type VMwareCbtUpdateDiskInput struct {
 	// REQUIRED; The disk Id.
 	DiskID *string
 
+	// The target disk size in GB.
+	DiskSizeInGB *int64
+
+	// The number of IOPS allowed for Premium V2 and Ultra disks.
+	Iops *int64
+
 	// A value indicating whether the disk is the OS disk.
 	IsOSDisk *string
 
 	// The target disk name.
 	TargetDiskName *string
+
+	// The total throughput in Mbps for Premium V2 and Ultra disks.
+	ThroughputInMbps *int64
 }
 
 // VMwareCbtUpdateMigrationItemInput - VMwareCbt specific update migration item input.
@@ -11704,6 +11959,9 @@ type VMwareCbtUpdateMigrationItemInput struct {
 
 	// The target boot diagnostics storage account ARM Id.
 	TargetBootDiagnosticsStorageAccountID *string
+
+	// The target capacity reservation group ARM Id.
+	TargetCapacityReservationGroupID *string
 
 	// The tags for the target disks.
 	TargetDiskTags map[string]*string

@@ -65,6 +65,10 @@ type ReplicationProtectedItemsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPurge func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *armrecoveryservicessiterecovery.ReplicationProtectedItemsClientBeginPurgeOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientPurgeResponse], errResp azfake.ErrorResponder)
 
+	// BeginReinstallMobilityService is the fake for method ReplicationProtectedItemsClient.BeginReinstallMobilityService
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginReinstallMobilityService func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, updateMobilityServiceRequest armrecoveryservicessiterecovery.ReinstallMobilityServiceRequest, options *armrecoveryservicessiterecovery.ReplicationProtectedItemsClientBeginReinstallMobilityServiceOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReinstallMobilityServiceResponse], errResp azfake.ErrorResponder)
+
 	// BeginRemoveDisks is the fake for method ReplicationProtectedItemsClient.BeginRemoveDisks
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginRemoveDisks func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, removeDisksInput armrecoveryservicessiterecovery.RemoveDisksInput, options *armrecoveryservicessiterecovery.ReplicationProtectedItemsClientBeginRemoveDisksOptions) (resp azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRemoveDisksResponse], errResp azfake.ErrorResponder)
@@ -126,6 +130,7 @@ func NewReplicationProtectedItemsServerTransport(srv *ReplicationProtectedItemsS
 		newListByReplicationProtectionContainersPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse]](),
 		beginPlannedFailover:                          newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientPlannedFailoverResponse]](),
 		beginPurge:                                    newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientPurgeResponse]](),
+		beginReinstallMobilityService:                 newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReinstallMobilityServiceResponse]](),
 		beginRemoveDisks:                              newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRemoveDisksResponse]](),
 		beginRepairReplication:                        newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRepairReplicationResponse]](),
 		beginReprotect:                                newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReprotectResponse]](),
@@ -154,6 +159,7 @@ type ReplicationProtectedItemsServerTransport struct {
 	newListByReplicationProtectionContainersPager *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse]]
 	beginPlannedFailover                          *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientPlannedFailoverResponse]]
 	beginPurge                                    *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientPurgeResponse]]
+	beginReinstallMobilityService                 *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReinstallMobilityServiceResponse]]
 	beginRemoveDisks                              *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRemoveDisksResponse]]
 	beginRepairReplication                        *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRepairReplicationResponse]]
 	beginReprotect                                *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReprotectResponse]]
@@ -212,6 +218,8 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = r.dispatchBeginPlannedFailover(req)
 			case "ReplicationProtectedItemsClient.BeginPurge":
 				res.resp, res.err = r.dispatchBeginPurge(req)
+			case "ReplicationProtectedItemsClient.BeginReinstallMobilityService":
+				res.resp, res.err = r.dispatchBeginReinstallMobilityService(req)
 			case "ReplicationProtectedItemsClient.BeginRemoveDisks":
 				res.resp, res.err = r.dispatchBeginRemoveDisks(req)
 			case "ReplicationProtectedItemsClient.BeginRepairReplication":
@@ -262,7 +270,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginAddDisks(req *ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addDisks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.AddDisksInput](req)
@@ -322,7 +330,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginApplyRecoveryPoi
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/applyRecoveryPoint`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.ApplyRecoveryPointInput](req)
@@ -382,7 +390,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginCreate(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.EnableProtectionInput](req)
@@ -442,7 +450,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginDelete(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/remove`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.DisableProtectionInput](req)
@@ -502,7 +510,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginFailoverCancel(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverCancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -558,7 +566,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginFailoverCommit(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/failoverCommit`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -612,7 +620,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchGet(req *http.Request
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 6 {
+	if len(matches) < 7 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -659,7 +667,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchNewListPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -718,7 +726,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchNewListByReplicationP
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 5 {
+		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -767,7 +775,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginPlannedFailover(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/plannedFailover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.PlannedFailoverInput](req)
@@ -827,7 +835,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginPurge(req *http.
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -874,6 +882,66 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginPurge(req *http.
 	return resp, nil
 }
 
+func (r *ReplicationProtectedItemsServerTransport) dispatchBeginReinstallMobilityService(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginReinstallMobilityService == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginReinstallMobilityService not implemented")}
+	}
+	beginReinstallMobilityService := r.beginReinstallMobilityService.get(req)
+	if beginReinstallMobilityService == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reinstallMobilityService`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 7 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.ReinstallMobilityServiceRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+		if err != nil {
+			return nil, err
+		}
+		protectionContainerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectionContainerName")])
+		if err != nil {
+			return nil, err
+		}
+		replicatedProtectedItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("replicatedProtectedItemName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginReinstallMobilityService(req.Context(), resourceGroupNameParam, resourceNameParam, fabricNameParam, protectionContainerNameParam, replicatedProtectedItemNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginReinstallMobilityService = &respr
+		r.beginReinstallMobilityService.add(req, beginReinstallMobilityService)
+	}
+
+	resp, err := server.PollerResponderNext(beginReinstallMobilityService, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginReinstallMobilityService.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginReinstallMobilityService) {
+		r.beginReinstallMobilityService.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ReplicationProtectedItemsServerTransport) dispatchBeginRemoveDisks(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginRemoveDisks == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRemoveDisks not implemented")}
@@ -883,7 +951,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginRemoveDisks(req 
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removeDisks`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.RemoveDisksInput](req)
@@ -943,7 +1011,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginRepairReplicatio
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/repairReplication`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -999,7 +1067,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginReprotect(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reProtect`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.ReverseReplicationInput](req)
@@ -1059,7 +1127,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginResolveHealthErr
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resolveHealthErrors`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.ResolveHealthInput](req)
@@ -1119,7 +1187,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginSwitchProvider(r
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/switchProvider`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.SwitchProviderInput](req)
@@ -1179,7 +1247,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginTestFailover(req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testFailover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.TestFailoverInput](req)
@@ -1239,7 +1307,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginTestFailoverClea
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testFailoverCleanup`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.TestFailoverCleanupInput](req)
@@ -1299,7 +1367,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginUnplannedFailove
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/unplannedFailover`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.UnplannedFailoverInput](req)
@@ -1359,7 +1427,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginUpdate(req *http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.UpdateReplicationProtectedItemInput](req)
@@ -1419,7 +1487,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginUpdateAppliance(
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAppliance`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.UpdateApplianceForReplicationProtectedItemInput](req)
@@ -1479,7 +1547,7 @@ func (r *ReplicationProtectedItemsServerTransport) dispatchBeginUpdateMobilitySe
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectionContainers/(?P<protectionContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationProtectedItems/(?P<replicatedProtectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateMobilityService`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicessiterecovery.UpdateMobilityServiceRequest](req)

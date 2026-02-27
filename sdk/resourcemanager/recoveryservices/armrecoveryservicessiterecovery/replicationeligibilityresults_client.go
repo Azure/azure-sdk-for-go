@@ -27,7 +27,7 @@ type ReplicationEligibilityResultsClient struct {
 // NewReplicationEligibilityResultsClient creates a new instance of ReplicationEligibilityResultsClient with the specified values.
 //   - subscriptionID - The subscription Id.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationEligibilityResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationEligibilityResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewReplicationEligibilityResultsClient(subscriptionID string, credential az
 // Get - Validates whether a given VM can be protected or not in which case returns list of errors.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - virtualMachineName - Virtual Machine name.
 //   - options - ReplicationEligibilityResultsClientGetOptions contains the optional parameters for the ReplicationEligibilityResultsClient.Get
@@ -90,7 +90,7 @@ func (client *ReplicationEligibilityResultsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,7 +108,7 @@ func (client *ReplicationEligibilityResultsClient) getHandleResponse(resp *http.
 // List - Validates whether a given VM can be protected or not in which case returns list of errors.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-01-01
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - virtualMachineName - Virtual Machine name.
 //   - options - ReplicationEligibilityResultsClientListOptions contains the optional parameters for the ReplicationEligibilityResultsClient.List
@@ -155,7 +155,7 @@ func (client *ReplicationEligibilityResultsClient) listCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", "2025-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

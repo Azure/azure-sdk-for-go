@@ -3933,7 +3933,7 @@ type MSDeploy struct {
 	Kind *string
 
 	// Core resource properties
-	Properties *MSDeployCore
+	Properties *MSDeployProperties
 
 	// READ-ONLY; Resource Id.
 	ID *string
@@ -4007,6 +4007,37 @@ type MSDeployLogEntry struct {
 type MSDeployLogProperties struct {
 	// READ-ONLY; List of log entry messages
 	Entries []*MSDeployLogEntry
+}
+
+// MSDeployProperties - MSDeploy ARM PUT information properties
+type MSDeployProperties struct {
+	// List of Add-On packages. Add-On packages implicitly enable the Do Not Delete MSDeploy rule.
+	AddOnPackages []*MSDeployCore
+
+	// Sets the AppOffline rule while the MSDeploy operation executes.
+	// Setting is <code>false</code> by default.
+	AppOffline *bool
+
+	// SQL Connection String
+	ConnectionString *string
+
+	// Database Type
+	DbType *string
+
+	// Package URI
+	PackageURI *string
+
+	// MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
+	SetParameters map[string]*string
+
+	// URI of MSDeploy Parameters file. Must not be set if SetParameters is used.
+	SetParametersXMLFileURI *string
+
+	// Controls whether the MSDeploy operation skips the App_Data directory.
+	// If set to <code>true</code>, the existing App_Data directory on the destination
+	// will not be deleted, and any App_Data directory in the source will be ignored.
+	// Setting is <code>false</code> by default.
+	SkipAppData *bool
 }
 
 // MSDeployStatus - MSDeploy ARM response

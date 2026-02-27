@@ -3016,14 +3016,16 @@ type WebAppsClientListPublishingCredentialsSlotResponse struct {
 
 // WebAppsClientListPublishingProfileXMLWithSecretsResponse contains the response from method WebAppsClient.ListPublishingProfileXMLWithSecrets.
 type WebAppsClientListPublishingProfileXMLWithSecretsResponse struct {
+	// Body contains the streaming response.
+	Body        io.ReadCloser
 	ContentType *string
-	Value       []byte
 }
 
 // WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse contains the response from method WebAppsClient.ListPublishingProfileXMLWithSecretsSlot.
 type WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse struct {
+	// Body contains the streaming response.
+	Body        io.ReadCloser
 	ContentType *string
-	Value       []byte
 }
 
 // WebAppsClientListRelayServiceConnectionsResponse contains the response from method WebAppsClient.ListRelayServiceConnections.

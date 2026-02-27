@@ -10374,6 +10374,61 @@ func (m *MSDeployLogProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MSDeployProperties.
+func (m MSDeployProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "addOnPackages", m.AddOnPackages)
+	populate(objectMap, "appOffline", m.AppOffline)
+	populate(objectMap, "connectionString", m.ConnectionString)
+	populate(objectMap, "dbType", m.DbType)
+	populate(objectMap, "packageUri", m.PackageURI)
+	populate(objectMap, "setParameters", m.SetParameters)
+	populate(objectMap, "setParametersXmlFileUri", m.SetParametersXMLFileURI)
+	populate(objectMap, "skipAppData", m.SkipAppData)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MSDeployProperties.
+func (m *MSDeployProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "addOnPackages":
+			err = unpopulate(val, "AddOnPackages", &m.AddOnPackages)
+			delete(rawMsg, key)
+		case "appOffline":
+			err = unpopulate(val, "AppOffline", &m.AppOffline)
+			delete(rawMsg, key)
+		case "connectionString":
+			err = unpopulate(val, "ConnectionString", &m.ConnectionString)
+			delete(rawMsg, key)
+		case "dbType":
+			err = unpopulate(val, "DbType", &m.DbType)
+			delete(rawMsg, key)
+		case "packageUri":
+			err = unpopulate(val, "PackageURI", &m.PackageURI)
+			delete(rawMsg, key)
+		case "setParameters":
+			err = unpopulate(val, "SetParameters", &m.SetParameters)
+			delete(rawMsg, key)
+		case "setParametersXmlFileUri":
+			err = unpopulate(val, "SetParametersXMLFileURI", &m.SetParametersXMLFileURI)
+			delete(rawMsg, key)
+		case "skipAppData":
+			err = unpopulate(val, "SkipAppData", &m.SkipAppData)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type MSDeployStatus.
 func (m MSDeployStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

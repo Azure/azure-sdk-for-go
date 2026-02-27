@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentListProfiles.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentListProfiles.json
 func ExampleNetworkExperimentProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,49 @@ func ExampleNetworkExperimentProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentListProfiles.json
+func ExampleNetworkExperimentProfilesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfrontdoor.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNetworkExperimentProfilesClient().NewListByResourceGroupPager("MyResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.ProfileList = armfrontdoor.ProfileList{
+		// 	Value: []*armfrontdoor.Profile{
+		// 		{
+		// 			Name: to.Ptr("MyProfile"),
+		// 			Type: to.Ptr("Microsoft.Network/NetworkExperimentprofiles"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/"),
+		// 			Location: to.Ptr("WestUs"),
+		// 			Tags: map[string]*string{
+		// 				"key1": to.Ptr("value1"),
+		// 				"key2": to.Ptr("value2"),
+		// 			},
+		// 			Properties: &armfrontdoor.ProfileProperties{
+		// 				EnabledState: to.Ptr(armfrontdoor.StateEnabled),
+		// 				ResourceState: to.Ptr(armfrontdoor.NetworkExperimentResourceStateCreating),
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentGetProfile.json
 func ExampleNetworkExperimentProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +132,7 @@ func ExampleNetworkExperimentProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentCreateProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentCreateProfile.json
 func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +175,7 @@ func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentUpdateProfile.json
 func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +221,7 @@ func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentDeleteProfile.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentDeleteProfile.json
 func ExampleNetworkExperimentProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

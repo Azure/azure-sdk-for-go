@@ -28,7 +28,7 @@ type ExperimentsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExperimentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 // BeginCreateOrUpdate - Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -71,7 +71,7 @@ func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // CreateOrUpdate - Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginCreateOrUpdate"
@@ -94,7 +94,7 @@ func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, _ *ExperimentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -129,7 +129,7 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 // BeginDelete - Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -154,7 +154,7 @@ func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginDelete"
@@ -177,7 +177,7 @@ func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, _ *ExperimentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +200,7 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Gets an Experiment by ExperimentName
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -237,7 +237,7 @@ func (client *ExperimentsClient) Get(ctx context.Context, resourceGroupName stri
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientGetOptions) (*policy.Request, error) {
+func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, _ *ExperimentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -260,7 +260,7 @@ func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (Experim
 
 // NewListByProfilePager - Gets a list of Experiments
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.NewListByProfilePager
@@ -306,7 +306,7 @@ func (client *ExperimentsClient) NewListByProfilePager(resourceGroupName string,
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) (*policy.Request, error) {
+func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ExperimentsClientListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -325,7 +325,7 @@ func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response
 // BeginUpdate - Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -369,7 +369,7 @@ func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // Update - Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginUpdate"
@@ -392,7 +392,7 @@ func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName s
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, _ *ExperimentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -415,7 +415,7 @@ func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

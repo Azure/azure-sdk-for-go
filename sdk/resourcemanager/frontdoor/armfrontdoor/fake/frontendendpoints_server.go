@@ -22,11 +22,11 @@ import (
 // FrontendEndpointsServer is a fake server for instances of the armfrontdoor.FrontendEndpointsClient type.
 type FrontendEndpointsServer struct {
 	// BeginDisableHTTPS is the fake for method FrontendEndpointsClient.BeginDisableHTTPS
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDisableHTTPS func(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *armfrontdoor.FrontendEndpointsClientBeginDisableHTTPSOptions) (resp azfake.PollerResponder[armfrontdoor.FrontendEndpointsClientDisableHTTPSResponse], errResp azfake.ErrorResponder)
 
 	// BeginEnableHTTPS is the fake for method FrontendEndpointsClient.BeginEnableHTTPS
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginEnableHTTPS func(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration armfrontdoor.CustomHTTPSConfiguration, options *armfrontdoor.FrontendEndpointsClientBeginEnableHTTPSOptions) (resp azfake.PollerResponder[armfrontdoor.FrontendEndpointsClientEnableHTTPSResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method FrontendEndpointsClient.Get
@@ -67,27 +67,46 @@ func (f *FrontendEndpointsServerTransport) Do(req *http.Request) (*http.Response
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return f.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "FrontendEndpointsClient.BeginDisableHTTPS":
-		resp, err = f.dispatchBeginDisableHTTPS(req)
-	case "FrontendEndpointsClient.BeginEnableHTTPS":
-		resp, err = f.dispatchBeginEnableHTTPS(req)
-	case "FrontendEndpointsClient.Get":
-		resp, err = f.dispatchGet(req)
-	case "FrontendEndpointsClient.NewListByFrontDoorPager":
-		resp, err = f.dispatchNewListByFrontDoorPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (f *FrontendEndpointsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if frontendEndpointsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = frontendEndpointsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "FrontendEndpointsClient.BeginDisableHTTPS":
+				res.resp, res.err = f.dispatchBeginDisableHTTPS(req)
+			case "FrontendEndpointsClient.BeginEnableHTTPS":
+				res.resp, res.err = f.dispatchBeginEnableHTTPS(req)
+			case "FrontendEndpointsClient.Get":
+				res.resp, res.err = f.dispatchGet(req)
+			case "FrontendEndpointsClient.NewListByFrontDoorPager":
+				res.resp, res.err = f.dispatchNewListByFrontDoorPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (f *FrontendEndpointsServerTransport) dispatchBeginDisableHTTPS(req *http.Request) (*http.Response, error) {
@@ -99,7 +118,7 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginDisableHTTPS(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints/(?P<frontendEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disableHttps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -127,9 +146,9 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginDisableHTTPS(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDisableHTTPS.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDisableHTTPS) {
 		f.beginDisableHTTPS.remove(req)
@@ -147,7 +166,7 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginEnableHTTPS(req *http.Re
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints/(?P<frontendEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enableHttps`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 4 {
+		if len(matches) < 5 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armfrontdoor.CustomHTTPSConfiguration](req)
@@ -179,9 +198,9 @@ func (f *FrontendEndpointsServerTransport) dispatchBeginEnableHTTPS(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginEnableHTTPS.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginEnableHTTPS) {
 		f.beginEnableHTTPS.remove(req)
@@ -197,7 +216,7 @@ func (f *FrontendEndpointsServerTransport) dispatchGet(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints/(?P<frontendEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -236,7 +255,7 @@ func (f *FrontendEndpointsServerTransport) dispatchNewListByFrontDoorPager(req *
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/frontDoors/(?P<frontDoorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/frontendEndpoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -266,4 +285,10 @@ func (f *FrontendEndpointsServerTransport) dispatchNewListByFrontDoorPager(req *
 		f.newListByFrontDoorPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to FrontendEndpointsServerTransport
+var frontendEndpointsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

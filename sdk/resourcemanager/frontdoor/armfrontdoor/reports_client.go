@@ -29,7 +29,7 @@ type ReportsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReportsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -45,7 +45,7 @@ func NewReportsClient(subscriptionID string, credential azcore.TokenCredential, 
 // GetLatencyScorecards - Gets a Latency Scorecard for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -99,7 +99,7 @@ func (client *ReportsClient) getLatencyScorecardsCreateRequest(ctx context.Conte
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
@@ -123,7 +123,7 @@ func (client *ReportsClient) getLatencyScorecardsHandleResponse(resp *http.Respo
 // GetTimeseries - Gets a Timeseries for a given Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2019-11-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -179,7 +179,7 @@ func (client *ReportsClient) getTimeseriesCreateRequest(ctx context.Context, res
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregationInterval", string(aggregationInterval))
-	reqQP.Set("api-version", "2019-11-01")
+	reqQP.Set("api-version", "2025-10-01")
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}

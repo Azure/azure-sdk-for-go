@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentListExperiments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentListExperiments.json
 func ExampleExperimentsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleExperimentsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentGetExperiment.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleExperimentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentCreateExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentCreateExperiment.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentUpdateExperiment.json
 func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleExperimentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentDeleteExperiment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentDeleteExperiment.json
 func ExampleExperimentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

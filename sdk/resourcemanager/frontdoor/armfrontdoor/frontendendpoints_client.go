@@ -28,7 +28,7 @@ type FrontendEndpointsClient struct {
 //   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
 //     ID forms part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFrontendEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FrontendEndpointsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewFrontendEndpointsClient(subscriptionID string, credential azcore.TokenCr
 // BeginDisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -71,7 +71,7 @@ func (client *FrontendEndpointsClient) BeginDisableHTTPS(ctx context.Context, re
 // DisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientBeginDisableHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendEndpointsClient.BeginDisableHTTPS"
@@ -94,7 +94,7 @@ func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourc
 }
 
 // disableHTTPSCreateRequest creates the DisableHTTPS request.
-func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientBeginDisableHTTPSOptions) (*policy.Request, error) {
+func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, _ *FrontendEndpointsClientBeginDisableHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -117,7 +117,7 @@ func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -126,7 +126,7 @@ func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Con
 // BeginEnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -154,7 +154,7 @@ func (client *FrontendEndpointsClient) BeginEnableHTTPS(ctx context.Context, res
 // EnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, options *FrontendEndpointsClientBeginEnableHTTPSOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FrontendEndpointsClient.BeginEnableHTTPS"
@@ -177,7 +177,7 @@ func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resource
 }
 
 // enableHTTPSCreateRequest creates the EnableHTTPS request.
-func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, options *FrontendEndpointsClientBeginEnableHTTPSOptions) (*policy.Request, error) {
+func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, _ *FrontendEndpointsClientBeginEnableHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -200,7 +200,7 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, customHTTPSConfiguration); err != nil {
@@ -212,7 +212,7 @@ func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Cont
 // Get - Gets a Frontend endpoint with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - frontendEndpointName - Name of the Frontend endpoint which is unique within the Front Door.
@@ -240,7 +240,7 @@ func (client *FrontendEndpointsClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientGetOptions) (*policy.Request, error) {
+func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, _ *FrontendEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -263,7 +263,7 @@ func (client *FrontendEndpointsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -280,7 +280,7 @@ func (client *FrontendEndpointsClient) getHandleResponse(resp *http.Response) (F
 
 // NewListByFrontDoorPager - Lists all of the frontend endpoints within a Front Door.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - frontDoorName - Name of the Front Door which is globally unique.
 //   - options - FrontendEndpointsClientListByFrontDoorOptions contains the optional parameters for the FrontendEndpointsClient.NewListByFrontDoorPager
@@ -309,7 +309,7 @@ func (client *FrontendEndpointsClient) NewListByFrontDoorPager(resourceGroupName
 }
 
 // listByFrontDoorCreateRequest creates the ListByFrontDoor request.
-func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, options *FrontendEndpointsClientListByFrontDoorOptions) (*policy.Request, error) {
+func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, _ *FrontendEndpointsClientListByFrontDoorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -328,7 +328,7 @@ func (client *FrontendEndpointsClient) listByFrontDoorCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

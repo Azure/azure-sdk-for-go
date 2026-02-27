@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentGetPreconfiguredEndpoints.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/NetworkExperimentGetPreconfiguredEndpoints.json
 func ExamplePreconfiguredEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,6 +40,7 @@ func ExamplePreconfiguredEndpointsClient_NewListPager() {
 		// 	Value: []*armfrontdoor.PreconfiguredEndpoint{
 		// 		{
 		// 			Name: to.Ptr("Endpoint 1"),
+		// 			ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile/preconfiguredEndpoints/endpoint1"),
 		// 			Properties: &armfrontdoor.PreconfiguredEndpointProperties{
 		// 				Description: to.Ptr("this is the endpoint 1 preconfigured endpoint."),
 		// 				Backend: to.Ptr("WESTUS"),

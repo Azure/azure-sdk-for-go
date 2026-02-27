@@ -1879,6 +1879,7 @@ func (l *LoadBalancingSettingsUpdateParameters) UnmarshalJSON(data []byte) error
 func (m ManagedRuleDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "defaultAction", m.DefaultAction)
+	populate(objectMap, "defaultSensitivity", m.DefaultSensitivity)
 	populate(objectMap, "defaultState", m.DefaultState)
 	populate(objectMap, "description", m.Description)
 	populate(objectMap, "ruleId", m.RuleID)
@@ -1896,6 +1897,9 @@ func (m *ManagedRuleDefinition) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "defaultAction":
 			err = unpopulate(val, "DefaultAction", &m.DefaultAction)
+			delete(rawMsg, key)
+		case "defaultSensitivity":
+			err = unpopulate(val, "DefaultSensitivity", &m.DefaultSensitivity)
 			delete(rawMsg, key)
 		case "defaultState":
 			err = unpopulate(val, "DefaultState", &m.DefaultState)
@@ -2026,6 +2030,7 @@ func (m ManagedRuleOverride) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enabledState", m.EnabledState)
 	populate(objectMap, "exclusions", m.Exclusions)
 	populate(objectMap, "ruleId", m.RuleID)
+	populate(objectMap, "sensitivity", m.Sensitivity)
 	return json.Marshal(objectMap)
 }
 
@@ -2049,6 +2054,9 @@ func (m *ManagedRuleOverride) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "ruleId":
 			err = unpopulate(val, "RuleID", &m.RuleID)
+			delete(rawMsg, key)
+		case "sensitivity":
+			err = unpopulate(val, "Sensitivity", &m.Sensitivity)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2299,6 +2307,7 @@ func (m *MatchCondition) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type PolicySettings.
 func (p PolicySettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "captchaExpirationInMinutes", p.CaptchaExpirationInMinutes)
 	populate(objectMap, "customBlockResponseBody", p.CustomBlockResponseBody)
 	populate(objectMap, "customBlockResponseStatusCode", p.CustomBlockResponseStatusCode)
 	populate(objectMap, "enabledState", p.EnabledState)
@@ -2319,6 +2328,9 @@ func (p *PolicySettings) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "captchaExpirationInMinutes":
+			err = unpopulate(val, "CaptchaExpirationInMinutes", &p.CaptchaExpirationInMinutes)
+			delete(rawMsg, key)
 		case "customBlockResponseBody":
 			err = unpopulate(val, "CustomBlockResponseBody", &p.CustomBlockResponseBody)
 			delete(rawMsg, key)

@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorFrontendEndpointList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/FrontdoorFrontendEndpointList.json
 func ExampleFrontendEndpointsClient_NewListByFrontDoorPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleFrontendEndpointsClient_NewListByFrontDoorPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorFrontendEndpointGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/FrontdoorFrontendEndpointGet.json
 func ExampleFrontendEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFrontendEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorEnableHttps.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/FrontdoorEnableHttps.json
 func ExampleFrontendEndpointsClient_BeginEnableHTTPS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleFrontendEndpointsClient_BeginEnableHTTPS() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b54ffc9278eff071455b1dbb4ad2e772afce885d/specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorDisableHttps.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a8e6c4ff7db46ccff3a666f52d78f13cc7d3905f/specification/frontdoor/resource-manager/Microsoft.Network/stable/2025-10-01/examples/FrontdoorDisableHttps.json
 func ExampleFrontendEndpointsClient_BeginDisableHTTPS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

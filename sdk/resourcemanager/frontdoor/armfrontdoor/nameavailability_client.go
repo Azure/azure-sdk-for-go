@@ -22,7 +22,7 @@ type NameAvailabilityClient struct {
 
 // NewNameAvailabilityClient creates a new instance of NameAvailabilityClient with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*NameAvailabilityClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewNameAvailabilityClient(credential azcore.TokenCredential, options *arm.C
 // Check - Check the availability of a Front Door resource name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2021-06-01
+// Generated from API version 2025-10-01
 //   - checkFrontDoorNameAvailabilityInput - Input to check.
 //   - options - NameAvailabilityClientCheckOptions contains the optional parameters for the NameAvailabilityClient.Check method.
 func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, options *NameAvailabilityClientCheckOptions) (NameAvailabilityClientCheckResponse, error) {
@@ -63,14 +63,14 @@ func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorN
 }
 
 // checkCreateRequest creates the Check request.
-func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, options *NameAvailabilityClientCheckOptions) (*policy.Request, error) {
+func (client *NameAvailabilityClient) checkCreateRequest(ctx context.Context, checkFrontDoorNameAvailabilityInput CheckNameAvailabilityInput, _ *NameAvailabilityClientCheckOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Network/checkFrontDoorNameAvailability"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
+	reqQP.Set("api-version", "2025-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkFrontDoorNameAvailabilityInput); err != nil {

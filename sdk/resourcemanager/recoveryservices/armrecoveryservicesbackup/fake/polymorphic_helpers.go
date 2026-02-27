@@ -6,7 +6,8 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v5"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
 func unmarshalFeatureSupportRequestClassification(rawMsg json.RawMessage) (armrecoveryservicesbackup.FeatureSupportRequestClassification, error) {

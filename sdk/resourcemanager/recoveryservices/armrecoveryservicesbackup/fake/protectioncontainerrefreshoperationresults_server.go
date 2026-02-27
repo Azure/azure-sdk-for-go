@@ -8,13 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v5"
 	"net/http"
 	"net/url"
 	"regexp"
+
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
 )
 
 // ProtectionContainerRefreshOperationResultsServer is a fake server for instances of the armrecoveryservicesbackup.ProtectionContainerRefreshOperationResultsClient type.

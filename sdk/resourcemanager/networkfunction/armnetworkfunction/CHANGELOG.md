@@ -1,5 +1,20 @@
 # Release History
 
+## 3.0.0 (2026-02-05)
+### Breaking Changes
+
+- Type of `AzureTrafficCollector.SystemData` has been changed from `*TrackedResourceSystemData` to `*SystemData`
+- Type of `CollectorPolicy.SystemData` has been changed from `*TrackedResourceSystemData` to `*SystemData`
+- Enum `APIVersionParameter` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `TrackedResourceSystemData` has been removed
+
+### Features Added
+
+- New field `LastModifiedAt` in struct `SystemData`
+
+
 ## 2.2.0 (2023-11-24)
 ### Features Added
 

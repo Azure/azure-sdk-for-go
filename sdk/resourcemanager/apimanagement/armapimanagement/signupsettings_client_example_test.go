@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadSignUpSettings.json
@@ -78,11 +78,11 @@ func ExampleSignUpSettingsClient_Update() {
 	}
 	_, err = clientFactory.NewSignUpSettingsClient().Update(ctx, "rg1", "apimService1", "*", armapimanagement.PortalSignupSettings{
 		Properties: &armapimanagement.PortalSignupSettingsProperties{
-			Enabled: to.Ptr(true),
+			Enabled:	to.Ptr(true),
 			TermsOfService: &armapimanagement.TermsOfServiceProperties{
-				ConsentRequired: to.Ptr(true),
-				Enabled:         to.Ptr(true),
-				Text:            to.Ptr("Terms of service text."),
+				ConsentRequired:	to.Ptr(true),
+				Enabled:		to.Ptr(true),
+				Text:			to.Ptr("Terms of service text."),
 			},
 		},
 	}, nil)
@@ -104,11 +104,11 @@ func ExampleSignUpSettingsClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewSignUpSettingsClient().CreateOrUpdate(ctx, "rg1", "apimService1", armapimanagement.PortalSignupSettings{
 		Properties: &armapimanagement.PortalSignupSettingsProperties{
-			Enabled: to.Ptr(true),
+			Enabled:	to.Ptr(true),
 			TermsOfService: &armapimanagement.TermsOfServiceProperties{
-				ConsentRequired: to.Ptr(true),
-				Enabled:         to.Ptr(true),
-				Text:            to.Ptr("Terms of service text."),
+				ConsentRequired:	to.Ptr(true),
+				Enabled:		to.Ptr(true),
+				Text:			to.Ptr("Terms of service text."),
 			},
 		},
 	}, &armapimanagement.SignUpSettingsClientCreateOrUpdateOptions{IfMatch: to.Ptr("*")})

@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListUsers.json
@@ -29,9 +29,9 @@ func ExampleUserClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewUserClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.UserClientListByServiceOptions{Filter: nil,
-		Top:          nil,
-		Skip:         nil,
-		ExpandGroups: nil,
+		Top:		nil,
+		Skip:		nil,
+		ExpandGroups:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -168,13 +168,13 @@ func ExampleUserClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewUserClient().CreateOrUpdate(ctx, "rg1", "apimService1", "5931a75ae4bbd512288c680b", armapimanagement.UserCreateParameters{
 		Properties: &armapimanagement.UserCreateParameterProperties{
-			Confirmation: to.Ptr(armapimanagement.ConfirmationSignup),
-			Email:        to.Ptr("foobar@outlook.com"),
-			FirstName:    to.Ptr("foo"),
-			LastName:     to.Ptr("bar"),
+			Confirmation:	to.Ptr(armapimanagement.ConfirmationSignup),
+			Email:		to.Ptr("foobar@outlook.com"),
+			FirstName:	to.Ptr("foo"),
+			LastName:	to.Ptr("bar"),
 		},
 	}, &armapimanagement.UserClientCreateOrUpdateOptions{Notify: nil,
-		IfMatch: nil,
+		IfMatch:	nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -216,9 +216,9 @@ func ExampleUserClient_Update() {
 	}
 	res, err := clientFactory.NewUserClient().Update(ctx, "rg1", "apimService1", "5931a75ae4bbd512a88c680b", "*", armapimanagement.UserUpdateParameters{
 		Properties: &armapimanagement.UserUpdateParametersProperties{
-			Email:     to.Ptr("foobar@outlook.com"),
-			FirstName: to.Ptr("foo"),
-			LastName:  to.Ptr("bar"),
+			Email:		to.Ptr("foobar@outlook.com"),
+			FirstName:	to.Ptr("foo"),
+			LastName:	to.Ptr("bar"),
 		},
 	}, nil)
 	if err != nil {
@@ -258,8 +258,8 @@ func ExampleUserClient_BeginDelete() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewUserClient().BeginDelete(ctx, "rg1", "apimService1", "5931a75ae4bbd512288c680b", "*", &armapimanagement.UserClientBeginDeleteOptions{DeleteSubscriptions: nil,
-		Notify:  nil,
-		AppType: nil,
+		Notify:		nil,
+		AppType:	nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -306,8 +306,8 @@ func ExampleUserClient_GetSharedAccessToken() {
 	}
 	res, err := clientFactory.NewUserClient().GetSharedAccessToken(ctx, "rg1", "apimService1", "userId1718", armapimanagement.UserTokenParameters{
 		Properties: &armapimanagement.UserTokenParameterProperties{
-			Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T00:44:24.284Z"); return t }()),
-			KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
+			Expiry:		to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T00:44:24.284Z"); return t }()),
+			KeyType:	to.Ptr(armapimanagement.KeyTypePrimary),
 		},
 	}, nil)
 	if err != nil {

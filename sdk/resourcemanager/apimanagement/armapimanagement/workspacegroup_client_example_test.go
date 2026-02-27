@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceGroups.json
@@ -27,8 +27,8 @@ func ExampleWorkspaceGroupClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceGroupClient().NewListByServicePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceGroupClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -154,10 +154,10 @@ func ExampleWorkspaceGroupClient_CreateOrUpdate_apiManagementCreateWorkspaceGrou
 	}
 	res, err := clientFactory.NewWorkspaceGroupClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "aadGroup", armapimanagement.GroupCreateParameters{
 		Properties: &armapimanagement.GroupCreateParametersProperties{
-			Type:        to.Ptr(armapimanagement.GroupTypeExternal),
-			Description: to.Ptr("new group to test"),
-			DisplayName: to.Ptr("NewGroup (samiraad.onmicrosoft.com)"),
-			ExternalID:  to.Ptr("aad://samiraad.onmicrosoft.com/groups/83cf2753-5831-4675-bc0e-2f8dc067c58d"),
+			Type:		to.Ptr(armapimanagement.GroupTypeExternal),
+			Description:	to.Ptr("new group to test"),
+			DisplayName:	to.Ptr("NewGroup (samiraad.onmicrosoft.com)"),
+			ExternalID:	to.Ptr("aad://samiraad.onmicrosoft.com/groups/83cf2753-5831-4675-bc0e-2f8dc067c58d"),
 		},
 	}, &armapimanagement.WorkspaceGroupClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {

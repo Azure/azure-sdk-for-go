@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspacePolicyFragments.json
@@ -27,9 +27,9 @@ func ExampleWorkspacePolicyFragmentClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspacePolicyFragmentClient().NewListByServicePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspacePolicyFragmentClientListByServiceOptions{Filter: nil,
-		Orderby: nil,
-		Top:     nil,
-		Skip:    nil,
+		Orderby:	nil,
+		Top:		nil,
+		Skip:		nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -148,9 +148,9 @@ func ExampleWorkspacePolicyFragmentClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewWorkspacePolicyFragmentClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "policyFragment1", armapimanagement.PolicyFragmentContract{
 		Properties: &armapimanagement.PolicyFragmentContractProperties{
-			Format:      to.Ptr(armapimanagement.PolicyFragmentContentFormatXML),
-			Description: to.Ptr("A policy fragment example"),
-			Value:       to.Ptr("<fragment><json-to-xml apply=\"always\" consider-accept-header=\"false\" /></fragment>"),
+			Format:		to.Ptr(armapimanagement.PolicyFragmentContentFormatXML),
+			Description:	to.Ptr("A policy fragment example"),
+			Value:		to.Ptr("<fragment><json-to-xml apply=\"always\" consider-accept-header=\"false\" /></fragment>"),
 		},
 	}, &armapimanagement.WorkspacePolicyFragmentClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleWorkspacePolicyFragmentClient_ListReferences() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewWorkspacePolicyFragmentClient().ListReferences(ctx, "rg1", "apimService1", "wks1", "policyFragment1", &armapimanagement.WorkspacePolicyFragmentClientListReferencesOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

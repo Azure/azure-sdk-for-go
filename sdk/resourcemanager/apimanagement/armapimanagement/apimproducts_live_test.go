@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,17 +20,17 @@ import (
 type ApimproductsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	apiId             string
-	groupId           string
-	productId         string
-	serviceName       string
-	tagId             string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	apiId			string
+	groupId			string
+	productId		string
+	serviceName		string
+	tagId			string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimproductsTestSuite) SetupSuite() {
@@ -71,17 +71,17 @@ func (testsuite *ApimproductsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -113,10 +113,10 @@ func (testsuite *ApimproductsTestSuite) TestProduct() {
 	// From step Product_ListByService
 	fmt.Println("Call operation: Product_ListByService")
 	productClientNewListByServicePager := productClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.ProductClientListByServiceOptions{Filter: nil,
-		Top:          nil,
-		Skip:         nil,
-		ExpandGroups: nil,
-		Tags:         nil,
+		Top:		nil,
+		Skip:		nil,
+		ExpandGroups:	nil,
+		Tags:		nil,
 	})
 	for productClientNewListByServicePager.More() {
 		_, err := productClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -132,9 +132,9 @@ func (testsuite *ApimproductsTestSuite) TestProduct() {
 	// From step Product_ListByTags
 	fmt.Println("Call operation: Product_ListByTags")
 	productClientNewListByTagsPager := productClient.NewListByTagsPager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.ProductClientListByTagsOptions{Filter: nil,
-		Top:                      nil,
-		Skip:                     nil,
-		IncludeNotTaggedProducts: nil,
+		Top:				nil,
+		Skip:				nil,
+		IncludeNotTaggedProducts:	nil,
 	})
 	for productClientNewListByTagsPager.More() {
 		_, err := productClientNewListByTagsPager.NextPage(testsuite.ctx)
@@ -161,9 +161,9 @@ func (testsuite *ApimproductsTestSuite) TestProductapi() {
 	testsuite.Require().NoError(err)
 	aPIClientCreateOrUpdateResponsePoller, err := aPIClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.apiId, armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:   to.Ptr("petstore"),
-			Format: to.Ptr(armapimanagement.ContentFormatOpenapiLink),
-			Value:  to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
+			Path:	to.Ptr("petstore"),
+			Format:	to.Ptr(armapimanagement.ContentFormatOpenapiLink),
+			Value:	to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -185,8 +185,8 @@ func (testsuite *ApimproductsTestSuite) TestProductapi() {
 	// From step ProductApi_ListByProduct
 	fmt.Println("Call operation: ProductApi_ListByProduct")
 	productAPIClientNewListByProductPager := productAPIClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.ProductAPIClientListByProductOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for productAPIClientNewListByProductPager.More() {
 		_, err := productAPIClientNewListByProductPager.NextPage(testsuite.ctx)
@@ -229,8 +229,8 @@ func (testsuite *ApimproductsTestSuite) TestProductgroup() {
 	// From step ProductGroup_ListByProduct
 	fmt.Println("Call operation: ProductGroup_ListByProduct")
 	productGroupClientNewListByProductPager := productGroupClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.ProductGroupClientListByProductOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for productGroupClientNewListByProductPager.More() {
 		_, err := productGroupClientNewListByProductPager.NextPage(testsuite.ctx)
@@ -306,8 +306,8 @@ func (testsuite *ApimproductsTestSuite) TestProducttag() {
 	// From step Tag_ListByProduct
 	fmt.Println("Call operation: Tag_ListByProduct")
 	tagClientNewListByProductPager := tagClient.NewListByProductPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.TagClientListByProductOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for tagClientNewListByProductPager.More() {
 		_, err := tagClientNewListByProductPager.NextPage(testsuite.ctx)
@@ -329,8 +329,8 @@ func (testsuite *ApimproductsTestSuite) TestProductsubscriptions() {
 	productSubscriptionsClient, err := armapimanagement.NewProductSubscriptionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	productSubscriptionsClientNewListPager := productSubscriptionsClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.productId, &armapimanagement.ProductSubscriptionsClientListOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for productSubscriptionsClientNewListPager.More() {
 		_, err := productSubscriptionsClientNewListPager.NextPage(testsuite.ctx)

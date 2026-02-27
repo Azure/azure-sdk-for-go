@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceApis.json
@@ -27,10 +27,10 @@ func ExampleWorkspaceAPIClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceAPIClient().NewListByServicePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceAPIClientListByServiceOptions{Filter: nil,
-		Top:                 nil,
-		Skip:                nil,
-		Tags:                nil,
-		ExpandAPIVersionSet: nil,
+		Top:			nil,
+		Skip:			nil,
+		Tags:			nil,
+		ExpandAPIVersionSet:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -247,23 +247,23 @@ func ExampleWorkspaceAPIClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewWorkspaceAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description: to.Ptr("apidescription5200"),
+			Description:	to.Ptr("apidescription5200"),
 			AuthenticationSettings: &armapimanagement.AuthenticationSettingsContract{
 				OAuth2: &armapimanagement.OAuth2AuthenticationSettingsContract{
-					AuthorizationServerID: to.Ptr("authorizationServerId2283"),
-					Scope:                 to.Ptr("oauth2scope2580"),
+					AuthorizationServerID:	to.Ptr("authorizationServerId2283"),
+					Scope:			to.Ptr("oauth2scope2580"),
 				},
 			},
 			SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
-				Header: to.Ptr("header4520"),
-				Query:  to.Ptr("query3037"),
+				Header:	to.Ptr("header4520"),
+				Query:	to.Ptr("query3037"),
 			},
-			Path:        to.Ptr("newapiPath"),
-			DisplayName: to.Ptr("apiname1463"),
+			Path:		to.Ptr("newapiPath"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTPS),
 				to.Ptr(armapimanagement.ProtocolHTTP)},
-			ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
+			ServiceURL:	to.Ptr("http://newechoapi.cloudapp.net/api"),
 		},
 	}, &armapimanagement.WorkspaceAPIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -324,9 +324,9 @@ func ExampleWorkspaceAPIClient_Update() {
 	}
 	res, err := clientFactory.NewWorkspaceAPIClient().Update(ctx, "rg1", "apimService1", "wks1", "echo-api", "*", armapimanagement.APIUpdateContract{
 		Properties: &armapimanagement.APIContractUpdateProperties{
-			Path:        to.Ptr("newecho"),
-			DisplayName: to.Ptr("Echo API New"),
-			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api2"),
+			Path:		to.Ptr("newecho"),
+			DisplayName:	to.Ptr("Echo API New"),
+			ServiceURL:	to.Ptr("http://echoapi.cloudapp.net/api2"),
 		},
 	}, nil)
 	if err != nil {

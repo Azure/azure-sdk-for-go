@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateStandardGateway.json
@@ -28,10 +28,10 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateStandardGate
 	}
 	poller, err := clientFactory.NewAPIGatewayClient().BeginCreateOrUpdate(ctx, "rg1", "apimGateway1", armapimanagement.GatewayResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr("South Central US"),
+		Location:	to.Ptr("South Central US"),
 		Properties: &armapimanagement.GatewayProperties{
 			Backend: &armapimanagement.BackendConfiguration{
 				Subnet: &armapimanagement.BackendSubnetConfiguration{
@@ -40,8 +40,8 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateStandardGate
 			},
 		},
 		SKU: &armapimanagement.GatewaySKUProperties{
-			Name:     to.Ptr(armapimanagement.APIGatewaySKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.APIGatewaySKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -107,21 +107,21 @@ func ExampleAPIGatewayClient_BeginCreateOrUpdate_apiManagementCreateWorkspacePre
 	}
 	poller, err := clientFactory.NewAPIGatewayClient().BeginCreateOrUpdate(ctx, "rg1", "apimGateway1", armapimanagement.GatewayResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr("South Central US"),
+		Location:	to.Ptr("South Central US"),
 		Properties: &armapimanagement.GatewayProperties{
 			Backend: &armapimanagement.BackendConfiguration{
 				Subnet: &armapimanagement.BackendSubnetConfiguration{
 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vn1/subnets/sn1"),
 				},
 			},
-			VirtualNetworkType: to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
+			VirtualNetworkType:	to.Ptr(armapimanagement.VirtualNetworkTypeExternal),
 		},
 		SKU: &armapimanagement.GatewaySKUProperties{
-			Name:     to.Ptr(armapimanagement.APIGatewaySKUTypeWorkspaceGatewayPremium),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.APIGatewaySKUTypeWorkspaceGatewayPremium),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	if err != nil {
@@ -182,13 +182,13 @@ func ExampleAPIGatewayClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewAPIGatewayClient().BeginUpdate(ctx, "rg1", "apimGateway1", armapimanagement.GatewayUpdateParameters{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Properties: &armapimanagement.GatewayUpdateProperties{},
+		Properties:	&armapimanagement.GatewayUpdateProperties{},
 		SKU: &armapimanagement.GatewaySKUPropertiesForPatch{
-			Name:     to.Ptr(armapimanagement.APIGatewaySKUTypeStandard),
-			Capacity: to.Ptr[int32](10),
+			Name:		to.Ptr(armapimanagement.APIGatewaySKUTypeStandard),
+			Capacity:	to.Ptr[int32](10),
 		},
 	}, nil)
 	if err != nil {

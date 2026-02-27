@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceCertificates.json
@@ -27,9 +27,9 @@ func ExampleWorkspaceCertificateClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceCertificateClient().NewListByWorkspacePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceCertificateClientListByWorkspaceOptions{Filter: nil,
-		Top:                     nil,
-		Skip:                    nil,
-		IsKeyVaultRefreshFailed: nil,
+		Top:				nil,
+		Skip:				nil,
+		IsKeyVaultRefreshFailed:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -174,8 +174,8 @@ func ExampleWorkspaceCertificateClient_CreateOrUpdate_apiManagementCreateWorkspa
 	}
 	res, err := clientFactory.NewWorkspaceCertificateClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "tempcert", armapimanagement.CertificateCreateOrUpdateParameters{
 		Properties: &armapimanagement.CertificateCreateOrUpdateProperties{
-			Data:     to.Ptr("****************Base 64 Encoded Certificate *******************************"),
-			Password: to.Ptr("****Certificate Password******"),
+			Data:		to.Ptr("****************Base 64 Encoded Certificate *******************************"),
+			Password:	to.Ptr("****Certificate Password******"),
 		},
 	}, &armapimanagement.WorkspaceCertificateClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -210,8 +210,8 @@ func ExampleWorkspaceCertificateClient_CreateOrUpdate_apiManagementCreateWorkspa
 	res, err := clientFactory.NewWorkspaceCertificateClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "templateCertkv", armapimanagement.CertificateCreateOrUpdateParameters{
 		Properties: &armapimanagement.CertificateCreateOrUpdateProperties{
 			KeyVault: &armapimanagement.KeyVaultContractCreateProperties{
-				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
-				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
+				IdentityClientID:	to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
+				SecretIdentifier:	to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 			},
 		},
 	}, &armapimanagement.WorkspaceCertificateClientCreateOrUpdateOptions{IfMatch: nil})

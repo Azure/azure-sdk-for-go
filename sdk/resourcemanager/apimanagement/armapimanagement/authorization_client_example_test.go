@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListAuthorizationsAuthCode.json
@@ -27,8 +27,8 @@ func ExampleAuthorizationClient_NewListByAuthorizationProviderPager_apiManagemen
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAuthorizationClient().NewListByAuthorizationProviderPager("rg1", "apimService1", "aadwithauthcode", &armapimanagement.AuthorizationClientListByAuthorizationProviderOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -82,8 +82,8 @@ func ExampleAuthorizationClient_NewListByAuthorizationProviderPager_apiManagemen
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAuthorizationClient().NewListByAuthorizationProviderPager("rg1", "apimService1", "aadwithclientcred", &armapimanagement.AuthorizationClientListByAuthorizationProviderOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -174,8 +174,8 @@ func ExampleAuthorizationClient_CreateOrUpdate_apiManagementCreateAuthorizationA
 	}
 	res, err := clientFactory.NewAuthorizationClient().CreateOrUpdate(ctx, "rg1", "apimService1", "aadwithauthcode", "authz2", armapimanagement.AuthorizationContract{
 		Properties: &armapimanagement.AuthorizationContractProperties{
-			AuthorizationType: to.Ptr(armapimanagement.AuthorizationTypeOAuth2),
-			OAuth2GrantType:   to.Ptr(armapimanagement.OAuth2GrantTypeAuthorizationCode),
+			AuthorizationType:	to.Ptr(armapimanagement.AuthorizationTypeOAuth2),
+			OAuth2GrantType:	to.Ptr(armapimanagement.OAuth2GrantTypeAuthorizationCode),
 		},
 	}, &armapimanagement.AuthorizationClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -213,11 +213,11 @@ func ExampleAuthorizationClient_CreateOrUpdate_apiManagementCreateAuthorizationA
 	}
 	res, err := clientFactory.NewAuthorizationClient().CreateOrUpdate(ctx, "rg1", "apimService1", "aadwithclientcred", "authz1", armapimanagement.AuthorizationContract{
 		Properties: &armapimanagement.AuthorizationContractProperties{
-			AuthorizationType: to.Ptr(armapimanagement.AuthorizationTypeOAuth2),
-			OAuth2GrantType:   to.Ptr(armapimanagement.OAuth2GrantTypeAuthorizationCode),
+			AuthorizationType:	to.Ptr(armapimanagement.AuthorizationTypeOAuth2),
+			OAuth2GrantType:	to.Ptr(armapimanagement.OAuth2GrantTypeAuthorizationCode),
 			Parameters: map[string]*string{
-				"clientId":     to.Ptr("clientsecretid"),
-				"clientSecret": to.Ptr("clientsecretvalue"),
+				"clientId":	to.Ptr("clientsecretid"),
+				"clientSecret":	to.Ptr("clientsecretvalue"),
 			},
 		},
 	}, &armapimanagement.AuthorizationClientCreateOrUpdateOptions{IfMatch: nil})

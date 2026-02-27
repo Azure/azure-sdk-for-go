@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,15 +20,15 @@ import (
 type ApimnotificationsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	email             string
-	serviceName       string
-	userId            string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	email			string
+	serviceName		string
+	userId			string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimnotificationsTestSuite) SetupSuite() {
@@ -66,17 +66,17 @@ func (testsuite *ApimnotificationsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -99,7 +99,7 @@ func (testsuite *ApimnotificationsTestSuite) TestNotification() {
 	notificationClient, err := armapimanagement.NewNotificationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	notificationClientNewListByServicePager := notificationClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.NotificationClientListByServiceOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	for notificationClientNewListByServicePager.More() {
 		_, err := notificationClientNewListByServicePager.NextPage(testsuite.ctx)

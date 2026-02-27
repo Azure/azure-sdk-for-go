@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListCertificates.json
@@ -27,9 +27,9 @@ func ExampleCertificateClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewCertificateClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.CertificateClientListByServiceOptions{Filter: nil,
-		Top:                     nil,
-		Skip:                    nil,
-		IsKeyVaultRefreshFailed: nil,
+		Top:				nil,
+		Skip:				nil,
+		IsKeyVaultRefreshFailed:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -174,8 +174,8 @@ func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificate() {
 	}
 	res, err := clientFactory.NewCertificateClient().CreateOrUpdate(ctx, "rg1", "apimService1", "tempcert", armapimanagement.CertificateCreateOrUpdateParameters{
 		Properties: &armapimanagement.CertificateCreateOrUpdateProperties{
-			Data:     to.Ptr("****************Base 64 Encoded Certificate *******************************"),
-			Password: to.Ptr("****Certificate Password******"),
+			Data:		to.Ptr("****************Base 64 Encoded Certificate *******************************"),
+			Password:	to.Ptr("****Certificate Password******"),
 		},
 	}, &armapimanagement.CertificateClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -210,8 +210,8 @@ func ExampleCertificateClient_CreateOrUpdate_apiManagementCreateCertificateWithK
 	res, err := clientFactory.NewCertificateClient().CreateOrUpdate(ctx, "rg1", "apimService1", "templateCertkv", armapimanagement.CertificateCreateOrUpdateParameters{
 		Properties: &armapimanagement.CertificateCreateOrUpdateProperties{
 			KeyVault: &armapimanagement.KeyVaultContractCreateProperties{
-				IdentityClientID: to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
-				SecretIdentifier: to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
+				IdentityClientID:	to.Ptr("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"),
+				SecretIdentifier:	to.Ptr("https://rpbvtkeyvaultintegration.vault-int.azure-int.net/secrets/msitestingCert"),
 			},
 		},
 	}, &armapimanagement.CertificateClientCreateOrUpdateOptions{IfMatch: nil})

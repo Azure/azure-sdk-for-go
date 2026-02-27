@@ -11,7 +11,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementGetReportsByApi.json
@@ -26,8 +26,8 @@ func ExampleReportsClient_NewListByAPIPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByAPIPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByAPIOptions{Top: nil,
-		Skip:    nil,
-		Orderby: nil,
+		Skip:		nil,
+		Orderby:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -94,8 +94,8 @@ func ExampleReportsClient_NewListByUserPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByUserPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByUserOptions{Top: nil,
-		Skip:    nil,
-		Orderby: nil,
+		Skip:		nil,
+		Orderby:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -180,8 +180,8 @@ func ExampleReportsClient_NewListByOperationPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByOperationPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByOperationOptions{Top: nil,
-		Skip:    nil,
-		Orderby: nil,
+		Skip:		nil,
+		Orderby:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -269,8 +269,8 @@ func ExampleReportsClient_NewListByProductPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByProductPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByProductOptions{Top: nil,
-		Skip:    nil,
-		Orderby: nil,
+		Skip:		nil,
+		Orderby:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -337,7 +337,7 @@ func ExampleReportsClient_NewListByGeoPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByGeoPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByGeoOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -386,8 +386,8 @@ func ExampleReportsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListBySubscriptionPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListBySubscriptionOptions{Top: nil,
-		Skip:    nil,
-		Orderby: nil,
+		Skip:		nil,
+		Orderby:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -478,8 +478,8 @@ func ExampleReportsClient_NewListByTimePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByTimePager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", "PT15M", &armapimanagement.ReportsClientListByTimeOptions{Top: nil,
-		Skip:    nil,
-		Orderby: nil,
+		Skip:		nil,
+		Orderby:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -546,7 +546,7 @@ func ExampleReportsClient_NewListByRequestPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewReportsClient().NewListByRequestPager("rg1", "apimService1", "timestamp ge datetime'2017-06-01T00:00:00' and timestamp le datetime'2017-06-04T00:00:00'", &armapimanagement.ReportsClientListByRequestOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)

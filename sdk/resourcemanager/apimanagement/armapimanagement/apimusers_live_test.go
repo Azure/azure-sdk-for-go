@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,14 +20,14 @@ import (
 type ApimusersTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	serviceName       string
-	userId            string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	serviceName		string
+	userId			string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimusersTestSuite) SetupSuite() {
@@ -64,17 +64,17 @@ func (testsuite *ApimusersTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -91,13 +91,13 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	testsuite.Require().NoError(err)
 	_, err = userClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, armapimanagement.UserCreateParameters{
 		Properties: &armapimanagement.UserCreateParameterProperties{
-			Confirmation: to.Ptr(armapimanagement.ConfirmationSignup),
-			Email:        to.Ptr("foobar@outlook.com"),
-			FirstName:    to.Ptr("foo"),
-			LastName:     to.Ptr("bar"),
+			Confirmation:	to.Ptr(armapimanagement.ConfirmationSignup),
+			Email:		to.Ptr("foobar@outlook.com"),
+			FirstName:	to.Ptr("foo"),
+			LastName:	to.Ptr("bar"),
 		},
 	}, &armapimanagement.UserClientCreateOrUpdateOptions{Notify: nil,
-		IfMatch: nil,
+		IfMatch:	nil,
 	})
 	testsuite.Require().NoError(err)
 
@@ -109,9 +109,9 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	// From step User_ListByService
 	fmt.Println("Call operation: User_ListByService")
 	userClientNewListByServicePager := userClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.UserClientListByServiceOptions{Filter: nil,
-		Top:          nil,
-		Skip:         nil,
-		ExpandGroups: nil,
+		Top:		nil,
+		Skip:		nil,
+		ExpandGroups:	nil,
 	})
 	for userClientNewListByServicePager.More() {
 		_, err := userClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -128,9 +128,9 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	fmt.Println("Call operation: User_Update")
 	_, err = userClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, "*", armapimanagement.UserUpdateParameters{
 		Properties: &armapimanagement.UserUpdateParametersProperties{
-			Email:     to.Ptr("foobar@outlook.com"),
-			FirstName: to.Ptr("foo"),
-			LastName:  to.Ptr("bar"),
+			Email:		to.Ptr("foobar@outlook.com"),
+			FirstName:	to.Ptr("foo"),
+			LastName:	to.Ptr("bar"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -145,8 +145,8 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	userGroupClient, err := armapimanagement.NewUserGroupClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	userGroupClientNewListPager := userGroupClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserGroupClientListOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for userGroupClientNewListPager.More() {
 		_, err := userGroupClientNewListPager.NextPage(testsuite.ctx)
@@ -159,8 +159,8 @@ func (testsuite *ApimusersTestSuite) TestUser() {
 	userSubscriptionClient, err := armapimanagement.NewUserSubscriptionClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	userSubscriptionClientNewListPager := userSubscriptionClient.NewListPager(testsuite.resourceGroupName, testsuite.serviceName, testsuite.userId, &armapimanagement.UserSubscriptionClientListOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for userSubscriptionClientNewListPager.More() {
 		_, err := userSubscriptionClientNewListPager.NextPage(testsuite.ctx)

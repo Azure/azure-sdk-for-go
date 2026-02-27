@@ -1,5 +1,20 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-02-12)
+### Breaking Changes
+
+- Function `*AzureBareMetalStorageInstancesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, azureBareMetalStorageInstanceName string, tagsParameter Tags, options *AzureBareMetalStorageInstancesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, azureBareMetalStorageInstanceName string, azureBareMetalStorageInstanceBodyParameter AzureBareMetalStorageInstanceBody, options *AzureBareMetalStorageInstancesClientUpdateOptions)`
+
+### Features Added
+
+- New enum type `ResourceIdentityType` with values `ResourceIdentityTypeNone`, `ResourceIdentityTypeSystemAssigned`
+- New function `*AzureBareMetalInstancesClient.Create(ctx context.Context, resourceGroupName string, azureBareMetalInstanceName string, requestBodyParameters AzureBareMetalInstance, options *AzureBareMetalInstancesClientCreateOptions) (AzureBareMetalInstancesClientCreateResponse, error)`
+- New function `*AzureBareMetalInstancesClient.Delete(ctx context.Context, resourceGroupName string, azureBareMetalInstanceName string, options *AzureBareMetalInstancesClientDeleteOptions) (AzureBareMetalInstancesClientDeleteResponse, error)`
+- New struct `AzureBareMetalStorageInstanceBody`
+- New struct `AzureBareMetalStorageInstanceIdentity`
+- New field `Identity` in struct `AzureBareMetalStorageInstance`
+
+
 ## 2.0.0-beta.1 (2023-12-08)
 ### Breaking Changes
 

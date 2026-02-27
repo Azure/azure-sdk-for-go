@@ -1,0 +1,4 @@
+directory: specification/baremetalinfrastructure/resource-manager/Microsoft.BareMetalInfrastructure/BareMetalInfrastructure
+commit: 7306214436326e73ce4035642d7f505075c151d4
+repo: i-specs
+additionalDirectories: 

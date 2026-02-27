@@ -6,6 +6,8 @@ package blob
 import (
 	"context"
 	"io"
+	"net/http"
+	"net/url"
 	"os"
 	"sync"
 	"sync/atomic"
@@ -412,6 +414,21 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
 		return DownloadStreamResponse{}, err
+	}
+
+	// Check if the response contains an error code indicating unmet access conditions
+	if dr.ErrorCode != nil && *dr.ErrorCode == string(bloberror.ConditionNotMet) {
+		// Create a minimal HTTP response to use with NewResponseErrorWithErrorCode
+		httpResp := &http.Response{
+			StatusCode: http.StatusNotModified,
+			Header:     make(http.Header),
+			Request: &http.Request{
+				Method: http.MethodGet,
+				URL:    &url.URL{},
+			},
+		}
+		httpResp.Header.Set("x-ms-error-code", *dr.ErrorCode)
+		return DownloadStreamResponse{}, runtime.NewResponseErrorWithErrorCode(httpResp, *dr.ErrorCode)
 	}
 
 	return DownloadStreamResponse{

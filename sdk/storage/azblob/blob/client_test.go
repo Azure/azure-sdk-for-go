@@ -1891,13 +1891,15 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 
 	currentTime := testcommon.GetRelativeTimeFromAnchor(cResp.Date, 10)
 
-	resp, err := bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+	_, err = bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
 		AccessConditions: &blob.AccessConditions{ModifiedAccessConditions: &blob.ModifiedAccessConditions{
 			IfModifiedSince: &currentTime,
 		}},
 	})
-	_require.NoError(err)
-	_require.Equal(*resp.ErrorCode, string(bloberror.ConditionNotMet))
+	_require.Error(err)
+	var respErr *azcore.ResponseError
+	_require.ErrorAs(err, &respErr)
+	_require.Equal(respErr.ErrorCode, string(bloberror.ConditionNotMet))
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
@@ -2062,9 +2064,48 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 		},
 	}
 
-	resp2, err := bbClient.DownloadStream(context.Background(), &options)
+	_, err = bbClient.DownloadStream(context.Background(), &options)
+	_require.Error(err)
+	var respErr *azcore.ResponseError
+	_require.ErrorAs(err, &respErr)
+	_require.Equal(respErr.ErrorCode, string(bloberror.ConditionNotMet))
+}
+
+// TestBlobDownloadStreamReturnsErrorOnUnmetAccessConditions validates that DownloadStream
+// returns a proper ResponseError when access conditions are unmet, as described in issue #24566.
+func (s *BlobRecordedTestsSuite) TestBlobDownloadStreamReturnsErrorOnUnmetAccessConditions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
-	_require.Equal(*resp2.ErrorCode, string(bloberror.ConditionNotMet))
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	// Test case from the issue: IfNoneMatch with a matching etag should return an error
+	resp, err := bbClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+
+	// This should fail because the etag matches (IfNoneMatch condition is not met)
+	_, err = bbClient.DownloadStream(context.Background(), &blob.DownloadStreamOptions{
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{
+				IfNoneMatch: resp.ETag,
+			},
+		},
+	})
+
+	// Validate that we get a proper ResponseError
+	_require.Error(err, "DownloadStream should return error when access conditions are unmet")
+	
+	var respErr *azcore.ResponseError
+	_require.ErrorAs(err, &respErr, "Error should be a ResponseError")
+	_require.Equal(respErr.ErrorCode, string(bloberror.ConditionNotMet), "Error code should be ConditionNotMet")
+	_require.Equal(respErr.StatusCode, http.StatusNotModified, "Status code should be 304 Not Modified")
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobDeleteNonExistent() {

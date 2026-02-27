@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.0-beta.1 (2026-02-09)
+## 5.0.0-beta.1 (2026-02-27)
 ### Breaking Changes
 
 - Enum `ContainerType` has been removed

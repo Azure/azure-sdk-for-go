@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 func TestNewClientFromConnStrReturnErrorOnWrongDelimiter(t *testing.T) {
@@ -854,5 +855,71 @@ func tokenOK() azcore.AccessToken {
 	return azcore.AccessToken{
 		Token:     "mock-token",
 		ExpiresOn: time.Now().Add(time.Hour),
+	}
+}
+
+func TestAddDefaultHeadersSetsActivityID(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	if err != nil {
+		t.Fatal(err)
+	}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	activityID := verifier.requests[0].headers.Get(cosmosHeaderActivityId)
+	if activityID == "" {
+		t.Fatal("expected x-ms-activity-id header to be set on the request")
+	}
+
+	if _, err := uuid.Parse(activityID); err != nil {
+		t.Errorf("expected activity id to be a valid UUID, but got %v: %v", activityID, err)
+	}
+}
+
+func TestActivityIDIsUniquePerRequest(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.SetResponse(
+		mock.WithStatusCode(200))
+	verifier := pipelineVerifier{}
+	internalClient, err := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerCall: []policy.Policy{&verifier}}, &policy.ClientOptions{Transport: srv})
+	if err != nil {
+		t.Fatal(err)
+	}
+	gem := &globalEndpointManager{preferredLocations: []string{}}
+	client := &Client{endpoint: srv.URL(), internal: internalClient, gem: gem}
+	operationContext := pipelineRequestOptions{
+		resourceType:    resourceTypeDatabase,
+		resourceAddress: "",
+	}
+
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = client.sendGetRequest("/", context.Background(), operationContext, nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	id1 := verifier.requests[0].headers.Get(cosmosHeaderActivityId)
+	id2 := verifier.requests[1].headers.Get(cosmosHeaderActivityId)
+	if id1 == id2 {
+		t.Errorf("expected unique activity ids per request, but both were %v", id1)
 	}
 }

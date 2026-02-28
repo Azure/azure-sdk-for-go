@@ -6,5 +6,5 @@ package armpostgresqlflexibleservers
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
-	moduleVersion = "v5.0.0"
+	moduleVersion = "v6.0.0-beta.1"
 )

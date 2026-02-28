@@ -4,6 +4,42 @@
 
 package armdisconnectedoperations
 
+// AutoRenew - Auto renew status
+type AutoRenew string
+
+const (
+	// AutoRenewDisabled - Auto renew is disabled.
+	AutoRenewDisabled AutoRenew = "Disabled"
+	// AutoRenewEnabled - Auto renew is enabled.
+	AutoRenewEnabled AutoRenew = "Enabled"
+)
+
+// PossibleAutoRenewValues returns the possible values for the AutoRenew const type.
+func PossibleAutoRenewValues() []AutoRenew {
+	return []AutoRenew{
+		AutoRenewDisabled,
+		AutoRenewEnabled,
+	}
+}
+
+// BenefitPlanStatus - Benefit plans status
+type BenefitPlanStatus string
+
+const (
+	// BenefitPlanStatusDisabled - Benefit plan is disabled.
+	BenefitPlanStatusDisabled BenefitPlanStatus = "Disabled"
+	// BenefitPlanStatusEnabled - Benefit plan is enabled.
+	BenefitPlanStatusEnabled BenefitPlanStatus = "Enabled"
+)
+
+// PossibleBenefitPlanStatusValues returns the possible values for the BenefitPlanStatus const type.
+func PossibleBenefitPlanStatusValues() []BenefitPlanStatus {
+	return []BenefitPlanStatus{
+		BenefitPlanStatusDisabled,
+		BenefitPlanStatusEnabled,
+	}
+}
+
 // BillingModel - Billing model
 type BillingModel string
 
@@ -16,6 +52,27 @@ const (
 func PossibleBillingModelValues() []BillingModel {
 	return []BillingModel{
 		BillingModelCapacity,
+	}
+}
+
+// BillingStatus - Billing status
+type BillingStatus string
+
+const (
+	// BillingStatusDisabled - Billing is disabled.
+	BillingStatusDisabled BillingStatus = "Disabled"
+	// BillingStatusEnabled - Billing is enabled.
+	BillingStatusEnabled BillingStatus = "Enabled"
+	// BillingStatusStopped - Billing is stopped.
+	BillingStatusStopped BillingStatus = "Stopped"
+)
+
+// PossibleBillingStatusValues returns the possible values for the BillingStatus const type.
+func PossibleBillingStatusValues() []BillingStatus {
+	return []BillingStatus{
+		BillingStatusDisabled,
+		BillingStatusEnabled,
+		BillingStatusStopped,
 	}
 }
 
@@ -79,6 +136,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// PricingModel - Pricing model
+type PricingModel string
+
+const (
+	// PricingModelAnnual - Annual pricing model.
+	PricingModelAnnual PricingModel = "Annual"
+	// PricingModelTrial - Trial pricing model.
+	PricingModelTrial PricingModel = "Trial"
+)
+
+// PossiblePricingModelValues returns the possible values for the PricingModel const type.
+func PossiblePricingModelValues() []PricingModel {
+	return []PricingModel{
+		PricingModelAnnual,
+		PricingModelTrial,
+	}
+}
+
 // RegistrationStatus - Registration status
 type RegistrationStatus string
 
@@ -133,5 +208,23 @@ func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 		ResourceProvisioningStateCanceled,
 		ResourceProvisioningStateFailed,
 		ResourceProvisioningStateSucceeded,
+	}
+}
+
+// SystemReboot - System Reboot
+type SystemReboot string
+
+const (
+	// SystemRebootNotRequired - System reboot is not required.
+	SystemRebootNotRequired SystemReboot = "NotRequired"
+	// SystemRebootRequired - System reboot is required.
+	SystemRebootRequired SystemReboot = "Required"
+)
+
+// PossibleSystemRebootValues returns the possible values for the SystemReboot const type.
+func PossibleSystemRebootValues() []SystemReboot {
+	return []SystemReboot{
+		SystemRebootNotRequired,
+		SystemRebootRequired,
 	}
 }

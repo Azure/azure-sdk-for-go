@@ -56,6 +56,30 @@ type ClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// HardwareSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the HardwareSettingsClient.BeginCreateOrUpdate
+// method.
+type HardwareSettingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// HardwareSettingsClientBeginDeleteOptions contains the optional parameters for the HardwareSettingsClient.BeginDelete method.
+type HardwareSettingsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// HardwareSettingsClientGetOptions contains the optional parameters for the HardwareSettingsClient.Get method.
+type HardwareSettingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HardwareSettingsClientListByParentOptions contains the optional parameters for the HardwareSettingsClient.NewListByParentPager
+// method.
+type HardwareSettingsClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ImagesClientGetOptions contains the optional parameters for the ImagesClient.Get method.
 type ImagesClientGetOptions struct {
 	// placeholder for future optional parameters

@@ -75,6 +75,45 @@ type ArtifactProperties struct {
 	Size *int64
 }
 
+// BenefitPlans - The benefit plans
+type BenefitPlans struct {
+	// Azure Hybrid Windows Server Benefit plan
+	AzureHybridWindowsServerBenefit *BenefitPlanStatus
+
+	// Number of Windows Server VMs to license under the Azure Hybrid Benefit plan
+	WindowsServerVMCount *int32
+}
+
+// BillingConfiguration - The billing configuration
+type BillingConfiguration struct {
+	// REQUIRED; The auto renew setting
+	AutoRenew *AutoRenew
+
+	// REQUIRED; The current billing configuration
+	Current *BillingPeriod
+
+	// The upcoming billing configuration
+	Upcoming *BillingPeriod
+
+	// READ-ONLY; The billing status
+	BillingStatus *BillingStatus
+}
+
+// BillingPeriod - The billing period
+type BillingPeriod struct {
+	// REQUIRED; The number of cores
+	Cores *int32
+
+	// REQUIRED; The pricing model
+	PricingModel *PricingModel
+
+	// READ-ONLY; The billing end date
+	EndDate *time.Time
+
+	// READ-ONLY; The billing start date
+	StartDate *time.Time
+}
+
 // DisconnectedOperation - Disconnected operation resource.
 type DisconnectedOperation struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -119,6 +158,12 @@ type DisconnectedOperationDeploymentManifest struct {
 	// READ-ONLY; The unique GUID of the stamp
 	StampID *string
 
+	// READ-ONLY; The benefit plans
+	BenefitPlans *BenefitPlans
+
+	// READ-ONLY; The billing configuration
+	BillingConfiguration *BillingConfiguration
+
 	// READ-ONLY; The cloud in which the resource is registered
 	Cloud *string
 }
@@ -137,17 +182,23 @@ type DisconnectedOperationProperties struct {
 	// REQUIRED; The connection intent
 	ConnectionIntent *ConnectionIntent
 
-	// The device version
-	DeviceVersion *string
-
-	// The registration intent
-	RegistrationStatus *RegistrationStatus
-
 	// READ-ONLY; The billing model
 	BillingModel *BillingModel
 
 	// READ-ONLY; The unique GUID of the stamp
 	StampID *string
+
+	// The benefit plans
+	BenefitPlans *BenefitPlans
+
+	// The billing configuration
+	BillingConfiguration *BillingConfiguration
+
+	// The device version
+	DeviceVersion *string
+
+	// The registration intent
+	RegistrationStatus *RegistrationStatus
 
 	// READ-ONLY; The connection status
 	ConnectionStatus *ConnectionStatus
@@ -167,6 +218,12 @@ type DisconnectedOperationUpdate struct {
 
 // DisconnectedOperationUpdateProperties - The updatable properties of the DisconnectedOperation.
 type DisconnectedOperationUpdateProperties struct {
+	// The benefit plans
+	BenefitPlans *BenefitPlans
+
+	// The billing configuration
+	BillingConfiguration *BillingConfiguration
+
 	// The connection intent
 	ConnectionIntent *ConnectionIntent
 
@@ -175,6 +232,66 @@ type DisconnectedOperationUpdateProperties struct {
 
 	// The registration intent
 	RegistrationStatus *RegistrationStatus
+}
+
+// HardwareSetting - Hardware settings resource.
+type HardwareSetting struct {
+	// The resource-specific properties for this resource.
+	Properties *HardwareSettingProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// HardwareSettingListResult - The response of a HardwareSetting list operation.
+type HardwareSettingListResult struct {
+	// REQUIRED; The HardwareSetting items on this page
+	Value []*HardwareSetting
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// HardwareSettingProperties - The hardware setting properties
+type HardwareSettingProperties struct {
+	// REQUIRED; The unique Id of the device
+	DeviceID *string
+
+	// REQUIRED; The disk space in GB
+	DiskSpaceInGb *int32
+
+	// REQUIRED; The hardware SKU
+	HardwareSKU *string
+
+	// REQUIRED; The memory in GB
+	MemoryInGb *int32
+
+	// REQUIRED; The number of nodes
+	Nodes *int32
+
+	// REQUIRED; The OEM
+	Oem *string
+
+	// REQUIRED; The solution builder extension at registration
+	SolutionBuilderExtension *string
+
+	// REQUIRED; The total number of cores
+	TotalCores *int32
+
+	// REQUIRED; The active version at registration
+	VersionAtRegistration *string
+
+	// READ-ONLY; The resource provisioning state
+	ProvisioningState *ResourceProvisioningState
 }
 
 // Image - Holds the release information of a disconnected operations image.
@@ -226,6 +343,9 @@ type ImageDownloadResult struct {
 
 	// READ-ONLY; The resource provisioning state
 	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; Image update properties for update release type image.
+	UpdateProperties *ImageUpdateProperties
 }
 
 // ImageListResult - The response of a Image list operation.
@@ -259,6 +379,27 @@ type ImageProperties struct {
 
 	// READ-ONLY; The resource provisioning state
 	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; Image update properties for update release type image.
+	UpdateProperties *ImageUpdateProperties
+}
+
+// ImageUpdateProperties - The update properties of the Update Release type Image
+type ImageUpdateProperties struct {
+	// READ-ONLY; The version(s) of the agent software included in this image update.
+	AgentVersion *string
+
+	// READ-ONLY; Details of feature updates included in this image release.
+	FeatureUpdates *string
+
+	// READ-ONLY; The operating system version provided by this image update.
+	OSVersion *string
+
+	// READ-ONLY; Details of security updates included in this image release.
+	SecurityUpdates *string
+
+	// READ-ONLY; Indicates if a system reboot is required after applying the update.
+	SystemReboot *SystemReboot
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

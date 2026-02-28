@@ -25,9 +25,9 @@ type ThreatIntelligenceIndicatorClient struct {
 }
 
 // NewThreatIntelligenceIndicatorClient creates a new instance of ThreatIntelligenceIndicatorClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceIndicatorClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azco
 // AppendTags - Append tags to a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
@@ -72,7 +72,7 @@ func (client *ThreatIntelligenceIndicatorClient) AppendTags(ctx context.Context,
 }
 
 // appendTagsCreateRequest creates the AppendTags request.
-func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceAppendTags ThreatIntelligenceAppendTags, options *ThreatIntelligenceIndicatorClientAppendTagsOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceAppendTags ThreatIntelligenceAppendTags, _ *ThreatIntelligenceIndicatorClientAppendTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/appendTags"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceAppendTags); err != nil {
@@ -107,7 +107,7 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 // Create - Update a threat Intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
@@ -137,7 +137,7 @@ func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, res
 }
 
 // createCreateRequest creates the Create request.
-func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, _ *ThreatIntelligenceIndicatorClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -160,7 +160,7 @@ func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceProperties); err != nil {
@@ -181,7 +181,7 @@ func (client *ThreatIntelligenceIndicatorClient) createHandleResponse(resp *http
 // CreateIndicator - Create a new threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
@@ -210,7 +210,7 @@ func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Con
 }
 
 // createIndicatorCreateRequest creates the CreateIndicator request.
-func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, _ *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/createIndicator"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -229,7 +229,7 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceProperties); err != nil {
@@ -250,7 +250,7 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorHandleResponse(r
 // Delete - Delete a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
@@ -278,7 +278,7 @@ func (client *ThreatIntelligenceIndicatorClient) Delete(ctx context.Context, res
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ThreatIntelligenceIndicatorClientDeleteOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ThreatIntelligenceIndicatorClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -301,7 +301,7 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +310,7 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 // Get - View a threat intelligence indicator by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
@@ -339,7 +339,7 @@ func (client *ThreatIntelligenceIndicatorClient) Get(ctx context.Context, resour
 }
 
 // getCreateRequest creates the Get request.
-func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ThreatIntelligenceIndicatorClientGetOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ThreatIntelligenceIndicatorClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -362,7 +362,7 @@ func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,7 +379,7 @@ func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Re
 
 // NewQueryIndicatorsPager - Query threat intelligence indicators as per filtering criteria.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - threatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
@@ -409,7 +409,7 @@ func (client *ThreatIntelligenceIndicatorClient) NewQueryIndicatorsPager(resourc
 }
 
 // queryIndicatorsCreateRequest creates the QueryIndicators request.
-func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, _ *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/queryIndicators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -428,7 +428,7 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceFilteringCriteria); err != nil {
@@ -449,7 +449,7 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsHandleResponse(r
 // ReplaceTags - Replace tags added to a threat intelligence indicator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
@@ -479,7 +479,7 @@ func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context
 }
 
 // replaceTagsCreateRequest creates the ReplaceTags request.
-func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (*policy.Request, error) {
+func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModel, _ *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/replaceTags"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -502,7 +502,7 @@ func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, threatIntelligenceReplaceTags); err != nil {

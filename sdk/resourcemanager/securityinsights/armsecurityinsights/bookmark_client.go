@@ -25,9 +25,9 @@ type BookmarkClient struct {
 }
 
 // NewBookmarkClient creates a new instance of BookmarkClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBookmarkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookmarkClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewBookmarkClient(subscriptionID string, credential azcore.TokenCredential,
 // Expand - Expand an bookmark
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - bookmarkID - Bookmark ID
@@ -72,7 +72,7 @@ func (client *BookmarkClient) Expand(ctx context.Context, resourceGroupName stri
 }
 
 // expandCreateRequest creates the Expand request.
-func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, parameters BookmarkExpandParameters, options *BookmarkClientExpandOptions) (*policy.Request, error) {
+func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, parameters BookmarkExpandParameters, _ *BookmarkClientExpandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}/expand"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

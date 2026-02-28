@@ -25,9 +25,9 @@ type SourceControlsClient struct {
 }
 
 // NewSourceControlsClient creates a new instance of SourceControlsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCrede
 // Create - Creates a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - sourceControlID - Source control Id
@@ -72,7 +72,7 @@ func (client *SourceControlsClient) Create(ctx context.Context, resourceGroupNam
 }
 
 // createCreateRequest creates the Create request.
-func (client *SourceControlsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, sourceControl SourceControl, options *SourceControlsClientCreateOptions) (*policy.Request, error) {
+func (client *SourceControlsClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, sourceControl SourceControl, _ *SourceControlsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +95,7 @@ func (client *SourceControlsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, sourceControl); err != nil {
@@ -116,18 +116,19 @@ func (client *SourceControlsClient) createHandleResponse(resp *http.Response) (S
 // Delete - Delete a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - sourceControlID - Source control Id
+//   - repositoryAccess - The repository access credentials.
 //   - options - SourceControlsClientDeleteOptions contains the optional parameters for the SourceControlsClient.Delete method.
-func (client *SourceControlsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientDeleteOptions) (SourceControlsClientDeleteResponse, error) {
+func (client *SourceControlsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, repositoryAccess RepositoryAccessProperties, options *SourceControlsClientDeleteOptions) (SourceControlsClientDeleteResponse, error) {
 	var err error
 	const operationName = "SourceControlsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sourceControlID, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, sourceControlID, repositoryAccess, options)
 	if err != nil {
 		return SourceControlsClientDeleteResponse{}, err
 	}
@@ -135,16 +136,17 @@ func (client *SourceControlsClient) Delete(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SourceControlsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
 		return SourceControlsClientDeleteResponse{}, err
 	}
-	return SourceControlsClientDeleteResponse{}, nil
+	resp, err := client.deleteHandleResponse(httpResp)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}"
+func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, repositoryAccess RepositoryAccessProperties, _ *SourceControlsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}/delete"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -161,21 +163,33 @@ func (client *SourceControlsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter sourceControlID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceControlId}", url.PathEscape(sourceControlID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, repositoryAccess); err != nil {
+		return nil, err
+	}
 	return req, nil
+}
+
+// deleteHandleResponse handles the Delete response.
+func (client *SourceControlsClient) deleteHandleResponse(resp *http.Response) (SourceControlsClientDeleteResponse, error) {
+	result := SourceControlsClientDeleteResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Warning); err != nil {
+		return SourceControlsClientDeleteResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets a source control byt its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - sourceControlID - Source control Id
@@ -203,7 +217,7 @@ func (client *SourceControlsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientGetOptions) (*policy.Request, error) {
+func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, _ *SourceControlsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols/{sourceControlId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -226,7 +240,7 @@ func (client *SourceControlsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,7 +257,7 @@ func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (Sour
 
 // NewListPager - Gets all source controls, without source control items.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.NewListPager method.
@@ -271,7 +285,7 @@ func (client *SourceControlsClient) NewListPager(resourceGroupName string, works
 }
 
 // listCreateRequest creates the List request.
-func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) (*policy.Request, error) {
+func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SourceControlsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/sourcecontrols"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -290,7 +304,7 @@ func (client *SourceControlsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

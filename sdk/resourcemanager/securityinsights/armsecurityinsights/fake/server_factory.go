@@ -16,40 +16,185 @@ import (
 
 // ServerFactory is a fake server for instances of the armsecurityinsights.ClientFactory type.
 type ServerFactory struct {
-	ActionsServer                            ActionsServer
-	AlertRuleTemplatesServer                 AlertRuleTemplatesServer
-	AlertRulesServer                         AlertRulesServer
-	AutomationRulesServer                    AutomationRulesServer
-	BookmarkServer                           BookmarkServer
-	BookmarkRelationsServer                  BookmarkRelationsServer
-	BookmarksServer                          BookmarksServer
-	DataConnectorsCheckRequirementsServer    DataConnectorsCheckRequirementsServer
-	DataConnectorsServer                     DataConnectorsServer
-	DomainWhoisServer                        DomainWhoisServer
-	EntitiesServer                           EntitiesServer
-	EntitiesGetTimelineServer                EntitiesGetTimelineServer
-	EntitiesRelationsServer                  EntitiesRelationsServer
-	EntityQueriesServer                      EntityQueriesServer
-	EntityQueryTemplatesServer               EntityQueryTemplatesServer
-	EntityRelationsServer                    EntityRelationsServer
-	FileImportsServer                        FileImportsServer
-	IPGeodataServer                          IPGeodataServer
-	IncidentCommentsServer                   IncidentCommentsServer
-	IncidentRelationsServer                  IncidentRelationsServer
-	IncidentsServer                          IncidentsServer
-	MetadataServer                           MetadataServer
-	OfficeConsentsServer                     OfficeConsentsServer
-	OperationsServer                         OperationsServer
-	ProductSettingsServer                    ProductSettingsServer
-	SecurityMLAnalyticsSettingsServer        SecurityMLAnalyticsSettingsServer
-	SentinelOnboardingStatesServer           SentinelOnboardingStatesServer
-	SourceControlServer                      SourceControlServer
-	SourceControlsServer                     SourceControlsServer
-	ThreatIntelligenceIndicatorServer        ThreatIntelligenceIndicatorServer
+	// ActionsServer contains the fakes for client ActionsClient
+	ActionsServer ActionsServer
+
+	// AlertRuleServer contains the fakes for client AlertRuleClient
+	AlertRuleServer AlertRuleServer
+
+	// AlertRuleTemplatesServer contains the fakes for client AlertRuleTemplatesClient
+	AlertRuleTemplatesServer AlertRuleTemplatesServer
+
+	// AlertRulesServer contains the fakes for client AlertRulesClient
+	AlertRulesServer AlertRulesServer
+
+	// AutomationRulesServer contains the fakes for client AutomationRulesClient
+	AutomationRulesServer AutomationRulesServer
+
+	// BillingStatisticsServer contains the fakes for client BillingStatisticsClient
+	BillingStatisticsServer BillingStatisticsServer
+
+	// BookmarkServer contains the fakes for client BookmarkClient
+	BookmarkServer BookmarkServer
+
+	// BookmarkRelationsServer contains the fakes for client BookmarkRelationsClient
+	BookmarkRelationsServer BookmarkRelationsServer
+
+	// BookmarksServer contains the fakes for client BookmarksClient
+	BookmarksServer BookmarksServer
+
+	// Server contains the fakes for client Client
+	Server Server
+
+	// ContentPackageServer contains the fakes for client ContentPackageClient
+	ContentPackageServer ContentPackageServer
+
+	// ContentPackagesServer contains the fakes for client ContentPackagesClient
+	ContentPackagesServer ContentPackagesServer
+
+	// ContentTemplateServer contains the fakes for client ContentTemplateClient
+	ContentTemplateServer ContentTemplateServer
+
+	// ContentTemplatesServer contains the fakes for client ContentTemplatesClient
+	ContentTemplatesServer ContentTemplatesServer
+
+	// DataConnectorDefinitionsServer contains the fakes for client DataConnectorDefinitionsClient
+	DataConnectorDefinitionsServer DataConnectorDefinitionsServer
+
+	// DataConnectorsCheckRequirementsServer contains the fakes for client DataConnectorsCheckRequirementsClient
+	DataConnectorsCheckRequirementsServer DataConnectorsCheckRequirementsServer
+
+	// DataConnectorsServer contains the fakes for client DataConnectorsClient
+	DataConnectorsServer DataConnectorsServer
+
+	// EntitiesServer contains the fakes for client EntitiesClient
+	EntitiesServer EntitiesServer
+
+	// EntitiesGetTimelineServer contains the fakes for client EntitiesGetTimelineClient
+	EntitiesGetTimelineServer EntitiesGetTimelineServer
+
+	// EntitiesRelationsServer contains the fakes for client EntitiesRelationsClient
+	EntitiesRelationsServer EntitiesRelationsServer
+
+	// EntityQueriesServer contains the fakes for client EntityQueriesClient
+	EntityQueriesServer EntityQueriesServer
+
+	// EntityQueryTemplatesServer contains the fakes for client EntityQueryTemplatesClient
+	EntityQueryTemplatesServer EntityQueryTemplatesServer
+
+	// EntityRelationsServer contains the fakes for client EntityRelationsClient
+	EntityRelationsServer EntityRelationsServer
+
+	// FileImportsServer contains the fakes for client FileImportsClient
+	FileImportsServer FileImportsServer
+
+	// GetServer contains the fakes for client GetClient
+	GetServer GetServer
+
+	// GetRecommendationsServer contains the fakes for client GetRecommendationsClient
+	GetRecommendationsServer GetRecommendationsServer
+
+	// GetTriggeredAnalyticsRuleRunsServer contains the fakes for client GetTriggeredAnalyticsRuleRunsClient
+	GetTriggeredAnalyticsRuleRunsServer GetTriggeredAnalyticsRuleRunsServer
+
+	// HuntCommentsServer contains the fakes for client HuntCommentsClient
+	HuntCommentsServer HuntCommentsServer
+
+	// HuntRelationsServer contains the fakes for client HuntRelationsClient
+	HuntRelationsServer HuntRelationsServer
+
+	// HuntsServer contains the fakes for client HuntsClient
+	HuntsServer HuntsServer
+
+	// IncidentCommentsServer contains the fakes for client IncidentCommentsClient
+	IncidentCommentsServer IncidentCommentsServer
+
+	// IncidentRelationsServer contains the fakes for client IncidentRelationsClient
+	IncidentRelationsServer IncidentRelationsServer
+
+	// IncidentTasksServer contains the fakes for client IncidentTasksClient
+	IncidentTasksServer IncidentTasksServer
+
+	// IncidentsServer contains the fakes for client IncidentsClient
+	IncidentsServer IncidentsServer
+
+	// MetadataServer contains the fakes for client MetadataClient
+	MetadataServer MetadataServer
+
+	// OfficeConsentsServer contains the fakes for client OfficeConsentsClient
+	OfficeConsentsServer OfficeConsentsServer
+
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// ProductPackageServer contains the fakes for client ProductPackageClient
+	ProductPackageServer ProductPackageServer
+
+	// ProductPackagesServer contains the fakes for client ProductPackagesClient
+	ProductPackagesServer ProductPackagesServer
+
+	// ProductSettingsServer contains the fakes for client ProductSettingsClient
+	ProductSettingsServer ProductSettingsServer
+
+	// ProductTemplateServer contains the fakes for client ProductTemplateClient
+	ProductTemplateServer ProductTemplateServer
+
+	// ProductTemplatesServer contains the fakes for client ProductTemplatesClient
+	ProductTemplatesServer ProductTemplatesServer
+
+	// ReevaluateServer contains the fakes for client ReevaluateClient
+	ReevaluateServer ReevaluateServer
+
+	// SecurityMLAnalyticsSettingsServer contains the fakes for client SecurityMLAnalyticsSettingsClient
+	SecurityMLAnalyticsSettingsServer SecurityMLAnalyticsSettingsServer
+
+	// SentinelOnboardingStatesServer contains the fakes for client SentinelOnboardingStatesClient
+	SentinelOnboardingStatesServer SentinelOnboardingStatesServer
+
+	// SourceControlServer contains the fakes for client SourceControlClient
+	SourceControlServer SourceControlServer
+
+	// SourceControlsServer contains the fakes for client SourceControlsClient
+	SourceControlsServer SourceControlsServer
+
+	// ThreatIntelligenceServer contains the fakes for client ThreatIntelligenceClient
+	ThreatIntelligenceServer ThreatIntelligenceServer
+
+	// ThreatIntelligenceIndicatorServer contains the fakes for client ThreatIntelligenceIndicatorClient
+	ThreatIntelligenceIndicatorServer ThreatIntelligenceIndicatorServer
+
+	// ThreatIntelligenceIndicatorMetricsServer contains the fakes for client ThreatIntelligenceIndicatorMetricsClient
 	ThreatIntelligenceIndicatorMetricsServer ThreatIntelligenceIndicatorMetricsServer
-	ThreatIntelligenceIndicatorsServer       ThreatIntelligenceIndicatorsServer
-	WatchlistItemsServer                     WatchlistItemsServer
-	WatchlistsServer                         WatchlistsServer
+
+	// ThreatIntelligenceIndicatorsServer contains the fakes for client ThreatIntelligenceIndicatorsClient
+	ThreatIntelligenceIndicatorsServer ThreatIntelligenceIndicatorsServer
+
+	// TriggeredAnalyticsRuleRunServer contains the fakes for client TriggeredAnalyticsRuleRunClient
+	TriggeredAnalyticsRuleRunServer TriggeredAnalyticsRuleRunServer
+
+	// UpdateServer contains the fakes for client UpdateClient
+	UpdateServer UpdateServer
+
+	// WatchlistItemsServer contains the fakes for client WatchlistItemsClient
+	WatchlistItemsServer WatchlistItemsServer
+
+	// WatchlistsServer contains the fakes for client WatchlistsClient
+	WatchlistsServer WatchlistsServer
+
+	// WorkspaceManagerAssignmentJobsServer contains the fakes for client WorkspaceManagerAssignmentJobsClient
+	WorkspaceManagerAssignmentJobsServer WorkspaceManagerAssignmentJobsServer
+
+	// WorkspaceManagerAssignmentsServer contains the fakes for client WorkspaceManagerAssignmentsClient
+	WorkspaceManagerAssignmentsServer WorkspaceManagerAssignmentsServer
+
+	// WorkspaceManagerConfigurationsServer contains the fakes for client WorkspaceManagerConfigurationsClient
+	WorkspaceManagerConfigurationsServer WorkspaceManagerConfigurationsServer
+
+	// WorkspaceManagerGroupsServer contains the fakes for client WorkspaceManagerGroupsClient
+	WorkspaceManagerGroupsServer WorkspaceManagerGroupsServer
+
+	// WorkspaceManagerMembersServer contains the fakes for client WorkspaceManagerMembersClient
+	WorkspaceManagerMembersServer WorkspaceManagerMembersServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -67,15 +212,22 @@ type ServerFactoryTransport struct {
 	srv                                        *ServerFactory
 	trMu                                       sync.Mutex
 	trActionsServer                            *ActionsServerTransport
+	trAlertRuleServer                          *AlertRuleServerTransport
 	trAlertRuleTemplatesServer                 *AlertRuleTemplatesServerTransport
 	trAlertRulesServer                         *AlertRulesServerTransport
 	trAutomationRulesServer                    *AutomationRulesServerTransport
+	trBillingStatisticsServer                  *BillingStatisticsServerTransport
 	trBookmarkServer                           *BookmarkServerTransport
 	trBookmarkRelationsServer                  *BookmarkRelationsServerTransport
 	trBookmarksServer                          *BookmarksServerTransport
+	trServer                                   *ServerTransport
+	trContentPackageServer                     *ContentPackageServerTransport
+	trContentPackagesServer                    *ContentPackagesServerTransport
+	trContentTemplateServer                    *ContentTemplateServerTransport
+	trContentTemplatesServer                   *ContentTemplatesServerTransport
+	trDataConnectorDefinitionsServer           *DataConnectorDefinitionsServerTransport
 	trDataConnectorsCheckRequirementsServer    *DataConnectorsCheckRequirementsServerTransport
 	trDataConnectorsServer                     *DataConnectorsServerTransport
-	trDomainWhoisServer                        *DomainWhoisServerTransport
 	trEntitiesServer                           *EntitiesServerTransport
 	trEntitiesGetTimelineServer                *EntitiesGetTimelineServerTransport
 	trEntitiesRelationsServer                  *EntitiesRelationsServerTransport
@@ -83,23 +235,42 @@ type ServerFactoryTransport struct {
 	trEntityQueryTemplatesServer               *EntityQueryTemplatesServerTransport
 	trEntityRelationsServer                    *EntityRelationsServerTransport
 	trFileImportsServer                        *FileImportsServerTransport
-	trIPGeodataServer                          *IPGeodataServerTransport
+	trGetServer                                *GetServerTransport
+	trGetRecommendationsServer                 *GetRecommendationsServerTransport
+	trGetTriggeredAnalyticsRuleRunsServer      *GetTriggeredAnalyticsRuleRunsServerTransport
+	trHuntCommentsServer                       *HuntCommentsServerTransport
+	trHuntRelationsServer                      *HuntRelationsServerTransport
+	trHuntsServer                              *HuntsServerTransport
 	trIncidentCommentsServer                   *IncidentCommentsServerTransport
 	trIncidentRelationsServer                  *IncidentRelationsServerTransport
+	trIncidentTasksServer                      *IncidentTasksServerTransport
 	trIncidentsServer                          *IncidentsServerTransport
 	trMetadataServer                           *MetadataServerTransport
 	trOfficeConsentsServer                     *OfficeConsentsServerTransport
 	trOperationsServer                         *OperationsServerTransport
+	trProductPackageServer                     *ProductPackageServerTransport
+	trProductPackagesServer                    *ProductPackagesServerTransport
 	trProductSettingsServer                    *ProductSettingsServerTransport
+	trProductTemplateServer                    *ProductTemplateServerTransport
+	trProductTemplatesServer                   *ProductTemplatesServerTransport
+	trReevaluateServer                         *ReevaluateServerTransport
 	trSecurityMLAnalyticsSettingsServer        *SecurityMLAnalyticsSettingsServerTransport
 	trSentinelOnboardingStatesServer           *SentinelOnboardingStatesServerTransport
 	trSourceControlServer                      *SourceControlServerTransport
 	trSourceControlsServer                     *SourceControlsServerTransport
+	trThreatIntelligenceServer                 *ThreatIntelligenceServerTransport
 	trThreatIntelligenceIndicatorServer        *ThreatIntelligenceIndicatorServerTransport
 	trThreatIntelligenceIndicatorMetricsServer *ThreatIntelligenceIndicatorMetricsServerTransport
 	trThreatIntelligenceIndicatorsServer       *ThreatIntelligenceIndicatorsServerTransport
+	trTriggeredAnalyticsRuleRunServer          *TriggeredAnalyticsRuleRunServerTransport
+	trUpdateServer                             *UpdateServerTransport
 	trWatchlistItemsServer                     *WatchlistItemsServerTransport
 	trWatchlistsServer                         *WatchlistsServerTransport
+	trWorkspaceManagerAssignmentJobsServer     *WorkspaceManagerAssignmentJobsServerTransport
+	trWorkspaceManagerAssignmentsServer        *WorkspaceManagerAssignmentsServerTransport
+	trWorkspaceManagerConfigurationsServer     *WorkspaceManagerConfigurationsServerTransport
+	trWorkspaceManagerGroupsServer             *WorkspaceManagerGroupsServerTransport
+	trWorkspaceManagerMembersServer            *WorkspaceManagerMembersServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -118,6 +289,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ActionsClient":
 		initServer(s, &s.trActionsServer, func() *ActionsServerTransport { return NewActionsServerTransport(&s.srv.ActionsServer) })
 		resp, err = s.trActionsServer.Do(req)
+	case "AlertRuleClient":
+		initServer(s, &s.trAlertRuleServer, func() *AlertRuleServerTransport { return NewAlertRuleServerTransport(&s.srv.AlertRuleServer) })
+		resp, err = s.trAlertRuleServer.Do(req)
 	case "AlertRuleTemplatesClient":
 		initServer(s, &s.trAlertRuleTemplatesServer, func() *AlertRuleTemplatesServerTransport {
 			return NewAlertRuleTemplatesServerTransport(&s.srv.AlertRuleTemplatesServer)
@@ -131,6 +305,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAutomationRulesServerTransport(&s.srv.AutomationRulesServer)
 		})
 		resp, err = s.trAutomationRulesServer.Do(req)
+	case "BillingStatisticsClient":
+		initServer(s, &s.trBillingStatisticsServer, func() *BillingStatisticsServerTransport {
+			return NewBillingStatisticsServerTransport(&s.srv.BillingStatisticsServer)
+		})
+		resp, err = s.trBillingStatisticsServer.Do(req)
 	case "BookmarkClient":
 		initServer(s, &s.trBookmarkServer, func() *BookmarkServerTransport { return NewBookmarkServerTransport(&s.srv.BookmarkServer) })
 		resp, err = s.trBookmarkServer.Do(req)
@@ -142,6 +321,34 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "BookmarksClient":
 		initServer(s, &s.trBookmarksServer, func() *BookmarksServerTransport { return NewBookmarksServerTransport(&s.srv.BookmarksServer) })
 		resp, err = s.trBookmarksServer.Do(req)
+	case "Client":
+		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		resp, err = s.trServer.Do(req)
+	case "ContentPackageClient":
+		initServer(s, &s.trContentPackageServer, func() *ContentPackageServerTransport {
+			return NewContentPackageServerTransport(&s.srv.ContentPackageServer)
+		})
+		resp, err = s.trContentPackageServer.Do(req)
+	case "ContentPackagesClient":
+		initServer(s, &s.trContentPackagesServer, func() *ContentPackagesServerTransport {
+			return NewContentPackagesServerTransport(&s.srv.ContentPackagesServer)
+		})
+		resp, err = s.trContentPackagesServer.Do(req)
+	case "ContentTemplateClient":
+		initServer(s, &s.trContentTemplateServer, func() *ContentTemplateServerTransport {
+			return NewContentTemplateServerTransport(&s.srv.ContentTemplateServer)
+		})
+		resp, err = s.trContentTemplateServer.Do(req)
+	case "ContentTemplatesClient":
+		initServer(s, &s.trContentTemplatesServer, func() *ContentTemplatesServerTransport {
+			return NewContentTemplatesServerTransport(&s.srv.ContentTemplatesServer)
+		})
+		resp, err = s.trContentTemplatesServer.Do(req)
+	case "DataConnectorDefinitionsClient":
+		initServer(s, &s.trDataConnectorDefinitionsServer, func() *DataConnectorDefinitionsServerTransport {
+			return NewDataConnectorDefinitionsServerTransport(&s.srv.DataConnectorDefinitionsServer)
+		})
+		resp, err = s.trDataConnectorDefinitionsServer.Do(req)
 	case "DataConnectorsCheckRequirementsClient":
 		initServer(s, &s.trDataConnectorsCheckRequirementsServer, func() *DataConnectorsCheckRequirementsServerTransport {
 			return NewDataConnectorsCheckRequirementsServerTransport(&s.srv.DataConnectorsCheckRequirementsServer)
@@ -152,9 +359,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDataConnectorsServerTransport(&s.srv.DataConnectorsServer)
 		})
 		resp, err = s.trDataConnectorsServer.Do(req)
-	case "DomainWhoisClient":
-		initServer(s, &s.trDomainWhoisServer, func() *DomainWhoisServerTransport { return NewDomainWhoisServerTransport(&s.srv.DomainWhoisServer) })
-		resp, err = s.trDomainWhoisServer.Do(req)
 	case "EntitiesClient":
 		initServer(s, &s.trEntitiesServer, func() *EntitiesServerTransport { return NewEntitiesServerTransport(&s.srv.EntitiesServer) })
 		resp, err = s.trEntitiesServer.Do(req)
@@ -186,9 +390,30 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "FileImportsClient":
 		initServer(s, &s.trFileImportsServer, func() *FileImportsServerTransport { return NewFileImportsServerTransport(&s.srv.FileImportsServer) })
 		resp, err = s.trFileImportsServer.Do(req)
-	case "IPGeodataClient":
-		initServer(s, &s.trIPGeodataServer, func() *IPGeodataServerTransport { return NewIPGeodataServerTransport(&s.srv.IPGeodataServer) })
-		resp, err = s.trIPGeodataServer.Do(req)
+	case "GetClient":
+		initServer(s, &s.trGetServer, func() *GetServerTransport { return NewGetServerTransport(&s.srv.GetServer) })
+		resp, err = s.trGetServer.Do(req)
+	case "GetRecommendationsClient":
+		initServer(s, &s.trGetRecommendationsServer, func() *GetRecommendationsServerTransport {
+			return NewGetRecommendationsServerTransport(&s.srv.GetRecommendationsServer)
+		})
+		resp, err = s.trGetRecommendationsServer.Do(req)
+	case "GetTriggeredAnalyticsRuleRunsClient":
+		initServer(s, &s.trGetTriggeredAnalyticsRuleRunsServer, func() *GetTriggeredAnalyticsRuleRunsServerTransport {
+			return NewGetTriggeredAnalyticsRuleRunsServerTransport(&s.srv.GetTriggeredAnalyticsRuleRunsServer)
+		})
+		resp, err = s.trGetTriggeredAnalyticsRuleRunsServer.Do(req)
+	case "HuntCommentsClient":
+		initServer(s, &s.trHuntCommentsServer, func() *HuntCommentsServerTransport { return NewHuntCommentsServerTransport(&s.srv.HuntCommentsServer) })
+		resp, err = s.trHuntCommentsServer.Do(req)
+	case "HuntRelationsClient":
+		initServer(s, &s.trHuntRelationsServer, func() *HuntRelationsServerTransport {
+			return NewHuntRelationsServerTransport(&s.srv.HuntRelationsServer)
+		})
+		resp, err = s.trHuntRelationsServer.Do(req)
+	case "HuntsClient":
+		initServer(s, &s.trHuntsServer, func() *HuntsServerTransport { return NewHuntsServerTransport(&s.srv.HuntsServer) })
+		resp, err = s.trHuntsServer.Do(req)
 	case "IncidentCommentsClient":
 		initServer(s, &s.trIncidentCommentsServer, func() *IncidentCommentsServerTransport {
 			return NewIncidentCommentsServerTransport(&s.srv.IncidentCommentsServer)
@@ -199,6 +424,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewIncidentRelationsServerTransport(&s.srv.IncidentRelationsServer)
 		})
 		resp, err = s.trIncidentRelationsServer.Do(req)
+	case "IncidentTasksClient":
+		initServer(s, &s.trIncidentTasksServer, func() *IncidentTasksServerTransport {
+			return NewIncidentTasksServerTransport(&s.srv.IncidentTasksServer)
+		})
+		resp, err = s.trIncidentTasksServer.Do(req)
 	case "IncidentsClient":
 		initServer(s, &s.trIncidentsServer, func() *IncidentsServerTransport { return NewIncidentsServerTransport(&s.srv.IncidentsServer) })
 		resp, err = s.trIncidentsServer.Do(req)
@@ -213,11 +443,34 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "ProductPackageClient":
+		initServer(s, &s.trProductPackageServer, func() *ProductPackageServerTransport {
+			return NewProductPackageServerTransport(&s.srv.ProductPackageServer)
+		})
+		resp, err = s.trProductPackageServer.Do(req)
+	case "ProductPackagesClient":
+		initServer(s, &s.trProductPackagesServer, func() *ProductPackagesServerTransport {
+			return NewProductPackagesServerTransport(&s.srv.ProductPackagesServer)
+		})
+		resp, err = s.trProductPackagesServer.Do(req)
 	case "ProductSettingsClient":
 		initServer(s, &s.trProductSettingsServer, func() *ProductSettingsServerTransport {
 			return NewProductSettingsServerTransport(&s.srv.ProductSettingsServer)
 		})
 		resp, err = s.trProductSettingsServer.Do(req)
+	case "ProductTemplateClient":
+		initServer(s, &s.trProductTemplateServer, func() *ProductTemplateServerTransport {
+			return NewProductTemplateServerTransport(&s.srv.ProductTemplateServer)
+		})
+		resp, err = s.trProductTemplateServer.Do(req)
+	case "ProductTemplatesClient":
+		initServer(s, &s.trProductTemplatesServer, func() *ProductTemplatesServerTransport {
+			return NewProductTemplatesServerTransport(&s.srv.ProductTemplatesServer)
+		})
+		resp, err = s.trProductTemplatesServer.Do(req)
+	case "ReevaluateClient":
+		initServer(s, &s.trReevaluateServer, func() *ReevaluateServerTransport { return NewReevaluateServerTransport(&s.srv.ReevaluateServer) })
+		resp, err = s.trReevaluateServer.Do(req)
 	case "SecurityMLAnalyticsSettingsClient":
 		initServer(s, &s.trSecurityMLAnalyticsSettingsServer, func() *SecurityMLAnalyticsSettingsServerTransport {
 			return NewSecurityMLAnalyticsSettingsServerTransport(&s.srv.SecurityMLAnalyticsSettingsServer)
@@ -238,6 +491,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSourceControlsServerTransport(&s.srv.SourceControlsServer)
 		})
 		resp, err = s.trSourceControlsServer.Do(req)
+	case "ThreatIntelligenceClient":
+		initServer(s, &s.trThreatIntelligenceServer, func() *ThreatIntelligenceServerTransport {
+			return NewThreatIntelligenceServerTransport(&s.srv.ThreatIntelligenceServer)
+		})
+		resp, err = s.trThreatIntelligenceServer.Do(req)
 	case "ThreatIntelligenceIndicatorClient":
 		initServer(s, &s.trThreatIntelligenceIndicatorServer, func() *ThreatIntelligenceIndicatorServerTransport {
 			return NewThreatIntelligenceIndicatorServerTransport(&s.srv.ThreatIntelligenceIndicatorServer)
@@ -253,6 +511,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewThreatIntelligenceIndicatorsServerTransport(&s.srv.ThreatIntelligenceIndicatorsServer)
 		})
 		resp, err = s.trThreatIntelligenceIndicatorsServer.Do(req)
+	case "TriggeredAnalyticsRuleRunClient":
+		initServer(s, &s.trTriggeredAnalyticsRuleRunServer, func() *TriggeredAnalyticsRuleRunServerTransport {
+			return NewTriggeredAnalyticsRuleRunServerTransport(&s.srv.TriggeredAnalyticsRuleRunServer)
+		})
+		resp, err = s.trTriggeredAnalyticsRuleRunServer.Do(req)
+	case "UpdateClient":
+		initServer(s, &s.trUpdateServer, func() *UpdateServerTransport { return NewUpdateServerTransport(&s.srv.UpdateServer) })
+		resp, err = s.trUpdateServer.Do(req)
 	case "WatchlistItemsClient":
 		initServer(s, &s.trWatchlistItemsServer, func() *WatchlistItemsServerTransport {
 			return NewWatchlistItemsServerTransport(&s.srv.WatchlistItemsServer)
@@ -261,6 +527,31 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "WatchlistsClient":
 		initServer(s, &s.trWatchlistsServer, func() *WatchlistsServerTransport { return NewWatchlistsServerTransport(&s.srv.WatchlistsServer) })
 		resp, err = s.trWatchlistsServer.Do(req)
+	case "WorkspaceManagerAssignmentJobsClient":
+		initServer(s, &s.trWorkspaceManagerAssignmentJobsServer, func() *WorkspaceManagerAssignmentJobsServerTransport {
+			return NewWorkspaceManagerAssignmentJobsServerTransport(&s.srv.WorkspaceManagerAssignmentJobsServer)
+		})
+		resp, err = s.trWorkspaceManagerAssignmentJobsServer.Do(req)
+	case "WorkspaceManagerAssignmentsClient":
+		initServer(s, &s.trWorkspaceManagerAssignmentsServer, func() *WorkspaceManagerAssignmentsServerTransport {
+			return NewWorkspaceManagerAssignmentsServerTransport(&s.srv.WorkspaceManagerAssignmentsServer)
+		})
+		resp, err = s.trWorkspaceManagerAssignmentsServer.Do(req)
+	case "WorkspaceManagerConfigurationsClient":
+		initServer(s, &s.trWorkspaceManagerConfigurationsServer, func() *WorkspaceManagerConfigurationsServerTransport {
+			return NewWorkspaceManagerConfigurationsServerTransport(&s.srv.WorkspaceManagerConfigurationsServer)
+		})
+		resp, err = s.trWorkspaceManagerConfigurationsServer.Do(req)
+	case "WorkspaceManagerGroupsClient":
+		initServer(s, &s.trWorkspaceManagerGroupsServer, func() *WorkspaceManagerGroupsServerTransport {
+			return NewWorkspaceManagerGroupsServerTransport(&s.srv.WorkspaceManagerGroupsServer)
+		})
+		resp, err = s.trWorkspaceManagerGroupsServer.Do(req)
+	case "WorkspaceManagerMembersClient":
+		initServer(s, &s.trWorkspaceManagerMembersServer, func() *WorkspaceManagerMembersServerTransport {
+			return NewWorkspaceManagerMembersServerTransport(&s.srv.WorkspaceManagerMembersServer)
+		})
+		resp, err = s.trWorkspaceManagerMembersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

@@ -5,15 +5,12 @@
 
 package armsecurityinsights
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
-	moduleVersion = "v2.0.0-beta.4"
-)
-
 // ActionType - The type of the automation rule action.
 type ActionType string
 
 const (
+	// ActionTypeAddIncidentTask - Add a task to an incident object
+	ActionTypeAddIncidentTask ActionType = "AddIncidentTask"
 	// ActionTypeModifyProperties - Modify an object's properties
 	ActionTypeModifyProperties ActionType = "ModifyProperties"
 	// ActionTypeRunPlaybook - Run a playbook on an object
@@ -23,6 +20,7 @@ const (
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
+		ActionTypeAddIncidentTask,
 		ActionTypeModifyProperties,
 		ActionTypeRunPlaybook,
 	}
@@ -43,6 +41,48 @@ func PossibleAlertDetailValues() []AlertDetail {
 	return []AlertDetail{
 		AlertDetailDisplayName,
 		AlertDetailSeverity,
+	}
+}
+
+// AlertProperty - The V3 alert property
+type AlertProperty string
+
+const (
+	// AlertPropertyAlertLink - Alert's link
+	AlertPropertyAlertLink AlertProperty = "AlertLink"
+	// AlertPropertyConfidenceLevel - Confidence level property
+	AlertPropertyConfidenceLevel AlertProperty = "ConfidenceLevel"
+	// AlertPropertyConfidenceScore - Confidence score
+	AlertPropertyConfidenceScore AlertProperty = "ConfidenceScore"
+	// AlertPropertyExtendedLinks - Extended links to the alert
+	AlertPropertyExtendedLinks AlertProperty = "ExtendedLinks"
+	// AlertPropertyProductComponentName - Product component name alert property
+	AlertPropertyProductComponentName AlertProperty = "ProductComponentName"
+	// AlertPropertyProductName - Product name alert property
+	AlertPropertyProductName AlertProperty = "ProductName"
+	// AlertPropertyProviderName - Provider name alert property
+	AlertPropertyProviderName AlertProperty = "ProviderName"
+	// AlertPropertyRemediationSteps - Remediation steps alert property
+	AlertPropertyRemediationSteps AlertProperty = "RemediationSteps"
+	// AlertPropertySubTechniques - SubTechniques alert property
+	AlertPropertySubTechniques AlertProperty = "SubTechniques"
+	// AlertPropertyTechniques - Techniques alert property
+	AlertPropertyTechniques AlertProperty = "Techniques"
+)
+
+// PossibleAlertPropertyValues returns the possible values for the AlertProperty const type.
+func PossibleAlertPropertyValues() []AlertProperty {
+	return []AlertProperty{
+		AlertPropertyAlertLink,
+		AlertPropertyConfidenceLevel,
+		AlertPropertyConfidenceScore,
+		AlertPropertyExtendedLinks,
+		AlertPropertyProductComponentName,
+		AlertPropertyProductName,
+		AlertPropertyProviderName,
+		AlertPropertyRemediationSteps,
+		AlertPropertySubTechniques,
+		AlertPropertyTechniques,
 	}
 }
 
@@ -249,6 +289,9 @@ func PossibleAutomationRulePropertyArrayChangedConditionSupportedChangeTypeValue
 type AutomationRulePropertyArrayConditionSupportedArrayConditionType string
 
 const (
+	// AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAllItems - Evaluate the condition as true if all the items
+	// fulfill it
+	AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAllItems AutomationRulePropertyArrayConditionSupportedArrayConditionType = "AllItems"
 	// AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem - Evaluate the condition as true if any item fulfills
 	// it
 	AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem AutomationRulePropertyArrayConditionSupportedArrayConditionType = "AnyItem"
@@ -257,6 +300,7 @@ const (
 // PossibleAutomationRulePropertyArrayConditionSupportedArrayConditionTypeValues returns the possible values for the AutomationRulePropertyArrayConditionSupportedArrayConditionType const type.
 func PossibleAutomationRulePropertyArrayConditionSupportedArrayConditionTypeValues() []AutomationRulePropertyArrayConditionSupportedArrayConditionType {
 	return []AutomationRulePropertyArrayConditionSupportedArrayConditionType{
+		AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAllItems,
 		AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem,
 	}
 }
@@ -269,6 +313,8 @@ const (
 	AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues AutomationRulePropertyArrayConditionSupportedArrayType = "CustomDetailValues"
 	// AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails - Evaluate the condition on the custom detail keys
 	AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails AutomationRulePropertyArrayConditionSupportedArrayType = "CustomDetails"
+	// AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels - Evaluate the condition on the incident labels
+	AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels AutomationRulePropertyArrayConditionSupportedArrayType = "IncidentLabels"
 )
 
 // PossibleAutomationRulePropertyArrayConditionSupportedArrayTypeValues returns the possible values for the AutomationRulePropertyArrayConditionSupportedArrayType const type.
@@ -276,6 +322,7 @@ func PossibleAutomationRulePropertyArrayConditionSupportedArrayTypeValues() []Au
 	return []AutomationRulePropertyArrayConditionSupportedArrayType{
 		AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetailValues,
 		AutomationRulePropertyArrayConditionSupportedArrayTypeCustomDetails,
+		AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels,
 	}
 }
 
@@ -412,10 +459,16 @@ const (
 	AutomationRulePropertyConditionSupportedPropertyHostOSVersion AutomationRulePropertyConditionSupportedProperty = "HostOSVersion"
 	// AutomationRulePropertyConditionSupportedPropertyIPAddress - The IP address
 	AutomationRulePropertyConditionSupportedPropertyIPAddress AutomationRulePropertyConditionSupportedProperty = "IPAddress"
+	// AutomationRulePropertyConditionSupportedPropertyIncidentAlertTitle - The alert title associated with any of the incident
+	// alerts
+	AutomationRulePropertyConditionSupportedPropertyIncidentAlertTitle AutomationRulePropertyConditionSupportedProperty = "IncidentAlertTitle"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey - The incident custom detail key
 	AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey AutomationRulePropertyConditionSupportedProperty = "IncidentCustomDetailsKey"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue - The incident custom detail value
 	AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue AutomationRulePropertyConditionSupportedProperty = "IncidentCustomDetailsValue"
+	// AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetectionRuleIDs - The Custom-Detection rule ids associated
+	// with any of the incident alerts
+	AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetectionRuleIDs AutomationRulePropertyConditionSupportedProperty = "IncidentCustomDetectionRuleIds"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentDescription - The description of the incident
 	AutomationRulePropertyConditionSupportedPropertyIncidentDescription AutomationRulePropertyConditionSupportedProperty = "IncidentDescription"
 	// AutomationRulePropertyConditionSupportedPropertyIncidentLabel - The labels of the incident
@@ -509,8 +562,10 @@ func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []Automati
 		AutomationRulePropertyConditionSupportedPropertyHostNetBiosName,
 		AutomationRulePropertyConditionSupportedPropertyHostOSVersion,
 		AutomationRulePropertyConditionSupportedPropertyIPAddress,
+		AutomationRulePropertyConditionSupportedPropertyIncidentAlertTitle,
 		AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsKey,
 		AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetailsValue,
+		AutomationRulePropertyConditionSupportedPropertyIncidentCustomDetectionRuleIDs,
 		AutomationRulePropertyConditionSupportedPropertyIncidentDescription,
 		AutomationRulePropertyConditionSupportedPropertyIncidentLabel,
 		AutomationRulePropertyConditionSupportedPropertyIncidentProviderName,
@@ -543,6 +598,54 @@ func PossibleAutomationRulePropertyConditionSupportedPropertyValues() []Automati
 		AutomationRulePropertyConditionSupportedPropertyRegistryKey,
 		AutomationRulePropertyConditionSupportedPropertyRegistryValueData,
 		AutomationRulePropertyConditionSupportedPropertyURL,
+	}
+}
+
+// BillingStatisticKind - The kind of the billing statistic
+type BillingStatisticKind string
+
+const (
+	BillingStatisticKindSapSolutionUsage BillingStatisticKind = "SapSolutionUsage"
+)
+
+// PossibleBillingStatisticKindValues returns the possible values for the BillingStatisticKind const type.
+func PossibleBillingStatisticKindValues() []BillingStatisticKind {
+	return []BillingStatisticKind{
+		BillingStatisticKindSapSolutionUsage,
+	}
+}
+
+// CcpAuthType - Type of paging
+type CcpAuthType string
+
+const (
+	CcpAuthTypeAPIKey     CcpAuthType = "APIKey"
+	CcpAuthTypeAWS        CcpAuthType = "AWS"
+	CcpAuthTypeBasic      CcpAuthType = "Basic"
+	CcpAuthTypeGCP        CcpAuthType = "GCP"
+	CcpAuthTypeGitHub     CcpAuthType = "GitHub"
+	CcpAuthTypeJwtToken   CcpAuthType = "JwtToken"
+	CcpAuthTypeNone       CcpAuthType = "None"
+	CcpAuthTypeOAuth2     CcpAuthType = "OAuth2"
+	CcpAuthTypeOracle     CcpAuthType = "Oracle"
+	CcpAuthTypeServiceBus CcpAuthType = "ServiceBus"
+	CcpAuthTypeSession    CcpAuthType = "Session"
+)
+
+// PossibleCcpAuthTypeValues returns the possible values for the CcpAuthType const type.
+func PossibleCcpAuthTypeValues() []CcpAuthType {
+	return []CcpAuthType{
+		CcpAuthTypeAPIKey,
+		CcpAuthTypeAWS,
+		CcpAuthTypeBasic,
+		CcpAuthTypeGCP,
+		CcpAuthTypeGitHub,
+		CcpAuthTypeJwtToken,
+		CcpAuthTypeNone,
+		CcpAuthTypeOAuth2,
+		CcpAuthTypeOracle,
+		CcpAuthTypeServiceBus,
+		CcpAuthTypeSession,
 	}
 }
 
@@ -637,6 +740,24 @@ func PossibleConnectAuthKindValues() []ConnectAuthKind {
 	}
 }
 
+// Connective - Represents boolean connectives used to join clauses in conditions.
+type Connective string
+
+const (
+	// ConnectiveAnd - 'And' connective
+	ConnectiveAnd Connective = "And"
+	// ConnectiveOr - 'Or' connective
+	ConnectiveOr Connective = "Or"
+)
+
+// PossibleConnectiveValues returns the possible values for the Connective const type.
+func PossibleConnectiveValues() []Connective {
+	return []Connective{
+		ConnectiveAnd,
+		ConnectiveOr,
+	}
+}
+
 // ConnectivityType - type of connectivity
 type ConnectivityType string
 
@@ -655,14 +776,22 @@ func PossibleConnectivityTypeValues() []ConnectivityType {
 type ContentType string
 
 const (
-	ContentTypeAnalyticRule ContentType = "AnalyticRule"
-	ContentTypeWorkbook     ContentType = "Workbook"
+	ContentTypeAnalyticsRule  ContentType = "AnalyticsRule"
+	ContentTypeAutomationRule ContentType = "AutomationRule"
+	ContentTypeHuntingQuery   ContentType = "HuntingQuery"
+	ContentTypeParser         ContentType = "Parser"
+	ContentTypePlaybook       ContentType = "Playbook"
+	ContentTypeWorkbook       ContentType = "Workbook"
 )
 
 // PossibleContentTypeValues returns the possible values for the ContentType const type.
 func PossibleContentTypeValues() []ContentType {
 	return []ContentType{
-		ContentTypeAnalyticRule,
+		ContentTypeAnalyticsRule,
+		ContentTypeAutomationRule,
+		ContentTypeHuntingQuery,
+		ContentTypeParser,
+		ContentTypePlaybook,
 		ContentTypeWorkbook,
 	}
 }
@@ -717,30 +846,49 @@ func PossibleDataConnectorAuthorizationStateValues() []DataConnectorAuthorizatio
 	}
 }
 
+// DataConnectorDefinitionKind - The kind of the data connector definitions
+type DataConnectorDefinitionKind string
+
+const (
+	DataConnectorDefinitionKindCustomizable DataConnectorDefinitionKind = "Customizable"
+)
+
+// PossibleDataConnectorDefinitionKindValues returns the possible values for the DataConnectorDefinitionKind const type.
+func PossibleDataConnectorDefinitionKindValues() []DataConnectorDefinitionKind {
+	return []DataConnectorDefinitionKind{
+		DataConnectorDefinitionKindCustomizable,
+	}
+}
+
 // DataConnectorKind - The kind of the data connector
 type DataConnectorKind string
 
 const (
-	DataConnectorKindAPIPolling                                DataConnectorKind = "APIPolling"
-	DataConnectorKindAmazonWebServicesCloudTrail               DataConnectorKind = "AmazonWebServicesCloudTrail"
-	DataConnectorKindAmazonWebServicesS3                       DataConnectorKind = "AmazonWebServicesS3"
-	DataConnectorKindAzureActiveDirectory                      DataConnectorKind = "AzureActiveDirectory"
-	DataConnectorKindAzureAdvancedThreatProtection             DataConnectorKind = "AzureAdvancedThreatProtection"
-	DataConnectorKindAzureSecurityCenter                       DataConnectorKind = "AzureSecurityCenter"
-	DataConnectorKindDynamics365                               DataConnectorKind = "Dynamics365"
-	DataConnectorKindGenericUI                                 DataConnectorKind = "GenericUI"
-	DataConnectorKindIOT                                       DataConnectorKind = "IOT"
-	DataConnectorKindMicrosoftCloudAppSecurity                 DataConnectorKind = "MicrosoftCloudAppSecurity"
-	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection DataConnectorKind = "MicrosoftDefenderAdvancedThreatProtection"
-	DataConnectorKindMicrosoftThreatIntelligence               DataConnectorKind = "MicrosoftThreatIntelligence"
-	DataConnectorKindMicrosoftThreatProtection                 DataConnectorKind = "MicrosoftThreatProtection"
-	DataConnectorKindOffice365                                 DataConnectorKind = "Office365"
-	DataConnectorKindOffice365Project                          DataConnectorKind = "Office365Project"
-	DataConnectorKindOfficeATP                                 DataConnectorKind = "OfficeATP"
-	DataConnectorKindOfficeIRM                                 DataConnectorKind = "OfficeIRM"
-	DataConnectorKindOfficePowerBI                             DataConnectorKind = "OfficePowerBI"
-	DataConnectorKindThreatIntelligence                        DataConnectorKind = "ThreatIntelligence"
-	DataConnectorKindThreatIntelligenceTaxii                   DataConnectorKind = "ThreatIntelligenceTaxii"
+	DataConnectorKindAPIPolling                                    DataConnectorKind = "APIPolling"
+	DataConnectorKindAmazonWebServicesCloudTrail                   DataConnectorKind = "AmazonWebServicesCloudTrail"
+	DataConnectorKindAmazonWebServicesS3                           DataConnectorKind = "AmazonWebServicesS3"
+	DataConnectorKindAzureActiveDirectory                          DataConnectorKind = "AzureActiveDirectory"
+	DataConnectorKindAzureAdvancedThreatProtection                 DataConnectorKind = "AzureAdvancedThreatProtection"
+	DataConnectorKindAzureSecurityCenter                           DataConnectorKind = "AzureSecurityCenter"
+	DataConnectorKindDynamics365                                   DataConnectorKind = "Dynamics365"
+	DataConnectorKindGCP                                           DataConnectorKind = "GCP"
+	DataConnectorKindGenericUI                                     DataConnectorKind = "GenericUI"
+	DataConnectorKindIOT                                           DataConnectorKind = "IOT"
+	DataConnectorKindMicrosoftCloudAppSecurity                     DataConnectorKind = "MicrosoftCloudAppSecurity"
+	DataConnectorKindMicrosoftDefenderAdvancedThreatProtection     DataConnectorKind = "MicrosoftDefenderAdvancedThreatProtection"
+	DataConnectorKindMicrosoftPurviewInformationProtection         DataConnectorKind = "MicrosoftPurviewInformationProtection"
+	DataConnectorKindMicrosoftThreatIntelligence                   DataConnectorKind = "MicrosoftThreatIntelligence"
+	DataConnectorKindMicrosoftThreatProtection                     DataConnectorKind = "MicrosoftThreatProtection"
+	DataConnectorKindOffice365                                     DataConnectorKind = "Office365"
+	DataConnectorKindOffice365Project                              DataConnectorKind = "Office365Project"
+	DataConnectorKindOfficeATP                                     DataConnectorKind = "OfficeATP"
+	DataConnectorKindOfficeIRM                                     DataConnectorKind = "OfficeIRM"
+	DataConnectorKindOfficePowerBI                                 DataConnectorKind = "OfficePowerBI"
+	DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence DataConnectorKind = "PremiumMicrosoftDefenderForThreatIntelligence"
+	DataConnectorKindPurviewAudit                                  DataConnectorKind = "PurviewAudit"
+	DataConnectorKindRestAPIPoller                                 DataConnectorKind = "RestApiPoller"
+	DataConnectorKindThreatIntelligence                            DataConnectorKind = "ThreatIntelligence"
+	DataConnectorKindThreatIntelligenceTaxii                       DataConnectorKind = "ThreatIntelligenceTaxii"
 )
 
 // PossibleDataConnectorKindValues returns the possible values for the DataConnectorKind const type.
@@ -753,10 +901,12 @@ func PossibleDataConnectorKindValues() []DataConnectorKind {
 		DataConnectorKindAzureAdvancedThreatProtection,
 		DataConnectorKindAzureSecurityCenter,
 		DataConnectorKindDynamics365,
+		DataConnectorKindGCP,
 		DataConnectorKindGenericUI,
 		DataConnectorKindIOT,
 		DataConnectorKindMicrosoftCloudAppSecurity,
 		DataConnectorKindMicrosoftDefenderAdvancedThreatProtection,
+		DataConnectorKindMicrosoftPurviewInformationProtection,
 		DataConnectorKindMicrosoftThreatIntelligence,
 		DataConnectorKindMicrosoftThreatProtection,
 		DataConnectorKindOffice365,
@@ -764,6 +914,9 @@ func PossibleDataConnectorKindValues() []DataConnectorKind {
 		DataConnectorKindOfficeATP,
 		DataConnectorKindOfficeIRM,
 		DataConnectorKindOfficePowerBI,
+		DataConnectorKindPremiumMicrosoftDefenderForThreatIntelligence,
+		DataConnectorKindPurviewAudit,
+		DataConnectorKindRestAPIPoller,
 		DataConnectorKindThreatIntelligence,
 		DataConnectorKindThreatIntelligenceTaxii,
 	}
@@ -991,6 +1144,19 @@ func PossibleElevationTokenValues() []ElevationToken {
 	}
 }
 
+type EnrichmentType string
+
+const (
+	EnrichmentTypeMain EnrichmentType = "main"
+)
+
+// PossibleEnrichmentTypeValues returns the possible values for the EnrichmentType const type.
+func PossibleEnrichmentTypeValues() []EnrichmentType {
+	return []EnrichmentType{
+		EnrichmentTypeMain,
+	}
+}
+
 type EntityItemQueryKind string
 
 const (
@@ -1005,81 +1171,81 @@ func PossibleEntityItemQueryKindValues() []EntityItemQueryKind {
 	}
 }
 
-// EntityKind - The kind of the entity
-type EntityKind string
+// EntityKindEnum - The kind of the entity
+type EntityKindEnum string
 
 const (
-	// EntityKindAccount - Entity represents account in the system.
-	EntityKindAccount EntityKind = "Account"
-	// EntityKindAzureResource - Entity represents azure resource in the system.
-	EntityKindAzureResource EntityKind = "AzureResource"
-	// EntityKindBookmark - Entity represents bookmark in the system.
-	EntityKindBookmark EntityKind = "Bookmark"
-	// EntityKindCloudApplication - Entity represents cloud application in the system.
-	EntityKindCloudApplication EntityKind = "CloudApplication"
-	// EntityKindDNSResolution - Entity represents dns resolution in the system.
-	EntityKindDNSResolution EntityKind = "DnsResolution"
-	// EntityKindFile - Entity represents file in the system.
-	EntityKindFile EntityKind = "File"
-	// EntityKindFileHash - Entity represents file hash in the system.
-	EntityKindFileHash EntityKind = "FileHash"
-	// EntityKindHost - Entity represents host in the system.
-	EntityKindHost EntityKind = "Host"
-	// EntityKindIP - Entity represents ip in the system.
-	EntityKindIP EntityKind = "Ip"
-	// EntityKindIoTDevice - Entity represents IoT device in the system.
-	EntityKindIoTDevice EntityKind = "IoTDevice"
-	// EntityKindMailCluster - Entity represents mail cluster in the system.
-	EntityKindMailCluster EntityKind = "MailCluster"
-	// EntityKindMailMessage - Entity represents mail message in the system.
-	EntityKindMailMessage EntityKind = "MailMessage"
-	// EntityKindMailbox - Entity represents mailbox in the system.
-	EntityKindMailbox EntityKind = "Mailbox"
-	// EntityKindMalware - Entity represents malware in the system.
-	EntityKindMalware EntityKind = "Malware"
-	// EntityKindNic - Entity represents network interface in the system.
-	EntityKindNic EntityKind = "Nic"
-	// EntityKindProcess - Entity represents process in the system.
-	EntityKindProcess EntityKind = "Process"
-	// EntityKindRegistryKey - Entity represents registry key in the system.
-	EntityKindRegistryKey EntityKind = "RegistryKey"
-	// EntityKindRegistryValue - Entity represents registry value in the system.
-	EntityKindRegistryValue EntityKind = "RegistryValue"
-	// EntityKindSecurityAlert - Entity represents security alert in the system.
-	EntityKindSecurityAlert EntityKind = "SecurityAlert"
-	// EntityKindSecurityGroup - Entity represents security group in the system.
-	EntityKindSecurityGroup EntityKind = "SecurityGroup"
-	// EntityKindSubmissionMail - Entity represents submission mail in the system.
-	EntityKindSubmissionMail EntityKind = "SubmissionMail"
-	// EntityKindURL - Entity represents url in the system.
-	EntityKindURL EntityKind = "Url"
+	// EntityKindEnumAccount - Entity represents account in the system.
+	EntityKindEnumAccount EntityKindEnum = "Account"
+	// EntityKindEnumAzureResource - Entity represents azure resource in the system.
+	EntityKindEnumAzureResource EntityKindEnum = "AzureResource"
+	// EntityKindEnumBookmark - Entity represents bookmark in the system.
+	EntityKindEnumBookmark EntityKindEnum = "Bookmark"
+	// EntityKindEnumCloudApplication - Entity represents cloud application in the system.
+	EntityKindEnumCloudApplication EntityKindEnum = "CloudApplication"
+	// EntityKindEnumDNSResolution - Entity represents dns resolution in the system.
+	EntityKindEnumDNSResolution EntityKindEnum = "DnsResolution"
+	// EntityKindEnumFile - Entity represents file in the system.
+	EntityKindEnumFile EntityKindEnum = "File"
+	// EntityKindEnumFileHash - Entity represents file hash in the system.
+	EntityKindEnumFileHash EntityKindEnum = "FileHash"
+	// EntityKindEnumHost - Entity represents host in the system.
+	EntityKindEnumHost EntityKindEnum = "Host"
+	// EntityKindEnumIP - Entity represents ip in the system.
+	EntityKindEnumIP EntityKindEnum = "Ip"
+	// EntityKindEnumIoTDevice - Entity represents IoT device in the system.
+	EntityKindEnumIoTDevice EntityKindEnum = "IoTDevice"
+	// EntityKindEnumMailCluster - Entity represents mail cluster in the system.
+	EntityKindEnumMailCluster EntityKindEnum = "MailCluster"
+	// EntityKindEnumMailMessage - Entity represents mail message in the system.
+	EntityKindEnumMailMessage EntityKindEnum = "MailMessage"
+	// EntityKindEnumMailbox - Entity represents mailbox in the system.
+	EntityKindEnumMailbox EntityKindEnum = "Mailbox"
+	// EntityKindEnumMalware - Entity represents malware in the system.
+	EntityKindEnumMalware EntityKindEnum = "Malware"
+	// EntityKindEnumNic - Entity represents network interface in the system.
+	EntityKindEnumNic EntityKindEnum = "Nic"
+	// EntityKindEnumProcess - Entity represents process in the system.
+	EntityKindEnumProcess EntityKindEnum = "Process"
+	// EntityKindEnumRegistryKey - Entity represents registry key in the system.
+	EntityKindEnumRegistryKey EntityKindEnum = "RegistryKey"
+	// EntityKindEnumRegistryValue - Entity represents registry value in the system.
+	EntityKindEnumRegistryValue EntityKindEnum = "RegistryValue"
+	// EntityKindEnumSecurityAlert - Entity represents security alert in the system.
+	EntityKindEnumSecurityAlert EntityKindEnum = "SecurityAlert"
+	// EntityKindEnumSecurityGroup - Entity represents security group in the system.
+	EntityKindEnumSecurityGroup EntityKindEnum = "SecurityGroup"
+	// EntityKindEnumSubmissionMail - Entity represents submission mail in the system.
+	EntityKindEnumSubmissionMail EntityKindEnum = "SubmissionMail"
+	// EntityKindEnumURL - Entity represents url in the system.
+	EntityKindEnumURL EntityKindEnum = "Url"
 )
 
-// PossibleEntityKindValues returns the possible values for the EntityKind const type.
-func PossibleEntityKindValues() []EntityKind {
-	return []EntityKind{
-		EntityKindAccount,
-		EntityKindAzureResource,
-		EntityKindBookmark,
-		EntityKindCloudApplication,
-		EntityKindDNSResolution,
-		EntityKindFile,
-		EntityKindFileHash,
-		EntityKindHost,
-		EntityKindIP,
-		EntityKindIoTDevice,
-		EntityKindMailCluster,
-		EntityKindMailMessage,
-		EntityKindMailbox,
-		EntityKindMalware,
-		EntityKindNic,
-		EntityKindProcess,
-		EntityKindRegistryKey,
-		EntityKindRegistryValue,
-		EntityKindSecurityAlert,
-		EntityKindSecurityGroup,
-		EntityKindSubmissionMail,
-		EntityKindURL,
+// PossibleEntityKindEnumValues returns the possible values for the EntityKindEnum const type.
+func PossibleEntityKindEnumValues() []EntityKindEnum {
+	return []EntityKindEnum{
+		EntityKindEnumAccount,
+		EntityKindEnumAzureResource,
+		EntityKindEnumBookmark,
+		EntityKindEnumCloudApplication,
+		EntityKindEnumDNSResolution,
+		EntityKindEnumFile,
+		EntityKindEnumFileHash,
+		EntityKindEnumHost,
+		EntityKindEnumIP,
+		EntityKindEnumIoTDevice,
+		EntityKindEnumMailCluster,
+		EntityKindEnumMailMessage,
+		EntityKindEnumMailbox,
+		EntityKindEnumMalware,
+		EntityKindEnumNic,
+		EntityKindEnumProcess,
+		EntityKindEnumRegistryKey,
+		EntityKindEnumRegistryValue,
+		EntityKindEnumSecurityAlert,
+		EntityKindEnumSecurityGroup,
+		EntityKindEnumSubmissionMail,
+		EntityKindEnumURL,
 	}
 }
 
@@ -1183,17 +1349,28 @@ func PossibleEntityQueryKindValues() []EntityQueryKind {
 	}
 }
 
-// EntityQueryTemplateKind - The kind of the entity query template.
 type EntityQueryTemplateKind string
 
 const (
-	EntityQueryTemplateKindActivity EntityQueryTemplateKind = "Activity"
+	EntityQueryTemplateKindActivity      EntityQueryTemplateKind = "Activity"
+	EntityQueryTemplateKindAnomaly       EntityQueryTemplateKind = "Anomaly"
+	EntityQueryTemplateKindBookmark      EntityQueryTemplateKind = "Bookmark"
+	EntityQueryTemplateKindExpansion     EntityQueryTemplateKind = "Expansion"
+	EntityQueryTemplateKindGuidedInsight EntityQueryTemplateKind = "GuidedInsight"
+	EntityQueryTemplateKindInsight       EntityQueryTemplateKind = "Insight"
+	EntityQueryTemplateKindSecurityAlert EntityQueryTemplateKind = "SecurityAlert"
 )
 
 // PossibleEntityQueryTemplateKindValues returns the possible values for the EntityQueryTemplateKind const type.
 func PossibleEntityQueryTemplateKindValues() []EntityQueryTemplateKind {
 	return []EntityQueryTemplateKind{
 		EntityQueryTemplateKindActivity,
+		EntityQueryTemplateKindAnomaly,
+		EntityQueryTemplateKindBookmark,
+		EntityQueryTemplateKindExpansion,
+		EntityQueryTemplateKindGuidedInsight,
+		EntityQueryTemplateKindInsight,
+		EntityQueryTemplateKindSecurityAlert,
 	}
 }
 
@@ -1296,34 +1473,6 @@ func PossibleEntityTypeValues() []EntityType {
 		EntityTypeSecurityGroup,
 		EntityTypeSubmissionMail,
 		EntityTypeURL,
-	}
-}
-
-type Enum13 string
-
-const (
-	Enum13Activity  Enum13 = "Activity"
-	Enum13Expansion Enum13 = "Expansion"
-)
-
-// PossibleEnum13Values returns the possible values for the Enum13 const type.
-func PossibleEnum13Values() []Enum13 {
-	return []Enum13{
-		Enum13Activity,
-		Enum13Expansion,
-	}
-}
-
-type Enum15 string
-
-const (
-	Enum15Activity Enum15 = "Activity"
-)
-
-// PossibleEnum15Values returns the possible values for the Enum15 const type.
-func PossibleEnum15Values() []Enum15 {
-	return []Enum15{
-		Enum15Activity,
 	}
 }
 
@@ -1446,6 +1595,22 @@ func PossibleFileImportStateValues() []FileImportState {
 	}
 }
 
+// Flag - The boolean value the metadata is for.
+type Flag string
+
+const (
+	FlagFalse Flag = "false"
+	FlagTrue  Flag = "true"
+)
+
+// PossibleFlagValues returns the possible values for the Flag const type.
+func PossibleFlagValues() []Flag {
+	return []Flag{
+		FlagFalse,
+		FlagTrue,
+	}
+}
+
 // GetInsightsError - the query kind
 type GetInsightsError string
 
@@ -1457,6 +1622,44 @@ const (
 func PossibleGetInsightsErrorValues() []GetInsightsError {
 	return []GetInsightsError{
 		GetInsightsErrorInsight,
+	}
+}
+
+// HTTPMethodVerb - The HTTP method, default value GET.
+type HTTPMethodVerb string
+
+const (
+	HTTPMethodVerbDELETE HTTPMethodVerb = "DELETE"
+	HTTPMethodVerbGET    HTTPMethodVerb = "GET"
+	HTTPMethodVerbPOST   HTTPMethodVerb = "POST"
+	HTTPMethodVerbPUT    HTTPMethodVerb = "PUT"
+)
+
+// PossibleHTTPMethodVerbValues returns the possible values for the HTTPMethodVerb const type.
+func PossibleHTTPMethodVerbValues() []HTTPMethodVerb {
+	return []HTTPMethodVerb{
+		HTTPMethodVerbDELETE,
+		HTTPMethodVerbGET,
+		HTTPMethodVerbPOST,
+		HTTPMethodVerbPUT,
+	}
+}
+
+// HypothesisStatus - The hypothesis status of the hunt.
+type HypothesisStatus string
+
+const (
+	HypothesisStatusInvalidated HypothesisStatus = "Invalidated"
+	HypothesisStatusUnknown     HypothesisStatus = "Unknown"
+	HypothesisStatusValidated   HypothesisStatus = "Validated"
+)
+
+// PossibleHypothesisStatusValues returns the possible values for the HypothesisStatus const type.
+func PossibleHypothesisStatusValues() []HypothesisStatus {
+	return []HypothesisStatus{
+		HypothesisStatusInvalidated,
+		HypothesisStatusUnknown,
+		HypothesisStatusValidated,
 	}
 }
 
@@ -1571,6 +1774,24 @@ func PossibleIncidentStatusValues() []IncidentStatus {
 	}
 }
 
+// IncidentTaskStatus - The status of the task
+type IncidentTaskStatus string
+
+const (
+	// IncidentTaskStatusCompleted - A completed task
+	IncidentTaskStatusCompleted IncidentTaskStatus = "Completed"
+	// IncidentTaskStatusNew - A new task
+	IncidentTaskStatusNew IncidentTaskStatus = "New"
+)
+
+// PossibleIncidentTaskStatusValues returns the possible values for the IncidentTaskStatus const type.
+func PossibleIncidentTaskStatusValues() []IncidentTaskStatus {
+	return []IncidentTaskStatus{
+		IncidentTaskStatusCompleted,
+		IncidentTaskStatusNew,
+	}
+}
+
 // IngestionMode - Describes how to ingest the records in the file.
 type IngestionMode string
 
@@ -1592,7 +1813,7 @@ func PossibleIngestionModeValues() []IngestionMode {
 	}
 }
 
-// KillChainIntent - Holds the alert intent stage(s) mapping for this alert.
+// KillChainIntent - The intent of the alert.
 type KillChainIntent string
 
 const (
@@ -1614,8 +1835,8 @@ const (
 	// benefit of subverting a particular defense or mitigation.
 	KillChainIntentDefenseEvasion KillChainIntent = "DefenseEvasion"
 	// KillChainIntentDiscovery - Discovery consists of techniques that allow the adversary to gain knowledge about the system
-	// and internal network. When adversaries gain access to a new system, they must orient themselves to what they now have control
-	// of and what benefits operating from that system give to their current objective or overall goals during the intrusion.
+	// and internal network. When adversaries gain access to a new system, they must navigate themselves to what they now have
+	// control of and what benefits operating from that system give to their current objective or overall goals during the intrusion.
 	// The operating system provides many native tools that aid in this post-compromise information-gathering phase.
 	KillChainIntentDiscovery KillChainIntent = "Discovery"
 	// KillChainIntentExecution - The execution tactic represents techniques that result in execution of adversary-controlled
@@ -1684,19 +1905,26 @@ func PossibleKillChainIntentValues() []KillChainIntent {
 type Kind string
 
 const (
-	KindAnalyticsRule            Kind = "AnalyticsRule"
-	KindAnalyticsRuleTemplate    Kind = "AnalyticsRuleTemplate"
-	KindAutomationRule           Kind = "AutomationRule"
-	KindAzureFunction            Kind = "AzureFunction"
+	KindAnalyticsRule         Kind = "AnalyticsRule"
+	KindAnalyticsRuleTemplate Kind = "AnalyticsRuleTemplate"
+	KindAutomationRule        Kind = "AutomationRule"
+	KindAzureFunction         Kind = "AzureFunction"
+	// KindCustomDetection - Custom detections enable proactive monitoring and automated response actions for various events and
+	// system states across your tenant.
+	KindCustomDetection          Kind = "CustomDetection"
 	KindDataConnector            Kind = "DataConnector"
 	KindDataType                 Kind = "DataType"
 	KindHuntingQuery             Kind = "HuntingQuery"
 	KindInvestigationQuery       Kind = "InvestigationQuery"
 	KindLogicAppsCustomConnector Kind = "LogicAppsCustomConnector"
+	KindNotebook                 Kind = "Notebook"
 	KindParser                   Kind = "Parser"
 	KindPlaybook                 Kind = "Playbook"
 	KindPlaybookTemplate         Kind = "PlaybookTemplate"
+	KindResourcesDataConnector   Kind = "ResourcesDataConnector"
 	KindSolution                 Kind = "Solution"
+	KindStandalone               Kind = "Standalone"
+	KindSummaryRule              Kind = "SummaryRule"
 	KindWatchlist                Kind = "Watchlist"
 	KindWatchlistTemplate        Kind = "WatchlistTemplate"
 	KindWorkbook                 Kind = "Workbook"
@@ -1710,15 +1938,20 @@ func PossibleKindValues() []Kind {
 		KindAnalyticsRuleTemplate,
 		KindAutomationRule,
 		KindAzureFunction,
+		KindCustomDetection,
 		KindDataConnector,
 		KindDataType,
 		KindHuntingQuery,
 		KindInvestigationQuery,
 		KindLogicAppsCustomConnector,
+		KindNotebook,
 		KindParser,
 		KindPlaybook,
 		KindPlaybookTemplate,
+		KindResourcesDataConnector,
 		KindSolution,
+		KindStandalone,
+		KindSummaryRule,
 		KindWatchlist,
 		KindWatchlistTemplate,
 		KindWorkbook,
@@ -1775,6 +2008,40 @@ func PossibleMicrosoftSecurityProductNameValues() []MicrosoftSecurityProductName
 	}
 }
 
+// Mode - The current mode of the workspace manager configuration
+type Mode string
+
+const (
+	// ModeDisabled - The workspace manager configuration is disabled
+	ModeDisabled Mode = "Disabled"
+	// ModeEnabled - The workspace manager configuration is enabled
+	ModeEnabled Mode = "Enabled"
+)
+
+// PossibleModeValues returns the possible values for the Mode const type.
+func PossibleModeValues() []Mode {
+	return []Mode{
+		ModeDisabled,
+		ModeEnabled,
+	}
+}
+
+// MtpProvider - The available data providers.
+type MtpProvider string
+
+const (
+	MtpProviderMicrosoftDefenderForCloudApps MtpProvider = "microsoftDefenderForCloudApps"
+	MtpProviderMicrosoftDefenderForIdentity  MtpProvider = "microsoftDefenderForIdentity"
+)
+
+// PossibleMtpProviderValues returns the possible values for the MtpProvider const type.
+func PossibleMtpProviderValues() []MtpProvider {
+	return []MtpProvider{
+		MtpProviderMicrosoftDefenderForCloudApps,
+		MtpProviderMicrosoftDefenderForIdentity,
+	}
+}
+
 // OSFamily - The operating system type.
 type OSFamily string
 
@@ -1802,19 +2069,67 @@ func PossibleOSFamilyValues() []OSFamily {
 	}
 }
 
-// Operator - Operator used for list of dependencies in criteria array.
+// Operator - Represents an operator in a ConditionClause.
 type Operator string
 
 const (
-	OperatorAND Operator = "AND"
-	OperatorOR  Operator = "OR"
+	OperatorAfterAbsolute       Operator = "AfterAbsolute"
+	OperatorAfterRelative       Operator = "AfterRelative"
+	OperatorArrayContains       Operator = "ArrayContains"
+	OperatorArrayNotContains    Operator = "ArrayNotContains"
+	OperatorBeforeAbsolute      Operator = "BeforeAbsolute"
+	OperatorBeforeRelative      Operator = "BeforeRelative"
+	OperatorEquals              Operator = "Equals"
+	OperatorGreaterThan         Operator = "GreaterThan"
+	OperatorGreaterThanEqual    Operator = "GreaterThanEqual"
+	OperatorIsFalse             Operator = "IsFalse"
+	OperatorIsNull              Operator = "IsNull"
+	OperatorIsTrue              Operator = "IsTrue"
+	OperatorLessThan            Operator = "LessThan"
+	OperatorLessThanEqual       Operator = "LessThanEqual"
+	OperatorNotEquals           Operator = "NotEquals"
+	OperatorOnOrAfterAbsolute   Operator = "OnOrAfterAbsolute"
+	OperatorOnOrAfterRelative   Operator = "OnOrAfterRelative"
+	OperatorOnOrBeforeAbsolute  Operator = "OnOrBeforeAbsolute"
+	OperatorOnOrBeforeRelative  Operator = "OnOrBeforeRelative"
+	OperatorStringContains      Operator = "StringContains"
+	OperatorStringEndsWith      Operator = "StringEndsWith"
+	OperatorStringIsEmpty       Operator = "StringIsEmpty"
+	OperatorStringNotContains   Operator = "StringNotContains"
+	OperatorStringNotEndsWith   Operator = "StringNotEndsWith"
+	OperatorStringNotStartsWith Operator = "StringNotStartsWith"
+	OperatorStringStartsWith    Operator = "StringStartsWith"
 )
 
 // PossibleOperatorValues returns the possible values for the Operator const type.
 func PossibleOperatorValues() []Operator {
 	return []Operator{
-		OperatorAND,
-		OperatorOR,
+		OperatorAfterAbsolute,
+		OperatorAfterRelative,
+		OperatorArrayContains,
+		OperatorArrayNotContains,
+		OperatorBeforeAbsolute,
+		OperatorBeforeRelative,
+		OperatorEquals,
+		OperatorGreaterThan,
+		OperatorGreaterThanEqual,
+		OperatorIsFalse,
+		OperatorIsNull,
+		OperatorIsTrue,
+		OperatorLessThan,
+		OperatorLessThanEqual,
+		OperatorNotEquals,
+		OperatorOnOrAfterAbsolute,
+		OperatorOnOrAfterRelative,
+		OperatorOnOrBeforeAbsolute,
+		OperatorOnOrBeforeRelative,
+		OperatorStringContains,
+		OperatorStringEndsWith,
+		OperatorStringIsEmpty,
+		OperatorStringNotContains,
+		OperatorStringNotEndsWith,
+		OperatorStringNotStartsWith,
+		OperatorStringStartsWith,
 	}
 }
 
@@ -1838,15 +2153,15 @@ func PossibleOutputTypeValues() []OutputType {
 	}
 }
 
-// OwnerType - The type of the owner the incident is assigned to.
+// OwnerType - The type of the owner the hunt is assigned to.
 type OwnerType string
 
 const (
-	// OwnerTypeGroup - The incident owner type is an AAD group
+	// OwnerTypeGroup - The hunt owner type is an AAD group
 	OwnerTypeGroup OwnerType = "Group"
-	// OwnerTypeUnknown - The incident owner type is unknown
+	// OwnerTypeUnknown - The hunt owner type is unknown
 	OwnerTypeUnknown OwnerType = "Unknown"
-	// OwnerTypeUser - The incident owner type is an AAD user
+	// OwnerTypeUser - The hunt owner type is an AAD user
 	OwnerTypeUser OwnerType = "User"
 )
 
@@ -1856,6 +2171,22 @@ func PossibleOwnerTypeValues() []OwnerType {
 		OwnerTypeGroup,
 		OwnerTypeUnknown,
 		OwnerTypeUser,
+	}
+}
+
+// PackageKind - The package kind
+type PackageKind string
+
+const (
+	PackageKindSolution   PackageKind = "Solution"
+	PackageKindStandalone PackageKind = "Standalone"
+)
+
+// PossiblePackageKindValues returns the possible values for the PackageKind const type.
+func PossiblePackageKindValues() []PackageKind {
+	return []PackageKind{
+		PackageKindSolution,
+		PackageKindStandalone,
 	}
 }
 
@@ -1919,6 +2250,46 @@ func PossibleProviderNameValues() []ProviderName {
 		ProviderNameMicrosoftOperationalInsightsWorkspaces,
 		ProviderNameMicrosoftOperationalInsightsWorkspacesDatasources,
 		ProviderNameMicrosoftOperationalInsightsWorkspacesSharedKeys,
+	}
+}
+
+// ProviderPermissionsScope - The scope on which the user should have permissions, in order to be able to create connections.
+type ProviderPermissionsScope string
+
+const (
+	ProviderPermissionsScopeResourceGroup ProviderPermissionsScope = "ResourceGroup"
+	ProviderPermissionsScopeSubscription  ProviderPermissionsScope = "Subscription"
+	ProviderPermissionsScopeWorkspace     ProviderPermissionsScope = "Workspace"
+)
+
+// PossibleProviderPermissionsScopeValues returns the possible values for the ProviderPermissionsScope const type.
+func PossibleProviderPermissionsScopeValues() []ProviderPermissionsScope {
+	return []ProviderPermissionsScope{
+		ProviderPermissionsScopeResourceGroup,
+		ProviderPermissionsScopeSubscription,
+		ProviderPermissionsScopeWorkspace,
+	}
+}
+
+// ProvisioningState - The triggered analytics rule run provisioning state
+type ProvisioningState string
+
+const (
+	ProvisioningStateAccepted   ProvisioningState = "Accepted"
+	ProvisioningStateCanceled   ProvisioningState = "Canceled"
+	ProvisioningStateFailed     ProvisioningState = "Failed"
+	ProvisioningStateInProgress ProvisioningState = "InProgress"
+	ProvisioningStateSucceeded  ProvisioningState = "Succeeded"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateFailed,
+		ProvisioningStateInProgress,
+		ProvisioningStateSucceeded,
 	}
 }
 
@@ -2005,15 +2376,59 @@ func PossibleRegistryValueKindValues() []RegistryValueKind {
 type RepoType string
 
 const (
-	RepoTypeDevOps RepoType = "DevOps"
-	RepoTypeGithub RepoType = "Github"
+	RepoTypeAzureDevOps RepoType = "AzureDevOps"
+	RepoTypeGithub      RepoType = "Github"
 )
 
 // PossibleRepoTypeValues returns the possible values for the RepoType const type.
 func PossibleRepoTypeValues() []RepoType {
 	return []RepoType{
-		RepoTypeDevOps,
+		RepoTypeAzureDevOps,
 		RepoTypeGithub,
+	}
+}
+
+// RepositoryAccessKind - The kind of repository access credentials
+type RepositoryAccessKind string
+
+const (
+	RepositoryAccessKindApp   RepositoryAccessKind = "App"
+	RepositoryAccessKindOAuth RepositoryAccessKind = "OAuth"
+	RepositoryAccessKindPAT   RepositoryAccessKind = "PAT"
+)
+
+// PossibleRepositoryAccessKindValues returns the possible values for the RepositoryAccessKind const type.
+func PossibleRepositoryAccessKindValues() []RepositoryAccessKind {
+	return []RepositoryAccessKind{
+		RepositoryAccessKindApp,
+		RepositoryAccessKindOAuth,
+		RepositoryAccessKindPAT,
+	}
+}
+
+// RestAPIPollerRequestPagingKind - Type of paging
+type RestAPIPollerRequestPagingKind string
+
+const (
+	RestAPIPollerRequestPagingKindCountBasedPaging     RestAPIPollerRequestPagingKind = "CountBasedPaging"
+	RestAPIPollerRequestPagingKindLinkHeader           RestAPIPollerRequestPagingKind = "LinkHeader"
+	RestAPIPollerRequestPagingKindNextPageToken        RestAPIPollerRequestPagingKind = "NextPageToken"
+	RestAPIPollerRequestPagingKindNextPageURL          RestAPIPollerRequestPagingKind = "NextPageUrl"
+	RestAPIPollerRequestPagingKindOffset               RestAPIPollerRequestPagingKind = "Offset"
+	RestAPIPollerRequestPagingKindPersistentLinkHeader RestAPIPollerRequestPagingKind = "PersistentLinkHeader"
+	RestAPIPollerRequestPagingKindPersistentToken      RestAPIPollerRequestPagingKind = "PersistentToken"
+)
+
+// PossibleRestAPIPollerRequestPagingKindValues returns the possible values for the RestAPIPollerRequestPagingKind const type.
+func PossibleRestAPIPollerRequestPagingKindValues() []RestAPIPollerRequestPagingKind {
+	return []RestAPIPollerRequestPagingKind{
+		RestAPIPollerRequestPagingKindCountBasedPaging,
+		RestAPIPollerRequestPagingKindLinkHeader,
+		RestAPIPollerRequestPagingKindNextPageToken,
+		RestAPIPollerRequestPagingKindNextPageURL,
+		RestAPIPollerRequestPagingKindOffset,
+		RestAPIPollerRequestPagingKindPersistentLinkHeader,
+		RestAPIPollerRequestPagingKindPersistentToken,
 	}
 }
 
@@ -2087,6 +2502,24 @@ func PossibleSettingsStatusValues() []SettingsStatus {
 	}
 }
 
+// SortingDirection - The direction to sort the results by.
+type SortingDirection string
+
+const (
+	// SortingDirectionASC - Indicates that the query should be sorted from lowest-to-highest value.
+	SortingDirectionASC SortingDirection = "ASC"
+	// SortingDirectionDESC - Indicates that the query should be sorted from lowest-to-highest value.
+	SortingDirectionDESC SortingDirection = "DESC"
+)
+
+// PossibleSortingDirectionValues returns the possible values for the SortingDirection const type.
+func PossibleSortingDirectionValues() []SortingDirection {
+	return []SortingDirection{
+		SortingDirectionASC,
+		SortingDirectionDESC,
+	}
+}
+
 // SourceKind - Source type of the content
 type SourceKind string
 
@@ -2111,15 +2544,72 @@ func PossibleSourceKindValues() []SourceKind {
 type SourceType string
 
 const (
-	SourceTypeLocalFile     SourceType = "Local file"
-	SourceTypeRemoteStorage SourceType = "Remote storage"
+	// SourceTypeAzureStorage - The source from Azure storage.
+	SourceTypeAzureStorage SourceType = "AzureStorage"
+	// SourceTypeLocal - The source from local file.
+	SourceTypeLocal SourceType = "Local"
 )
 
 // PossibleSourceTypeValues returns the possible values for the SourceType const type.
 func PossibleSourceTypeValues() []SourceType {
 	return []SourceType{
-		SourceTypeLocalFile,
-		SourceTypeRemoteStorage,
+		SourceTypeAzureStorage,
+		SourceTypeLocal,
+	}
+}
+
+// State - State of recommendation.
+type State string
+
+const (
+	// StateActive - Recommendation is active.
+	StateActive State = "Active"
+	// StateCompletedBySystem - Recommendation has been completed by the system.
+	StateCompletedBySystem State = "CompletedBySystem"
+	// StateCompletedByUser - Recommendation has been completed by user.
+	StateCompletedByUser State = "CompletedByUser"
+	// StateDismissed - Recommendation has been dismissed.
+	StateDismissed State = "Dismissed"
+	// StateInProgress - Recommendation is in progress.
+	StateInProgress State = "InProgress"
+)
+
+// PossibleStateValues returns the possible values for the State const type.
+func PossibleStateValues() []State {
+	return []State{
+		StateActive,
+		StateCompletedBySystem,
+		StateCompletedByUser,
+		StateDismissed,
+		StateInProgress,
+	}
+}
+
+// Status - The status of the hunt.
+type Status string
+
+const (
+	StatusActive     Status = "Active"
+	StatusApproved   Status = "Approved"
+	StatusBacklog    Status = "Backlog"
+	StatusClosed     Status = "Closed"
+	StatusFailed     Status = "Failed"
+	StatusInProgress Status = "InProgress"
+	StatusNew        Status = "New"
+	StatusSucceeded  Status = "Succeeded"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusActive,
+		StatusApproved,
+		StatusBacklog,
+		StatusClosed,
+		StatusFailed,
+		StatusInProgress,
+		StatusNew,
+		StatusSucceeded,
 	}
 }
 
@@ -2138,6 +2628,33 @@ func PossibleSupportTierValues() []SupportTier {
 		SupportTierCommunity,
 		SupportTierMicrosoft,
 		SupportTierPartner,
+	}
+}
+
+// TIObjectKind - The kind of the TI object
+type TIObjectKind string
+
+const (
+	// TIObjectKindAttackPattern - A TI object that represents an attack pattern.
+	TIObjectKindAttackPattern TIObjectKind = "AttackPattern"
+	// TIObjectKindIdentity - A TI object that represents an identity.
+	TIObjectKindIdentity TIObjectKind = "Identity"
+	// TIObjectKindIndicator - A TI object that represents an indicator.
+	TIObjectKindIndicator TIObjectKind = "Indicator"
+	// TIObjectKindRelationship - A TI object that represents a relationship between two TI objects.
+	TIObjectKindRelationship TIObjectKind = "Relationship"
+	// TIObjectKindThreatActor - A TI object that represents a threat actor.
+	TIObjectKindThreatActor TIObjectKind = "ThreatActor"
+)
+
+// PossibleTIObjectKindValues returns the possible values for the TIObjectKind const type.
+func PossibleTIObjectKindValues() []TIObjectKind {
+	return []TIObjectKind{
+		TIObjectKindAttackPattern,
+		TIObjectKindIdentity,
+		TIObjectKindIndicator,
+		TIObjectKindRelationship,
+		TIObjectKindThreatActor,
 	}
 }
 
@@ -2162,36 +2679,49 @@ func PossibleTemplateStatusValues() []TemplateStatus {
 	}
 }
 
-// ThreatIntelligenceResourceKindEnum - The kind of the threat intelligence entity
-type ThreatIntelligenceResourceKindEnum string
+// ThreatIntelligenceResourceInnerKind - The kind of the threat intelligence entity
+type ThreatIntelligenceResourceInnerKind string
 
 const (
-	// ThreatIntelligenceResourceKindEnumIndicator - Entity represents threat intelligence indicator in the system.
-	ThreatIntelligenceResourceKindEnumIndicator ThreatIntelligenceResourceKindEnum = "indicator"
+	// ThreatIntelligenceResourceInnerKindIndicator - Entity represents threat intelligence indicator in the system.
+	ThreatIntelligenceResourceInnerKindIndicator ThreatIntelligenceResourceInnerKind = "indicator"
 )
 
-// PossibleThreatIntelligenceResourceKindEnumValues returns the possible values for the ThreatIntelligenceResourceKindEnum const type.
-func PossibleThreatIntelligenceResourceKindEnumValues() []ThreatIntelligenceResourceKindEnum {
-	return []ThreatIntelligenceResourceKindEnum{
-		ThreatIntelligenceResourceKindEnumIndicator,
+// PossibleThreatIntelligenceResourceInnerKindValues returns the possible values for the ThreatIntelligenceResourceInnerKind const type.
+func PossibleThreatIntelligenceResourceInnerKindValues() []ThreatIntelligenceResourceInnerKind {
+	return []ThreatIntelligenceResourceInnerKind{
+		ThreatIntelligenceResourceInnerKindIndicator,
 	}
 }
 
-// ThreatIntelligenceSortingCriteriaEnum - Sorting order (ascending/descending/unsorted).
-type ThreatIntelligenceSortingCriteriaEnum string
+// ThreatIntelligenceSortingOrder - Sorting order (ascending/descending/unsorted).
+type ThreatIntelligenceSortingOrder string
 
 const (
-	ThreatIntelligenceSortingCriteriaEnumAscending  ThreatIntelligenceSortingCriteriaEnum = "ascending"
-	ThreatIntelligenceSortingCriteriaEnumDescending ThreatIntelligenceSortingCriteriaEnum = "descending"
-	ThreatIntelligenceSortingCriteriaEnumUnsorted   ThreatIntelligenceSortingCriteriaEnum = "unsorted"
+	ThreatIntelligenceSortingOrderAscending  ThreatIntelligenceSortingOrder = "ascending"
+	ThreatIntelligenceSortingOrderDescending ThreatIntelligenceSortingOrder = "descending"
+	ThreatIntelligenceSortingOrderUnsorted   ThreatIntelligenceSortingOrder = "unsorted"
 )
 
-// PossibleThreatIntelligenceSortingCriteriaEnumValues returns the possible values for the ThreatIntelligenceSortingCriteriaEnum const type.
-func PossibleThreatIntelligenceSortingCriteriaEnumValues() []ThreatIntelligenceSortingCriteriaEnum {
-	return []ThreatIntelligenceSortingCriteriaEnum{
-		ThreatIntelligenceSortingCriteriaEnumAscending,
-		ThreatIntelligenceSortingCriteriaEnumDescending,
-		ThreatIntelligenceSortingCriteriaEnumUnsorted,
+// PossibleThreatIntelligenceSortingOrderValues returns the possible values for the ThreatIntelligenceSortingOrder const type.
+func PossibleThreatIntelligenceSortingOrderValues() []ThreatIntelligenceSortingOrder {
+	return []ThreatIntelligenceSortingOrder{
+		ThreatIntelligenceSortingOrderAscending,
+		ThreatIntelligenceSortingOrderDescending,
+		ThreatIntelligenceSortingOrderUnsorted,
+	}
+}
+
+type TiType string
+
+const (
+	TiTypeMain TiType = "main"
+)
+
+// PossibleTiTypeValues returns the possible values for the TiType const type.
+func PossibleTiTypeValues() []TiType {
+	return []TiType{
+		TiTypeMain,
 	}
 }
 
@@ -2282,5 +2812,27 @@ func PossibleVersionValues() []Version {
 	return []Version{
 		VersionV1,
 		VersionV2,
+	}
+}
+
+// WarningCode - The type of repository.
+type WarningCode string
+
+const (
+	WarningCodeSourceControlDeletedWithWarnings                      WarningCode = "SourceControl_DeletedWithWarnings"
+	WarningCodeSourceControlWarningDeletePipelineFromAzureDevOps     WarningCode = "SourceControlWarning_DeletePipelineFromAzureDevOps"
+	WarningCodeSourceControlWarningDeleteRoleAssignment              WarningCode = "SourceControlWarning_DeleteRoleAssignment"
+	WarningCodeSourceControlWarningDeleteServicePrincipal            WarningCode = "SourceControlWarning_DeleteServicePrincipal"
+	WarningCodeSourceControlWarningDeleteWorkflowAndSecretFromGitHub WarningCode = "SourceControlWarning_DeleteWorkflowAndSecretFromGitHub"
+)
+
+// PossibleWarningCodeValues returns the possible values for the WarningCode const type.
+func PossibleWarningCodeValues() []WarningCode {
+	return []WarningCode{
+		WarningCodeSourceControlDeletedWithWarnings,
+		WarningCodeSourceControlWarningDeletePipelineFromAzureDevOps,
+		WarningCodeSourceControlWarningDeleteRoleAssignment,
+		WarningCodeSourceControlWarningDeleteServicePrincipal,
+		WarningCodeSourceControlWarningDeleteWorkflowAndSecretFromGitHub,
 	}
 }

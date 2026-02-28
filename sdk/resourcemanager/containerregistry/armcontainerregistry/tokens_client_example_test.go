@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/TokenCreate.json
+// Generated from example definition: 2026-01-01-preview/TokenCreate.json
 func ExampleTokensClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleTokensClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TokenDelete.json
+// Generated from example definition: 2026-01-01-preview/TokenDelete.json
 func ExampleTokensClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleTokensClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TokenGet.json
+// Generated from example definition: 2026-01-01-preview/TokenGet.json
 func ExampleTokensClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleTokensClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TokenList.json
+// Generated from example definition: 2026-01-01-preview/TokenList.json
 func ExampleTokensClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleTokensClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/TokenUpdate.json
+// Generated from example definition: 2026-01-01-preview/TokenUpdate.json
 func ExampleTokensClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

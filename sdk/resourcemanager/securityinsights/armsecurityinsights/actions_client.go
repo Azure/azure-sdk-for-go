@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -25,9 +26,9 @@ type ActionsClient struct {
 }
 
 // NewActionsClient creates a new instance of ActionsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,9 +44,9 @@ func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, 
 // CreateOrUpdate - Creates or updates the action of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - ruleID - Alert rule ID
 //   - actionID - Action ID
 //   - action - The action
@@ -73,7 +74,7 @@ func (client *ActionsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, options *ActionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, _ *ActionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -100,7 +101,7 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, action); err != nil {
@@ -112,6 +113,14 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionsClientCreateOrUpdateResponse, error) {
 	result := ActionsClientCreateOrUpdateResponse{}
+	if val := resp.Header.Get("Retry-After"); val != "" {
+		retryAfter32, err := strconv.ParseInt(val, 10, 32)
+		retryAfter := int32(retryAfter32)
+		if err != nil {
+			return ActionsClientCreateOrUpdateResponse{}, err
+		}
+		result.RetryAfter = &retryAfter
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionResponse); err != nil {
 		return ActionsClientCreateOrUpdateResponse{}, err
 	}
@@ -121,9 +130,9 @@ func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (
 // Delete - Delete the action of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - ruleID - Alert rule ID
 //   - actionID - Action ID
 //   - options - ActionsClientDeleteOptions contains the optional parameters for the ActionsClient.Delete method.
@@ -149,7 +158,7 @@ func (client *ActionsClient) Delete(ctx context.Context, resourceGroupName strin
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientDeleteOptions) (*policy.Request, error) {
+func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, _ *ActionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -176,7 +185,7 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,9 +194,9 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 // Get - Gets the action of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - ruleID - Alert rule ID
 //   - actionID - Action ID
 //   - options - ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
@@ -214,7 +223,7 @@ func (client *ActionsClient) Get(ctx context.Context, resourceGroupName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientGetOptions) (*policy.Request, error) {
+func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, _ *ActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -241,7 +250,7 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -258,9 +267,9 @@ func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClie
 
 // NewListByAlertRulePager - Gets all actions of alert rule.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - ruleID - Alert rule ID
 //   - options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.NewListByAlertRulePager
 //     method.
@@ -288,7 +297,7 @@ func (client *ActionsClient) NewListByAlertRulePager(resourceGroupName string, w
 }
 
 // listByAlertRuleCreateRequest creates the ListByAlertRule request.
-func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) (*policy.Request, error) {
+func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, _ *ActionsClientListByAlertRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -311,7 +320,7 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

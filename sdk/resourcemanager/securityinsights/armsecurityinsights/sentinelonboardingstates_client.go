@@ -25,9 +25,9 @@ type SentinelOnboardingStatesClient struct {
 }
 
 // NewSentinelOnboardingStatesClient creates a new instance of SentinelOnboardingStatesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SentinelOnboardingStatesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewSentinelOnboardingStatesClient(subscriptionID string, credential azcore.
 // Create - Create Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
@@ -95,7 +95,7 @@ func (client *SentinelOnboardingStatesClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SentinelOnboardingStateParameter != nil {
@@ -119,9 +119,9 @@ func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Re
 // Delete - Delete Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
 //   - options - SentinelOnboardingStatesClientDeleteOptions contains the optional parameters for the SentinelOnboardingStatesClient.Delete
 //     method.
@@ -147,7 +147,7 @@ func (client *SentinelOnboardingStatesClient) Delete(ctx context.Context, resour
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, options *SentinelOnboardingStatesClientDeleteOptions) (*policy.Request, error) {
+func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, _ *SentinelOnboardingStatesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +170,7 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -179,9 +179,9 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 // Get - Get Sentinel onboarding state
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
 //   - options - SentinelOnboardingStatesClientGetOptions contains the optional parameters for the SentinelOnboardingStatesClient.Get
 //     method.
@@ -208,7 +208,7 @@ func (client *SentinelOnboardingStatesClient) Get(ctx context.Context, resourceG
 }
 
 // getCreateRequest creates the Get request.
-func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, options *SentinelOnboardingStatesClientGetOptions) (*policy.Request, error) {
+func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, sentinelOnboardingStateName string, _ *SentinelOnboardingStatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates/{sentinelOnboardingStateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -231,7 +231,7 @@ func (client *SentinelOnboardingStatesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -249,9 +249,9 @@ func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Respo
 // List - Gets all Sentinel onboarding states
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - options - SentinelOnboardingStatesClientListOptions contains the optional parameters for the SentinelOnboardingStatesClient.List
 //     method.
 func (client *SentinelOnboardingStatesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *SentinelOnboardingStatesClientListOptions) (SentinelOnboardingStatesClientListResponse, error) {
@@ -277,7 +277,7 @@ func (client *SentinelOnboardingStatesClient) List(ctx context.Context, resource
 }
 
 // listCreateRequest creates the List request.
-func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SentinelOnboardingStatesClientListOptions) (*policy.Request, error) {
+func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SentinelOnboardingStatesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/onboardingStates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -296,7 +296,7 @@ func (client *SentinelOnboardingStatesClient) listCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

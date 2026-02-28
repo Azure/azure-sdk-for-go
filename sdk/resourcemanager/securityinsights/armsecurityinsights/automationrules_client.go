@@ -25,9 +25,9 @@ type AutomationRulesClient struct {
 }
 
 // NewAutomationRulesClient creates a new instance of AutomationRulesClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationRulesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,10 +43,10 @@ func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCred
 // CreateOrUpdate - Creates or updates the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - automationRuleID - Automation rule ID
+//   - automationRuleID - The automation rule ID.
 //   - options - AutomationRulesClientCreateOrUpdateOptions contains the optional parameters for the AutomationRulesClient.CreateOrUpdate
 //     method.
 func (client *AutomationRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientCreateOrUpdateOptions) (AutomationRulesClientCreateOrUpdateResponse, error) {
@@ -95,7 +95,7 @@ func (client *AutomationRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.AutomationRuleToUpsert != nil {
@@ -119,9 +119,9 @@ func (client *AutomationRulesClient) createOrUpdateHandleResponse(resp *http.Res
 // Delete - Delete the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - automationRuleID - Automation rule ID
 //   - options - AutomationRulesClientDeleteOptions contains the optional parameters for the AutomationRulesClient.Delete method.
 func (client *AutomationRulesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientDeleteOptions) (AutomationRulesClientDeleteResponse, error) {
@@ -147,7 +147,7 @@ func (client *AutomationRulesClient) Delete(ctx context.Context, resourceGroupNa
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientDeleteOptions) (*policy.Request, error) {
+func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, _ *AutomationRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/automationRules/{automationRuleId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -170,7 +170,7 @@ func (client *AutomationRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,9 +188,9 @@ func (client *AutomationRulesClient) deleteHandleResponse(resp *http.Response) (
 // Get - Gets the automation rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - automationRuleID - Automation rule ID
 //   - options - AutomationRulesClientGetOptions contains the optional parameters for the AutomationRulesClient.Get method.
 func (client *AutomationRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientGetOptions) (AutomationRulesClientGetResponse, error) {
@@ -216,7 +216,7 @@ func (client *AutomationRulesClient) Get(ctx context.Context, resourceGroupName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientGetOptions) (*policy.Request, error) {
+func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, _ *AutomationRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/automationRules/{automationRuleId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -239,7 +239,7 @@ func (client *AutomationRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -256,9 +256,9 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 
 // NewListPager - Gets all automation rules.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.NewListPager
 //     method.
 func (client *AutomationRulesClient) NewListPager(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse] {
@@ -285,7 +285,7 @@ func (client *AutomationRulesClient) NewListPager(resourceGroupName string, work
 }
 
 // listCreateRequest creates the List request.
-func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) (*policy.Request, error) {
+func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *AutomationRulesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/automationRules"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,7 +304,7 @@ func (client *AutomationRulesClient) listCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

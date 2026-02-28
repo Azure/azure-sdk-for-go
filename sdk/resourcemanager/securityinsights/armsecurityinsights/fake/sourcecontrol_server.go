@@ -22,7 +22,7 @@ import (
 type SourceControlServer struct {
 	// NewListRepositoriesPager is the fake for method SourceControlClient.NewListRepositoriesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListRepositoriesPager func(resourceGroupName string, workspaceName string, repoType armsecurityinsights.RepoType, options *armsecurityinsights.SourceControlClientListRepositoriesOptions) (resp azfake.PagerResponder[armsecurityinsights.SourceControlClientListRepositoriesResponse])
+	NewListRepositoriesPager func(resourceGroupName string, workspaceName string, repositoryAccess armsecurityinsights.RepositoryAccessProperties, options *armsecurityinsights.SourceControlClientListRepositoriesOptions) (resp azfake.PagerResponder[armsecurityinsights.SourceControlClientListRepositoriesResponse])
 }
 
 // NewSourceControlServerTransport creates a new instance of SourceControlServerTransport with the provided implementation.
@@ -50,21 +50,40 @@ func (s *SourceControlServerTransport) Do(req *http.Request) (*http.Response, er
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return s.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "SourceControlClient.NewListRepositoriesPager":
-		resp, err = s.dispatchNewListRepositoriesPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (s *SourceControlServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if sourceControlServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = sourceControlServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "SourceControlClient.NewListRepositoriesPager":
+				res.resp, res.err = s.dispatchNewListRepositoriesPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (s *SourceControlServerTransport) dispatchNewListRepositoriesPager(req *http.Request) (*http.Response, error) {
@@ -76,10 +95,10 @@ func (s *SourceControlServerTransport) dispatchNewListRepositoriesPager(req *htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/listRepositories`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.RepoType](req)
+		body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.RepositoryAccessProperties](req)
 		if err != nil {
 			return nil, err
 		}
@@ -110,4 +129,10 @@ func (s *SourceControlServerTransport) dispatchNewListRepositoriesPager(req *htt
 		s.newListRepositoriesPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to SourceControlServerTransport
+var sourceControlServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

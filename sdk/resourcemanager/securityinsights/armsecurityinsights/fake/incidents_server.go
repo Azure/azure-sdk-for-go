@@ -27,10 +27,6 @@ type IncidentsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, incident armsecurityinsights.Incident, options *armsecurityinsights.IncidentsClientCreateOrUpdateOptions) (resp azfake.Responder[armsecurityinsights.IncidentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// CreateTeam is the fake for method IncidentsClient.CreateTeam
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateTeam func(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, teamProperties armsecurityinsights.TeamProperties, options *armsecurityinsights.IncidentsClientCreateTeamOptions) (resp azfake.Responder[armsecurityinsights.IncidentsClientCreateTeamResponse], errResp azfake.ErrorResponder)
-
 	// Delete is the fake for method IncidentsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
 	Delete func(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *armsecurityinsights.IncidentsClientDeleteOptions) (resp azfake.Responder[armsecurityinsights.IncidentsClientDeleteResponse], errResp azfake.ErrorResponder)
@@ -85,37 +81,54 @@ func (i *IncidentsServerTransport) Do(req *http.Request) (*http.Response, error)
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return i.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "IncidentsClient.CreateOrUpdate":
-		resp, err = i.dispatchCreateOrUpdate(req)
-	case "IncidentsClient.CreateTeam":
-		resp, err = i.dispatchCreateTeam(req)
-	case "IncidentsClient.Delete":
-		resp, err = i.dispatchDelete(req)
-	case "IncidentsClient.Get":
-		resp, err = i.dispatchGet(req)
-	case "IncidentsClient.NewListPager":
-		resp, err = i.dispatchNewListPager(req)
-	case "IncidentsClient.ListAlerts":
-		resp, err = i.dispatchListAlerts(req)
-	case "IncidentsClient.ListBookmarks":
-		resp, err = i.dispatchListBookmarks(req)
-	case "IncidentsClient.ListEntities":
-		resp, err = i.dispatchListEntities(req)
-	case "IncidentsClient.RunPlaybook":
-		resp, err = i.dispatchRunPlaybook(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (i *IncidentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if incidentsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = incidentsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "IncidentsClient.CreateOrUpdate":
+				res.resp, res.err = i.dispatchCreateOrUpdate(req)
+			case "IncidentsClient.Delete":
+				res.resp, res.err = i.dispatchDelete(req)
+			case "IncidentsClient.Get":
+				res.resp, res.err = i.dispatchGet(req)
+			case "IncidentsClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
+			case "IncidentsClient.ListAlerts":
+				res.resp, res.err = i.dispatchListAlerts(req)
+			case "IncidentsClient.ListBookmarks":
+				res.resp, res.err = i.dispatchListBookmarks(req)
+			case "IncidentsClient.ListEntities":
+				res.resp, res.err = i.dispatchListEntities(req)
+			case "IncidentsClient.RunPlaybook":
+				res.resp, res.err = i.dispatchRunPlaybook(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (i *IncidentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -125,7 +138,7 @@ func (i *IncidentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.Incident](req)
@@ -159,47 +172,6 @@ func (i *IncidentsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	return resp, nil
 }
 
-func (i *IncidentsServerTransport) dispatchCreateTeam(req *http.Request) (*http.Response, error) {
-	if i.srv.CreateTeam == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateTeam not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createTeam`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.TeamProperties](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	incidentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("incidentId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := i.srv.CreateTeam(req.Context(), resourceGroupNameParam, workspaceNameParam, incidentIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TeamInformation, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (i *IncidentsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if i.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
@@ -207,7 +179,7 @@ func (i *IncidentsServerTransport) dispatchDelete(req *http.Request) (*http.Resp
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -244,7 +216,7 @@ func (i *IncidentsServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -283,7 +255,7 @@ func (i *IncidentsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -361,7 +333,7 @@ func (i *IncidentsServerTransport) dispatchListAlerts(req *http.Request) (*http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/alerts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -398,7 +370,7 @@ func (i *IncidentsServerTransport) dispatchListBookmarks(req *http.Request) (*ht
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/bookmarks`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -435,7 +407,7 @@ func (i *IncidentsServerTransport) dispatchListEntities(req *http.Request) (*htt
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/entities`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -472,7 +444,7 @@ func (i *IncidentsServerTransport) dispatchRunPlaybook(req *http.Request) (*http
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/incidents/(?P<incidentIdentifier>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runPlaybook`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.ManualTriggerRequestBody](req)
@@ -510,4 +482,10 @@ func (i *IncidentsServerTransport) dispatchRunPlaybook(req *http.Request) (*http
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to IncidentsServerTransport
+var incidentsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

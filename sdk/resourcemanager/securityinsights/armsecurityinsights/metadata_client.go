@@ -26,9 +26,9 @@ type MetadataClient struct {
 }
 
 // NewMetadataClient creates a new instance of MetadataClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MetadataClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,9 +44,9 @@ func NewMetadataClient(subscriptionID string, credential azcore.TokenCredential,
 // Create - Create a Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - metadataName - The Metadata name.
 //   - metadata - Metadata resource.
 //   - options - MetadataClientCreateOptions contains the optional parameters for the MetadataClient.Create method.
@@ -73,7 +73,7 @@ func (client *MetadataClient) Create(ctx context.Context, resourceGroupName stri
 }
 
 // createCreateRequest creates the Create request.
-func (client *MetadataClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadata MetadataModel, options *MetadataClientCreateOptions) (*policy.Request, error) {
+func (client *MetadataClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadata MetadataModel, _ *MetadataClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +96,7 @@ func (client *MetadataClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, metadata); err != nil {
@@ -117,9 +117,9 @@ func (client *MetadataClient) createHandleResponse(resp *http.Response) (Metadat
 // Delete - Delete a Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - metadataName - The Metadata name.
 //   - options - MetadataClientDeleteOptions contains the optional parameters for the MetadataClient.Delete method.
 func (client *MetadataClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientDeleteOptions) (MetadataClientDeleteResponse, error) {
@@ -144,7 +144,7 @@ func (client *MetadataClient) Delete(ctx context.Context, resourceGroupName stri
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientDeleteOptions) (*policy.Request, error) {
+func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, _ *MetadataClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -167,7 +167,7 @@ func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,9 +176,9 @@ func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceG
 // Get - Get a Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - metadataName - The Metadata name.
 //   - options - MetadataClientGetOptions contains the optional parameters for the MetadataClient.Get method.
 func (client *MetadataClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientGetOptions) (MetadataClientGetResponse, error) {
@@ -204,7 +204,7 @@ func (client *MetadataClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // getCreateRequest creates the Get request.
-func (client *MetadataClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientGetOptions) (*policy.Request, error) {
+func (client *MetadataClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, _ *MetadataClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,7 +227,7 @@ func (client *MetadataClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -244,9 +244,9 @@ func (client *MetadataClient) getHandleResponse(resp *http.Response) (MetadataCl
 
 // NewListPager - List of all metadata
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - options - MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
 func (client *MetadataClient) NewListPager(resourceGroupName string, workspaceName string, options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetadataClientListResponse]{
@@ -303,7 +303,7 @@ func (client *MetadataClient) listCreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -321,9 +321,9 @@ func (client *MetadataClient) listHandleResponse(resp *http.Response) (MetadataC
 // Update - Update an existing Metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
+//   - workspaceName - The name of the monitor workspace.
 //   - metadataName - The Metadata name.
 //   - metadataPatch - Partial metadata request.
 //   - options - MetadataClientUpdateOptions contains the optional parameters for the MetadataClient.Update method.
@@ -350,7 +350,7 @@ func (client *MetadataClient) Update(ctx context.Context, resourceGroupName stri
 }
 
 // updateCreateRequest creates the Update request.
-func (client *MetadataClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadataPatch MetadataPatch, options *MetadataClientUpdateOptions) (*policy.Request, error) {
+func (client *MetadataClient) updateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, metadataPatch MetadataPatch, _ *MetadataClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/metadata/{metadataName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -373,7 +373,7 @@ func (client *MetadataClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, metadataPatch); err != nil {

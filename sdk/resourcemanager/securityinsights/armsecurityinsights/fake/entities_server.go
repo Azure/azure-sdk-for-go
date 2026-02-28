@@ -16,6 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 )
 
@@ -37,9 +38,13 @@ type EntitiesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, options *armsecurityinsights.EntitiesClientListOptions) (resp azfake.PagerResponder[armsecurityinsights.EntitiesClientListResponse])
 
-	// Queries is the fake for method EntitiesClient.Queries
+	// NewQueriesPager is the fake for method EntitiesClient.NewQueriesPager
 	// HTTP status codes to indicate success: http.StatusOK
-	Queries func(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, kind armsecurityinsights.EntityItemQueryKind, options *armsecurityinsights.EntitiesClientQueriesOptions) (resp azfake.Responder[armsecurityinsights.EntitiesClientQueriesResponse], errResp azfake.ErrorResponder)
+	NewQueriesPager func(resourceGroupName string, workspaceName string, entityID string, kind armsecurityinsights.EntityItemQueryKind, options *armsecurityinsights.EntitiesClientQueriesOptions) (resp azfake.PagerResponder[armsecurityinsights.EntitiesClientQueriesResponse])
+
+	// RunPlaybook is the fake for method EntitiesClient.RunPlaybook
+	// HTTP status codes to indicate success: http.StatusNoContent
+	RunPlaybook func(ctx context.Context, resourceGroupName string, workspaceName string, entityIdentifier string, options *armsecurityinsights.EntitiesClientRunPlaybookOptions) (resp azfake.Responder[armsecurityinsights.EntitiesClientRunPlaybookResponse], errResp azfake.ErrorResponder)
 }
 
 // NewEntitiesServerTransport creates a new instance of EntitiesServerTransport with the provided implementation.
@@ -47,16 +52,18 @@ type EntitiesServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewEntitiesServerTransport(srv *EntitiesServer) *EntitiesServerTransport {
 	return &EntitiesServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armsecurityinsights.EntitiesClientListResponse]](),
+		srv:             srv,
+		newListPager:    newTracker[azfake.PagerResponder[armsecurityinsights.EntitiesClientListResponse]](),
+		newQueriesPager: newTracker[azfake.PagerResponder[armsecurityinsights.EntitiesClientQueriesResponse]](),
 	}
 }
 
 // EntitiesServerTransport connects instances of armsecurityinsights.EntitiesClient to instances of EntitiesServer.
 // Don't use this type directly, use NewEntitiesServerTransport instead.
 type EntitiesServerTransport struct {
-	srv          *EntitiesServer
-	newListPager *tracker[azfake.PagerResponder[armsecurityinsights.EntitiesClientListResponse]]
+	srv             *EntitiesServer
+	newListPager    *tracker[azfake.PagerResponder[armsecurityinsights.EntitiesClientListResponse]]
+	newQueriesPager *tracker[azfake.PagerResponder[armsecurityinsights.EntitiesClientQueriesResponse]]
 }
 
 // Do implements the policy.Transporter interface for EntitiesServerTransport.
@@ -67,29 +74,50 @@ func (e *EntitiesServerTransport) Do(req *http.Request) (*http.Response, error) 
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return e.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "EntitiesClient.Expand":
-		resp, err = e.dispatchExpand(req)
-	case "EntitiesClient.Get":
-		resp, err = e.dispatchGet(req)
-	case "EntitiesClient.GetInsights":
-		resp, err = e.dispatchGetInsights(req)
-	case "EntitiesClient.NewListPager":
-		resp, err = e.dispatchNewListPager(req)
-	case "EntitiesClient.Queries":
-		resp, err = e.dispatchQueries(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (e *EntitiesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if entitiesServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = entitiesServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "EntitiesClient.Expand":
+				res.resp, res.err = e.dispatchExpand(req)
+			case "EntitiesClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "EntitiesClient.GetInsights":
+				res.resp, res.err = e.dispatchGetInsights(req)
+			case "EntitiesClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
+			case "EntitiesClient.NewQueriesPager":
+				res.resp, res.err = e.dispatchNewQueriesPager(req)
+			case "EntitiesClient.RunPlaybook":
+				res.resp, res.err = e.dispatchRunPlaybook(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
 	}
-
-	if err != nil {
-		return nil, err
-	}
-
-	return resp, nil
 }
 
 func (e *EntitiesServerTransport) dispatchExpand(req *http.Request) (*http.Response, error) {
@@ -99,7 +127,7 @@ func (e *EntitiesServerTransport) dispatchExpand(req *http.Request) (*http.Respo
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/expand`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.EntityExpandParameters](req)
@@ -140,7 +168,7 @@ func (e *EntitiesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -177,7 +205,7 @@ func (e *EntitiesServerTransport) dispatchGetInsights(req *http.Request) (*http.
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getInsights`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.EntityGetInsightsParameters](req)
@@ -220,7 +248,7 @@ func (e *EntitiesServerTransport) dispatchNewListPager(req *http.Request) (*http
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -252,17 +280,76 @@ func (e *EntitiesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	return resp, nil
 }
 
-func (e *EntitiesServerTransport) dispatchQueries(req *http.Request) (*http.Response, error) {
-	if e.srv.Queries == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Queries not implemented")}
+func (e *EntitiesServerTransport) dispatchNewQueriesPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewQueriesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewQueriesPager not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queries`
+	newQueriesPager := e.newQueriesPager.get(req)
+	if newQueriesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queries`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		entityIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityId")])
+		if err != nil {
+			return nil, err
+		}
+		kindParam, err := parseWithCast(qp.Get("kind"), func(v string) (armsecurityinsights.EntityItemQueryKind, error) {
+			p, unescapeErr := url.QueryUnescape(v)
+			if unescapeErr != nil {
+				return "", unescapeErr
+			}
+			return armsecurityinsights.EntityItemQueryKind(p), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewQueriesPager(resourceGroupNameParam, workspaceNameParam, entityIDParam, kindParam, nil)
+		newQueriesPager = &resp
+		e.newQueriesPager.add(req, newQueriesPager)
+		server.PagerResponderInjectNextLinks(newQueriesPager, req, func(page *armsecurityinsights.EntitiesClientQueriesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newQueriesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newQueriesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newQueriesPager) {
+		e.newQueriesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *EntitiesServerTransport) dispatchRunPlaybook(req *http.Request) (*http.Response, error) {
+	if e.srv.RunPlaybook == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RunPlaybook not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/entities/(?P<entityIdentifier>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runPlaybook`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
+	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.EntityManualTriggerRequestBody](req)
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -271,31 +358,33 @@ func (e *EntitiesServerTransport) dispatchQueries(req *http.Request) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
-	entityIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityId")])
+	entityIdentifierParam, err := url.PathUnescape(matches[regex.SubexpIndex("entityIdentifier")])
 	if err != nil {
 		return nil, err
 	}
-	kindParam, err := parseWithCast(qp.Get("kind"), func(v string) (armsecurityinsights.EntityItemQueryKind, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
+	var options *armsecurityinsights.EntitiesClientRunPlaybookOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armsecurityinsights.EntitiesClientRunPlaybookOptions{
+			RequestBody: &body,
 		}
-		return armsecurityinsights.EntityItemQueryKind(p), nil
-	})
-	if err != nil {
-		return nil, err
 	}
-	respr, errRespr := e.srv.Queries(req.Context(), resourceGroupNameParam, workspaceNameParam, entityIDParam, kindParam, nil)
+	respr, errRespr := e.srv.RunPlaybook(req.Context(), resourceGroupNameParam, workspaceNameParam, entityIdentifierParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetQueriesResponse, req)
+	resp, err := server.NewResponse(respContent, req, nil)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to EntitiesServerTransport
+var entitiesServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

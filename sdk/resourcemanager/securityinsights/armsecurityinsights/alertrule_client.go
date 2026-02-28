@@ -45,9 +45,9 @@ func NewAlertRuleClient(subscriptionID string, credential azcore.TokenCredential
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
-//   - analyticsRuleRunTriggerParameter - The content of the action request
+//   - analyticsRuleRunTriggerParameter - The Analytics Rule Run Trigger parameter
 //   - options - AlertRuleClientBeginTriggerRuleRunOptions contains the optional parameters for the AlertRuleClient.BeginTriggerRuleRun
 //     method.
 func (client *AlertRuleClient) BeginTriggerRuleRun(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, analyticsRuleRunTriggerParameter AnalyticsRuleRunTrigger, options *AlertRuleClientBeginTriggerRuleRunOptions) (*runtime.Poller[AlertRuleClientTriggerRuleRunResponse], error) {
@@ -86,7 +86,7 @@ func (client *AlertRuleClient) triggerRuleRun(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}

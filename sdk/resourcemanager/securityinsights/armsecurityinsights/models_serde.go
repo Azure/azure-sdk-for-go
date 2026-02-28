@@ -1053,7 +1053,6 @@ func (a *ActivityEntityQuery) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ActivityEntityQueryTemplate.
 func (a ActivityEntityQueryTemplate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "etag", a.Etag)
 	populate(objectMap, "id", a.ID)
 	objectMap["kind"] = EntityQueryTemplateKindActivity
 	populate(objectMap, "name", a.Name)
@@ -1072,9 +1071,6 @@ func (a *ActivityEntityQueryTemplate) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "etag":
-			err = unpopulate(val, "Etag", &a.Etag)
-			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
@@ -2478,7 +2474,7 @@ func (a *AutomationRulesList) UnmarshalJSON(data []byte) error {
 func (a Availability) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "isPreview", a.IsPreview)
-	populate(objectMap, "status", a.Status)
+	objectMap["status"] = int32(1)
 	return json.Marshal(objectMap)
 }
 
@@ -6682,7 +6678,6 @@ func (e *EntityQueryList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EntityQueryTemplate.
 func (e EntityQueryTemplate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "etag", e.Etag)
 	populate(objectMap, "id", e.ID)
 	objectMap["kind"] = e.Kind
 	populate(objectMap, "name", e.Name)
@@ -6700,9 +6695,6 @@ func (e *EntityQueryTemplate) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "etag":
-			err = unpopulate(val, "Etag", &e.Etag)
-			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &e.ID)
 			delete(rawMsg, key)
@@ -8407,7 +8399,6 @@ func (g *GetInsightsResultsMetadata) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GetQueriesResponse.
 func (g GetQueriesResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", g.NextLink)
 	populate(objectMap, "value", g.Value)
 	return json.Marshal(objectMap)
 }
@@ -8421,9 +8412,6 @@ func (g *GetQueriesResponse) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &g.NextLink)
-			delete(rawMsg, key)
 		case "value":
 			g.Value, err = unmarshalEntityQueryItemClassificationArray(val)
 			delete(rawMsg, key)
@@ -8977,6 +8965,7 @@ func (h *HuntProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HuntRelation.
 func (h HuntRelation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "etag", h.Etag)
 	populate(objectMap, "id", h.ID)
 	populate(objectMap, "name", h.Name)
 	populate(objectMap, "properties", h.Properties)
@@ -8994,6 +8983,9 @@ func (h *HuntRelation) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "etag":
+			err = unpopulate(val, "Etag", &h.Etag)
+			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, "ID", &h.ID)
 			delete(rawMsg, key)
@@ -11947,6 +11939,37 @@ func (m *MSTIDataConnectorDataTypes) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed.
+func (m MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateDateTimeRFC3339(objectMap, "lookbackPeriod", m.LookbackPeriod)
+	populate(objectMap, "state", m.State)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed.
+func (m *MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", m, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "lookbackPeriod":
+			err = unpopulateDateTimeRFC3339(val, "LookbackPeriod", &m.LookbackPeriod)
+			delete(rawMsg, key)
+		case "state":
+			err = unpopulate(val, "State", &m.State)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", m, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type MSTIDataConnectorProperties.
 func (m MSTIDataConnectorProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -13630,37 +13653,6 @@ func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties) Unmarshal
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &m.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", m, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.
-func (m MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populateDateTimeRFC3339(objectMap, "lookbackPeriod", m.LookbackPeriod)
-	populate(objectMap, "state", m.State)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.
-func (m *MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", m, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "lookbackPeriod":
-			err = unpopulateDateTimeRFC3339(val, "LookbackPeriod", &m.LookbackPeriod)
-			delete(rawMsg, key)
-		case "state":
-			err = unpopulate(val, "State", &m.State)
 			delete(rawMsg, key)
 		}
 		if err != nil {

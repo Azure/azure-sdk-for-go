@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -46,7 +45,7 @@ func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, 
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - actionID - Action ID
 //   - action - The action
@@ -113,14 +112,6 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (ActionsClientCreateOrUpdateResponse, error) {
 	result := ActionsClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return ActionsClientCreateOrUpdateResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionResponse); err != nil {
 		return ActionsClientCreateOrUpdateResponse{}, err
 	}
@@ -132,7 +123,7 @@ func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - actionID - Action ID
 //   - options - ActionsClientDeleteOptions contains the optional parameters for the ActionsClient.Delete method.
@@ -196,7 +187,7 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - actionID - Action ID
 //   - options - ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
@@ -269,7 +260,7 @@ func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClie
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.NewListByAlertRulePager
 //     method.

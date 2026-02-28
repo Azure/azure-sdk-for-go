@@ -143,6 +143,11 @@ func (e *EntityQueryTemplatesServerTransport) dispatchNewListPager(req *http.Req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		kindUnescaped, err := url.QueryUnescape(qp.Get("kind"))
+		if err != nil {
+			return nil, err
+		}
+		kindParam := getOptional(armsecurityinsights.EntityQueryTemplateKind(kindUnescaped))
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -151,11 +156,6 @@ func (e *EntityQueryTemplatesServerTransport) dispatchNewListPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		kindUnescaped, err := url.QueryUnescape(qp.Get("kind"))
-		if err != nil {
-			return nil, err
-		}
-		kindParam := getOptional(armsecurityinsights.EntityQueryTemplateKind(kindUnescaped))
 		var options *armsecurityinsights.EntityQueryTemplatesClientListOptions
 		if kindParam != nil {
 			options = &armsecurityinsights.EntityQueryTemplatesClientListOptions{

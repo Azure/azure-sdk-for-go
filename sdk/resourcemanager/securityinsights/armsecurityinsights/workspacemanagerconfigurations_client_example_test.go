@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/GetAllWorkspaceManagerConfigurations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/GetAllWorkspaceManagerConfigurations.json
 func ExampleWorkspaceManagerConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleWorkspaceManagerConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/GetWorkspaceManagerConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/GetWorkspaceManagerConfiguration.json
 func ExampleWorkspaceManagerConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,24 @@ func ExampleWorkspaceManagerConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/CreateOrUpdateWorkspaceManagerConfiguration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/DeleteWorkspaceManagerConfiguration.json
+func ExampleWorkspaceManagerConfigurationsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewWorkspaceManagerConfigurationsClient().Delete(ctx, "myRg", "myWorkspace", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/CreateOrUpdateWorkspaceManagerConfiguration.json
 func ExampleWorkspaceManagerConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,21 +131,4 @@ func ExampleWorkspaceManagerConfigurationsClient_CreateOrUpdate() {
 	// 		Mode: to.Ptr(armsecurityinsights.ModeEnabled),
 	// 	},
 	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/workspaceManagerConfigurations/DeleteWorkspaceManagerConfiguration.json
-func ExampleWorkspaceManagerConfigurationsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewWorkspaceManagerConfigurationsClient().Delete(ctx, "myRg", "myWorkspace", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
 }

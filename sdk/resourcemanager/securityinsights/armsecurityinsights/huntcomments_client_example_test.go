@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntComments.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntComments.json
 func ExampleHuntCommentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleHuntCommentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntCommentById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntCommentById.json
 func ExampleHuntCommentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,24 @@ func ExampleHuntCommentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/CreateHuntComment.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/DeleteHuntComment.json
+func ExampleHuntCommentsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewHuntCommentsClient().Delete(ctx, "myRg", "myWorkspace", "163e7b2a-a2ec-4041-aaba-d878a38f265f", "2216d0e1-91e3-4902-89fd-d2df8c123456", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/CreateHuntComment.json
 func ExampleHuntCommentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,21 +148,4 @@ func ExampleHuntCommentsClient_CreateOrUpdate() {
 	// 		Message: to.Ptr("This is a test comment."),
 	// 	},
 	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/DeleteHuntComment.json
-func ExampleHuntCommentsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewHuntCommentsClient().Delete(ctx, "myRg", "myWorkspace", "163e7b2a-a2ec-4041-aaba-d878a38f265f", "2216d0e1-91e3-4902-89fd-d2df8c123456", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
 }

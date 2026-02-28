@@ -45,7 +45,7 @@ func NewContentTemplateClient(subscriptionID string, credential azcore.TokenCred
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - templateID - template Id
 //   - options - ContentTemplateClientDeleteOptions contains the optional parameters for the ContentTemplateClient.Delete method.
 func (client *ContentTemplateClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, options *ContentTemplateClientDeleteOptions) (ContentTemplateClientDeleteResponse, error) {
@@ -106,7 +106,7 @@ func (client *ContentTemplateClient) deleteCreateRequest(ctx context.Context, re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - templateID - template Id
 //   - options - ContentTemplateClientGetOptions contains the optional parameters for the ContentTemplateClient.Get method.
 func (client *ContentTemplateClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, templateID string, options *ContentTemplateClientGetOptions) (ContentTemplateClientGetResponse, error) {
@@ -175,7 +175,7 @@ func (client *ContentTemplateClient) getHandleResponse(resp *http.Response) (Con
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - templateID - template Id
 //   - templateInstallationProperties - Template installation properties
 //   - options - ContentTemplateClientInstallOptions contains the optional parameters for the ContentTemplateClient.Install method.

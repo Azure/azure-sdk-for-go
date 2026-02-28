@@ -6,7 +6,6 @@
 - Function `*SourceControlClient.NewListRepositoriesPager` parameter(s) have been changed from `(resourceGroupName string, workspaceName string, repoType RepoType, options *SourceControlClientListRepositoriesOptions)` to `(resourceGroupName string, workspaceName string, repositoryAccess RepositoryAccessProperties, options *SourceControlClientListRepositoriesOptions)`
 - Function `*SourceControlsClient.Delete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientDeleteOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, repositoryAccess RepositoryAccessProperties, options *SourceControlsClientDeleteOptions)`
 - Type of `AccountEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `Availability.Status` has been changed from `*int32` to `*AvailabilityStatus`
 - Type of `AzureResourceEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
 - Type of `CloudApplicationEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
 - Type of `DNSEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
@@ -21,7 +20,7 @@
 - Type of `IPEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
 - Type of `IncidentEntitiesResultsMetadata.EntityKind` has been changed from `*EntityKind` to `*EntityKindEnum`
 - Type of `IoTDeviceEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
-- Type of `MSTIDataConnectorDataTypes.MicrosoftEmergingThreatFeed` has been changed from `*MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed` to `*MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed`
+- Type of `MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed.LookbackPeriod` has been changed from `*string` to `*time.Time`
 - Type of `MailClusterEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
 - Type of `MailMessageEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
 - Type of `MailboxEntity.Kind` has been changed from `*EntityKind` to `*EntityKindEnum`
@@ -62,7 +61,6 @@
 - Operation `*ProductSettingsClient.List` has supported pagination, use `*ProductSettingsClient.NewListPager` instead.
 - Struct `ContentPathMap` has been removed
 - Struct `MSTIDataConnectorDataTypesBingSafetyPhishingURL` has been removed
-- Struct `MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed` has been removed
 - Struct `TeamProperties` has been removed
 - Field `CityCf`, `CountryCf`, `StateCf` of struct `EnrichmentIPGeodata` has been removed
 - Field `BingSafetyPhishingURL` of struct `MSTIDataConnectorDataTypes` has been removed
@@ -84,7 +82,6 @@
 - New value `RepoTypeAzureDevOps` added to enum type `RepoType`
 - New value `SourceTypeAzureStorage`, `SourceTypeLocal` added to enum type `SourceType`
 - New enum type `AlertProperty` with values `AlertPropertyAlertLink`, `AlertPropertyConfidenceLevel`, `AlertPropertyConfidenceScore`, `AlertPropertyExtendedLinks`, `AlertPropertyProductComponentName`, `AlertPropertyProductName`, `AlertPropertyProviderName`, `AlertPropertyRemediationSteps`, `AlertPropertySubTechniques`, `AlertPropertyTechniques`
-- New enum type `AvailabilityStatus` with values `AvailabilityStatusOne`
 - New enum type `BillingStatisticKind` with values `BillingStatisticKindSapSolutionUsage`
 - New enum type `CcpAuthType` with values `CcpAuthTypeAPIKey`, `CcpAuthTypeAWS`, `CcpAuthTypeBasic`, `CcpAuthTypeGCP`, `CcpAuthTypeGitHub`, `CcpAuthTypeJwtToken`, `CcpAuthTypeNone`, `CcpAuthTypeOAuth2`, `CcpAuthTypeOracle`, `CcpAuthTypeServiceBus`, `CcpAuthTypeSession`
 - New enum type `Connective` with values `ConnectiveAnd`, `ConnectiveOr`
@@ -331,7 +328,6 @@
 - New struct `MicrosoftPurviewInformationProtectionConnectorDataTypesLogs`
 - New struct `MicrosoftPurviewInformationProtectionDataConnector`
 - New struct `MicrosoftPurviewInformationProtectionDataConnectorProperties`
-- New struct `MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed`
 - New struct `MtpFilteredProviders`
 - New struct `NoneAuthModel`
 - New struct `OAuthModel`
@@ -407,14 +403,10 @@
 - New struct `WorkspaceManagerMember`
 - New struct `WorkspaceManagerMemberProperties`
 - New struct `WorkspaceManagerMembersList`
-- New field `RetryAfter` in struct `ActionsClientCreateOrUpdateResponse`
-- New field `Etag` in struct `ActivityEntityQueryTemplate`
 - New field `AlertDynamicProperties` in struct `AlertDetailsOverride`
 - New field `CityConfidenceFactor`, `CountryConfidenceFactor`, `StateConfidenceFactor` in struct `EnrichmentIPGeodata`
-- New field `Etag` in struct `EntityQueryTemplate`
 - New field `SubTechniques` in struct `FusionAlertRuleProperties`
 - New field `SubTechniques` in struct `FusionAlertRuleTemplateProperties`
-- New field `NextLink` in struct `GetQueriesResponse`
 - New field `MergedIncidentNumber`, `MergedIncidentURL` in struct `IncidentAdditionalData`
 - New field `SubTechniques` in struct `MLBehaviorAnalyticsAlertRuleProperties`
 - New field `Alerts` in struct `MTPDataConnectorDataTypes`

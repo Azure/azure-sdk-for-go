@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/GetAllSettings.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/GetAllSettings.json
 func ExampleProductSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleProductSettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/GetEyesOnSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/GetEyesOnSetting.json
 func ExampleProductSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,24 @@ func ExampleProductSettingsClient_Get() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/UpdateEyesOnSetting.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/DeleteEyesOnSetting.json
+func ExampleProductSettingsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewProductSettingsClient().Delete(ctx, "myRg", "myWorkspace", "EyesOn", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/UpdateEyesOnSetting.json
 func ExampleProductSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,21 +133,4 @@ func ExampleProductSettingsClient_Update() {
 	// 		},
 	// 	},
 	// 	                        }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/settings/DeleteEyesOnSetting.json
-func ExampleProductSettingsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewProductSettingsClient().Delete(ctx, "myRg", "myWorkspace", "EyesOn", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
 }

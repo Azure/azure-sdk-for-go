@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetDataConnectors.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetDataConnectors.json
 func ExampleDataConnectorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,12 +99,12 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureActiveDirectory),
 		// 			Properties: &armsecurityinsights.AADDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 		// 					Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.OfficeDataConnector{
@@ -153,12 +153,12 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 			Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 			Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection),
 		// 			Properties: &armsecurityinsights.AATPDataConnectorProperties{
+		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 		// 					Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 						State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 					},
 		// 				},
-		// 				TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 			},
 		// 		},
 		// 		&armsecurityinsights.AwsCloudTrailDataConnector{
@@ -201,12 +201,12 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection),
 		// 				Properties: &armsecurityinsights.MDATPDataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 					DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 		// 						Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 						},
 		// 					},
-		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				},
 		// 			},
 		// 			&armsecurityinsights.OfficeATPDataConnector{
@@ -216,12 +216,12 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 		// 				Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficeATP),
 		// 				Properties: &armsecurityinsights.OfficeATPDataConnectorProperties{
+		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 					DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 		// 						Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 		// 							State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 		// 						},
 		// 					},
-		// 					TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 		// 				},
 		// 			},
 		// 			&armsecurityinsights.Office365ProjectDataConnector{
@@ -296,7 +296,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 					ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 		// 						Availability: &armsecurityinsights.Availability{
 		// 							IsPreview: to.Ptr(true),
-		// 							Status: to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+		// 							Status: to.Ptr[int32](1),
 		// 						},
 		// 						ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 		// 							{
@@ -430,7 +430,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 		// 						ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 		// 							Availability: &armsecurityinsights.Availability{
 		// 								IsPreview: to.Ptr(true),
-		// 								Status: to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+		// 								Status: to.Ptr[int32](1),
 		// 							},
 		// 							ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 		// 								{
@@ -535,7 +535,7 @@ func ExampleDataConnectorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAPIPolling.json
 func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +564,7 @@ func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -669,7 +669,7 @@ func ExampleDataConnectorsClient_Get_getAApiPollingDataConnector() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAzureSecurityCenterById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAzureSecurityCenterById.json
 func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,7 +706,7 @@ func ExampleDataConnectorsClient_Get_getAAscDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetDynamics365DataConnectorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetDynamics365DataConnectorById.json
 func ExampleDataConnectorsClient_Get_getADynamics365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,7 +743,7 @@ func ExampleDataConnectorsClient_Get_getADynamics365DataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetGoogleCloudPlatformById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetGoogleCloudPlatformById.json
 func ExampleDataConnectorsClient_Get_getAGcpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +785,7 @@ func ExampleDataConnectorsClient_Get_getAGcpDataConnector() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetGenericUI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetGenericUI.json
 func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +814,7 @@ func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -941,7 +941,7 @@ func ExampleDataConnectorsClient_Get_getAGenericUiDataConnector() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetIoTById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetIoTById.json
 func ExampleDataConnectorsClient_Get_getAIoTDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -978,7 +978,7 @@ func ExampleDataConnectorsClient_Get_getAIoTDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftCloudAppSecurityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftCloudAppSecurityById.json
 func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1018,7 +1018,7 @@ func ExampleDataConnectorsClient_Get_getAMcasDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftDefenderAdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1044,18 +1044,18 @@ func ExampleDataConnectorsClient_Get_getAMdatpDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindMicrosoftDefenderAdvancedThreatProtection),
 	// 		Properties: &armsecurityinsights.MDATPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftPurviewInformationProtectionDataConnetorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftPurviewInformationProtectionDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAMicrosoftPurviewInformationProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1092,7 +1092,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftPurviewInformationProtectionDa
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftThreatIntelligenceById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1120,7 +1120,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnecto
 	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
-	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed{
+	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t}()),
 	// 				},
@@ -1130,7 +1130,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnecto
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftThreatProtectionById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAMicrosoftThreatProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1174,7 +1174,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatProtectionDataConnector(
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetPremiumMicrosoftDefenderForThreatIntelligenceById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetPremiumMicrosoftDefenderForThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1213,7 +1213,7 @@ func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntell
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetPurviewAuditDataConnectorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetPurviewAuditDataConnectorById.json
 func ExampleDataConnectorsClient_Get_getAPurviewAuditDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1252,7 +1252,7 @@ func ExampleDataConnectorsClient_Get_getAPurviewAuditDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetRestApiPollerById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetRestApiPollerById.json
 func ExampleDataConnectorsClient_Get_getARestApiPollerDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1319,7 +1319,7 @@ func ExampleDataConnectorsClient_Get_getARestApiPollerDataConnector() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetThreatIntelligenceTaxiiById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetThreatIntelligenceTaxiiById.json
 func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1364,7 +1364,7 @@ func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetThreatIntelligenceById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetThreatIntelligenceById.json
 func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1402,7 +1402,7 @@ func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAzureActiveDirectoryById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAzureActiveDirectoryById.json
 func ExampleDataConnectorsClient_Get_getAnAadipAzureActiveDirectoryIdentityProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1428,18 +1428,18 @@ func ExampleDataConnectorsClient_Get_getAnAadipAzureActiveDirectoryIdentityProte
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureActiveDirectory),
 	// 		Properties: &armsecurityinsights.AADDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAzureAdvancedThreatProtectionById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAzureAdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1465,18 +1465,18 @@ func ExampleDataConnectorsClient_Get_getAnAatpDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindAzureAdvancedThreatProtection),
 	// 		Properties: &armsecurityinsights.AATPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAmazonWebServicesS3ById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAmazonWebServicesS3ById.json
 func ExampleDataConnectorsClient_Get_getAnAwsS3DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1516,7 +1516,7 @@ func ExampleDataConnectorsClient_Get_getAnAwsS3DataConnector() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAmazonWebServicesCloudTrailById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetAmazonWebServicesCloudTrailById.json
 func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1553,7 +1553,7 @@ func ExampleDataConnectorsClient_Get_getAnAwsCloudTrailDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOffice365AdvancedThreatProtectionById.json
 func ExampleDataConnectorsClient_Get_getAnOfficeAtpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1579,18 +1579,18 @@ func ExampleDataConnectorsClient_Get_getAnOfficeAtpDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficeATP),
 	// 		Properties: &armsecurityinsights.OfficeATPDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetMicrosoftInsiderRiskManagementById.json
 func ExampleDataConnectorsClient_Get_getAnOfficeIrmDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1616,18 +1616,18 @@ func ExampleDataConnectorsClient_Get_getAnOfficeIrmDataConnector() {
 	// 		Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
 	// 		Kind: to.Ptr(armsecurityinsights.DataConnectorKindOfficeIRM),
 	// 		Properties: &armsecurityinsights.OfficeIRMDataConnectorProperties{
+	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			DataTypes: &armsecurityinsights.AlertsDataTypeOfDataConnector{
 	// 				Alerts: &armsecurityinsights.DataConnectorDataTypeCommon{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 		},
 	// 	},
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOfficePowerBIDataConnetorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOfficePowerBIDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365PowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1664,7 +1664,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365PowerBiDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOffice365ProjectDataConnetorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOffice365ProjectDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365ProjectDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1701,7 +1701,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365ProjectDataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOfficeDataConnetorById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/GetOfficeDataConnetorById.json
 func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1744,7 +1744,7 @@ func ExampleDataConnectorsClient_Get_getAnOffice365DataConnector() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateAPIPolling.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1761,7 +1761,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 				Availability: &armsecurityinsights.Availability{
 					IsPreview: to.Ptr(true),
-					Status:    to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+					Status:    to.Ptr[int32](1),
 				},
 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 					{
@@ -1878,7 +1878,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -1982,7 +1982,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAApiPollingDataC
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateDynamics365DataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateDynamics365DataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesADynamics365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2030,7 +2030,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesADynamics365Data
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateGoogleCloudPlatform.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateGoogleCloudPlatform.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGcpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2097,7 +2097,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGcpDataConnecto
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateGenericUI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateGenericUI.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2114,7 +2114,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 				Availability: &armsecurityinsights.Availability{
 					IsPreview: to.Ptr(true),
-					Status:    to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+					Status:    to.Ptr[int32](1),
 				},
 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 					{
@@ -2254,7 +2254,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 	// 			ConnectorUIConfig: &armsecurityinsights.CodelessUIConnectorConfigProperties{
 	// 				Availability: &armsecurityinsights.Availability{
 	// 					IsPreview: to.Ptr(true),
-	// 					Status: to.Ptr(armsecurityinsights.AvailabilityStatus(1)),
+	// 					Status: to.Ptr[int32](1),
 	// 				},
 	// 				ConnectivityCriteria: []*armsecurityinsights.CodelessUIConnectorConfigPropertiesConnectivityCriteriaItem{
 	// 					{
@@ -2380,7 +2380,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAGenericUiDataCo
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateMicrosoftThreatIntelligenceDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateMicrosoftThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2396,7 +2396,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
-				MicrosoftEmergingThreatFeed: &armsecurityinsights.MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed{
+				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
 					State:          to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
 				},
@@ -2419,7 +2419,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
-	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed{
+	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t}()),
 	// 				},
@@ -2429,7 +2429,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateMicrosoftThreatProtectionDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateMicrosoftThreatProtectionDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreatProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2491,7 +2491,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreatePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreatePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosoftDefenderForThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2541,7 +2541,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreatePurviewAuditDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreatePurviewAuditDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPurviewAuditDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2598,7 +2598,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPurviewAuditDat
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntelligenceTaxiiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2660,7 +2660,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateMicrosoftPurviewInformationProtectionDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateMicrosoftPurviewInformationProtectionDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnMicrosoftPurviewInformationProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2708,7 +2708,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnMicrosoftPurvi
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateOfficePowerBIDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateOfficePowerBIDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOfficePowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2756,7 +2756,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOfficePowerBiD
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateOffice365ProjectDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateOffice365ProjectDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365ProjectDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2804,7 +2804,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365Proje
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateOfficeDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateOfficeDataConnetor.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2864,7 +2864,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnOffice365DataC
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateThreatIntelligenceDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/CreateThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntelligencePlatformDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2913,7 +2913,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteAPIPolling.json
 func ExampleDataConnectorsClient_Delete_deleteAApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2930,7 +2930,7 @@ func ExampleDataConnectorsClient_Delete_deleteAApiPollingDataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteGoogleCloudPlatform.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteGoogleCloudPlatform.json
 func ExampleDataConnectorsClient_Delete_deleteAGcpDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2947,7 +2947,7 @@ func ExampleDataConnectorsClient_Delete_deleteAGcpDataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteGenericUI.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteGenericUI.json
 func ExampleDataConnectorsClient_Delete_deleteAGenericUiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2964,7 +2964,7 @@ func ExampleDataConnectorsClient_Delete_deleteAGenericUiDataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeletePurviewAuditDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeletePurviewAuditDataConnector.json
 func ExampleDataConnectorsClient_Delete_deleteAPurviewAuditDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2981,7 +2981,7 @@ func ExampleDataConnectorsClient_Delete_deleteAPurviewAuditDataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteMicrosoftPurviewInformationProtectionDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteMicrosoftPurviewInformationProtectionDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftPurviewInformationProtectionDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2998,7 +2998,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftPurviewInformationProte
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteMicrosoftThreatIntelligenceDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteMicrosoftThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3015,7 +3015,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnMicrosoftThreatIntelligenceDataC
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteOfficePowerBIDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteOfficePowerBIDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnOfficePowerBiDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3032,7 +3032,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnOfficePowerBiDataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteOffice365ProjectDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteOffice365ProjectDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnOffice365ProjectDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3049,7 +3049,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnOffice365ProjectDataConnector() 
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteOfficeDataConnetor.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeleteOfficeDataConnetor.json
 func ExampleDataConnectorsClient_Delete_deleteAnOffice365DataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3066,7 +3066,7 @@ func ExampleDataConnectorsClient_Delete_deleteAnOffice365DataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeletePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DeletePremiumMicrosoftDefenderForThreatIntelligenceDataConnector.json
 func ExampleDataConnectorsClient_Delete_deletesAPremiumMicrosoftDefenderForThreatIntelligenceDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3083,7 +3083,7 @@ func ExampleDataConnectorsClient_Delete_deletesAPremiumMicrosoftDefenderForThrea
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/ConnectAPIPollingV2Logs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/ConnectAPIPollingV2Logs.json
 func ExampleDataConnectorsClient_Connect_connectAnApiPollingV2LogsDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3113,7 +3113,7 @@ func ExampleDataConnectorsClient_Connect_connectAnApiPollingV2LogsDataConnector(
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/ConnectAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/ConnectAPIPolling.json
 func ExampleDataConnectorsClient_Connect_connectAnApiPollingDataConnector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3140,7 +3140,7 @@ func ExampleDataConnectorsClient_Connect_connectAnApiPollingDataConnector() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
 func ExampleDataConnectorsClient_Disconnect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

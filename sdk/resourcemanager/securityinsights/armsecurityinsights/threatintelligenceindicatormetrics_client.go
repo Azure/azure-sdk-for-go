@@ -45,7 +45,7 @@ func NewThreatIntelligenceIndicatorMetricsClient(subscriptionID string, credenti
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - ThreatIntelligenceIndicatorMetricsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorMetricsClient.List
 //     method.
 func (client *ThreatIntelligenceIndicatorMetricsClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *ThreatIntelligenceIndicatorMetricsClientListOptions) (ThreatIntelligenceIndicatorMetricsClientListResponse, error) {

@@ -45,7 +45,7 @@ func NewBookmarksClient(subscriptionID string, credential azcore.TokenCredential
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - bookmarkID - Bookmark ID
 //   - bookmark - The bookmark
 //   - options - BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate
@@ -119,7 +119,7 @@ func (client *BookmarksClient) createOrUpdateHandleResponse(resp *http.Response)
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - bookmarkID - Bookmark ID
 //   - options - BookmarksClientDeleteOptions contains the optional parameters for the BookmarksClient.Delete method.
 func (client *BookmarksClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientDeleteOptions) (BookmarksClientDeleteResponse, error) {
@@ -178,7 +178,7 @@ func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resource
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - bookmarkID - Bookmark ID
 //   - options - BookmarksClientGetOptions contains the optional parameters for the BookmarksClient.Get method.
 func (client *BookmarksClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientGetOptions) (BookmarksClientGetResponse, error) {
@@ -246,7 +246,7 @@ func (client *BookmarksClient) getHandleResponse(resp *http.Response) (Bookmarks
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - BookmarksClientListOptions contains the optional parameters for the BookmarksClient.NewListPager method.
 func (client *BookmarksClient) NewListPager(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *runtime.Pager[BookmarksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BookmarksClientListResponse]{

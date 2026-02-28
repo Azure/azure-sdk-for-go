@@ -21,7 +21,7 @@ import (
 // AlertRuleServer is a fake server for instances of the armsecurityinsights.AlertRuleClient type.
 type AlertRuleServer struct {
 	// BeginTriggerRuleRun is the fake for method AlertRuleClient.BeginTriggerRuleRun
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginTriggerRuleRun func(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, analyticsRuleRunTriggerParameter armsecurityinsights.AnalyticsRuleRunTrigger, options *armsecurityinsights.AlertRuleClientBeginTriggerRuleRunOptions) (resp azfake.PollerResponder[armsecurityinsights.AlertRuleClientTriggerRuleRunResponse], errResp azfake.ErrorResponder)
 }
 
@@ -127,9 +127,9 @@ func (a *AlertRuleServerTransport) dispatchBeginTriggerRuleRun(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginTriggerRuleRun.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginTriggerRuleRun) {
 		a.beginTriggerRuleRun.remove(req)

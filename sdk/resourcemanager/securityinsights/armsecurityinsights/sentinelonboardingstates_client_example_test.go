@@ -14,38 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/GetAllSentinelOnboardingStates.json
-func ExampleSentinelOnboardingStatesClient_List() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSentinelOnboardingStatesClient().List(ctx, "myRg", "myWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.SentinelOnboardingStatesList = armsecurityinsights.SentinelOnboardingStatesList{
-	// 	Value: []*armsecurityinsights.SentinelOnboardingState{
-	// 		{
-	// 			Name: to.Ptr("default"),
-	// 			Type: to.Ptr("Microsoft.SecurityInsights/onboardingStates"),
-	// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/onboardingStates/default"),
-	// 			Properties: &armsecurityinsights.SentinelOnboardingStateProperties{
-	// 				CustomerManagedKey: to.Ptr(false),
-	// 			},
-	// 	}},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/GetSentinelOnboardingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/GetSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +42,7 @@ func ExampleSentinelOnboardingStatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/CreateSentinelOnboardingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/CreateSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +75,7 @@ func ExampleSentinelOnboardingStatesClient_Create() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/DeleteSentinelOnboardingState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/DeleteSentinelOnboardingState.json
 func ExampleSentinelOnboardingStatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,4 +90,35 @@ func ExampleSentinelOnboardingStatesClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/onboardingStates/GetAllSentinelOnboardingStates.json
+func ExampleSentinelOnboardingStatesClient_List() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSentinelOnboardingStatesClient().List(ctx, "myRg", "myWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.SentinelOnboardingStatesList = armsecurityinsights.SentinelOnboardingStatesList{
+	// 	Value: []*armsecurityinsights.SentinelOnboardingState{
+	// 		{
+	// 			Name: to.Ptr("default"),
+	// 			Type: to.Ptr("Microsoft.SecurityInsights/onboardingStates"),
+	// 			ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/onboardingStates/default"),
+	// 			Properties: &armsecurityinsights.SentinelOnboardingStateProperties{
+	// 				CustomerManagedKey: to.Ptr(false),
+	// 			},
+	// 	}},
+	// }
 }

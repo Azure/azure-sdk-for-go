@@ -45,9 +45,9 @@ func NewBookmarkClient(subscriptionID string, credential azcore.TokenCredential,
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - bookmarkID - Bookmark ID
-//   - parameters - The content of the action request
+//   - parameters - The parameters required to execute an expand operation on the given bookmark.
 //   - options - BookmarkClientExpandOptions contains the optional parameters for the BookmarkClient.Expand method.
 func (client *BookmarkClient) Expand(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, parameters BookmarkExpandParameters, options *BookmarkClientExpandOptions) (BookmarkClientExpandResponse, error) {
 	var err error

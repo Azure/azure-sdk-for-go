@@ -45,7 +45,7 @@ func NewSourceControlClient(subscriptionID string, credential azcore.TokenCreden
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - repositoryAccess - The content of the action request
+//   - repositoryAccess - The repository access credentials.
 //   - options - SourceControlClientListRepositoriesOptions contains the optional parameters for the SourceControlClient.NewListRepositoriesPager
 //     method.
 func (client *SourceControlClient) NewListRepositoriesPager(resourceGroupName string, workspaceName string, repositoryAccess RepositoryAccessProperties, options *SourceControlClientListRepositoriesOptions) *runtime.Pager[SourceControlClientListRepositoriesResponse] {

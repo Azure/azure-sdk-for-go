@@ -46,7 +46,7 @@ func NewMetadataClient(subscriptionID string, credential azcore.TokenCredential,
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - metadataName - The Metadata name.
 //   - metadata - Metadata resource.
 //   - options - MetadataClientCreateOptions contains the optional parameters for the MetadataClient.Create method.
@@ -119,7 +119,7 @@ func (client *MetadataClient) createHandleResponse(resp *http.Response) (Metadat
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - metadataName - The Metadata name.
 //   - options - MetadataClientDeleteOptions contains the optional parameters for the MetadataClient.Delete method.
 func (client *MetadataClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientDeleteOptions) (MetadataClientDeleteResponse, error) {
@@ -178,7 +178,7 @@ func (client *MetadataClient) deleteCreateRequest(ctx context.Context, resourceG
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - metadataName - The Metadata name.
 //   - options - MetadataClientGetOptions contains the optional parameters for the MetadataClient.Get method.
 func (client *MetadataClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, metadataName string, options *MetadataClientGetOptions) (MetadataClientGetResponse, error) {
@@ -246,7 +246,7 @@ func (client *MetadataClient) getHandleResponse(resp *http.Response) (MetadataCl
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - MetadataClientListOptions contains the optional parameters for the MetadataClient.NewListPager method.
 func (client *MetadataClient) NewListPager(resourceGroupName string, workspaceName string, options *MetadataClientListOptions) *runtime.Pager[MetadataClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MetadataClientListResponse]{
@@ -323,7 +323,7 @@ func (client *MetadataClient) listHandleResponse(resp *http.Response) (MetadataC
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - metadataName - The Metadata name.
 //   - metadataPatch - Partial metadata request.
 //   - options - MetadataClientUpdateOptions contains the optional parameters for the MetadataClient.Update method.

@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntRelations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntRelations.json
 func ExampleHuntRelationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,6 +46,7 @@ func ExampleHuntRelationsClient_NewListPager() {
 		// 			Name: to.Ptr("2216d0e1-91e3-4902-89fd-d2df8c535096"),
 		// 			Type: to.Ptr("Microsoft.SecurityInsights/hunts/relations"),
 		// 			ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/mms-eus/providers/Microsoft.OperationalInsights/workspaces/avdvirint/providers/Microsoft.SecurityInsights/hunts/163e7b2a-a2ec-4041-aaba-d878a38f265f/relations/2216d0e1-91e3-4902-89fd-d2df8c535096"),
+		// 			Etag: to.Ptr("\"26012da2-0000-0c00-0000-627ad2760000\""),
 		// 			Properties: &armsecurityinsights.HuntRelationProperties{
 		// 				Labels: []*string{
 		// 					to.Ptr("label1")},
@@ -57,7 +58,7 @@ func ExampleHuntRelationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntRelationById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/GetHuntRelationById.json
 func ExampleHuntRelationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,6 +80,7 @@ func ExampleHuntRelationsClient_Get() {
 	// 	Name: to.Ptr("2216d0e1-91e3-4902-89fd-d2df8c535096"),
 	// 	Type: to.Ptr("Microsoft.SecurityInsights/hunts/relations"),
 	// 	ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/mms-eus/providers/Microsoft.OperationalInsights/workspaces/avdvirint/providers/Microsoft.SecurityInsights/hunts/163e7b2a-a2ec-4041-aaba-d878a38f265f/relations/2216d0e1-91e3-4902-89fd-d2df8c535096"),
+	// 	Etag: to.Ptr("\"26012da2-0000-0c00-0000-627ad2760000\""),
 	// 	Properties: &armsecurityinsights.HuntRelationProperties{
 	// 		Labels: []*string{
 	// 			to.Ptr("label1")},
@@ -88,7 +90,24 @@ func ExampleHuntRelationsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/CreateHuntRelation.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/DeleteHuntRelation.json
+func ExampleHuntRelationsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewHuntRelationsClient().Delete(ctx, "myRg", "myWorkspace", "163e7b2a-a2ec-4041-aaba-d878a38f265f", "2216d0e1-91e3-4902-89fd-d2df8c535096", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/CreateHuntRelation.json
 func ExampleHuntRelationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,6 +135,7 @@ func ExampleHuntRelationsClient_CreateOrUpdate() {
 	// 	Name: to.Ptr("2216d0e1-91e3-4902-89fd-d2df8c535096"),
 	// 	Type: to.Ptr("Microsoft.SecurityInsights/hunts/relations"),
 	// 	ID: to.Ptr("/subscriptions/bd794837-4d29-4647-9105-6339bfdb4e6a/resourceGroups/mms-eus/providers/Microsoft.OperationalInsights/workspaces/avdvirint/providers/Microsoft.SecurityInsights/hunts/163e7b2a-a2ec-4041-aaba-d878a38f265f/relations/2216d0e1-91e3-4902-89fd-d2df8c535096"),
+	// 	Etag: to.Ptr("\"26012da2-0000-0c00-0000-627ad2760000\""),
 	// 	Properties: &armsecurityinsights.HuntRelationProperties{
 	// 		Labels: []*string{
 	// 			to.Ptr("Test Label")},
@@ -123,21 +143,4 @@ func ExampleHuntRelationsClient_CreateOrUpdate() {
 	// 			RelatedResourceName: to.Ptr("2216d0e1-91e3-4902-89fd-d2df8c535096"),
 	// 		},
 	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/hunts/DeleteHuntRelation.json
-func ExampleHuntRelationsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewHuntRelationsClient().Delete(ctx, "myRg", "myWorkspace", "163e7b2a-a2ec-4041-aaba-d878a38f265f", "2216d0e1-91e3-4902-89fd-d2df8c535096", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
 }

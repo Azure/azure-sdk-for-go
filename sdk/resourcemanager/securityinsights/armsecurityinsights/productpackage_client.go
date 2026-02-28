@@ -45,7 +45,7 @@ func NewProductPackageClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - packageID - package Id
 //   - options - ProductPackageClientGetOptions contains the optional parameters for the ProductPackageClient.Get method.
 func (client *ProductPackageClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, options *ProductPackageClientGetOptions) (ProductPackageClientGetResponse, error) {

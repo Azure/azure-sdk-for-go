@@ -45,7 +45,7 @@ func NewSecurityMLAnalyticsSettingsClient(subscriptionID string, credential azco
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - settingsResourceName - Security ML Analytics Settings resource name
 //   - securityMLAnalyticsSetting - The security ML Analytics setting
 //   - options - SecurityMLAnalyticsSettingsClientCreateOrUpdateOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.CreateOrUpdate
@@ -119,7 +119,7 @@ func (client *SecurityMLAnalyticsSettingsClient) createOrUpdateHandleResponse(re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - settingsResourceName - Security ML Analytics Settings resource name
 //   - options - SecurityMLAnalyticsSettingsClientDeleteOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.Delete
 //     method.
@@ -179,7 +179,7 @@ func (client *SecurityMLAnalyticsSettingsClient) deleteCreateRequest(ctx context
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - settingsResourceName - Security ML Analytics Settings resource name
 //   - options - SecurityMLAnalyticsSettingsClientGetOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.Get
 //     method.
@@ -248,7 +248,7 @@ func (client *SecurityMLAnalyticsSettingsClient) getHandleResponse(resp *http.Re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - SecurityMLAnalyticsSettingsClientListOptions contains the optional parameters for the SecurityMLAnalyticsSettingsClient.NewListPager
 //     method.
 func (client *SecurityMLAnalyticsSettingsClient) NewListPager(resourceGroupName string, workspaceName string, options *SecurityMLAnalyticsSettingsClientListOptions) *runtime.Pager[SecurityMLAnalyticsSettingsClientListResponse] {

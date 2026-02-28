@@ -16,7 +16,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetEntities.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/manualTrigger/Entities_RunPlaybook.json
+func ExampleEntitiesClient_RunPlaybook() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewEntitiesClient().RunPlaybook(ctx, "myRg", "myWorkspace", "72e01a22-5cd2-4139-a149-9f2736ff2ar2", &armsecurityinsights.EntitiesClientRunPlaybookOptions{RequestBody: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetEntities.json
 func ExampleEntitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +108,7 @@ func ExampleEntitiesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetCloudApplicationEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetCloudApplicationEntityById.json
 func ExampleEntitiesClient_Get_getACloudApplicationEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +142,7 @@ func ExampleEntitiesClient_Get_getACloudApplicationEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetDnsEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetDnsEntityById.json
 func ExampleEntitiesClient_Get_getADnsEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +176,7 @@ func ExampleEntitiesClient_Get_getADnsEntity() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetFileEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetFileEntityById.json
 func ExampleEntitiesClient_Get_getAFileEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +209,7 @@ func ExampleEntitiesClient_Get_getAFileEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetFileHashEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetFileHashEntityById.json
 func ExampleEntitiesClient_Get_getAFileHashEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +242,7 @@ func ExampleEntitiesClient_Get_getAFileHashEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetHostEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetHostEntityById.json
 func ExampleEntitiesClient_Get_getAHostEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +282,7 @@ func ExampleEntitiesClient_Get_getAHostEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMailClusterEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMailClusterEntityById.json
 func ExampleEntitiesClient_Get_getAMailClusterEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +333,7 @@ func ExampleEntitiesClient_Get_getAMailClusterEntity() {
 	// 			                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMailMessageEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMailMessageEntityById.json
 func ExampleEntitiesClient_Get_getAMailMessageEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +386,7 @@ func ExampleEntitiesClient_Get_getAMailMessageEntity() {
 	// 					                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMailboxEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMailboxEntityById.json
 func ExampleEntitiesClient_Get_getAMailboxEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,7 +421,7 @@ func ExampleEntitiesClient_Get_getAMailboxEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMalwareEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetMalwareEntityById.json
 func ExampleEntitiesClient_Get_getAMalwareEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +454,7 @@ func ExampleEntitiesClient_Get_getAMalwareEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetProcessEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetProcessEntityById.json
 func ExampleEntitiesClient_Get_getAProcessEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +488,7 @@ func ExampleEntitiesClient_Get_getAProcessEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetRegistryKeyEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetRegistryKeyEntityById.json
 func ExampleEntitiesClient_Get_getARegistryKeyEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,7 +521,7 @@ func ExampleEntitiesClient_Get_getARegistryKeyEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetRegistryValueEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetRegistryValueEntityById.json
 func ExampleEntitiesClient_Get_getARegistryValueEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,7 +556,7 @@ func ExampleEntitiesClient_Get_getARegistryValueEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetSecurityAlertEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetSecurityAlertEntityById.json
 func ExampleEntitiesClient_Get_getASecurityAlertEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -598,7 +615,7 @@ func ExampleEntitiesClient_Get_getASecurityAlertEntity() {
 	// 		                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetSecurityGroupEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetSecurityGroupEntityById.json
 func ExampleEntitiesClient_Get_getASecurityGroupEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -632,7 +649,7 @@ func ExampleEntitiesClient_Get_getASecurityGroupEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetSubmissionMailEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetSubmissionMailEntityById.json
 func ExampleEntitiesClient_Get_getASubmissionMailEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -670,7 +687,7 @@ func ExampleEntitiesClient_Get_getASubmissionMailEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetUrlEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetUrlEntityById.json
 func ExampleEntitiesClient_Get_getAUrlEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -702,7 +719,7 @@ func ExampleEntitiesClient_Get_getAUrlEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetIoTDeviceEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetIoTDeviceEntityById.json
 func ExampleEntitiesClient_Get_getAnIoTDeviceEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -754,7 +771,7 @@ func ExampleEntitiesClient_Get_getAnIoTDeviceEntity() {
 	// 			                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetAccountEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetAccountEntityById.json
 func ExampleEntitiesClient_Get_getAnAccountEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -795,7 +812,7 @@ func ExampleEntitiesClient_Get_getAnAccountEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetAzureResourceEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetAzureResourceEntityById.json
 func ExampleEntitiesClient_Get_getAnAzureResourceEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -828,7 +845,7 @@ func ExampleEntitiesClient_Get_getAnAzureResourceEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetIpEntityById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetIpEntityById.json
 func ExampleEntitiesClient_Get_getAnIpEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -860,7 +877,7 @@ func ExampleEntitiesClient_Get_getAnIpEntity() {
 	// 	                        }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/expand/PostExpandEntity.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/expand/PostExpandEntity.json
 func ExampleEntitiesClient_Expand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -915,103 +932,7 @@ func ExampleEntitiesClient_Expand() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/insights/PostGetInsights.json
-func ExampleEntitiesClient_GetInsights() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEntitiesClient().GetInsights(ctx, "myRg", "myWorkspace", "e1d3d618-e11f-478b-98e3-bb381539a8e1", armsecurityinsights.EntityGetInsightsParameters{
-		AddDefaultExtendedTimeRange: to.Ptr(false),
-		EndTime:                     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00.000Z"); return t }()),
-		InsightQueryIDs: []*string{
-			to.Ptr("cae8d0aa-aa45-4d53-8d88-17dd64ffd4e4")},
-		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T00:00:00.000Z"); return t }()),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.EntityGetInsightsResponse = armsecurityinsights.EntityGetInsightsResponse{
-	// 	MetaData: &armsecurityinsights.GetInsightsResultsMetadata{
-	// 		Errors: []*armsecurityinsights.GetInsightsErrorKind{
-	// 			{
-	// 				ErrorMessage: to.Ptr("Internal server error"),
-	// 				Kind: to.Ptr(armsecurityinsights.GetInsightsErrorInsight),
-	// 				QueryID: to.Ptr("4a70a63d-25c4-6312-b73e-4f302a90c06a"),
-	// 		}},
-	// 		TotalCount: to.Ptr[int32](7),
-	// 	},
-	// 	Value: []*armsecurityinsights.EntityInsightItem{
-	// 		{
-	// 			ChartQueryResults: []*armsecurityinsights.InsightsTableResult{
-	// 				{
-	// 					Columns: []*armsecurityinsights.InsightsTableResultColumnsItem{
-	// 						{
-	// 							Name: to.Ptr("TimeGenerated"),
-	// 							Type: to.Ptr("datetime"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("Count"),
-	// 							Type: to.Ptr("long"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("Legend"),
-	// 							Type: to.Ptr("string"),
-	// 					}},
-	// 					Rows: [][]*string{
-	// 						[]*string{
-	// 							to.Ptr("2021-09-01T00:00:00.000Z"),
-	// 							to.Ptr("55"),
-	// 							to.Ptr("SomeLegend")}},
-	// 					}},
-	// 					QueryID: to.Ptr("e29ee1ef-7445-455e-85f1-269f2d536d61"),
-	// 					QueryTimeInterval: &armsecurityinsights.EntityInsightItemQueryTimeInterval{
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:35:20.000Z"); return t}()),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:35:20.000Z"); return t}()),
-	// 					},
-	// 					TableQueryResults: &armsecurityinsights.InsightsTableResult{
-	// 						Columns: []*armsecurityinsights.InsightsTableResultColumnsItem{
-	// 							{
-	// 								Name: to.Ptr("Title"),
-	// 								Type: to.Ptr("string"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("NameCount"),
-	// 								Type: to.Ptr("long"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("SIDCount"),
-	// 								Type: to.Ptr("long"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("InternalOrder"),
-	// 								Type: to.Ptr("long"),
-	// 							},
-	// 							{
-	// 								Name: to.Ptr("Index"),
-	// 								Type: to.Ptr("long"),
-	// 						}},
-	// 						Rows: [][]*string{
-	// 							[]*string{
-	// 								to.Ptr("MyTitle"),
-	// 								to.Ptr("15"),
-	// 								to.Ptr("SID"),
-	// 								to.Ptr("1"),
-	// 								to.Ptr("1")}},
-	// 							},
-	// 					}},
-	// 				}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetQueries.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/GetQueries.json
 func ExampleEntitiesClient_NewQueriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1442,8 +1363,8 @@ func ExampleEntitiesClient_NewQueriesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/manualTrigger/Entities_RunPlaybook.json
-func ExampleEntitiesClient_RunPlaybook() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/entities/insights/PostGetInsights.json
+func ExampleEntitiesClient_GetInsights() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1453,8 +1374,87 @@ func ExampleEntitiesClient_RunPlaybook() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewEntitiesClient().RunPlaybook(ctx, "myRg", "myWorkspace", "72e01a22-5cd2-4139-a149-9f2736ff2ar2", &armsecurityinsights.EntitiesClientRunPlaybookOptions{RequestBody: nil})
+	res, err := clientFactory.NewEntitiesClient().GetInsights(ctx, "myRg", "myWorkspace", "e1d3d618-e11f-478b-98e3-bb381539a8e1", armsecurityinsights.EntityGetInsightsParameters{
+		AddDefaultExtendedTimeRange: to.Ptr(false),
+		EndTime:                     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00.000Z"); return t }()),
+		InsightQueryIDs: []*string{
+			to.Ptr("cae8d0aa-aa45-4d53-8d88-17dd64ffd4e4")},
+		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T00:00:00.000Z"); return t }()),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.EntityGetInsightsResponse = armsecurityinsights.EntityGetInsightsResponse{
+	// 	MetaData: &armsecurityinsights.GetInsightsResultsMetadata{
+	// 		Errors: []*armsecurityinsights.GetInsightsErrorKind{
+	// 			{
+	// 				ErrorMessage: to.Ptr("Internal server error"),
+	// 				Kind: to.Ptr(armsecurityinsights.GetInsightsErrorInsight),
+	// 				QueryID: to.Ptr("4a70a63d-25c4-6312-b73e-4f302a90c06a"),
+	// 		}},
+	// 		TotalCount: to.Ptr[int32](7),
+	// 	},
+	// 	Value: []*armsecurityinsights.EntityInsightItem{
+	// 		{
+	// 			ChartQueryResults: []*armsecurityinsights.InsightsTableResult{
+	// 				{
+	// 					Columns: []*armsecurityinsights.InsightsTableResultColumnsItem{
+	// 						{
+	// 							Name: to.Ptr("TimeGenerated"),
+	// 							Type: to.Ptr("datetime"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("Count"),
+	// 							Type: to.Ptr("long"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("Legend"),
+	// 							Type: to.Ptr("string"),
+	// 					}},
+	// 					Rows: [][]*string{
+	// 						[]*string{
+	// 							to.Ptr("2021-09-01T00:00:00.000Z"),
+	// 							to.Ptr("55"),
+	// 							to.Ptr("SomeLegend")}},
+	// 					}},
+	// 					QueryID: to.Ptr("e29ee1ef-7445-455e-85f1-269f2d536d61"),
+	// 					QueryTimeInterval: &armsecurityinsights.EntityInsightItemQueryTimeInterval{
+	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:35:20.000Z"); return t}()),
+	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:35:20.000Z"); return t}()),
+	// 					},
+	// 					TableQueryResults: &armsecurityinsights.InsightsTableResult{
+	// 						Columns: []*armsecurityinsights.InsightsTableResultColumnsItem{
+	// 							{
+	// 								Name: to.Ptr("Title"),
+	// 								Type: to.Ptr("string"),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("NameCount"),
+	// 								Type: to.Ptr("long"),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("SIDCount"),
+	// 								Type: to.Ptr("long"),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("InternalOrder"),
+	// 								Type: to.Ptr("long"),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("Index"),
+	// 								Type: to.Ptr("long"),
+	// 						}},
+	// 						Rows: [][]*string{
+	// 							[]*string{
+	// 								to.Ptr("MyTitle"),
+	// 								to.Ptr("15"),
+	// 								to.Ptr("SID"),
+	// 								to.Ptr("1"),
+	// 								to.Ptr("1")}},
+	// 							},
+	// 					}},
+	// 				}
 }

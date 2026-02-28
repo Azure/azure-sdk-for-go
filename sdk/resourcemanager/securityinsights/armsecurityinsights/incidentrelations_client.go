@@ -46,7 +46,7 @@ func NewIncidentRelationsClient(subscriptionID string, credential azcore.TokenCr
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - relationName - Relation Name
 //   - relation - The relation model
@@ -125,7 +125,7 @@ func (client *IncidentRelationsClient) createOrUpdateHandleResponse(resp *http.R
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - relationName - Relation Name
 //   - options - IncidentRelationsClientDeleteOptions contains the optional parameters for the IncidentRelationsClient.Delete
@@ -190,7 +190,7 @@ func (client *IncidentRelationsClient) deleteCreateRequest(ctx context.Context, 
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - relationName - Relation Name
 //   - options - IncidentRelationsClientGetOptions contains the optional parameters for the IncidentRelationsClient.Get method.
@@ -263,7 +263,7 @@ func (client *IncidentRelationsClient) getHandleResponse(resp *http.Response) (I
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentRelationsClientListOptions contains the optional parameters for the IncidentRelationsClient.NewListPager
 //     method.

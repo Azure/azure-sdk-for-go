@@ -13,7 +13,181 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_Get.json
+func ExampleAutomationRulesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAutomationRulesClient().Get(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AutomationRule = armsecurityinsights.AutomationRule{
+	// 	Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 	Type: to.Ptr("Microsoft.SecurityInsights/automationRules"),
+	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/automationRules/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 	Properties: &armsecurityinsights.AutomationRuleProperties{
+	// 		Actions: []armsecurityinsights.AutomationRuleActionClassification{
+	// 			&armsecurityinsights.AutomationRuleAddIncidentTaskAction{
+	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeAddIncidentTask),
+	// 				Order: to.Ptr[int32](1),
+	// 				ActionConfiguration: &armsecurityinsights.AddIncidentTaskActionProperties{
+	// 					Description: to.Ptr("Reset passwords for compromised users."),
+	// 					Title: to.Ptr("Reset user passwords"),
+	// 				},
+	// 		}},
+	// 		CreatedBy: &armsecurityinsights.ClientInfo{
+	// 			Name: to.Ptr("john doe"),
+	// 			Email: to.Ptr("john.doe@contoso.com"),
+	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
+	// 		},
+	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
+	// 		DisplayName: to.Ptr("Suspicious user sign-in events"),
+	// 		LastModifiedBy: &armsecurityinsights.ClientInfo{
+	// 			Name: to.Ptr("john doe"),
+	// 			Email: to.Ptr("john.doe@contoso.com"),
+	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
+	// 		},
+	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30.000Z"); return t}()),
+	// 		Order: to.Ptr[int32](1),
+	// 		TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
+	// 			Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 				&armsecurityinsights.PropertyArrayConditionProperties{
+	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArray),
+	// 					ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayValuesCondition{
+	// 						ArrayConditionType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem),
+	// 						ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels),
+	// 						ItemConditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 							&armsecurityinsights.PropertyConditionProperties{
+	// 								ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
+	// 								ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
+	// 									Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
+	// 									PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentLabel),
+	// 									PropertyValues: []*string{
+	// 										to.Ptr("myLabel")},
+	// 									},
+	// 							}},
+	// 						},
+	// 				}},
+	// 				IsEnabled: to.Ptr(true),
+	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_CreateOrUpdate.json
+func ExampleAutomationRulesClient_CreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAutomationRulesClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", &armsecurityinsights.AutomationRulesClientCreateOrUpdateOptions{AutomationRuleToUpsert: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AutomationRule = armsecurityinsights.AutomationRule{
+	// 	Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 	Type: to.Ptr("Microsoft.SecurityInsights/automationRules"),
+	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/automationRules/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+	// 	Properties: &armsecurityinsights.AutomationRuleProperties{
+	// 		Actions: []armsecurityinsights.AutomationRuleActionClassification{
+	// 			&armsecurityinsights.AutomationRuleAddIncidentTaskAction{
+	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeAddIncidentTask),
+	// 				Order: to.Ptr[int32](1),
+	// 				ActionConfiguration: &armsecurityinsights.AddIncidentTaskActionProperties{
+	// 					Description: to.Ptr("Reset passwords for compromised users."),
+	// 					Title: to.Ptr("Reset user passwords"),
+	// 				},
+	// 		}},
+	// 		CreatedBy: &armsecurityinsights.ClientInfo{
+	// 			Name: to.Ptr("john doe"),
+	// 			Email: to.Ptr("john.doe@contoso.com"),
+	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
+	// 		},
+	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
+	// 		DisplayName: to.Ptr("Suspicious user sign-in events"),
+	// 		LastModifiedBy: &armsecurityinsights.ClientInfo{
+	// 			Name: to.Ptr("john doe"),
+	// 			Email: to.Ptr("john.doe@contoso.com"),
+	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
+	// 		},
+	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30.000Z"); return t}()),
+	// 		Order: to.Ptr[int32](1),
+	// 		TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
+	// 			Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 				&armsecurityinsights.PropertyArrayConditionProperties{
+	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArray),
+	// 					ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayValuesCondition{
+	// 						ArrayConditionType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem),
+	// 						ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels),
+	// 						ItemConditions: []armsecurityinsights.AutomationRuleConditionClassification{
+	// 							&armsecurityinsights.PropertyConditionProperties{
+	// 								ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
+	// 								ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
+	// 									Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
+	// 									PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentLabel),
+	// 									PropertyValues: []*string{
+	// 										to.Ptr("myLabel")},
+	// 									},
+	// 							}},
+	// 						},
+	// 				}},
+	// 				IsEnabled: to.Ptr(true),
+	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
+	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
+	// 			},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_Delete.json
+func ExampleAutomationRulesClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAutomationRulesClient().Delete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Interface = map[string]any{
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_List.json
 func ExampleAutomationRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,178 +269,4 @@ func ExampleAutomationRulesClient_NewListPager() {
 		// 		}},
 		// 	}
 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_Get.json
-func ExampleAutomationRulesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAutomationRulesClient().Get(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AutomationRule = armsecurityinsights.AutomationRule{
-	// 	Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-	// 	Type: to.Ptr("Microsoft.SecurityInsights/automationRules"),
-	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/automationRules/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
-	// 	Properties: &armsecurityinsights.AutomationRuleProperties{
-	// 		Actions: []armsecurityinsights.AutomationRuleActionClassification{
-	// 			&armsecurityinsights.AutomationRuleAddIncidentTaskAction{
-	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeAddIncidentTask),
-	// 				Order: to.Ptr[int32](1),
-	// 				ActionConfiguration: &armsecurityinsights.AddIncidentTaskActionProperties{
-	// 					Description: to.Ptr("Reset passwords for compromised users."),
-	// 					Title: to.Ptr("Reset user passwords"),
-	// 				},
-	// 		}},
-	// 		CreatedBy: &armsecurityinsights.ClientInfo{
-	// 			Name: to.Ptr("john doe"),
-	// 			Email: to.Ptr("john.doe@contoso.com"),
-	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
-	// 		},
-	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
-	// 		DisplayName: to.Ptr("Suspicious user sign-in events"),
-	// 		LastModifiedBy: &armsecurityinsights.ClientInfo{
-	// 			Name: to.Ptr("john doe"),
-	// 			Email: to.Ptr("john.doe@contoso.com"),
-	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
-	// 		},
-	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30.000Z"); return t}()),
-	// 		Order: to.Ptr[int32](1),
-	// 		TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
-	// 			Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
-	// 				&armsecurityinsights.PropertyArrayConditionProperties{
-	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArray),
-	// 					ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayValuesCondition{
-	// 						ArrayConditionType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem),
-	// 						ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels),
-	// 						ItemConditions: []armsecurityinsights.AutomationRuleConditionClassification{
-	// 							&armsecurityinsights.PropertyConditionProperties{
-	// 								ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
-	// 								ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
-	// 									Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
-	// 									PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentLabel),
-	// 									PropertyValues: []*string{
-	// 										to.Ptr("myLabel")},
-	// 									},
-	// 							}},
-	// 						},
-	// 				}},
-	// 				IsEnabled: to.Ptr(true),
-	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
-	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
-	// 			},
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_CreateOrUpdate.json
-func ExampleAutomationRulesClient_CreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAutomationRulesClient().CreateOrUpdate(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", &armsecurityinsights.AutomationRulesClientCreateOrUpdateOptions{AutomationRuleToUpsert: nil})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AutomationRule = armsecurityinsights.AutomationRule{
-	// 	Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-	// 	Type: to.Ptr("Microsoft.SecurityInsights/automationRules"),
-	// 	ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/automationRules/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-	// 	Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
-	// 	Properties: &armsecurityinsights.AutomationRuleProperties{
-	// 		Actions: []armsecurityinsights.AutomationRuleActionClassification{
-	// 			&armsecurityinsights.AutomationRuleAddIncidentTaskAction{
-	// 				ActionType: to.Ptr(armsecurityinsights.ActionTypeAddIncidentTask),
-	// 				Order: to.Ptr[int32](1),
-	// 				ActionConfiguration: &armsecurityinsights.AddIncidentTaskActionProperties{
-	// 					Description: to.Ptr("Reset passwords for compromised users."),
-	// 					Title: to.Ptr("Reset user passwords"),
-	// 				},
-	// 		}},
-	// 		CreatedBy: &armsecurityinsights.ClientInfo{
-	// 			Name: to.Ptr("john doe"),
-	// 			Email: to.Ptr("john.doe@contoso.com"),
-	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
-	// 		},
-	// 		CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:00.000Z"); return t}()),
-	// 		DisplayName: to.Ptr("Suspicious user sign-in events"),
-	// 		LastModifiedBy: &armsecurityinsights.ClientInfo{
-	// 			Name: to.Ptr("john doe"),
-	// 			Email: to.Ptr("john.doe@contoso.com"),
-	// 			ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-	// 			UserPrincipalName: to.Ptr("john@contoso.com"),
-	// 		},
-	// 		LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:00:30.000Z"); return t}()),
-	// 		Order: to.Ptr[int32](1),
-	// 		TriggeringLogic: &armsecurityinsights.AutomationRuleTriggeringLogic{
-	// 			Conditions: []armsecurityinsights.AutomationRuleConditionClassification{
-	// 				&armsecurityinsights.PropertyArrayConditionProperties{
-	// 					ConditionType: to.Ptr(armsecurityinsights.ConditionTypePropertyArray),
-	// 					ConditionProperties: &armsecurityinsights.AutomationRulePropertyArrayValuesCondition{
-	// 						ArrayConditionType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayConditionTypeAnyItem),
-	// 						ArrayType: to.Ptr(armsecurityinsights.AutomationRulePropertyArrayConditionSupportedArrayTypeIncidentLabels),
-	// 						ItemConditions: []armsecurityinsights.AutomationRuleConditionClassification{
-	// 							&armsecurityinsights.PropertyConditionProperties{
-	// 								ConditionType: to.Ptr(armsecurityinsights.ConditionTypeProperty),
-	// 								ConditionProperties: &armsecurityinsights.AutomationRulePropertyValuesCondition{
-	// 									Operator: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedOperatorEquals),
-	// 									PropertyName: to.Ptr(armsecurityinsights.AutomationRulePropertyConditionSupportedPropertyIncidentLabel),
-	// 									PropertyValues: []*string{
-	// 										to.Ptr("myLabel")},
-	// 									},
-	// 							}},
-	// 						},
-	// 				}},
-	// 				IsEnabled: to.Ptr(true),
-	// 				TriggersOn: to.Ptr(armsecurityinsights.TriggersOnIncidents),
-	// 				TriggersWhen: to.Ptr(armsecurityinsights.TriggersWhenCreated),
-	// 			},
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/automationRules/AutomationRules_Delete.json
-func ExampleAutomationRulesClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAutomationRulesClient().Delete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.Interface = map[string]any{
-	// }
 }

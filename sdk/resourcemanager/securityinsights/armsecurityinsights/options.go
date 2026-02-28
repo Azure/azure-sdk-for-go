@@ -678,7 +678,6 @@ type IncidentsClientListOptions struct {
 
 // IncidentsClientRunPlaybookOptions contains the optional parameters for the IncidentsClient.RunPlaybook method.
 type IncidentsClientRunPlaybookOptions struct {
-	// Describes the request body for triggering a playbook on an incident.
 	RequestBody *ManualTriggerRequestBody
 }
 

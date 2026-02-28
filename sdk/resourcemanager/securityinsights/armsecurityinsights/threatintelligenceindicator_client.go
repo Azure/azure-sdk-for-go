@@ -45,7 +45,7 @@ func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azco
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
 //   - threatIntelligenceAppendTags - The threat intelligence append tags request body
 //   - options - ThreatIntelligenceIndicatorClientAppendTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.AppendTags
@@ -109,7 +109,7 @@ func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx con
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
 //   - threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
 //   - options - ThreatIntelligenceIndicatorClientCreateOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Create
@@ -183,8 +183,8 @@ func (client *ThreatIntelligenceIndicatorClient) createHandleResponse(resp *http
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
-//   - threatIntelligenceProperties - The content of the action request
+//   - workspaceName - The name of the workspace.
+//   - threatIntelligenceProperties - Properties of threat intelligence indicators to create and update.
 //   - options - ThreatIntelligenceIndicatorClientCreateIndicatorOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.CreateIndicator
 //     method.
 func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, options *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (ThreatIntelligenceIndicatorClientCreateIndicatorResponse, error) {
@@ -252,7 +252,7 @@ func (client *ThreatIntelligenceIndicatorClient) createIndicatorHandleResponse(r
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
 //   - options - ThreatIntelligenceIndicatorClientDeleteOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Delete
 //     method.
@@ -312,7 +312,7 @@ func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
 //   - options - ThreatIntelligenceIndicatorClientGetOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.Get
 //     method.
@@ -381,8 +381,8 @@ func (client *ThreatIntelligenceIndicatorClient) getHandleResponse(resp *http.Re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
-//   - threatIntelligenceFilteringCriteria - The content of the action request
+//   - workspaceName - The name of the workspace.
+//   - threatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
 //   - options - ThreatIntelligenceIndicatorClientQueryIndicatorsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.NewQueryIndicatorsPager
 //     method.
 func (client *ThreatIntelligenceIndicatorClient) NewQueryIndicatorsPager(resourceGroupName string, workspaceName string, threatIntelligenceFilteringCriteria ThreatIntelligenceFilteringCriteria, options *ThreatIntelligenceIndicatorClientQueryIndicatorsOptions) *runtime.Pager[ThreatIntelligenceIndicatorClientQueryIndicatorsResponse] {
@@ -451,7 +451,7 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsHandleResponse(r
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - name - Threat intelligence indicator name field.
 //   - threatIntelligenceReplaceTags - Tags in the threat intelligence indicator to be replaced.
 //   - options - ThreatIntelligenceIndicatorClientReplaceTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.ReplaceTags

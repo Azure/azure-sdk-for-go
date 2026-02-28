@@ -5,23 +5,6 @@
 
 package armsecurityinsights
 
-import "encoding/json"
-
-// MarshalJSON implements the json.Marshaller interface for type AlertRuleClientTriggerRuleRunResponse.
-func (a AlertRuleClientTriggerRuleRunResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(a.AlertRuleClassification)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleClientTriggerRuleRunResponse.
-func (a *AlertRuleClientTriggerRuleRunResponse) UnmarshalJSON(data []byte) error {
-	res, err := unmarshalAlertRuleClassification(data)
-	if err != nil {
-		return err
-	}
-	a.AlertRuleClassification = res
-	return nil
-}
-
 // UnmarshalJSON implements the json.Unmarshaller interface for type AlertRuleTemplatesClientGetResponse.
 func (a *AlertRuleTemplatesClientGetResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalAlertRuleTemplateClassification(data)

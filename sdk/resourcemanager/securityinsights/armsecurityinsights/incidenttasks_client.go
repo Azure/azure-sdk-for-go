@@ -45,7 +45,7 @@ func NewIncidentTasksClient(subscriptionID string, credential azcore.TokenCreden
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incidentTaskID - Incident task ID
 //   - incidentTask - The incident task
@@ -124,7 +124,7 @@ func (client *IncidentTasksClient) createOrUpdateHandleResponse(resp *http.Respo
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incidentTaskID - Incident task ID
 //   - options - IncidentTasksClientDeleteOptions contains the optional parameters for the IncidentTasksClient.Delete method.
@@ -188,7 +188,7 @@ func (client *IncidentTasksClient) deleteCreateRequest(ctx context.Context, reso
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incidentTaskID - Incident task ID
 //   - options - IncidentTasksClientGetOptions contains the optional parameters for the IncidentTasksClient.Get method.
@@ -261,7 +261,7 @@ func (client *IncidentTasksClient) getHandleResponse(resp *http.Response) (Incid
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentTasksClientListOptions contains the optional parameters for the IncidentTasksClient.NewListPager method.
 func (client *IncidentTasksClient) NewListPager(resourceGroupName string, workspaceName string, incidentID string, options *IncidentTasksClientListOptions) *runtime.Pager[IncidentTasksClientListResponse] {

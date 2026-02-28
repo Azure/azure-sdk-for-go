@@ -318,9 +318,6 @@ func (e *EntitiesServerTransport) dispatchNewQueriesPager(req *http.Request) (*h
 		resp := e.srv.NewQueriesPager(resourceGroupNameParam, workspaceNameParam, entityIDParam, kindParam, nil)
 		newQueriesPager = &resp
 		e.newQueriesPager.add(req, newQueriesPager)
-		server.PagerResponderInjectNextLinks(newQueriesPager, req, func(page *armsecurityinsights.EntitiesClientQueriesResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
 	}
 	resp, err := server.PagerResponderNext(newQueriesPager, req)
 	if err != nil {

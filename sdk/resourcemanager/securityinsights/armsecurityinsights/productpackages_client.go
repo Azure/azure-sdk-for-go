@@ -47,7 +47,7 @@ func NewProductPackagesClient(subscriptionID string, credential azcore.TokenCred
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - ProductPackagesClientListOptions contains the optional parameters for the ProductPackagesClient.NewListPager
 //     method.
 func (client *ProductPackagesClient) NewListPager(resourceGroupName string, workspaceName string, options *ProductPackagesClientListOptions) *runtime.Pager[ProductPackagesClientListResponse] {

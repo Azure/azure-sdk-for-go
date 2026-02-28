@@ -31,9 +31,7 @@ type AADCheckRequirementsProperties struct {
 
 // AADDataConnector - Represents AADIP (Azure Active Directory Identity Protection) data connector.
 type AADDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -100,9 +98,7 @@ type AATPCheckRequirementsProperties struct {
 
 // AATPDataConnector - Represents AATP (Azure Advanced Threat Protection) data connector.
 type AATPDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -205,9 +201,7 @@ type ASCCheckRequirementsProperties struct {
 
 // ASCDataConnector - Represents ASC (Azure Security Center) data connector.
 type ASCDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -271,9 +265,7 @@ func (a *AWSAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
 
 // AccountEntity - Represents an account entity.
 type AccountEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Account entity properties
@@ -382,7 +374,7 @@ type ActionRequestProperties struct {
 
 // ActionResponse - Action for alert rule.
 type ActionResponse struct {
-	// Etag of the action.
+	// ETag of the action.
 	Etag *string
 
 	// Action properties for get request
@@ -412,10 +404,10 @@ type ActionResponseProperties struct {
 
 // ActionsList - List all the actions.
 type ActionsList struct {
-	// REQUIRED; The ActionResponse items on this page
+	// REQUIRED; Array of actions.
 	Value []*ActionResponse
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of actions.
 	NextLink *string
 }
 
@@ -499,9 +491,7 @@ type ActivityEntityQueriesPropertiesQueryDefinitions struct {
 
 // ActivityEntityQuery - Represents Activity entity query.
 type ActivityEntityQuery struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; the entity query kind
 	Kind *EntityQueryKind
 
 	// Etag of the azure resource
@@ -537,11 +527,8 @@ func (a *ActivityEntityQuery) GetEntityQuery() *EntityQuery {
 
 // ActivityEntityQueryTemplate - Represents Activity entity query.
 type ActivityEntityQueryTemplate struct {
-	// REQUIRED; The kind of the entity query template.
+	// REQUIRED; the entity query template kind
 	Kind *EntityQueryTemplateKind
-
-	// Etag of the azure resource
-	Etag *string
 
 	// Activity entity query properties
 	Properties *ActivityEntityQueryTemplateProperties
@@ -562,7 +549,6 @@ type ActivityEntityQueryTemplate struct {
 // GetEntityQueryTemplate implements the EntityQueryTemplateClassification interface for type ActivityEntityQueryTemplate.
 func (a *ActivityEntityQueryTemplate) GetEntityQueryTemplate() *EntityQueryTemplate {
 	return &EntityQueryTemplate{
-		Etag:       a.Etag,
 		ID:         a.ID,
 		Kind:       a.Kind,
 		Name:       a.Name,
@@ -678,9 +664,7 @@ type AlertPropertyMapping struct {
 
 // AlertRule - Alert rule.
 type AlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -704,9 +688,7 @@ func (a *AlertRule) GetAlertRule() *AlertRule { return a }
 
 // AlertRuleTemplate - Alert rule template.
 type AlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -736,19 +718,19 @@ type AlertRuleTemplateDataSource struct {
 
 // AlertRuleTemplatesList - List all the alert rule templates.
 type AlertRuleTemplatesList struct {
-	// REQUIRED; The AlertRuleTemplate items on this page
+	// REQUIRED; Array of alert rule templates.
 	Value []AlertRuleTemplateClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of alert rule templates.
 	NextLink *string
 }
 
 // AlertRulesList - List all the alert rules.
 type AlertRulesList struct {
-	// REQUIRED; The AlertRule items on this page
+	// REQUIRED; Array of alert rules.
 	Value []AlertRuleClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of alert rules.
 	NextLink *string
 }
 
@@ -772,9 +754,7 @@ type AnalyticsRuleRunTriggerProperties struct {
 
 // Anomalies - Settings with single toggle.
 type Anomalies struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the setting
 	Kind *SettingKind
 
 	// Etag of the azure resource
@@ -816,9 +796,7 @@ type AnomaliesSettingsProperties struct {
 
 // AnomalySecurityMLAnalyticsSettings - Represents Anomaly Security ML Analytics Settings
 type AnomalySecurityMLAnalyticsSettings struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of security ML Analytics Settings
 	Kind *SecurityMLAnalyticsSettingsKind
 
 	// Etag of the azure resource
@@ -983,7 +961,6 @@ func (a *AttackPattern) GetTIObject() *TIObject {
 	}
 }
 
-// AutomationRule - Concrete proxy resource types can be created by aliasing this type using a specific property type.
 type AutomationRule struct {
 	// REQUIRED; Automation rule properties
 	Properties *AutomationRuleProperties
@@ -1155,22 +1132,19 @@ type AutomationRuleTriggeringLogic struct {
 	ExpirationTimeUTC *time.Time
 }
 
-// AutomationRulesList - Paged collection of AutomationRule items
 type AutomationRulesList struct {
-	// REQUIRED; The AutomationRule items on this page
-	Value []*AutomationRule
-
-	// The link to the next page of items
 	NextLink *string
+	Value    []*AutomationRule
 }
 
 // Availability - Connector Availability Status
 type Availability struct {
+	// CONSTANT; The connector Availability Status
+	// Field has constant value 1, any specified value is ignored.
+	Status *int32
+
 	// Set connector as preview
 	IsPreview *bool
-
-	// The connector Availability Status
-	Status *AvailabilityStatus
 }
 
 // AwsCloudTrailCheckRequirements - Amazon Web Services CloudTrail requirements check request.
@@ -1188,9 +1162,7 @@ func (a *AwsCloudTrailCheckRequirements) GetDataConnectorsCheckRequirements() *D
 
 // AwsCloudTrailDataConnector - Represents Amazon Web Services CloudTrail data connector.
 type AwsCloudTrailDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -1260,9 +1232,7 @@ func (a *AwsS3CheckRequirements) GetDataConnectorsCheckRequirements() *DataConne
 
 // AwsS3DataConnector - Represents Amazon Web Services S3 data connector.
 type AwsS3DataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -1334,9 +1304,7 @@ type AzureDevOpsResourceInfo struct {
 
 // AzureResourceEntity - Represents an azure resource entity.
 type AzureResourceEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// AzureResource entity properties
@@ -1403,9 +1371,7 @@ func (b *BasicAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
 
 // BillingStatistic - Billing statistic
 type BillingStatistic struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the billing statistic
 	Kind *BillingStatisticKind
 
 	// READ-ONLY; Resource Etag.
@@ -1429,10 +1395,10 @@ func (b *BillingStatistic) GetBillingStatistic() *BillingStatistic { return b }
 
 // BillingStatisticList - List of all Microsoft Sentinel billing statistics.
 type BillingStatisticList struct {
-	// REQUIRED; The BillingStatistic items on this page
+	// REQUIRED; Array of billing statistics.
 	Value []BillingStatisticClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of billing statistics.
 	NextLink *string
 }
 
@@ -1498,10 +1464,10 @@ type BookmarkExpandResponseValue struct {
 
 // BookmarkList - List all the bookmarks.
 type BookmarkList struct {
-	// REQUIRED; The Bookmark items on this page
+	// REQUIRED; Array of bookmarks.
 	Value []*Bookmark
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of bookmarks.
 	NextLink *string
 }
 
@@ -1671,9 +1637,7 @@ type ClientInfo struct {
 
 // CloudApplicationEntity - Represents a cloud application entity.
 type CloudApplicationEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// CloudApplication entity properties
@@ -1725,9 +1689,7 @@ type CloudApplicationEntityProperties struct {
 
 // CodelessAPIPollingDataConnector - Represents Codeless API Polling data connector.
 type CodelessAPIPollingDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -1999,9 +1961,7 @@ type CodelessUIConnectorConfigPropertiesSampleQueriesItem struct {
 
 // CodelessUIDataConnector - Represents Codeless UI data connector.
 type CodelessUIDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -2046,7 +2006,7 @@ type ConditionClause struct {
 	// REQUIRED; The top level connective operator for this condition.
 	Values []*string
 
-	// READ-ONLY; The connective used to join all values in this ConditionClause
+	// The connective used to join all values in this ConditionClause
 	ClauseConnective *Connective
 }
 
@@ -2056,7 +2016,7 @@ type ConditionProperties struct {
 	// operator.
 	Clauses []*ConditionClause
 
-	// READ-ONLY; The top level connective operator for this condition.
+	// The top level connective operator for this condition.
 	ConditionConnective *Connective
 
 	// READ-ONLY; The STIX type for the objects returned by this query.
@@ -2188,9 +2148,7 @@ type CustomizableConnectionsConfig struct {
 
 // CustomizableConnectorDefinition - Connector definition for kind 'Customizable'.
 type CustomizableConnectorDefinition struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorDefinitionKind
 
 	// Etag of the azure resource
@@ -2293,9 +2251,7 @@ type DCRConfiguration struct {
 
 // DNSEntity - Represents a dns entity.
 type DNSEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Dns entity properties
@@ -2349,9 +2305,7 @@ type DNSEntityProperties struct {
 
 // DataConnector - Data connector
 type DataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -2417,9 +2371,7 @@ type DataConnectorDataTypeCommon struct {
 // DataConnectorDefinition - An Azure resource, which encapsulate the entire info requires to display a data connector page
 // in Azure portal, and the info required to define data connections.
 type DataConnectorDefinition struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorDefinitionKind
 
 	// Etag of the azure resource
@@ -2443,19 +2395,16 @@ func (d *DataConnectorDefinition) GetDataConnectorDefinition() *DataConnectorDef
 
 // DataConnectorDefinitionArmCollectionWrapper - Encapsulate the data connector definition object
 type DataConnectorDefinitionArmCollectionWrapper struct {
-	// REQUIRED; The DataConnectorDefinition items on this page
-	Value []DataConnectorDefinitionClassification
-
-	// The link to the next page of items
 	NextLink *string
+	Value    []DataConnectorDefinitionClassification
 }
 
 // DataConnectorList - List all the data connectors.
 type DataConnectorList struct {
-	// REQUIRED; The DataConnector items on this page
+	// REQUIRED; Array of data connectors.
 	Value []DataConnectorClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of data connectors.
 	NextLink *string
 }
 
@@ -2539,9 +2488,7 @@ type Dynamics365CheckRequirementsProperties struct {
 
 // Dynamics365DataConnector - Represents Dynamics365 data connector.
 type Dynamics365DataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -2769,9 +2716,7 @@ type EnrichmentIPGeodata struct {
 
 // Entity - Specific entity.
 type Entity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
@@ -2792,9 +2737,7 @@ func (e *Entity) GetEntity() *Entity { return e }
 
 // EntityAnalytics - Settings with single toggle.
 type EntityAnalytics struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the setting
 	Kind *SettingKind
 
 	// Etag of the azure resource
@@ -2932,10 +2875,10 @@ type EntityInsightItemQueryTimeInterval struct {
 
 // EntityList - List of all the entities.
 type EntityList struct {
-	// REQUIRED; The Entity items on this page
+	// REQUIRED; Array of entities.
 	Value []EntityClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of entities.
 	NextLink *string
 }
 
@@ -2962,9 +2905,7 @@ type EntityMapping struct {
 
 // EntityQuery - Specific entity query.
 type EntityQuery struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; the entity query kind
 	Kind *EntityQueryKind
 
 	// Etag of the azure resource
@@ -3011,20 +2952,17 @@ type EntityQueryItemPropertiesDataTypesItem struct {
 
 // EntityQueryList - List of all the entity queries.
 type EntityQueryList struct {
-	// REQUIRED; The EntityQuery items on this page
+	// REQUIRED; Array of entity queries.
 	Value []EntityQueryClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of entity queries.
 	NextLink *string
 }
 
 // EntityQueryTemplate - Specific entity query template.
 type EntityQueryTemplate struct {
-	// REQUIRED; The kind of the entity query template.
+	// REQUIRED; the entity query template kind
 	Kind *EntityQueryTemplateKind
-
-	// Etag of the azure resource
-	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
 	ID *string
@@ -3044,10 +2982,10 @@ func (e *EntityQueryTemplate) GetEntityQueryTemplate() *EntityQueryTemplate { re
 
 // EntityQueryTemplateList - List of all the entity query templates.
 type EntityQueryTemplateList struct {
-	// REQUIRED; The EntityQueryTemplate items on this page
+	// REQUIRED; Array of entity query templates.
 	Value []EntityQueryTemplateClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of entity query templates.
 	NextLink *string
 }
 
@@ -3122,9 +3060,7 @@ type ExpansionEntityQueriesProperties struct {
 
 // ExpansionEntityQuery - Represents Expansion entity query.
 type ExpansionEntityQuery struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; the entity query kind
 	Kind *EntityQueryKind
 
 	// Etag of the azure resource
@@ -3181,9 +3117,7 @@ type ExpansionResultsMetadata struct {
 
 // EyesOn - Settings with single toggle.
 type EyesOn struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the setting
 	Kind *SettingKind
 
 	// Etag of the azure resource
@@ -3234,9 +3168,7 @@ type FieldMapping struct {
 
 // FileEntity - Represents a file entity.
 type FileEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// File entity properties
@@ -3290,9 +3222,7 @@ type FileEntityProperties struct {
 
 // FileHashEntity - Represents a file hash entity.
 type FileHashEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// FileHash entity properties
@@ -3358,10 +3288,10 @@ type FileImport struct {
 
 // FileImportList - List all the file imports.
 type FileImportList struct {
-	// REQUIRED; The FileImport items on this page
+	// REQUIRED; Array of file imports.
 	Value []*FileImport
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of file imports.
 	NextLink *string
 }
 
@@ -3427,9 +3357,7 @@ type FileMetadata struct {
 
 // FusionAlertRule - Represents Fusion alert rule.
 type FusionAlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -3501,9 +3429,7 @@ type FusionAlertRuleProperties struct {
 
 // FusionAlertRuleTemplate - Represents Fusion alert rule template.
 type FusionAlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Fusion alert rule template properties
@@ -3694,9 +3620,7 @@ type GCPAuthProperties struct {
 
 // GCPDataConnector - Represents Google Cloud Platform data connector.
 type GCPDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -3822,8 +3746,6 @@ type GetInsightsResultsMetadata struct {
 
 // GetQueriesResponse - Retrieve queries for entity result operation response.
 type GetQueriesResponse struct {
-	NextLink *string
-
 	// The query result values.
 	Value []EntityQueryItemClassification
 }
@@ -3894,9 +3816,7 @@ type GroupingConfiguration struct {
 
 // HostEntity - Represents a host entity.
 type HostEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Host entity properties
@@ -4008,10 +3928,10 @@ type HuntComment struct {
 
 // HuntCommentList - List of all hunt comments
 type HuntCommentList struct {
-	// REQUIRED; The HuntComment items on this page
+	// REQUIRED; Array of hunt comments
 	Value []*HuntComment
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of hunt comments.
 	NextLink *string
 }
 
@@ -4023,10 +3943,10 @@ type HuntCommentProperties struct {
 
 // HuntList - List all the hunts.
 type HuntList struct {
-	// REQUIRED; The Hunt items on this page
+	// REQUIRED; Array of hunts.
 	Value []*Hunt
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of hunts.
 	NextLink *string
 }
 
@@ -4077,6 +3997,9 @@ type HuntProperties struct {
 
 // HuntRelation - Represents a Hunt Relation in Azure Security Insights.
 type HuntRelation struct {
+	// Etag of the azure resource
+	Etag *string
+
 	// Hunt Relation properties
 	Properties *HuntRelationProperties
 
@@ -4095,10 +4018,10 @@ type HuntRelation struct {
 
 // HuntRelationList - List of all the hunt relations
 type HuntRelationList struct {
-	// REQUIRED; The HuntRelation items on this page
+	// REQUIRED; Array of hunt relations
 	Value []*HuntRelation
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of hunt relations.
 	NextLink *string
 }
 
@@ -4122,9 +4045,7 @@ type HuntRelationProperties struct {
 
 // HuntingBookmark - Represents a Hunting bookmark entity.
 type HuntingBookmark struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// HuntingBookmark entity properties
@@ -4199,9 +4120,7 @@ type HuntingBookmarkProperties struct {
 
 // IPEntity - Represents an ip entity.
 type IPEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Ip entity properties
@@ -4369,10 +4288,10 @@ type IncidentComment struct {
 
 // IncidentCommentList - List of incident comments.
 type IncidentCommentList struct {
-	// REQUIRED; The IncidentComment items on this page
+	// REQUIRED; Array of comments.
 	Value []*IncidentComment
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of comments.
 	NextLink *string
 }
 
@@ -4444,10 +4363,10 @@ type IncidentLabel struct {
 
 // IncidentList - List all the incidents.
 type IncidentList struct {
-	// REQUIRED; The Incident items on this page
+	// REQUIRED; Array of incidents.
 	Value []*Incident
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of incidents.
 	NextLink *string
 }
 
@@ -4578,11 +4497,8 @@ type IncidentTask struct {
 
 // IncidentTaskList - List of incident tasks
 type IncidentTaskList struct {
-	// REQUIRED; The IncidentTask items on this page
-	Value []*IncidentTask
-
-	// The link to the next page of items
 	NextLink *string
+	Value    []*IncidentTask
 }
 
 // IncidentTaskProperties - Describes the properties of an incident task
@@ -4862,9 +4778,7 @@ type IoTCheckRequirementsProperties struct {
 
 // IoTDataConnector - Represents IoT data connector.
 type IoTDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -4909,9 +4823,7 @@ type IoTDataConnectorProperties struct {
 
 // IoTDeviceEntity - Represents an IoT device entity.
 type IoTDeviceEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// IoTDevice entity properties
@@ -5073,10 +4985,10 @@ type JobItem struct {
 
 // JobList - List of all the jobs
 type JobList struct {
-	// REQUIRED; The Job items on this page
+	// REQUIRED; Array of jobs.
 	Value []*Job
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of jobs.
 	NextLink *string
 }
 
@@ -5162,9 +5074,7 @@ type MCASCheckRequirementsProperties struct {
 
 // MCASDataConnector - Represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -5240,9 +5150,7 @@ type MDATPCheckRequirementsProperties struct {
 
 // MDATPDataConnector - Represents MDATP (Microsoft Defender Advanced Threat Protection) data connector.
 type MDATPDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -5287,9 +5195,7 @@ type MDATPDataConnectorProperties struct {
 
 // MLBehaviorAnalyticsAlertRule - Represents MLBehaviorAnalytics alert rule.
 type MLBehaviorAnalyticsAlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -5355,9 +5261,7 @@ type MLBehaviorAnalyticsAlertRuleProperties struct {
 
 // MLBehaviorAnalyticsAlertRuleTemplate - Represents MLBehaviorAnalytics alert rule template.
 type MLBehaviorAnalyticsAlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// MLBehaviorAnalytics alert rule template properties.
@@ -5444,9 +5348,7 @@ type MSTICheckRequirementsProperties struct {
 
 // MSTIDataConnector - Represents Microsoft Threat Intelligence data connector.
 type MSTIDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -5483,7 +5385,16 @@ func (m *MSTIDataConnector) GetDataConnector() *DataConnector {
 // MSTIDataConnectorDataTypes - The available data types for Microsoft Threat Intelligence Platforms data connector.
 type MSTIDataConnectorDataTypes struct {
 	// REQUIRED; Data type for Microsoft Threat Intelligence Platforms data connector.
-	MicrosoftEmergingThreatFeed *MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed
+	MicrosoftEmergingThreatFeed *MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed
+}
+
+// MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed - Data type for Microsoft Threat Intelligence Platforms data connector.
+type MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed struct {
+	// REQUIRED; The lookback period for the feed to be imported.
+	LookbackPeriod *time.Time
+
+	// REQUIRED; Describe whether this data type connection is enabled or not.
+	State *DataTypeState
 }
 
 // MSTIDataConnectorProperties - Microsoft Threat Intelligence data connector properties.
@@ -5503,9 +5414,7 @@ type MTPCheckRequirementsProperties struct {
 
 // MTPDataConnector - Represents MTP (Microsoft Threat Protection) data connector.
 type MTPDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -5574,9 +5483,7 @@ type MTPDataConnectorProperties struct {
 
 // MailClusterEntity - Represents a mail cluster entity.
 type MailClusterEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Mail cluster entity properties
@@ -5663,9 +5570,7 @@ type MailClusterEntityProperties struct {
 
 // MailMessageEntity - Represents a mail message entity.
 type MailMessageEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Mail message entity properties
@@ -5783,9 +5688,7 @@ type MailMessageEntityProperties struct {
 
 // MailboxEntity - Represents a mailbox entity.
 type MailboxEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Mailbox entity properties
@@ -5840,9 +5743,7 @@ type MailboxEntityProperties struct {
 
 // MalwareEntity - Represents a malware entity.
 type MalwareEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// File entity properties
@@ -5895,7 +5796,7 @@ type MalwareEntityProperties struct {
 }
 
 type ManualTriggerRequestBody struct {
-	// REQUIRED; Related Analytic rule resource id
+	// REQUIRED
 	LogicAppsResourceID *string
 	TenantID            *string
 }
@@ -5948,10 +5849,10 @@ type MetadataDependencies struct {
 
 // MetadataList - List of all the metadata.
 type MetadataList struct {
-	// REQUIRED; The MetadataModel items on this page
+	// REQUIRED; Array of metadata.
 	Value []*MetadataModel
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next page of metadata.
 	NextLink *string
 }
 
@@ -6013,8 +5914,8 @@ type MetadataProperties struct {
 	Categories *MetadataCategories
 
 	// Static ID for the content. Used to identify dependencies and content from solutions or community. Hard-coded/static for
-	// out of the box content and solutions. Can be optionally set for user created
-	// content to define dependencies. If an active content item is made from a template, both will have the same contentId.
+	// out of the box content and solutions. Dynamic for user-created. This is the
+	// resource name
 	ContentID *string
 
 	// Schema version of the content. Can be used to distinguish between different flow based on the schema version
@@ -6028,13 +5929,13 @@ type MetadataProperties struct {
 	// can be supplied or operator/criteria for complex formats.
 	Dependencies *MetadataDependencies
 
-	// first publish date of solution content item
+	// first publish date solution content item
 	FirstPublishDate *time.Time
 
 	// the icon identifier. this id can later be fetched from the solution template
 	Icon *string
 
-	// last publish date of solution content item
+	// last publish date for the solution content item
 	LastPublishDate *time.Time
 
 	// preview image file names. These will be taken from the solution artifacts
@@ -6074,8 +5975,8 @@ type MetadataPropertiesPatch struct {
 	Categories *MetadataCategories
 
 	// Static ID for the content. Used to identify dependencies and content from solutions or community. Hard-coded/static for
-	// out of the box content and solutions. Can be optionally set for user created
-	// content to define dependencies. If an active content item is made from a template, both will have the same contentId.
+	// out of the box content and solutions. Dynamic for user-created. This is the
+	// resource name
 	ContentID *string
 
 	// Schema version of the content. Can be used to distinguish between different flow based on the schema version
@@ -6089,7 +5990,7 @@ type MetadataPropertiesPatch struct {
 	// can be supplied or operator/criteria for complex formats.
 	Dependencies *MetadataDependencies
 
-	// first publish date of solution content item
+	// first publish date solution content item
 	FirstPublishDate *time.Time
 
 	// the icon identifier. this id can later be fetched from the solution template
@@ -6098,7 +5999,7 @@ type MetadataPropertiesPatch struct {
 	// The kind of content the metadata is for.
 	Kind *string
 
-	// last publish date of solution content item
+	// last publish date for the solution content item
 	LastPublishDate *time.Time
 
 	// Full parent resource ID of the content item the metadata is for. This is the full resource ID including the scope (subscription
@@ -6198,9 +6099,7 @@ type MicrosoftPurviewInformationProtectionConnectorDataTypesLogs struct {
 
 // MicrosoftPurviewInformationProtectionDataConnector - Represents Microsoft Purview Information Protection data connector.
 type MicrosoftPurviewInformationProtectionDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -6246,9 +6145,7 @@ type MicrosoftPurviewInformationProtectionDataConnectorProperties struct {
 
 // MicrosoftSecurityIncidentCreationAlertRule - Represents MicrosoftSecurityIncidentCreation rule.
 type MicrosoftSecurityIncidentCreationAlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -6314,9 +6211,7 @@ type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 
 // MicrosoftSecurityIncidentCreationAlertRuleTemplate - Represents MicrosoftSecurityIncidentCreation rule template.
 type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// MicrosoftSecurityIncidentCreation rule template properties
@@ -6382,15 +6277,6 @@ type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	LastUpdatedDateUTC *time.Time
 }
 
-// MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed - Data type for Microsoft Threat Intelligence Platforms data connector.
-type MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed struct {
-	// REQUIRED; The lookback period for the feed to be imported.
-	LookbackPeriod *time.Time
-
-	// REQUIRED; Describe whether this data type connection is enabled or not.
-	State *DataTypeState
-}
-
 // MtpCheckRequirements - Represents MTP (Microsoft Threat Protection) requirements check request.
 type MtpCheckRequirements struct {
 	// REQUIRED; Describes the kind of connector to be checked.
@@ -6416,9 +6302,7 @@ type MtpFilteredProviders struct {
 
 // NicEntity - Represents an network interface entity.
 type NicEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Network interface entity properties
@@ -6482,9 +6366,7 @@ func (n *NoneAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
 
 // NrtAlertRule - Represents NRT alert rule.
 type NrtAlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -6580,9 +6462,7 @@ type NrtAlertRuleProperties struct {
 
 // NrtAlertRuleTemplate - Represents NRT alert rule template.
 type NrtAlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// NRT alert rule template properties
@@ -6760,9 +6640,7 @@ type Office365ProjectConnectorDataTypesLogs struct {
 
 // Office365ProjectDataConnector - Represents Office Microsoft Project data connector.
 type Office365ProjectDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -6829,9 +6707,7 @@ type OfficeATPCheckRequirementsProperties struct {
 
 // OfficeATPDataConnector - Represents OfficeATP (Office 365 Advanced Threat Protection) data connector.
 type OfficeATPDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -6894,10 +6770,10 @@ type OfficeConsent struct {
 
 // OfficeConsentList - List of all the office365 consents.
 type OfficeConsentList struct {
-	// REQUIRED; The OfficeConsent items on this page
+	// REQUIRED; Array of the consents.
 	Value []*OfficeConsent
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of office consents.
 	NextLink *string
 }
 
@@ -6912,9 +6788,7 @@ type OfficeConsentProperties struct {
 
 // OfficeDataConnector - Represents office data connector.
 type OfficeDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -7011,9 +6885,7 @@ type OfficeIRMCheckRequirementsProperties struct {
 
 // OfficeIRMDataConnector - Represents OfficeIRM (Microsoft Insider Risk Management) data connector.
 type OfficeIRMDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -7092,9 +6964,7 @@ type OfficePowerBIConnectorDataTypesLogs struct {
 
 // OfficePowerBIDataConnector - Represents Office Microsoft PowerBI data connector.
 type OfficePowerBIDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -7203,10 +7073,10 @@ func (o *OracleAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
 
 // PackageList - List available packages.
 type PackageList struct {
-	// REQUIRED; The PackageModel items on this page
+	// REQUIRED; Array of packages.
 	Value []*PackageModel
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of packages.
 	NextLink *string
 }
 
@@ -7376,9 +7246,7 @@ type PremiumMdtiDataConnectorProperties struct {
 
 // PremiumMicrosoftDefenderForThreatIntelligence - Represents Microsoft Defender for Threat Intelligence Premium data connector.
 type PremiumMicrosoftDefenderForThreatIntelligence struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -7414,9 +7282,7 @@ func (p *PremiumMicrosoftDefenderForThreatIntelligence) GetDataConnector() *Data
 
 // ProcessEntity - Represents a process entity.
 type ProcessEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Process entity properties
@@ -7485,10 +7351,10 @@ type ProcessEntityProperties struct {
 
 // ProductPackageList - List available packages.
 type ProductPackageList struct {
-	// REQUIRED; The ProductPackageModel items on this page
+	// REQUIRED; Array of packages.
 	Value []*ProductPackageModel
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of packages.
 	NextLink *string
 }
 
@@ -7596,10 +7462,10 @@ type ProductPackageProperties struct {
 
 // ProductTemplateList - List of all the template.
 type ProductTemplateList struct {
-	// REQUIRED; The ProductTemplateModel items on this page
+	// REQUIRED; Array of templates.
 	Value []*ProductTemplateModel
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next page of template.
 	NextLink *string
 }
 
@@ -7816,9 +7682,7 @@ type PurviewAuditConnectorDataTypesLogs struct {
 
 // PurviewAuditDataConnector - Represents PurviewAudit data connector.
 type PurviewAuditDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -7936,10 +7800,10 @@ type Recommendation struct {
 
 // RecommendationList - A list of recommendations
 type RecommendationList struct {
-	// REQUIRED; The Recommendation items on this page
+	// REQUIRED; An list of recommendations
 	Value []*Recommendation
 
-	// The link to the next page of items
+	// READ-ONLY; Link to next page of resources.
 	NextLink *string
 }
 
@@ -8014,9 +7878,7 @@ type ReevaluateResponse struct {
 
 // RegistryKeyEntity - Represents a registry key entity.
 type RegistryKeyEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// RegistryKey entity properties
@@ -8064,9 +7926,7 @@ type RegistryKeyEntityProperties struct {
 
 // RegistryValueEntity - Represents a registry value entity.
 type RegistryValueEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// RegistryKey entity properties
@@ -8142,10 +8002,10 @@ type Relation struct {
 
 // RelationList - List of relations.
 type RelationList struct {
-	// REQUIRED; The Relation items on this page
+	// REQUIRED; Array of relations.
 	Value []*Relation
 
-	// READ-ONLY; The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of relations.
 	NextLink *string
 }
 
@@ -8220,10 +8080,10 @@ type Repo struct {
 
 // RepoList - List all the source controls.
 type RepoList struct {
-	// REQUIRED; The Repo items on this page
+	// REQUIRED; Array of repositories.
 	Value []*Repo
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of repositories.
 	NextLink *string
 }
 
@@ -8320,9 +8180,7 @@ type ResourceProviderRequiredPermissions struct {
 
 // RestAPIPollerDataConnector - Represents Rest Api Poller data connector.
 type RestAPIPollerDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -8454,9 +8312,7 @@ type RestAPIPollerRequestPagingConfig struct {
 
 // SapSolutionUsageStatistic - Billing statistic about the Microsoft Sentinel solution for SAP Usage
 type SapSolutionUsageStatistic struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the billing statistic
 	Kind *BillingStatisticKind
 
 	// The SAP solution usage object
@@ -8499,9 +8355,7 @@ type SapSolutionUsageStatisticProperties struct {
 
 // ScheduledAlertRule - Represents scheduled alert rule.
 type ScheduledAlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -8609,9 +8463,7 @@ type ScheduledAlertRuleProperties struct {
 
 // ScheduledAlertRuleTemplate - Represents scheduled alert rule template.
 type ScheduledAlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Scheduled alert rule template properties
@@ -8712,9 +8564,7 @@ type ScheduledAlertRuleTemplateProperties struct {
 
 // SecurityAlert - Represents a security alert entity.
 type SecurityAlert struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// SecurityAlert entity properties
@@ -8887,9 +8737,7 @@ func (s *SecurityAlertTimelineItem) GetEntityTimelineItem() *EntityTimelineItem 
 
 // SecurityGroupEntity - Represents a security group entity.
 type SecurityGroupEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// SecurityGroup entity properties
@@ -8940,9 +8788,7 @@ type SecurityGroupEntityProperties struct {
 
 // SecurityMLAnalyticsSetting - Security ML Analytics Setting
 type SecurityMLAnalyticsSetting struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of security ML Analytics Settings
 	Kind *SecurityMLAnalyticsSettingsKind
 
 	// Etag of the azure resource
@@ -8977,10 +8823,10 @@ type SecurityMLAnalyticsSettingsDataSource struct {
 
 // SecurityMLAnalyticsSettingsList - List all the SecurityMLAnalyticsSettings
 type SecurityMLAnalyticsSettingsList struct {
-	// REQUIRED; The SecurityMLAnalyticsSetting items on this page
+	// REQUIRED; Array of SecurityMLAnalyticsSettings
 	Value []SecurityMLAnalyticsSettingClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of SecurityMLAnalyticsSettings.
 	NextLink *string
 }
 
@@ -9077,18 +8923,16 @@ func (s *SessionAuthModel) GetCcpAuthConfig() *CcpAuthConfig {
 
 // SettingList - List of all the settings.
 type SettingList struct {
-	// REQUIRED; The Settings items on this page
+	// REQUIRED; Array of settings.
 	Value []SettingsClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of settings.
 	NextLink *string
 }
 
 // Settings - The Setting.
 type Settings struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the setting
 	Kind *SettingKind
 
 	// Etag of the azure resource
@@ -9133,10 +8977,10 @@ type SourceControl struct {
 
 // SourceControlList - List all the source controls.
 type SourceControlList struct {
-	// REQUIRED; The SourceControl items on this page
+	// REQUIRED; Array of source controls.
 	Value []*SourceControl
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of source controls.
 	NextLink *string
 }
 
@@ -9184,9 +9028,7 @@ type SourceControlProperties struct {
 
 // SubmissionMailEntity - Represents a submission mail entity.
 type SubmissionMailEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Submission mail entity properties
@@ -9301,9 +9143,7 @@ type TICheckRequirementsProperties struct {
 
 // TIDataConnector - Represents threat intelligence data connector.
 type TIDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -9440,10 +9280,10 @@ type TeamInformation struct {
 
 // TemplateList - List of all the template.
 type TemplateList struct {
-	// REQUIRED; The TemplateModel items on this page
+	// REQUIRED; Array of templates.
 	Value []*TemplateModel
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next page of template.
 	NextLink *string
 }
 
@@ -9617,9 +9457,7 @@ type ThreatIntelligence struct {
 
 // ThreatIntelligenceAlertRule - Represents Threat Intelligence alert rule.
 type ThreatIntelligenceAlertRule struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Etag of the azure resource
@@ -9685,9 +9523,7 @@ type ThreatIntelligenceAlertRuleProperties struct {
 
 // ThreatIntelligenceAlertRuleTemplate - Represents Threat Intelligence alert rule template.
 type ThreatIntelligenceAlertRuleTemplate struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the alert rule
 	Kind *AlertRuleKind
 
 	// Threat Intelligence alert rule template properties
@@ -9836,9 +9672,7 @@ type ThreatIntelligenceGranularMarkingModel struct {
 
 // ThreatIntelligenceIndicatorModel - Threat intelligence indicator entity.
 type ThreatIntelligenceIndicatorModel struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *ThreatIntelligenceResourceInnerKind
 
 	// Etag of the azure resource
@@ -9968,9 +9802,7 @@ type ThreatIntelligenceIndicatorProperties struct {
 
 // ThreatIntelligenceInformation - Threat intelligence information object.
 type ThreatIntelligenceInformation struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *ThreatIntelligenceResourceInnerKind
 
 	// Etag of the azure resource
@@ -9996,10 +9828,10 @@ func (t *ThreatIntelligenceInformation) GetThreatIntelligenceInformation() *Thre
 
 // ThreatIntelligenceInformationList - List of all the threat intelligence information objects.
 type ThreatIntelligenceInformationList struct {
-	// REQUIRED; The ThreatIntelligenceInformation items on this page
+	// REQUIRED; Array of threat intelligence information objects.
 	Value []ThreatIntelligenceInformationClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of information objects.
 	NextLink *string
 }
 
@@ -10014,10 +9846,10 @@ type ThreatIntelligenceKillChainPhase struct {
 
 // ThreatIntelligenceList - List all the threat intelligence objects on the workspace that match the provided query.
 type ThreatIntelligenceList struct {
-	// REQUIRED; The TIObject items on this page
+	// REQUIRED; Array of threat intelligence objects on the workspace that match the provided query.
 	Value []TIObjectClassification
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of threat intelligence objects.
 	NextLink *string
 }
 
@@ -10108,9 +9940,7 @@ type TiTaxiiCheckRequirementsProperties struct {
 
 // TiTaxiiDataConnector - Data connector to pull Threat intelligence data from TAXII 2.0/2.1 server
 type TiTaxiiDataConnector struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The data connector kind
 	Kind *DataConnectorKind
 
 	// Etag of the azure resource
@@ -10248,6 +10078,9 @@ type TriggeredAnalyticsRuleRunProperties struct {
 	// REQUIRED
 	ExecutionTimeUTC *time.Time
 
+	// REQUIRED; The triggered analytics rule run provisioning state
+	ProvisioningState *ProvisioningState
+
 	// REQUIRED
 	RuleID *string
 
@@ -10256,25 +10089,20 @@ type TriggeredAnalyticsRuleRunProperties struct {
 
 	// Dictionary of
 	RuleRunAdditionalData map[string]any
-
-	// READ-ONLY; The triggered analytics rule run provisioning state
-	ProvisioningState *ProvisioningState
 }
 
 // TriggeredAnalyticsRuleRuns - The triggered analytics rule run array
 type TriggeredAnalyticsRuleRuns struct {
-	// REQUIRED; The TriggeredAnalyticsRuleRun items on this page
+	// REQUIRED
 	Value []*TriggeredAnalyticsRuleRun
 
-	// The link to the next page of items
+	// READ-ONLY
 	NextLink *string
 }
 
 // URLEntity - Represents a url entity.
 type URLEntity struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the entity.
 	Kind *EntityKindEnum
 
 	// Url entity properties
@@ -10319,9 +10147,7 @@ type URLEntityProperties struct {
 
 // Ueba - Settings with single toggle.
 type Ueba struct {
-	// REQUIRED; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps
-	// are a kind of Microsoft.Web/sites type. If supported, the resource provider must
-	// validate and persist this value.
+	// REQUIRED; The kind of the setting
 	Kind *SettingKind
 
 	// Etag of the azure resource
@@ -10444,10 +10270,10 @@ type WatchlistItem struct {
 
 // WatchlistItemList - List all the watchlist items.
 type WatchlistItemList struct {
-	// REQUIRED; The WatchlistItem items on this page
+	// REQUIRED; Array of watchlist items.
 	Value []*WatchlistItem
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of watchlist items.
 	NextLink *string
 }
 
@@ -10486,10 +10312,10 @@ type WatchlistItemProperties struct {
 
 // WatchlistList - List all the watchlists.
 type WatchlistList struct {
-	// REQUIRED; The Watchlist items on this page
+	// REQUIRED; Array of watchlist.
 	Value []*Watchlist
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of watchlists.
 	NextLink *string
 }
 
@@ -10530,6 +10356,9 @@ type WatchlistProperties struct {
 	// The number of lines in a csv/tsv content to skip before the header
 	NumberOfLinesToSkip *int32
 
+	// The triggered analytics rule run provisioning state
+	ProvisioningState *ProvisioningState
+
 	// The raw content that represents to watchlist items to create. In case of csv/tsv content type, it's the content of the
 	// file that will parsed by the endpoint
 	RawContent *string
@@ -10561,9 +10390,6 @@ type WatchlistProperties struct {
 
 	// The type of the watchlist
 	WatchlistType *string
-
-	// READ-ONLY; Describes provisioning state
-	ProvisioningState *ProvisioningState
 }
 
 // Webhook - Detail about the webhook object.
@@ -10622,10 +10448,10 @@ type WorkspaceManagerAssignment struct {
 
 // WorkspaceManagerAssignmentList - List of all the workspace manager assignments.
 type WorkspaceManagerAssignmentList struct {
-	// REQUIRED; The WorkspaceManagerAssignment items on this page
+	// REQUIRED; Array of workspace manager assignments.
 	Value []*WorkspaceManagerAssignment
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of workspace manager assignments.
 	NextLink *string
 }
 
@@ -10667,10 +10493,10 @@ type WorkspaceManagerConfiguration struct {
 
 // WorkspaceManagerConfigurationList - List all the workspace manager configurations for the workspace.
 type WorkspaceManagerConfigurationList struct {
-	// REQUIRED; The WorkspaceManagerConfiguration items on this page
+	// REQUIRED; Array of workspace manager configurations.
 	Value []*WorkspaceManagerConfiguration
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of workspace manager configurations.
 	NextLink *string
 }
 
@@ -10703,10 +10529,10 @@ type WorkspaceManagerGroup struct {
 
 // WorkspaceManagerGroupList - List of all the workspace manager groups.
 type WorkspaceManagerGroupList struct {
-	// REQUIRED; The WorkspaceManagerGroup items on this page
+	// REQUIRED; Array of workspace manager groups.
 	Value []*WorkspaceManagerGroup
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of workspace manager groups.
 	NextLink *string
 }
 
@@ -10754,9 +10580,9 @@ type WorkspaceManagerMemberProperties struct {
 
 // WorkspaceManagerMembersList - List of workspace manager members
 type WorkspaceManagerMembersList struct {
-	// REQUIRED; The WorkspaceManagerMember items on this page
+	// REQUIRED; Array of workspace manager members
 	Value []*WorkspaceManagerMember
 
-	// The link to the next page of items
+	// READ-ONLY; URL to fetch the next set of workspace manager members
 	NextLink *string
 }

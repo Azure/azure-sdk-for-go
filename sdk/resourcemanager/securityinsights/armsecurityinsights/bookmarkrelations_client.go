@@ -49,7 +49,7 @@ func NewBookmarkRelationsClient(subscriptionID string, credential azcore.TokenCr
 //   - workspaceName - The name of the workspace.
 //   - bookmarkID - Bookmark ID
 //   - relationName - Relation Name
-//   - relation - Resource create parameters.
+//   - relation - The relation model
 //   - options - BookmarkRelationsClientCreateOrUpdateOptions contains the optional parameters for the BookmarkRelationsClient.CreateOrUpdate
 //     method.
 func (client *BookmarkRelationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, relationName string, relation Relation, options *BookmarkRelationsClientCreateOrUpdateOptions) (BookmarkRelationsClientCreateOrUpdateResponse, error) {

@@ -46,7 +46,7 @@ func NewContentPackagesClient(subscriptionID string, credential azcore.TokenCred
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - packageID - package Id
 //   - options - ContentPackagesClientGetOptions contains the optional parameters for the ContentPackagesClient.Get method.
 func (client *ContentPackagesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, packageID string, options *ContentPackagesClientGetOptions) (ContentPackagesClientGetResponse, error) {
@@ -114,7 +114,7 @@ func (client *ContentPackagesClient) getHandleResponse(resp *http.Response) (Con
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - ContentPackagesClientListOptions contains the optional parameters for the ContentPackagesClient.NewListPager
 //     method.
 func (client *ContentPackagesClient) NewListPager(resourceGroupName string, workspaceName string, options *ContentPackagesClientListOptions) *runtime.Pager[ContentPackagesClientListResponse] {

@@ -45,7 +45,7 @@ func NewThreatIntelligenceIndicatorsClient(subscriptionID string, credential azc
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.NewListPager
 //     method.
 func (client *ThreatIntelligenceIndicatorsClient) NewListPager(resourceGroupName string, workspaceName string, options *ThreatIntelligenceIndicatorsClientListOptions) *runtime.Pager[ThreatIntelligenceIndicatorsClientListResponse] {

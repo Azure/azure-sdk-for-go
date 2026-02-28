@@ -121,7 +121,7 @@ func (client *SentinelOnboardingStatesClient) createHandleResponse(resp *http.Re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
 //   - options - SentinelOnboardingStatesClientDeleteOptions contains the optional parameters for the SentinelOnboardingStatesClient.Delete
 //     method.
@@ -181,7 +181,7 @@ func (client *SentinelOnboardingStatesClient) deleteCreateRequest(ctx context.Co
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - sentinelOnboardingStateName - The Sentinel onboarding state name. Supports - default
 //   - options - SentinelOnboardingStatesClientGetOptions contains the optional parameters for the SentinelOnboardingStatesClient.Get
 //     method.
@@ -251,7 +251,7 @@ func (client *SentinelOnboardingStatesClient) getHandleResponse(resp *http.Respo
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - SentinelOnboardingStatesClientListOptions contains the optional parameters for the SentinelOnboardingStatesClient.List
 //     method.
 func (client *SentinelOnboardingStatesClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *SentinelOnboardingStatesClientListOptions) (SentinelOnboardingStatesClientListResponse, error) {

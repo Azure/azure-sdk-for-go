@@ -46,7 +46,7 @@ func NewAutomationRulesClient(subscriptionID string, credential azcore.TokenCred
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - automationRuleID - The automation rule ID.
+//   - automationRuleID - Automation rule ID
 //   - options - AutomationRulesClientCreateOrUpdateOptions contains the optional parameters for the AutomationRulesClient.CreateOrUpdate
 //     method.
 func (client *AutomationRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientCreateOrUpdateOptions) (AutomationRulesClientCreateOrUpdateResponse, error) {
@@ -121,7 +121,7 @@ func (client *AutomationRulesClient) createOrUpdateHandleResponse(resp *http.Res
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - automationRuleID - Automation rule ID
 //   - options - AutomationRulesClientDeleteOptions contains the optional parameters for the AutomationRulesClient.Delete method.
 func (client *AutomationRulesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientDeleteOptions) (AutomationRulesClientDeleteResponse, error) {
@@ -190,7 +190,7 @@ func (client *AutomationRulesClient) deleteHandleResponse(resp *http.Response) (
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - automationRuleID - Automation rule ID
 //   - options - AutomationRulesClientGetOptions contains the optional parameters for the AutomationRulesClient.Get method.
 func (client *AutomationRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, automationRuleID string, options *AutomationRulesClientGetOptions) (AutomationRulesClientGetResponse, error) {
@@ -258,7 +258,7 @@ func (client *AutomationRulesClient) getHandleResponse(resp *http.Response) (Aut
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - AutomationRulesClientListOptions contains the optional parameters for the AutomationRulesClient.NewListPager
 //     method.
 func (client *AutomationRulesClient) NewListPager(resourceGroupName string, workspaceName string, options *AutomationRulesClientListOptions) *runtime.Pager[AutomationRulesClientListResponse] {

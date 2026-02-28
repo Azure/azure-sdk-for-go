@@ -45,7 +45,7 @@ func NewAlertRuleTemplatesClient(subscriptionID string, credential azcore.TokenC
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - alertRuleTemplateID - Alert rule template ID
 //   - options - AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
 func (client *AlertRuleTemplatesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string, options *AlertRuleTemplatesClientGetOptions) (AlertRuleTemplatesClientGetResponse, error) {
@@ -113,7 +113,7 @@ func (client *AlertRuleTemplatesClient) getHandleResponse(resp *http.Response) (
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.NewListPager
 //     method.
 func (client *AlertRuleTemplatesClient) NewListPager(resourceGroupName string, workspaceName string, options *AlertRuleTemplatesClientListOptions) *runtime.Pager[AlertRuleTemplatesClientListResponse] {

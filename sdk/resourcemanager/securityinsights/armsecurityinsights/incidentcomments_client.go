@@ -46,7 +46,7 @@ func NewIncidentCommentsClient(subscriptionID string, credential azcore.TokenCre
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incidentCommentID - Incident comment ID
 //   - incidentComment - The incident comment
@@ -125,7 +125,7 @@ func (client *IncidentCommentsClient) createOrUpdateHandleResponse(resp *http.Re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incidentCommentID - Incident comment ID
 //   - options - IncidentCommentsClientDeleteOptions contains the optional parameters for the IncidentCommentsClient.Delete method.
@@ -189,7 +189,7 @@ func (client *IncidentCommentsClient) deleteCreateRequest(ctx context.Context, r
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incidentCommentID - Incident comment ID
 //   - options - IncidentCommentsClientGetOptions contains the optional parameters for the IncidentCommentsClient.Get method.
@@ -262,7 +262,7 @@ func (client *IncidentCommentsClient) getHandleResponse(resp *http.Response) (In
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentCommentsClientListOptions contains the optional parameters for the IncidentCommentsClient.NewListPager
 //     method.

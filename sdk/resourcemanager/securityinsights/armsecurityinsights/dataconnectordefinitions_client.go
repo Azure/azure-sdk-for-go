@@ -45,7 +45,7 @@ func NewDataConnectorDefinitionsClient(subscriptionID string, credential azcore.
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorDefinitionName - The data connector definition name.
 //   - connectorDefinitionInput - The data connector definition
 //   - options - DataConnectorDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the DataConnectorDefinitionsClient.CreateOrUpdate
@@ -119,7 +119,7 @@ func (client *DataConnectorDefinitionsClient) createOrUpdateHandleResponse(resp 
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorDefinitionName - The data connector definition name.
 //   - options - DataConnectorDefinitionsClientDeleteOptions contains the optional parameters for the DataConnectorDefinitionsClient.Delete
 //     method.
@@ -179,7 +179,7 @@ func (client *DataConnectorDefinitionsClient) deleteCreateRequest(ctx context.Co
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorDefinitionName - The data connector definition name.
 //   - options - DataConnectorDefinitionsClientGetOptions contains the optional parameters for the DataConnectorDefinitionsClient.Get
 //     method.
@@ -248,7 +248,7 @@ func (client *DataConnectorDefinitionsClient) getHandleResponse(resp *http.Respo
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - DataConnectorDefinitionsClientListOptions contains the optional parameters for the DataConnectorDefinitionsClient.NewListPager
 //     method.
 func (client *DataConnectorDefinitionsClient) NewListPager(resourceGroupName string, workspaceName string, options *DataConnectorDefinitionsClientListOptions) *runtime.Pager[DataConnectorDefinitionsClientListResponse] {

@@ -47,7 +47,7 @@ func NewWatchlistsClient(subscriptionID string, credential azcore.TokenCredentia
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - watchlist - The watchlist
 //   - options - WatchlistsClientBeginCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.BeginCreateOrUpdate
@@ -135,7 +135,7 @@ func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context,
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - options - WatchlistsClientBeginDeleteOptions contains the optional parameters for the WatchlistsClient.BeginDelete method.
 func (client *WatchlistsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientBeginDeleteOptions) (*runtime.Poller[WatchlistsClientDeleteResponse], error) {
@@ -216,7 +216,7 @@ func (client *WatchlistsClient) deleteCreateRequest(ctx context.Context, resourc
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - options - WatchlistsClientGetOptions contains the optional parameters for the WatchlistsClient.Get method.
 func (client *WatchlistsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientGetOptions) (WatchlistsClientGetResponse, error) {
@@ -284,7 +284,7 @@ func (client *WatchlistsClient) getHandleResponse(resp *http.Response) (Watchlis
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.NewListPager method.
 func (client *WatchlistsClient) NewListPager(resourceGroupName string, workspaceName string, options *WatchlistsClientListOptions) *runtime.Pager[WatchlistsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WatchlistsClientListResponse]{

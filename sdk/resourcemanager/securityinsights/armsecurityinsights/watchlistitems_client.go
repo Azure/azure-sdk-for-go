@@ -45,7 +45,7 @@ func NewWatchlistItemsClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - watchlistItemID - The watchlist item id (GUID)
 //   - watchlistItem - The watchlist item
@@ -124,7 +124,7 @@ func (client *WatchlistItemsClient) createOrUpdateHandleResponse(resp *http.Resp
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - watchlistItemID - The watchlist item id (GUID)
 //   - options - WatchlistItemsClientDeleteOptions contains the optional parameters for the WatchlistItemsClient.Delete method.
@@ -188,7 +188,7 @@ func (client *WatchlistItemsClient) deleteCreateRequest(ctx context.Context, res
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - watchlistItemID - The watchlist item id (GUID)
 //   - options - WatchlistItemsClientGetOptions contains the optional parameters for the WatchlistItemsClient.Get method.
@@ -261,7 +261,7 @@ func (client *WatchlistItemsClient) getHandleResponse(resp *http.Response) (Watc
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - watchlistAlias - The watchlist alias
 //   - options - WatchlistItemsClientListOptions contains the optional parameters for the WatchlistItemsClient.NewListPager method.
 func (client *WatchlistItemsClient) NewListPager(resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistItemsClientListOptions) *runtime.Pager[WatchlistItemsClientListResponse] {

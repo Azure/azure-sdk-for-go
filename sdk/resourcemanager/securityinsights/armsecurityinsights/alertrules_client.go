@@ -45,7 +45,7 @@ func NewAlertRulesClient(subscriptionID string, credential azcore.TokenCredentia
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - alertRule - The alert rule
 //   - options - AlertRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertRulesClient.CreateOrUpdate
@@ -119,7 +119,7 @@ func (client *AlertRulesClient) createOrUpdateHandleResponse(resp *http.Response
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - options - AlertRulesClientDeleteOptions contains the optional parameters for the AlertRulesClient.Delete method.
 func (client *AlertRulesClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, options *AlertRulesClientDeleteOptions) (AlertRulesClientDeleteResponse, error) {
@@ -178,7 +178,7 @@ func (client *AlertRulesClient) deleteCreateRequest(ctx context.Context, resourc
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - ruleID - Alert rule ID
 //   - options - AlertRulesClientGetOptions contains the optional parameters for the AlertRulesClient.Get method.
 func (client *AlertRulesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, options *AlertRulesClientGetOptions) (AlertRulesClientGetResponse, error) {
@@ -246,7 +246,7 @@ func (client *AlertRulesClient) getHandleResponse(resp *http.Response) (AlertRul
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - AlertRulesClientListOptions contains the optional parameters for the AlertRulesClient.NewListPager method.
 func (client *AlertRulesClient) NewListPager(resourceGroupName string, workspaceName string, options *AlertRulesClientListOptions) *runtime.Pager[AlertRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertRulesClientListResponse]{

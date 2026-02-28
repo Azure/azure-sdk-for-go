@@ -9,9 +9,6 @@ package armsecurityinsights
 type ActionsClientCreateOrUpdateResponse struct {
 	// Action for alert rule.
 	ActionResponse
-
-	// RetryAfter contains the information returned from the Retry-After header response.
-	RetryAfter *int32
 }
 
 // ActionsClientDeleteResponse contains the response from method ActionsClient.Delete.
@@ -33,8 +30,7 @@ type ActionsClientListByAlertRuleResponse struct {
 
 // AlertRuleClientTriggerRuleRunResponse contains the response from method AlertRuleClient.BeginTriggerRuleRun.
 type AlertRuleClientTriggerRuleRunResponse struct {
-	// Alert rule.
-	AlertRuleClassification
+	// placeholder for future response values
 }
 
 // AlertRuleTemplatesClientGetResponse contains the response from method AlertRuleTemplatesClient.Get.
@@ -74,7 +70,6 @@ type AlertRulesClientListResponse struct {
 
 // AutomationRulesClientCreateOrUpdateResponse contains the response from method AutomationRulesClient.CreateOrUpdate.
 type AutomationRulesClientCreateOrUpdateResponse struct {
-	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	AutomationRule
 }
 
@@ -86,13 +81,11 @@ type AutomationRulesClientDeleteResponse struct {
 
 // AutomationRulesClientGetResponse contains the response from method AutomationRulesClient.Get.
 type AutomationRulesClientGetResponse struct {
-	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
 	AutomationRule
 }
 
 // AutomationRulesClientListResponse contains the response from method AutomationRulesClient.NewListPager.
 type AutomationRulesClientListResponse struct {
-	// Paged collection of AutomationRule items
 	AutomationRulesList
 }
 

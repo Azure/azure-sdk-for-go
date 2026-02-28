@@ -45,7 +45,7 @@ func NewContentPackageClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - packageID - package Id
 //   - packageInstallationProperties - Package installation properties
 //   - options - ContentPackageClientInstallOptions contains the optional parameters for the ContentPackageClient.Install method.
@@ -118,7 +118,7 @@ func (client *ContentPackageClient) installHandleResponse(resp *http.Response) (
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - packageID - package Id
 //   - options - ContentPackageClientUninstallOptions contains the optional parameters for the ContentPackageClient.Uninstall
 //     method.

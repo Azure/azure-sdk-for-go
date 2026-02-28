@@ -47,7 +47,7 @@ func NewContentTemplatesClient(subscriptionID string, credential azcore.TokenCre
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - ContentTemplatesClientListOptions contains the optional parameters for the ContentTemplatesClient.NewListPager
 //     method.
 func (client *ContentTemplatesClient) NewListPager(resourceGroupName string, workspaceName string, options *ContentTemplatesClientListOptions) *runtime.Pager[ContentTemplatesClientListResponse] {

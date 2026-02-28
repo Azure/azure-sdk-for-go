@@ -46,7 +46,7 @@ func NewIncidentsClient(subscriptionID string, credential azcore.TokenCredential
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - incident - The incident
 //   - options - IncidentsClientCreateOrUpdateOptions contains the optional parameters for the IncidentsClient.CreateOrUpdate
@@ -120,7 +120,7 @@ func (client *IncidentsClient) createOrUpdateHandleResponse(resp *http.Response)
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentsClientDeleteOptions contains the optional parameters for the IncidentsClient.Delete method.
 func (client *IncidentsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientDeleteOptions) (IncidentsClientDeleteResponse, error) {
@@ -179,7 +179,7 @@ func (client *IncidentsClient) deleteCreateRequest(ctx context.Context, resource
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentsClientGetOptions contains the optional parameters for the IncidentsClient.Get method.
 func (client *IncidentsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientGetOptions) (IncidentsClientGetResponse, error) {
@@ -247,7 +247,7 @@ func (client *IncidentsClient) getHandleResponse(resp *http.Response) (Incidents
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - IncidentsClientListOptions contains the optional parameters for the IncidentsClient.NewListPager method.
 func (client *IncidentsClient) NewListPager(resourceGroupName string, workspaceName string, options *IncidentsClientListOptions) *runtime.Pager[IncidentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IncidentsClientListResponse]{
@@ -324,7 +324,7 @@ func (client *IncidentsClient) listHandleResponse(resp *http.Response) (Incident
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentsClientListAlertsOptions contains the optional parameters for the IncidentsClient.ListAlerts method.
 func (client *IncidentsClient) ListAlerts(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListAlertsOptions) (IncidentsClientListAlertsResponse, error) {
@@ -393,7 +393,7 @@ func (client *IncidentsClient) listAlertsHandleResponse(resp *http.Response) (In
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentsClientListBookmarksOptions contains the optional parameters for the IncidentsClient.ListBookmarks method.
 func (client *IncidentsClient) ListBookmarks(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListBookmarksOptions) (IncidentsClientListBookmarksResponse, error) {
@@ -462,7 +462,7 @@ func (client *IncidentsClient) listBookmarksHandleResponse(resp *http.Response) 
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - incidentID - Incident ID
 //   - options - IncidentsClientListEntitiesOptions contains the optional parameters for the IncidentsClient.ListEntities method.
 func (client *IncidentsClient) ListEntities(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, options *IncidentsClientListEntitiesOptions) (IncidentsClientListEntitiesResponse, error) {
@@ -532,7 +532,6 @@ func (client *IncidentsClient) listEntitiesHandleResponse(resp *http.Response) (
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - incidentIdentifier - The incident identifier.
 //   - options - IncidentsClientRunPlaybookOptions contains the optional parameters for the IncidentsClient.RunPlaybook method.
 func (client *IncidentsClient) RunPlaybook(ctx context.Context, resourceGroupName string, workspaceName string, incidentIdentifier string, options *IncidentsClientRunPlaybookOptions) (IncidentsClientRunPlaybookResponse, error) {
 	var err error

@@ -330,19 +330,20 @@ func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesC
 func (client *EntitiesClient) NewQueriesPager(resourceGroupName string, workspaceName string, entityID string, kind EntityItemQueryKind, options *EntitiesClientQueriesOptions) *runtime.Pager[EntitiesClientQueriesResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EntitiesClientQueriesResponse]{
 		More: func(page EntitiesClientQueriesResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+			return false
 		},
 		Fetcher: func(ctx context.Context, page *EntitiesClientQueriesResponse) (EntitiesClientQueriesResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "EntitiesClient.NewQueriesPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.queriesCreateRequest(ctx, resourceGroupName, workspaceName, entityID, kind, options)
-			}, nil)
+			req, err := client.queriesCreateRequest(ctx, resourceGroupName, workspaceName, entityID, kind, options)
 			if err != nil {
 				return EntitiesClientQueriesResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EntitiesClientQueriesResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return EntitiesClientQueriesResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.queriesHandleResponse(resp)
 		},
@@ -396,7 +397,7 @@ func (client *EntitiesClient) queriesHandleResponse(resp *http.Response) (Entiti
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - entityIdentifier - entity ID
+//   - entityIdentifier - Entity identifier.
 //   - options - EntitiesClientRunPlaybookOptions contains the optional parameters for the EntitiesClient.RunPlaybook method.
 func (client *EntitiesClient) RunPlaybook(ctx context.Context, resourceGroupName string, workspaceName string, entityIdentifier string, options *EntitiesClientRunPlaybookOptions) (EntitiesClientRunPlaybookResponse, error) {
 	var err error

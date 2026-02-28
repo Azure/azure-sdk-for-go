@@ -45,7 +45,7 @@ func NewSourceControlsClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - sourceControlID - Source control Id
 //   - sourceControl - The SourceControl
 //   - options - SourceControlsClientCreateOptions contains the optional parameters for the SourceControlsClient.Create method.
@@ -118,7 +118,7 @@ func (client *SourceControlsClient) createHandleResponse(resp *http.Response) (S
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - sourceControlID - Source control Id
 //   - repositoryAccess - The repository access credentials.
 //   - options - SourceControlsClientDeleteOptions contains the optional parameters for the SourceControlsClient.Delete method.
@@ -191,7 +191,7 @@ func (client *SourceControlsClient) deleteHandleResponse(resp *http.Response) (S
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - sourceControlID - Source control Id
 //   - options - SourceControlsClientGetOptions contains the optional parameters for the SourceControlsClient.Get method.
 func (client *SourceControlsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, sourceControlID string, options *SourceControlsClientGetOptions) (SourceControlsClientGetResponse, error) {
@@ -259,7 +259,7 @@ func (client *SourceControlsClient) getHandleResponse(resp *http.Response) (Sour
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - SourceControlsClientListOptions contains the optional parameters for the SourceControlsClient.NewListPager method.
 func (client *SourceControlsClient) NewListPager(resourceGroupName string, workspaceName string, options *SourceControlsClientListOptions) *runtime.Pager[SourceControlsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SourceControlsClientListResponse]{

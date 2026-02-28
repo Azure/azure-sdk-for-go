@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/78d844e37cc56936fa63ea1e4e8a820d9a009384/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/contentPackages/GetProductPackages.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0d9b77817effe915b68e20d1a1830bf3b682cbd3/specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights/preview/2025-07-01-preview/examples/contentPackages/GetProductPackages.json
 func ExampleProductPackagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,6 @@ func ExampleProductPackagesClient_NewListPager() {
 		// 					},
 		// 					DisplayName: to.Ptr("str"),
 		// 					FirstPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse("2006-01-02", "2022-04-01"); return t}()),
-		// 					InstalledVersion: to.Ptr("2.0.0"),
 		// 					Providers: []*string{
 		// 						to.Ptr("Microsoft")},
 		// 						Source: &armsecurityinsights.MetadataSource{
@@ -98,6 +97,7 @@ func ExampleProductPackagesClient_NewListPager() {
 		// 							Tier: to.Ptr(armsecurityinsights.SupportTierMicrosoft),
 		// 						},
 		// 						Version: to.Ptr("2.0.0"),
+		// 						InstalledVersion: to.Ptr("2.0.0"),
 		// 					},
 		// 			}},
 		// 		}

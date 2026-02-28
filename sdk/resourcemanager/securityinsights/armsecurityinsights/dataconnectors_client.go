@@ -45,9 +45,9 @@ func NewDataConnectorsClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorID - Connector ID
-//   - connectBody - The content of the action request
+//   - connectBody - The data connector
 //   - options - DataConnectorsClientConnectOptions contains the optional parameters for the DataConnectorsClient.Connect method.
 func (client *DataConnectorsClient) Connect(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, connectBody DataConnectorConnectBody, options *DataConnectorsClientConnectOptions) (DataConnectorsClientConnectResponse, error) {
 	var err error
@@ -108,7 +108,7 @@ func (client *DataConnectorsClient) connectCreateRequest(ctx context.Context, re
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorID - Connector ID
 //   - dataConnector - The data connector
 //   - options - DataConnectorsClientCreateOrUpdateOptions contains the optional parameters for the DataConnectorsClient.CreateOrUpdate
@@ -182,7 +182,7 @@ func (client *DataConnectorsClient) createOrUpdateHandleResponse(resp *http.Resp
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorID - Connector ID
 //   - options - DataConnectorsClientDeleteOptions contains the optional parameters for the DataConnectorsClient.Delete method.
 func (client *DataConnectorsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *DataConnectorsClientDeleteOptions) (DataConnectorsClientDeleteResponse, error) {
@@ -241,7 +241,7 @@ func (client *DataConnectorsClient) deleteCreateRequest(ctx context.Context, res
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorID - Connector ID
 //   - options - DataConnectorsClientDisconnectOptions contains the optional parameters for the DataConnectorsClient.Disconnect
 //     method.
@@ -301,7 +301,7 @@ func (client *DataConnectorsClient) disconnectCreateRequest(ctx context.Context,
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - dataConnectorID - Connector ID
 //   - options - DataConnectorsClientGetOptions contains the optional parameters for the DataConnectorsClient.Get method.
 func (client *DataConnectorsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataConnectorID string, options *DataConnectorsClientGetOptions) (DataConnectorsClientGetResponse, error) {
@@ -369,7 +369,7 @@ func (client *DataConnectorsClient) getHandleResponse(resp *http.Response) (Data
 //
 // Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the monitor workspace.
+//   - workspaceName - The name of the workspace.
 //   - options - DataConnectorsClientListOptions contains the optional parameters for the DataConnectorsClient.NewListPager method.
 func (client *DataConnectorsClient) NewListPager(resourceGroupName string, workspaceName string, options *DataConnectorsClientListOptions) *runtime.Pager[DataConnectorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataConnectorsClientListResponse]{

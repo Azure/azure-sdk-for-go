@@ -17,7 +17,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"strconv"
 )
 
 // ActionsServer is a fake server for instances of the armsecurityinsights.ActionsClient type.
@@ -147,9 +146,6 @@ func (a *ActionsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ActionResponse, req)
 	if err != nil {
 		return nil, err
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
 	}
 	return resp, nil
 }

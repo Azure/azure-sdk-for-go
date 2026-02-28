@@ -44,7 +44,7 @@ func NewProjectConnectionsClient(subscriptionID string, credential azcore.TokenC
 // Create - Create or update Cognitive Services project connection under the specified project.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -101,7 +101,7 @@ func (client *ProjectConnectionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Connection != nil {
@@ -125,7 +125,7 @@ func (client *ProjectConnectionsClient) createHandleResponse(resp *http.Response
 // Delete - Delete Cognitive Services project connection by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -181,7 +181,7 @@ func (client *ProjectConnectionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -190,7 +190,7 @@ func (client *ProjectConnectionsClient) deleteCreateRequest(ctx context.Context,
 // Get - Lists Cognitive Services project connection by name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -246,7 +246,7 @@ func (client *ProjectConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,7 +263,7 @@ func (client *ProjectConnectionsClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - Lists all the available Cognitive Services project connections under the specified project.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -316,7 +316,7 @@ func (client *ProjectConnectionsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	if options != nil && options.Category != nil {
 		reqQP.Set("category", *options.Category)
 	}
@@ -343,7 +343,7 @@ func (client *ProjectConnectionsClient) listHandleResponse(resp *http.Response) 
 // Update - Update Cognitive Services project connection under the specified project.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - projectName - The name of Cognitive Services account's project.
@@ -400,7 +400,7 @@ func (client *ProjectConnectionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Connection != nil {

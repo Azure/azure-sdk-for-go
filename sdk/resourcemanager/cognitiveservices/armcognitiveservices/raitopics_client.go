@@ -43,7 +43,7 @@ func NewRaiTopicsClient(subscriptionID string, credential azcore.TokenCredential
 // CreateOrUpdate - Create the rai topic associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiTopicName - The name of the Rai Topic associated with the Cognitive Services Account
@@ -96,7 +96,7 @@ func (client *RaiTopicsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiTopic); err != nil {
@@ -117,7 +117,7 @@ func (client *RaiTopicsClient) createOrUpdateHandleResponse(resp *http.Response)
 // BeginDelete - Deletes the specified custom topic associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiTopicName - The name of the Rai Topic associated with the Cognitive Services Account
@@ -143,7 +143,7 @@ func (client *RaiTopicsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes the specified custom topic associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 func (client *RaiTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiTopicName string, options *RaiTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiTopicsClient.BeginDelete"
@@ -189,7 +189,7 @@ func (client *RaiTopicsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +198,7 @@ func (client *RaiTopicsClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets the specified custom topic associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiTopicName - The name of the Rai Topic associated with the Cognitive Services Account
@@ -249,7 +249,7 @@ func (client *RaiTopicsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *RaiTopicsClient) getHandleResponse(resp *http.Response) (RaiTopics
 
 // NewListPager - Gets the custom topics associated with the Azure OpenAI account.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - RaiTopicsClientListOptions contains the optional parameters for the RaiTopicsClient.NewListPager method.
@@ -313,7 +313,7 @@ func (client *RaiTopicsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

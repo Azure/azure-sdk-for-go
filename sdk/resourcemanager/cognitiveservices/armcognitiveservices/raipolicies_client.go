@@ -43,7 +43,7 @@ func NewRaiPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 // CreateOrUpdate - Update the state of specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
@@ -75,6 +75,10 @@ func (client *RaiPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGro
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, _ *RaiPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -83,10 +87,6 @@ func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if raiPolicyName == "" {
 		return nil, errors.New("parameter raiPolicyName cannot be empty")
 	}
@@ -96,7 +96,7 @@ func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiPolicy); err != nil {
@@ -117,7 +117,7 @@ func (client *RaiPoliciesClient) createOrUpdateHandleResponse(resp *http.Respons
 // BeginDelete - Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
@@ -143,7 +143,7 @@ func (client *RaiPoliciesClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiPoliciesClient.BeginDelete"
@@ -168,6 +168,10 @@ func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGr
 // deleteCreateRequest creates the Delete request.
 func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, _ *RaiPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -176,10 +180,6 @@ func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if raiPolicyName == "" {
 		return nil, errors.New("parameter raiPolicyName cannot be empty")
 	}
@@ -189,7 +189,7 @@ func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +198,7 @@ func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 // Get - Gets the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - raiPolicyName - The name of the RaiPolicy associated with the Cognitive Services Account
@@ -228,6 +228,10 @@ func (client *RaiPoliciesClient) Get(ctx context.Context, resourceGroupName stri
 // getCreateRequest creates the Get request.
 func (client *RaiPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, _ *RaiPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -236,10 +240,6 @@ func (client *RaiPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if raiPolicyName == "" {
 		return nil, errors.New("parameter raiPolicyName cannot be empty")
 	}
@@ -249,7 +249,7 @@ func (client *RaiPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *RaiPoliciesClient) getHandleResponse(resp *http.Response) (RaiPoli
 
 // NewListPager - Gets the content filters associated with the Azure OpenAI account.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
@@ -296,6 +296,10 @@ func (client *RaiPoliciesClient) NewListPager(resourceGroupName string, accountN
 // listCreateRequest creates the List request.
 func (client *RaiPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *RaiPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -304,16 +308,12 @@ func (client *RaiPoliciesClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

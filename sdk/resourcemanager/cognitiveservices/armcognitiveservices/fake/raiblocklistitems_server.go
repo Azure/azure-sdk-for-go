@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -27,7 +27,7 @@ type RaiBlocklistItemsServer struct {
 
 	// BatchDelete is the fake for method RaiBlocklistItemsClient.BatchDelete
 	// HTTP status codes to indicate success: http.StatusNoContent
-	BatchDelete func(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames any, options *armcognitiveservices.RaiBlocklistItemsClientBatchDeleteOptions) (resp azfake.Responder[armcognitiveservices.RaiBlocklistItemsClientBatchDeleteResponse], errResp azfake.ErrorResponder)
+	BatchDelete func(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames []*string, options *armcognitiveservices.RaiBlocklistItemsClientBatchDeleteOptions) (resp azfake.Responder[armcognitiveservices.RaiBlocklistItemsClientBatchDeleteResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdate is the fake for method RaiBlocklistItemsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -170,7 +170,7 @@ func (r *RaiBlocklistItemsServerTransport) dispatchBatchDelete(req *http.Request
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[any](req)
+	body, err := server.UnmarshalRequestAsJSON[[]*string](req)
 	if err != nil {
 		return nil, err
 	}

@@ -57,6 +57,22 @@ func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	}
 }
 
+// NewAgentApplicationsClient creates a new instance of AgentApplicationsClient.
+func (c *ClientFactory) NewAgentApplicationsClient() *AgentApplicationsClient {
+	return &AgentApplicationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewAgentDeploymentsClient creates a new instance of AgentDeploymentsClient.
+func (c *ClientFactory) NewAgentDeploymentsClient() *AgentDeploymentsClient {
+	return &AgentDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCommitmentPlansClient creates a new instance of CommitmentPlansClient.
 func (c *ClientFactory) NewCommitmentPlansClient() *CommitmentPlansClient {
 	return &CommitmentPlansClient{
@@ -113,6 +129,22 @@ func (c *ClientFactory) NewLocationBasedModelCapacitiesClient() *LocationBasedMo
 	}
 }
 
+// NewManagedNetworkProvisionsClient creates a new instance of ManagedNetworkProvisionsClient.
+func (c *ClientFactory) NewManagedNetworkProvisionsClient() *ManagedNetworkProvisionsClient {
+	return &ManagedNetworkProvisionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedNetworkSettingsClient creates a new instance of ManagedNetworkSettingsClient.
+func (c *ClientFactory) NewManagedNetworkSettingsClient() *ManagedNetworkSettingsClient {
+	return &ManagedNetworkSettingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManagementClient creates a new instance of ManagementClient.
 func (c *ClientFactory) NewManagementClient() *ManagementClient {
 	return &ManagementClient{
@@ -149,6 +181,22 @@ func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *Netwo
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewOutboundRuleClient creates a new instance of OutboundRuleClient.
+func (c *ClientFactory) NewOutboundRuleClient() *OutboundRuleClient {
+	return &OutboundRuleClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewOutboundRulesClient creates a new instance of OutboundRulesClient.
+func (c *ClientFactory) NewOutboundRulesClient() *OutboundRulesClient {
+	return &OutboundRulesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 
@@ -224,9 +272,33 @@ func (c *ClientFactory) NewRaiContentFiltersClient() *RaiContentFiltersClient {
 	}
 }
 
+// NewRaiExternalSafetyProviderClient creates a new instance of RaiExternalSafetyProviderClient.
+func (c *ClientFactory) NewRaiExternalSafetyProviderClient() *RaiExternalSafetyProviderClient {
+	return &RaiExternalSafetyProviderClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRaiExternalSafetyProvidersClient creates a new instance of RaiExternalSafetyProvidersClient.
+func (c *ClientFactory) NewRaiExternalSafetyProvidersClient() *RaiExternalSafetyProvidersClient {
+	return &RaiExternalSafetyProvidersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewRaiPoliciesClient creates a new instance of RaiPoliciesClient.
 func (c *ClientFactory) NewRaiPoliciesClient() *RaiPoliciesClient {
 	return &RaiPoliciesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRaiToolLabelsClient creates a new instance of RaiToolLabelsClient.
+func (c *ClientFactory) NewRaiToolLabelsClient() *RaiToolLabelsClient {
+	return &RaiToolLabelsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -243,6 +315,22 @@ func (c *ClientFactory) NewRaiTopicsClient() *RaiTopicsClient {
 // NewResourceSKUsClient creates a new instance of ResourceSKUsClient.
 func (c *ClientFactory) NewResourceSKUsClient() *ResourceSKUsClient {
 	return &ResourceSKUsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSubscriptionRaiPolicyClient creates a new instance of SubscriptionRaiPolicyClient.
+func (c *ClientFactory) NewSubscriptionRaiPolicyClient() *SubscriptionRaiPolicyClient {
+	return &SubscriptionRaiPolicyClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTestRaiExternalSafetyProviderClient creates a new instance of TestRaiExternalSafetyProviderClient.
+func (c *ClientFactory) NewTestRaiExternalSafetyProviderClient() *TestRaiExternalSafetyProviderClient {
+	return &TestRaiExternalSafetyProviderClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

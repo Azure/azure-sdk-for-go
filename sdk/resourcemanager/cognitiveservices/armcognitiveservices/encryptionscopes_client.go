@@ -43,7 +43,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Update the state of specified encryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - encryptionScopeName - The name of the encryptionScope associated with the Cognitive Services Account
@@ -75,6 +75,10 @@ func (client *EncryptionScopesClient) CreateOrUpdate(ctx context.Context, resour
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *EncryptionScopesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, encryptionScope EncryptionScope, _ *EncryptionScopesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -83,10 +87,6 @@ func (client *EncryptionScopesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if encryptionScopeName == "" {
 		return nil, errors.New("parameter encryptionScopeName cannot be empty")
 	}
@@ -96,7 +96,7 @@ func (client *EncryptionScopesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, encryptionScope); err != nil {
@@ -117,7 +117,7 @@ func (client *EncryptionScopesClient) createOrUpdateHandleResponse(resp *http.Re
 // BeginDelete - Deletes the specified encryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - encryptionScopeName - The name of the encryptionScope associated with the Cognitive Services Account
@@ -130,7 +130,8 @@ func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceG
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EncryptionScopesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -143,7 +144,7 @@ func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deletes the specified encryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 func (client *EncryptionScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EncryptionScopesClient.BeginDelete"
@@ -168,6 +169,10 @@ func (client *EncryptionScopesClient) deleteOperation(ctx context.Context, resou
 // deleteCreateRequest creates the Delete request.
 func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, _ *EncryptionScopesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -176,10 +181,6 @@ func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if encryptionScopeName == "" {
 		return nil, errors.New("parameter encryptionScopeName cannot be empty")
 	}
@@ -189,7 +190,7 @@ func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,7 +199,7 @@ func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, r
 // Get - Gets the specified EncryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - encryptionScopeName - The name of the encryptionScope associated with the Cognitive Services Account
@@ -228,6 +229,10 @@ func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName
 // getCreateRequest creates the Get request.
 func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, _ *EncryptionScopesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes/{encryptionScopeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -236,10 +241,6 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if encryptionScopeName == "" {
 		return nil, errors.New("parameter encryptionScopeName cannot be empty")
 	}
@@ -249,7 +250,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +267,7 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *http.Response) (En
 
 // NewListPager - Gets the content filters associated with the Azure OpenAI account.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
 //   - options - EncryptionScopesClientListOptions contains the optional parameters for the EncryptionScopesClient.NewListPager
@@ -297,6 +298,10 @@ func (client *EncryptionScopesClient) NewListPager(resourceGroupName string, acc
 // listCreateRequest creates the List request.
 func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *EncryptionScopesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/encryptionScopes"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -305,16 +310,12 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

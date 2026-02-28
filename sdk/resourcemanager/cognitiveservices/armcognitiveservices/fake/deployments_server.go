@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -40,6 +40,14 @@ type DeploymentsServer struct {
 	// NewListSKUsPager is the fake for method DeploymentsClient.NewListSKUsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSKUsPager func(resourceGroupName string, accountName string, deploymentName string, options *armcognitiveservices.DeploymentsClientListSKUsOptions) (resp azfake.PagerResponder[armcognitiveservices.DeploymentsClientListSKUsResponse])
+
+	// Pause is the fake for method DeploymentsClient.Pause
+	// HTTP status codes to indicate success: http.StatusOK
+	Pause func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *armcognitiveservices.DeploymentsClientPauseOptions) (resp azfake.Responder[armcognitiveservices.DeploymentsClientPauseResponse], errResp azfake.ErrorResponder)
+
+	// Resume is the fake for method DeploymentsClient.Resume
+	// HTTP status codes to indicate success: http.StatusOK
+	Resume func(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *armcognitiveservices.DeploymentsClientResumeOptions) (resp azfake.Responder[armcognitiveservices.DeploymentsClientResumeResponse], errResp azfake.ErrorResponder)
 
 	// BeginUpdate is the fake for method DeploymentsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -104,6 +112,10 @@ func (d *DeploymentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DeploymentsClient.NewListSKUsPager":
 				res.resp, res.err = d.dispatchNewListSKUsPager(req)
+			case "DeploymentsClient.Pause":
+				res.resp, res.err = d.dispatchPause(req)
+			case "DeploymentsClient.Resume":
+				res.resp, res.err = d.dispatchResume(req)
 			case "DeploymentsClient.BeginUpdate":
 				res.resp, res.err = d.dispatchBeginUpdate(req)
 			default:
@@ -344,6 +356,80 @@ func (d *DeploymentsServerTransport) dispatchNewListSKUsPager(req *http.Request)
 	}
 	if !server.PagerResponderMore(newListSKUsPager) {
 		d.newListSKUsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchPause(req *http.Request) (*http.Response, error) {
+	if d.srv.Pause == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Pause not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/pause`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Pause(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchResume(req *http.Request) (*http.Response, error) {
+	if d.srv.Resume == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Resume not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deployments/(?P<deploymentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resume`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Resume(req.Context(), resourceGroupNameParam, accountNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Deployment, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

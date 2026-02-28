@@ -35,6 +35,169 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
+// AgentDeploymentProvisioningState - Provisioning state of an agentic deployment, as an Azure resource.
+type AgentDeploymentProvisioningState string
+
+const (
+	// AgentDeploymentProvisioningStateCanceled - The deployment was canceled.
+	AgentDeploymentProvisioningStateCanceled AgentDeploymentProvisioningState = "Canceled"
+	// AgentDeploymentProvisioningStateCreating - The deployment is being created.
+	AgentDeploymentProvisioningStateCreating AgentDeploymentProvisioningState = "Creating"
+	// AgentDeploymentProvisioningStateDeleting - The deployment is being deleted.
+	AgentDeploymentProvisioningStateDeleting AgentDeploymentProvisioningState = "Deleting"
+	// AgentDeploymentProvisioningStateFailed - The deployment failed.
+	AgentDeploymentProvisioningStateFailed AgentDeploymentProvisioningState = "Failed"
+	// AgentDeploymentProvisioningStateSucceeded - The deployment was successfully completed.
+	AgentDeploymentProvisioningStateSucceeded AgentDeploymentProvisioningState = "Succeeded"
+	// AgentDeploymentProvisioningStateUpdating - The deployment is being updated.
+	AgentDeploymentProvisioningStateUpdating AgentDeploymentProvisioningState = "Updating"
+)
+
+// PossibleAgentDeploymentProvisioningStateValues returns the possible values for the AgentDeploymentProvisioningState const type.
+func PossibleAgentDeploymentProvisioningStateValues() []AgentDeploymentProvisioningState {
+	return []AgentDeploymentProvisioningState{
+		AgentDeploymentProvisioningStateCanceled,
+		AgentDeploymentProvisioningStateCreating,
+		AgentDeploymentProvisioningStateDeleting,
+		AgentDeploymentProvisioningStateFailed,
+		AgentDeploymentProvisioningStateSucceeded,
+		AgentDeploymentProvisioningStateUpdating,
+	}
+}
+
+// AgentDeploymentState - Current operational state of the agentic functionality represented by this deployment.
+type AgentDeploymentState string
+
+const (
+	// AgentDeploymentStateDeleted - The deployment was deleted.
+	AgentDeploymentStateDeleted AgentDeploymentState = "Deleted"
+	// AgentDeploymentStateDeleting - The deployment is being deleted.
+	AgentDeploymentStateDeleting AgentDeploymentState = "Deleting"
+	// AgentDeploymentStateFailed - The deployment failed.
+	AgentDeploymentStateFailed AgentDeploymentState = "Failed"
+	// AgentDeploymentStateRunning - The deployment started/is operational.
+	AgentDeploymentStateRunning AgentDeploymentState = "Running"
+	// AgentDeploymentStateStarting - The deployment is starting.
+	AgentDeploymentStateStarting AgentDeploymentState = "Starting"
+	// AgentDeploymentStateStopped - The deployment was stopped.
+	AgentDeploymentStateStopped AgentDeploymentState = "Stopped"
+	// AgentDeploymentStateStopping - The deployment is being stopped.
+	AgentDeploymentStateStopping AgentDeploymentState = "Stopping"
+	// AgentDeploymentStateUpdating - The deployment is being updated.
+	AgentDeploymentStateUpdating AgentDeploymentState = "Updating"
+)
+
+// PossibleAgentDeploymentStateValues returns the possible values for the AgentDeploymentState const type.
+func PossibleAgentDeploymentStateValues() []AgentDeploymentState {
+	return []AgentDeploymentState{
+		AgentDeploymentStateDeleted,
+		AgentDeploymentStateDeleting,
+		AgentDeploymentStateFailed,
+		AgentDeploymentStateRunning,
+		AgentDeploymentStateStarting,
+		AgentDeploymentStateStopped,
+		AgentDeploymentStateStopping,
+		AgentDeploymentStateUpdating,
+	}
+}
+
+// AgentDeploymentType - Specifies the type of deployment for an agent, indicating how the underlying compute and network
+// infrastructure is managed.
+type AgentDeploymentType string
+
+const (
+	// AgentDeploymentTypeCustom - The underlying infra is provisioned by the deployer (BYO)
+	AgentDeploymentTypeCustom AgentDeploymentType = "Custom"
+	// AgentDeploymentTypeHosted - The underlying infra is owned by the platform
+	AgentDeploymentTypeHosted AgentDeploymentType = "Hosted"
+	// AgentDeploymentTypeManaged - The underlying infra is managed by the platform in the deployer's subscription
+	AgentDeploymentTypeManaged AgentDeploymentType = "Managed"
+)
+
+// PossibleAgentDeploymentTypeValues returns the possible values for the AgentDeploymentType const type.
+func PossibleAgentDeploymentTypeValues() []AgentDeploymentType {
+	return []AgentDeploymentType{
+		AgentDeploymentTypeCustom,
+		AgentDeploymentTypeHosted,
+		AgentDeploymentTypeManaged,
+	}
+}
+
+// AgentProtocol - Protocol used by the agent/exposed by a deployment.
+type AgentProtocol string
+
+const (
+	// AgentProtocolA2A - Agent2Agent standard
+	AgentProtocolA2A AgentProtocol = "A2A"
+	// AgentProtocolAgent - Agent protocol (aka Active)
+	AgentProtocolAgent AgentProtocol = "Agent"
+	// AgentProtocolResponses - OpenAI-compatible
+	AgentProtocolResponses AgentProtocol = "Responses"
+)
+
+// PossibleAgentProtocolValues returns the possible values for the AgentProtocol const type.
+func PossibleAgentProtocolValues() []AgentProtocol {
+	return []AgentProtocol{
+		AgentProtocolA2A,
+		AgentProtocolAgent,
+		AgentProtocolResponses,
+	}
+}
+
+// AgenticApplicationProvisioningState - Provisioning state of an agentic application.
+type AgenticApplicationProvisioningState string
+
+const (
+	// AgenticApplicationProvisioningStateCanceled - The application provisioning was canceled.
+	AgenticApplicationProvisioningStateCanceled AgenticApplicationProvisioningState = "Canceled"
+	// AgenticApplicationProvisioningStateCreating - The application is being created.
+	AgenticApplicationProvisioningStateCreating AgenticApplicationProvisioningState = "Creating"
+	// AgenticApplicationProvisioningStateDeleting - The application is being deleted.
+	AgenticApplicationProvisioningStateDeleting AgenticApplicationProvisioningState = "Deleting"
+	// AgenticApplicationProvisioningStateFailed - The application provisioning failed.
+	AgenticApplicationProvisioningStateFailed AgenticApplicationProvisioningState = "Failed"
+	// AgenticApplicationProvisioningStateSucceeded - The application was successfully provisioned.
+	AgenticApplicationProvisioningStateSucceeded AgenticApplicationProvisioningState = "Succeeded"
+	// AgenticApplicationProvisioningStateUpdating - The application is being updated.
+	AgenticApplicationProvisioningStateUpdating AgenticApplicationProvisioningState = "Updating"
+)
+
+// PossibleAgenticApplicationProvisioningStateValues returns the possible values for the AgenticApplicationProvisioningState const type.
+func PossibleAgenticApplicationProvisioningStateValues() []AgenticApplicationProvisioningState {
+	return []AgenticApplicationProvisioningState{
+		AgenticApplicationProvisioningStateCanceled,
+		AgenticApplicationProvisioningStateCreating,
+		AgenticApplicationProvisioningStateDeleting,
+		AgenticApplicationProvisioningStateFailed,
+		AgenticApplicationProvisioningStateSucceeded,
+		AgenticApplicationProvisioningStateUpdating,
+	}
+}
+
+// BuiltInAuthorizationScheme - Authorization scheme type.
+type BuiltInAuthorizationScheme string
+
+const (
+	// BuiltInAuthorizationSchemeChannels - Channels-specific (AzureBotService) authorization
+	BuiltInAuthorizationSchemeChannels BuiltInAuthorizationScheme = "Channels"
+	// BuiltInAuthorizationSchemeCustom - Custom scheme defined by the application author
+	BuiltInAuthorizationSchemeCustom BuiltInAuthorizationScheme = "Custom"
+	// BuiltInAuthorizationSchemeDefault - Standard AzureML RBAC
+	BuiltInAuthorizationSchemeDefault BuiltInAuthorizationScheme = "Default"
+	// BuiltInAuthorizationSchemeOrganizationScope - Claim-based, requires membership in the tenant
+	BuiltInAuthorizationSchemeOrganizationScope BuiltInAuthorizationScheme = "OrganizationScope"
+)
+
+// PossibleBuiltInAuthorizationSchemeValues returns the possible values for the BuiltInAuthorizationScheme const type.
+func PossibleBuiltInAuthorizationSchemeValues() []BuiltInAuthorizationScheme {
+	return []BuiltInAuthorizationScheme{
+		BuiltInAuthorizationSchemeChannels,
+		BuiltInAuthorizationSchemeCustom,
+		BuiltInAuthorizationSchemeDefault,
+		BuiltInAuthorizationSchemeOrganizationScope,
+	}
+}
+
 // ByPassSelection - Setting for trusted services.
 type ByPassSelection string
 
@@ -118,18 +281,25 @@ func PossibleCommitmentPlanProvisioningStateValues() []CommitmentPlanProvisionin
 type ConnectionAuthType string
 
 const (
-	ConnectionAuthTypeAAD              ConnectionAuthType = "AAD"
-	ConnectionAuthTypeAPIKey           ConnectionAuthType = "ApiKey"
-	ConnectionAuthTypeAccessKey        ConnectionAuthType = "AccessKey"
-	ConnectionAuthTypeAccountKey       ConnectionAuthType = "AccountKey"
-	ConnectionAuthTypeCustomKeys       ConnectionAuthType = "CustomKeys"
-	ConnectionAuthTypeManagedIdentity  ConnectionAuthType = "ManagedIdentity"
-	ConnectionAuthTypeNone             ConnectionAuthType = "None"
-	ConnectionAuthTypeOAuth2           ConnectionAuthType = "OAuth2"
-	ConnectionAuthTypePAT              ConnectionAuthType = "PAT"
-	ConnectionAuthTypeSAS              ConnectionAuthType = "SAS"
-	ConnectionAuthTypeServicePrincipal ConnectionAuthType = "ServicePrincipal"
-	ConnectionAuthTypeUsernamePassword ConnectionAuthType = "UsernamePassword"
+	ConnectionAuthTypeAAD                    ConnectionAuthType = "AAD"
+	ConnectionAuthTypeAPIKey                 ConnectionAuthType = "ApiKey"
+	ConnectionAuthTypeAccessKey              ConnectionAuthType = "AccessKey"
+	ConnectionAuthTypeAccountKey             ConnectionAuthType = "AccountKey"
+	ConnectionAuthTypeAccountManagedIdentity ConnectionAuthType = "AccountManagedIdentity"
+	ConnectionAuthTypeAgentUserImpersonation ConnectionAuthType = "AgentUserImpersonation"
+	ConnectionAuthTypeAgenticIdentityToken   ConnectionAuthType = "AgenticIdentityToken"
+	ConnectionAuthTypeAgenticUser            ConnectionAuthType = "AgenticUser"
+	ConnectionAuthTypeCustomKeys             ConnectionAuthType = "CustomKeys"
+	ConnectionAuthTypeDelegatedSAS           ConnectionAuthType = "DelegatedSAS"
+	ConnectionAuthTypeManagedIdentity        ConnectionAuthType = "ManagedIdentity"
+	ConnectionAuthTypeNone                   ConnectionAuthType = "None"
+	ConnectionAuthTypeOAuth2                 ConnectionAuthType = "OAuth2"
+	ConnectionAuthTypePAT                    ConnectionAuthType = "PAT"
+	ConnectionAuthTypeProjectManagedIdentity ConnectionAuthType = "ProjectManagedIdentity"
+	ConnectionAuthTypeSAS                    ConnectionAuthType = "SAS"
+	ConnectionAuthTypeServicePrincipal       ConnectionAuthType = "ServicePrincipal"
+	ConnectionAuthTypeUserEntraToken         ConnectionAuthType = "UserEntraToken"
+	ConnectionAuthTypeUsernamePassword       ConnectionAuthType = "UsernamePassword"
 )
 
 // PossibleConnectionAuthTypeValues returns the possible values for the ConnectionAuthType const type.
@@ -139,13 +309,20 @@ func PossibleConnectionAuthTypeValues() []ConnectionAuthType {
 		ConnectionAuthTypeAPIKey,
 		ConnectionAuthTypeAccessKey,
 		ConnectionAuthTypeAccountKey,
+		ConnectionAuthTypeAccountManagedIdentity,
+		ConnectionAuthTypeAgentUserImpersonation,
+		ConnectionAuthTypeAgenticIdentityToken,
+		ConnectionAuthTypeAgenticUser,
 		ConnectionAuthTypeCustomKeys,
+		ConnectionAuthTypeDelegatedSAS,
 		ConnectionAuthTypeManagedIdentity,
 		ConnectionAuthTypeNone,
 		ConnectionAuthTypeOAuth2,
 		ConnectionAuthTypePAT,
+		ConnectionAuthTypeProjectManagedIdentity,
 		ConnectionAuthTypeSAS,
 		ConnectionAuthTypeServicePrincipal,
+		ConnectionAuthTypeUserEntraToken,
 		ConnectionAuthTypeUsernamePassword,
 	}
 }
@@ -154,112 +331,126 @@ func PossibleConnectionAuthTypeValues() []ConnectionAuthType {
 type ConnectionCategory string
 
 const (
-	ConnectionCategoryADLSGen2                 ConnectionCategory = "ADLSGen2"
-	ConnectionCategoryAIServices               ConnectionCategory = "AIServices"
-	ConnectionCategoryAPIKey                   ConnectionCategory = "ApiKey"
-	ConnectionCategoryAmazonMws                ConnectionCategory = "AmazonMws"
-	ConnectionCategoryAmazonRdsForOracle       ConnectionCategory = "AmazonRdsForOracle"
-	ConnectionCategoryAmazonRdsForSQLServer    ConnectionCategory = "AmazonRdsForSqlServer"
-	ConnectionCategoryAmazonRedshift           ConnectionCategory = "AmazonRedshift"
-	ConnectionCategoryAmazonS3Compatible       ConnectionCategory = "AmazonS3Compatible"
-	ConnectionCategoryAzureBlob                ConnectionCategory = "AzureBlob"
-	ConnectionCategoryAzureDataExplorer        ConnectionCategory = "AzureDataExplorer"
-	ConnectionCategoryAzureDatabricksDeltaLake ConnectionCategory = "AzureDatabricksDeltaLake"
-	ConnectionCategoryAzureMariaDb             ConnectionCategory = "AzureMariaDb"
-	ConnectionCategoryAzureMySQLDb             ConnectionCategory = "AzureMySqlDb"
-	ConnectionCategoryAzureOneLake             ConnectionCategory = "AzureOneLake"
-	ConnectionCategoryAzureOpenAI              ConnectionCategory = "AzureOpenAI"
-	ConnectionCategoryAzurePostgresDb          ConnectionCategory = "AzurePostgresDb"
-	ConnectionCategoryAzureSQLDb               ConnectionCategory = "AzureSqlDb"
-	ConnectionCategoryAzureSQLMi               ConnectionCategory = "AzureSqlMi"
-	ConnectionCategoryAzureStorageAccount      ConnectionCategory = "AzureStorageAccount"
-	ConnectionCategoryAzureSynapseAnalytics    ConnectionCategory = "AzureSynapseAnalytics"
-	ConnectionCategoryAzureTableStorage        ConnectionCategory = "AzureTableStorage"
-	ConnectionCategoryBingLLMSearch            ConnectionCategory = "BingLLMSearch"
-	ConnectionCategoryCassandra                ConnectionCategory = "Cassandra"
-	ConnectionCategoryCognitiveSearch          ConnectionCategory = "CognitiveSearch"
-	ConnectionCategoryCognitiveService         ConnectionCategory = "CognitiveService"
-	ConnectionCategoryConcur                   ConnectionCategory = "Concur"
-	ConnectionCategoryContainerRegistry        ConnectionCategory = "ContainerRegistry"
-	ConnectionCategoryCosmosDb                 ConnectionCategory = "CosmosDb"
-	ConnectionCategoryCosmosDbMongoDbAPI       ConnectionCategory = "CosmosDbMongoDbApi"
-	ConnectionCategoryCouchbase                ConnectionCategory = "Couchbase"
-	ConnectionCategoryCustomKeys               ConnectionCategory = "CustomKeys"
-	ConnectionCategoryDb2                      ConnectionCategory = "Db2"
-	ConnectionCategoryDrill                    ConnectionCategory = "Drill"
-	ConnectionCategoryDynamics                 ConnectionCategory = "Dynamics"
-	ConnectionCategoryDynamicsAx               ConnectionCategory = "DynamicsAx"
-	ConnectionCategoryDynamicsCrm              ConnectionCategory = "DynamicsCrm"
-	ConnectionCategoryElasticsearch            ConnectionCategory = "Elasticsearch"
-	ConnectionCategoryEloqua                   ConnectionCategory = "Eloqua"
-	ConnectionCategoryFileServer               ConnectionCategory = "FileServer"
-	ConnectionCategoryFtpServer                ConnectionCategory = "FtpServer"
-	ConnectionCategoryGenericContainerRegistry ConnectionCategory = "GenericContainerRegistry"
-	ConnectionCategoryGenericHTTP              ConnectionCategory = "GenericHttp"
-	ConnectionCategoryGenericRest              ConnectionCategory = "GenericRest"
-	ConnectionCategoryGit                      ConnectionCategory = "Git"
-	ConnectionCategoryGoogleAdWords            ConnectionCategory = "GoogleAdWords"
-	ConnectionCategoryGoogleBigQuery           ConnectionCategory = "GoogleBigQuery"
-	ConnectionCategoryGoogleCloudStorage       ConnectionCategory = "GoogleCloudStorage"
-	ConnectionCategoryGreenplum                ConnectionCategory = "Greenplum"
-	ConnectionCategoryHbase                    ConnectionCategory = "Hbase"
-	ConnectionCategoryHdfs                     ConnectionCategory = "Hdfs"
-	ConnectionCategoryHive                     ConnectionCategory = "Hive"
-	ConnectionCategoryHubspot                  ConnectionCategory = "Hubspot"
-	ConnectionCategoryImpala                   ConnectionCategory = "Impala"
-	ConnectionCategoryInformix                 ConnectionCategory = "Informix"
-	ConnectionCategoryJira                     ConnectionCategory = "Jira"
-	ConnectionCategoryMagento                  ConnectionCategory = "Magento"
-	ConnectionCategoryManagedOnlineEndpoint    ConnectionCategory = "ManagedOnlineEndpoint"
-	ConnectionCategoryMariaDb                  ConnectionCategory = "MariaDb"
-	ConnectionCategoryMarketo                  ConnectionCategory = "Marketo"
-	ConnectionCategoryMicrosoftAccess          ConnectionCategory = "MicrosoftAccess"
-	ConnectionCategoryMongoDbAtlas             ConnectionCategory = "MongoDbAtlas"
-	ConnectionCategoryMongoDbV2                ConnectionCategory = "MongoDbV2"
-	ConnectionCategoryMySQL                    ConnectionCategory = "MySql"
-	ConnectionCategoryNetezza                  ConnectionCategory = "Netezza"
-	ConnectionCategoryODataRest                ConnectionCategory = "ODataRest"
-	ConnectionCategoryOdbc                     ConnectionCategory = "Odbc"
-	ConnectionCategoryOffice365                ConnectionCategory = "Office365"
-	ConnectionCategoryOpenAI                   ConnectionCategory = "OpenAI"
-	ConnectionCategoryOracle                   ConnectionCategory = "Oracle"
-	ConnectionCategoryOracleCloudStorage       ConnectionCategory = "OracleCloudStorage"
-	ConnectionCategoryOracleServiceCloud       ConnectionCategory = "OracleServiceCloud"
-	ConnectionCategoryPayPal                   ConnectionCategory = "PayPal"
-	ConnectionCategoryPhoenix                  ConnectionCategory = "Phoenix"
-	ConnectionCategoryPinecone                 ConnectionCategory = "Pinecone"
-	ConnectionCategoryPostgreSQL               ConnectionCategory = "PostgreSql"
-	ConnectionCategoryPresto                   ConnectionCategory = "Presto"
-	ConnectionCategoryPythonFeed               ConnectionCategory = "PythonFeed"
-	ConnectionCategoryQuickBooks               ConnectionCategory = "QuickBooks"
-	ConnectionCategoryRedis                    ConnectionCategory = "Redis"
-	ConnectionCategoryResponsys                ConnectionCategory = "Responsys"
-	ConnectionCategoryS3                       ConnectionCategory = "S3"
-	ConnectionCategorySQLServer                ConnectionCategory = "SqlServer"
-	ConnectionCategorySalesforce               ConnectionCategory = "Salesforce"
-	ConnectionCategorySalesforceMarketingCloud ConnectionCategory = "SalesforceMarketingCloud"
-	ConnectionCategorySalesforceServiceCloud   ConnectionCategory = "SalesforceServiceCloud"
-	ConnectionCategorySapBw                    ConnectionCategory = "SapBw"
-	ConnectionCategorySapCloudForCustomer      ConnectionCategory = "SapCloudForCustomer"
-	ConnectionCategorySapEcc                   ConnectionCategory = "SapEcc"
-	ConnectionCategorySapHana                  ConnectionCategory = "SapHana"
-	ConnectionCategorySapOpenHub               ConnectionCategory = "SapOpenHub"
-	ConnectionCategorySapTable                 ConnectionCategory = "SapTable"
-	ConnectionCategorySerp                     ConnectionCategory = "Serp"
-	ConnectionCategoryServerless               ConnectionCategory = "Serverless"
-	ConnectionCategoryServiceNow               ConnectionCategory = "ServiceNow"
-	ConnectionCategorySftp                     ConnectionCategory = "Sftp"
-	ConnectionCategorySharePointOnlineList     ConnectionCategory = "SharePointOnlineList"
-	ConnectionCategoryShopify                  ConnectionCategory = "Shopify"
-	ConnectionCategorySnowflake                ConnectionCategory = "Snowflake"
-	ConnectionCategorySpark                    ConnectionCategory = "Spark"
-	ConnectionCategorySquare                   ConnectionCategory = "Square"
-	ConnectionCategorySybase                   ConnectionCategory = "Sybase"
-	ConnectionCategoryTeradata                 ConnectionCategory = "Teradata"
-	ConnectionCategoryVertica                  ConnectionCategory = "Vertica"
-	ConnectionCategoryWebTable                 ConnectionCategory = "WebTable"
-	ConnectionCategoryXero                     ConnectionCategory = "Xero"
-	ConnectionCategoryZoho                     ConnectionCategory = "Zoho"
+	ConnectionCategoryADLSGen2                     ConnectionCategory = "ADLSGen2"
+	ConnectionCategoryAIServices                   ConnectionCategory = "AIServices"
+	ConnectionCategoryAPIKey                       ConnectionCategory = "ApiKey"
+	ConnectionCategoryAPIManagement                ConnectionCategory = "ApiManagement"
+	ConnectionCategoryAmazonMws                    ConnectionCategory = "AmazonMws"
+	ConnectionCategoryAmazonRdsForOracle           ConnectionCategory = "AmazonRdsForOracle"
+	ConnectionCategoryAmazonRdsForSQLServer        ConnectionCategory = "AmazonRdsForSqlServer"
+	ConnectionCategoryAmazonRedshift               ConnectionCategory = "AmazonRedshift"
+	ConnectionCategoryAmazonS3Compatible           ConnectionCategory = "AmazonS3Compatible"
+	ConnectionCategoryAppConfig                    ConnectionCategory = "AppConfig"
+	ConnectionCategoryAppInsights                  ConnectionCategory = "AppInsights"
+	ConnectionCategoryAzureBlob                    ConnectionCategory = "AzureBlob"
+	ConnectionCategoryAzureContainerAppEnvironment ConnectionCategory = "AzureContainerAppEnvironment"
+	ConnectionCategoryAzureDataExplorer            ConnectionCategory = "AzureDataExplorer"
+	ConnectionCategoryAzureDatabricksDeltaLake     ConnectionCategory = "AzureDatabricksDeltaLake"
+	ConnectionCategoryAzureKeyVault                ConnectionCategory = "AzureKeyVault"
+	ConnectionCategoryAzureMariaDb                 ConnectionCategory = "AzureMariaDb"
+	ConnectionCategoryAzureMySQLDb                 ConnectionCategory = "AzureMySqlDb"
+	ConnectionCategoryAzureOneLake                 ConnectionCategory = "AzureOneLake"
+	ConnectionCategoryAzureOpenAI                  ConnectionCategory = "AzureOpenAI"
+	ConnectionCategoryAzurePostgresDb              ConnectionCategory = "AzurePostgresDb"
+	ConnectionCategoryAzureSQLDb                   ConnectionCategory = "AzureSqlDb"
+	ConnectionCategoryAzureSQLMi                   ConnectionCategory = "AzureSqlMi"
+	ConnectionCategoryAzureStorageAccount          ConnectionCategory = "AzureStorageAccount"
+	ConnectionCategoryAzureSynapseAnalytics        ConnectionCategory = "AzureSynapseAnalytics"
+	ConnectionCategoryAzureTableStorage            ConnectionCategory = "AzureTableStorage"
+	ConnectionCategoryBingLLMSearch                ConnectionCategory = "BingLLMSearch"
+	ConnectionCategoryCassandra                    ConnectionCategory = "Cassandra"
+	ConnectionCategoryCognitiveSearch              ConnectionCategory = "CognitiveSearch"
+	ConnectionCategoryCognitiveService             ConnectionCategory = "CognitiveService"
+	ConnectionCategoryConcur                       ConnectionCategory = "Concur"
+	ConnectionCategoryContainerRegistry            ConnectionCategory = "ContainerRegistry"
+	ConnectionCategoryCosmosDb                     ConnectionCategory = "CosmosDb"
+	ConnectionCategoryCosmosDbMongoDbAPI           ConnectionCategory = "CosmosDbMongoDbApi"
+	ConnectionCategoryCouchbase                    ConnectionCategory = "Couchbase"
+	ConnectionCategoryCustomKeys                   ConnectionCategory = "CustomKeys"
+	ConnectionCategoryDatabricks                   ConnectionCategory = "Databricks"
+	ConnectionCategoryDb2                          ConnectionCategory = "Db2"
+	ConnectionCategoryDrill                        ConnectionCategory = "Drill"
+	ConnectionCategoryDynamics                     ConnectionCategory = "Dynamics"
+	ConnectionCategoryDynamicsAx                   ConnectionCategory = "DynamicsAx"
+	ConnectionCategoryDynamicsCrm                  ConnectionCategory = "DynamicsCrm"
+	ConnectionCategoryElasticsearch                ConnectionCategory = "Elasticsearch"
+	ConnectionCategoryEloqua                       ConnectionCategory = "Eloqua"
+	ConnectionCategoryFileServer                   ConnectionCategory = "FileServer"
+	ConnectionCategoryFtpServer                    ConnectionCategory = "FtpServer"
+	ConnectionCategoryGenericContainerRegistry     ConnectionCategory = "GenericContainerRegistry"
+	ConnectionCategoryGenericHTTP                  ConnectionCategory = "GenericHttp"
+	ConnectionCategoryGenericRest                  ConnectionCategory = "GenericRest"
+	ConnectionCategoryGit                          ConnectionCategory = "Git"
+	ConnectionCategoryGoogleAdWords                ConnectionCategory = "GoogleAdWords"
+	ConnectionCategoryGoogleBigQuery               ConnectionCategory = "GoogleBigQuery"
+	ConnectionCategoryGoogleCloudStorage           ConnectionCategory = "GoogleCloudStorage"
+	ConnectionCategoryGreenplum                    ConnectionCategory = "Greenplum"
+	ConnectionCategoryGroundingWithBingSearch      ConnectionCategory = "GroundingWithBingSearch"
+	ConnectionCategoryGroundingWithCustomSearch    ConnectionCategory = "GroundingWithCustomSearch"
+	ConnectionCategoryHbase                        ConnectionCategory = "Hbase"
+	ConnectionCategoryHdfs                         ConnectionCategory = "Hdfs"
+	ConnectionCategoryHive                         ConnectionCategory = "Hive"
+	ConnectionCategoryHubspot                      ConnectionCategory = "Hubspot"
+	ConnectionCategoryImpala                       ConnectionCategory = "Impala"
+	ConnectionCategoryInformix                     ConnectionCategory = "Informix"
+	ConnectionCategoryJira                         ConnectionCategory = "Jira"
+	ConnectionCategoryMagento                      ConnectionCategory = "Magento"
+	ConnectionCategoryManagedOnlineEndpoint        ConnectionCategory = "ManagedOnlineEndpoint"
+	ConnectionCategoryMariaDb                      ConnectionCategory = "MariaDb"
+	ConnectionCategoryMarketo                      ConnectionCategory = "Marketo"
+	ConnectionCategoryMicrosoftAccess              ConnectionCategory = "MicrosoftAccess"
+	ConnectionCategoryMicrosoftFabric              ConnectionCategory = "MicrosoftFabric"
+	ConnectionCategoryModelGateway                 ConnectionCategory = "ModelGateway"
+	ConnectionCategoryMongoDbAtlas                 ConnectionCategory = "MongoDbAtlas"
+	ConnectionCategoryMongoDbV2                    ConnectionCategory = "MongoDbV2"
+	ConnectionCategoryMySQL                        ConnectionCategory = "MySql"
+	ConnectionCategoryNetezza                      ConnectionCategory = "Netezza"
+	ConnectionCategoryODataRest                    ConnectionCategory = "ODataRest"
+	ConnectionCategoryOdbc                         ConnectionCategory = "Odbc"
+	ConnectionCategoryOffice365                    ConnectionCategory = "Office365"
+	ConnectionCategoryOpenAI                       ConnectionCategory = "OpenAI"
+	ConnectionCategoryOracle                       ConnectionCategory = "Oracle"
+	ConnectionCategoryOracleCloudStorage           ConnectionCategory = "OracleCloudStorage"
+	ConnectionCategoryOracleServiceCloud           ConnectionCategory = "OracleServiceCloud"
+	ConnectionCategoryPayPal                       ConnectionCategory = "PayPal"
+	ConnectionCategoryPhoenix                      ConnectionCategory = "Phoenix"
+	ConnectionCategoryPinecone                     ConnectionCategory = "Pinecone"
+	ConnectionCategoryPostgreSQL                   ConnectionCategory = "PostgreSql"
+	ConnectionCategoryPowerPlatformEnvironment     ConnectionCategory = "PowerPlatformEnvironment"
+	ConnectionCategoryPresto                       ConnectionCategory = "Presto"
+	ConnectionCategoryPythonFeed                   ConnectionCategory = "PythonFeed"
+	ConnectionCategoryQuickBooks                   ConnectionCategory = "QuickBooks"
+	ConnectionCategoryRedis                        ConnectionCategory = "Redis"
+	ConnectionCategoryRemoteA2A                    ConnectionCategory = "RemoteA2A"
+	ConnectionCategoryRemoteTool                   ConnectionCategory = "RemoteTool"
+	ConnectionCategoryResponsys                    ConnectionCategory = "Responsys"
+	ConnectionCategoryS3                           ConnectionCategory = "S3"
+	ConnectionCategorySQLServer                    ConnectionCategory = "SqlServer"
+	ConnectionCategorySalesforce                   ConnectionCategory = "Salesforce"
+	ConnectionCategorySalesforceMarketingCloud     ConnectionCategory = "SalesforceMarketingCloud"
+	ConnectionCategorySalesforceServiceCloud       ConnectionCategory = "SalesforceServiceCloud"
+	ConnectionCategorySapBw                        ConnectionCategory = "SapBw"
+	ConnectionCategorySapCloudForCustomer          ConnectionCategory = "SapCloudForCustomer"
+	ConnectionCategorySapEcc                       ConnectionCategory = "SapEcc"
+	ConnectionCategorySapHana                      ConnectionCategory = "SapHana"
+	ConnectionCategorySapOpenHub                   ConnectionCategory = "SapOpenHub"
+	ConnectionCategorySapTable                     ConnectionCategory = "SapTable"
+	ConnectionCategorySerp                         ConnectionCategory = "Serp"
+	ConnectionCategoryServerless                   ConnectionCategory = "Serverless"
+	ConnectionCategoryServiceNow                   ConnectionCategory = "ServiceNow"
+	ConnectionCategorySftp                         ConnectionCategory = "Sftp"
+	ConnectionCategorySharePointOnlineList         ConnectionCategory = "SharePointOnlineList"
+	ConnectionCategorySharepoint                   ConnectionCategory = "Sharepoint"
+	ConnectionCategoryShopify                      ConnectionCategory = "Shopify"
+	ConnectionCategorySnowflake                    ConnectionCategory = "Snowflake"
+	ConnectionCategorySpark                        ConnectionCategory = "Spark"
+	ConnectionCategorySquare                       ConnectionCategory = "Square"
+	ConnectionCategorySybase                       ConnectionCategory = "Sybase"
+	ConnectionCategoryTeradata                     ConnectionCategory = "Teradata"
+	ConnectionCategoryVertica                      ConnectionCategory = "Vertica"
+	ConnectionCategoryWebTable                     ConnectionCategory = "WebTable"
+	ConnectionCategoryXero                         ConnectionCategory = "Xero"
+	ConnectionCategoryZoho                         ConnectionCategory = "Zoho"
 )
 
 // PossibleConnectionCategoryValues returns the possible values for the ConnectionCategory const type.
@@ -268,14 +459,19 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryADLSGen2,
 		ConnectionCategoryAIServices,
 		ConnectionCategoryAPIKey,
+		ConnectionCategoryAPIManagement,
 		ConnectionCategoryAmazonMws,
 		ConnectionCategoryAmazonRdsForOracle,
 		ConnectionCategoryAmazonRdsForSQLServer,
 		ConnectionCategoryAmazonRedshift,
 		ConnectionCategoryAmazonS3Compatible,
+		ConnectionCategoryAppConfig,
+		ConnectionCategoryAppInsights,
 		ConnectionCategoryAzureBlob,
+		ConnectionCategoryAzureContainerAppEnvironment,
 		ConnectionCategoryAzureDataExplorer,
 		ConnectionCategoryAzureDatabricksDeltaLake,
+		ConnectionCategoryAzureKeyVault,
 		ConnectionCategoryAzureMariaDb,
 		ConnectionCategoryAzureMySQLDb,
 		ConnectionCategoryAzureOneLake,
@@ -296,6 +492,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryCosmosDbMongoDbAPI,
 		ConnectionCategoryCouchbase,
 		ConnectionCategoryCustomKeys,
+		ConnectionCategoryDatabricks,
 		ConnectionCategoryDb2,
 		ConnectionCategoryDrill,
 		ConnectionCategoryDynamics,
@@ -313,6 +510,8 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryGoogleBigQuery,
 		ConnectionCategoryGoogleCloudStorage,
 		ConnectionCategoryGreenplum,
+		ConnectionCategoryGroundingWithBingSearch,
+		ConnectionCategoryGroundingWithCustomSearch,
 		ConnectionCategoryHbase,
 		ConnectionCategoryHdfs,
 		ConnectionCategoryHive,
@@ -325,6 +524,8 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryMariaDb,
 		ConnectionCategoryMarketo,
 		ConnectionCategoryMicrosoftAccess,
+		ConnectionCategoryMicrosoftFabric,
+		ConnectionCategoryModelGateway,
 		ConnectionCategoryMongoDbAtlas,
 		ConnectionCategoryMongoDbV2,
 		ConnectionCategoryMySQL,
@@ -340,10 +541,13 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryPhoenix,
 		ConnectionCategoryPinecone,
 		ConnectionCategoryPostgreSQL,
+		ConnectionCategoryPowerPlatformEnvironment,
 		ConnectionCategoryPresto,
 		ConnectionCategoryPythonFeed,
 		ConnectionCategoryQuickBooks,
 		ConnectionCategoryRedis,
+		ConnectionCategoryRemoteA2A,
+		ConnectionCategoryRemoteTool,
 		ConnectionCategoryResponsys,
 		ConnectionCategoryS3,
 		ConnectionCategorySQLServer,
@@ -361,6 +565,7 @@ func PossibleConnectionCategoryValues() []ConnectionCategory {
 		ConnectionCategoryServiceNow,
 		ConnectionCategorySftp,
 		ConnectionCategorySharePointOnlineList,
+		ConnectionCategorySharepoint,
 		ConnectionCategoryShopify,
 		ConnectionCategorySnowflake,
 		ConnectionCategorySpark,
@@ -516,6 +721,26 @@ func PossibleDeploymentScaleTypeValues() []DeploymentScaleType {
 	}
 }
 
+// DeploymentState - The state of the deployment. Controls whether the deployment is accepting inference requests. Use 'Running'
+// for active deployments that process requests, or 'Paused' to temporarily stop inference
+// while preserving the deployment configuration.
+type DeploymentState string
+
+const (
+	// DeploymentStatePaused - The deployment is paused and not accepting inference requests.
+	DeploymentStatePaused DeploymentState = "Paused"
+	// DeploymentStateRunning - The deployment is running and accepting inference requests.
+	DeploymentStateRunning DeploymentState = "Running"
+)
+
+// PossibleDeploymentStateValues returns the possible values for the DeploymentState const type.
+func PossibleDeploymentStateValues() []DeploymentState {
+	return []DeploymentState{
+		DeploymentStatePaused,
+		DeploymentStateRunning,
+	}
+}
+
 // DeprecationStatus - Indicates whether the deprecation date is a confirmed planned end-of-life date or an estimated deprecation
 // date. When 'Planned', the deprecation date represents a confirmed and communicated model
 // end-of-life date. When 'Tentative', the deprecation date is an estimated timeline that may be subject to change.
@@ -576,6 +801,22 @@ func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
 	}
 }
 
+// FirewallSKU - Firewall Sku used for FQDN Rules
+type FirewallSKU string
+
+const (
+	FirewallSKUBasic    FirewallSKU = "Basic"
+	FirewallSKUStandard FirewallSKU = "Standard"
+)
+
+// PossibleFirewallSKUValues returns the possible values for the FirewallSKU const type.
+func PossibleFirewallSKUValues() []FirewallSKU {
+	return []FirewallSKU{
+		FirewallSKUBasic,
+		FirewallSKUStandard,
+	}
+}
+
 // HostingModel - Account hosting model.
 type HostingModel string
 
@@ -593,6 +834,102 @@ func PossibleHostingModelValues() []HostingModel {
 		HostingModelDisconnectedContainer,
 		HostingModelProvisionedWeb,
 		HostingModelWeb,
+	}
+}
+
+// IdentityKind - Specifies the kind of Entra identity described by this object.
+type IdentityKind string
+
+const (
+	// IdentityKindAgentBlueprint - Represents a class identity, used for agentic applications.
+	IdentityKindAgentBlueprint IdentityKind = "AgentBlueprint"
+	// IdentityKindAgentInstance - Represents an instance identity.
+	IdentityKindAgentInstance IdentityKind = "AgentInstance"
+	// IdentityKindAgenticUser - Represents an agentic instance identity with user-like traits.
+	IdentityKindAgenticUser IdentityKind = "AgenticUser"
+	// IdentityKindManaged - Represents a classic managed identity.
+	IdentityKindManaged IdentityKind = "Managed"
+	// IdentityKindNone - No identity.
+	IdentityKindNone IdentityKind = "None"
+)
+
+// PossibleIdentityKindValues returns the possible values for the IdentityKind const type.
+func PossibleIdentityKindValues() []IdentityKind {
+	return []IdentityKind{
+		IdentityKindAgentBlueprint,
+		IdentityKindAgentInstance,
+		IdentityKindAgenticUser,
+		IdentityKindManaged,
+		IdentityKindNone,
+	}
+}
+
+// IdentityManagementType - Enumeration of identity types, from the perspective of management.
+type IdentityManagementType string
+
+const (
+	// IdentityManagementTypeNone - No identity.
+	IdentityManagementTypeNone IdentityManagementType = "None"
+	// IdentityManagementTypeSystem - Platform-managed identity.
+	IdentityManagementTypeSystem IdentityManagementType = "System"
+	// IdentityManagementTypeUser - User-managed identity.
+	IdentityManagementTypeUser IdentityManagementType = "User"
+)
+
+// PossibleIdentityManagementTypeValues returns the possible values for the IdentityManagementType const type.
+func PossibleIdentityManagementTypeValues() []IdentityManagementType {
+	return []IdentityManagementType{
+		IdentityManagementTypeNone,
+		IdentityManagementTypeSystem,
+		IdentityManagementTypeUser,
+	}
+}
+
+// IdentityProvisioningState - Represents the provisioning state of an identity resource.
+type IdentityProvisioningState string
+
+const (
+	// IdentityProvisioningStateCanceled - Identity provisioning has been canceled.
+	IdentityProvisioningStateCanceled IdentityProvisioningState = "Canceled"
+	// IdentityProvisioningStateCreating - Identity is being created.
+	IdentityProvisioningStateCreating IdentityProvisioningState = "Creating"
+	// IdentityProvisioningStateDeleting - Identity is being deleted.
+	IdentityProvisioningStateDeleting IdentityProvisioningState = "Deleting"
+	// IdentityProvisioningStateFailed - Identity provisioning has failed.
+	IdentityProvisioningStateFailed IdentityProvisioningState = "Failed"
+	// IdentityProvisioningStateSucceeded - Identity has been successfully provisioned.
+	IdentityProvisioningStateSucceeded IdentityProvisioningState = "Succeeded"
+	// IdentityProvisioningStateUpdating - Identity is being updated.
+	IdentityProvisioningStateUpdating IdentityProvisioningState = "Updating"
+)
+
+// PossibleIdentityProvisioningStateValues returns the possible values for the IdentityProvisioningState const type.
+func PossibleIdentityProvisioningStateValues() []IdentityProvisioningState {
+	return []IdentityProvisioningState{
+		IdentityProvisioningStateCanceled,
+		IdentityProvisioningStateCreating,
+		IdentityProvisioningStateDeleting,
+		IdentityProvisioningStateFailed,
+		IdentityProvisioningStateSucceeded,
+		IdentityProvisioningStateUpdating,
+	}
+}
+
+// IsolationMode - Isolation mode for the managed network of a cognitive services account.
+type IsolationMode string
+
+const (
+	IsolationModeAllowInternetOutbound     IsolationMode = "AllowInternetOutbound"
+	IsolationModeAllowOnlyApprovedOutbound IsolationMode = "AllowOnlyApprovedOutbound"
+	IsolationModeDisabled                  IsolationMode = "Disabled"
+)
+
+// PossibleIsolationModeValues returns the possible values for the IsolationMode const type.
+func PossibleIsolationModeValues() []IsolationMode {
+	return []IsolationMode{
+		IsolationModeAllowInternetOutbound,
+		IsolationModeAllowOnlyApprovedOutbound,
+		IsolationModeDisabled,
 	}
 }
 
@@ -625,6 +962,62 @@ func PossibleKeySourceValues() []KeySource {
 	return []KeySource{
 		KeySourceMicrosoftCognitiveServices,
 		KeySourceMicrosoftKeyVault,
+	}
+}
+
+// ManagedNetworkKind - The Kind of the managed network. Users can switch from V1 to V2 for granular access controls, but
+// cannot switch back to V1 once V2 is enabled.
+type ManagedNetworkKind string
+
+const (
+	ManagedNetworkKindV1 ManagedNetworkKind = "V1"
+	ManagedNetworkKindV2 ManagedNetworkKind = "V2"
+)
+
+// PossibleManagedNetworkKindValues returns the possible values for the ManagedNetworkKind const type.
+func PossibleManagedNetworkKindValues() []ManagedNetworkKind {
+	return []ManagedNetworkKind{
+		ManagedNetworkKindV1,
+		ManagedNetworkKindV2,
+	}
+}
+
+type ManagedNetworkProvisioningState string
+
+const (
+	ManagedNetworkProvisioningStateDeferred  ManagedNetworkProvisioningState = "Deferred"
+	ManagedNetworkProvisioningStateDeleted   ManagedNetworkProvisioningState = "Deleted"
+	ManagedNetworkProvisioningStateDeleting  ManagedNetworkProvisioningState = "Deleting"
+	ManagedNetworkProvisioningStateFailed    ManagedNetworkProvisioningState = "Failed"
+	ManagedNetworkProvisioningStateSucceeded ManagedNetworkProvisioningState = "Succeeded"
+	ManagedNetworkProvisioningStateUpdating  ManagedNetworkProvisioningState = "Updating"
+)
+
+// PossibleManagedNetworkProvisioningStateValues returns the possible values for the ManagedNetworkProvisioningState const type.
+func PossibleManagedNetworkProvisioningStateValues() []ManagedNetworkProvisioningState {
+	return []ManagedNetworkProvisioningState{
+		ManagedNetworkProvisioningStateDeferred,
+		ManagedNetworkProvisioningStateDeleted,
+		ManagedNetworkProvisioningStateDeleting,
+		ManagedNetworkProvisioningStateFailed,
+		ManagedNetworkProvisioningStateSucceeded,
+		ManagedNetworkProvisioningStateUpdating,
+	}
+}
+
+// ManagedNetworkStatus - Status for the managed network of a cognitive services account.
+type ManagedNetworkStatus string
+
+const (
+	ManagedNetworkStatusActive   ManagedNetworkStatus = "Active"
+	ManagedNetworkStatusInactive ManagedNetworkStatus = "Inactive"
+)
+
+// PossibleManagedNetworkStatusValues returns the possible values for the ManagedNetworkStatus const type.
+func PossibleManagedNetworkStatusValues() []ManagedNetworkStatus {
+	return []ManagedNetworkStatus{
+		ManagedNetworkStatusActive,
+		ManagedNetworkStatusInactive,
 	}
 }
 
@@ -849,18 +1242,48 @@ func PossibleQuotaUsageStatusValues() []QuotaUsageStatus {
 	}
 }
 
+// RaiActionType - The action types to apply to the content filters
+type RaiActionType string
+
+const (
+	RaiActionTypeANNOTATING RaiActionType = "ANNOTATING"
+	RaiActionTypeBLOCKING   RaiActionType = "BLOCKING"
+	RaiActionTypeHITL       RaiActionType = "HITL"
+	RaiActionTypeNone       RaiActionType = "None"
+	RaiActionTypeRETRY      RaiActionType = "RETRY"
+)
+
+// PossibleRaiActionTypeValues returns the possible values for the RaiActionType const type.
+func PossibleRaiActionTypeValues() []RaiActionType {
+	return []RaiActionType{
+		RaiActionTypeANNOTATING,
+		RaiActionTypeBLOCKING,
+		RaiActionTypeHITL,
+		RaiActionTypeNone,
+		RaiActionTypeRETRY,
+	}
+}
+
 // RaiPolicyContentSource - Content source to apply the Content Filters.
 type RaiPolicyContentSource string
 
 const (
-	RaiPolicyContentSourceCompletion RaiPolicyContentSource = "Completion"
-	RaiPolicyContentSourcePrompt     RaiPolicyContentSource = "Prompt"
+	RaiPolicyContentSourceCompletion   RaiPolicyContentSource = "Completion"
+	RaiPolicyContentSourcePostRun      RaiPolicyContentSource = "PostRun"
+	RaiPolicyContentSourcePostToolCall RaiPolicyContentSource = "PostToolCall"
+	RaiPolicyContentSourcePreRun       RaiPolicyContentSource = "PreRun"
+	RaiPolicyContentSourcePreToolCall  RaiPolicyContentSource = "PreToolCall"
+	RaiPolicyContentSourcePrompt       RaiPolicyContentSource = "Prompt"
 )
 
 // PossibleRaiPolicyContentSourceValues returns the possible values for the RaiPolicyContentSource const type.
 func PossibleRaiPolicyContentSourceValues() []RaiPolicyContentSource {
 	return []RaiPolicyContentSource{
 		RaiPolicyContentSourceCompletion,
+		RaiPolicyContentSourcePostRun,
+		RaiPolicyContentSourcePostToolCall,
+		RaiPolicyContentSourcePreRun,
+		RaiPolicyContentSourcePreToolCall,
 		RaiPolicyContentSourcePrompt,
 	}
 }
@@ -973,6 +1396,66 @@ func PossibleRoutingMethodsValues() []RoutingMethods {
 	}
 }
 
+// RuleCategory - Category of a managed network Outbound Rule of a cognitive services account.
+type RuleCategory string
+
+const (
+	RuleCategoryDependency  RuleCategory = "Dependency"
+	RuleCategoryRecommended RuleCategory = "Recommended"
+	RuleCategoryRequired    RuleCategory = "Required"
+	RuleCategoryUserDefined RuleCategory = "UserDefined"
+)
+
+// PossibleRuleCategoryValues returns the possible values for the RuleCategory const type.
+func PossibleRuleCategoryValues() []RuleCategory {
+	return []RuleCategory{
+		RuleCategoryDependency,
+		RuleCategoryRecommended,
+		RuleCategoryRequired,
+		RuleCategoryUserDefined,
+	}
+}
+
+// RuleStatus - Type of a managed network Outbound Rule of a cognitive services account.
+type RuleStatus string
+
+const (
+	RuleStatusActive       RuleStatus = "Active"
+	RuleStatusDeleting     RuleStatus = "Deleting"
+	RuleStatusFailed       RuleStatus = "Failed"
+	RuleStatusInactive     RuleStatus = "Inactive"
+	RuleStatusProvisioning RuleStatus = "Provisioning"
+)
+
+// PossibleRuleStatusValues returns the possible values for the RuleStatus const type.
+func PossibleRuleStatusValues() []RuleStatus {
+	return []RuleStatus{
+		RuleStatusActive,
+		RuleStatusDeleting,
+		RuleStatusFailed,
+		RuleStatusInactive,
+		RuleStatusProvisioning,
+	}
+}
+
+// RuleType - Type of a managed network Outbound Rule of a cognitive services account.
+type RuleType string
+
+const (
+	RuleTypeFQDN            RuleType = "FQDN"
+	RuleTypePrivateEndpoint RuleType = "PrivateEndpoint"
+	RuleTypeServiceTag      RuleType = "ServiceTag"
+)
+
+// PossibleRuleTypeValues returns the possible values for the RuleType const type.
+func PossibleRuleTypeValues() []RuleType {
+	return []RuleType{
+		RuleTypeFQDN,
+		RuleTypePrivateEndpoint,
+		RuleTypeServiceTag,
+	}
+}
+
 // SKUTier - This field is required to be implemented by the Resource Provider if the service has more than one tier, but
 // is not required on a PUT.
 type SKUTier string
@@ -1013,6 +1496,28 @@ func PossibleScenarioTypeValues() []ScenarioType {
 	}
 }
 
+// ServiceTier - The service tier for the deployment. Determines the pricing and performance level for request processing.
+// Use 'Default' for standard pricing or 'Priority' for higher-priority processing with premium
+// pricing. Note: Pause operations are only supported on Standard, DataZoneStandard, and GlobalStandard SKUs.
+type ServiceTier string
+
+const (
+	// ServiceTierDefault - Default service tier meaning the request will be processed with the standard pricing and performance
+	// for the selected model.
+	ServiceTierDefault ServiceTier = "Default"
+	// ServiceTierPriority - Priority service tier meaning the request will be processed with higher pricing and performance for
+	// the selected model.
+	ServiceTierPriority ServiceTier = "Priority"
+)
+
+// PossibleServiceTierValues returns the possible values for the ServiceTier const type.
+func PossibleServiceTierValues() []ServiceTier {
+	return []ServiceTier{
+		ServiceTierDefault,
+		ServiceTierPriority,
+	}
+}
+
 // TierUpgradePolicy - Gets the tier upgrade policy for the subscription.
 type TierUpgradePolicy string
 
@@ -1026,6 +1531,21 @@ func PossibleTierUpgradePolicyValues() []TierUpgradePolicy {
 	return []TierUpgradePolicy{
 		TierUpgradePolicyNoAutoUpgrade,
 		TierUpgradePolicyOnceUpgradeIsAvailable,
+	}
+}
+
+// TrafficRoutingProtocol - Traffic routing protocol, used to distribute an application's inbound traffic to its deployments.
+type TrafficRoutingProtocol string
+
+const (
+	// TrafficRoutingProtocolFixedRatio - Percentage based routing
+	TrafficRoutingProtocolFixedRatio TrafficRoutingProtocol = "FixedRatio"
+)
+
+// PossibleTrafficRoutingProtocolValues returns the possible values for the TrafficRoutingProtocol const type.
+func PossibleTrafficRoutingProtocolValues() []TrafficRoutingProtocol {
+	return []TrafficRoutingProtocol{
+		TrafficRoutingProtocolFixedRatio,
 	}
 }
 

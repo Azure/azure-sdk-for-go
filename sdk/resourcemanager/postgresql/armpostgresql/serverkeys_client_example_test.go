@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/c767823fdfd9d5e96bad245e3ea4d14d94a716bb/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2020-01-01/examples/ServerKeyList.json
@@ -98,8 +98,8 @@ func ExampleServerKeysClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewServerKeysClient().BeginCreateOrUpdate(ctx, "testserver", "someVault_someKey_01234567890123456789012345678901", "testrg", armpostgresql.ServerKey{
 		Properties: &armpostgresql.ServerKeyProperties{
-			ServerKeyType: to.Ptr(armpostgresql.ServerKeyTypeAzureKeyVault),
-			URI:           to.Ptr("https://someVault.vault.azure.net/keys/someKey/01234567890123456789012345678901"),
+			ServerKeyType:	to.Ptr(armpostgresql.ServerKeyTypeAzureKeyVault),
+			URI:		to.Ptr("https://someVault.vault.azure.net/keys/someKey/01234567890123456789012345678901"),
 		},
 	}, nil)
 	if err != nil {

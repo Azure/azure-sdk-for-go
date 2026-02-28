@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresql/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
@@ -21,14 +21,14 @@ import (
 type PostgresqlTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	serverName        string
-	adminPassword     string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	serverName		string
+	adminPassword		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *PostgresqlTestSuite) SetupSuite() {
@@ -65,23 +65,23 @@ func (testsuite *PostgresqlTestSuite) Prepare() {
 	serversClient, err := armpostgresql.NewServersClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	serversClientCreateResponsePoller, err := serversClient.BeginCreate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerForCreate{
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armpostgresql.ServerPropertiesForDefaultCreate{
-			CreateMode:        to.Ptr(armpostgresql.CreateModeDefault),
-			MinimalTLSVersion: to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:    to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
+			CreateMode:		to.Ptr(armpostgresql.CreateModeDefault),
+			MinimalTLSVersion:	to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
+			SSLEnforcement:		to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 			StorageProfile: &armpostgresql.StorageProfile{
-				BackupRetentionDays: to.Ptr[int32](7),
-				GeoRedundantBackup:  to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
-				StorageMB:           to.Ptr[int32](128000),
+				BackupRetentionDays:	to.Ptr[int32](7),
+				GeoRedundantBackup:	to.Ptr(armpostgresql.GeoRedundantBackupDisabled),
+				StorageMB:		to.Ptr[int32](128000),
 			},
-			AdministratorLogin:         to.Ptr("cloudsa"),
-			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
+			AdministratorLogin:		to.Ptr("cloudsa"),
+			AdministratorLoginPassword:	to.Ptr(testsuite.adminPassword),
 		},
 		SKU: &armpostgresql.SKU{
-			Name:   to.Ptr("GP_Gen5_8"),
-			Family: to.Ptr("Gen5"),
-			Tier:   to.Ptr(armpostgresql.SKUTierGeneralPurpose),
+			Name:	to.Ptr("GP_Gen5_8"),
+			Family:	to.Ptr("Gen5"),
+			Tier:	to.Ptr(armpostgresql.SKUTierGeneralPurpose),
 		},
 		Tags: map[string]*string{
 			"ElasticServer": to.Ptr("1"),
@@ -124,9 +124,9 @@ func (testsuite *PostgresqlTestSuite) TestServers() {
 	fmt.Println("Call operation: Servers_Update")
 	serversClientUpdateResponsePoller, err := serversClient.BeginUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerUpdateParameters{
 		Properties: &armpostgresql.ServerUpdateParametersProperties{
-			AdministratorLoginPassword: to.Ptr(testsuite.adminPassword),
-			MinimalTLSVersion:          to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
-			SSLEnforcement:             to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
+			AdministratorLoginPassword:	to.Ptr(testsuite.adminPassword),
+			MinimalTLSVersion:		to.Ptr(armpostgresql.MinimalTLSVersionEnumTLS12),
+			SSLEnforcement:			to.Ptr(armpostgresql.SSLEnforcementEnumEnabled),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -150,8 +150,8 @@ func (testsuite *PostgresqlTestSuite) TestFirewallRules() {
 	testsuite.Require().NoError(err)
 	firewallRulesClientCreateOrUpdateResponsePoller, err := firewallRulesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "rule1", armpostgresql.FirewallRule{
 		Properties: &armpostgresql.FirewallRuleProperties{
-			EndIPAddress:   to.Ptr("255.255.255.255"),
-			StartIPAddress: to.Ptr("0.0.0.0"),
+			EndIPAddress:	to.Ptr("255.255.255.255"),
+			StartIPAddress:	to.Ptr("0.0.0.0"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -186,34 +186,34 @@ func (testsuite *PostgresqlTestSuite) TestVirtualNetworkRules() {
 	var err error
 	// From step VirtualNetwork_Create
 	template := map[string]any{
-		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-		"contentVersion": "1.0.0.0",
+		"$schema":		"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+		"contentVersion":	"1.0.0.0",
 		"outputs": map[string]any{
 			"subnetId": map[string]any{
-				"type":  "string",
-				"value": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), parameters('subnetName'))]",
+				"type":		"string",
+				"value":	"[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworksName'), parameters('subnetName'))]",
 			},
 		},
 		"parameters": map[string]any{
 			"location": map[string]any{
-				"type":         "string",
-				"defaultValue": testsuite.location,
+				"type":		"string",
+				"defaultValue":	testsuite.location,
 			},
 			"subnetName": map[string]any{
-				"type":         "string",
-				"defaultValue": "pgsubnet",
+				"type":		"string",
+				"defaultValue":	"pgsubnet",
 			},
 			"virtualNetworksName": map[string]any{
-				"type":         "string",
-				"defaultValue": "pgvnet",
+				"type":		"string",
+				"defaultValue":	"pgvnet",
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('virtualNetworksName')]",
-				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2021-05-01",
-				"location":   "[parameters('location')]",
+				"name":		"[parameters('virtualNetworksName')]",
+				"type":		"Microsoft.Network/virtualNetworks",
+				"apiVersion":	"2021-05-01",
+				"location":	"[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
 						"addressPrefixes": []any{
@@ -222,21 +222,21 @@ func (testsuite *PostgresqlTestSuite) TestVirtualNetworkRules() {
 					},
 					"subnets": []any{
 						map[string]any{
-							"name": "[parameters('subnetName')]",
+							"name":	"[parameters('subnetName')]",
 							"properties": map[string]any{
 								"addressPrefix": "10.0.0.0/24",
 							},
 						},
 					},
 				},
-				"tags": map[string]any{},
+				"tags":	map[string]any{},
 			},
 		},
 	}
 	deployment := armresources.Deployment{
 		Properties: &armresources.DeploymentProperties{
-			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Template:	template,
+			Mode:		to.Ptr(armresources.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "VirtualNetwork_Create", &deployment)
@@ -249,8 +249,8 @@ func (testsuite *PostgresqlTestSuite) TestVirtualNetworkRules() {
 	testsuite.Require().NoError(err)
 	virtualNetworkRulesClientCreateOrUpdateResponsePoller, err := virtualNetworkRulesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "vnet-firewall-rule", armpostgresql.VirtualNetworkRule{
 		Properties: &armpostgresql.VirtualNetworkRuleProperties{
-			IgnoreMissingVnetServiceEndpoint: to.Ptr(true),
-			VirtualNetworkSubnetID:           to.Ptr(subnetId),
+			IgnoreMissingVnetServiceEndpoint:	to.Ptr(true),
+			VirtualNetworkSubnetID:			to.Ptr(subnetId),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -288,8 +288,8 @@ func (testsuite *PostgresqlTestSuite) TestDatabases() {
 	testsuite.Require().NoError(err)
 	databasesClientCreateOrUpdateResponsePoller, err := databasesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "db1", armpostgresql.Database{
 		Properties: &armpostgresql.DatabaseProperties{
-			Charset:   to.Ptr("UTF8"),
-			Collation: to.Ptr("English_United States.1252"),
+			Charset:	to.Ptr("UTF8"),
+			Collation:	to.Ptr("English_United States.1252"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -327,8 +327,8 @@ func (testsuite *PostgresqlTestSuite) TestConfigurations() {
 	testsuite.Require().NoError(err)
 	configurationsClientCreateOrUpdateResponsePoller, err := configurationsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, "array_nulls", armpostgresql.Configuration{
 		Properties: &armpostgresql.ConfigurationProperties{
-			Source: to.Ptr("user-override"),
-			Value:  to.Ptr("off"),
+			Source:	to.Ptr("user-override"),
+			Value:	to.Ptr("off"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -359,10 +359,10 @@ func (testsuite *PostgresqlTestSuite) TestServerAdministrators() {
 	testsuite.Require().NoError(err)
 	serverAdministratorsClientCreateOrUpdateResponsePoller, err := serverAdministratorsClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ServerAdministratorResource{
 		Properties: &armpostgresql.ServerAdministratorProperties{
-			AdministratorType: to.Ptr("ActiveDirectory"),
-			Login:             to.Ptr("bob@contoso.com"),
-			Sid:               to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
-			TenantID:          to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
+			AdministratorType:	to.Ptr("ActiveDirectory"),
+			Login:			to.Ptr("bob@contoso.com"),
+			Sid:			to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
+			TenantID:		to.Ptr("c6b82b90-a647-49cb-8a62-0d2d3cb7ac7c"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -416,13 +416,13 @@ func (testsuite *PostgresqlTestSuite) TestServerParameters() {
 	serverParametersClientListUpdateConfigurationsResponsePoller, err := serverParametersClient.BeginListUpdateConfigurations(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, armpostgresql.ConfigurationListResult{
 		Value: []*armpostgresql.Configuration{
 			{
-				Name: to.Ptr("array_nulls"),
+				Name:	to.Ptr("array_nulls"),
 				Properties: &armpostgresql.ConfigurationProperties{
 					Value: to.Ptr("on"),
 				},
 			},
 			{
-				Name: to.Ptr("backslash_quote"),
+				Name:	to.Ptr("backslash_quote"),
 				Properties: &armpostgresql.ConfigurationProperties{
 					Value: to.Ptr("on"),
 				},
@@ -497,8 +497,8 @@ func (testsuite *PostgresqlTestSuite) TestCheckNameAvailability() {
 	checkNameAvailabilityClient, err := armpostgresql.NewCheckNameAvailabilityClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 	_, err = checkNameAvailabilityClient.Execute(testsuite.ctx, armpostgresql.NameAvailabilityRequest{
-		Name: to.Ptr("name1"),
-		Type: to.Ptr("Microsoft.DBforPostgreSQL"),
+		Name:	to.Ptr("name1"),
+		Type:	to.Ptr("Microsoft.DBforPostgreSQL"),
 	}, nil)
 	testsuite.Require().NoError(err)
 }

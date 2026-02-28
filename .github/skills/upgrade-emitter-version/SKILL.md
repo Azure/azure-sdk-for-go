@@ -1,6 +1,6 @@
 ---
 name: upgrade-emitter-version
-description: Use when upgrading TypeSpec emitter packages in eng/emitter-package.json to their latest versions, or when asked to update TypeSpec compiler and Azure tools versions.
+description: Use when upgrading Go emitter package and TypeSpec packages in eng/emitter-package.json to their latest versions.
 ---
 
 # Upgrade Emitter and TypeSpec Versions

@@ -1,18 +1,23 @@
 # Release History
 
-## 3.1.0-beta.3 (2025-10-09)
+## 3.1.0-beta.3 (2026-02-10)
 ### Breaking Changes
 
-- Function `*APIKeysClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *APIKeysClientCreateOrUpdateOptions)` to `(context.Context, string, string, string, DeploymentAPIKeyRequest, *APIKeysClientCreateOrUpdateOptions)`
-- Function `*CertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *CertificatesClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, Certificate, *CertificatesClientBeginCreateOrUpdateOptions)`
-- Function `*ConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, string, *ConfigurationsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, string, ConfigurationRequest, *ConfigurationsClientBeginCreateOrUpdateOptions)`
-- Function `*DeploymentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(context.Context, string, string, *DeploymentsClientBeginCreateOrUpdateOptions)` to `(context.Context, string, string, Deployment, *DeploymentsClientBeginCreateOrUpdateOptions)`
-- Function `*DeploymentsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, string, *DeploymentsClientBeginUpdateOptions)` to `(context.Context, string, string, DeploymentUpdateParameters, *DeploymentsClientBeginUpdateOptions)`
+- Function `*APIKeysClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, options *APIKeysClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, body DeploymentAPIKeyRequest, options *APIKeysClientCreateOrUpdateOptions)`
+- Function `*CertificatesClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, options *CertificatesClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, certificateName string, body Certificate, options *CertificatesClientBeginCreateOrUpdateOptions)`
+- Function `*ConfigurationsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *ConfigurationsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, body ConfigurationRequest, options *ConfigurationsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, body Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions)`
+- Function `*DeploymentsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, deploymentName string, body DeploymentUpdateParameters, options *DeploymentsClientBeginUpdateOptions)`
+- Type of `ConfigurationListResponse.Value` has been changed from `[]*ConfigurationResponse` to `[]*Configuration`
 - Type of `OperationListResult.Value` has been changed from `[]*OperationResult` to `[]*Operation`
+- Struct `ConfigurationResponse` has been removed
+- Struct `ConfigurationResponseProperties` has been removed
 - Struct `OperationResult` has been removed
 - Field `Body` of struct `APIKeysClientCreateOrUpdateOptions` has been removed
 - Field `Body` of struct `CertificatesClientBeginCreateOrUpdateOptions` has been removed
 - Field `Body` of struct `ConfigurationsClientBeginCreateOrUpdateOptions` has been removed
+- Field `ConfigurationResponse` of struct `ConfigurationsClientCreateOrUpdateResponse` has been removed
+- Field `ConfigurationResponse` of struct `ConfigurationsClientGetResponse` has been removed
 - Field `Body` of struct `DeploymentsClientBeginCreateOrUpdateOptions` has been removed
 - Field `Body` of struct `DeploymentsClientBeginUpdateOptions` has been removed
 
@@ -24,13 +29,15 @@
 - New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
 - New function `*ClientFactory.NewDefaultWafPolicyClient() *DefaultWafPolicyClient`
 - New function `*ClientFactory.NewWafPolicyClient() *WafPolicyClient`
-- New function `NewDefaultWafPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*DefaultWafPolicyClient, error)`
-- New function `*DefaultWafPolicyClient.List(context.Context, string, string, *DefaultWafPolicyClientListOptions) (DefaultWafPolicyClientListResponse, error)`
-- New function `NewWafPolicyClient(string, azcore.TokenCredential, *arm.ClientOptions) (*WafPolicyClient, error)`
-- New function `*WafPolicyClient.BeginCreate(context.Context, string, string, string, DeploymentWafPolicy, *WafPolicyClientBeginCreateOptions) (*runtime.Poller[WafPolicyClientCreateResponse], error)`
-- New function `*WafPolicyClient.BeginDelete(context.Context, string, string, string, *WafPolicyClientBeginDeleteOptions) (*runtime.Poller[WafPolicyClientDeleteResponse], error)`
-- New function `*WafPolicyClient.Get(context.Context, string, string, string, *WafPolicyClientGetOptions) (WafPolicyClientGetResponse, error)`
-- New function `*WafPolicyClient.NewListPager(string, string, *WafPolicyClientListOptions) *runtime.Pager[WafPolicyClientListResponse]`
+- New function `NewDefaultWafPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultWafPolicyClient, error)`
+- New function `*DefaultWafPolicyClient.List(ctx context.Context, resourceGroupName string, deploymentName string, options *DefaultWafPolicyClientListOptions) (DefaultWafPolicyClientListResponse, error)`
+- New function `NewWafPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WafPolicyClient, error)`
+- New function `*WafPolicyClient.BeginCreate(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, body DeploymentWafPolicy, options *WafPolicyClientBeginCreateOptions) (*runtime.Poller[WafPolicyClientCreateResponse], error)`
+- New function `*WafPolicyClient.BeginDelete(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientBeginDeleteOptions) (*runtime.Poller[WafPolicyClientDeleteResponse], error)`
+- New function `*WafPolicyClient.Get(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *WafPolicyClientGetOptions) (WafPolicyClientGetResponse, error)`
+- New function `*WafPolicyClient.NewListPager(resourceGroupName string, deploymentName string, options *WafPolicyClientListOptions) *runtime.Pager[WafPolicyClientListResponse]`
+- New struct `Configuration`
+- New struct `ConfigurationProperties`
 - New struct `DeploymentDefaultWafPolicyListResponse`
 - New struct `DeploymentDefaultWafPolicyProperties`
 - New struct `DeploymentWafPolicy`
@@ -41,6 +48,8 @@
 - New struct `DeploymentWafPolicyMetadataProperties`
 - New struct `DeploymentWafPolicyProperties`
 - New struct `Operation`
+- New anonymous field `Configuration` in struct `ConfigurationsClientCreateOrUpdateResponse`
+- New anonymous field `Configuration` in struct `ConfigurationsClientGetResponse`
 - New field `SystemData` in struct `DeploymentAPIKeyRequest`
 - New field `SystemData` in struct `DeploymentAPIKeyResponse`
 - New field `WafRelease` in struct `WebApplicationFirewallStatus`

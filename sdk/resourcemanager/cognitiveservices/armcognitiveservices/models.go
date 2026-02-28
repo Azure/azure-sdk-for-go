@@ -518,6 +518,254 @@ type AccountSKUListResult struct {
 	Value []*AccountSKU
 }
 
+// AgentApplication - Agent Application resource
+type AgentApplication struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *AgenticApplicationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AgentApplicationResourceArmPaginatedResult - A paginated list of Agent Application entities.
+type AgentApplicationResourceArmPaginatedResult struct {
+	// The link to the next page of Agent Application objects. If null, there are no additional pages.
+	NextLink *string
+
+	// An array of objects of type Agent Application.
+	Value []*AgentApplication
+}
+
+// AgentCard - Represents a detailed description of an agent, including its name, functionality, hosting information, supported
+// interaction modes, and available skills.
+type AgentCard struct {
+	// Default interaction modes supported by the Agent across all skills.
+	DefaultInputModes []*string
+
+	// Default output modes supported by the Agent across all skills.
+	DefaultOutputModes []*string
+
+	// Human-readable description of the Agent's function.
+	Description *string
+
+	// URL for the Agent's documentation.
+	DocumentationURL *string
+
+	// Human-readable name for the Agent (e.g., 'Recipe Agent').
+	Name *string
+
+	// Service provider information for the Agent.
+	Provider *ProviderInfo
+
+	// Collection of capability units the Agent can perform.
+	Skills []*Skill
+
+	// URL address where the Agent is hosted.
+	URL *string
+
+	// Version of the Agent (format defined by provider, e.g., '1.0.0').
+	Version *string
+}
+
+// AgentDeployment - Agent Deployment resource
+type AgentDeployment struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties AgentDeploymentPropertiesClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AgentDeploymentProperties - Type representing an agent deployment as a management construct.
+type AgentDeploymentProperties struct {
+	// REQUIRED; Gets or sets the type of deployment for the agent.
+	DeploymentType *AgentDeploymentType
+
+	// Returns a flat list of agent:version deployed in this deployment.
+	Agents []*VersionedAgentReference
+
+	// Gets or sets the unique identifier of the deployment.
+	DeploymentID *string
+
+	// The asset description text.
+	Description *string
+
+	// Gets or sets the display name of the deployment.
+	DisplayName *string
+
+	// Gets or sets the supported protocol types and versions exposed by this deployment.
+	Protocols []*AgentProtocolVersion
+
+	// Gets or sets the current operational state of the deployment (and, intrinsically, of the comprising agents).
+	State *AgentDeploymentState
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string
+
+	// READ-ONLY; Gets or sets the provisioning state of the agent deployment.
+	ProvisioningState *AgentDeploymentProvisioningState
+}
+
+// GetAgentDeploymentProperties implements the AgentDeploymentPropertiesClassification interface for type AgentDeploymentProperties.
+func (a *AgentDeploymentProperties) GetAgentDeploymentProperties() *AgentDeploymentProperties {
+	return a
+}
+
+// AgentDeploymentResourceArmPaginatedResult - A paginated list of Agent Deployment entities.
+type AgentDeploymentResourceArmPaginatedResult struct {
+	// The link to the next page of Agent Deployment objects. If null, there are no additional pages.
+	NextLink *string
+
+	// An array of objects of type Agent Deployment.
+	Value []*AgentDeployment
+}
+
+// AgentProtocolVersion - Type modeling the protocol and version used by an agent/exposed by a deployment.
+type AgentProtocolVersion struct {
+	// The protocol used by the agent/exposed by a deployment.
+	Protocol *AgentProtocol
+
+	// The version of the protocol.
+	Version *string
+}
+
+// AgentReference - Agent Reference resource
+type AgentReference struct {
+	// REQUIRED; [Required] Additional attributes of the entity.
+	Properties *AgentReferenceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AgentReferenceProperties - Type modeling a reference to a version of an agent definition.
+type AgentReferenceProperties struct {
+	// Gets the agent's unique identifier within the organization (subscription).
+	AgentID *string
+
+	// Gets the agent's name (unique within the project/app).
+	AgentName *string
+}
+
+// AgentReferenceResourceArmPaginatedResult - A paginated list of Agent Reference entities.
+type AgentReferenceResourceArmPaginatedResult struct {
+	// The link to the next page of Agent Reference objects. If null, there are no additional pages.
+	NextLink *string
+
+	// An array of objects of type Agent Reference.
+	Value []*AgentReference
+}
+
+// AgenticApplicationProperties - Resource type representing an agentic application as a management construct.
+type AgenticApplicationProperties struct {
+	// The EntraId Agentic Blueprint of the application.
+	AgentIdentityBlueprint *AssignedIdentity
+
+	// The list of agent definitions comprising this application, returned as references to the objects under the parent project;
+	// use this to obtain a flat list of all agent-version pairs represented by this
+	// application.
+	Agents []*AgentReferenceProperties
+
+	// Gets or sets the authorization policy associated with this agentic application instance.
+	AuthorizationPolicy ApplicationAuthorizationPolicyClassification
+
+	// The application's dedicated invocation endpoint.
+	BaseURL *string
+
+	// The (default) agent instance identity of the application.
+	DefaultInstanceIdentity *AssignedIdentity
+
+	// The asset description text.
+	Description *string
+
+	// The display name of the application.
+	DisplayName *string
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string
+
+	// Gets or sets the traffic routing policy for the application's deployments.
+	TrafficRoutingPolicy *ApplicationTrafficRoutingPolicy
+
+	// READ-ONLY; Enabledstate of the application.
+	IsEnabled *bool
+
+	// READ-ONLY; Provisioning state of the application.
+	ProvisioningState *AgenticApplicationProvisioningState
+}
+
+// ApplicationAuthorizationPolicy - Represents a policy for authorizing applications based on specified authentication and
+// authorization schemes.
+type ApplicationAuthorizationPolicy struct {
+	// REQUIRED; Authorization scheme type.
+	Type *BuiltInAuthorizationScheme
+}
+
+// GetApplicationAuthorizationPolicy implements the ApplicationAuthorizationPolicyClassification interface for type ApplicationAuthorizationPolicy.
+func (a *ApplicationAuthorizationPolicy) GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy {
+	return a
+}
+
+// ApplicationTrafficRoutingPolicy - Type representing an application traffic policy as a property of an agentic application.
+type ApplicationTrafficRoutingPolicy struct {
+	// Methodology used to route traffic to the application's deployments.
+	Protocol *TrafficRoutingProtocol
+
+	// Gets or sets the collection of traffic routing rules.
+	Rules []*TrafficRoutingRule
+}
+
+// AssignedIdentity - Type representing an identity assignment
+type AssignedIdentity struct {
+	// REQUIRED; The client ID of the identity.
+	ClientID *string
+
+	// REQUIRED; Specifies the kind of Entra identity described by this object.
+	Kind *IdentityKind
+
+	// REQUIRED; The principal ID of the identity.
+	PrincipalID *string
+
+	// REQUIRED; The tenant ID of the identity.
+	TenantID *string
+
+	// REQUIRED; Enumeration of identity types, from the perspective of management.
+	Type *IdentityManagementType
+
+	// The subject of this identity assignment.
+	Subject *string
+
+	// READ-ONLY; Represents the provisioning state of an identity resource.
+	ProvisioningState *IdentityProvisioningState
+}
+
 // AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// READ-ONLY; Resource Etag.
@@ -611,6 +859,9 @@ type CapabilityHostProperties struct {
 	// The asset description text.
 	Description *string
 
+	// Whether public hosting environment is enabled for the capability host
+	EnablePublicHostingEnvironment *bool
+
 	// List of connection names from those available in the account or project to be used as a storage resource.
 	StorageConnections []*string
 
@@ -652,6 +903,20 @@ type CapacityConfig struct {
 
 	// The minimal incremental between allowed values for capacity.
 	Step *int32
+}
+
+// ChannelsBuiltInAuthorizationPolicy - Represents a built-in authorization policy specific to Azure Bot Service/Channels
+// authentication.
+type ChannelsBuiltInAuthorizationPolicy struct {
+	// REQUIRED; Authorization scheme type.
+	Type *BuiltInAuthorizationScheme
+}
+
+// GetApplicationAuthorizationPolicy implements the ApplicationAuthorizationPolicyClassification interface for type ChannelsBuiltInAuthorizationPolicy.
+func (c *ChannelsBuiltInAuthorizationPolicy) GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy {
+	return &ApplicationAuthorizationPolicy{
+		Type: c.Type,
+	}
 }
 
 // CheckDomainAvailabilityParameter - Check Domain availability parameter.
@@ -1209,6 +1474,11 @@ type DeploymentProperties struct {
 	// The current capacity.
 	CurrentCapacity *int32
 
+	// The state of the deployment. Controls whether the deployment is accepting inference requests. Use 'Running' for active
+	// deployments that process requests, or 'Paused' to temporarily stop inference
+	// while preserving the deployment configuration.
+	DeploymentState *DeploymentState
+
 	// Properties of Cognitive Services account deployment model.
 	Model *DeploymentModel
 
@@ -1220,6 +1490,11 @@ type DeploymentProperties struct {
 
 	// Properties of Cognitive Services account deployment model. (Deprecated, please use Deployment.sku instead.)
 	ScaleSettings *DeploymentScaleSettings
+
+	// The service tier for the deployment. Determines the pricing and performance level for request processing. Use 'Default'
+	// for standard pricing or 'Priority' for higher-priority processing with premium
+	// pricing. Note: Pause operations are only supported on Standard, DataZoneStandard, and GlobalStandard SKUs.
+	ServiceTier *ServiceTier
 
 	// Specifies the deployment name that should serve requests when the request would have otherwise been throttled due to reaching
 	// current deployment throughput limit.
@@ -1368,11 +1643,117 @@ type ErrorDetail struct {
 	Target *string
 }
 
+// ErrorDetailAutoGenerated - The error detail.
+type ErrorDetailAutoGenerated struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
 	Error *ErrorDetail
+}
+
+// ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated struct {
+	// The error object.
+	Error *ErrorDetailAutoGenerated
+}
+
+// FqdnOutboundRule - FQDN Outbound Rule for the managed network of a cognitive services account.
+type FqdnOutboundRule struct {
+	// REQUIRED; Type of a managed network Outbound Rule of a cognitive services account.
+	Type *RuleType
+
+	// Category of a managed network Outbound Rule of a cognitive services account.
+	Category    *RuleCategory
+	Destination *string
+
+	// Type of a managed network Outbound Rule of a cognitive services account.
+	Status *RuleStatus
+
+	// READ-ONLY; Error information about an outbound rule of a cognitive services account if RuleStatus is failed.
+	ErrorInformation *string
+
+	// READ-ONLY
+	ParentRuleNames []*string
+}
+
+// GetOutboundRule implements the OutboundRuleClassification interface for type FqdnOutboundRule.
+func (f *FqdnOutboundRule) GetOutboundRule() *OutboundRule {
+	return &OutboundRule{
+		Category:         f.Category,
+		ErrorInformation: f.ErrorInformation,
+		ParentRuleNames:  f.ParentRuleNames,
+		Status:           f.Status,
+		Type:             f.Type,
+	}
+}
+
+// HostedAgentDeployment - Represents a hosted agent deployment where the underlying infrastructure is owned by the platform.
+type HostedAgentDeployment struct {
+	// REQUIRED; Gets or sets the type of deployment for the agent.
+	DeploymentType *AgentDeploymentType
+
+	// Returns a flat list of agent:version deployed in this deployment.
+	Agents []*VersionedAgentReference
+
+	// Gets or sets the unique identifier of the deployment.
+	DeploymentID *string
+
+	// The asset description text.
+	Description *string
+
+	// Gets or sets the display name of the deployment.
+	DisplayName *string
+
+	// Gets or sets the maximum number of replicas for this hosted deployment.
+	MaxReplicas *int32
+
+	// Gets or sets the minimum number of replicas for this hosted deployment.
+	MinReplicas *int32
+
+	// Gets or sets the supported protocol types and versions exposed by this deployment.
+	Protocols []*AgentProtocolVersion
+
+	// Gets or sets the current operational state of the deployment (and, intrinsically, of the comprising agents).
+	State *AgentDeploymentState
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string
+
+	// READ-ONLY; Gets or sets the provisioning state of the agent deployment.
+	ProvisioningState *AgentDeploymentProvisioningState
+}
+
+// GetAgentDeploymentProperties implements the AgentDeploymentPropertiesClassification interface for type HostedAgentDeployment.
+func (h *HostedAgentDeployment) GetAgentDeploymentProperties() *AgentDeploymentProperties {
+	return &AgentDeploymentProperties{
+		Agents:            h.Agents,
+		DeploymentID:      h.DeploymentID,
+		DeploymentType:    h.DeploymentType,
+		Description:       h.Description,
+		DisplayName:       h.DisplayName,
+		Protocols:         h.Protocols,
+		ProvisioningState: h.ProvisioningState,
+		State:             h.State,
+		Tags:              h.Tags,
+	}
 }
 
 // IPRule - A rule governing the accessibility from a specific ip address or ip range.
@@ -1411,6 +1792,52 @@ type KeyVaultProperties struct {
 
 	// Version of the Key from KeyVault
 	KeyVersion *string
+}
+
+// ManagedAgentDeployment - Represents a managed agent deployment where the underlying infrastructure is managed by the platform
+// in the deployer's subscription.
+type ManagedAgentDeployment struct {
+	// REQUIRED; Gets or sets the type of deployment for the agent.
+	DeploymentType *AgentDeploymentType
+
+	// Returns a flat list of agent:version deployed in this deployment.
+	Agents []*VersionedAgentReference
+
+	// Gets or sets the unique identifier of the deployment.
+	DeploymentID *string
+
+	// The asset description text.
+	Description *string
+
+	// Gets or sets the display name of the deployment.
+	DisplayName *string
+
+	// Gets or sets the supported protocol types and versions exposed by this deployment.
+	Protocols []*AgentProtocolVersion
+
+	// Gets or sets the current operational state of the deployment (and, intrinsically, of the comprising agents).
+	State *AgentDeploymentState
+
+	// Tag dictionary. Tags can be added, removed, and updated.
+	Tags map[string]*string
+
+	// READ-ONLY; Gets or sets the provisioning state of the agent deployment.
+	ProvisioningState *AgentDeploymentProvisioningState
+}
+
+// GetAgentDeploymentProperties implements the AgentDeploymentPropertiesClassification interface for type ManagedAgentDeployment.
+func (m *ManagedAgentDeployment) GetAgentDeploymentProperties() *AgentDeploymentProperties {
+	return &AgentDeploymentProperties{
+		Agents:            m.Agents,
+		DeploymentID:      m.DeploymentID,
+		DeploymentType:    m.DeploymentType,
+		Description:       m.Description,
+		DisplayName:       m.DisplayName,
+		Protocols:         m.Protocols,
+		ProvisioningState: m.ProvisioningState,
+		State:             m.State,
+		Tags:              m.Tags,
+	}
 }
 
 type ManagedIdentityAuthTypeConnectionProperties struct {
@@ -1464,6 +1891,118 @@ func (m *ManagedIdentityAuthTypeConnectionProperties) GetConnectionPropertiesV2(
 		Target:                      m.Target,
 		UseWorkspaceManagedIdentity: m.UseWorkspaceManagedIdentity,
 	}
+}
+
+// ManagedNetworkListResult - List of managed networks of a cognitive services account.
+type ManagedNetworkListResult struct {
+	// The link to the next page constructed using the continuationToken. If null, there are no additional pages.
+	NextLink *string
+
+	// The list of managed network settings of an account. Since this list may be incomplete, the nextLink field should be used
+	// to request the next list of cognitive services accounts.
+	Value []*ManagedNetworkSettingsPropertiesBasicResource
+}
+
+// ManagedNetworkProvisionStatus - Status of the Provisioning for the managed network of a cognitive services account.
+type ManagedNetworkProvisionStatus struct {
+	// Status for the managed network of a cognitive services account.
+	Status *ManagedNetworkStatus
+}
+
+// ManagedNetworkSettings - Managed Network settings for a cognitive services account.
+type ManagedNetworkSettings struct {
+	// Firewall Sku used for FQDN Rules
+	FirewallSKU *FirewallSKU
+
+	// Isolation mode for the managed network of a cognitive services account.
+	IsolationMode *IsolationMode
+
+	// The Kind of the managed network. Users can switch from V1 to V2 for granular access controls, but cannot switch back to
+	// V1 once V2 is enabled.
+	ManagedNetworkKind *ManagedNetworkKind
+
+	// Dictionary of
+	OutboundRules map[string]OutboundRuleClassification
+
+	// Status of the Provisioning for the managed network of a cognitive services account.
+	Status *ManagedNetworkProvisionStatus
+
+	// READ-ONLY; Public IP address assigned to the Azure Firewall.
+	EgressIPAddress *string
+
+	// READ-ONLY
+	NetworkID *string
+}
+
+type ManagedNetworkSettingsBasicResource struct {
+	// Managed Network settings for a cognitive services account.
+	Properties *ManagedNetworkSettings
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type ManagedNetworkSettingsEx struct {
+	// Firewall Sku used for FQDN Rules
+	FirewallSKU *FirewallSKU
+
+	// Isolation mode for the managed network of a cognitive services account.
+	IsolationMode *IsolationMode
+
+	// The Kind of the managed network. Users can switch from V1 to V2 for granular access controls, but cannot switch back to
+	// V1 once V2 is enabled.
+	ManagedNetworkKind *ManagedNetworkKind
+
+	// Dictionary of
+	OutboundRules map[string]OutboundRuleClassification
+
+	// Status of the Provisioning for the managed network of a cognitive services account.
+	Status *ManagedNetworkProvisionStatus
+
+	// READ-ONLY
+	ChangeableIsolationModes []*IsolationMode
+
+	// READ-ONLY; Public IP address assigned to the Azure Firewall.
+	EgressIPAddress *string
+
+	// READ-ONLY
+	NetworkID *string
+}
+
+// ManagedNetworkSettingsProperties - The properties of the managed network settings of a cognitive services account.
+type ManagedNetworkSettingsProperties struct {
+	// Managed Network settings for a cognitive services account.
+	ManagedNetwork *ManagedNetworkSettingsEx
+
+	// READ-ONLY; The current deployment state of the managed network resource. The provisioningState is to indicate states for
+	// resource provisioning.
+	ProvisioningState *ManagedNetworkProvisioningState
+}
+
+type ManagedNetworkSettingsPropertiesBasicResource struct {
+	// The properties of the managed network settings of a cognitive services account.
+	Properties *ManagedNetworkSettingsProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // MetricName - A metric name.
@@ -1905,6 +2444,67 @@ type OperationListResult struct {
 	Value []*Operation
 }
 
+// OrganizationSharedBuiltInAuthorizationPolicy - Built-in authorization policy scoped to organization/tenant.
+type OrganizationSharedBuiltInAuthorizationPolicy struct {
+	// REQUIRED; Authorization scheme type.
+	Type *BuiltInAuthorizationScheme
+}
+
+// GetApplicationAuthorizationPolicy implements the ApplicationAuthorizationPolicyClassification interface for type OrganizationSharedBuiltInAuthorizationPolicy.
+func (o *OrganizationSharedBuiltInAuthorizationPolicy) GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy {
+	return &ApplicationAuthorizationPolicy{
+		Type: o.Type,
+	}
+}
+
+// OutboundRule - Outbound Rule for the managed network of a cognitive services account.
+type OutboundRule struct {
+	// REQUIRED; Type of a managed network Outbound Rule of a cognitive services account.
+	Type *RuleType
+
+	// Category of a managed network Outbound Rule of a cognitive services account.
+	Category *RuleCategory
+
+	// Type of a managed network Outbound Rule of a cognitive services account.
+	Status *RuleStatus
+
+	// READ-ONLY; Error information about an outbound rule of a cognitive services account if RuleStatus is failed.
+	ErrorInformation *string
+
+	// READ-ONLY
+	ParentRuleNames []*string
+}
+
+// GetOutboundRule implements the OutboundRuleClassification interface for type OutboundRule.
+func (o *OutboundRule) GetOutboundRule() *OutboundRule { return o }
+
+type OutboundRuleBasicResource struct {
+	// REQUIRED; Outbound Rule for the managed network of a cognitive services account.
+	Properties OutboundRuleClassification
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// OutboundRuleListResult - List of outbound rules for the managed network of a cognitive services account.
+type OutboundRuleListResult struct {
+	// The link to the next page constructed using the continuationToken. If null, there are no additional pages.
+	NextLink *string
+
+	// The list of cognitive services accounts. Since this list may be incomplete, the nextLink field should be used to request
+	// the next list of cognitive services accounts.
+	Value []*OutboundRuleBasicResource
+}
+
 type PATAuthTypeConnectionProperties struct {
 	// REQUIRED; Authentication type of the connection target
 	AuthType *ConnectionAuthType
@@ -2178,6 +2778,15 @@ type ProjectProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// ProviderInfo - Service provider information for the Agent
+type ProviderInfo struct {
+	// Organization name of the provider.
+	Organization *string
+
+	// URL of the provider.
+	URL *string
+}
+
 type ProvisioningIssue struct {
 	// Name of the NSP provisioning issue
 	Name *string
@@ -2421,6 +3030,114 @@ type RaiContentFilterProperties struct {
 	Source *RaiPolicyContentSource
 }
 
+// RaiExternalSafetyProvider - Cognitive Services Rai External Safety provider.
+type RaiExternalSafetyProvider struct {
+	// Properties of Cognitive Services Rai External Safety provider.
+	Properties *RaiExternalSafetyProviderProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RaiExternalSafetyProviderProperties - RAI External SafetyProvider properties.
+type RaiExternalSafetyProviderProperties struct {
+	// Creation time of the safety provider.
+	CreatedAt *time.Time
+
+	// Last modified time of the safety provider.
+	LastModifiedAt *time.Time
+
+	// Safety provider mode sync/async.
+	Mode *string
+
+	// The unique identifier of the safety provider.
+	ProviderID *string
+
+	// Name of the safety provider.
+	ProviderName *string
+
+	// Webhook URL for the safety provider.
+	URL *string
+}
+
+// RaiExternalSafetyProviderResult - The list of cognitive services RAI External Safety Providers.
+type RaiExternalSafetyProviderResult struct {
+	// The link used to get the next page of Rai External Safety Provider.
+	NextLink *string
+
+	// The list of RaiExternalSafetyProvider.
+	Value []*RaiExternalSafetyProviderSchema
+}
+
+// RaiExternalSafetyProviderSchema - Cognitive Services Rai External Safety provider Schema.
+type RaiExternalSafetyProviderSchema struct {
+	// Properties of Cognitive Services Rai External Safety provider.
+	Properties *RaiExternalSafetyProviderSchemaProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RaiExternalSafetyProviderSchemaProperties - RAI External SafetyProvider schema properties.
+type RaiExternalSafetyProviderSchemaProperties struct {
+	// The Key Vault URI that contains the api key for safety provider urls.
+	KeyVaultURI *string
+
+	// The managed identity to access the Key Vault.
+	ManagedIdentity *string
+
+	// Safety provider mode sync/async.
+	Mode *string
+
+	// The unique identifier of the safety provider.
+	ProviderID *string
+
+	// Name of the safety provider.
+	ProviderName *string
+
+	// The name of the secret in Key Vault that contains the api key to access the webhook.
+	SecretName *string
+
+	// Webhook URL for the safety provider.
+	URL *string
+
+	// READ-ONLY; Creation time of the safety provider.
+	CreatedAt *time.Time
+
+	// READ-ONLY; Last modified time of the safety provider.
+	LastModifiedAt *time.Time
+}
+
 // RaiMonitorConfig - Cognitive Services Rai Monitor Config.
 type RaiMonitorConfig struct {
 	// The storage resource Id.
@@ -2456,6 +3173,9 @@ type RaiPolicy struct {
 
 // RaiPolicyContentFilter - Azure OpenAI Content Filter.
 type RaiPolicyContentFilter struct {
+	// The action types to apply to the content filters
+	Action *RaiActionType
+
 	// If blocking would occur.
 	Blocking *bool
 
@@ -2500,8 +3220,79 @@ type RaiPolicyProperties struct {
 	// previous version.
 	Mode *RaiPolicyMode
 
+	// The list of Safety Providers.
+	SafetyProviders []*SafetyProviderConfig
+
 	// READ-ONLY; Content Filters policy type.
 	Type *RaiPolicyType
+}
+
+// RaiSafetyProviderConfig - Azure OpenAI RAI safety provider config.
+type RaiSafetyProviderConfig struct {
+	// If blocking would occur.
+	Blocking *bool
+
+	// Name of RAI Safety Provider.
+	SafetyProviderName *string
+}
+
+// RaiToolLabel - Cognitive Services RAI Tool Label resource.
+type RaiToolLabel struct {
+	// Properties of the RAI Tool Label.
+	Properties *RaiToolLabelProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource Etag.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RaiToolLabelProperties - RAI Tool Label properties.
+type RaiToolLabelProperties struct {
+	// REQUIRED; The unique tool connection name, e.g., 'Web_Search'.
+	ToolConnectionName *string
+
+	// Account-level tool label definition.
+	AccountScope *RaiToolLabelPropertiesAccountScope
+
+	// List of project-level tool label definitions.
+	ProjectScopes []*RaiToolLabelPropertiesProjectScopesItem
+}
+
+// RaiToolLabelPropertiesAccountScope - Account-level tool label definition.
+type RaiToolLabelPropertiesAccountScope struct {
+	// Dictionary of label key-value pairs for the account scope.
+	LabelValues map[string]*string
+}
+
+type RaiToolLabelPropertiesProjectScopesItem struct {
+	// REQUIRED; Dictionary of label key-value pairs for the project scope.
+	LabelValues map[string]*string
+
+	// REQUIRED; Project name to which this scope applies.
+	Project *string
+}
+
+// RaiToolLabelResult - The list of Cognitive Services RAI Tool Labels.
+type RaiToolLabelResult struct {
+	// The link used to get the next page of RaiToolLabels.
+	NextLink *string
+
+	// The list of RAI Tool Labels.
+	Value []*RaiToolLabel
 }
 
 // RaiTopic - Cognitive Services Rai Topic.
@@ -2690,6 +3481,19 @@ type ResourceSKURestrictions struct {
 	Values []*string
 }
 
+// RoleBasedBuiltInAuthorizationPolicy - Built-in role-based authorization policy.
+type RoleBasedBuiltInAuthorizationPolicy struct {
+	// REQUIRED; Authorization scheme type.
+	Type *BuiltInAuthorizationScheme
+}
+
+// GetApplicationAuthorizationPolicy implements the ApplicationAuthorizationPolicyClassification interface for type RoleBasedBuiltInAuthorizationPolicy.
+func (r *RoleBasedBuiltInAuthorizationPolicy) GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy {
+	return &ApplicationAuthorizationPolicy{
+		Type: r.Type,
+	}
+}
+
 type SASAuthTypeConnectionProperties struct {
 	// REQUIRED; Authentication type of the connection target
 	AuthType *ConnectionAuthType
@@ -2823,6 +3627,18 @@ type SKUResource struct {
 	SKU *SKU
 }
 
+// SafetyProviderConfig - Gets or sets the source to which safety providers applies.
+type SafetyProviderConfig struct {
+	// If blocking would occur.
+	Blocking *bool
+
+	// Name of RAI Safety Provider.
+	SafetyProviderName *string
+
+	// Content source to apply the Content Filters.
+	Source *RaiPolicyContentSource
+}
+
 type ServicePrincipalAuthTypeConnectionProperties struct {
 	// REQUIRED; Authentication type of the connection target
 	AuthType *ConnectionAuthType
@@ -2876,6 +3692,30 @@ func (s *ServicePrincipalAuthTypeConnectionProperties) GetConnectionPropertiesV2
 	}
 }
 
+// Skill - Collection of capability units the Agent can perform
+type Skill struct {
+	// Skill description.
+	Description *string
+
+	// Example scenarios or prompts the skill can execute (e.g., 'I need a recipe for bread').
+	Examples []*string
+
+	// Unique identifier for the skill.
+	ID *string
+
+	// Input MIME types supported by the skill (if different from default).
+	InputModes []*string
+
+	// Human-readable name for the skill.
+	Name *string
+
+	// Output MIME types supported by the skill (if different from default).
+	OutputModes []*string
+
+	// Tags describing the skill's capability category (e.g., 'cooking', 'customer support').
+	Tags []*string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -2904,6 +3744,21 @@ type ThrottlingRule struct {
 	MatchPatterns            []*RequestMatchPattern
 	MinCount                 *float32
 	RenewalPeriod            *float32
+}
+
+// TrafficRoutingRule - Represents a rule for routing traffic to a specific deployment.
+type TrafficRoutingRule struct {
+	// The unique identifier of the deployment to which traffic is routed by this rule.
+	DeploymentID *string
+
+	// A user-provided description for this traffic routing rule.
+	Description *string
+
+	// The identifier of this traffic routing rule.
+	RuleID *string
+
+	// Gets or sets the percentage of traffic allocated to this instance.
+	TrafficPercentage *int32
 }
 
 // Usage - The usage data for a usage request.
@@ -3016,6 +3871,18 @@ func (u *UsernamePasswordAuthTypeConnectionProperties) GetConnectionPropertiesV2
 		Target:                      u.Target,
 		UseWorkspaceManagedIdentity: u.UseWorkspaceManagedIdentity,
 	}
+}
+
+// VersionedAgentReference - Type modeling a reference to a version of an agent definition.
+type VersionedAgentReference struct {
+	// Gets the agent's unique identifier within the organization (subscription).
+	AgentID *string
+
+	// Gets the agent's name (unique within the project/app).
+	AgentName *string
+
+	// Gets the agent's version (unique for each agent lineage).
+	AgentVersion *string
 }
 
 // VirtualNetworkRule - A rule governing the accessibility from a specific virtual network.

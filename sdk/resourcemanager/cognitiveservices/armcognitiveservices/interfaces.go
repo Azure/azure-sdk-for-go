@@ -5,6 +5,25 @@
 
 package armcognitiveservices
 
+// AgentDeploymentPropertiesClassification provides polymorphic access to related types.
+// Call the interface's GetAgentDeploymentProperties() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AgentDeploymentProperties, *HostedAgentDeployment, *ManagedAgentDeployment
+type AgentDeploymentPropertiesClassification interface {
+	// GetAgentDeploymentProperties returns the AgentDeploymentProperties content of the underlying type.
+	GetAgentDeploymentProperties() *AgentDeploymentProperties
+}
+
+// ApplicationAuthorizationPolicyClassification provides polymorphic access to related types.
+// Call the interface's GetApplicationAuthorizationPolicy() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *ApplicationAuthorizationPolicy, *ChannelsBuiltInAuthorizationPolicy, *OrganizationSharedBuiltInAuthorizationPolicy,
+// - *RoleBasedBuiltInAuthorizationPolicy
+type ApplicationAuthorizationPolicyClassification interface {
+	// GetApplicationAuthorizationPolicy returns the ApplicationAuthorizationPolicy content of the underlying type.
+	GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy
+}
+
 // ConnectionPropertiesV2Classification provides polymorphic access to related types.
 // Call the interface's GetConnectionPropertiesV2() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -15,4 +34,13 @@ package armcognitiveservices
 type ConnectionPropertiesV2Classification interface {
 	// GetConnectionPropertiesV2 returns the ConnectionPropertiesV2 content of the underlying type.
 	GetConnectionPropertiesV2() *ConnectionPropertiesV2
+}
+
+// OutboundRuleClassification provides polymorphic access to related types.
+// Call the interface's GetOutboundRule() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *FqdnOutboundRule, *OutboundRule
+type OutboundRuleClassification interface {
+	// GetOutboundRule returns the OutboundRule content of the underlying type.
+	GetOutboundRule() *OutboundRule
 }

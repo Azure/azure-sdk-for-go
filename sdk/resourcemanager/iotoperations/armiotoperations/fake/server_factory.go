@@ -82,41 +82,41 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "BrokerAuthenticationClient":
-		initServer(s, &s.trBrokerAuthenticationServer, func() *BrokerAuthenticationServerTransport {
+		initServer(&s.trMu, &s.trBrokerAuthenticationServer, func() *BrokerAuthenticationServerTransport {
 			return NewBrokerAuthenticationServerTransport(&s.srv.BrokerAuthenticationServer)
 		})
 		resp, err = s.trBrokerAuthenticationServer.Do(req)
 	case "BrokerAuthorizationClient":
-		initServer(s, &s.trBrokerAuthorizationServer, func() *BrokerAuthorizationServerTransport {
+		initServer(&s.trMu, &s.trBrokerAuthorizationServer, func() *BrokerAuthorizationServerTransport {
 			return NewBrokerAuthorizationServerTransport(&s.srv.BrokerAuthorizationServer)
 		})
 		resp, err = s.trBrokerAuthorizationServer.Do(req)
 	case "BrokerClient":
-		initServer(s, &s.trBrokerServer, func() *BrokerServerTransport { return NewBrokerServerTransport(&s.srv.BrokerServer) })
+		initServer(&s.trMu, &s.trBrokerServer, func() *BrokerServerTransport { return NewBrokerServerTransport(&s.srv.BrokerServer) })
 		resp, err = s.trBrokerServer.Do(req)
 	case "BrokerListenerClient":
-		initServer(s, &s.trBrokerListenerServer, func() *BrokerListenerServerTransport {
+		initServer(&s.trMu, &s.trBrokerListenerServer, func() *BrokerListenerServerTransport {
 			return NewBrokerListenerServerTransport(&s.srv.BrokerListenerServer)
 		})
 		resp, err = s.trBrokerListenerServer.Do(req)
 	case "DataflowClient":
-		initServer(s, &s.trDataflowServer, func() *DataflowServerTransport { return NewDataflowServerTransport(&s.srv.DataflowServer) })
+		initServer(&s.trMu, &s.trDataflowServer, func() *DataflowServerTransport { return NewDataflowServerTransport(&s.srv.DataflowServer) })
 		resp, err = s.trDataflowServer.Do(req)
 	case "DataflowEndpointClient":
-		initServer(s, &s.trDataflowEndpointServer, func() *DataflowEndpointServerTransport {
+		initServer(&s.trMu, &s.trDataflowEndpointServer, func() *DataflowEndpointServerTransport {
 			return NewDataflowEndpointServerTransport(&s.srv.DataflowEndpointServer)
 		})
 		resp, err = s.trDataflowEndpointServer.Do(req)
 	case "DataflowProfileClient":
-		initServer(s, &s.trDataflowProfileServer, func() *DataflowProfileServerTransport {
+		initServer(&s.trMu, &s.trDataflowProfileServer, func() *DataflowProfileServerTransport {
 			return NewDataflowProfileServerTransport(&s.srv.DataflowProfileServer)
 		})
 		resp, err = s.trDataflowProfileServer.Do(req)
 	case "InstanceClient":
-		initServer(s, &s.trInstanceServer, func() *InstanceServerTransport { return NewInstanceServerTransport(&s.srv.InstanceServer) })
+		initServer(&s.trMu, &s.trInstanceServer, func() *InstanceServerTransport { return NewInstanceServerTransport(&s.srv.InstanceServer) })
 		resp, err = s.trInstanceServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -127,12 +127,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

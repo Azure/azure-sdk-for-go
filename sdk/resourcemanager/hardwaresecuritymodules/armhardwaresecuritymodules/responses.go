@@ -13,7 +13,7 @@ type CloudHsmClusterBackupStatusClientGetResponse struct {
 	Location *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 }
 
 // CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse contains the response from method CloudHsmClusterPrivateEndpointConnectionsClient.Create.
@@ -48,7 +48,7 @@ type CloudHsmClusterRestoreStatusClientGetResponse struct {
 	Location *string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 }
 
 // CloudHsmClustersClientBackupResponse contains the response from method CloudHsmClustersClient.BeginBackup.
@@ -57,7 +57,7 @@ type CloudHsmClustersClientBackupResponse struct {
 	BackupResult
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 }
 
 // CloudHsmClustersClientCreateOrUpdateResponse contains the response from method CloudHsmClustersClient.BeginCreateOrUpdate.
@@ -95,7 +95,7 @@ type CloudHsmClustersClientRestoreResponse struct {
 	RestoreResult
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 }
 
 // CloudHsmClustersClientUpdateResponse contains the response from method CloudHsmClustersClient.BeginUpdate.
@@ -110,7 +110,7 @@ type CloudHsmClustersClientValidateBackupPropertiesResponse struct {
 	BackupResult
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 }
 
 // CloudHsmClustersClientValidateRestorePropertiesResponse contains the response from method CloudHsmClustersClient.BeginValidateRestoreProperties.
@@ -119,7 +119,7 @@ type CloudHsmClustersClientValidateRestorePropertiesResponse struct {
 	RestoreResult
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
-	XMSRequestID *string
+	RequestID *string
 }
 
 // DedicatedHsmClientCreateOrUpdateResponse contains the response from method DedicatedHsmClient.BeginCreateOrUpdate.

@@ -705,6 +705,66 @@ func (s *PageBlobUnrecordedTestsSuite) TestIncrementalCopy() {
 	waitForIncrementalCopy(_require, dstBlob, &resp)
 }
 
+func (s *PageBlobRecordedTestsSuite) TestIncrementalCopyErrorCode() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+
+	accountSAS, err := testcommon.GetAccountSAS(sas.AccountPermissions{Read: true, Create: true, Write: true, List: true, Add: true, Delete: true},
+		sas.AccountResourceTypes{Service: true, Container: true, Object: true})
+	_require.NoError(err)
+
+	svcClientSAS, err := service.NewClientWithNoCredential(svcClient.URL()+"?"+accountSAS, nil)
+	_require.NoError(err)
+	containerClient := svcClientSAS.NewContainerClient(containerName)
+	_, err = containerClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	srcBlob := createNewPageBlob(context.Background(), _require, "src"+testcommon.GenerateBlobName(testName), containerClient)
+
+	contentSize := 1024
+	r := testcommon.GetReaderToGeneratedBytes(contentSize)
+	offset, count := int64(0), int64(contentSize)
+	_, err = srcBlob.UploadPages(context.Background(), r, blob.HTTPRange{
+		Offset: offset,
+		Count:  count,
+	}, nil)
+	_require.NoError(err)
+
+	snapshot1Resp, err := srcBlob.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	// Sleep to ensure time difference between snapshots
+	time.Sleep(1 * time.Millisecond)
+
+	// Create second snapshot (newer)
+	r2 := testcommon.GetReaderToGeneratedBytes(contentSize)
+	_, err = srcBlob.UploadPages(context.Background(), r2, blob.HTTPRange{
+		Offset: offset,
+		Count:  count,
+	}, nil)
+	_require.NoError(err)
+
+	snapshot2Resp, err := srcBlob.CreateSnapshot(context.Background(), nil)
+	_require.NoError(err)
+
+	dstBlob := containerClient.NewPageBlobClient("dst" + testcommon.GenerateBlobName(testName))
+
+	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshot2Resp.Snapshot, nil)
+	_require.NoError(err)
+	_require.NotNil(resp)
+
+	waitForIncrementalCopy(_require, dstBlob, &resp)
+
+	_, err = dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshot1Resp.Snapshot, nil)
+	_require.Error(err)
+	_require.Contains(err.Error(), bloberror.IncrementalCopyOfEarlierSnapshotNotAllowed)
+}
 func (s *PageBlobRecordedTestsSuite) TestResizePageBlob() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

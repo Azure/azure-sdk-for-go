@@ -5059,3 +5059,91 @@ func (s *PageBlobRecordedTestsSuite) TestPageBlobClientCustomAudience() {
 	_, err = pbClientAudience.GetProperties(context.Background(), nil)
 	_require.NoError(err)
 }
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPK() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewPageBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), pageblob.PageBytes*10, &pageblob.CreateOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 512
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.UploadPages(context.Background(), streaming.NopCloser(r), blob.HTTPRange{Offset: 0, Count: int64(contentSize)}, &pageblob.UploadPagesOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewPageBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+
+	// Test UploadPagesFromURL with Source CPK
+	_, err = destBlobClient.UploadPagesFromURL(context.Background(), srcURL, 0, 0, int64(contentSize), &pageblob.UploadPagesFromURLOptions{
+		SourceCustomerProvidedKey: &cpk,
+	})
+	_require.NoError(err)
+}
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPKFail() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create source blob with CPK
+	srcBlobName := testcommon.GenerateBlobName("src")
+	srcBlobClient := containerClient.NewPageBlobClient(srcBlobName)
+
+	cpk := testcommon.TestCPKByValue
+
+	_, err = srcBlobClient.Create(context.Background(), pageblob.PageBytes*10, &pageblob.CreateOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	contentSize := 512
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
+	_, err = srcBlobClient.UploadPages(context.Background(), streaming.NopCloser(r), blob.HTTPRange{Offset: 0, Count: int64(contentSize)}, &pageblob.UploadPagesOptions{
+		CPKInfo: &cpk,
+	})
+	_require.NoError(err)
+
+	// Get source blob URL with SAS
+	srcURL, err := srcBlobClient.GetSASURL(sas.BlobPermissions{Read: true}, time.Now().Add(1*time.Hour), nil)
+	_require.NoError(err)
+
+	destBlobName := testcommon.GenerateBlobName("dest")
+	destBlobClient := containerClient.NewPageBlobClient(destBlobName)
+	_, err = destBlobClient.Create(context.Background(), pageblob.PageBytes*10, nil)
+	_require.NoError(err)
+
+	// Test UploadPagesFromURL with Source CPK
+	_, err = destBlobClient.UploadPagesFromURL(context.Background(), srcURL, 0, 0, int64(contentSize), &pageblob.UploadPagesFromURLOptions{
+		SourceCustomerProvidedKey: &testcommon.TestInvalidCPKByValue,
+	})
+	_require.Error(err)
+}

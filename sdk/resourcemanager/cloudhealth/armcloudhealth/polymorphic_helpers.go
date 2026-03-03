@@ -27,6 +27,29 @@ func unmarshalAuthenticationSettingPropertiesClassification(rawMsg json.RawMessa
 	return b, nil
 }
 
+func unmarshalDiscoveryRuleSpecificationClassification(rawMsg json.RawMessage) (DiscoveryRuleSpecificationClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b DiscoveryRuleSpecificationClassification
+	switch m["kind"] {
+	case string(DiscoveryRuleKindResourceGraphQuery):
+		b = &ResourceGraphQuerySpecification{}
+	case string(DiscoveryRuleKindApplicationInsightsTopology):
+		b = &ApplicationInsightsTopologySpecification{}
+	default:
+		b = &DiscoveryRuleSpecification{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalSignalDefinitionPropertiesClassification(rawMsg json.RawMessage) (SignalDefinitionPropertiesClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

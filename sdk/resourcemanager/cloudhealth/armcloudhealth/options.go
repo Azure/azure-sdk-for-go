@@ -6,16 +6,18 @@ package armcloudhealth
 
 import "time"
 
-// AuthenticationSettingsClientCreateOrUpdateOptions contains the optional parameters for the AuthenticationSettingsClient.CreateOrUpdate
+// AuthenticationSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the AuthenticationSettingsClient.BeginCreateOrUpdate
 // method.
-type AuthenticationSettingsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+type AuthenticationSettingsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
-// AuthenticationSettingsClientDeleteOptions contains the optional parameters for the AuthenticationSettingsClient.Delete
+// AuthenticationSettingsClientBeginDeleteOptions contains the optional parameters for the AuthenticationSettingsClient.BeginDelete
 // method.
-type AuthenticationSettingsClientDeleteOptions struct {
-	// placeholder for future optional parameters
+type AuthenticationSettingsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // AuthenticationSettingsClientGetOptions contains the optional parameters for the AuthenticationSettingsClient.Get method.
@@ -29,15 +31,17 @@ type AuthenticationSettingsClientListByHealthModelOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiscoveryRulesClientCreateOrUpdateOptions contains the optional parameters for the DiscoveryRulesClient.CreateOrUpdate
+// DiscoveryRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the DiscoveryRulesClient.BeginCreateOrUpdate
 // method.
-type DiscoveryRulesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+type DiscoveryRulesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
-// DiscoveryRulesClientDeleteOptions contains the optional parameters for the DiscoveryRulesClient.Delete method.
-type DiscoveryRulesClientDeleteOptions struct {
-	// placeholder for future optional parameters
+// DiscoveryRulesClientBeginDeleteOptions contains the optional parameters for the DiscoveryRulesClient.BeginDelete method.
+type DiscoveryRulesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // DiscoveryRulesClientGetOptions contains the optional parameters for the DiscoveryRulesClient.Get method.
@@ -53,18 +57,35 @@ type DiscoveryRulesClientListByHealthModelOptions struct {
 	Timestamp *time.Time
 }
 
-// EntitiesClientCreateOrUpdateOptions contains the optional parameters for the EntitiesClient.CreateOrUpdate method.
-type EntitiesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+// EntitiesClientBeginCreateOrUpdateOptions contains the optional parameters for the EntitiesClient.BeginCreateOrUpdate method.
+type EntitiesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
-// EntitiesClientDeleteOptions contains the optional parameters for the EntitiesClient.Delete method.
-type EntitiesClientDeleteOptions struct {
+// EntitiesClientBeginDeleteOptions contains the optional parameters for the EntitiesClient.BeginDelete method.
+type EntitiesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// EntitiesClientGetHistoryOptions contains the optional parameters for the EntitiesClient.GetHistory method.
+type EntitiesClientGetHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 
 // EntitiesClientGetOptions contains the optional parameters for the EntitiesClient.Get method.
 type EntitiesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EntitiesClientGetSignalHistoryOptions contains the optional parameters for the EntitiesClient.GetSignalHistory method.
+type EntitiesClientGetSignalHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EntitiesClientIngestHealthReportOptions contains the optional parameters for the EntitiesClient.IngestHealthReport method.
+type EntitiesClientIngestHealthReportOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -116,14 +137,17 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RelationshipsClientCreateOrUpdateOptions contains the optional parameters for the RelationshipsClient.CreateOrUpdate method.
-type RelationshipsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+// RelationshipsClientBeginCreateOrUpdateOptions contains the optional parameters for the RelationshipsClient.BeginCreateOrUpdate
+// method.
+type RelationshipsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
-// RelationshipsClientDeleteOptions contains the optional parameters for the RelationshipsClient.Delete method.
-type RelationshipsClientDeleteOptions struct {
-	// placeholder for future optional parameters
+// RelationshipsClientBeginDeleteOptions contains the optional parameters for the RelationshipsClient.BeginDelete method.
+type RelationshipsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // RelationshipsClientGetOptions contains the optional parameters for the RelationshipsClient.Get method.
@@ -139,15 +163,18 @@ type RelationshipsClientListByHealthModelOptions struct {
 	Timestamp *time.Time
 }
 
-// SignalDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the SignalDefinitionsClient.CreateOrUpdate
+// SignalDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SignalDefinitionsClient.BeginCreateOrUpdate
 // method.
-type SignalDefinitionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+type SignalDefinitionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
-// SignalDefinitionsClientDeleteOptions contains the optional parameters for the SignalDefinitionsClient.Delete method.
-type SignalDefinitionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
+// SignalDefinitionsClientBeginDeleteOptions contains the optional parameters for the SignalDefinitionsClient.BeginDelete
+// method.
+type SignalDefinitionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // SignalDefinitionsClientGetOptions contains the optional parameters for the SignalDefinitionsClient.Get method.

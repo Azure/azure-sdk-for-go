@@ -29,8 +29,24 @@ steps:
   # The other public CI builds will pass a real service directory, which will not activate the PR diff logic and as such will operate
   # as before this change.
   - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+      - template: eng/common/pipelines/templates/steps/install-azsdk-cli.yml
+        parameters:
+          CustomCondition: eq(variables.AZSDK_PIPELINE_MODE, true)]
+
+      - task: Powershell@2
+        displayName: 🤖 Save package properties filtered for PR
+        condition: eq(variables.AZSDK_PIPELINE_MODE, true)]
+        inputs:
+          filePath: $AZSDK
+          arguments: >
+            --ci
+            --out-dir '${{ parameters.PackageInfoDirectory }}'
+          pwsh: true
+          workingDirectory: '${{ parameters.WorkingDirectory }}'
+
       - task: Powershell@2
         displayName: Generate PR Diff
+        condition: ne(variables.AZSDK_PIPELINE_MODE, true)]
         inputs:
           targetType: inline
           script: >
@@ -43,6 +59,7 @@ steps:
 
       - task: Powershell@2
         displayName: Save package properties filtered for PR
+        condition: ne(variables.AZSDK_PIPELINE_MODE, true)]
         inputs:
           filePath: ${{ parameters.ScriptDirectory }}/Save-Package-Properties.ps1
           arguments: >
@@ -72,7 +89,18 @@ steps:
 
   - ${{ else }}:
       - task: Powershell@2
+        displayName: 🤖 Save package properties filtered for PR
+        condition: eq(variables.AZSDK_PIPELINE_MODE, true)]
+        inputs:
+          filePath: $AZSDK
+          arguments: >
+            --out-dir '${{ parameters.PackageInfoDirectory }}'
+          pwsh: true
+          workingDirectory: '${{ parameters.WorkingDirectory }}'
+
+      - task: Powershell@2
         displayName: Save package properties
+        condition: ne(variables.AZSDK_PIPELINE_MODE, true)]
         inputs:
           filePath: ${{ parameters.ScriptDirectory }}/Save-Package-Properties.ps1
           arguments: >

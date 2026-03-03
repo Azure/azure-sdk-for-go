@@ -211,7 +211,8 @@ func (b *Client) AbortCopyFromURL(ctx context.Context, copyID string, options *A
 // To remove all tags from the blob, call this operation with no tags set.
 // https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags
 func (b *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
-	return b.generated().SetTags(ctx, *tags, options.format())
+	serializedTags := shared.SerializeBlobTags(tags)
+	return b.generated().SetTags(ctx, *serializedTags, options.format())
 }
 
 // GetTags operation enables users to get tags on a blob or specific blob version, or snapshot.

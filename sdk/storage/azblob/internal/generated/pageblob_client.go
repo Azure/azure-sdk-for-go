@@ -370,7 +370,11 @@ func (client *PageBlobClient) createCreateRequest(ctx context.Context, size int6
 		req.Raw().Header["x-ms-legal-hold"] = []string{strconv.FormatBool(*options.LegalHold)}
 	}
 	if options != nil && options.Metadata != nil {
-		req.Raw().Header["x-ms-meta"] = []string{*options.Metadata}
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+			}
+		}
 	}
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}

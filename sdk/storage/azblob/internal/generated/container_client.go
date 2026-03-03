@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/http"
 	"strconv"
 	"strings"
@@ -345,7 +346,11 @@ func (client *ContainerClient) createCreateRequest(ctx context.Context, options 
 		req.Raw().Header["x-ms-deny-encryption-scope-override"] = []string{strconv.FormatBool(*options.PreventEncryptionScopeOverride)}
 	}
 	if options != nil && options.Metadata != nil {
-		req.Raw().Header["x-ms-meta"] = []string{*options.Metadata}
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+			}
+		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
 	return req, nil
@@ -812,8 +817,13 @@ func (client *ContainerClient) getPropertiesHandleResponse(resp *http.Response) 
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
 		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
-	if val := resp.Header.Get("x-ms-meta"); val != "" {
-		result.Metadata = &val
+	for hh := range resp.Header {
+		if len(hh) > len("x-ms-meta") && strings.EqualFold(hh[:len("x-ms-meta")], "x-ms-meta") {
+			if result.Metadata == nil {
+				result.Metadata = map[string]*string{}
+			}
+			result.Metadata[hh[len("x-ms-meta"):]] = to.Ptr(resp.Header.Get(hh))
+		}
 	}
 	if val := resp.Header.Get("x-ms-deny-encryption-scope-override"); val != "" {
 		preventEncryptionScopeOverride, err := strconv.ParseBool(val)
@@ -1465,7 +1475,11 @@ func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, opt
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
 	if options != nil && options.Metadata != nil {
-		req.Raw().Header["x-ms-meta"] = []string{*options.Metadata}
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+			}
+		}
 	}
 	req.Raw().Header["x-ms-version"] = []string{"2026-04-06"}
 	return req, nil

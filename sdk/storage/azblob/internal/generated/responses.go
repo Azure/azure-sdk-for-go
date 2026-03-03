@@ -510,7 +510,7 @@ type BlobClientDownloadResponse struct {
 	LegalHold *bool
 
 	// The metadata headers.
-	Metadata *string
+	Metadata map[string]*string
 
 	// Optional. Only valid when Object Replication is enabled for the storage container and on the destination blob of the replication.
 	ObjectReplicationPolicyID *string
@@ -518,7 +518,7 @@ type BlobClientDownloadResponse struct {
 	// Optional. Only valid when Object Replication is enabled for the storage container and on the source blob of the replication.
 	// When retrieving this header, it will return the header with the policy id and rule id (e.g. x-ms-or-policyid_ruleid), and
 	// the value will be the status of the replication (e.g. complete, failed).
-	ObjectReplicationRules *string
+	ObjectReplicationRules map[string]*string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	RequestID *string
@@ -715,7 +715,7 @@ type BlobClientGetPropertiesResponse struct {
 	LegalHold *bool
 
 	// The metadata headers.
-	Metadata *string
+	Metadata map[string]*string
 
 	// Optional. Only valid when Object Replication is enabled for the storage container and on the destination blob of the replication.
 	ObjectReplicationPolicyID *string
@@ -723,7 +723,7 @@ type BlobClientGetPropertiesResponse struct {
 	// Optional. Only valid when Object Replication is enabled for the storage container and on the source blob of the replication.
 	// When retrieving this header, it will return the header with the policy id and rule id (e.g. x-ms-or-policyid_ruleid), and
 	// the value will be the status of the replication (e.g. complete, failed).
-	ObjectReplicationRules *string
+	ObjectReplicationRules map[string]*string
 
 	// If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High
 	// and Standard.
@@ -1203,7 +1203,7 @@ type BlockBlobClientQueryResponse struct {
 	LeaseStatus *LeaseStatus
 
 	// The metadata headers.
-	Metadata *string
+	Metadata map[string]*string
 
 	// An opaque, globally-unique, server-generated string identifier for the request.
 	RequestID *string
@@ -1595,7 +1595,7 @@ type ContainerClientGetPropertiesResponse struct {
 	LeaseStatus *LeaseStatus
 
 	// The metadata headers.
-	Metadata *string
+	Metadata map[string]*string
 
 	// If a blob has a lease and the lease is of infinite duration then the value of this header is set to true, otherwise it
 	// is set to false.

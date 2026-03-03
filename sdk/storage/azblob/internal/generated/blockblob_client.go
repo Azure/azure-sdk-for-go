@@ -10,9 +10,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -135,7 +137,11 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 		req.Raw().Header["x-ms-legal-hold"] = []string{strconv.FormatBool(*options.LegalHold)}
 	}
 	if options != nil && options.Metadata != nil {
-		req.Raw().Header["x-ms-meta"] = []string{*options.Metadata}
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+			}
+		}
 	}
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
@@ -522,8 +528,13 @@ func (client *BlockBlobClient) queryHandleResponse(resp *http.Response) (BlockBl
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
 		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
-	if val := resp.Header.Get("x-ms-meta"); val != "" {
-		result.Metadata = &val
+	for hh := range resp.Header {
+		if len(hh) > len("x-ms-meta") && strings.EqualFold(hh[:len("x-ms-meta")], "x-ms-meta") {
+			if result.Metadata == nil {
+				result.Metadata = map[string]*string{}
+			}
+			result.Metadata[hh[len("x-ms-meta"):]] = to.Ptr(resp.Header.Get(hh))
+		}
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
@@ -929,7 +940,11 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, body io.
 		req.Raw().Header["x-ms-legal-hold"] = []string{strconv.FormatBool(*options.LegalHold)}
 	}
 	if options != nil && options.Metadata != nil {
-		req.Raw().Header["x-ms-meta"] = []string{*options.Metadata}
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+			}
+		}
 	}
 	if options != nil && options.StructuredBodyType != nil {
 		req.Raw().Header["x-ms-structured-body"] = []string{*options.StructuredBodyType}
@@ -1120,7 +1135,11 @@ func (client *BlockBlobClient) uploadBlobFromURLCreateRequest(ctx context.Contex
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
 	if options != nil && options.Metadata != nil {
-		req.Raw().Header["x-ms-meta"] = []string{*options.Metadata}
+		for k, v := range options.Metadata {
+			if v != nil {
+				req.Raw().Header["x-ms-meta"+k] = []string{*v}
+			}
+		}
 	}
 	if options != nil && options.SourceContentMD5 != nil {
 		req.Raw().Header["x-ms-source-content-md5"] = []string{base64.StdEncoding.EncodeToString(options.SourceContentMD5)}

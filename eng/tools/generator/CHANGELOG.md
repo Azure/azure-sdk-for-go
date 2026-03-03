@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.7 (2026-03-03)
+
+### Bugs Fixed
+
+- Fixed `GenerateChangelog` to bypass errors when the module doesn't contain any exports instead of failing.
+
 ## 0.4.6 (2026-02-26)
 
 ### Other Changes

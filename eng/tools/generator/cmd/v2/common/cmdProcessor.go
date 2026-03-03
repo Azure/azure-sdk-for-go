@@ -247,6 +247,9 @@ func ExecuteTspClient(path string, args ...string) error {
 				if strings.Contains(line, "npm warn") {
 					continue
 				}
+				if strings.Contains(line, "Error reading tsp-location.yaml") {
+					continue
+				}
 				newErrMsgs = append(newErrMsgs, line)
 			}
 

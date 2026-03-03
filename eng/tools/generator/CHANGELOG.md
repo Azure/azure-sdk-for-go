@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.7 (2026-02-27)
+
+### Other Changes
+
+- Filter out irrelevant error message "Error reading tsp-location.yaml" in command execution output to avoid confusion for users.
+
 ## 0.4.6 (2026-02-26)
 
 ### Other Changes

@@ -14,6 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
 
+// Testing
+
 // AccessToken represents an Azure service bearer access token with expiry information.
 type AccessToken = exported.AccessToken
 

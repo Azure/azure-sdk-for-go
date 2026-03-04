@@ -22,7 +22,7 @@ parameters:
     default: []
 
 steps:
-  - template: eng/common/pipelines/templates/steps/install-azsdk-cli.yml
+  - template: /eng/common/pipelines/templates/steps/install-azsdk-cli.yml
     parameters:
       CustomCondition: eq(variables.AZSDK_PIPELINE_MODE, true)
 

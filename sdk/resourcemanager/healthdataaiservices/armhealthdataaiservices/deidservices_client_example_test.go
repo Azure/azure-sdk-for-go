@@ -31,6 +31,9 @@ func ExampleDeidServicesClient_BeginCreate() {
 			Type:                   to.Ptr(armhealthdataaiservices.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{},
 		},
+		SKU: &armhealthdataaiservices.SKU{
+			Name: to.Ptr("Free"),
+		},
 		Tags:     map[string]*string{},
 		Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
 	}, nil)
@@ -86,6 +89,9 @@ func ExampleDeidServicesClient_BeginCreate() {
 	// 			},
 	// 			PrincipalID: to.Ptr("a82361f4-5320-4a26-8d1b-45832d2164dd"),
 	// 			TenantID: to.Ptr("53a6a686-ae15-4a1d-badf-3e7947918893"),
+	// 		},
+	// 		SKU: &armhealthdataaiservices.SKU{
+	// 			Name: to.Ptr("Free"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -187,6 +193,9 @@ func ExampleDeidServicesClient_Get() {
 	// 			PrincipalID: to.Ptr("a82361f4-5320-4a26-8d1b-45832d2164dd"),
 	// 			TenantID: to.Ptr("53a6a686-ae15-4a1d-badf-3e7947918893"),
 	// 		},
+	// 		SKU: &armhealthdataaiservices.SKU{
+	// 			Name: to.Ptr("Free"),
+	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
 	// 		Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -271,6 +280,9 @@ func ExampleDeidServicesClient_NewListByResourceGroupPager() {
 		// 					Type: to.Ptr(armhealthdataaiservices.ManagedServiceIdentityTypeNone),
 		// 					UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{
 		// 					},
+		// 				},
+		// 				SKU: &armhealthdataaiservices.SKU{
+		// 					Name: to.Ptr("Free"),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -361,6 +373,9 @@ func ExampleDeidServicesClient_NewListBySubscriptionPager() {
 		// 					UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{
 		// 					},
 		// 				},
+		// 				SKU: &armhealthdataaiservices.SKU{
+		// 					Name: to.Ptr("Free"),
+		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
 		// 				Location: to.Ptr("qwyhvdwcsjulggagdqxlmazcl"),
@@ -398,6 +413,9 @@ func ExampleDeidServicesClient_BeginUpdate() {
 		Identity: &armhealthdataaiservices.ManagedServiceIdentityUpdate{
 			Type:                   to.Ptr(armhealthdataaiservices.ManagedServiceIdentityTypeNone),
 			UserAssignedIdentities: map[string]*armhealthdataaiservices.UserAssignedIdentity{},
+		},
+		SKU: &armhealthdataaiservices.SKU{
+			Name: to.Ptr("Free"),
 		},
 		Tags: map[string]*string{},
 		Properties: &armhealthdataaiservices.DeidPropertiesUpdate{
@@ -456,6 +474,9 @@ func ExampleDeidServicesClient_BeginUpdate() {
 	// 			},
 	// 			PrincipalID: to.Ptr("a82361f4-5320-4a26-8d1b-45832d2164dd"),
 	// 			TenantID: to.Ptr("53a6a686-ae15-4a1d-badf-3e7947918893"),
+	// 		},
+	// 		SKU: &armhealthdataaiservices.SKU{
+	// 			Name: to.Ptr("Free"),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},

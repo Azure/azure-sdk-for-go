@@ -21,3 +21,6 @@ variables:
   # Supported versions for testing. These variables are referenced in test matrix files.
   GO_VERSION_LATEST: 1.25.4
   GO_VERSION_PREVIOUS: 1.24.10
+
+  # (benbp) testing
+  AZSDK_PIPELINE_MODE: true

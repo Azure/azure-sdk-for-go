@@ -1,0 +1,16 @@
+name: sensei-basic-001
+description: Basic skill improvement task
+category: basic
+prompt: |
+  Review this skill frontmatter for compliance:
+  
+  ---
+  name: example-skill
+  description: A skill for doing things
+  ---
+  
+  Check if it meets waza requirements and suggest improvements.
+expected_behavior:
+  - Identifies missing fields
+  - Suggests improvements
+  - References compliance requirements

@@ -1,0 +1,18 @@
+name: markdown-token-optimizer-basic-001
+description: Basic markdown token optimization task
+category: basic
+prompt: |
+  Optimize the following markdown content to reduce token count while preserving meaning:
+  
+  # Introduction
+  
+  This is a very long introduction to the topic. We will be discussing many different aspects of this topic in great detail throughout this document. The purpose of this introduction is to provide context and background information.
+  
+  ## Background
+  
+  The background section provides additional context about the topic we are discussing.
+  
+expected_behavior:
+  - Removes redundancy
+  - Preserves key information
+  - Reduces token count

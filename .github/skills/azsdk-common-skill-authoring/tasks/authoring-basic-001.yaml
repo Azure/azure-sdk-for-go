@@ -1,0 +1,9 @@
+name: skill-authoring-basic-001
+description: Basic skill authoring guidance task
+category: basic
+prompt: |
+  I want to create a new skill for API documentation review. What should I include in the SKILL.md file?
+expected_behavior:
+  - Provides frontmatter structure
+  - Mentions required fields
+  - References guidelines

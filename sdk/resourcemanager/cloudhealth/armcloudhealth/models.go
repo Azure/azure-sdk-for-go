@@ -273,13 +273,13 @@ type EntityProperties struct {
 
 // EvaluationRule - Evaluation rule for a signal definition
 type EvaluationRule struct {
-	// Degraded rule with static threshold. When used, dynamicDetectionRule must not be set.
+	// Degraded rule with static threshold.
 	DegradedRule *ThresholdRule
 
 	// Configure to use ML-based dynamic thresholds. When used, degradedRule and unhealthyRule must not be set.
 	DynamicDetectionRule *DynamicDetectionRule
 
-	// Unhealthy rule with static threshold. When used, dynamicDetectionRule must not be set.
+	// Unhealthy rule with static threshold.
 	UnhealthyRule *ThresholdRule
 }
 

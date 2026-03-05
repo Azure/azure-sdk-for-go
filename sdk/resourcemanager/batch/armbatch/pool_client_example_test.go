@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"log"
 )
 
@@ -56,7 +56,7 @@ func ExamplePoolClient_Create_createPoolAcceleratedNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB46CB72A227E2\""
+	// 	Etag: "W/\"0x8DB46CB72A227E2\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -187,7 +187,7 @@ func ExamplePoolClient_Create_createPoolConfidentialDiskEncryptionSetForUserSubs
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Name: to.Ptr("testpool"),
@@ -331,7 +331,7 @@ func ExamplePoolClient_Create_createPoolCustomerManagedKeyForBatchManagedAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Identity: &armbatch.PoolIdentity{
 	// 			Type: to.Ptr(armbatch.PoolIdentityTypeUserAssigned),
@@ -456,7 +456,7 @@ func ExamplePoolClient_Create_createPoolDiskEncryptionSetForUserSubscriptionAcco
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/testpool"),
 	// 		Name: to.Ptr("testpool"),
@@ -587,7 +587,7 @@ func ExamplePoolClient_Create_createPoolDualStackNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/pools/dualstackpool"),
 	// 		Name: to.Ptr("dualstackpool"),
@@ -709,7 +709,7 @@ func ExamplePoolClient_Create_createPoolMinimalVirtualMachineConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -788,7 +788,7 @@ func ExamplePoolClient_Create_createPoolNoPublicIP() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -873,7 +873,7 @@ func ExamplePoolClient_Create_createPoolPublicIPs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -968,7 +968,7 @@ func ExamplePoolClient_Create_createPoolSecurityProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB554F8E08BCF4\""
+	// 	Etag: "W/\"0x8DB554F8E08BCF4\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1055,7 +1055,7 @@ func ExamplePoolClient_Create_createPoolCustomImage() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1134,7 +1134,7 @@ func ExamplePoolClient_Create_createPoolTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB554F8E08BCF4\""
+	// 	Etag: "W/\"0x8DB554F8E08BCF4\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1247,7 +1247,7 @@ func ExamplePoolClient_Create_createPoolUpgradePolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
+	// 	Etag: "W/\"0x8DB51E64D3C3B69\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1367,7 +1367,7 @@ func ExamplePoolClient_Create_createPoolUserAssignedIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1530,7 +1530,7 @@ func ExamplePoolClient_Create_createPoolFullVirtualMachineConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1688,7 +1688,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationExtensions() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1790,7 +1790,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationOSDisk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB51F14DC1A8AD\""
+	// 	Etag: "W/\"0x8DB51F14DC1A8AD\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -1899,7 +1899,7 @@ func ExamplePoolClient_Create_createPoolVirtualMachineConfigurationServiceArtifa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientCreateResponse{
-	// 	ETag: "W/\"0x8DB51F14DC1A8AD\""
+	// 	Etag: "W/\"0x8DB51F14DC1A8AD\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("mypool41"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2005,7 +2005,7 @@ func ExamplePoolClient_DisableAutoScale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientDisableAutoScaleResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2067,7 +2067,7 @@ func ExamplePoolClient_Get_getPool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2219,7 +2219,7 @@ func ExamplePoolClient_Get_getPoolAcceleratedNetworking() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2291,7 +2291,7 @@ func ExamplePoolClient_Get_getPoolSecurityProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB554F8E08BCF4\""
+	// 	Etag: "W/\"0x8DB554F8E08BCF4\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2366,7 +2366,7 @@ func ExamplePoolClient_Get_getPoolUpgradePolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
+	// 	Etag: "W/\"0x8DB51E64D3C3B69\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2458,7 +2458,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationExtensions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2540,7 +2540,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationOSDisk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
+	// 	Etag: "W/\"0x8DB51E64D3C3B69\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2616,7 +2616,7 @@ func ExamplePoolClient_Get_getPoolVirtualMachineConfigurationServiceArtifactRefe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientGetResponse{
-	// 	ETag: "W/\"0x8DB51E64D3C3B69\""
+	// 	Etag: "W/\"0x8DB51E64D3C3B69\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2916,7 +2916,7 @@ func ExamplePoolClient_StopResize() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientStopResizeResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -2992,7 +2992,7 @@ func ExamplePoolClient_Update_updatePoolEnableAutoscale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3081,7 +3081,7 @@ func ExamplePoolClient_Update_updatePoolOtherProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3173,7 +3173,7 @@ func ExamplePoolClient_Update_updatePoolRemoveStartTask() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),
@@ -3255,7 +3255,7 @@ func ExamplePoolClient_Update_updatePoolResizePool() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PoolClientUpdateResponse{
-	// 	ETag: "W/\"0x8D4EDFEBFADF4AB\""
+	// 	Etag: "W/\"0x8D4EDFEBFADF4AB\""
 	// 	Pool: &armbatch.Pool{
 	// 		Name: to.Ptr("testpool"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/pools"),

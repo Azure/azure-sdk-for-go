@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -172,7 +172,7 @@ func (p *PoolServerTransport) dispatchCreate(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).ETag; val != nil {
+	if val := server.GetResponse(respr).Etag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -260,7 +260,7 @@ func (p *PoolServerTransport) dispatchDisableAutoScale(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).ETag; val != nil {
+	if val := server.GetResponse(respr).Etag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -300,7 +300,7 @@ func (p *PoolServerTransport) dispatchGet(req *http.Request) (*http.Response, er
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).ETag; val != nil {
+	if val := server.GetResponse(respr).Etag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -414,7 +414,7 @@ func (p *PoolServerTransport) dispatchStopResize(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).ETag; val != nil {
+	if val := server.GetResponse(respr).Etag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil
@@ -465,7 +465,7 @@ func (p *PoolServerTransport) dispatchUpdate(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	if val := server.GetResponse(respr).ETag; val != nil {
+	if val := server.GetResponse(respr).Etag; val != nil {
 		resp.Header.Set("ETag", *val)
 	}
 	return resp, nil

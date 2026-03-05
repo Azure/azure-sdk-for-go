@@ -251,8 +251,8 @@ type SummaryType string
 const (
 	// SummaryTypeBinaryHardening - The summary contains information about the binary hardening analysis results
 	SummaryTypeBinaryHardening SummaryType = "BinaryHardening"
-	// SummaryTypeCommonVulnerabilitiesAndExposures - The summary contains information about the Common Vulnerabilities and Exposures
-	// analysis results
+	// SummaryTypeCommonVulnerabilitiesAndExposures - The summary contains information about the CVE (Common Vulnerabilities and
+	// Exposures) analysis results (deprecated)
 	SummaryTypeCommonVulnerabilitiesAndExposures SummaryType = "CommonVulnerabilitiesAndExposures"
 	// SummaryTypeCryptoCertificate - The summary contains information about the cryptographic certificate analysis results
 	SummaryTypeCryptoCertificate SummaryType = "CryptoCertificate"

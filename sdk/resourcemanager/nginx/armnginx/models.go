@@ -122,6 +122,24 @@ type CertificateProperties struct {
 	SHA1Thumbprint *string
 }
 
+// Configuration - Nginx Configuration Response
+type Configuration struct {
+	// Nginx Configuration Response Properties
+	Properties *ConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // ConfigurationFile - Nginx Configuration File
 type ConfigurationFile struct {
 	Content     *string
@@ -131,7 +149,7 @@ type ConfigurationFile struct {
 // ConfigurationListResponse - Response of a list operation.
 type ConfigurationListResponse struct {
 	// REQUIRED; The NginxConfigurationResponse items on this page
-	Value []*ConfigurationResponse
+	Value []*Configuration
 
 	// The link to the next page of items
 	NextLink *string
@@ -141,6 +159,19 @@ type ConfigurationListResponse struct {
 type ConfigurationPackage struct {
 	Data           *string
 	ProtectedFiles []*string
+}
+
+// ConfigurationProperties - Nginx Configuration Response Properties
+type ConfigurationProperties struct {
+	Files []*ConfigurationFile
+
+	// Nginx Configuration Package
+	Package        *ConfigurationPackage
+	ProtectedFiles []*ConfigurationProtectedFileResponse
+	RootFile       *string
+
+	// READ-ONLY; Provisioning State
+	ProvisioningState *ProvisioningState
 }
 
 // ConfigurationProtectedFileRequest - Nginx Configuration Protected File Request
@@ -190,37 +221,6 @@ type ConfigurationRequestProperties struct {
 	// Nginx Configuration Package
 	Package        *ConfigurationPackage
 	ProtectedFiles []*ConfigurationProtectedFileRequest
-	RootFile       *string
-
-	// READ-ONLY; Provisioning State
-	ProvisioningState *ProvisioningState
-}
-
-// ConfigurationResponse - Nginx Configuration Response
-type ConfigurationResponse struct {
-	// Nginx Configuration Response Properties
-	Properties *ConfigurationResponseProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// ConfigurationResponseProperties - Nginx Configuration Response Properties
-type ConfigurationResponseProperties struct {
-	Files []*ConfigurationFile
-
-	// Nginx Configuration Package
-	Package        *ConfigurationPackage
-	ProtectedFiles []*ConfigurationProtectedFileResponse
 	RootFile       *string
 
 	// READ-ONLY; Provisioning State
@@ -653,7 +653,7 @@ type Operation struct {
 	Origin *Origin
 }
 
-// OperationDisplay - Localized display information for and operation.
+// OperationDisplay - Localized display information for an operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
 	Description *string

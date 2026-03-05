@@ -6,7 +6,7 @@ package armsitemanager
 
 import "time"
 
-// Site as ARM Resource
+// Site as Extension Resource
 type Site struct {
 	// The resource-specific properties for this resource.
 	Properties *SiteProperties

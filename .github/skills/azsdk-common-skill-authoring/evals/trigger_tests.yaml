@@ -1,0 +1,13 @@
+shouldTriggerPrompts:
+  - "create a new skill"
+  - "write a skill for API review"
+  - "what is the SKILL.md format"
+  - "skill template structure"
+  - "review my skill PR for compliance"
+  - "skill best practices and token budgets"
+shouldNotTriggerPrompts:
+  - "deploy my Azure Function"
+  - "fix my pipeline build error"
+  - "authenticate with Azure AD"
+  - "how do I release an SDK package"
+  - "configure Azure Storage geo-redundancy"

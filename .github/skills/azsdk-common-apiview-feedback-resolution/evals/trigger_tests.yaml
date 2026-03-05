@@ -1,0 +1,12 @@
+shouldTriggerPrompts:
+  - "resolve APIView feedback on my PR"
+  - "fix APIView comments"
+  - "address API review feedback"
+  - "APIView shows issues with my SDK"
+  - "help me with APIView suggestions"
+shouldNotTriggerPrompts:
+  - "deploy my Azure Function"
+  - "fix my pipeline build error"
+  - "create a new TypeSpec definition"
+  - "how do I release an SDK package"
+  - "set up Azure Storage account"

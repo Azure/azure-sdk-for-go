@@ -1,0 +1,12 @@
+name: azsdk-common-pipeline-troubleshooting-evals
+description: Evaluations for the pipeline troubleshooting skill
+skill: azsdk-common-pipeline-troubleshooting
+config:
+  timeout: 60
+graders:
+  - type: text
+    name: skill-activated
+    config:
+      contains:
+        - "pipeline"
+tasks: tasks/*.yaml

@@ -1,0 +1,12 @@
+name: anti-trigger
+description: Should not trigger on unrelated prompts
+prompt: "How do I authenticate with Azure Active Directory in my Python app?"
+expected:
+  skill_activated: false
+graders:
+  - type: text
+    name: no-authoring-advice
+    config:
+      not_contains:
+        - "SKILL.md"
+        - "frontmatter"

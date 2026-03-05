@@ -1,0 +1,14 @@
+shouldTriggerPrompts:
+  - "run sensei on my skill"
+  - "improve skill frontmatter compliance"
+  - "fix frontmatter for azure-deploy"
+  - "score my skill"
+  - "sensei help"
+  - "check skill tokens"
+  - "frontmatter audit on all skills"
+shouldNotTriggerPrompts:
+  - "deploy my Azure Function"
+  - "fix my pipeline build error"
+  - "create a new TypeSpec definition"
+  - "how do I release an SDK package"
+  - "configure Azure Storage geo-redundancy"

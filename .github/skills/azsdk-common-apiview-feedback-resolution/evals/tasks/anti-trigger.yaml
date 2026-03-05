@@ -1,0 +1,12 @@
+name: anti-trigger
+description: Should not trigger on unrelated prompts
+prompt: "How do I set up a new Azure Storage account?"
+expected:
+  skill_activated: false
+graders:
+  - type: text
+    name: no-apiview-advice
+    config:
+      not_contains:
+        - "APIView"
+        - "API review"

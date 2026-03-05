@@ -1,0 +1,12 @@
+name: azsdk-common-markdown-token-optimizer-evals
+description: Evaluations for the markdown token optimizer skill
+skill: azsdk-common-markdown-token-optimizer
+config:
+  timeout: 60
+graders:
+  - type: text
+    name: skill-activated
+    config:
+      contains:
+        - "token"
+tasks: tasks/*.yaml

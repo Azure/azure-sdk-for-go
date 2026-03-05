@@ -9,15 +9,14 @@ config:
   executor: copilot-sdk
   model: claude-sonnet-4.6
 graders:
-  - type: keyword
+  - type: text
     name: mentions_pipeline_concepts
     config:
-      keywords: ["pipeline", "build", "failure"]
-      must_include_all: false
-  - type: regex
+      contains: ["pipeline", "build", "failure"]
+  - type: text
     name: references_tools
     config:
-      pattern: "(?i)(azsdk_analyze_pipeline|pipeline|build failure|CI)"
+      regex_match: "(?i)(azsdk_analyze_pipeline|pipeline|build failure|CI)"
   - type: code
     name: has_substantive_output
     config:

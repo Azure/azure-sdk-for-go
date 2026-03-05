@@ -1,0 +1,12 @@
+shouldTriggerPrompts:
+  - "release my SDK package"
+  - "how to publish a new SDK version"
+  - "walk me through SDK release process"
+  - "release a new version of azure-sdk"
+  - "SDK release checklist"
+shouldNotTriggerPrompts:
+  - "write unit tests"
+  - "fix my pipeline build error"
+  - "create a new TypeSpec definition"
+  - "optimize markdown tokens"
+  - "resolve APIView feedback"

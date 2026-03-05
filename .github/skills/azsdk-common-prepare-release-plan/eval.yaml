@@ -9,15 +9,14 @@ config:
   executor: copilot-sdk
   model: claude-sonnet-4.6
 graders:
-  - type: keyword
+  - type: text
     name: mentions_release_plan
     config:
-      keywords: ["release plan", "Service Tree", "API version"]
-      must_include_all: false
-  - type: regex
+      contains: ["release plan", "Service Tree", "API version"]
+  - type: text
     name: references_tools
     config:
-      pattern: "(?i)(azsdk_create_release_plan|azsdk_get_release_plan|azsdk_update_sdk_details|release plan)"
+      regex_match: "(?i)(azsdk_create_release_plan|azsdk_get_release_plan|azsdk_update_sdk_details|release plan)"
   - type: code
     name: has_substantive_output
     config:

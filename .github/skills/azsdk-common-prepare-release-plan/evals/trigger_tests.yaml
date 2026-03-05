@@ -1,0 +1,12 @@
+shouldTriggerPrompts:
+  - "prepare a release plan"
+  - "plan the next SDK release"
+  - "create release plan for my package"
+  - "what goes in a release plan"
+  - "help me prepare for SDK release"
+shouldNotTriggerPrompts:
+  - "deploy my Azure Function"
+  - "fix my pipeline build error"
+  - "create a new TypeSpec definition"
+  - "configure Azure logging"
+  - "resolve APIView feedback"

@@ -1,0 +1,12 @@
+name: azsdk-common-sdk-release-evals
+description: Evaluations for the SDK release skill
+skill: azsdk-common-sdk-release
+config:
+  timeout: 60
+graders:
+  - type: text
+    name: skill-activated
+    config:
+      contains:
+        - "release"
+tasks: tasks/*.yaml

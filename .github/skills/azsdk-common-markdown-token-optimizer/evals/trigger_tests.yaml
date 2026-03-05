@@ -1,0 +1,13 @@
+shouldTriggerPrompts:
+  - "optimize markdown for token efficiency"
+  - "reduce tokens in my SKILL.md"
+  - "my file has too many tokens"
+  - "token count is too high"
+  - "make this markdown more concise for AI"
+  - "shrink file size for token budget"
+shouldNotTriggerPrompts:
+  - "deploy my Azure Function"
+  - "fix my pipeline build error"
+  - "create a new TypeSpec definition"
+  - "how do I release an SDK package"
+  - "review my API design"

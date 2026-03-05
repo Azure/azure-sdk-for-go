@@ -1,5 +1,5 @@
 ---
-name: sensei
+name: azsdk-common-sensei
 description: "**WORKFLOW SKILL** — Iteratively improve skill frontmatter compliance using the Ralph loop pattern. WHEN: \"run sensei\", \"sensei help\", \"improve skill\", \"fix frontmatter\", \"skill compliance\", \"frontmatter audit\", \"score skill\", \"check skill tokens\". INVOKES: token counting tools, test runners, git commands. FOR SINGLE OPERATIONS: use token CLI directly for counts/checks."
 license: MIT
 metadata:

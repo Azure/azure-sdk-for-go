@@ -9,11 +9,10 @@ config:
   executor: copilot-sdk
   model: claude-sonnet-4.6
 graders:
-  - type: keyword
+  - type: text
     name: mentions_authoring_concepts
     config:
-      keywords: ["skill", "authoring", "frontmatter", "guidelines", "structure"]
-      must_include_all: false
+      contains: ["skill", "authoring", "frontmatter", "guidelines", "structure"]
   - type: code
     name: has_substantive_output
     config:

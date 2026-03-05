@@ -1,0 +1,12 @@
+name: azsdk-common-sensei-evals
+description: Evaluations for the sensei skill compliance improver
+skill: azsdk-common-sensei
+config:
+  timeout: 60
+graders:
+  - type: text
+    name: skill-activated
+    config:
+      contains:
+        - "skill"
+tasks: tasks/*.yaml

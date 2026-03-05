@@ -1,0 +1,12 @@
+name: azsdk-common-prepare-release-plan-evals
+description: Evaluations for the release plan preparation skill
+skill: azsdk-common-prepare-release-plan
+config:
+  timeout: 60
+graders:
+  - type: text
+    name: skill-activated
+    config:
+      contains:
+        - "release"
+tasks: tasks/*.yaml

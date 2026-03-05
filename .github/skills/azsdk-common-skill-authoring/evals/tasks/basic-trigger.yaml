@@ -1,0 +1,11 @@
+name: basic-trigger
+description: Should trigger on skill creation requests
+prompt: "I need to create a new skill for Azure SDK. What's the correct SKILL.md format?"
+expected:
+  skill_activated: true
+graders:
+  - type: text
+    name: mentions-skill-structure
+    config:
+      contains:
+        - "skill"

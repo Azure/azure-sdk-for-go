@@ -1,0 +1,12 @@
+name: azsdk-common-skill-authoring-evals
+description: Evaluations for the skill authoring guide
+skill: azsdk-common-skill-authoring
+config:
+  timeout: 60
+graders:
+  - type: text
+    name: skill-activated
+    config:
+      contains:
+        - "skill"
+tasks: tasks/*.yaml

@@ -9,15 +9,14 @@ config:
   executor: copilot-sdk
   model: claude-sonnet-4.6
 graders:
-  - type: keyword
+  - type: text
     name: mentions_release_concepts
     config:
-      keywords: ["release", "pipeline", "azsdk_release_sdk"]
-      must_include_all: false
-  - type: regex
+      contains: ["release", "pipeline", "azsdk_release_sdk"]
+  - type: text
     name: references_tools
     config:
-      pattern: "(?i)(azsdk_release_sdk|release.*pipeline|check.*ready|trigger.*release)"
+      regex_match: "(?i)(azsdk_release_sdk|release.*pipeline|check.*ready|trigger.*release)"
   - type: code
     name: has_substantive_output
     config:

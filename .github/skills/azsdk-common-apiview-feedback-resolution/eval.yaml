@@ -9,15 +9,14 @@ config:
   executor: copilot-sdk
   model: claude-sonnet-4.6
 graders:
-  - type: keyword
+  - type: text
     name: mentions_apiview
     config:
-      keywords: ["APIView", "feedback", "comment"]
-      must_include_all: false
-  - type: regex
+      contains: ["APIView", "feedback", "comment"]
+  - type: text
     name: references_tools
     config:
-      pattern: "(?i)(azsdk_apiview_get_comments|azsdk_typespec_delegate_apiview_feedback|APIView)"
+      regex_match: "(?i)(azsdk_apiview_get_comments|azsdk_typespec_delegate_apiview_feedback|APIView)"
   - type: code
     name: has_substantive_output
     config:

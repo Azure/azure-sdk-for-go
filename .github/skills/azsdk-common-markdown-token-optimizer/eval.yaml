@@ -9,11 +9,10 @@ config:
   executor: copilot-sdk
   model: claude-sonnet-4.6
 graders:
-  - type: keyword
+  - type: text
     name: mentions_optimization_concepts
     config:
-      keywords: ["token", "markdown", "optimize", "reduce", "compression"]
-      must_include_all: false
+      contains: ["token", "markdown", "optimize", "reduce", "compression"]
   - type: code
     name: has_substantive_output
     config:

@@ -1,0 +1,11 @@
+name: basic-trigger
+description: Should trigger on sensei invocation requests
+prompt: "Run sensei on the azure-deploy skill to improve its frontmatter compliance"
+expected:
+  skill_activated: true
+graders:
+  - type: text
+    name: mentions-compliance
+    config:
+      contains:
+        - "skill"

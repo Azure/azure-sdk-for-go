@@ -1,0 +1,12 @@
+shouldTriggerPrompts:
+  - "my CI pipeline is failing"
+  - "debug pipeline build error"
+  - "pipeline troubleshooting help"
+  - "fix failing SDK pipeline"
+  - "CI build broke after my change"
+shouldNotTriggerPrompts:
+  - "write a TypeSpec definition"
+  - "create a new skill"
+  - "optimize markdown tokens"
+  - "how do I release an SDK package"
+  - "resolve APIView feedback"

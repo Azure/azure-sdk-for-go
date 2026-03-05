@@ -1,0 +1,26 @@
+name: azsdk-common-typespec-to-sdk-workflow-eval
+description: Evaluation suite for the end-to-end TypeSpec to SDK release workflow.
+skill: azsdk-common-typespec-to-sdk-workflow
+version: "1.0"
+config:
+  trials_per_task: 1
+  timeout_seconds: 600
+  parallel: false
+  executor: copilot-sdk
+  model: claude-sonnet-4.6
+graders:
+  - type: text
+    name: mentions_workflow_steps
+    config:
+      contains: ["TypeSpec", "SDK", "release", "generate"]
+  - type: text
+    name: references_workflow_concepts
+    config:
+      regex_match: "(?i)(release plan|SDK generation|TypeSpec|API spec|pipeline)"
+  - type: code
+    name: has_substantive_output
+    config:
+      assertions:
+        - "len(output) > 100"
+tasks:
+  - "tasks/*.yaml"

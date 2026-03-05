@@ -74,29 +74,29 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AvsStorageContainerVolumesClient":
-		initServer(s, &s.trAvsStorageContainerVolumesServer, func() *AvsStorageContainerVolumesServerTransport {
+		initServer(&s.trMu, &s.trAvsStorageContainerVolumesServer, func() *AvsStorageContainerVolumesServerTransport {
 			return NewAvsStorageContainerVolumesServerTransport(&s.srv.AvsStorageContainerVolumesServer)
 		})
 		resp, err = s.trAvsStorageContainerVolumesServer.Do(req)
 	case "AvsStorageContainersClient":
-		initServer(s, &s.trAvsStorageContainersServer, func() *AvsStorageContainersServerTransport {
+		initServer(&s.trMu, &s.trAvsStorageContainersServer, func() *AvsStorageContainersServerTransport {
 			return NewAvsStorageContainersServerTransport(&s.srv.AvsStorageContainersServer)
 		})
 		resp, err = s.trAvsStorageContainersServer.Do(req)
 	case "AvsVMVolumesClient":
-		initServer(s, &s.trAvsVMVolumesServer, func() *AvsVMVolumesServerTransport { return NewAvsVMVolumesServerTransport(&s.srv.AvsVMVolumesServer) })
+		initServer(&s.trMu, &s.trAvsVMVolumesServer, func() *AvsVMVolumesServerTransport { return NewAvsVMVolumesServerTransport(&s.srv.AvsVMVolumesServer) })
 		resp, err = s.trAvsVMVolumesServer.Do(req)
 	case "AvsVMsClient":
-		initServer(s, &s.trAvsVMsServer, func() *AvsVMsServerTransport { return NewAvsVMsServerTransport(&s.srv.AvsVMsServer) })
+		initServer(&s.trMu, &s.trAvsVMsServer, func() *AvsVMsServerTransport { return NewAvsVMsServerTransport(&s.srv.AvsVMsServer) })
 		resp, err = s.trAvsVMsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ReservationsClient":
-		initServer(s, &s.trReservationsServer, func() *ReservationsServerTransport { return NewReservationsServerTransport(&s.srv.ReservationsServer) })
+		initServer(&s.trMu, &s.trReservationsServer, func() *ReservationsServerTransport { return NewReservationsServerTransport(&s.srv.ReservationsServer) })
 		resp, err = s.trReservationsServer.Do(req)
 	case "StoragePoolsClient":
-		initServer(s, &s.trStoragePoolsServer, func() *StoragePoolsServerTransport { return NewStoragePoolsServerTransport(&s.srv.StoragePoolsServer) })
+		initServer(&s.trMu, &s.trStoragePoolsServer, func() *StoragePoolsServerTransport { return NewStoragePoolsServerTransport(&s.srv.StoragePoolsServer) })
 		resp, err = s.trStoragePoolsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -107,12 +107,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -36,7 +36,7 @@ func NewSitesByServiceGroupClient(credential azcore.TokenCredential, options *ar
 	return client, nil
 }
 
-// BeginCreateOrUpdate - create or update Site at SG scope
+// BeginCreateOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
@@ -62,7 +62,7 @@ func (client *SitesByServiceGroupClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - create or update Site at SG scope
+// CreateOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
@@ -113,7 +113,7 @@ func (client *SitesByServiceGroupClient) createOrUpdateCreateRequest(ctx context
 	return req, nil
 }
 
-// Delete - delete Site at SG scope
+// Delete - Delete a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
@@ -163,7 +163,7 @@ func (client *SitesByServiceGroupClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
-// Get - Get Site at SG scope
+// Get - Get a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
@@ -223,7 +223,7 @@ func (client *SitesByServiceGroupClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListByServiceGroupPager - list Site at SG scope
+// NewListByServiceGroupPager - List Site resources by scope
 //
 // Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
@@ -279,13 +279,13 @@ func (client *SitesByServiceGroupClient) listByServiceGroupHandleResponse(resp *
 	return result, nil
 }
 
-// Update - update Site at SG scope
+// Update - Update a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2025-06-01
 //   - servicegroupName - The name of the service group
 //   - siteName - The name of the Site
-//   - properties - Resource create parameters.
+//   - properties - The resource properties to be updated.
 //   - options - SitesByServiceGroupClientUpdateOptions contains the optional parameters for the SitesByServiceGroupClient.Update
 //     method.
 func (client *SitesByServiceGroupClient) Update(ctx context.Context, servicegroupName string, siteName string, properties SiteUpdate, options *SitesByServiceGroupClientUpdateOptions) (SitesByServiceGroupClientUpdateResponse, error) {

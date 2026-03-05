@@ -420,19 +420,19 @@ type CveResult struct {
 	// Name of the CVE.
 	CveName *string
 
-	// Legacy property for the effective CVE score.
+	// Legacy property for the effective CVE score (deprecated).
 	CvssScore *string
 
 	// All known CVSS scores for the CVE.
 	CvssScores []*CvssScore
 
-	// Legacy property for the CVE CVSS version 2 score, if one existed.
+	// Legacy property for the CVE CVSS version 2 score, if one existed. (deprecated)
 	CvssV2Score *string
 
-	// Legacy property for the CVE CVSS version 3 score, if one existed.
+	// Legacy property for the CVE CVSS version 3 score, if one existed. (deprecated)
 	CvssV3Score *string
 
-	// Legacy property for the what CVSS version score was stored in the cvssScore property
+	// Legacy property for the what CVSS version score was stored in the cvssScore property (deprecated).
 	CvssVersion *string
 
 	// The CVE description.
@@ -454,7 +454,7 @@ type CveResult struct {
 	ProvisioningState *ProvisioningState
 }
 
-// CveSummary - Properties for a CVE analysis summary.
+// CveSummary - Properties for a CVE (Common Vulnerabilities and Exposures) analysis summary (deprecated).
 type CveSummary struct {
 	// REQUIRED; Describes the type of summary object.
 	SummaryType *SummaryType

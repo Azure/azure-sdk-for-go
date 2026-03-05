@@ -223,7 +223,7 @@ func (client *SitesBySubscriptionClient) getHandleResponse(resp *http.Response) 
 	return result, nil
 }
 
-// NewListPager - List Site resources by subscription ID
+// NewListPager - List Site resources by scope
 //
 // Generated from API version 2025-06-01
 //   - options - SitesBySubscriptionClientListOptions contains the optional parameters for the SitesBySubscriptionClient.NewListPager
@@ -283,7 +283,7 @@ func (client *SitesBySubscriptionClient) listHandleResponse(resp *http.Response)
 //
 // Generated from API version 2025-06-01
 //   - siteName - The name of the Site
-//   - properties - Resource create parameters.
+//   - properties - The resource properties to be updated.
 //   - options - SitesBySubscriptionClientUpdateOptions contains the optional parameters for the SitesBySubscriptionClient.Update
 //     method.
 func (client *SitesBySubscriptionClient) Update(ctx context.Context, siteName string, properties SiteUpdate, options *SitesBySubscriptionClientUpdateOptions) (SitesBySubscriptionClientUpdateResponse, error) {

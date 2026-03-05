@@ -74,29 +74,29 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CapabilitiesClient":
-		initServer(s, &s.trCapabilitiesServer, func() *CapabilitiesServerTransport { return NewCapabilitiesServerTransport(&s.srv.CapabilitiesServer) })
+		initServer(&s.trMu, &s.trCapabilitiesServer, func() *CapabilitiesServerTransport { return NewCapabilitiesServerTransport(&s.srv.CapabilitiesServer) })
 		resp, err = s.trCapabilitiesServer.Do(req)
 	case "CapabilityTypesClient":
-		initServer(s, &s.trCapabilityTypesServer, func() *CapabilityTypesServerTransport {
+		initServer(&s.trMu, &s.trCapabilityTypesServer, func() *CapabilityTypesServerTransport {
 			return NewCapabilityTypesServerTransport(&s.srv.CapabilityTypesServer)
 		})
 		resp, err = s.trCapabilityTypesServer.Do(req)
 	case "ExperimentsClient":
-		initServer(s, &s.trExperimentsServer, func() *ExperimentsServerTransport { return NewExperimentsServerTransport(&s.srv.ExperimentsServer) })
+		initServer(&s.trMu, &s.trExperimentsServer, func() *ExperimentsServerTransport { return NewExperimentsServerTransport(&s.srv.ExperimentsServer) })
 		resp, err = s.trExperimentsServer.Do(req)
 	case "OperationStatusesClient":
-		initServer(s, &s.trOperationStatusesServer, func() *OperationStatusesServerTransport {
+		initServer(&s.trMu, &s.trOperationStatusesServer, func() *OperationStatusesServerTransport {
 			return NewOperationStatusesServerTransport(&s.srv.OperationStatusesServer)
 		})
 		resp, err = s.trOperationStatusesServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "TargetTypesClient":
-		initServer(s, &s.trTargetTypesServer, func() *TargetTypesServerTransport { return NewTargetTypesServerTransport(&s.srv.TargetTypesServer) })
+		initServer(&s.trMu, &s.trTargetTypesServer, func() *TargetTypesServerTransport { return NewTargetTypesServerTransport(&s.srv.TargetTypesServer) })
 		resp, err = s.trTargetTypesServer.Do(req)
 	case "TargetsClient":
-		initServer(s, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
+		initServer(&s.trMu, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
 		resp, err = s.trTargetsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -107,12 +107,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -7,7 +7,7 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 	"log"
 )
 

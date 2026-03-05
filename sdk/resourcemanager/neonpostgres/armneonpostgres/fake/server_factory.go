@@ -78,32 +78,32 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "BranchesClient":
-		initServer(s, &s.trBranchesServer, func() *BranchesServerTransport { return NewBranchesServerTransport(&s.srv.BranchesServer) })
+		initServer(&s.trMu, &s.trBranchesServer, func() *BranchesServerTransport { return NewBranchesServerTransport(&s.srv.BranchesServer) })
 		resp, err = s.trBranchesServer.Do(req)
 	case "ComputesClient":
-		initServer(s, &s.trComputesServer, func() *ComputesServerTransport { return NewComputesServerTransport(&s.srv.ComputesServer) })
+		initServer(&s.trMu, &s.trComputesServer, func() *ComputesServerTransport { return NewComputesServerTransport(&s.srv.ComputesServer) })
 		resp, err = s.trComputesServer.Do(req)
 	case "EndpointsClient":
-		initServer(s, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
+		initServer(&s.trMu, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
 		resp, err = s.trEndpointsServer.Do(req)
 	case "NeonDatabasesClient":
-		initServer(s, &s.trNeonDatabasesServer, func() *NeonDatabasesServerTransport {
+		initServer(&s.trMu, &s.trNeonDatabasesServer, func() *NeonDatabasesServerTransport {
 			return NewNeonDatabasesServerTransport(&s.srv.NeonDatabasesServer)
 		})
 		resp, err = s.trNeonDatabasesServer.Do(req)
 	case "NeonRolesClient":
-		initServer(s, &s.trNeonRolesServer, func() *NeonRolesServerTransport { return NewNeonRolesServerTransport(&s.srv.NeonRolesServer) })
+		initServer(&s.trMu, &s.trNeonRolesServer, func() *NeonRolesServerTransport { return NewNeonRolesServerTransport(&s.srv.NeonRolesServer) })
 		resp, err = s.trNeonRolesServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "OrganizationsClient":
-		initServer(s, &s.trOrganizationsServer, func() *OrganizationsServerTransport {
+		initServer(&s.trMu, &s.trOrganizationsServer, func() *OrganizationsServerTransport {
 			return NewOrganizationsServerTransport(&s.srv.OrganizationsServer)
 		})
 		resp, err = s.trOrganizationsServer.Do(req)
 	case "ProjectsClient":
-		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
+		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -114,12 +114,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -26,7 +26,7 @@ type ImageVersionsClient struct {
 // NewImageVersionsClient creates a new instance of ImageVersionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImageVersionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -41,7 +41,7 @@ func NewImageVersionsClient(subscriptionID string, credential azcore.TokenCreden
 
 // NewListByImagePager - List ImageVersion resources by Image
 //
-// Generated from API version 2024-10-19
+// Generated from API version 2025-09-20
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - imageName - Name of the image.
 //   - options - ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
@@ -89,7 +89,7 @@ func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
+	reqQP.Set("api-version", "2025-09-20")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

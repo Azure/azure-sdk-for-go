@@ -6,7 +6,7 @@ package armsitemanager
 
 // SitesByServiceGroupClientCreateOrUpdateResponse contains the response from method SitesByServiceGroupClient.BeginCreateOrUpdate.
 type SitesByServiceGroupClientCreateOrUpdateResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
@@ -17,7 +17,7 @@ type SitesByServiceGroupClientDeleteResponse struct {
 
 // SitesByServiceGroupClientGetResponse contains the response from method SitesByServiceGroupClient.Get.
 type SitesByServiceGroupClientGetResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
@@ -29,13 +29,13 @@ type SitesByServiceGroupClientListByServiceGroupResponse struct {
 
 // SitesByServiceGroupClientUpdateResponse contains the response from method SitesByServiceGroupClient.Update.
 type SitesByServiceGroupClientUpdateResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
 // SitesBySubscriptionClientCreateOrUpdateResponse contains the response from method SitesBySubscriptionClient.BeginCreateOrUpdate.
 type SitesBySubscriptionClientCreateOrUpdateResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
@@ -46,7 +46,7 @@ type SitesBySubscriptionClientDeleteResponse struct {
 
 // SitesBySubscriptionClientGetResponse contains the response from method SitesBySubscriptionClient.Get.
 type SitesBySubscriptionClientGetResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
@@ -58,13 +58,13 @@ type SitesBySubscriptionClientListResponse struct {
 
 // SitesBySubscriptionClientUpdateResponse contains the response from method SitesBySubscriptionClient.Update.
 type SitesBySubscriptionClientUpdateResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
 // SitesClientCreateOrUpdateResponse contains the response from method SitesClient.BeginCreateOrUpdate.
 type SitesClientCreateOrUpdateResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
@@ -75,7 +75,7 @@ type SitesClientDeleteResponse struct {
 
 // SitesClientGetResponse contains the response from method SitesClient.Get.
 type SitesClientGetResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }
 
@@ -87,6 +87,6 @@ type SitesClientListByResourceGroupResponse struct {
 
 // SitesClientUpdateResponse contains the response from method SitesClient.Update.
 type SitesClientUpdateResponse struct {
-	// Site as ARM Resource
+	// Site as Extension Resource
 	Site
 }

@@ -54,12 +54,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CarbonServiceClient":
-		initServer(s, &s.trCarbonServiceServer, func() *CarbonServiceServerTransport {
+		initServer(&s.trMu, &s.trCarbonServiceServer, func() *CarbonServiceServerTransport {
 			return NewCarbonServiceServerTransport(&s.srv.CarbonServiceServer)
 		})
 		resp, err = s.trCarbonServiceServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -70,12 +70,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

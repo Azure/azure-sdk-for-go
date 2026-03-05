@@ -237,7 +237,7 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List a Site
+// NewListByResourceGroupPager - List Site resources by scope
 //
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -303,7 +303,7 @@ func (client *SitesClient) listByResourceGroupHandleResponse(resp *http.Response
 // Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - siteName - The name of the Site
-//   - properties - Resource create parameters.
+//   - properties - The resource properties to be updated.
 //   - options - SitesClientUpdateOptions contains the optional parameters for the SitesClient.Update method.
 func (client *SitesClient) Update(ctx context.Context, resourceGroupName string, siteName string, properties SiteUpdate, options *SitesClientUpdateOptions) (SitesClientUpdateResponse, error) {
 	var err error

@@ -26,7 +26,7 @@ type ConfigurationsClient struct {
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -344,7 +344,7 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 // getHandleResponse handles the Get response.
 func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
 	result := ConfigurationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
 	return result, nil

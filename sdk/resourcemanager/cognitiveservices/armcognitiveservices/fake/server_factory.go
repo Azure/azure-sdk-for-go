@@ -25,6 +25,12 @@ type ServerFactory struct {
 	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
 
+	// AgentApplicationsServer contains the fakes for client AgentApplicationsClient
+	AgentApplicationsServer AgentApplicationsServer
+
+	// AgentDeploymentsServer contains the fakes for client AgentDeploymentsClient
+	AgentDeploymentsServer AgentDeploymentsServer
+
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
 
@@ -46,6 +52,12 @@ type ServerFactory struct {
 	// LocationBasedModelCapacitiesServer contains the fakes for client LocationBasedModelCapacitiesClient
 	LocationBasedModelCapacitiesServer LocationBasedModelCapacitiesServer
 
+	// ManagedNetworkProvisionsServer contains the fakes for client ManagedNetworkProvisionsClient
+	ManagedNetworkProvisionsServer ManagedNetworkProvisionsServer
+
+	// ManagedNetworkSettingsServer contains the fakes for client ManagedNetworkSettingsClient
+	ManagedNetworkSettingsServer ManagedNetworkSettingsServer
+
 	// ManagementServer contains the fakes for client ManagementClient
 	ManagementServer ManagementServer
 
@@ -60,6 +72,12 @@ type ServerFactory struct {
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// OutboundRuleServer contains the fakes for client OutboundRuleClient
+	OutboundRuleServer OutboundRuleServer
+
+	// OutboundRulesServer contains the fakes for client OutboundRulesClient
+	OutboundRulesServer OutboundRulesServer
 
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
@@ -88,14 +106,29 @@ type ServerFactory struct {
 	// RaiContentFiltersServer contains the fakes for client RaiContentFiltersClient
 	RaiContentFiltersServer RaiContentFiltersServer
 
+	// RaiExternalSafetyProviderServer contains the fakes for client RaiExternalSafetyProviderClient
+	RaiExternalSafetyProviderServer RaiExternalSafetyProviderServer
+
+	// RaiExternalSafetyProvidersServer contains the fakes for client RaiExternalSafetyProvidersClient
+	RaiExternalSafetyProvidersServer RaiExternalSafetyProvidersServer
+
 	// RaiPoliciesServer contains the fakes for client RaiPoliciesClient
 	RaiPoliciesServer RaiPoliciesServer
+
+	// RaiToolLabelsServer contains the fakes for client RaiToolLabelsClient
+	RaiToolLabelsServer RaiToolLabelsServer
 
 	// RaiTopicsServer contains the fakes for client RaiTopicsClient
 	RaiTopicsServer RaiTopicsServer
 
 	// ResourceSKUsServer contains the fakes for client ResourceSKUsClient
 	ResourceSKUsServer ResourceSKUsServer
+
+	// SubscriptionRaiPolicyServer contains the fakes for client SubscriptionRaiPolicyClient
+	SubscriptionRaiPolicyServer SubscriptionRaiPolicyServer
+
+	// TestRaiExternalSafetyProviderServer contains the fakes for client TestRaiExternalSafetyProviderClient
+	TestRaiExternalSafetyProviderServer TestRaiExternalSafetyProviderServer
 
 	// UsagesServer contains the fakes for client UsagesClient
 	UsagesServer UsagesServer
@@ -118,6 +151,8 @@ type ServerFactoryTransport struct {
 	trAccountCapabilityHostsServer                 *AccountCapabilityHostsServerTransport
 	trAccountConnectionsServer                     *AccountConnectionsServerTransport
 	trAccountsServer                               *AccountsServerTransport
+	trAgentApplicationsServer                      *AgentApplicationsServerTransport
+	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
 	trDefenderForAISettingsServer                  *DefenderForAISettingsServerTransport
@@ -125,11 +160,15 @@ type ServerFactoryTransport struct {
 	trDeploymentsServer                            *DeploymentsServerTransport
 	trEncryptionScopesServer                       *EncryptionScopesServerTransport
 	trLocationBasedModelCapacitiesServer           *LocationBasedModelCapacitiesServerTransport
+	trManagedNetworkProvisionsServer               *ManagedNetworkProvisionsServerTransport
+	trManagedNetworkSettingsServer                 *ManagedNetworkSettingsServerTransport
 	trManagementServer                             *ManagementServerTransport
 	trModelCapacitiesServer                        *ModelCapacitiesServerTransport
 	trModelsServer                                 *ModelsServerTransport
 	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
 	trOperationsServer                             *OperationsServerTransport
+	trOutboundRuleServer                           *OutboundRuleServerTransport
+	trOutboundRulesServer                          *OutboundRulesServerTransport
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trProjectCapabilityHostsServer                 *ProjectCapabilityHostsServerTransport
@@ -139,9 +178,14 @@ type ServerFactoryTransport struct {
 	trRaiBlocklistItemsServer                      *RaiBlocklistItemsServerTransport
 	trRaiBlocklistsServer                          *RaiBlocklistsServerTransport
 	trRaiContentFiltersServer                      *RaiContentFiltersServerTransport
+	trRaiExternalSafetyProviderServer              *RaiExternalSafetyProviderServerTransport
+	trRaiExternalSafetyProvidersServer             *RaiExternalSafetyProvidersServerTransport
 	trRaiPoliciesServer                            *RaiPoliciesServerTransport
+	trRaiToolLabelsServer                          *RaiToolLabelsServerTransport
 	trRaiTopicsServer                              *RaiTopicsServerTransport
 	trResourceSKUsServer                           *ResourceSKUsServerTransport
+	trSubscriptionRaiPolicyServer                  *SubscriptionRaiPolicyServerTransport
+	trTestRaiExternalSafetyProviderServer          *TestRaiExternalSafetyProviderServerTransport
 	trUsagesServer                                 *UsagesServerTransport
 }
 
@@ -171,6 +215,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AccountsClient":
 		initServer(s, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
+	case "AgentApplicationsClient":
+		initServer(s, &s.trAgentApplicationsServer, func() *AgentApplicationsServerTransport {
+			return NewAgentApplicationsServerTransport(&s.srv.AgentApplicationsServer)
+		})
+		resp, err = s.trAgentApplicationsServer.Do(req)
+	case "AgentDeploymentsClient":
+		initServer(s, &s.trAgentDeploymentsServer, func() *AgentDeploymentsServerTransport {
+			return NewAgentDeploymentsServerTransport(&s.srv.AgentDeploymentsServer)
+		})
+		resp, err = s.trAgentDeploymentsServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(s, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)
@@ -204,6 +258,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewLocationBasedModelCapacitiesServerTransport(&s.srv.LocationBasedModelCapacitiesServer)
 		})
 		resp, err = s.trLocationBasedModelCapacitiesServer.Do(req)
+	case "ManagedNetworkProvisionsClient":
+		initServer(s, &s.trManagedNetworkProvisionsServer, func() *ManagedNetworkProvisionsServerTransport {
+			return NewManagedNetworkProvisionsServerTransport(&s.srv.ManagedNetworkProvisionsServer)
+		})
+		resp, err = s.trManagedNetworkProvisionsServer.Do(req)
+	case "ManagedNetworkSettingsClient":
+		initServer(s, &s.trManagedNetworkSettingsServer, func() *ManagedNetworkSettingsServerTransport {
+			return NewManagedNetworkSettingsServerTransport(&s.srv.ManagedNetworkSettingsServer)
+		})
+		resp, err = s.trManagedNetworkSettingsServer.Do(req)
 	case "ManagementClient":
 		initServer(s, &s.trManagementServer, func() *ManagementServerTransport { return NewManagementServerTransport(&s.srv.ManagementServer) })
 		resp, err = s.trManagementServer.Do(req)
@@ -223,6 +287,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "OutboundRuleClient":
+		initServer(s, &s.trOutboundRuleServer, func() *OutboundRuleServerTransport { return NewOutboundRuleServerTransport(&s.srv.OutboundRuleServer) })
+		resp, err = s.trOutboundRuleServer.Do(req)
+	case "OutboundRulesClient":
+		initServer(s, &s.trOutboundRulesServer, func() *OutboundRulesServerTransport {
+			return NewOutboundRulesServerTransport(&s.srv.OutboundRulesServer)
+		})
+		resp, err = s.trOutboundRulesServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
@@ -264,15 +336,40 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRaiContentFiltersServerTransport(&s.srv.RaiContentFiltersServer)
 		})
 		resp, err = s.trRaiContentFiltersServer.Do(req)
+	case "RaiExternalSafetyProviderClient":
+		initServer(s, &s.trRaiExternalSafetyProviderServer, func() *RaiExternalSafetyProviderServerTransport {
+			return NewRaiExternalSafetyProviderServerTransport(&s.srv.RaiExternalSafetyProviderServer)
+		})
+		resp, err = s.trRaiExternalSafetyProviderServer.Do(req)
+	case "RaiExternalSafetyProvidersClient":
+		initServer(s, &s.trRaiExternalSafetyProvidersServer, func() *RaiExternalSafetyProvidersServerTransport {
+			return NewRaiExternalSafetyProvidersServerTransport(&s.srv.RaiExternalSafetyProvidersServer)
+		})
+		resp, err = s.trRaiExternalSafetyProvidersServer.Do(req)
 	case "RaiPoliciesClient":
 		initServer(s, &s.trRaiPoliciesServer, func() *RaiPoliciesServerTransport { return NewRaiPoliciesServerTransport(&s.srv.RaiPoliciesServer) })
 		resp, err = s.trRaiPoliciesServer.Do(req)
+	case "RaiToolLabelsClient":
+		initServer(s, &s.trRaiToolLabelsServer, func() *RaiToolLabelsServerTransport {
+			return NewRaiToolLabelsServerTransport(&s.srv.RaiToolLabelsServer)
+		})
+		resp, err = s.trRaiToolLabelsServer.Do(req)
 	case "RaiTopicsClient":
 		initServer(s, &s.trRaiTopicsServer, func() *RaiTopicsServerTransport { return NewRaiTopicsServerTransport(&s.srv.RaiTopicsServer) })
 		resp, err = s.trRaiTopicsServer.Do(req)
 	case "ResourceSKUsClient":
 		initServer(s, &s.trResourceSKUsServer, func() *ResourceSKUsServerTransport { return NewResourceSKUsServerTransport(&s.srv.ResourceSKUsServer) })
 		resp, err = s.trResourceSKUsServer.Do(req)
+	case "SubscriptionRaiPolicyClient":
+		initServer(s, &s.trSubscriptionRaiPolicyServer, func() *SubscriptionRaiPolicyServerTransport {
+			return NewSubscriptionRaiPolicyServerTransport(&s.srv.SubscriptionRaiPolicyServer)
+		})
+		resp, err = s.trSubscriptionRaiPolicyServer.Do(req)
+	case "TestRaiExternalSafetyProviderClient":
+		initServer(s, &s.trTestRaiExternalSafetyProviderServer, func() *TestRaiExternalSafetyProviderServerTransport {
+			return NewTestRaiExternalSafetyProviderServerTransport(&s.srv.TestRaiExternalSafetyProviderServer)
+		})
+		resp, err = s.trTestRaiExternalSafetyProviderServer.Do(req)
 	case "UsagesClient":
 		initServer(s, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
 		resp, err = s.trUsagesServer.Do(req)

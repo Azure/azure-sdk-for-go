@@ -1,4 +1,4 @@
-directory: specification/keyvault/Security.KeyVault.Settings
+directory: specification/keyvault/Security.KeyVault.EKM
 commit: 163aa7017ecbdbed0056d3e11b3417c035dbd82e
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

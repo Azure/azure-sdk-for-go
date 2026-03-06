@@ -25,9 +25,9 @@ type OfficeConsentsClient struct {
 }
 
 // NewOfficeConsentsClient creates a new instance of OfficeConsentsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OfficeConsentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewOfficeConsentsClient(subscriptionID string, credential azcore.TokenCrede
 // Delete - Delete the office365 consent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - consentID - consent ID
@@ -70,7 +70,7 @@ func (client *OfficeConsentsClient) Delete(ctx context.Context, resourceGroupNam
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, options *OfficeConsentsClientDeleteOptions) (*policy.Request, error) {
+func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, _ *OfficeConsentsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/officeConsents/{consentId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -93,7 +93,7 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -102,7 +102,7 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets an office365 consent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - consentID - consent ID
@@ -130,7 +130,7 @@ func (client *OfficeConsentsClient) Get(ctx context.Context, resourceGroupName s
 }
 
 // getCreateRequest creates the Get request.
-func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, options *OfficeConsentsClientGetOptions) (*policy.Request, error) {
+func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, consentID string, _ *OfficeConsentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/officeConsents/{consentId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -153,7 +153,7 @@ func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *OfficeConsentsClient) getHandleResponse(resp *http.Response) (Offi
 
 // NewListPager - Gets all office365 consents.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - OfficeConsentsClientListOptions contains the optional parameters for the OfficeConsentsClient.NewListPager method.
@@ -198,7 +198,7 @@ func (client *OfficeConsentsClient) NewListPager(resourceGroupName string, works
 }
 
 // listCreateRequest creates the List request.
-func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *OfficeConsentsClientListOptions) (*policy.Request, error) {
+func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *OfficeConsentsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/officeConsents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -217,7 +217,7 @@ func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

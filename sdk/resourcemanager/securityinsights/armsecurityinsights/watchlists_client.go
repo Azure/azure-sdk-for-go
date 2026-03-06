@@ -25,9 +25,9 @@ type WatchlistsClient struct {
 }
 
 // NewWatchlistsClient creates a new instance of WatchlistsClient with the specified values.
-//   - subscriptionID - The ID of the target subscription.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWatchlistsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WatchlistsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,45 +40,65 @@ func NewWatchlistsClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// CreateOrUpdate - Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type).
-// To create a Watchlist and its Items, we should call this endpoint with either rawContent or a
-// valid SAR URI and contentType properties. The rawContent is mainly used for small watchlist (content size below 3.8 MB).
-// The SAS URI enables the creation of large watchlist, where the content size can
-// go up to 500 MB. The status of processing such large file can be polled through the URL returned in Azure-AsyncOperation
-// header.
+// BeginCreateOrUpdate - Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content
+// type). To create a Watchlist and its Items, we should call this endpoint with rawContent and
+// contentType properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - watchlistAlias - Watchlist Alias
+//   - watchlistAlias - The watchlist alias
 //   - watchlist - The watchlist
-//   - options - WatchlistsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.CreateOrUpdate
+//   - options - WatchlistsClientBeginCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.BeginCreateOrUpdate
 //     method.
-func (client *WatchlistsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist Watchlist, options *WatchlistsClientCreateOrUpdateOptions) (WatchlistsClientCreateOrUpdateResponse, error) {
+func (client *WatchlistsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist Watchlist, options *WatchlistsClientBeginCreateOrUpdateOptions) (*runtime.Poller[WatchlistsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, workspaceName, watchlistAlias, watchlist, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchlistsClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WatchlistsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create or update a Watchlist and its Watchlist Items (bulk creation, e.g. through text/csv content type).
+// To create a Watchlist and its Items, we should call this endpoint with rawContent and
+// contentType properties.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01-preview
+func (client *WatchlistsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist Watchlist, options *WatchlistsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "WatchlistsClient.CreateOrUpdate"
+	const operationName = "WatchlistsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, watchlist, options)
 	if err != nil {
-		return WatchlistsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return WatchlistsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return WatchlistsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist Watchlist, options *WatchlistsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist Watchlist, _ *WatchlistsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -101,7 +121,7 @@ func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, watchlist); err != nil {
@@ -110,50 +130,59 @@ func (client *WatchlistsClient) createOrUpdateCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WatchlistsClient) createOrUpdateHandleResponse(resp *http.Response) (WatchlistsClientCreateOrUpdateResponse, error) {
-	result := WatchlistsClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
-		result.AzureAsyncOperation = &val
+// BeginDelete - Delete a watchlist.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-07-01-preview
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - The watchlist alias
+//   - options - WatchlistsClientBeginDeleteOptions contains the optional parameters for the WatchlistsClient.BeginDelete method.
+func (client *WatchlistsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientBeginDeleteOptions) (*runtime.Poller[WatchlistsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, watchlistAlias, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchlistsClientDeleteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WatchlistsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Watchlist); err != nil {
-		return WatchlistsClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // Delete - Delete a watchlist.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - The name of the workspace.
-//   - watchlistAlias - Watchlist Alias
-//   - options - WatchlistsClientDeleteOptions contains the optional parameters for the WatchlistsClient.Delete method.
-func (client *WatchlistsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientDeleteOptions) (WatchlistsClientDeleteResponse, error) {
+// Generated from API version 2025-07-01-preview
+func (client *WatchlistsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "WatchlistsClient.Delete"
+	const operationName = "WatchlistsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, options)
 	if err != nil {
-		return WatchlistsClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return WatchlistsClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return WatchlistsClientDeleteResponse{}, err
+		return nil, err
 	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *WatchlistsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientDeleteOptions) (*policy.Request, error) {
+func (client *WatchlistsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, _ *WatchlistsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -176,28 +205,19 @@ func (client *WatchlistsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// deleteHandleResponse handles the Delete response.
-func (client *WatchlistsClient) deleteHandleResponse(resp *http.Response) (WatchlistsClientDeleteResponse, error) {
-	result := WatchlistsClientDeleteResponse{}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
-		result.AzureAsyncOperation = &val
-	}
-	return result, nil
-}
-
-// Get - Gets a watchlist, without its watchlist items.
+// Get - Get a watchlist, without its watchlist items.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
-//   - watchlistAlias - Watchlist Alias
+//   - watchlistAlias - The watchlist alias
 //   - options - WatchlistsClientGetOptions contains the optional parameters for the WatchlistsClient.Get method.
 func (client *WatchlistsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientGetOptions) (WatchlistsClientGetResponse, error) {
 	var err error
@@ -222,7 +242,7 @@ func (client *WatchlistsClient) Get(ctx context.Context, resourceGroupName strin
 }
 
 // getCreateRequest creates the Get request.
-func (client *WatchlistsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistsClientGetOptions) (*policy.Request, error) {
+func (client *WatchlistsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, _ *WatchlistsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/watchlists/{watchlistAlias}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -245,7 +265,7 @@ func (client *WatchlistsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,9 +280,9 @@ func (client *WatchlistsClient) getHandleResponse(resp *http.Response) (Watchlis
 	return result, nil
 }
 
-// NewListPager - Gets all watchlists, without watchlist items.
+// NewListPager - Get all watchlists, without watchlist items.
 //
-// Generated from API version 2022-09-01-preview
+// Generated from API version 2025-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the workspace.
 //   - options - WatchlistsClientListOptions contains the optional parameters for the WatchlistsClient.NewListPager method.
@@ -312,7 +332,7 @@ func (client *WatchlistsClient) listCreateRequest(ctx context.Context, resourceG
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2025-07-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

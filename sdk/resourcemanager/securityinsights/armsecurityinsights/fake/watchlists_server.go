@@ -21,13 +21,13 @@ import (
 
 // WatchlistsServer is a fake server for instances of the armsecurityinsights.WatchlistsClient type.
 type WatchlistsServer struct {
-	// CreateOrUpdate is the fake for method WatchlistsClient.CreateOrUpdate
+	// BeginCreateOrUpdate is the fake for method WatchlistsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist armsecurityinsights.Watchlist, options *armsecurityinsights.WatchlistsClientCreateOrUpdateOptions) (resp azfake.Responder[armsecurityinsights.WatchlistsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlist armsecurityinsights.Watchlist, options *armsecurityinsights.WatchlistsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsecurityinsights.WatchlistsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method WatchlistsClient.Delete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *armsecurityinsights.WatchlistsClientDeleteOptions) (resp azfake.Responder[armsecurityinsights.WatchlistsClientDeleteResponse], errResp azfake.ErrorResponder)
+	// BeginDelete is the fake for method WatchlistsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, options *armsecurityinsights.WatchlistsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurityinsights.WatchlistsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method WatchlistsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -43,16 +43,20 @@ type WatchlistsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWatchlistsServerTransport(srv *WatchlistsServer) *WatchlistsServerTransport {
 	return &WatchlistsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armsecurityinsights.WatchlistsClientListResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armsecurityinsights.WatchlistsClientCreateOrUpdateResponse]](),
+		beginDelete:         newTracker[azfake.PollerResponder[armsecurityinsights.WatchlistsClientDeleteResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armsecurityinsights.WatchlistsClientListResponse]](),
 	}
 }
 
 // WatchlistsServerTransport connects instances of armsecurityinsights.WatchlistsClient to instances of WatchlistsServer.
 // Don't use this type directly, use NewWatchlistsServerTransport instead.
 type WatchlistsServerTransport struct {
-	srv          *WatchlistsServer
-	newListPager *tracker[azfake.PagerResponder[armsecurityinsights.WatchlistsClientListResponse]]
+	srv                 *WatchlistsServer
+	beginCreateOrUpdate *tracker[azfake.PollerResponder[armsecurityinsights.WatchlistsClientCreateOrUpdateResponse]]
+	beginDelete         *tracker[azfake.PollerResponder[armsecurityinsights.WatchlistsClientDeleteResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armsecurityinsights.WatchlistsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WatchlistsServerTransport.
@@ -63,110 +67,145 @@ func (w *WatchlistsServerTransport) Do(req *http.Request) (*http.Response, error
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	var resp *http.Response
-	var err error
+	return w.dispatchToMethodFake(req, method)
+}
 
-	switch method {
-	case "WatchlistsClient.CreateOrUpdate":
-		resp, err = w.dispatchCreateOrUpdate(req)
-	case "WatchlistsClient.Delete":
-		resp, err = w.dispatchDelete(req)
-	case "WatchlistsClient.Get":
-		resp, err = w.dispatchGet(req)
-	case "WatchlistsClient.NewListPager":
-		resp, err = w.dispatchNewListPager(req)
-	default:
-		err = fmt.Errorf("unhandled API %s", method)
+func (w *WatchlistsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+	resultChan := make(chan result)
+	defer close(resultChan)
+
+	go func() {
+		var intercepted bool
+		var res result
+		if watchlistsServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = watchlistsServerTransportInterceptor.Do(req)
+		}
+		if !intercepted {
+			switch method {
+			case "WatchlistsClient.BeginCreateOrUpdate":
+				res.resp, res.err = w.dispatchBeginCreateOrUpdate(req)
+			case "WatchlistsClient.BeginDelete":
+				res.resp, res.err = w.dispatchBeginDelete(req)
+			case "WatchlistsClient.Get":
+				res.resp, res.err = w.dispatchGet(req)
+			case "WatchlistsClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
+			default:
+				res.err = fmt.Errorf("unhandled API %s", method)
+			}
+
+		}
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
+	}()
+
+	select {
+	case <-req.Context().Done():
+		return nil, req.Context().Err()
+	case res := <-resultChan:
+		return res.resp, res.err
+	}
+}
+
+func (w *WatchlistsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+	}
+	beginCreateOrUpdate := w.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.Watchlist](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, watchlistAliasParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		w.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
 	}
 
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
 	if err != nil {
 		return nil, err
+	}
+
+	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		w.beginCreateOrUpdate.remove(req)
 	}
 
 	return resp, nil
 }
 
-func (w *WatchlistsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if w.srv.CreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
+func (w *WatchlistsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginDelete := w.beginDelete.get(req)
+	if beginDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginDelete(req.Context(), resourceGroupNameParam, workspaceNameParam, watchlistAliasParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDelete = &respr
+		w.beginDelete.add(req, beginDelete)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armsecurityinsights.Watchlist](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := w.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, watchlistAliasParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Watchlist, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
-		resp.Header.Set("Azure-AsyncOperation", *val)
-	}
-	return resp, nil
-}
 
-func (w *WatchlistsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if w.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	resp, err := server.PollerResponderNext(beginDelete, req)
 	if err != nil {
 		return nil, err
 	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
+
+	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	watchlistAliasParam, err := url.PathUnescape(matches[regex.SubexpIndex("watchlistAlias")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginDelete) {
+		w.beginDelete.remove(req)
 	}
-	respr, errRespr := w.srv.Delete(req.Context(), resourceGroupNameParam, workspaceNameParam, watchlistAliasParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
-		resp.Header.Set("Azure-AsyncOperation", *val)
-	}
+
 	return resp, nil
 }
 
@@ -177,7 +216,7 @@ func (w *WatchlistsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists/(?P<watchlistAlias>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 4 {
+	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -216,7 +255,7 @@ func (w *WatchlistsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/watchlists`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -258,4 +297,10 @@ func (w *WatchlistsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		w.newListPager.remove(req)
 	}
 	return resp, nil
+}
+
+// set this to conditionally intercept incoming requests to WatchlistsServerTransport
+var watchlistsServerTransportInterceptor interface {
+	// Do returns true if the server transport should use the returned response/error
+	Do(*http.Request) (*http.Response, error, bool)
 }

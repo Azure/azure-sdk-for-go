@@ -1,5 +1,371 @@
 # Release History
 
+## 10.0.0 (2026-03-04)
+### Breaking Changes
+
+- Function `*AvailablePrivateEndpointTypesClient.NewListByResourceGroupPager` parameter(s) have been changed from `(location string, resourceGroupName string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions)` to `(resourceGroupName string, location string, options *AvailablePrivateEndpointTypesClientListByResourceGroupOptions)`
+- Function `*AvailableResourceGroupDelegationsClient.NewListPager` parameter(s) have been changed from `(location string, resourceGroupName string, options *AvailableResourceGroupDelegationsClientListOptions)` to `(resourceGroupName string, location string, options *AvailableResourceGroupDelegationsClientListOptions)`
+- Function `*IpamPoolsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPoolUpdate, options *IpamPoolsClientUpdateOptions)`
+- Function `*PrivateDNSZoneGroupsClient.NewListPager` parameter(s) have been changed from `(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsClientListOptions)` to `(resourceGroupName string, privateEndpointName string, options *PrivateDNSZoneGroupsClientListOptions)`
+- Function `*PrivateLinkServicesClient.BeginCheckPrivateLinkServiceVisibilityByResourceGroup` parameter(s) have been changed from `(ctx context.Context, location string, resourceGroupName string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions)` to `(ctx context.Context, resourceGroupName string, location string, parameters CheckPrivateLinkServiceVisibilityRequest, options *PrivateLinkServicesClientBeginCheckPrivateLinkServiceVisibilityByResourceGroupOptions)`
+- Function `*PrivateLinkServicesClient.NewListAutoApprovedPrivateLinkServicesByResourceGroupPager` parameter(s) have been changed from `(location string, resourceGroupName string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions)` to `(resourceGroupName string, location string, options *PrivateLinkServicesClientListAutoApprovedPrivateLinkServicesByResourceGroupOptions)`
+- Function `*StaticCidrsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, body StaticCidr, options *StaticCidrsClientCreateOptions)`
+- Function `*VerifierWorkspacesClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, body VerifierWorkspaceUpdate, options *VerifierWorkspacesClientUpdateOptions)`
+- Function `*VipSwapClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions)` to `(ctx context.Context, groupName string, resourceName string, singletonResource SingletonResource, parameters SwapResource, options *VipSwapClientBeginCreateOptions)`
+- Function `*VipSwapClient.Get` parameter(s) have been changed from `(ctx context.Context, groupName string, resourceName string, options *VipSwapClientGetOptions)` to `(ctx context.Context, groupName string, resourceName string, singletonResource SingletonResource, options *VipSwapClientGetOptions)`
+- Function `*VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]], error)`
+- Function `*VirtualHubsClient.BeginGetInboundRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualHubsClientGetInboundRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualHubsClientGetInboundRoutesResponse]], error)`
+- Function `*VirtualHubsClient.BeginGetOutboundRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualHubsClientGetOutboundRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualHubsClientGetOutboundRoutesResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetAdvertisedRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetLearnedRoutes` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetLearnedRoutesResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetLearnedRoutesResponse]], error)`
+- Function `*VirtualNetworkGatewaysClient.BeginGetVpnclientConnectionHealth` return value(s) have been changed from `(*runtime.Poller[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse], error)` to `(*runtime.Poller[*runtime.Pager[VirtualNetworkGatewaysClientGetVpnclientConnectionHealthResponse]], error)`
+- Type of `ApplicationGatewayAuthenticationCertificatePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayBackendAddressPoolPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayBackendHTTPSettingsPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayBackendSettingsPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayEntraJWTValidationConfigPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayFirewallRuleSetPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayFrontendIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayFrontendPortPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayHTTPListenerPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayListenerPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayLoadDistributionPolicyPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayPathRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayPrivateEndpointConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayPrivateLinkConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayPrivateLinkIPConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayProbePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayRequestRoutingRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayRewriteRuleSetPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayRoutingRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewaySSLCertificatePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewaySSLProfilePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayTrustedClientCertificatePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayTrustedRootCertificatePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationGatewayURLPathMapPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ApplicationSecurityGroupPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AuthorizationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AzureFirewallApplicationRuleCollectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AzureFirewallFqdnTagPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AzureFirewallIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AzureFirewallNatRuleCollectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AzureFirewallNetworkRuleCollectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `AzureFirewallPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `BackendAddressPoolPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `BastionHostIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `BastionHostPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `BgpConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ConnectionMonitorResultProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ConnectivityConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ContainerNetworkInterfaceConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ContainerNetworkInterfaceIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ContainerNetworkInterfacePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `CustomIPPrefixPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `DdosCustomPolicyPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `DdosDetectionRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `DdosProtectionPlanPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `DelegationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `DscpConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `EffectiveNetworkSecurityGroup.TagMap` has been changed from `*string` to `map[string][]*string`
+- Type of `ExpressRouteCircuitConnectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteCircuitPeeringPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteCircuitPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteCrossConnectionPeeringProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteCrossConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteGatewayProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteLinkPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRoutePortAuthorizationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRoutePortPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRoutePortsLocationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ExpressRouteServiceProviderPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `FirewallPolicyDraftProperties.ExplicitProxy` has been changed from `*ExplicitProxySettings` to `*ExplicitProxy`
+- Type of `FirewallPolicyPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `FirewallPolicyRuleCollectionGroupProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `FlowLogPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `FrontendIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `GroupProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `HubIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `HubRouteTableProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `HubVirtualNetworkConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `IPConfigurationProfilePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `IPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `IPGroupPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `InboundNatPoolPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `InboundNatRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `InboundSecurityRuleProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `InterfaceIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `InterfacePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `InterfaceTapConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `LoadBalancerPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `LoadBalancingRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `LocalNetworkGatewayPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ManagerProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ManagerRoutingConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `NatGatewayPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `NspAccessRule.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspAssociation.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspLink.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspLinkReference.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspLoggingConfiguration.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `NspProfile.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `OutboundRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `P2SConnectionConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `P2SVPNGatewayProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PacketCaptureResultProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PeerExpressRouteCircuitConnectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PrivateDNSZoneGroupPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PrivateEndpointConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PrivateEndpointProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PrivateLinkServiceConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PrivateLinkServiceIPConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PrivateLinkServiceProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ProbePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ProfilePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PublicIPAddressPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `PublicIPPrefixPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RecordSet.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ResourceNavigationLinkFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RouteFilterPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RouteFilterRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RouteMapProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RoutePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RouteTablePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RoutingIntentProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RoutingRuleCollectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `RoutingRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SecurityGroupPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SecurityPartnerProviderPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SecurityPerimeter.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `SecurityRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SecurityUserConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SecurityUserRuleCollectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SecurityUserRulePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ServiceAssociationLinkPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ServiceDelegationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ServiceEndpointPolicyDefinitionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ServiceEndpointPolicyPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ServiceEndpointPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `ServiceGateway.SystemData` has been changed from `*SecurityPerimeterSystemData` to `*SystemData`
+- Type of `SharedKeyProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `StaticMemberProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `SubnetPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNClientRevokedCertificatePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNClientRootCertificatePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNGatewayNatRuleProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNGatewayProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNServerConfigurationPolicyGroupProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNSiteLinkConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNSiteLinkProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VPNSiteProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualApplianceConnectionProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualAppliancePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualApplianceSiteProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualHubProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualHubRouteTableV2Properties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkApplianceIPConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkAppliancePropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkGatewayConnectionListEntityPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkGatewayConnectionPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkGatewayIPConfigurationPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkGatewayNatRuleProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkGatewayPolicyGroupProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkGatewayPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkPeeringPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualNetworkTapPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualRouterPeeringProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualRouterPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VirtualWanProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `VngClientConnectionConfigurationProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `WatcherPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- Type of `WebApplicationFirewallPolicyPropertiesFormat.ProvisioningState` has been changed from `*ProvisioningState` to `*NetworkProvisioningState`
+- `AzureFirewallSKUNameAZFWVnet` from enum `AzureFirewallSKUName` has been removed
+- `FirewallPolicyIDPSSignatureDirectionFive`, `FirewallPolicyIDPSSignatureDirectionFour`, `FirewallPolicyIDPSSignatureDirectionOne`, `FirewallPolicyIDPSSignatureDirectionThree`, `FirewallPolicyIDPSSignatureDirectionTwo`, `FirewallPolicyIDPSSignatureDirectionZero` from enum `FirewallPolicyIDPSSignatureDirection` has been removed
+- `FirewallPolicyIDPSSignatureModeOne`, `FirewallPolicyIDPSSignatureModeTwo`, `FirewallPolicyIDPSSignatureModeZero` from enum `FirewallPolicyIDPSSignatureMode` has been removed
+- `FirewallPolicyIDPSSignatureSeverityOne`, `FirewallPolicyIDPSSignatureSeverityThree`, `FirewallPolicyIDPSSignatureSeverityTwo` from enum `FirewallPolicyIDPSSignatureSeverity` has been removed
+- Enum `ConnectionMonitorSourceStatus` has been removed
+- Enum `ConnectionState` has been removed
+- Enum `EvaluationState` has been removed
+- Enum `HubVirtualNetworkConnectionStatus` has been removed
+- Enum `NetworkOperationStatus` has been removed
+- Enum `TunnelConnectionStatus` has been removed
+- Function `*ClientFactory.NewManagementClient` has been removed
+- Function `*ConfigurationPolicyGroupsClient.BeginCreateOrUpdate` has been removed
+- Function `*ConfigurationPolicyGroupsClient.BeginDelete` has been removed
+- Function `*ConfigurationPolicyGroupsClient.Get` has been removed
+- Function `*InterfacesClient.GetVirtualMachineScaleSetIPConfiguration` has been removed
+- Function `*InterfacesClient.GetVirtualMachineScaleSetNetworkInterface` has been removed
+- Function `*InterfacesClient.NewListVirtualMachineScaleSetIPConfigurationsPager` has been removed
+- Function `*InterfacesClient.NewListVirtualMachineScaleSetNetworkInterfacesPager` has been removed
+- Function `*InterfacesClient.NewListVirtualMachineScaleSetVMNetworkInterfacesPager` has been removed
+- Function `NewManagementClient` has been removed
+- Function `*ManagementClient.CheckDNSNameAvailability` has been removed
+- Function `*ManagementClient.BeginDeleteBastionShareableLink` has been removed
+- Function `*ManagementClient.BeginDeleteBastionShareableLinkByToken` has been removed
+- Function `*ManagementClient.NewDisconnectActiveSessionsPager` has been removed
+- Function `*ManagementClient.ExpressRouteProviderPort` has been removed
+- Function `*ManagementClient.BeginGeneratevirtualwanvpnserverconfigurationvpnprofile` has been removed
+- Function `*ManagementClient.BeginGetActiveSessions` has been removed
+- Function `*ManagementClient.NewGetBastionShareableLinkPager` has been removed
+- Function `*ManagementClient.ListActiveConnectivityConfigurations` has been removed
+- Function `*ManagementClient.ListActiveSecurityAdminRules` has been removed
+- Function `*ManagementClient.ListNetworkManagerEffectiveConnectivityConfigurations` has been removed
+- Function `*ManagementClient.ListNetworkManagerEffectiveSecurityAdminRules` has been removed
+- Function `*ManagementClient.BeginPutBastionShareableLink` has been removed
+- Function `*ManagementClient.SupportedSecurityProviders` has been removed
+- Function `*P2SVPNGatewaysClient.BeginReset` has been removed
+- Function `*PublicIPAddressesClient.GetVirtualMachineScaleSetPublicIPAddress` has been removed
+- Function `*PublicIPAddressesClient.NewListVirtualMachineScaleSetPublicIPAddressesPager` has been removed
+- Function `*PublicIPAddressesClient.NewListVirtualMachineScaleSetVMPublicIPAddressesPager` has been removed
+- Operation `*ExpressRouteConnectionsClient.List` has supported pagination, use `*ExpressRouteConnectionsClient.NewListPager` instead.
+- Operation `*ExpressRouteGatewaysClient.ListByResourceGroup` has supported pagination, use `*ExpressRouteGatewaysClient.NewListByResourceGroupPager` instead.
+- Operation `*ExpressRouteGatewaysClient.ListBySubscription` has supported pagination, use `*ExpressRouteGatewaysClient.NewListBySubscriptionPager` instead.
+- Operation `*FirewallPolicyIdpsSignaturesOverridesClient.List` has supported pagination, use `*FirewallPolicyIdpsSignaturesOverridesClient.NewListPager` instead.
+- Operation `*ManagerDeploymentStatusClient.List` has supported pagination, use `*ManagerDeploymentStatusClient.NewListPager` instead.
+- Operation `*VipSwapClient.List` has supported pagination, use `*VipSwapClient.NewListPager` instead.
+- Struct `AzureAsyncOperationResult` has been removed
+- Struct `ChildResource` has been removed
+- Struct `CommonErrorAdditionalInfo` has been removed
+- Struct `CommonErrorDetail` has been removed
+- Struct `CommonErrorResponse` has been removed
+- Struct `CommonProxyResource` has been removed
+- Struct `CommonResource` has been removed
+- Struct `CommonTrackedResource` has been removed
+- Struct `ConnectionMonitorQueryResult` has been removed
+- Struct `ConnectionStateSnapshot` has been removed
+- Struct `Error` has been removed
+- Struct `ErrorDetails` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ExplicitProxySettings` has been removed
+- Struct `ManagementClientGetActiveSessionsResponse` has been removed
+- Struct `ManagementClientPutBastionShareableLinkResponse` has been removed
+- Struct `PatchRouteFilter` has been removed
+- Struct `PatchRouteFilterRule` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceSet` has been removed
+- Struct `SecurityPerimeterProxyResource` has been removed
+- Struct `SecurityPerimeterResource` has been removed
+- Struct `SecurityPerimeterSystemData` has been removed
+- Struct `TrackedResource` has been removed
+- Struct `VPNSiteID` has been removed
+- Field `ExplicitProxySettings` of struct `FirewallPolicyPropertiesFormat` has been removed
+- Field `Body` of struct `IpamPoolsClientUpdateOptions` has been removed
+- Field `PacketCaptureResult` of struct `PacketCapturesClientCreateResponse` has been removed
+- Field `Body` of struct `StaticCidrsClientCreateOptions` has been removed
+- Field `Value` of struct `VPNConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNGatewaysClientStopPacketCaptureResponse` has been removed
+- Field `Value` of struct `VPNLinkConnectionsClientGetIkeSasResponse` has been removed
+- Field `Body` of struct `VerifierWorkspacesClientUpdateOptions` has been removed
+- Field `Value` of struct `VirtualNetworkGatewayConnectionsClientGetIkeSasResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse` has been removed
+- Field `Active` of struct `VirtualNetworkGatewayPropertiesFormat` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse` has been removed
+- Field `Value` of struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse` has been removed
+
+### Features Added
+
+- New value `AzureFirewallSKUNameAZFWVNet` added to enum type `AzureFirewallSKUName`
+- New value `FirewallPolicyIDPSSignatureDirection0`, `FirewallPolicyIDPSSignatureDirection1`, `FirewallPolicyIDPSSignatureDirection2`, `FirewallPolicyIDPSSignatureDirection3`, `FirewallPolicyIDPSSignatureDirection4`, `FirewallPolicyIDPSSignatureDirection5` added to enum type `FirewallPolicyIDPSSignatureDirection`
+- New value `FirewallPolicyIDPSSignatureMode0`, `FirewallPolicyIDPSSignatureMode1`, `FirewallPolicyIDPSSignatureMode2` added to enum type `FirewallPolicyIDPSSignatureMode`
+- New value `FirewallPolicyIDPSSignatureSeverity1`, `FirewallPolicyIDPSSignatureSeverity2`, `FirewallPolicyIDPSSignatureSeverity3` added to enum type `FirewallPolicyIDPSSignatureSeverity`
+- New enum type `NetworkProvisioningState` with values `NetworkProvisioningStateDeleting`, `NetworkProvisioningStateFailed`, `NetworkProvisioningStateSucceeded`, `NetworkProvisioningStateUpdating`
+- New enum type `SingletonResource` with values `SingletonResourceSwap`
+- New function `*BastionHostsClient.BeginDeleteBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *BastionHostsClientBeginDeleteBastionShareableLinkOptions) (*runtime.Poller[BastionHostsClientDeleteBastionShareableLinkResponse], error)`
+- New function `*BastionHostsClient.BeginDeleteBastionShareableLinkByToken(ctx context.Context, resourceGroupName string, bastionHostName string, bslTokenRequest BastionShareableLinkTokenListRequest, options *BastionHostsClientBeginDeleteBastionShareableLinkByTokenOptions) (*runtime.Poller[BastionHostsClientDeleteBastionShareableLinkByTokenResponse], error)`
+- New function `*BastionHostsClient.NewDisconnectActiveSessionsPager(resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, options *BastionHostsClientDisconnectActiveSessionsOptions) *runtime.Pager[BastionHostsClientDisconnectActiveSessionsResponse]`
+- New function `*BastionHostsClient.BeginGetActiveSessions(ctx context.Context, resourceGroupName string, bastionHostName string, options *BastionHostsClientBeginGetActiveSessionsOptions) (*runtime.Poller[*runtime.Pager[BastionHostsClientGetActiveSessionsResponse]], error)`
+- New function `*BastionHostsClient.NewGetBastionShareableLinkPager(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *BastionHostsClientGetBastionShareableLinkOptions) *runtime.Pager[BastionHostsClientGetBastionShareableLinkResponse]`
+- New function `*BastionHostsClient.BeginPutBastionShareableLink(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *BastionHostsClientBeginPutBastionShareableLinkOptions) (*runtime.Poller[*runtime.Pager[BastionHostsClientPutBastionShareableLinkResponse]], error)`
+- New function `NewCheckDNSNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CheckDNSNameAvailabilityClient, error)`
+- New function `*CheckDNSNameAvailabilityClient.CheckDNSNameAvailability(ctx context.Context, location string, domainNameLabel string, options *CheckDNSNameAvailabilityClientCheckDNSNameAvailabilityOptions) (CheckDNSNameAvailabilityClientCheckDNSNameAvailabilityResponse, error)`
+- New function `*ClientFactory.NewCheckDNSNameAvailabilityClient() *CheckDNSNameAvailabilityClient`
+- New function `*ClientFactory.NewEffectiveConfigurationsClient() *EffectiveConfigurationsClient`
+- New function `*ClientFactory.NewExpressRouteProviderPortsClient() *ExpressRouteProviderPortsClient`
+- New function `*ClientFactory.NewVirtualWANSClient() *VirtualWANSClient`
+- New function `NewEffectiveConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EffectiveConfigurationsClient, error)`
+- New function `*EffectiveConfigurationsClient.NewListNetworkManagerEffectiveConnectivityConfigurationsPager(resourceGroupName string, virtualNetworkName string, parameters QueryRequestOptions, options *EffectiveConfigurationsClientListNetworkManagerEffectiveConnectivityConfigurationsOptions) *runtime.Pager[EffectiveConfigurationsClientListNetworkManagerEffectiveConnectivityConfigurationsResponse]`
+- New function `*EffectiveConfigurationsClient.NewListNetworkManagerEffectiveSecurityAdminRulesPager(resourceGroupName string, virtualNetworkName string, parameters QueryRequestOptions, options *EffectiveConfigurationsClientListNetworkManagerEffectiveSecurityAdminRulesOptions) *runtime.Pager[EffectiveConfigurationsClientListNetworkManagerEffectiveSecurityAdminRulesResponse]`
+- New function `NewExpressRouteProviderPortsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteProviderPortsClient, error)`
+- New function `*ExpressRouteProviderPortsClient.ExpressRouteProviderPort(ctx context.Context, providerport string, options *ExpressRouteProviderPortsClientExpressRouteProviderPortOptions) (ExpressRouteProviderPortsClientExpressRouteProviderPortResponse, error)`
+- New function `*ManagersClient.NewListActiveConnectivityConfigurationsPager(resourceGroupName string, networkManagerName string, parameters ActiveConfigurationParameter, options *ManagersClientListActiveConnectivityConfigurationsOptions) *runtime.Pager[ManagersClientListActiveConnectivityConfigurationsResponse]`
+- New function `*ManagersClient.NewListActiveSecurityAdminRulesPager(resourceGroupName string, networkManagerName string, parameters ActiveConfigurationParameter, options *ManagersClientListActiveSecurityAdminRulesOptions) *runtime.Pager[ManagersClientListActiveSecurityAdminRulesResponse]`
+- New struct `BastionHostsClientGetActiveSessionsResponse`
+- New struct `BastionHostsClientPutBastionShareableLinkResponse`
+- New struct `DeleteBastionShareableLinkFinalResult`
+- New struct `DisconnectVirtualNetworkGatewayVPNConnectionsFinalResult`
+- New struct `ExplicitProxy`
+- New struct `GenerateVPNProfileFinalResult`
+- New struct `GeneratevpnclientpackageFinalResult`
+- New struct `GetIkeSasFinalResult`
+- New struct `GetVPNProfilePackageURLFinalResult`
+- New struct `NoContentResponse`
+- New struct `PrepareNetworkPoliciesFinalResult`
+- New struct `ResetVPNClientSharedKeyFinalResult`
+- New struct `StartExpressRouteSiteFailoverSimulationFinalResult`
+- New struct `StartFinalResult`
+- New struct `StartPacketCaptureFinalResult`
+- New struct `StartPacketCaptureFinalResult1`
+- New struct `StartPacketCaptureFinalResult2`
+- New struct `StopExpressRouteSiteFailoverSimulationFinalResult`
+- New struct `StopFinalResult`
+- New struct `StopFinalResult1`
+- New struct `StopPacketCaptureFinalResult`
+- New struct `StopPacketCaptureFinalResult1`
+- New struct `StopPacketCaptureFinalResult2`
+- New struct `UnprepareNetworkPoliciesFinalResult`
+- New struct `VPNConnectionsStartPacketCaptureFinalResult`
+- New struct `VPNConnectionsStopPacketCaptureFinalResult`
+- New struct `VirtualWANSClientBeginGeneratevirtualwanvpnserverconfigurationvpnprofileOptions`
+- New struct `VirtualWANSClientGeneratevirtualwanvpnserverconfigurationvpnprofileResponse`
+- New struct `VirtualWANSClientSupportedSecurityProvidersOptions`
+- New struct `VirtualWANSClientSupportedSecurityProvidersResponse`
+- New anonymous field `StartFinalResult` in struct `ApplicationGatewaysClientStartResponse`
+- New anonymous field `StopFinalResult` in struct `ApplicationGatewaysClientStopResponse`
+- New field `NextLink` in struct `ConnectionMonitorListResult`
+- New anonymous field `StopFinalResult1` in struct `ConnectionMonitorsClientStopResponse`
+- New field `ExplicitProxy` in struct `FirewallPolicyPropertiesFormat`
+- New field `RetryAfter` in struct `GroupsClientCreateOrUpdateResponse`
+- New field `NextLink` in struct `PacketCaptureListResult`
+- New anonymous field `Watcher` in struct `PacketCapturesClientCreateResponse`
+- New anonymous field `NoContentResponse` in struct `ServiceGatewaysClientUpdateAddressLocationsResponse`
+- New anonymous field `NoContentResponse` in struct `ServiceGatewaysClientUpdateServicesResponse`
+- New anonymous field `PrepareNetworkPoliciesFinalResult` in struct `SubnetsClientPrepareNetworkPoliciesResponse`
+- New anonymous field `UnprepareNetworkPoliciesFinalResult` in struct `SubnetsClientUnprepareNetworkPoliciesResponse`
+- New anonymous field `VPNConnectionsStartPacketCaptureFinalResult` in struct `VPNConnectionsClientStartPacketCaptureResponse`
+- New anonymous field `VPNConnectionsStopPacketCaptureFinalResult` in struct `VPNConnectionsClientStopPacketCaptureResponse`
+- New anonymous field `StartPacketCaptureFinalResult2` in struct `VPNGatewaysClientStartPacketCaptureResponse`
+- New anonymous field `StopPacketCaptureFinalResult2` in struct `VPNGatewaysClientStopPacketCaptureResponse`
+- New anonymous field `GetIkeSasFinalResult` in struct `VPNLinkConnectionsClientGetIkeSasResponse`
+- New anonymous field `StartPacketCaptureFinalResult1` in struct `VirtualNetworkGatewayConnectionsClientStartPacketCaptureResponse`
+- New anonymous field `StopPacketCaptureFinalResult1` in struct `VirtualNetworkGatewayConnectionsClientStopPacketCaptureResponse`
+- New field `ActiveActive` in struct `VirtualNetworkGatewayPropertiesFormat`
+- New anonymous field `DisconnectVirtualNetworkGatewayVPNConnectionsFinalResult` in struct `VirtualNetworkGatewaysClientDisconnectVirtualNetworkGatewayVPNConnectionsResponse`
+- New anonymous field `GenerateVPNProfileFinalResult` in struct `VirtualNetworkGatewaysClientGenerateVPNProfileResponse`
+- New anonymous field `GeneratevpnclientpackageFinalResult` in struct `VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse`
+- New anonymous field `GetVPNProfilePackageURLFinalResult` in struct `VirtualNetworkGatewaysClientGetVPNProfilePackageURLResponse`
+- New anonymous field `ResetVPNClientSharedKeyFinalResult` in struct `VirtualNetworkGatewaysClientResetVPNClientSharedKeyResponse`
+- New anonymous field `StartExpressRouteSiteFailoverSimulationFinalResult` in struct `VirtualNetworkGatewaysClientStartExpressRouteSiteFailoverSimulationResponse`
+- New anonymous field `StartPacketCaptureFinalResult` in struct `VirtualNetworkGatewaysClientStartPacketCaptureResponse`
+- New anonymous field `StopExpressRouteSiteFailoverSimulationFinalResult` in struct `VirtualNetworkGatewaysClientStopExpressRouteSiteFailoverSimulationResponse`
+- New anonymous field `StopPacketCaptureFinalResult` in struct `VirtualNetworkGatewaysClientStopPacketCaptureResponse`
+- New field `NextLink` in struct `WatcherListResult`
+
+
 ## 9.0.0 (2026-02-19)
 ### Breaking Changes
 

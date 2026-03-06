@@ -42,7 +42,7 @@ func NewScopeMapsClient(subscriptionID string, credential azcore.TokenCredential
 // BeginCreate - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - scopeMapName - The name of the scope map.
@@ -68,7 +68,7 @@ func (client *ScopeMapsClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 func (client *ScopeMapsClient) create(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScopeMapsClient.BeginCreate"
@@ -114,7 +114,7 @@ func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -127,7 +127,7 @@ func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resource
 // BeginDelete - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - scopeMapName - The name of the scope map.
@@ -152,7 +152,7 @@ func (client *ScopeMapsClient) BeginDelete(ctx context.Context, resourceGroupNam
 // Delete - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 func (client *ScopeMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScopeMapsClient.BeginDelete"
@@ -198,7 +198,7 @@ func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -206,7 +206,7 @@ func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resource
 // Get - Gets the properties of the specified scope map.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - scopeMapName - The name of the scope map.
@@ -257,7 +257,7 @@ func (client *ScopeMapsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +274,7 @@ func (client *ScopeMapsClient) getHandleResponse(resp *http.Response) (ScopeMaps
 
 // NewListPager - Lists all the scope maps for the specified container registry.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ScopeMapsClientListOptions contains the optional parameters for the ScopeMapsClient.NewListPager method.
@@ -321,7 +321,7 @@ func (client *ScopeMapsClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *ScopeMapsClient) listHandleResponse(resp *http.Response) (ScopeMap
 // BeginUpdate - Updates a scope map with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - scopeMapName - The name of the scope map.
@@ -365,7 +365,7 @@ func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // Update - Updates a scope map with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-01-01-preview
 func (client *ScopeMapsClient) update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScopeMapsClient.BeginUpdate"
@@ -411,7 +411,7 @@ func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
+	reqQP.Set("api-version", "2026-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

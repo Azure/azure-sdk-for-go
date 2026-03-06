@@ -99,6 +99,18 @@ type RotateKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SecureUnwrapKeyOptions contains the optional parameters for the Client.SecureUnwrapKey method.
+type SecureUnwrapKeyOptions struct {
+	// The version of the key.
+	Version *string
+}
+
+// SecureWrapKeyOptions contains the optional parameters for the Client.SecureWrapKey method.
+type SecureWrapKeyOptions struct {
+	// The version of the key.
+	Version *string
+}
+
 // SignOptions contains the optional parameters for the Client.Sign method.
 type SignOptions struct {
 	// placeholder for future optional parameters

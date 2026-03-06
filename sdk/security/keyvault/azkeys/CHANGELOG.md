@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
-* Upgraded to API service version `2025-07-01`
+* Upgraded to API service version `2026-01-01-preview`
 
 ## 1.4.0 (2025-06-12)
 

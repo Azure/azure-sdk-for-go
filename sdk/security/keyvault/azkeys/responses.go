@@ -117,6 +117,18 @@ type RotateKeyResponse struct {
 	KeyBundle
 }
 
+// SecureUnwrapKeyResponse contains the response from method Client.SecureUnwrapKey.
+type SecureUnwrapKeyResponse struct {
+	// The secure key wrap operation result.
+	SecureKeyOperationResult
+}
+
+// SecureWrapKeyResponse contains the response from method Client.SecureWrapKey.
+type SecureWrapKeyResponse struct {
+	// The secure key wrap operation result.
+	SecureKeyOperationResult
+}
+
 // SignResponse contains the response from method Client.Sign.
 type SignResponse struct {
 	// The key operation result.

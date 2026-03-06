@@ -96,6 +96,14 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	RotateKey func(ctx context.Context, name string, options *azkeys.RotateKeyOptions) (resp azfake.Responder[azkeys.RotateKeyResponse], errResp azfake.ErrorResponder)
 
+	// SecureUnwrapKey is the fake for method Client.SecureUnwrapKey
+	// HTTP status codes to indicate success: http.StatusOK
+	SecureUnwrapKey func(ctx context.Context, name string, parameters azkeys.SecureKeyUnWrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder)
+
+	// SecureWrapKey is the fake for method Client.SecureWrapKey
+	// HTTP status codes to indicate success: http.StatusOK
+	SecureWrapKey func(ctx context.Context, name string, parameters azkeys.SecureKeyWrapOperationParameters, options *azkeys.SecureWrapKeyOptions) (resp azfake.Responder[azkeys.SecureWrapKeyResponse], errResp azfake.ErrorResponder)
+
 	// Sign is the fake for method Client.Sign
 	// HTTP status codes to indicate success: http.StatusOK
 	Sign func(ctx context.Context, name string, version string, parameters azkeys.SignParameters, options *azkeys.SignOptions) (resp azfake.Responder[azkeys.SignResponse], errResp azfake.ErrorResponder)
@@ -203,6 +211,10 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 				res.resp, res.err = s.dispatchRestoreKey(req)
 			case "Client.RotateKey":
 				res.resp, res.err = s.dispatchRotateKey(req)
+			case "Client.SecureUnwrapKey":
+				res.resp, res.err = s.dispatchSecureUnwrapKey(req)
+			case "Client.SecureWrapKey":
+				res.resp, res.err = s.dispatchSecureWrapKey(req)
 			case "Client.Sign":
 				res.resp, res.err = s.dispatchSign(req)
 			case "Client.UnwrapKey":
@@ -811,6 +823,94 @@ func (s *ServerTransport) dispatchRotateKey(req *http.Request) (*http.Response, 
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KeyBundle, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchSecureUnwrapKey(req *http.Request) (*http.Response, error) {
+	if s.srv.SecureUnwrapKey == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SecureUnwrapKey not implemented")}
+	}
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)??/secureunwrapkey`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[azkeys.SecureKeyUnWrapOperationParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("key_name")])
+	if err != nil {
+		return nil, err
+	}
+	versionUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("key_version")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam := getOptional(versionUnescaped)
+	var options *azkeys.SecureUnwrapKeyOptions
+	if versionParam != nil {
+		options = &azkeys.SecureUnwrapKeyOptions{
+			Version: versionParam,
+		}
+	}
+	respr, errRespr := s.srv.SecureUnwrapKey(req.Context(), nameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecureKeyOperationResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchSecureWrapKey(req *http.Request) (*http.Response, error) {
+	if s.srv.SecureWrapKey == nil {
+		return nil, &nonRetriableError{errors.New("fake for method SecureWrapKey not implemented")}
+	}
+	const regexStr = `/keys/(?P<key_name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/?(?P<key_version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)??/securewrapkey`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[azkeys.SecureKeyWrapOperationParameters](req)
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("key_name")])
+	if err != nil {
+		return nil, err
+	}
+	versionUnescaped, err := url.PathUnescape(matches[regex.SubexpIndex("key_version")])
+	if err != nil {
+		return nil, err
+	}
+	versionParam := getOptional(versionUnescaped)
+	var options *azkeys.SecureWrapKeyOptions
+	if versionParam != nil {
+		options = &azkeys.SecureWrapKeyOptions{
+			Version: versionParam,
+		}
+	}
+	respr, errRespr := s.srv.SecureWrapKey(req.Context(), nameParam, body, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecureKeyOperationResult, req)
 	if err != nil {
 		return nil, err
 	}

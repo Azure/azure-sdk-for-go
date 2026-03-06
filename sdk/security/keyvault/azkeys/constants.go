@@ -99,6 +99,46 @@ func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	}
 }
 
+// JSONWebKeyWrapAlgorithm - An algorithm used for key wrapping and unwrapping.
+type JSONWebKeyWrapAlgorithm string
+
+const (
+	// JSONWebKeyWrapAlgorithmA128KW - 128-bit AES key wrap.
+	JSONWebKeyWrapAlgorithmA128KW JSONWebKeyWrapAlgorithm = "A128KW"
+	// JSONWebKeyWrapAlgorithmA128KWPAD - 192-bit AES key wrap with padding.
+	JSONWebKeyWrapAlgorithmA128KWPAD JSONWebKeyWrapAlgorithm = "A128KWPAD"
+	// JSONWebKeyWrapAlgorithmA192KW - 192-bit AES key wrap.
+	JSONWebKeyWrapAlgorithmA192KW JSONWebKeyWrapAlgorithm = "A192KW"
+	// JSONWebKeyWrapAlgorithmA192KWPAD - 256-bit AES key wrap with padding.
+	JSONWebKeyWrapAlgorithmA192KWPAD JSONWebKeyWrapAlgorithm = "A192KWPAD"
+	// JSONWebKeyWrapAlgorithmA256KW - 256-bit AES key wrap.
+	JSONWebKeyWrapAlgorithmA256KW JSONWebKeyWrapAlgorithm = "A256KW"
+	// JSONWebKeyWrapAlgorithmA256KWPAD - 128-bit AES key wrap with padding.
+	JSONWebKeyWrapAlgorithmA256KWPAD JSONWebKeyWrapAlgorithm = "A256KWPAD"
+	// JSONWebKeyWrapAlgorithmCKMAESKEYWRAP - CKM AES key wrap.
+	JSONWebKeyWrapAlgorithmCKMAESKEYWRAP JSONWebKeyWrapAlgorithm = "CKM_AES_KEY_WRAP"
+	// JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD - CKM AES key wrap with padding.
+	JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD JSONWebKeyWrapAlgorithm = "CKM_AES_KEY_WRAP_PAD"
+	// JSONWebKeyWrapAlgorithmRSAOAEP256 - RSAES using Optimal Asymmetric Encryption Padding with a hash function of SHA-256 and
+	// a mask generation function of MGF1 with SHA-256.
+	JSONWebKeyWrapAlgorithmRSAOAEP256 JSONWebKeyWrapAlgorithm = "RSA-OAEP-256"
+)
+
+// PossibleJSONWebKeyWrapAlgorithmValues returns the possible values for the JSONWebKeyWrapAlgorithm const type.
+func PossibleJSONWebKeyWrapAlgorithmValues() []JSONWebKeyWrapAlgorithm {
+	return []JSONWebKeyWrapAlgorithm{
+		JSONWebKeyWrapAlgorithmA128KW,
+		JSONWebKeyWrapAlgorithmA128KWPAD,
+		JSONWebKeyWrapAlgorithmA192KW,
+		JSONWebKeyWrapAlgorithmA192KWPAD,
+		JSONWebKeyWrapAlgorithmA256KW,
+		JSONWebKeyWrapAlgorithmA256KWPAD,
+		JSONWebKeyWrapAlgorithmCKMAESKEYWRAP,
+		JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD,
+		JSONWebKeyWrapAlgorithmRSAOAEP256,
+	}
+}
+
 // KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
 type KeyEncryptionAlgorithm string
 

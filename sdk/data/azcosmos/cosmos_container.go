@@ -468,10 +468,6 @@ func (c *ContainerClient) ReadManyItems(
 			return ReadManyItemsResponse{}, errors.New("item identity at index " + fmt.Sprint(i) + " has an empty ID")
 		}
 	}
-	correlatedActivityId, _ := uuid.New()
-	h := headerOptionsOverride{
-		correlatedActivityId: &correlatedActivityId,
-	}
 
 	readManyOptions := &ReadManyOptions{}
 	if o != nil {
@@ -482,12 +478,6 @@ func (c *ContainerClient) ReadManyItems(
 	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDocument,
 		resourceAddress: c.link,
-	}
-
-	if readManyOptions.QueryEngine != nil {
-		// use correlated activity id header for read many queries
-		operationContext.headerOptionsOverride = &h
-		return c.executeReadManyWithEngine(readManyOptions.QueryEngine, itemIdentities, readManyOptions, operationContext, ctx)
 	}
 
 	return c.executeReadManyWithQueries(ctx, itemIdentities, readManyOptions, operationContext)

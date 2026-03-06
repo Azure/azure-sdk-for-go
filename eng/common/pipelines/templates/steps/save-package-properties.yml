@@ -22,6 +22,10 @@ parameters:
     default: []
 
 steps:
+  - template: /eng/common/pipelines/templates/steps/install-azsdk-cli.yml
+    parameters:
+      CustomCondition: eq(variables.AZSDK_PIPELINE_MODE, true)
+
   # There will be transitory period for every language repo where the <language> - pullrequest build definition will run
   # alongside the <language> - <service> - ci definitions. These pullrequest build definitions will have the ServiceDirectory parameter
   # set to 'auto', which will allow the expanding and contracting based on PR Diff.
@@ -30,7 +34,18 @@ steps:
   # as before this change.
   - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
       - task: Powershell@2
+        displayName: 🤖 Save package properties filtered for PR
+        condition: eq(variables.AZSDK_PIPELINE_MODE, true)
+        inputs:
+          targetType: inline
+          script: |
+            & $env:AZSDK --ci --out-dir '${{ parameters.PackageInfoDirectory }}'
+          pwsh: true
+          workingDirectory: '${{ parameters.WorkingDirectory }}'
+
+      - task: Powershell@2
         displayName: Generate PR Diff
+        condition: ne(variables.AZSDK_PIPELINE_MODE, true)
         inputs:
           targetType: inline
           script: >
@@ -43,6 +58,7 @@ steps:
 
       - task: Powershell@2
         displayName: Save package properties filtered for PR
+        condition: ne(variables.AZSDK_PIPELINE_MODE, true)
         inputs:
           filePath: ${{ parameters.ScriptDirectory }}/Save-Package-Properties.ps1
           arguments: >
@@ -72,7 +88,18 @@ steps:
 
   - ${{ else }}:
       - task: Powershell@2
+        displayName: 🤖 Save package properties filtered for PR
+        condition: eq(variables.AZSDK_PIPELINE_MODE, true)
+        inputs:
+          targetType: inline
+          script: |
+            & $env:AZSDK --out-dir '${{ parameters.PackageInfoDirectory }}'
+          pwsh: true
+          workingDirectory: '${{ parameters.WorkingDirectory }}'
+
+      - task: Powershell@2
         displayName: Save package properties
+        condition: ne(variables.AZSDK_PIPELINE_MODE, true)
         inputs:
           filePath: ${{ parameters.ScriptDirectory }}/Save-Package-Properties.ps1
           arguments: >

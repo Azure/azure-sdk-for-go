@@ -13,6 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/template/aztemplate/internal"
 )
 
+// test
+
 // ClientOptions contains optional parameters for NewClient
 type ClientOptions struct {
 	azcore.ClientOptions

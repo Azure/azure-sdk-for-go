@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApis.json
@@ -27,10 +27,10 @@ func ExampleAPIClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAPIClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.APIClientListByServiceOptions{Filter: nil,
-		Top:                 nil,
-		Skip:                nil,
-		Tags:                nil,
-		ExpandAPIVersionSet: nil,
+		Top:			nil,
+		Skip:			nil,
+		Tags:			nil,
+		ExpandAPIVersionSet:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -247,23 +247,23 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApi() {
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description: to.Ptr("apidescription5200"),
+			Description:	to.Ptr("apidescription5200"),
 			AuthenticationSettings: &armapimanagement.AuthenticationSettingsContract{
 				OAuth2: &armapimanagement.OAuth2AuthenticationSettingsContract{
-					AuthorizationServerID: to.Ptr("authorizationServerId2283"),
-					Scope:                 to.Ptr("oauth2scope2580"),
+					AuthorizationServerID:	to.Ptr("authorizationServerId2283"),
+					Scope:			to.Ptr("oauth2scope2580"),
 				},
 			},
 			SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
-				Header: to.Ptr("header4520"),
-				Query:  to.Ptr("query3037"),
+				Header:	to.Ptr("header4520"),
+				Query:	to.Ptr("query3037"),
 			},
-			Path:        to.Ptr("newapiPath"),
-			DisplayName: to.Ptr("apiname1463"),
+			Path:		to.Ptr("newapiPath"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTPS),
 				to.Ptr(armapimanagement.ProtocolHTTP)},
-			ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
+			ServiceURL:	to.Ptr("http://newechoapi.cloudapp.net/api"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -324,16 +324,16 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiClone() {
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "echo-api2", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description:          to.Ptr("Copy of Existing Echo Api including Operations."),
-			IsCurrent:            to.Ptr(true),
-			SubscriptionRequired: to.Ptr(true),
-			Path:                 to.Ptr("echo2"),
-			DisplayName:          to.Ptr("Echo API2"),
+			Description:		to.Ptr("Copy of Existing Echo Api including Operations."),
+			IsCurrent:		to.Ptr(true),
+			SubscriptionRequired:	to.Ptr(true),
+			Path:			to.Ptr("echo2"),
+			DisplayName:		to.Ptr("Echo API2"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTP),
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
-			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api"),
-			SourceAPIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001"),
+			ServiceURL:	to.Ptr("http://echoapi.cloudapp.net/api"),
+			SourceAPIID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -383,18 +383,18 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiNewVersionUsingE
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "echoapiv3", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description:          to.Ptr("Create Echo API into a new Version using Existing Version Set and Copy all Operations."),
-			APIVersion:           to.Ptr("v4"),
-			APIVersionSetID:      to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
-			IsCurrent:            to.Ptr(true),
-			SubscriptionRequired: to.Ptr(true),
-			Path:                 to.Ptr("echo2"),
-			DisplayName:          to.Ptr("Echo API2"),
+			Description:		to.Ptr("Create Echo API into a new Version using Existing Version Set and Copy all Operations."),
+			APIVersion:		to.Ptr("v4"),
+			APIVersionSetID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458"),
+			IsCurrent:		to.Ptr(true),
+			SubscriptionRequired:	to.Ptr(true),
+			Path:			to.Ptr("echo2"),
+			DisplayName:		to.Ptr("Echo API2"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTP),
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
-			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api"),
-			SourceAPIID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath"),
+			ServiceURL:	to.Ptr("http://echoapi.cloudapp.net/api"),
+			SourceAPIID:	to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -451,10 +451,10 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiRevisionFromExis
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "echo-api;rev=3", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			APIRevisionDescription: to.Ptr("Creating a Revision of an existing API"),
-			Path:                   to.Ptr("echo"),
-			ServiceURL:             to.Ptr("http://echoapi.cloudapp.net/apiv3"),
-			SourceAPIID:            to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
+			APIRevisionDescription:	to.Ptr("Creating a Revision of an existing API"),
+			Path:			to.Ptr("echo"),
+			ServiceURL:		to.Ptr("http://echoapi.cloudapp.net/apiv3"),
+			SourceAPIID:		to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -502,10 +502,10 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingImportOverr
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "apidocs", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:       to.Ptr("petstoreapi123"),
-			ServiceURL: to.Ptr("http://petstore.swagger.wordnik.com/api"),
-			Format:     to.Ptr(armapimanagement.ContentFormat("swagger-link")),
-			Value:      to.Ptr("http://apimpimportviaurl.azurewebsites.net/api/apidocs/"),
+			Path:		to.Ptr("petstoreapi123"),
+			ServiceURL:	to.Ptr("http://petstore.swagger.wordnik.com/api"),
+			Format:		to.Ptr(armapimanagement.ContentFormat("swagger-link")),
+			Value:		to.Ptr("http://apimpimportviaurl.azurewebsites.net/api/apidocs/"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -553,9 +553,9 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3Import(
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "petstore", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:   to.Ptr("petstore"),
-			Format: to.Ptr(armapimanagement.ContentFormatOpenapiLink),
-			Value:  to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
+			Path:	to.Ptr("petstore"),
+			Format:	to.Ptr(armapimanagement.ContentFormatOpenapiLink),
+			Value:	to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -602,10 +602,10 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingOai3ImportW
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "petstore", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:                                    to.Ptr("petstore"),
-			Format:                                  to.Ptr(armapimanagement.ContentFormatOpenapiLink),
-			TranslateRequiredQueryParametersConduct: to.Ptr(armapimanagement.TranslateRequiredQueryParametersConductTemplate),
-			Value:                                   to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
+			Path:						to.Ptr("petstore"),
+			Format:						to.Ptr(armapimanagement.ContentFormatOpenapiLink),
+			TranslateRequiredQueryParametersConduct:	to.Ptr(armapimanagement.TranslateRequiredQueryParametersConductTemplate),
+			Value:						to.Ptr("https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v3.0/petstore.yaml"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -652,9 +652,9 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingSwaggerImpo
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "petstore", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:   to.Ptr("petstore"),
-			Format: to.Ptr(armapimanagement.ContentFormatSwaggerLinkJSON),
-			Value:  to.Ptr("http://petstore.swagger.io/v2/swagger.json"),
+			Path:	to.Ptr("petstore"),
+			Format:	to.Ptr(armapimanagement.ContentFormatSwaggerLinkJSON),
+			Value:	to.Ptr("http://petstore.swagger.io/v2/swagger.json"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -702,9 +702,9 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiUsingWadlImport(
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "petstore", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:   to.Ptr("collector"),
-			Format: to.Ptr(armapimanagement.ContentFormatWadlLinkJSON),
-			Value:  to.Ptr("https://developer.cisco.com/media/wae-release-6-2-api-reference/wae-collector-rest-api/application.wadl"),
+			Path:	to.Ptr("collector"),
+			Format:	to.Ptr(armapimanagement.ContentFormatWadlLinkJSON),
+			Value:	to.Ptr("https://developer.cisco.com/media/wae-release-6-2-api-reference/wae-collector-rest-api/application.wadl"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -752,28 +752,28 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleAuth
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description: to.Ptr("apidescription5200"),
+			Description:	to.Ptr("apidescription5200"),
 			AuthenticationSettings: &armapimanagement.AuthenticationSettingsContract{
 				OAuth2AuthenticationSettings: []*armapimanagement.OAuth2AuthenticationSettingsContract{
 					{
-						AuthorizationServerID: to.Ptr("authorizationServerId2283"),
-						Scope:                 to.Ptr("oauth2scope2580"),
+						AuthorizationServerID:	to.Ptr("authorizationServerId2283"),
+						Scope:			to.Ptr("oauth2scope2580"),
 					},
 					{
-						AuthorizationServerID: to.Ptr("authorizationServerId2284"),
-						Scope:                 to.Ptr("oauth2scope2581"),
+						AuthorizationServerID:	to.Ptr("authorizationServerId2284"),
+						Scope:			to.Ptr("oauth2scope2581"),
 					}},
 			},
 			SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
-				Header: to.Ptr("header4520"),
-				Query:  to.Ptr("query3037"),
+				Header:	to.Ptr("header4520"),
+				Query:	to.Ptr("query3037"),
 			},
-			Path:        to.Ptr("newapiPath"),
-			DisplayName: to.Ptr("apiname1463"),
+			Path:		to.Ptr("newapiPath"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTPS),
 				to.Ptr(armapimanagement.ProtocolHTTP)},
-			ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
+			ServiceURL:	to.Ptr("http://newechoapi.cloudapp.net/api"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -838,30 +838,30 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithMultipleOpen
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description: to.Ptr("apidescription5200"),
+			Description:	to.Ptr("apidescription5200"),
 			AuthenticationSettings: &armapimanagement.AuthenticationSettingsContract{
 				OpenidAuthenticationSettings: []*armapimanagement.OpenIDAuthenticationSettingsContract{
 					{
 						BearerTokenSendingMethods: []*armapimanagement.BearerTokenSendingMethods{
 							to.Ptr(armapimanagement.BearerTokenSendingMethodsAuthorizationHeader)},
-						OpenidProviderID: to.Ptr("openidProviderId2283"),
+						OpenidProviderID:	to.Ptr("openidProviderId2283"),
 					},
 					{
 						BearerTokenSendingMethods: []*armapimanagement.BearerTokenSendingMethods{
 							to.Ptr(armapimanagement.BearerTokenSendingMethodsAuthorizationHeader)},
-						OpenidProviderID: to.Ptr("openidProviderId2284"),
+						OpenidProviderID:	to.Ptr("openidProviderId2284"),
 					}},
 			},
 			SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
-				Header: to.Ptr("header4520"),
-				Query:  to.Ptr("query3037"),
+				Header:	to.Ptr("header4520"),
+				Query:	to.Ptr("query3037"),
 			},
-			Path:        to.Ptr("newapiPath"),
-			DisplayName: to.Ptr("apiname1463"),
+			Path:		to.Ptr("newapiPath"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTPS),
 				to.Ptr(armapimanagement.ProtocolHTTP)},
-			ServiceURL: to.Ptr("http://newechoapi.cloudapp.net/api"),
+			ServiceURL:	to.Ptr("http://newechoapi.cloudapp.net/api"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -929,23 +929,23 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateApiWithOpenIdConnec
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Description: to.Ptr("This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters."),
+			Description:	to.Ptr("This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters."),
 			AuthenticationSettings: &armapimanagement.AuthenticationSettingsContract{
 				Openid: &armapimanagement.OpenIDAuthenticationSettingsContract{
 					BearerTokenSendingMethods: []*armapimanagement.BearerTokenSendingMethods{
 						to.Ptr(armapimanagement.BearerTokenSendingMethodsAuthorizationHeader)},
-					OpenidProviderID: to.Ptr("testopenid"),
+					OpenidProviderID:	to.Ptr("testopenid"),
 				},
 			},
 			SubscriptionKeyParameterNames: &armapimanagement.SubscriptionKeyParameterNamesContract{
-				Header: to.Ptr("Ocp-Apim-Subscription-Key"),
-				Query:  to.Ptr("subscription-key"),
+				Header:	to.Ptr("Ocp-Apim-Subscription-Key"),
+				Query:	to.Ptr("subscription-key"),
 			},
-			Path:        to.Ptr("petstore"),
-			DisplayName: to.Ptr("Swagger Petstore"),
+			Path:		to.Ptr("petstore"),
+			DisplayName:	to.Ptr("Swagger Petstore"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
-			ServiceURL: to.Ptr("http://petstore.swagger.io/v2"),
+			ServiceURL:	to.Ptr("http://petstore.swagger.io/v2"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -1000,14 +1000,14 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateGraphQlApi() {
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			APIType:     to.Ptr(armapimanagement.APITypeGraphql),
-			Description: to.Ptr("apidescription5200"),
-			Path:        to.Ptr("graphql-api"),
-			DisplayName: to.Ptr("apiname1463"),
+			APIType:	to.Ptr(armapimanagement.APITypeGraphql),
+			Description:	to.Ptr("apidescription5200"),
+			Path:		to.Ptr("graphql-api"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTP),
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
-			ServiceURL: to.Ptr("https://api.spacex.land/graphql"),
+			ServiceURL:	to.Ptr("https://api.spacex.land/graphql"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -1054,15 +1054,15 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateGrpcApi() {
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			APIType:     to.Ptr(armapimanagement.APITypeGrpc),
-			Description: to.Ptr("apidescription5200"),
-			Path:        to.Ptr("grpc-api"),
-			DisplayName: to.Ptr("apiname1463"),
+			APIType:	to.Ptr(armapimanagement.APITypeGrpc),
+			Description:	to.Ptr("apidescription5200"),
+			Path:		to.Ptr("grpc-api"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
-			ServiceURL: to.Ptr("https://your-api-hostname/samples"),
-			Format:     to.Ptr(armapimanagement.ContentFormatGrpcLink),
-			Value:      to.Ptr("https://raw.githubusercontent.com/kedacore/keda/main/pkg/scalers/externalscaler/externalscaler.proto"),
+			ServiceURL:	to.Ptr("https://your-api-hostname/samples"),
+			Format:		to.Ptr(armapimanagement.ContentFormatGrpcLink),
+			Value:		to.Ptr("https://raw.githubusercontent.com/kedacore/keda/main/pkg/scalers/externalscaler/externalscaler.proto"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -1107,16 +1107,16 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateODataApi() {
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			APIType:     to.Ptr(armapimanagement.APITypeOData),
-			Description: to.Ptr("apidescription5200"),
-			Path:        to.Ptr("odata-api"),
-			DisplayName: to.Ptr("apiname1463"),
+			APIType:	to.Ptr(armapimanagement.APITypeOData),
+			Description:	to.Ptr("apidescription5200"),
+			Path:		to.Ptr("odata-api"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolHTTP),
 				to.Ptr(armapimanagement.ProtocolHTTPS)},
-			ServiceURL: to.Ptr("https://services.odata.org/TripPinWebApiService"),
-			Format:     to.Ptr(armapimanagement.ContentFormatODataLink),
-			Value:      to.Ptr("https://services.odata.org/TripPinWebApiService/$metadata"),
+			ServiceURL:	to.Ptr("https://services.odata.org/TripPinWebApiService"),
+			Format:		to.Ptr(armapimanagement.ContentFormatODataLink),
+			Value:		to.Ptr("https://services.odata.org/TripPinWebApiService/$metadata"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -1163,13 +1163,13 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapPassThroughApiU
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "soapApi", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:        to.Ptr("currency"),
-			Format:      to.Ptr(armapimanagement.ContentFormatWsdlLink),
-			SoapAPIType: to.Ptr(armapimanagement.SoapAPITypeSoapPassThrough),
-			Value:       to.Ptr("http://www.webservicex.net/CurrencyConvertor.asmx?WSDL"),
+			Path:		to.Ptr("currency"),
+			Format:		to.Ptr(armapimanagement.ContentFormatWsdlLink),
+			SoapAPIType:	to.Ptr(armapimanagement.SoapAPITypeSoapPassThrough),
+			Value:		to.Ptr("http://www.webservicex.net/CurrencyConvertor.asmx?WSDL"),
 			WsdlSelector: &armapimanagement.APICreateOrUpdatePropertiesWsdlSelector{
-				WsdlEndpointName: to.Ptr("CurrencyConvertorSoap"),
-				WsdlServiceName:  to.Ptr("CurrencyConvertor"),
+				WsdlEndpointName:	to.Ptr("CurrencyConvertorSoap"),
+				WsdlServiceName:	to.Ptr("CurrencyConvertor"),
 			},
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
@@ -1218,12 +1218,12 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateSoapToRestApiUsingW
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "soapApi", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			Path:   to.Ptr("currency"),
-			Format: to.Ptr(armapimanagement.ContentFormatWsdlLink),
-			Value:  to.Ptr("http://www.webservicex.net/CurrencyConvertor.asmx?WSDL"),
+			Path:	to.Ptr("currency"),
+			Format:	to.Ptr(armapimanagement.ContentFormatWsdlLink),
+			Value:	to.Ptr("http://www.webservicex.net/CurrencyConvertor.asmx?WSDL"),
 			WsdlSelector: &armapimanagement.APICreateOrUpdatePropertiesWsdlSelector{
-				WsdlEndpointName: to.Ptr("CurrencyConvertorSoap"),
-				WsdlServiceName:  to.Ptr("CurrencyConvertor"),
+				WsdlEndpointName:	to.Ptr("CurrencyConvertorSoap"),
+				WsdlServiceName:	to.Ptr("CurrencyConvertor"),
 			},
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
@@ -1271,14 +1271,14 @@ func ExampleAPIClient_BeginCreateOrUpdate_apiManagementCreateWebSocketApi() {
 	}
 	poller, err := clientFactory.NewAPIClient().BeginCreateOrUpdate(ctx, "rg1", "apimService1", "tempgroup", armapimanagement.APICreateOrUpdateParameter{
 		Properties: &armapimanagement.APICreateOrUpdateProperties{
-			APIType:     to.Ptr(armapimanagement.APITypeWebsocket),
-			Description: to.Ptr("apidescription5200"),
-			Path:        to.Ptr("newapiPath"),
-			DisplayName: to.Ptr("apiname1463"),
+			APIType:	to.Ptr(armapimanagement.APITypeWebsocket),
+			Description:	to.Ptr("apidescription5200"),
+			Path:		to.Ptr("newapiPath"),
+			DisplayName:	to.Ptr("apiname1463"),
 			Protocols: []*armapimanagement.Protocol{
 				to.Ptr(armapimanagement.ProtocolWss),
 				to.Ptr(armapimanagement.ProtocolWs)},
-			ServiceURL: to.Ptr("wss://echo.websocket.org"),
+			ServiceURL:	to.Ptr("wss://echo.websocket.org"),
 		},
 	}, &armapimanagement.APIClientBeginCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -1325,9 +1325,9 @@ func ExampleAPIClient_Update() {
 	}
 	res, err := clientFactory.NewAPIClient().Update(ctx, "rg1", "apimService1", "echo-api", "*", armapimanagement.APIUpdateContract{
 		Properties: &armapimanagement.APIContractUpdateProperties{
-			Path:        to.Ptr("newecho"),
-			DisplayName: to.Ptr("Echo API New"),
-			ServiceURL:  to.Ptr("http://echoapi.cloudapp.net/api2"),
+			Path:		to.Ptr("newecho"),
+			DisplayName:	to.Ptr("Echo API New"),
+			ServiceURL:	to.Ptr("http://echoapi.cloudapp.net/api2"),
 		},
 	}, nil)
 	if err != nil {
@@ -1390,9 +1390,9 @@ func ExampleAPIClient_NewListByTagsPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAPIClient().NewListByTagsPager("rg1", "apimService1", &armapimanagement.APIClientListByTagsOptions{Filter: nil,
-		Top:                  nil,
-		Skip:                 nil,
-		IncludeNotTaggedApis: nil,
+		Top:			nil,
+		Skip:			nil,
+		IncludeNotTaggedApis:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)

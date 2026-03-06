@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceApiVersionSets.json
@@ -27,8 +27,8 @@ func ExampleWorkspaceAPIVersionSetClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewWorkspaceAPIVersionSetClient().NewListByServicePager("rg1", "apimService1", "wks1", &armapimanagement.WorkspaceAPIVersionSetClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -127,9 +127,9 @@ func ExampleWorkspaceAPIVersionSetClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewWorkspaceAPIVersionSetClient().CreateOrUpdate(ctx, "rg1", "apimService1", "wks1", "api1", armapimanagement.APIVersionSetContract{
 		Properties: &armapimanagement.APIVersionSetContractProperties{
-			Description:      to.Ptr("Version configuration"),
-			DisplayName:      to.Ptr("api set 1"),
-			VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
+			Description:		to.Ptr("Version configuration"),
+			DisplayName:		to.Ptr("api set 1"),
+			VersioningScheme:	to.Ptr(armapimanagement.VersioningSchemeSegment),
 		},
 	}, &armapimanagement.WorkspaceAPIVersionSetClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -163,9 +163,9 @@ func ExampleWorkspaceAPIVersionSetClient_Update() {
 	}
 	res, err := clientFactory.NewWorkspaceAPIVersionSetClient().Update(ctx, "rg1", "apimService1", "wks1", "vs1", "*", armapimanagement.APIVersionSetUpdateParameters{
 		Properties: &armapimanagement.APIVersionSetUpdateParametersProperties{
-			Description:      to.Ptr("Version configuration"),
-			DisplayName:      to.Ptr("api set 1"),
-			VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
+			Description:		to.Ptr("Version configuration"),
+			DisplayName:		to.Ptr("api set 1"),
+			VersioningScheme:	to.Ptr(armapimanagement.VersioningSchemeSegment),
 		},
 	}, nil)
 	if err != nil {

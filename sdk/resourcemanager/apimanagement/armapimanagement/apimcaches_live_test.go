@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,14 +20,14 @@ import (
 type ApimcachesTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	cacheId           string
-	serviceName       string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	cacheId			string
+	serviceName		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimcachesTestSuite) SetupSuite() {
@@ -64,17 +64,17 @@ func (testsuite *ApimcachesTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -91,10 +91,10 @@ func (testsuite *ApimcachesTestSuite) TestCache() {
 	testsuite.Require().NoError(err)
 	_, err = cacheClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.cacheId, armapimanagement.CacheContract{
 		Properties: &armapimanagement.CacheContractProperties{
-			ConnectionString: to.Ptr("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False"),
-			UseFromLocation:  to.Ptr("default"),
-			Description:      to.Ptr("Redis cache instances in West India"),
-			ResourceID:       to.Ptr("https://management.azure.com/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Cache/redis/" + testsuite.serviceName),
+			ConnectionString:	to.Ptr("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False"),
+			UseFromLocation:	to.Ptr("default"),
+			Description:		to.Ptr("Redis cache instances in West India"),
+			ResourceID:		to.Ptr("https://management.azure.com/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Cache/redis/" + testsuite.serviceName),
 		},
 	}, &armapimanagement.CacheClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -112,7 +112,7 @@ func (testsuite *ApimcachesTestSuite) TestCache() {
 	// From step Cache_ListByService
 	fmt.Println("Call operation: Cache_ListByService")
 	cacheClientNewListByServicePager := cacheClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.CacheClientListByServiceOptions{Top: nil,
-		Skip: nil,
+		Skip:	nil,
 	})
 	for cacheClientNewListByServicePager.More() {
 		_, err := cacheClientNewListByServicePager.NextPage(testsuite.ctx)

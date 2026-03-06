@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListAuthorizationServers.json
@@ -27,8 +27,8 @@ func ExampleAuthorizationServerClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAuthorizationServerClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.AuthorizationServerClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -178,26 +178,26 @@ func ExampleAuthorizationServerClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAuthorizationServerClient().CreateOrUpdate(ctx, "rg1", "apimService1", "newauthServer", armapimanagement.AuthorizationServerContract{
 		Properties: &armapimanagement.AuthorizationServerContractProperties{
-			Description: to.Ptr("test server"),
+			Description:	to.Ptr("test server"),
 			AuthorizationMethods: []*armapimanagement.AuthorizationMethod{
 				to.Ptr(armapimanagement.AuthorizationMethodGET)},
 			BearerTokenSendingMethods: []*armapimanagement.BearerTokenSendingMethod{
 				to.Ptr(armapimanagement.BearerTokenSendingMethodAuthorizationHeader)},
-			DefaultScope:               to.Ptr("read write"),
-			ResourceOwnerPassword:      to.Ptr("pwd"),
-			ResourceOwnerUsername:      to.Ptr("un"),
-			SupportState:               to.Ptr(true),
-			TokenEndpoint:              to.Ptr("https://www.contoso.com/oauth2/token"),
-			AuthorizationEndpoint:      to.Ptr("https://www.contoso.com/oauth2/auth"),
-			ClientID:                   to.Ptr("1"),
-			ClientRegistrationEndpoint: to.Ptr("https://www.contoso.com/apps"),
-			ClientSecret:               to.Ptr("2"),
-			DisplayName:                to.Ptr("test2"),
+			DefaultScope:			to.Ptr("read write"),
+			ResourceOwnerPassword:		to.Ptr("pwd"),
+			ResourceOwnerUsername:		to.Ptr("un"),
+			SupportState:			to.Ptr(true),
+			TokenEndpoint:			to.Ptr("https://www.contoso.com/oauth2/token"),
+			AuthorizationEndpoint:		to.Ptr("https://www.contoso.com/oauth2/auth"),
+			ClientID:			to.Ptr("1"),
+			ClientRegistrationEndpoint:	to.Ptr("https://www.contoso.com/apps"),
+			ClientSecret:			to.Ptr("2"),
+			DisplayName:			to.Ptr("test2"),
 			GrantTypes: []*armapimanagement.GrantType{
 				to.Ptr(armapimanagement.GrantTypeAuthorizationCode),
 				to.Ptr(armapimanagement.GrantTypeImplicit)},
-			UseInAPIDocumentation: to.Ptr(true),
-			UseInTestConsole:      to.Ptr(false),
+			UseInAPIDocumentation:	to.Ptr(true),
+			UseInTestConsole:	to.Ptr(false),
 		},
 	}, &armapimanagement.AuthorizationServerClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -247,10 +247,10 @@ func ExampleAuthorizationServerClient_Update() {
 	}
 	res, err := clientFactory.NewAuthorizationServerClient().Update(ctx, "rg1", "apimService1", "newauthServer", "*", armapimanagement.AuthorizationServerUpdateContract{
 		Properties: &armapimanagement.AuthorizationServerUpdateContractProperties{
-			ClientID:              to.Ptr("update"),
-			ClientSecret:          to.Ptr("updated"),
-			UseInAPIDocumentation: to.Ptr(true),
-			UseInTestConsole:      to.Ptr(false),
+			ClientID:		to.Ptr("update"),
+			ClientSecret:		to.Ptr("updated"),
+			UseInAPIDocumentation:	to.Ptr(true),
+			UseInTestConsole:	to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {

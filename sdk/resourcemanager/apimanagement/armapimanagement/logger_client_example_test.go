@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListLoggers.json
@@ -27,8 +27,8 @@ func ExampleLoggerClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewLoggerClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.LoggerClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -146,11 +146,11 @@ func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateAiLogger() {
 	}
 	res, err := clientFactory.NewLoggerClient().CreateOrUpdate(ctx, "rg1", "apimService1", "loggerId", armapimanagement.LoggerContract{
 		Properties: &armapimanagement.LoggerContractProperties{
-			Description: to.Ptr("adding a new logger"),
+			Description:	to.Ptr("adding a new logger"),
 			Credentials: map[string]*string{
 				"instrumentationKey": to.Ptr("11................a1"),
 			},
-			LoggerType: to.Ptr(armapimanagement.LoggerTypeApplicationInsights),
+			LoggerType:	to.Ptr(armapimanagement.LoggerTypeApplicationInsights),
 		},
 	}, &armapimanagement.LoggerClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -186,12 +186,12 @@ func ExampleLoggerClient_CreateOrUpdate_apiManagementCreateEhLogger() {
 	}
 	res, err := clientFactory.NewLoggerClient().CreateOrUpdate(ctx, "rg1", "apimService1", "eh1", armapimanagement.LoggerContract{
 		Properties: &armapimanagement.LoggerContractProperties{
-			Description: to.Ptr("adding a new logger"),
+			Description:	to.Ptr("adding a new logger"),
 			Credentials: map[string]*string{
-				"name":             to.Ptr("hydraeventhub"),
-				"connectionString": to.Ptr("Endpoint=sb://hydraeventhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=********="),
+				"name":			to.Ptr("hydraeventhub"),
+				"connectionString":	to.Ptr("Endpoint=sb://hydraeventhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=********="),
 			},
-			LoggerType: to.Ptr(armapimanagement.LoggerTypeAzureEventHub),
+			LoggerType:	to.Ptr(armapimanagement.LoggerTypeAzureEventHub),
 		},
 	}, &armapimanagement.LoggerClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -228,8 +228,8 @@ func ExampleLoggerClient_Update() {
 	}
 	res, err := clientFactory.NewLoggerClient().Update(ctx, "rg1", "apimService1", "eh1", "*", armapimanagement.LoggerUpdateContract{
 		Properties: &armapimanagement.LoggerUpdateParameters{
-			Description: to.Ptr("updating description"),
-			LoggerType:  to.Ptr(armapimanagement.LoggerTypeAzureEventHub),
+			Description:	to.Ptr("updating description"),
+			LoggerType:	to.Ptr(armapimanagement.LoggerTypeAzureEventHub),
 		},
 	}, nil)
 	if err != nil {

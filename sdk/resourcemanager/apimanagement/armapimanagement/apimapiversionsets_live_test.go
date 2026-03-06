@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/stretchr/testify/suite"
 )
@@ -20,14 +20,14 @@ import (
 type ApimapiversionsetsTestSuite struct {
 	suite.Suite
 
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	serviceName       string
-	versionSetId      string
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx			context.Context
+	cred			azcore.TokenCredential
+	options			*arm.ClientOptions
+	serviceName		string
+	versionSetId		string
+	location		string
+	resourceGroupName	string
+	subscriptionId		string
 }
 
 func (testsuite *ApimapiversionsetsTestSuite) SetupSuite() {
@@ -64,17 +64,17 @@ func (testsuite *ApimapiversionsetsTestSuite) Prepare() {
 	testsuite.Require().NoError(err)
 	serviceClientCreateOrUpdateResponsePoller, err := serviceClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, armapimanagement.ServiceResource{
 		Tags: map[string]*string{
-			"Name": to.Ptr("Contoso"),
-			"Test": to.Ptr("User"),
+			"Name":	to.Ptr("Contoso"),
+			"Test":	to.Ptr("User"),
 		},
-		Location: to.Ptr(testsuite.location),
+		Location:	to.Ptr(testsuite.location),
 		Properties: &armapimanagement.ServiceProperties{
-			PublisherEmail: to.Ptr("foo@contoso.com"),
-			PublisherName:  to.Ptr("foo"),
+			PublisherEmail:	to.Ptr("foo@contoso.com"),
+			PublisherName:	to.Ptr("foo"),
 		},
 		SKU: &armapimanagement.ServiceSKUProperties{
-			Name:     to.Ptr(armapimanagement.SKUTypeStandard),
-			Capacity: to.Ptr[int32](1),
+			Name:		to.Ptr(armapimanagement.SKUTypeStandard),
+			Capacity:	to.Ptr[int32](1),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)
@@ -91,9 +91,9 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	testsuite.Require().NoError(err)
 	_, err = aPIVersionSetClient.CreateOrUpdate(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, armapimanagement.APIVersionSetContract{
 		Properties: &armapimanagement.APIVersionSetContractProperties{
-			DisplayName:      to.Ptr("api set 1"),
-			VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
-			Description:      to.Ptr("Version configuration"),
+			DisplayName:		to.Ptr("api set 1"),
+			VersioningScheme:	to.Ptr(armapimanagement.VersioningSchemeSegment),
+			Description:		to.Ptr("Version configuration"),
 		},
 	}, &armapimanagement.APIVersionSetClientCreateOrUpdateOptions{IfMatch: nil})
 	testsuite.Require().NoError(err)
@@ -106,8 +106,8 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	// From step ApiVersionSet_ListByService
 	fmt.Println("Call operation: ApiVersionSet_ListByService")
 	aPIVersionSetClientNewListByServicePager := aPIVersionSetClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.serviceName, &armapimanagement.APIVersionSetClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for aPIVersionSetClientNewListByServicePager.More() {
 		_, err := aPIVersionSetClientNewListByServicePager.NextPage(testsuite.ctx)
@@ -124,9 +124,9 @@ func (testsuite *ApimapiversionsetsTestSuite) TestApiversionset() {
 	fmt.Println("Call operation: ApiVersionSet_Update")
 	_, err = aPIVersionSetClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.serviceName, testsuite.versionSetId, "*", armapimanagement.APIVersionSetUpdateParameters{
 		Properties: &armapimanagement.APIVersionSetUpdateParametersProperties{
-			Description:      to.Ptr("Version configuration"),
-			DisplayName:      to.Ptr("api set 1"),
-			VersioningScheme: to.Ptr(armapimanagement.VersioningSchemeSegment),
+			Description:		to.Ptr("Version configuration"),
+			DisplayName:		to.Ptr("api set 1"),
+			VersioningScheme:	to.Ptr(armapimanagement.VersioningSchemeSegment),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

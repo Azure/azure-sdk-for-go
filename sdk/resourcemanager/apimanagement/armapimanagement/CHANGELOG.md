@@ -1,5 +1,250 @@
 # Release History
 
+## 4.0.0-beta.1 (2026-01-20)
+### Breaking Changes
+
+- Function `*GatewayAPIClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, options *GatewayAPIClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, serviceName string, gatewayID string, apiID string, parameters AssociationContract, options *GatewayAPIClientCreateOrUpdateOptions)`
+- Type of `APIVersionSetContractDetails.VersioningScheme` has been changed from `*APIVersionSetContractDetailsVersioningScheme` to `*VersioningScheme`
+- Type of `GatewayConfigConnectionResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `GatewayResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `OperationStatusResult.PercentComplete` has been changed from `*float32` to `*float64`
+- Type of `ServiceResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Type of `WorkspaceLinksResource.Etag` has been changed from `*string` to `*azcore.ETag`
+- Enum `APIVersionSetContractDetailsVersioningScheme` has been removed
+- Enum `AsyncResolverStatus` has been removed
+- Struct `APIEntityBaseContract` has been removed
+- Struct `APIRevisionInfoContract` has been removed
+- Struct `APIVersionSetEntityBase` has been removed
+- Struct `ApimResource` has been removed
+- Struct `AuthorizationServerContractBaseProperties` has been removed
+- Struct `BackendBaseParameters` has been removed
+- Struct `BackendPool` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `GatewayBaseProperties` has been removed
+- Struct `IdentityProviderBaseParameters` has been removed
+- Struct `IssueContractBaseProperties` has been removed
+- Struct `NamedValueEntityBaseParameters` has been removed
+- Struct `OperationEntityBaseContract` has been removed
+- Struct `PolicyWithComplianceCollection` has been removed
+- Struct `PolicyWithComplianceContract` has been removed
+- Struct `PolicyWithComplianceContractProperties` has been removed
+- Struct `ProductEntityBaseParameters` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `QuotaCounterValueContract` has been removed
+- Struct `ResolverResultContract` has been removed
+- Struct `ResolverResultContractProperties` has been removed
+- Struct `ResolverResultLogItemContract` has been removed
+- Struct `Resource` has been removed
+- Struct `ServiceBaseProperties` has been removed
+- Struct `UserEntityBaseParameters` has been removed
+- Struct `WorkspaceLinksBaseProperties` has been removed
+- Field `Parameters` of struct `GatewayAPIClientCreateOrUpdateOptions` has been removed
+- Field `Value` of struct `GatewayClientListTraceResponse` has been removed
+
+### Features Added
+
+- New value `SKUTypePremiumV2` added to enum type `SKUType`
+- New enum type `BackendSessionIDSource` with values `BackendSessionIDSourceCookie`
+- New enum type `CarbonEmissionCategory` with values `CarbonEmissionCategoryHigh`, `CarbonEmissionCategoryLow`, `CarbonEmissionCategoryMedium`, `CarbonEmissionCategoryVeryHigh`, `CarbonEmissionCategoryVeryLow`
+- New enum type `ClientApplicationState` with values `ClientApplicationStateActive`, `ClientApplicationStateApproved`, `ClientApplicationStatePending`, `ClientApplicationStateRejected`
+- New enum type `KeyVaultFetchCode` with values `KeyVaultFetchCodeFailed`, `KeyVaultFetchCodeSuccess`
+- New enum type `LlmDiagnosticSettings` with values `LlmDiagnosticSettingsDisabled`, `LlmDiagnosticSettingsEnabled`
+- New enum type `LlmMessageLogTypes` with values `LlmMessageLogTypesAll`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `ProductAuthType` with values `ProductAuthTypeApplicationToken`, `ProductAuthTypeSubscriptionKey`
+- New enum type `ReleaseChannel` with values `ReleaseChannelDefault`, `ReleaseChannelPreview`, `ReleaseChannelStable`
+- New function `NewAPIGatewayHostnameBindingClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIGatewayHostnameBindingClient, error)`
+- New function `*APIGatewayHostnameBindingClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, parameters GatewayHostnameBindingResource, options *APIGatewayHostnameBindingClientBeginCreateOrUpdateOptions) (*runtime.Poller[APIGatewayHostnameBindingClientCreateOrUpdateResponse], error)`
+- New function `*APIGatewayHostnameBindingClient.BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, ifMatch string, options *APIGatewayHostnameBindingClientBeginDeleteOptions) (*runtime.Poller[APIGatewayHostnameBindingClientDeleteResponse], error)`
+- New function `*APIGatewayHostnameBindingClient.Get(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, options *APIGatewayHostnameBindingClientGetOptions) (APIGatewayHostnameBindingClientGetResponse, error)`
+- New function `*APIGatewayHostnameBindingClient.NewListByGatewayPager(resourceGroupName string, gatewayName string, options *APIGatewayHostnameBindingClientListByGatewayOptions) *runtime.Pager[APIGatewayHostnameBindingClientListByGatewayResponse]`
+- New function `*APIGatewayHostnameBindingClient.BeginRefreshSecret(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, options *APIGatewayHostnameBindingClientBeginRefreshSecretOptions) (*runtime.Poller[APIGatewayHostnameBindingClientRefreshSecretResponse], error)`
+- New function `NewAPIToolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIToolClient, error)`
+- New function `*APIToolClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, parameters ToolContract, options *APIToolClientCreateOrUpdateOptions) (APIToolClientCreateOrUpdateResponse, error)`
+- New function `*APIToolClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientDeleteOptions) (APIToolClientDeleteResponse, error)`
+- New function `*APIToolClient.Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientGetOptions) (APIToolClientGetResponse, error)`
+- New function `*APIToolClient.GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientGetEntityTagOptions) (APIToolClientGetEntityTagResponse, error)`
+- New function `*APIToolClient.NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIToolClientListByAPIOptions) *runtime.Pager[APIToolClientListByAPIResponse]`
+- New function `*APIToolClient.Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, parameters ToolContract, options *APIToolClientUpdateOptions) (APIToolClientUpdateResponse, error)`
+- New function `*AuthorizationProviderClient.RefreshSecret(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationProviderClientRefreshSecretOptions) (AuthorizationProviderClientRefreshSecretResponse, error)`
+- New function `NewClientApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationClient, error)`
+- New function `*ClientApplicationClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, parameters ClientApplicationContract, options *ClientApplicationClientCreateOrUpdateOptions) (ClientApplicationClientCreateOrUpdateResponse, error)`
+- New function `*ClientApplicationClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientDeleteOptions) (ClientApplicationClientDeleteResponse, error)`
+- New function `*ClientApplicationClient.Get(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientGetOptions) (ClientApplicationClientGetResponse, error)`
+- New function `*ClientApplicationClient.GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientGetEntityTagOptions) (ClientApplicationClientGetEntityTagResponse, error)`
+- New function `*ClientApplicationClient.NewListByServicePager(resourceGroupName string, serviceName string, options *ClientApplicationClientListByServiceOptions) *runtime.Pager[ClientApplicationClientListByServiceResponse]`
+- New function `*ClientApplicationClient.ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientListSecretsOptions) (ClientApplicationClientListSecretsResponse, error)`
+- New function `NewClientApplicationProductLinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationProductLinkClient, error)`
+- New function `*ClientApplicationProductLinkClient.Create(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, parameters ClientApplicationProductLinkContract, options *ClientApplicationProductLinkClientCreateOptions) (ClientApplicationProductLinkClientCreateResponse, error)`
+- New function `*ClientApplicationProductLinkClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, options *ClientApplicationProductLinkClientDeleteOptions) (ClientApplicationProductLinkClientDeleteResponse, error)`
+- New function `*ClientApplicationProductLinkClient.Get(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, options *ClientApplicationProductLinkClientGetOptions) (ClientApplicationProductLinkClientGetResponse, error)`
+- New function `*ClientApplicationProductLinkClient.NewListByClientApplicationsPager(resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationProductLinkClientListByClientApplicationsOptions) *runtime.Pager[ClientApplicationProductLinkClientListByClientApplicationsResponse]`
+- New function `*ClientFactory.NewAPIGatewayHostnameBindingClient() *APIGatewayHostnameBindingClient`
+- New function `*ClientFactory.NewAPIToolClient() *APIToolClient`
+- New function `*ClientFactory.NewClientApplicationClient() *ClientApplicationClient`
+- New function `*ClientFactory.NewClientApplicationProductLinkClient() *ClientApplicationProductLinkClient`
+- New function `*ServiceClient.BeginRefreshHostnames(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginRefreshHostnamesOptions) (*runtime.Poller[ServiceClientRefreshHostnamesResponse], error)`
+- New struct `AuthorizationProviderKeyVaultContract`
+- New struct `BackendFailureResponse`
+- New struct `BackendSessionAffinity`
+- New struct `BackendSessionID`
+- New struct `ClientApplicationCollection`
+- New struct `ClientApplicationContract`
+- New struct `ClientApplicationContractProperties`
+- New struct `ClientApplicationProductLinkCollection`
+- New struct `ClientApplicationProductLinkContract`
+- New struct `ClientApplicationProductLinkContractProperties`
+- New struct `ClientApplicationSecretsContract`
+- New struct `ClientApplicationSecretsContractEntra`
+- New struct `GatewayHostnameBindingBaseProperties`
+- New struct `GatewayHostnameBindingCertificate`
+- New struct `GatewayHostnameBindingKeyVault`
+- New struct `GatewayHostnameBindingKeyVaultLastStatus`
+- New struct `GatewayHostnameBindingListResult`
+- New struct `GatewayHostnameBindingResource`
+- New struct `GatewayTraceContract`
+- New struct `LLMDiagnosticSettings`
+- New struct `LLMMessageDiagnosticSettings`
+- New struct `ManagedServiceIdentity`
+- New struct `ProductApplicationContractEntra`
+- New struct `ProductEntityBaseParametersApplication`
+- New struct `ToolCollection`
+- New struct `ToolContract`
+- New struct `ToolContractProperties`
+- New struct `UserAssignedIdentity`
+- New field `ETag` in struct `APIClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `APIContract`
+- New field `RetryAfter` in struct `APIIssueAttachmentClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `APIIssueClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `APIIssueCommentClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `APIReleaseContract`
+- New field `ETag` in struct `APISchemaClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `APITagDescriptionClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `APIVersionSetContract`
+- New field `RetryAfter` in struct `APIWikiClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `AccessInformationContract`
+- New field `SystemData` in struct `AllPoliciesContract`
+- New field `SystemData` in struct `AssociationContract`
+- New field `SystemData` in struct `AuthorizationAccessPolicyContract`
+- New field `SystemData` in struct `AuthorizationContract`
+- New field `RetryAfter` in struct `AuthorizationProviderClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `AuthorizationProviderContract`
+- New field `KeyVault` in struct `AuthorizationProviderOAuth2Settings`
+- New field `RetryAfter` in struct `AuthorizationServerClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `AuthorizationServerContract`
+- New field `SystemData` in struct `AuthorizationServerUpdateContract`
+- New field `FailureResponse`, `SessionAffinity` in struct `BackendBaseParametersPool`
+- New field `RetryAfter` in struct `BackendClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `BackendContract`
+- New field `AzureRegion` in struct `BackendContractProperties`
+- New field `PreferredCarbonEmission` in struct `BackendPoolItem`
+- New field `SystemData` in struct `BackendReconnectContract`
+- New field `ServerCertificateThumbprints`, `ServerX509Names` in struct `BackendTLSProperties`
+- New field `AzureRegion` in struct `BackendUpdateParameterProperties`
+- New field `SystemData` in struct `CacheContract`
+- New field `SystemData` in struct `CertificateContract`
+- New field `FailureResponse` in struct `CircuitBreakerRule`
+- New field `SystemData` in struct `ContentItemContract`
+- New field `SystemData` in struct `ContentTypeContract`
+- New field `SystemData` in struct `DeletedServiceContract`
+- New field `RetryAfter` in struct `DiagnosticClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `DiagnosticContract`
+- New field `LargeLanguageModel` in struct `DiagnosticContractProperties`
+- New field `SystemData` in struct `DiagnosticUpdateContract`
+- New field `SystemData` in struct `DocumentationContract`
+- New field `SystemData` in struct `EmailTemplateContract`
+- New field `SystemData` in struct `GatewayCertificateAuthorityContract`
+- New anonymous field `GatewayTraceContract` in struct `GatewayClientListTraceResponse`
+- New field `SystemData` in struct `GatewayConfigConnectionResource`
+- New field `Identity`, `SystemData` in struct `GatewayContract`
+- New field `RetryAfter` in struct `GatewayHostnameConfigurationClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `GatewayHostnameConfigurationContract`
+- New field `ETag` in struct `GlobalSchemaClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `GlobalSchemaContract`
+- New field `RetryAfter` in struct `GroupClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `GroupContract`
+- New field `SystemData` in struct `IdentityProviderContract`
+- New field `CertificateID` in struct `IdentityProviderContractProperties`
+- New field `SystemData` in struct `IdentityProviderCreateContract`
+- New field `CertificateID` in struct `IdentityProviderCreateContractProperties`
+- New field `CertificateID` in struct `IdentityProviderUpdateProperties`
+- New field `SystemData` in struct `IssueAttachmentContract`
+- New field `SystemData` in struct `IssueCommentContract`
+- New field `SystemData` in struct `IssueContract`
+- New field `SystemData` in struct `LoggerContract`
+- New field `ETag` in struct `NamedValueClientCreateOrUpdateResponse`
+- New field `ETag` in struct `NamedValueClientRefreshSecretResponse`
+- New field `ETag` in struct `NamedValueClientUpdateResponse`
+- New field `SystemData` in struct `NamedValueContract`
+- New field `SystemData` in struct `NamedValueCreateContract`
+- New field `SystemData` in struct `NotificationContract`
+- New field `SystemData` in struct `OpenidConnectProviderContract`
+- New field `SystemData` in struct `OperationContract`
+- New field `SystemData` in struct `OperationResultContract`
+- New field `RetryAfter` in struct `OperationsResultsClientGetResponse`
+- New field `SystemData` in struct `PolicyContract`
+- New field `SystemData` in struct `PolicyDescriptionContract`
+- New field `ETag` in struct `PolicyFragmentClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `PolicyFragmentContract`
+- New field `SystemData` in struct `PolicyRestrictionContract`
+- New field `SystemData` in struct `PortalConfigContract`
+- New field `SystemData` in struct `PortalDelegationSettings`
+- New field `ETag` in struct `PortalRevisionClientCreateOrUpdateResponse`
+- New field `ETag` in struct `PortalRevisionClientUpdateResponse`
+- New field `SystemData` in struct `PortalRevisionContract`
+- New field `SystemData` in struct `PortalSettingsContract`
+- New field `SystemData` in struct `PortalSigninSettings`
+- New field `SystemData` in struct `PortalSignupSettings`
+- New field `SystemData` in struct `PrivateEndpointConnection`
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `GroupIDs` in struct `PrivateEndpointConnectionProperties`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+- New field `SystemData` in struct `ProductAPILinkContract`
+- New field `SystemData` in struct `ProductContract`
+- New field `Application`, `AuthenticationType` in struct `ProductContractProperties`
+- New field `SystemData` in struct `ProductGroupLinkContract`
+- New field `Application`, `AuthenticationType` in struct `ProductTagResourceContractProperties`
+- New field `Application`, `AuthenticationType` in struct `ProductUpdateProperties`
+- New field `RetryAfter` in struct `ProductWikiClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `RecipientEmailContract`
+- New field `SystemData` in struct `RecipientUserContract`
+- New field `NextLink` in struct `RequestReportCollection`
+- New field `SystemData` in struct `ResolverContract`
+- New field `SystemData` in struct `ResourceCollectionValueItem`
+- New field `SystemData` in struct `SchemaContract`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceProperties`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceUpdateProperties`
+- New field `SystemData` in struct `SubscriptionContract`
+- New field `SystemData` in struct `TagAPILinkContract`
+- New field `SystemData` in struct `TagContract`
+- New field `SystemData` in struct `TagDescriptionContract`
+- New field `SystemData` in struct `TagOperationLinkContract`
+- New field `SystemData` in struct `TagProductLinkContract`
+- New field `SystemData` in struct `TenantConfigurationSyncStateContract`
+- New field `SystemData` in struct `TenantSettingsContract`
+- New field `RetryAfter` in struct `UserClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `UserContract`
+- New field `SystemData` in struct `WikiContract`
+- New field `ETag` in struct `WorkspaceAPIClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceAPIDiagnosticClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceAPIOperationClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceAPIOperationPolicyClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceAPIPolicyClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceAPIReleaseClientCreateOrUpdateResponse`
+- New field `ETag` in struct `WorkspaceAPISchemaClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceBackendClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `WorkspaceContract`
+- New field `RetryAfter` in struct `WorkspaceDiagnosticClientCreateOrUpdateResponse`
+- New field `ETag` in struct `WorkspaceGlobalSchemaClientCreateOrUpdateResponse`
+- New field `SystemData` in struct `WorkspaceLinksResource`
+- New field `ETag` in struct `WorkspaceNamedValueClientCreateOrUpdateResponse`
+- New field `ETag` in struct `WorkspaceNamedValueClientRefreshSecretResponse`
+- New field `ETag` in struct `WorkspaceNamedValueClientUpdateResponse`
+- New field `ETag` in struct `WorkspacePolicyFragmentClientCreateOrUpdateResponse`
+- New field `RetryAfter` in struct `WorkspaceProductPolicyClientCreateOrUpdateResponse`
+
+
 ## 3.0.0 (2025-04-10)
 ### Breaking Changes
 

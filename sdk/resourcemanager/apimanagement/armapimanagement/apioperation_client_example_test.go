@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApiOperations.json
@@ -27,9 +27,9 @@ func ExampleAPIOperationClient_NewListByAPIPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAPIOperationClient().NewListByAPIPager("rg1", "apimService1", "57d2ef278aa04f0888cba3f3", &armapimanagement.APIOperationClientListByAPIOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
-		Tags: nil,
+		Top:	nil,
+		Skip:	nil,
+		Tags:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -286,23 +286,23 @@ func ExampleAPIOperationClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAPIOperationClient().CreateOrUpdate(ctx, "rg1", "apimService1", "PetStoreTemplate2", "newoperations", armapimanagement.OperationContract{
 		Properties: &armapimanagement.OperationContractProperties{
-			Description:        to.Ptr("This can only be done by the logged in user."),
-			TemplateParameters: []*armapimanagement.ParameterContract{},
+			Description:		to.Ptr("This can only be done by the logged in user."),
+			TemplateParameters:	[]*armapimanagement.ParameterContract{},
 			Request: &armapimanagement.RequestContract{
-				Description:     to.Ptr("Created user object"),
-				Headers:         []*armapimanagement.ParameterContract{},
-				QueryParameters: []*armapimanagement.ParameterContract{},
+				Description:		to.Ptr("Created user object"),
+				Headers:		[]*armapimanagement.ParameterContract{},
+				QueryParameters:	[]*armapimanagement.ParameterContract{},
 				Representations: []*armapimanagement.RepresentationContract{
 					{
-						ContentType: to.Ptr("application/json"),
-						SchemaID:    to.Ptr("592f6c1d0af5840ca8897f0c"),
-						TypeName:    to.Ptr("User"),
+						ContentType:	to.Ptr("application/json"),
+						SchemaID:	to.Ptr("592f6c1d0af5840ca8897f0c"),
+						TypeName:	to.Ptr("User"),
 					}},
 			},
 			Responses: []*armapimanagement.ResponseContract{
 				{
-					Description: to.Ptr("successful operation"),
-					Headers:     []*armapimanagement.ParameterContract{},
+					Description:	to.Ptr("successful operation"),
+					Headers:	[]*armapimanagement.ParameterContract{},
 					Representations: []*armapimanagement.RepresentationContract{
 						{
 							ContentType: to.Ptr("application/xml"),
@@ -310,11 +310,11 @@ func ExampleAPIOperationClient_CreateOrUpdate() {
 						{
 							ContentType: to.Ptr("application/json"),
 						}},
-					StatusCode: to.Ptr[int32](200),
+					StatusCode:	to.Ptr[int32](200),
 				}},
-			Method:      to.Ptr("POST"),
-			DisplayName: to.Ptr("createUser2"),
-			URLTemplate: to.Ptr("/user1"),
+			Method:		to.Ptr("POST"),
+			DisplayName:	to.Ptr("createUser2"),
+			URLTemplate:	to.Ptr("/user1"),
 		},
 	}, &armapimanagement.APIOperationClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {
@@ -378,35 +378,35 @@ func ExampleAPIOperationClient_Update() {
 	}
 	res, err := clientFactory.NewAPIOperationClient().Update(ctx, "rg1", "apimService1", "echo-api", "operationId", "*", armapimanagement.OperationUpdateContract{
 		Properties: &armapimanagement.OperationUpdateContractProperties{
-			TemplateParameters: []*armapimanagement.ParameterContract{},
+			TemplateParameters:	[]*armapimanagement.ParameterContract{},
 			Request: &armapimanagement.RequestContract{
 				QueryParameters: []*armapimanagement.ParameterContract{
 					{
-						Name:         to.Ptr("param1"),
-						Type:         to.Ptr("string"),
-						Description:  to.Ptr("A sample parameter that is required and has a default value of \"sample\"."),
-						DefaultValue: to.Ptr("sample"),
-						Required:     to.Ptr(true),
+						Name:		to.Ptr("param1"),
+						Type:		to.Ptr("string"),
+						Description:	to.Ptr("A sample parameter that is required and has a default value of \"sample\"."),
+						DefaultValue:	to.Ptr("sample"),
+						Required:	to.Ptr(true),
 						Values: []*string{
 							to.Ptr("sample")},
 					}},
 			},
 			Responses: []*armapimanagement.ResponseContract{
 				{
-					Description:     to.Ptr("Returned in all cases."),
-					Headers:         []*armapimanagement.ParameterContract{},
-					Representations: []*armapimanagement.RepresentationContract{},
-					StatusCode:      to.Ptr[int32](200),
+					Description:		to.Ptr("Returned in all cases."),
+					Headers:		[]*armapimanagement.ParameterContract{},
+					Representations:	[]*armapimanagement.RepresentationContract{},
+					StatusCode:		to.Ptr[int32](200),
 				},
 				{
-					Description:     to.Ptr("Server Error."),
-					Headers:         []*armapimanagement.ParameterContract{},
-					Representations: []*armapimanagement.RepresentationContract{},
-					StatusCode:      to.Ptr[int32](500),
+					Description:		to.Ptr("Server Error."),
+					Headers:		[]*armapimanagement.ParameterContract{},
+					Representations:	[]*armapimanagement.RepresentationContract{},
+					StatusCode:		to.Ptr[int32](500),
 				}},
-			Method:      to.Ptr("GET"),
-			DisplayName: to.Ptr("Retrieve resource"),
-			URLTemplate: to.Ptr("/resource"),
+			Method:		to.Ptr("GET"),
+			DisplayName:	to.Ptr("Retrieve resource"),
+			URLTemplate:	to.Ptr("/resource"),
 		},
 	}, nil)
 	if err != nil {

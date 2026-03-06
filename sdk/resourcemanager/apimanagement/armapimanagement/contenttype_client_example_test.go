@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListContentTypes.json
@@ -186,42 +186,42 @@ func ExampleContentTypeClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewContentTypeClient().CreateOrUpdate(ctx, "rg1", "apimService1", "page", armapimanagement.ContentTypeContract{
 		Properties: &armapimanagement.ContentTypeContractProperties{
-			Name: to.Ptr("Page"),
+			Name:	to.Ptr("Page"),
 			Schema: map[string]any{
-				"additionalProperties": false,
+				"additionalProperties":	false,
 				"properties": map[string]any{
 					"en_us": map[string]any{
-						"type":                 "object",
-						"additionalProperties": false,
+						"type":			"object",
+						"additionalProperties":	false,
 						"properties": map[string]any{
 							"description": map[string]any{
-								"type":        "string",
-								"description": "Page description. This property gets included in SEO attributes.",
-								"indexed":     true,
-								"title":       "Description",
+								"type":		"string",
+								"description":	"Page description. This property gets included in SEO attributes.",
+								"indexed":	true,
+								"title":	"Description",
 							},
 							"documentId": map[string]any{
-								"type":        "string",
-								"description": "Reference to page content document.",
-								"title":       "Document ID",
+								"type":		"string",
+								"description":	"Reference to page content document.",
+								"title":	"Document ID",
 							},
 							"keywords": map[string]any{
-								"type":        "string",
-								"description": "Page keywords. This property gets included in SEO attributes.",
-								"indexed":     true,
-								"title":       "Keywords",
+								"type":		"string",
+								"description":	"Page keywords. This property gets included in SEO attributes.",
+								"indexed":	true,
+								"title":	"Keywords",
 							},
 							"permalink": map[string]any{
-								"type":        "string",
-								"description": "Page permalink, e.g. '/about'.",
-								"indexed":     true,
-								"title":       "Permalink",
+								"type":		"string",
+								"description":	"Page permalink, e.g. '/about'.",
+								"indexed":	true,
+								"title":	"Permalink",
 							},
 							"title": map[string]any{
-								"type":        "string",
-								"description": "Page title. This property gets included in SEO attributes.",
-								"indexed":     true,
-								"title":       "Title",
+								"type":		"string",
+								"description":	"Page title. This property gets included in SEO attributes.",
+								"indexed":	true,
+								"title":	"Title",
 							},
 						},
 						"required": []any{
@@ -232,8 +232,8 @@ func ExampleContentTypeClient_CreateOrUpdate() {
 					},
 				},
 			},
-			Description: to.Ptr("A regular page"),
-			Version:     to.Ptr("1.0.0"),
+			Description:	to.Ptr("A regular page"),
+			Version:	to.Ptr("1.0.0"),
 		},
 	}, &armapimanagement.ContentTypeClientCreateOrUpdateOptions{IfMatch: nil})
 	if err != nil {

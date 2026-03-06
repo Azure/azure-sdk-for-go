@@ -12,7 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListApiDiagnostics.json
@@ -27,8 +27,8 @@ func ExampleAPIDiagnosticClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewAPIDiagnosticClient().NewListByServicePager("rg1", "apimService1", "echo-api", &armapimanagement.APIDiagnosticClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -191,7 +191,7 @@ func ExampleAPIDiagnosticClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewAPIDiagnosticClient().CreateOrUpdate(ctx, "rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "applicationinsights", armapimanagement.DiagnosticContract{
 		Properties: &armapimanagement.DiagnosticContractProperties{
-			AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
+			AlwaysLog:	to.Ptr(armapimanagement.AlwaysLogAllErrors),
 			Backend: &armapimanagement.PipelineDiagnosticSettings{
 				Response: &armapimanagement.HTTPMessageDiagnostic{
 					Body: &armapimanagement.BodyDiagnosticSettings{
@@ -224,10 +224,10 @@ func ExampleAPIDiagnosticClient_CreateOrUpdate() {
 						to.Ptr("Content-type")},
 				},
 			},
-			LoggerID: to.Ptr("/loggers/applicationinsights"),
+			LoggerID:	to.Ptr("/loggers/applicationinsights"),
 			Sampling: &armapimanagement.SamplingSettings{
-				Percentage:   to.Ptr[float64](50),
-				SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
+				Percentage:	to.Ptr[float64](50),
+				SamplingType:	to.Ptr(armapimanagement.SamplingTypeFixed),
 			},
 		},
 	}, &armapimanagement.APIDiagnosticClientCreateOrUpdateOptions{IfMatch: nil})
@@ -297,7 +297,7 @@ func ExampleAPIDiagnosticClient_Update() {
 	}
 	res, err := clientFactory.NewAPIDiagnosticClient().Update(ctx, "rg1", "apimService1", "echo-api", "applicationinsights", "*", armapimanagement.DiagnosticContract{
 		Properties: &armapimanagement.DiagnosticContractProperties{
-			AlwaysLog: to.Ptr(armapimanagement.AlwaysLogAllErrors),
+			AlwaysLog:	to.Ptr(armapimanagement.AlwaysLogAllErrors),
 			Backend: &armapimanagement.PipelineDiagnosticSettings{
 				Response: &armapimanagement.HTTPMessageDiagnostic{
 					Body: &armapimanagement.BodyDiagnosticSettings{
@@ -330,10 +330,10 @@ func ExampleAPIDiagnosticClient_Update() {
 						to.Ptr("Content-type")},
 				},
 			},
-			LoggerID: to.Ptr("/loggers/applicationinsights"),
+			LoggerID:	to.Ptr("/loggers/applicationinsights"),
 			Sampling: &armapimanagement.SamplingSettings{
-				Percentage:   to.Ptr[float64](50),
-				SamplingType: to.Ptr(armapimanagement.SamplingTypeFixed),
+				Percentage:	to.Ptr[float64](50),
+				SamplingType:	to.Ptr(armapimanagement.SamplingTypeFixed),
 			},
 		},
 	}, nil)

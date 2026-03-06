@@ -14,7 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v4"
 )
 
 // Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListGateways.json
@@ -29,8 +29,8 @@ func ExampleGatewayClient_NewListByServicePager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewGatewayClient().NewListByServicePager("rg1", "apimService1", &armapimanagement.GatewayClientListByServiceOptions{Filter: nil,
-		Top:  nil,
-		Skip: nil,
+		Top:	nil,
+		Skip:	nil,
 	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
@@ -132,7 +132,7 @@ func ExampleGatewayClient_CreateOrUpdate() {
 	}
 	res, err := clientFactory.NewGatewayClient().CreateOrUpdate(ctx, "rg1", "apimService1", "gw1", armapimanagement.GatewayContract{
 		Properties: &armapimanagement.GatewayContractProperties{
-			Description: to.Ptr("my gateway 1"),
+			Description:	to.Ptr("my gateway 1"),
 			LocationData: &armapimanagement.ResourceLocationDataContract{
 				Name: to.Ptr("my location"),
 			},
@@ -170,7 +170,7 @@ func ExampleGatewayClient_Update() {
 	}
 	res, err := clientFactory.NewGatewayClient().Update(ctx, "rg1", "apimService1", "gw1", "*", armapimanagement.GatewayContract{
 		Properties: &armapimanagement.GatewayContractProperties{
-			Description: to.Ptr("my gateway 1"),
+			Description:	to.Ptr("my gateway 1"),
 			LocationData: &armapimanagement.ResourceLocationDataContract{
 				Name: to.Ptr("my location"),
 			},
@@ -267,8 +267,8 @@ func ExampleGatewayClient_GenerateToken() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewGatewayClient().GenerateToken(ctx, "rg1", "apimService1", "gw1", armapimanagement.GatewayTokenRequestContract{
-		Expiry:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.284Z"); return t }()),
-		KeyType: to.Ptr(armapimanagement.KeyTypePrimary),
+		Expiry:		to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-21T00:44:24.284Z"); return t }()),
+		KeyType:	to.Ptr(armapimanagement.KeyTypePrimary),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -310,8 +310,8 @@ func ExampleGatewayClient_ListDebugCredentials() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewGatewayClient().ListDebugCredentials(ctx, "rg1", "apimService1", "gw1", armapimanagement.GatewayListDebugCredentialsContract{
-		APIID:                  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
-		CredentialsExpireAfter: to.Ptr("PT1H"),
+		APIID:			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
+		CredentialsExpireAfter:	to.Ptr("PT1H"),
 		Purposes: []*armapimanagement.GatewayListDebugCredentialsContractPurpose{
 			to.Ptr(armapimanagement.GatewayListDebugCredentialsContractPurposeTracing)},
 	}, nil)

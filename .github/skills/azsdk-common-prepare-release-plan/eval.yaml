@@ -3,6 +3,7 @@ description: Evaluation suite for release plan management skill.
 skill: azsdk-common-prepare-release-plan
 version: "1.0"
 config:
+  model: gpt-4o
   trials_per_task: 1
   timeout_seconds: 300
   parallel: false

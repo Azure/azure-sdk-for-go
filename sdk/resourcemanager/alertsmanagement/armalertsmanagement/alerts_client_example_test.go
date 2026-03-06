@@ -10,18 +10,394 @@ import (
 	"context"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/AlertsMetaData_MonitorService.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_List.json
+func ExampleAlertsClient_NewGetAllTenantPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAlertsClient().NewGetAllTenantPager(&armalertsmanagement.AlertsClientGetAllTenantOptions{TargetResource: nil,
+		TargetResourceType:  nil,
+		TargetResourceGroup: nil,
+		MonitorService:      nil,
+		MonitorCondition:    nil,
+		Severity:            nil,
+		AlertState:          nil,
+		AlertRule:           nil,
+		SmartGroupID:        nil,
+		IncludeContext:      to.Ptr(true),
+		IncludeEgressConfig: nil,
+		PageCount:           nil,
+		SortBy:              nil,
+		SortOrder:           nil,
+		Select:              nil,
+		TimeRange:           nil,
+		CustomTimeRange:     nil,
+	})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.AlertsList = armalertsmanagement.AlertsList{
+		// 	Value: []*armalertsmanagement.Alert{
+		// 		{
+		// 			Name: to.Ptr("cpu alert"),
+		// 			Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
+		// 			ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+		// 			Properties: &armalertsmanagement.AlertProperties{
+		// 				Context: map[string]any{
+		// 					"AffectedConfigurationItems":[]any{
+		// 						"",
+		// 					},
+		// 					"AlertRuleName": "Test number of results",
+		// 					"AlertThresholdOperator": "Greater Than Or Equal To",
+		// 					"AlertThresholdValue": float64(0),
+		// 					"AlertType": "Number of results",
+		// 					"Description": "",
+		// 					"Frequency": float64(5),
+		// 					"IncludeSearchResults": true,
+		// 					"LinkToFilteredSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToFilteredSearchResultsUI": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_resource_group%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwrKUdd0ejhGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResults": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_name%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwreefe4tGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"ResultCount": float64(3),
+		// 					"SearchIntervalDurationMin": "30",
+		// 					"SearchIntervalEndtimeUtc": "2023-04-19T12:32:25Z",
+		// 					"SearchIntervalInSeconds": float64(1800),
+		// 					"SearchIntervalStartTimeUtc": "2023-04-19T12:02:25Z",
+		// 					"SearchQuery": "traces",
+		// 					"SeverityDescription": "Informational",
+		// 					"SubscriptionId": "0ef55770-ee07-488d-8dc5-75f53fa5a901",
+		// 					"WorkspaceId": "e72c8301-003e-4251-aac9-2374b3320ecf",
+		// 				},
+		// 				CustomProperties: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 				EgressConfig: map[string]any{
+		// 				},
+		// 				Essentials: &armalertsmanagement.Essentials{
+		// 					Description: to.Ptr("description of the alert"),
+		// 					ActionStatus: &armalertsmanagement.ActionStatus{
+		// 						IsSuppressed: to.Ptr(false),
+		// 					},
+		// 					AlertRule: to.Ptr("https://servisdffsdf.portal.mms.microsoft.com/#Workspace/overview/settings/details/Edit Alert Rule/details/index?savedSearchId=&scheduleId="),
+		// 					AlertState: to.Ptr(armalertsmanagement.AlertStateAcknowledged),
+		// 					LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+		// 					LastModifiedUserName: to.Ptr("System"),
+		// 					MonitorCondition: to.Ptr(armalertsmanagement.MonitorConditionFired),
+		// 					MonitorConditionResolvedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+		// 					MonitorService: to.Ptr(armalertsmanagement.MonitorServiceApplicationInsights),
+		// 					Severity: to.Ptr(armalertsmanagement.SeveritySev3),
+		// 					SignalType: to.Ptr(armalertsmanagement.SignalTypeLog),
+		// 					SmartGroupID: to.Ptr("23d6b2ce-8c54-468f-aff0-sd32aebb7e56"),
+		// 					SmartGroupingReason: to.Ptr("Occurred frequently with other alerts"),
+		// 					SourceCreatedID: to.Ptr("6cd6b2ce-8c54-468f-aff0-9d12aebb7e49"),
+		// 					StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+		// 					TargetResource: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight"),
+		// 					TargetResourceGroup: to.Ptr("servicedeskresourcegroup"),
+		// 					TargetResourceName: to.Ptr("servicedeskappinsight"),
+		// 					TargetResourceType: to.Ptr("components"),
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("cpu alert"),
+		// 			Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
+		// 			ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/cind/providers/microsoft.operationalinsights/workspaces/servicedeskwcus/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+		// 			Properties: &armalertsmanagement.AlertProperties{
+		// 				Context: map[string]any{
+		// 					"AffectedConfigurationItems":[]any{
+		// 						"",
+		// 					},
+		// 					"AlertRuleName": "Test number of results",
+		// 					"AlertThresholdOperator": "Greater Than Or Equal To",
+		// 					"AlertThresholdValue": float64(0),
+		// 					"AlertType": "Number of results",
+		// 					"Description": "",
+		// 					"Frequency": float64(5),
+		// 					"IncludeSearchResults": true,
+		// 					"LinkToFilteredSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToFilteredSearchResultsUI": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_resource_group%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwrKUdd0ejhGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResults": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_name%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwreefe4tGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"ResultCount": float64(3),
+		// 					"SearchIntervalDurationMin": "30",
+		// 					"SearchIntervalEndtimeUtc": "2023-04-19T12:32:25Z",
+		// 					"SearchIntervalInSeconds": float64(1800),
+		// 					"SearchIntervalStartTimeUtc": "2023-04-19T12:02:25Z",
+		// 					"SearchQuery": "traces",
+		// 					"SeverityDescription": "Informational",
+		// 					"SubscriptionId": "0ef55770-ee07-488d-8dc5-75f53fa5a901",
+		// 					"WorkspaceId": "e72c8301-003e-4251-aac9-2374b3320ecf",
+		// 				},
+		// 				CustomProperties: map[string]*string{
+		// 					"category": to.Ptr("performance"),
+		// 					"environment": to.Ptr("production"),
+		// 					"priority": to.Ptr("high"),
+		// 				},
+		// 				EgressConfig: map[string]any{
+		// 				},
+		// 				Essentials: &armalertsmanagement.Essentials{
+		// 					Description: to.Ptr("description of the alert"),
+		// 					ActionStatus: &armalertsmanagement.ActionStatus{
+		// 						IsSuppressed: to.Ptr(false),
+		// 					},
+		// 					AlertRule: to.Ptr("https://servicsdfsdf.portal.mms.microsoft.com/#Workspace/overview/settings/details/Edit Alert Rule/details/index?savedSearchId=&scheduleId="),
+		// 					AlertState: to.Ptr(armalertsmanagement.AlertStateNew),
+		// 					LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+		// 					LastModifiedUserName: to.Ptr("System"),
+		// 					MonitorCondition: to.Ptr(armalertsmanagement.MonitorConditionFired),
+		// 					MonitorConditionResolvedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+		// 					MonitorService: to.Ptr(armalertsmanagement.MonitorServiceApplicationInsights),
+		// 					Severity: to.Ptr(armalertsmanagement.SeveritySev3),
+		// 					SignalType: to.Ptr(armalertsmanagement.SignalTypeLog),
+		// 					SmartGroupID: to.Ptr("d1c49c89-ea95-4697-a299-c0f5ebac62f1"),
+		// 					SmartGroupingReason: to.Ptr("Alerts that frequently occur together have been grouped."),
+		// 					SourceCreatedID: to.Ptr("6cd6b2ce-8c54-468f-aff0-9d12aebb7e49"),
+		// 					StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+		// 					TargetResource: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/cind/providers/microsoft.operationalinsights/workspaces/servicedeskwcus"),
+		// 					TargetResourceGroup: to.Ptr("servicedeskresourcegroup"),
+		// 					TargetResourceName: to.Ptr("servicedeskwcus"),
+		// 					TargetResourceType: to.Ptr("components"),
+		// 				},
+		// 			},
+		// 	}},
+		// }
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_GetById.json
+func ExampleAlertsClient_GetByIDTenant() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAlertsClient().GetByIDTenant(ctx, "66114d64-d9d9-478b-95c9-b789d6502100", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Alert = armalertsmanagement.Alert{
+	// 	Name: to.Ptr("cpu alert"),
+	// 	Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
+	// 	ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+	// 	Properties: &armalertsmanagement.AlertProperties{
+	// 		Context: map[string]any{
+	// 		},
+	// 		CustomProperties: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 		EgressConfig: map[string]any{
+	// 		},
+	// 		Essentials: &armalertsmanagement.Essentials{
+	// 			Description: to.Ptr("description of the alert"),
+	// 			ActionStatus: &armalertsmanagement.ActionStatus{
+	// 				IsSuppressed: to.Ptr(false),
+	// 			},
+	// 			AlertRule: to.Ptr("https://sersdfsdfinsight.portal.mms.microsoft.com/#Workspace/overview/settings/details/Edit Alert Rule/details/index?savedSearchId=&scheduleId="),
+	// 			AlertState: to.Ptr(armalertsmanagement.AlertStateAcknowledged),
+	// 			LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+	// 			LastModifiedUserName: to.Ptr("System"),
+	// 			MonitorCondition: to.Ptr(armalertsmanagement.MonitorConditionFired),
+	// 			MonitorConditionResolvedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+	// 			MonitorService: to.Ptr(armalertsmanagement.MonitorServiceApplicationInsights),
+	// 			Severity: to.Ptr(armalertsmanagement.SeveritySev3),
+	// 			SignalType: to.Ptr(armalertsmanagement.SignalTypeLog),
+	// 			SmartGroupID: to.Ptr("23d6b2ce-8c54-468f-aff0-sd32aebb7e56"),
+	// 			SmartGroupingReason: to.Ptr("Occurred frequently with other alerts"),
+	// 			SourceCreatedID: to.Ptr("6cd6b2ce-8c54-468f-aff0-9d12aebb7e49"),
+	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+	// 			TargetResource: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight"),
+	// 			TargetResourceGroup: to.Ptr("servicedeskresourcegroup"),
+	// 			TargetResourceName: to.Ptr("servicedeskappinsight"),
+	// 			TargetResourceType: to.Ptr("components"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_History.json
+func ExampleAlertsClient_GetHistoryTenant() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAlertsClient().GetHistoryTenant(ctx, "66114d64-d9d9-478b-95c9-b789d6502100", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AlertModification = armalertsmanagement.AlertModification{
+	// 	Name: to.Ptr("CPU Alert"),
+	// 	Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
+	// 	ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/someResourceGroup/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+	// 	Properties: &armalertsmanagement.AlertModificationProperties{
+	// 		AlertID: to.Ptr("66114d64-d9d9-478b-95c9-b789d6502100"),
+	// 		Modifications: []*armalertsmanagement.AlertModificationItem{
+	// 			{
+	// 				Description: to.Ptr("New Alert Object is created"),
+	// 				Comments: to.Ptr(""),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventAlertCreated),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:09:01Z"),
+	// 				ModifiedBy: to.Ptr("System"),
+	// 				NewValue: to.Ptr(""),
+	// 				OldValue: to.Ptr(""),
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("State changed from 'New' to 'Acknowledged'"),
+	// 				Comments: to.Ptr("The alert has been resolved"),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventStateChange),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:14:15.7378737Z"),
+	// 				ModifiedBy: to.Ptr("vikramm@microsoft.com"),
+	// 				NewValue: to.Ptr("Resolved"),
+	// 				OldValue: to.Ptr("Fired"),
+	// 				Details: &armalertsmanagement.PropertyChangeDetails{
+	// 					Type: to.Ptr(armalertsmanagement.AlertModificationTypePropertyChange),
+	// 					Comment: to.Ptr("The alert has been resolved"),
+	// 					NewValue: to.Ptr("Resolved"),
+	// 					OldValue: to.Ptr("Fired"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("New Alert Object is created"),
+	// 				Comments: to.Ptr(""),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventActionsTriggered),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:09:01Z"),
+	// 				ModifiedBy: to.Ptr("System"),
+	// 				NewValue: to.Ptr(""),
+	// 				OldValue: to.Ptr(""),
+	// 				Details: &armalertsmanagement.ActionTriggeredDetails{
+	// 					Type: to.Ptr(armalertsmanagement.AlertModificationTypeActionsTriggered),
+	// 					ActionGroup: &armalertsmanagement.TriggeredRule{
+	// 						ActionGroupID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/rg1/providers/Microsoft.Insights/actionGroups/actionGroup1"),
+	// 						RuleID: to.Ptr("RuleId1"),
+	// 						RuleType: to.Ptr(armalertsmanagement.RuleTypeAlertRule),
+	// 					},
+	// 					NotificationResult: &armalertsmanagement.NotificationResult{
+	// 						Status: to.Ptr(armalertsmanagement.ResultStatus("Accepted")),
+	// 						StatusURL: to.Ptr("https://management.azure.com/subscriptions/2a784a95-81bd-41c8-ba8a-362d1098a2b9/resourceGroups/AzNSTest/providers/microsoft.insights/actionGroups/ag2/notificationStatus/00000000000?api-version=2021-09-01"),
+	// 					},
+	// 				},
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("New Alert Object is created"),
+	// 				Comments: to.Ptr(""),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventActionsSuppressed),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:09:01Z"),
+	// 				ModifiedBy: to.Ptr("System"),
+	// 				NewValue: to.Ptr(""),
+	// 				OldValue: to.Ptr(""),
+	// 				Details: &armalertsmanagement.ActionSuppressedDetails{
+	// 					Type: to.Ptr(armalertsmanagement.AlertModificationTypeActionsSuppressed),
+	// 					SuppressedActionGroups: []*armalertsmanagement.TriggeredRule{
+	// 						{
+	// 							ActionGroupID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/rg1/providers/Microsoft.Insights/actionGroups/actionGroup1"),
+	// 							RuleID: to.Ptr("RuleId1"),
+	// 							RuleType: to.Ptr(armalertsmanagement.RuleTypeAlertRule),
+	// 					}},
+	// 					SuppressionActionRules: []*string{
+	// 						to.Ptr("ActionRule 1"),
+	// 						to.Ptr("ActionRule 2")},
+	// 					},
+	// 			}},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_ChangeState.json
+func ExampleAlertsClient_ChangeStateTenant() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAlertsClient().ChangeStateTenant(ctx, "66114d64-d9d9-478b-95c9-b789d6502100", armalertsmanagement.AlertStateAcknowledged, &armalertsmanagement.AlertsClientChangeStateTenantOptions{Comment: nil})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.Alert = armalertsmanagement.Alert{
+	// 	Name: to.Ptr("cpu alert"),
+	// 	Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
+	// 	ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+	// 	Properties: &armalertsmanagement.AlertProperties{
+	// 		Context: map[string]any{
+	// 		},
+	// 		EgressConfig: map[string]any{
+	// 		},
+	// 		Essentials: &armalertsmanagement.Essentials{
+	// 			Description: to.Ptr("description of the alert"),
+	// 			ActionStatus: &armalertsmanagement.ActionStatus{
+	// 				IsSuppressed: to.Ptr(false),
+	// 			},
+	// 			AlertRule: to.Ptr("https://servisdfsdfappinsight.portal.mms.microsoft.com/#Workspace/overview/settings/details/Edit Alert Rule/details/index?savedSearchId=&scheduleId="),
+	// 			AlertState: to.Ptr(armalertsmanagement.AlertStateAcknowledged),
+	// 			LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+	// 			LastModifiedUserName: to.Ptr("System"),
+	// 			MonitorCondition: to.Ptr(armalertsmanagement.MonitorConditionFired),
+	// 			MonitorConditionResolvedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+	// 			MonitorService: to.Ptr(armalertsmanagement.MonitorServiceApplicationInsights),
+	// 			Severity: to.Ptr(armalertsmanagement.SeveritySev3),
+	// 			SignalType: to.Ptr(armalertsmanagement.SignalTypeLog),
+	// 			SmartGroupID: to.Ptr("23d6b2ce-8c54-468f-aff0-sd32aebb7e56"),
+	// 			SmartGroupingReason: to.Ptr("Occurred frequently with other alerts"),
+	// 			SourceCreatedID: to.Ptr("6cd6b2ce-8c54-468f-aff0-9d12aebb7e49"),
+	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-13T15:51:02.000Z"); return t}()),
+	// 			TargetResource: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight"),
+	// 			TargetResourceGroup: to.Ptr("servicedeskresourcegroup"),
+	// 			TargetResourceName: to.Ptr("servicedeskappinsight"),
+	// 			TargetResourceType: to.Ptr("components"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/AlertsMetaData_MonitorService.json
 func ExampleAlertsClient_MetaData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -112,14 +488,14 @@ func ExampleAlertsClient_MetaData() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_List.json
 func ExampleAlertsClient_NewGetAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -132,7 +508,7 @@ func ExampleAlertsClient_NewGetAllPager() {
 		AlertState:          nil,
 		AlertRule:           nil,
 		SmartGroupID:        nil,
-		IncludeContext:      nil,
+		IncludeContext:      to.Ptr(true),
 		IncludeEgressConfig: nil,
 		PageCount:           nil,
 		SortBy:              nil,
@@ -156,9 +532,36 @@ func ExampleAlertsClient_NewGetAllPager() {
 		// 		{
 		// 			Name: to.Ptr("cpu alert"),
 		// 			Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
-		// 			ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+		// 			ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
 		// 			Properties: &armalertsmanagement.AlertProperties{
 		// 				Context: map[string]any{
+		// 					"AffectedConfigurationItems":[]any{
+		// 						"",
+		// 					},
+		// 					"AlertRuleName": "Test number of results",
+		// 					"AlertThresholdOperator": "Greater Than Or Equal To",
+		// 					"AlertThresholdValue": float64(0),
+		// 					"AlertType": "Number of results",
+		// 					"Description": "",
+		// 					"Frequency": float64(5),
+		// 					"IncludeSearchResults": true,
+		// 					"LinkToFilteredSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToFilteredSearchResultsUI": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_resource_group%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwrKUdd0ejhGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResults": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_name%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwreefe4tGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"ResultCount": float64(3),
+		// 					"SearchIntervalDurationMin": "30",
+		// 					"SearchIntervalEndtimeUtc": "2023-04-19T12:32:25Z",
+		// 					"SearchIntervalInSeconds": float64(1800),
+		// 					"SearchIntervalStartTimeUtc": "2023-04-19T12:02:25Z",
+		// 					"SearchQuery": "traces",
+		// 					"SeverityDescription": "Informational",
+		// 					"SubscriptionId": "0ef55770-ee07-488d-8dc5-75f53fa5a901",
+		// 					"WorkspaceId": "e72c8301-003e-4251-aac9-2374b3320ecf",
+		// 				},
+		// 				CustomProperties: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
 		// 				},
 		// 				EgressConfig: map[string]any{
 		// 				},
@@ -190,9 +593,37 @@ func ExampleAlertsClient_NewGetAllPager() {
 		// 		{
 		// 			Name: to.Ptr("cpu alert"),
 		// 			Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
-		// 			ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+		// 			ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/cind/providers/microsoft.operationalinsights/workspaces/servicedeskwcus/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
 		// 			Properties: &armalertsmanagement.AlertProperties{
 		// 				Context: map[string]any{
+		// 					"AffectedConfigurationItems":[]any{
+		// 						"",
+		// 					},
+		// 					"AlertRuleName": "Test number of results",
+		// 					"AlertThresholdOperator": "Greater Than Or Equal To",
+		// 					"AlertThresholdValue": float64(0),
+		// 					"AlertType": "Number of results",
+		// 					"Description": "",
+		// 					"Frequency": float64(5),
+		// 					"IncludeSearchResults": true,
+		// 					"LinkToFilteredSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToFilteredSearchResultsUI": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_resource_group%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwrKUdd0ejhGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResults": "https://portal.azure.com#@0ef55770-ee07-488d-8dc5-75f53fa5a901/blade/Microsoft_Azure_Monitoring_Logs/LogsBlade/source/Alerts.EmailLinks/scope/%7B%22resources%22%3A%5B%7B%22resourceId%22%3A%22%2Fsubscriptions%2F0ef55770-ee07-488d-8dc5-75f53fa5a901%2FresourceGroups%2Fexample_name%2Fproviders%2Fmicrosoft.insights%2Fcomponents%2FPortal%22%7D%5D%7D/q/eJwreefe4tGAA%3D%3D/prettify/1/timespan/2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"LinkToSearchResultsAPI": "https://api.applicationinsights.io/v1/apps/e72c8301-003e-4251-aac9-2374b3320ecf/query?query=traces&timespan=2023-04-19T12%3a02%3a25.0000000Z%2f2023-04-19T12%3a32%3a25.0000000Z",
+		// 					"ResultCount": float64(3),
+		// 					"SearchIntervalDurationMin": "30",
+		// 					"SearchIntervalEndtimeUtc": "2023-04-19T12:32:25Z",
+		// 					"SearchIntervalInSeconds": float64(1800),
+		// 					"SearchIntervalStartTimeUtc": "2023-04-19T12:02:25Z",
+		// 					"SearchQuery": "traces",
+		// 					"SeverityDescription": "Informational",
+		// 					"SubscriptionId": "0ef55770-ee07-488d-8dc5-75f53fa5a901",
+		// 					"WorkspaceId": "e72c8301-003e-4251-aac9-2374b3320ecf",
+		// 				},
+		// 				CustomProperties: map[string]*string{
+		// 					"category": to.Ptr("performance"),
+		// 					"environment": to.Ptr("production"),
+		// 					"priority": to.Ptr("high"),
 		// 				},
 		// 				EgressConfig: map[string]any{
 		// 				},
@@ -225,14 +656,14 @@ func ExampleAlertsClient_NewGetAllPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_GetById.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_GetById.json
 func ExampleAlertsClient_GetByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -246,9 +677,13 @@ func ExampleAlertsClient_GetByID() {
 	// res.Alert = armalertsmanagement.Alert{
 	// 	Name: to.Ptr("cpu alert"),
 	// 	Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
-	// 	ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+	// 	ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
 	// 	Properties: &armalertsmanagement.AlertProperties{
 	// 		Context: map[string]any{
+	// 		},
+	// 		CustomProperties: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
 	// 		},
 	// 		EgressConfig: map[string]any{
 	// 		},
@@ -279,14 +714,14 @@ func ExampleAlertsClient_GetByID() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_ChangeState.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_ChangeState.json
 func ExampleAlertsClient_ChangeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -300,7 +735,7 @@ func ExampleAlertsClient_ChangeState() {
 	// res.Alert = armalertsmanagement.Alert{
 	// 	Name: to.Ptr("cpu alert"),
 	// 	Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
-	// 	ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
+	// 	ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
 	// 	Properties: &armalertsmanagement.AlertProperties{
 	// 		Context: map[string]any{
 	// 		},
@@ -333,14 +768,14 @@ func ExampleAlertsClient_ChangeState() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_History.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_History.json
 func ExampleAlertsClient_GetHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -354,19 +789,10 @@ func ExampleAlertsClient_GetHistory() {
 	// res.AlertModification = armalertsmanagement.AlertModification{
 	// 	Name: to.Ptr("CPU Alert"),
 	// 	Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
-	// 	ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100/history/default"),
+	// 	ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/someResourceGroup/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
 	// 	Properties: &armalertsmanagement.AlertModificationProperties{
 	// 		AlertID: to.Ptr("66114d64-d9d9-478b-95c9-b789d6502100"),
 	// 		Modifications: []*armalertsmanagement.AlertModificationItem{
-	// 			{
-	// 				Description: to.Ptr("State changed from 'New' to 'Acknowledged'"),
-	// 				Comments: to.Ptr("Acknowledging alert"),
-	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventStateChange),
-	// 				ModifiedAt: to.Ptr("2018-06-13T06:14:15.7378737Z"),
-	// 				ModifiedBy: to.Ptr("vikramm@microsoft.com"),
-	// 				NewValue: to.Ptr("Acknowledged"),
-	// 				OldValue: to.Ptr("New"),
-	// 			},
 	// 			{
 	// 				Description: to.Ptr("New Alert Object is created"),
 	// 				Comments: to.Ptr(""),
@@ -375,19 +801,76 @@ func ExampleAlertsClient_GetHistory() {
 	// 				ModifiedBy: to.Ptr("System"),
 	// 				NewValue: to.Ptr(""),
 	// 				OldValue: to.Ptr(""),
-	// 		}},
-	// 	},
-	// }
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("State changed from 'New' to 'Acknowledged'"),
+	// 				Comments: to.Ptr("The alert has been resolved"),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventStateChange),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:14:15.7378737Z"),
+	// 				ModifiedBy: to.Ptr("vikramm@microsoft.com"),
+	// 				NewValue: to.Ptr("Resolved"),
+	// 				OldValue: to.Ptr("Fired"),
+	// 				Details: &armalertsmanagement.PropertyChangeDetails{
+	// 					Type: to.Ptr(armalertsmanagement.AlertModificationTypePropertyChange),
+	// 					Comment: to.Ptr("The alert has been resolved"),
+	// 					NewValue: to.Ptr("Resolved"),
+	// 					OldValue: to.Ptr("Fired"),
+	// 				},
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("New Alert Object is created"),
+	// 				Comments: to.Ptr(""),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventActionsTriggered),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:09:01Z"),
+	// 				ModifiedBy: to.Ptr("System"),
+	// 				NewValue: to.Ptr(""),
+	// 				OldValue: to.Ptr(""),
+	// 				Details: &armalertsmanagement.ActionTriggeredDetails{
+	// 					Type: to.Ptr(armalertsmanagement.AlertModificationTypeActionsTriggered),
+	// 					ActionGroup: &armalertsmanagement.TriggeredRule{
+	// 						ActionGroupID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/rg1/providers/Microsoft.Insights/actionGroups/actionGroup1"),
+	// 						RuleID: to.Ptr("RuleId1"),
+	// 						RuleType: to.Ptr(armalertsmanagement.RuleTypeAlertRule),
+	// 					},
+	// 					NotificationResult: &armalertsmanagement.NotificationResult{
+	// 						Status: to.Ptr(armalertsmanagement.ResultStatus("Accepted")),
+	// 						StatusURL: to.Ptr("https://management.azure.com/subscriptions/2a784a95-81bd-41c8-ba8a-362d1098a2b9/resourceGroups/AzNSTest/providers/microsoft.insights/actionGroups/ag2/notificationStatus/00000000000?api-version=2021-09-01"),
+	// 					},
+	// 				},
+	// 			},
+	// 			{
+	// 				Description: to.Ptr("New Alert Object is created"),
+	// 				Comments: to.Ptr(""),
+	// 				ModificationEvent: to.Ptr(armalertsmanagement.AlertModificationEventActionsSuppressed),
+	// 				ModifiedAt: to.Ptr("2018-06-13T06:09:01Z"),
+	// 				ModifiedBy: to.Ptr("System"),
+	// 				NewValue: to.Ptr(""),
+	// 				OldValue: to.Ptr(""),
+	// 				Details: &armalertsmanagement.ActionSuppressedDetails{
+	// 					Type: to.Ptr(armalertsmanagement.AlertModificationTypeActionsSuppressed),
+	// 					SuppressedActionGroups: []*armalertsmanagement.TriggeredRule{
+	// 						{
+	// 							ActionGroupID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/rg1/providers/Microsoft.Insights/actionGroups/actionGroup1"),
+	// 							RuleID: to.Ptr("RuleId1"),
+	// 							RuleType: to.Ptr(armalertsmanagement.RuleTypeAlertRule),
+	// 					}},
+	// 					SuppressionActionRules: []*string{
+	// 						to.Ptr("ActionRule 1"),
+	// 						to.Ptr("ActionRule 2")},
+	// 					},
+	// 			}},
+	// 		},
+	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_Summary.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_Summary.json
 func ExampleAlertsClient_GetSummary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -510,4 +993,82 @@ func ExampleAlertsClient_GetSummary() {
 	// 		}},
 	// 	},
 	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Alerts_GetEnrichments.json
+func ExampleAlertsClient_NewGetEnrichmentsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAlertsClient().NewGetEnrichmentsPager("66114d64-d9d9-478b-95c9-b789d6502101", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.AlertEnrichmentsList = armalertsmanagement.AlertEnrichmentsList{
+		// 	Value: []*armalertsmanagement.AlertEnrichmentResponse{
+		// 		{
+		// 			Name: to.Ptr("default"),
+		// 			Type: to.Ptr("Microsoft.AlertsManagement/alerts/enrichments"),
+		// 			ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502101/enrichments/default"),
+		// 			Properties: &armalertsmanagement.AlertEnrichmentProperties{
+		// 				AlertID: to.Ptr("66114d64-d9d9-478b-95c9-b789d6502101"),
+		// 				Enrichments: []armalertsmanagement.AlertEnrichmentItemClassification{
+		// 					&armalertsmanagement.PrometheusInstantQuery{
+		// 						Type: to.Ptr(armalertsmanagement.TypePrometheusInstantQuery),
+		// 						Description: to.Ptr("Enrichment description"),
+		// 						Status: to.Ptr(armalertsmanagement.StatusSucceeded),
+		// 						Title: to.Ptr("Number of OOM killed events by container"),
+		// 						Datasources: []*string{
+		// 							to.Ptr("/subscriptions/72fa99ef-9c84-4a7c-b343-ec62da107d81/resourceGroups/SyntheticRules/providers/microsoft.monitor/accounts/canaryamw")},
+		// 							GrafanaExplorePath: to.Ptr("/explore?left=%7B%22datasource%22..."),
+		// 							LinkToAPI: to.Ptr("https://test-3sxl.eastus.prometheus.monitor.azure.com/api/v1/query_range?..."),
+		// 							Query: to.Ptr("sum by (cluster,container,replicaset,namespace)(label_replace( kube_pod_container_status_last_terminated_reason{reason='OOMKilled', cluster='cluster1', namespace='namespace1'}'}, 'replicaset', '$1', 'pod', '(.*)(-[a-z0-9]{5})$')) > 0"),
+		// 							Time: to.Ptr("2015-07-01T20:10:51.781Z"),
+		// 						},
+		// 						&armalertsmanagement.PrometheusRangeQuery{
+		// 							Type: to.Ptr(armalertsmanagement.TypePrometheusRangeQuery),
+		// 							Description: to.Ptr("Enrichment description"),
+		// 							Status: to.Ptr(armalertsmanagement.StatusSucceeded),
+		// 							Title: to.Ptr("Number of OOM killed events by container"),
+		// 							Datasources: []*string{
+		// 								to.Ptr("/subscriptions/72fa99ef-9c84-4a7c-b343-ec62da107d81/resourceGroups/SyntheticRules/providers/microsoft.monitor/accounts/canaryamw")},
+		// 								GrafanaExplorePath: to.Ptr("/explore?left=%7B%22datasource%22..."),
+		// 								LinkToAPI: to.Ptr("https://test-3sxl.eastus.prometheus.monitor.azure.com/api/v1/query_range?..."),
+		// 								Query: to.Ptr("sum by (cluster,container,replicaset,namespace)(label_replace( kube_pod_container_status_last_terminated_reason{reason='OOMKilled', cluster='cluster1', namespace='namespace'}'}, 'replicaset', '$1', 'pod', '(.*)(-[a-z0-9]{5})$')) > 0"),
+		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-07-01T20:20:51.781Z"); return t}()),
+		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-07-01T20:10:51.781Z"); return t}()),
+		// 								Step: to.Ptr("PT15S"),
+		// 							},
+		// 							&armalertsmanagement.PrometheusRangeQuery{
+		// 								Type: to.Ptr(armalertsmanagement.TypePrometheusRangeQuery),
+		// 								Description: to.Ptr("Enrichment description"),
+		// 								ErrorMessage: to.Ptr("Calling Prometheus query API failed"),
+		// 								Status: to.Ptr(armalertsmanagement.StatusFailed),
+		// 								Title: to.Ptr("Number of OOM killed events by container"),
+		// 								Datasources: []*string{
+		// 									to.Ptr("/subscriptions/72fa99ef-9c84-4a7c-b343-ec62da107d81/resourceGroups/SyntheticRules/providers/microsoft.monitor/accounts/canaryamw")},
+		// 									GrafanaExplorePath: to.Ptr("/explore?left=%7B%22datasource%22..."),
+		// 									LinkToAPI: to.Ptr("https://test-3sxl.eastus.prometheus.monitor.azure.com/api/v1/query_range?..."),
+		// 									Query: to.Ptr("sum by (cluster,container,replicaset,namespace)(label_replace( kube_pod_container_status_last_terminated_reason{reason='OOMKilled', cluster='cluster1', namespace='namespace'}'}, 'replicaset', '$1', 'pod', '(.*)(-[a-z0-9]{5})$')) > 0"),
+		// 									End: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-07-01T20:20:51.781Z"); return t}()),
+		// 									Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-07-01T20:10:51.781Z"); return t}()),
+		// 									Step: to.Ptr("PT15S"),
+		// 							}},
+		// 						},
+		// 				}},
+		// 			}
+	}
 }

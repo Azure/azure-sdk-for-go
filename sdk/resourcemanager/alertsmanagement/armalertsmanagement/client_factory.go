@@ -13,76 +13,37 @@ import (
 // ClientFactory is a client factory used to create any client in this module.
 // Don't use this type directly, use NewClientFactory instead.
 type ClientFactory struct {
-	subscriptionID string
-	internal       *arm.Client
+	scope    string
+	internal *arm.Client
 }
 
 // NewClientFactory creates a new instance of ClientFactory with the specified values.
 // The parameter values will be propagated to any client created from this factory.
-//   - subscriptionID - The ID of the target subscription.
+//   - scope - scope here is resourceId for which alert is created.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
+func NewClientFactory(scope string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientFactory, error) {
 	internal, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	return &ClientFactory{
-		subscriptionID: subscriptionID,
-		internal:       internal,
+		scope:    scope,
+		internal: internal,
 	}, nil
-}
-
-// NewAlertProcessingRulesClient creates a new instance of AlertProcessingRulesClient.
-func (c *ClientFactory) NewAlertProcessingRulesClient() *AlertProcessingRulesClient {
-	return &AlertProcessingRulesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewAlertRuleRecommendationsClient creates a new instance of AlertRuleRecommendationsClient.
-func (c *ClientFactory) NewAlertRuleRecommendationsClient() *AlertRuleRecommendationsClient {
-	return &AlertRuleRecommendationsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
 }
 
 // NewAlertsClient creates a new instance of AlertsClient.
 func (c *ClientFactory) NewAlertsClient() *AlertsClient {
 	return &AlertsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
+		scope:    c.scope,
+		internal: c.internal,
 	}
 }
 
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
-		internal: c.internal,
-	}
-}
-
-// NewPrometheusRuleGroupsClient creates a new instance of PrometheusRuleGroupsClient.
-func (c *ClientFactory) NewPrometheusRuleGroupsClient() *PrometheusRuleGroupsClient {
-	return &PrometheusRuleGroupsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSmartGroupsClient creates a new instance of SmartGroupsClient.
-func (c *ClientFactory) NewSmartGroupsClient() *SmartGroupsClient {
-	return &SmartGroupsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewTenantActivityLogAlertsClient creates a new instance of TenantActivityLogAlertsClient.
-func (c *ClientFactory) NewTenantActivityLogAlertsClient() *TenantActivityLogAlertsClient {
-	return &TenantActivityLogAlertsClient{
 		internal: c.internal,
 	}
 }

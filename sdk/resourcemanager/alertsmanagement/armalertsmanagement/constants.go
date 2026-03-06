@@ -5,34 +5,10 @@
 
 package armalertsmanagement
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement"
-	moduleVersion = "v0.10.0"
-)
-
-// ActionType - Action that should be applied.
-type ActionType string
-
-const (
-	ActionTypeAddActionGroups       ActionType = "AddActionGroups"
-	ActionTypeRemoveAllActionGroups ActionType = "RemoveAllActionGroups"
-)
-
-// PossibleActionTypeValues returns the possible values for the ActionType const type.
-func PossibleActionTypeValues() []ActionType {
-	return []ActionType{
-		ActionTypeAddActionGroups,
-		ActionTypeRemoveAllActionGroups,
-	}
-}
-
 // AlertModificationEvent - Reason for the modification
 type AlertModificationEvent string
 
 const (
-	AlertModificationEventActionRuleSuppressed   AlertModificationEvent = "ActionRuleSuppressed"
-	AlertModificationEventActionRuleTriggered    AlertModificationEvent = "ActionRuleTriggered"
-	AlertModificationEventActionsFailed          AlertModificationEvent = "ActionsFailed"
 	AlertModificationEventActionsSuppressed      AlertModificationEvent = "ActionsSuppressed"
 	AlertModificationEventActionsTriggered       AlertModificationEvent = "ActionsTriggered"
 	AlertModificationEventAlertCreated           AlertModificationEvent = "AlertCreated"
@@ -44,15 +20,30 @@ const (
 // PossibleAlertModificationEventValues returns the possible values for the AlertModificationEvent const type.
 func PossibleAlertModificationEventValues() []AlertModificationEvent {
 	return []AlertModificationEvent{
-		AlertModificationEventActionRuleSuppressed,
-		AlertModificationEventActionRuleTriggered,
-		AlertModificationEventActionsFailed,
 		AlertModificationEventActionsSuppressed,
 		AlertModificationEventActionsTriggered,
 		AlertModificationEventAlertCreated,
 		AlertModificationEventMonitorConditionChange,
 		AlertModificationEventSeverityChange,
 		AlertModificationEventStateChange,
+	}
+}
+
+// AlertModificationType - Type of modification details
+type AlertModificationType string
+
+const (
+	AlertModificationTypeActionsSuppressed AlertModificationType = "ActionsSuppressed"
+	AlertModificationTypeActionsTriggered  AlertModificationType = "ActionsTriggered"
+	AlertModificationTypePropertyChange    AlertModificationType = "PropertyChange"
+)
+
+// PossibleAlertModificationTypeValues returns the possible values for the AlertModificationType const type.
+func PossibleAlertModificationTypeValues() []AlertModificationType {
+	return []AlertModificationType{
+		AlertModificationTypeActionsSuppressed,
+		AlertModificationTypeActionsTriggered,
+		AlertModificationTypePropertyChange,
 	}
 }
 
@@ -147,66 +138,6 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// DaysOfWeek - Days of week.
-type DaysOfWeek string
-
-const (
-	DaysOfWeekFriday    DaysOfWeek = "Friday"
-	DaysOfWeekMonday    DaysOfWeek = "Monday"
-	DaysOfWeekSaturday  DaysOfWeek = "Saturday"
-	DaysOfWeekSunday    DaysOfWeek = "Sunday"
-	DaysOfWeekThursday  DaysOfWeek = "Thursday"
-	DaysOfWeekTuesday   DaysOfWeek = "Tuesday"
-	DaysOfWeekWednesday DaysOfWeek = "Wednesday"
-)
-
-// PossibleDaysOfWeekValues returns the possible values for the DaysOfWeek const type.
-func PossibleDaysOfWeekValues() []DaysOfWeek {
-	return []DaysOfWeek{
-		DaysOfWeekFriday,
-		DaysOfWeekMonday,
-		DaysOfWeekSaturday,
-		DaysOfWeekSunday,
-		DaysOfWeekThursday,
-		DaysOfWeekTuesday,
-		DaysOfWeekWednesday,
-	}
-}
-
-// Field - Field for a given condition.
-type Field string
-
-const (
-	FieldAlertContext        Field = "AlertContext"
-	FieldAlertRuleID         Field = "AlertRuleId"
-	FieldAlertRuleName       Field = "AlertRuleName"
-	FieldDescription         Field = "Description"
-	FieldMonitorCondition    Field = "MonitorCondition"
-	FieldMonitorService      Field = "MonitorService"
-	FieldSeverity            Field = "Severity"
-	FieldSignalType          Field = "SignalType"
-	FieldTargetResource      Field = "TargetResource"
-	FieldTargetResourceGroup Field = "TargetResourceGroup"
-	FieldTargetResourceType  Field = "TargetResourceType"
-)
-
-// PossibleFieldValues returns the possible values for the Field const type.
-func PossibleFieldValues() []Field {
-	return []Field{
-		FieldAlertContext,
-		FieldAlertRuleID,
-		FieldAlertRuleName,
-		FieldDescription,
-		FieldMonitorCondition,
-		FieldMonitorService,
-		FieldSeverity,
-		FieldSignalType,
-		FieldTargetResource,
-		FieldTargetResourceGroup,
-		FieldTargetResourceType,
-	}
-}
-
 type Identifier string
 
 const (
@@ -261,6 +192,7 @@ const (
 	MonitorServiceLogAnalytics              MonitorService = "Log Analytics"
 	MonitorServiceNagios                    MonitorService = "Nagios"
 	MonitorServicePlatform                  MonitorService = "Platform"
+	MonitorServiceResourceHealth            MonitorService = "Resource Health"
 	MonitorServiceSCOM                      MonitorService = "SCOM"
 	MonitorServiceServiceHealth             MonitorService = "ServiceHealth"
 	MonitorServiceSmartDetector             MonitorService = "SmartDetector"
@@ -280,6 +212,7 @@ func PossibleMonitorServiceValues() []MonitorService {
 		MonitorServiceLogAnalytics,
 		MonitorServiceNagios,
 		MonitorServicePlatform,
+		MonitorServiceResourceHealth,
 		MonitorServiceSCOM,
 		MonitorServiceServiceHealth,
 		MonitorServiceSmartDetector,
@@ -288,41 +221,43 @@ func PossibleMonitorServiceValues() []MonitorService {
 	}
 }
 
-// Operator - Operator for a given condition.
-type Operator string
+// ResultStatus - The status of the notification
+type ResultStatus string
 
 const (
-	OperatorContains       Operator = "Contains"
-	OperatorDoesNotContain Operator = "DoesNotContain"
-	OperatorEquals         Operator = "Equals"
-	OperatorNotEquals      Operator = "NotEquals"
+	ResultStatusFailed                  ResultStatus = "Failed"
+	ResultStatusInline                  ResultStatus = "Inline"
+	ResultStatusNone                    ResultStatus = "None"
+	ResultStatusThrottled               ResultStatus = "Throttled"
+	ResultStatusThrottledByAlertRule    ResultStatus = "ThrottledByAlertRule"
+	ResultStatusThrottledBySubscription ResultStatus = "ThrottledBySubscription"
 )
 
-// PossibleOperatorValues returns the possible values for the Operator const type.
-func PossibleOperatorValues() []Operator {
-	return []Operator{
-		OperatorContains,
-		OperatorDoesNotContain,
-		OperatorEquals,
-		OperatorNotEquals,
+// PossibleResultStatusValues returns the possible values for the ResultStatus const type.
+func PossibleResultStatusValues() []ResultStatus {
+	return []ResultStatus{
+		ResultStatusFailed,
+		ResultStatusInline,
+		ResultStatusNone,
+		ResultStatusThrottled,
+		ResultStatusThrottledByAlertRule,
+		ResultStatusThrottledBySubscription,
 	}
 }
 
-// RecurrenceType - Specifies when the recurrence should be applied.
-type RecurrenceType string
+// RuleType - The rule type
+type RuleType string
 
 const (
-	RecurrenceTypeDaily   RecurrenceType = "Daily"
-	RecurrenceTypeMonthly RecurrenceType = "Monthly"
-	RecurrenceTypeWeekly  RecurrenceType = "Weekly"
+	RuleTypeActionRule RuleType = "ActionRule"
+	RuleTypeAlertRule  RuleType = "AlertRule"
 )
 
-// PossibleRecurrenceTypeValues returns the possible values for the RecurrenceType const type.
-func PossibleRecurrenceTypeValues() []RecurrenceType {
-	return []RecurrenceType{
-		RecurrenceTypeDaily,
-		RecurrenceTypeMonthly,
-		RecurrenceTypeWeekly,
+// PossibleRuleTypeValues returns the possible values for the RuleType const type.
+func PossibleRuleTypeValues() []RuleType {
+	return []RuleType{
+		RuleTypeActionRule,
+		RuleTypeAlertRule,
 	}
 }
 
@@ -365,47 +300,6 @@ func PossibleSignalTypeValues() []SignalType {
 	}
 }
 
-// SmartGroupModificationEvent - Reason for the modification
-type SmartGroupModificationEvent string
-
-const (
-	SmartGroupModificationEventAlertAdded        SmartGroupModificationEvent = "AlertAdded"
-	SmartGroupModificationEventAlertRemoved      SmartGroupModificationEvent = "AlertRemoved"
-	SmartGroupModificationEventSmartGroupCreated SmartGroupModificationEvent = "SmartGroupCreated"
-	SmartGroupModificationEventStateChange       SmartGroupModificationEvent = "StateChange"
-)
-
-// PossibleSmartGroupModificationEventValues returns the possible values for the SmartGroupModificationEvent const type.
-func PossibleSmartGroupModificationEventValues() []SmartGroupModificationEvent {
-	return []SmartGroupModificationEvent{
-		SmartGroupModificationEventAlertAdded,
-		SmartGroupModificationEventAlertRemoved,
-		SmartGroupModificationEventSmartGroupCreated,
-		SmartGroupModificationEventStateChange,
-	}
-}
-
-type SmartGroupsSortByFields string
-
-const (
-	SmartGroupsSortByFieldsAlertsCount          SmartGroupsSortByFields = "alertsCount"
-	SmartGroupsSortByFieldsLastModifiedDateTime SmartGroupsSortByFields = "lastModifiedDateTime"
-	SmartGroupsSortByFieldsSeverity             SmartGroupsSortByFields = "severity"
-	SmartGroupsSortByFieldsStartDateTime        SmartGroupsSortByFields = "startDateTime"
-	SmartGroupsSortByFieldsState                SmartGroupsSortByFields = "state"
-)
-
-// PossibleSmartGroupsSortByFieldsValues returns the possible values for the SmartGroupsSortByFields const type.
-func PossibleSmartGroupsSortByFieldsValues() []SmartGroupsSortByFields {
-	return []SmartGroupsSortByFields{
-		SmartGroupsSortByFieldsAlertsCount,
-		SmartGroupsSortByFieldsLastModifiedDateTime,
-		SmartGroupsSortByFieldsSeverity,
-		SmartGroupsSortByFieldsStartDateTime,
-		SmartGroupsSortByFieldsState,
-	}
-}
-
 type SortOrder string
 
 const (
@@ -421,21 +315,19 @@ func PossibleSortOrderValues() []SortOrder {
 	}
 }
 
-// State - Smart group state
-type State string
+// Status - The status of the evaluation of the enrichment.
+type Status string
 
 const (
-	StateAcknowledged State = "Acknowledged"
-	StateClosed       State = "Closed"
-	StateNew          State = "New"
+	StatusFailed    Status = "Failed"
+	StatusSucceeded Status = "Succeeded"
 )
 
-// PossibleStateValues returns the possible values for the State const type.
-func PossibleStateValues() []State {
-	return []State{
-		StateAcknowledged,
-		StateClosed,
-		StateNew,
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusFailed,
+		StatusSucceeded,
 	}
 }
 
@@ -455,5 +347,21 @@ func PossibleTimeRangeValues() []TimeRange {
 		TimeRangeOneH,
 		TimeRangeSevenD,
 		TimeRangeThirtyD,
+	}
+}
+
+// Type - The enrichment type.
+type Type string
+
+const (
+	TypePrometheusInstantQuery Type = "PrometheusInstantQuery"
+	TypePrometheusRangeQuery   Type = "PrometheusRangeQuery"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypePrometheusInstantQuery,
+		TypePrometheusRangeQuery,
 	}
 }

@@ -7,52 +7,45 @@ package armalertsmanagement
 
 import "time"
 
-// Action to be applied.
-type Action struct {
-	// REQUIRED; Action that should be applied.
-	ActionType *ActionType
-}
-
-// GetAction implements the ActionClassification interface for type Action.
-func (a *Action) GetAction() *Action { return a }
-
-// ActionGroup - A pointer to an Azure Action Group.
-type ActionGroup struct {
-	// REQUIRED; The resource ID of the Action Group. This cannot be null or empty.
-	ActionGroupID *string
-
-	// Predefined list of properties and configuration items for the action group.
-	ActionProperties map[string]*string
-
-	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
-	WebhookProperties map[string]*string
-}
-
-// ActionList - A list of Activity Log Alert rule actions.
-type ActionList struct {
-	// The list of the Action Groups.
-	ActionGroups []*ActionGroup
-}
-
 // ActionStatus - Action status
 type ActionStatus struct {
 	// Value indicating whether alert is suppressed.
 	IsSuppressed *bool
 }
 
-// AddActionGroups - Add action groups to alert processing rule.
-type AddActionGroups struct {
-	// REQUIRED; List of action group Ids to add to alert processing rule.
-	ActionGroupIDs []*string
+type ActionSuppressedDetails struct {
+	// REQUIRED; Type of modification details
+	Type *AlertModificationType
 
-	// REQUIRED; Action that should be applied.
-	ActionType *ActionType
+	// List of suppressed action groups
+	SuppressedActionGroups []*TriggeredRule
+
+	// List of suppression action rules
+	SuppressionActionRules []*string
 }
 
-// GetAction implements the ActionClassification interface for type AddActionGroups.
-func (a *AddActionGroups) GetAction() *Action {
-	return &Action{
-		ActionType: a.ActionType,
+// GetBaseDetails implements the BaseDetailsClassification interface for type ActionSuppressedDetails.
+func (a *ActionSuppressedDetails) GetBaseDetails() *BaseDetails {
+	return &BaseDetails{
+		Type: a.Type,
+	}
+}
+
+type ActionTriggeredDetails struct {
+	// REQUIRED; Type of modification details
+	Type *AlertModificationType
+
+	// The action group that was triggered
+	ActionGroup *TriggeredRule
+
+	// The result of the notification delivery
+	NotificationResult *NotificationResult
+}
+
+// GetBaseDetails implements the BaseDetailsClassification interface for type ActionTriggeredDetails.
+func (a *ActionTriggeredDetails) GetBaseDetails() *BaseDetails {
+	return &BaseDetails{
+		Type: a.Type,
 	}
 }
 
@@ -71,9 +64,66 @@ type Alert struct {
 	Type *string
 }
 
+// AlertEnrichmentItem - Alert enrichment item.
+type AlertEnrichmentItem struct {
+	// REQUIRED; The enrichment description.
+	Description *string
+
+	// REQUIRED; The status of the evaluation of the enrichment.
+	Status *Status
+
+	// REQUIRED; The enrichment title.
+	Title *string
+
+	// REQUIRED; The enrichment type.
+	Type *Type
+
+	// The error message. Will be present only if the status is 'Failed'.
+	ErrorMessage *string
+}
+
+// GetAlertEnrichmentItem implements the AlertEnrichmentItemClassification interface for type AlertEnrichmentItem.
+func (a *AlertEnrichmentItem) GetAlertEnrichmentItem() *AlertEnrichmentItem { return a }
+
+// AlertEnrichmentProperties - Properties of the alert enrichment item.
+type AlertEnrichmentProperties struct {
+	// Enrichment details
+	Enrichments []AlertEnrichmentItemClassification
+
+	// READ-ONLY; Unique Id (GUID) of the alert for which the enrichments are being retrieved.
+	AlertID *string
+}
+
+// AlertEnrichmentResponse - The alert's enrichments.
+type AlertEnrichmentResponse struct {
+	// Properties of the alert enrichment item.
+	Properties *AlertEnrichmentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AlertEnrichmentsList - List the alert's enrichments.
+type AlertEnrichmentsList struct {
+	// Request URL that can be used to query next page.
+	NextLink *string
+
+	// List the alert's enrichments
+	Value []*AlertEnrichmentResponse
+}
+
 // AlertModification - Alert Modification details
 type AlertModification struct {
-	// Properties of the alert modification item.
+	// Alert modification history properties.
 	Properties *AlertModificationProperties
 
 	// READ-ONLY; Azure resource Id
@@ -94,6 +144,9 @@ type AlertModificationItem struct {
 	// Description of the modification
 	Description *string
 
+	// Base details class.
+	Details BaseDetailsClassification
+
 	// Reason for the modification
 	ModificationEvent *AlertModificationEvent
 
@@ -110,72 +163,20 @@ type AlertModificationItem struct {
 	OldValue *string
 }
 
-// AlertModificationProperties - Properties of the alert modification item.
+// AlertModificationProperties - Alert modification history properties.
 type AlertModificationProperties struct {
-	// Modification details
+	// Array of alert modification events.
 	Modifications []*AlertModificationItem
 
-	// READ-ONLY; Unique Id of the alert for which the history is being retrieved
+	// READ-ONLY; Unique identifier of the alert.
 	AlertID *string
-}
-
-// AlertProcessingRule - Alert processing rule object containing target scopes, conditions and scheduling logic.
-type AlertProcessingRule struct {
-	// REQUIRED; Resource location
-	Location *string
-
-	// Alert processing rule properties.
-	Properties *AlertProcessingRuleProperties
-
-	// Resource tags
-	Tags map[string]*string
-
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Azure resource name
-	Name *string
-
-	// READ-ONLY; Alert processing rule system data.
-	SystemData *SystemData
-
-	// READ-ONLY; Azure resource type
-	Type *string
-}
-
-// AlertProcessingRuleProperties - Alert processing rule properties defining scopes, conditions and scheduling logic for alert
-// processing rule.
-type AlertProcessingRuleProperties struct {
-	// REQUIRED; Actions to be applied.
-	Actions []ActionClassification
-
-	// REQUIRED; Scopes on which alert processing rule will apply.
-	Scopes []*string
-
-	// Conditions on which alerts will be filtered.
-	Conditions []*Condition
-
-	// Description of alert processing rule.
-	Description *string
-
-	// Indicates if the given alert processing rule is enabled or disabled.
-	Enabled *bool
-
-	// Scheduling for alert processing rule.
-	Schedule *Schedule
-}
-
-// AlertProcessingRulesList - List of alert processing rules.
-type AlertProcessingRulesList struct {
-	// URL to fetch the next set of alert processing rules.
-	NextLink *string
-
-	// List of alert processing rules.
-	Value []*AlertProcessingRule
 }
 
 // AlertProperties - Alert property bag
 type AlertProperties struct {
+	// Custom properties that can hold any user defined key-value pairs
+	CustomProperties map[string]*string
+
 	// This object contains consistent fields across different monitor services.
 	Essentials *Essentials
 
@@ -184,115 +185,6 @@ type AlertProperties struct {
 
 	// READ-ONLY; Config which would be used for displaying the data in portal.
 	EgressConfig any
-}
-
-// AlertRuleAllOfCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
-type AlertRuleAllOfCondition struct {
-	// REQUIRED; The list of Activity Log Alert rule conditions.
-	AllOf []*AlertRuleAnyOfOrLeafCondition
-}
-
-// AlertRuleAnyOfOrLeafCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
-// Each condition can be of one of the following types:Important: Each type has its unique subset of properties.
-// Properties from different types CANNOT exist in one condition.
-// * Leaf Condition - must contain 'field' and either 'equals' or 'containsAny'.Please note, 'anyOf' should not be set in
-// a Leaf Condition.
-// * AnyOf Condition - must contain only 'anyOf' (which is an array of Leaf Conditions).Please note, 'field', 'equals' and
-// 'containsAny' should not be set in an AnyOf Condition.
-type AlertRuleAnyOfOrLeafCondition struct {
-	// An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
-	AnyOf []*AlertRuleLeafCondition
-
-	// The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition
-	// is met.
-	ContainsAny []*string
-
-	// The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met.
-	Equals *string
-
-	// The name of the Activity Log event's field that this condition will examine. The possible values for this field are (case-insensitive):
-	// 'resourceId', 'category', 'caller', 'level', 'operationName',
-	// 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'.
-	Field *string
-}
-
-// AlertRuleLeafCondition - An Activity Log Alert rule condition that is met by comparing the field and value of an Activity
-// Log event. This condition must contain 'field' and either 'equals' or 'containsAny'.
-type AlertRuleLeafCondition struct {
-	// The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition
-	// is met.
-	ContainsAny []*string
-
-	// The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met.
-	Equals *string
-
-	// The name of the Activity Log event's field that this condition will examine. The possible values for this field are (case-insensitive):
-	// 'resourceId', 'category', 'caller', 'level', 'operationName',
-	// 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'.
-	Field *string
-}
-
-// AlertRuleProperties - An Azure Activity Log Alert rule.
-type AlertRuleProperties struct {
-	// REQUIRED; The actions that will activate when the condition is met.
-	Actions *ActionList
-
-	// REQUIRED; The condition that will cause this alert to activate.
-	Condition *AlertRuleAllOfCondition
-
-	// A description of this Activity Log Alert rule.
-	Description *string
-
-	// Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its
-	// actions will be activated.
-	Enabled *bool
-
-	// A list of resource IDs that will be used as prefixes. The alert will only apply to Activity Log events with resource IDs
-	// that fall under one of these prefixes. This list must include at least one
-	// item.
-	Scopes []*string
-
-	// The tenant GUID. Must be provided for tenant-level and management group events rules.
-	TenantScope *string
-}
-
-// AlertRuleRecommendationProperties - Describes the format of Alert Rule Recommendations response.
-type AlertRuleRecommendationProperties struct {
-	// REQUIRED; The recommendation alert rule type.
-	AlertRuleType *string
-
-	// REQUIRED; A dictionary that provides the display information for an alert rule recommendation.
-	DisplayInformation map[string]*string
-
-	// REQUIRED; A complete ARM template to deploy the alert rules.
-	RuleArmTemplate *RuleArmTemplate
-}
-
-// AlertRuleRecommendationResource - A single alert rule recommendation resource.
-type AlertRuleRecommendationResource struct {
-	// REQUIRED; recommendation properties.
-	Properties *AlertRuleRecommendationProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// AlertRuleRecommendationsListResponse - List of alert rule recommendations.
-type AlertRuleRecommendationsListResponse struct {
-	// REQUIRED; the values for the alert rule recommendations.
-	Value []*AlertRuleRecommendationResource
-
-	// URL to fetch the next set of recommendations.
-	NextLink *string
 }
 
 // AlertsList - List the alerts.
@@ -364,42 +256,18 @@ type AlertsSummaryGroupItem struct {
 	Values []*AlertsSummaryGroupItem
 }
 
+// BaseDetails - Base details class.
+type BaseDetails struct {
+	// REQUIRED; Type of modification details
+	Type *AlertModificationType
+}
+
+// GetBaseDetails implements the BaseDetailsClassification interface for type BaseDetails.
+func (b *BaseDetails) GetBaseDetails() *BaseDetails { return b }
+
 // Comments - Change alert state reason
 type Comments struct {
 	Comments *string
-}
-
-// Condition to trigger an alert processing rule.
-type Condition struct {
-	// Field for a given condition.
-	Field *Field
-
-	// Operator for a given condition.
-	Operator *Operator
-
-	// List of values to match for a given condition.
-	Values []*string
-}
-
-// DailyRecurrence - Daily recurrence object.
-type DailyRecurrence struct {
-	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType
-
-	// End time for recurrence.
-	EndTime *string
-
-	// Start time for recurrence.
-	StartTime *string
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type DailyRecurrence.
-func (d *DailyRecurrence) GetRecurrence() *Recurrence {
-	return &Recurrence{
-		EndTime:        d.EndTime,
-		RecurrenceType: d.RecurrenceType,
-		StartTime:      d.StartTime,
-	}
 }
 
 // Essentials - This object contains consistent fields across different monitor services.
@@ -436,8 +304,8 @@ type Essentials struct {
 	// of the user.
 	LastModifiedUserName *string
 
-	// READ-ONLY; Condition of the rule at the monitor service. It represents whether the underlying conditions have crossed the
-	// defined alert rule thresholds.
+	// READ-ONLY; Can be 'Fired' or 'Resolved', which represents whether the underlying conditions have crossed the defined alert
+	// rule thresholds.
 	MonitorCondition *MonitorCondition
 
 	// READ-ONLY; Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert
@@ -492,28 +360,12 @@ func (m *MonitorServiceList) GetAlertsMetaDataProperties() *AlertsMetaDataProper
 	}
 }
 
-// MonthlyRecurrence - Monthly recurrence object.
-type MonthlyRecurrence struct {
-	// REQUIRED; Specifies the values for monthly recurrence pattern.
-	DaysOfMonth []*int32
+type NotificationResult struct {
+	// The status of the notification
+	Status *ResultStatus
 
-	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType
-
-	// End time for recurrence.
-	EndTime *string
-
-	// Start time for recurrence.
-	StartTime *string
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type MonthlyRecurrence.
-func (m *MonthlyRecurrence) GetRecurrence() *Recurrence {
-	return &Recurrence{
-		EndTime:        m.EndTime,
-		RecurrenceType: m.RecurrenceType,
-		StartTime:      m.StartTime,
-	}
+	// URL endpoint for checking notification delivery status. Only populated when status is 'Inline'.
+	StatusURL *string
 }
 
 // Operation provided by provider
@@ -552,326 +404,193 @@ type OperationsList struct {
 	NextLink *string
 }
 
-// PatchObject - Data contract for patch.
-type PatchObject struct {
-	// Properties supported by patch operation.
-	Properties *PatchProperties
+// PrometheusEnrichmentItem - Prometheus enrichment object.
+type PrometheusEnrichmentItem struct {
+	// REQUIRED; An array of the azure monitor workspace resource ids.
+	Datasources []*string
 
-	// Tags to be updated.
-	Tags map[string]*string
-}
-
-// PatchProperties - Alert processing rule properties supported by patch.
-type PatchProperties struct {
-	// Indicates if the given alert processing rule is enabled or disabled.
-	Enabled *bool
-}
-
-type PrometheusRule struct {
-	// REQUIRED; the expression to run for the rule.
-	Expression *string
-
-	// The array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved. Only
-	// relevant for alerts.
-	Actions []*PrometheusRuleGroupAction
-
-	// the name of the alert rule.
-	Alert *string
-
-	// annotations for rule group. Only relevant for alerts.
-	Annotations map[string]*string
-
-	// the flag that indicates whether the Prometheus rule is enabled.
-	Enabled *bool
-
-	// the amount of time alert must be active before firing. Only relevant for alerts.
-	For *string
-
-	// labels for rule group. Only relevant for alerts.
-	Labels map[string]*string
-
-	// the name of the recording rule.
-	Record *string
-
-	// defines the configuration for resolving fired alerts. Only relevant for alerts.
-	ResolveConfiguration *PrometheusRuleResolveConfiguration
-
-	// the severity of the alerts fired by the rule. Only relevant for alerts.
-	Severity *int32
-}
-
-// PrometheusRuleGroupAction - An alert action. Only relevant for alerts.
-type PrometheusRuleGroupAction struct {
-	// The resource id of the action group to use.
-	ActionGroupID *string
-
-	// The properties of an action group object.
-	ActionProperties map[string]*string
-}
-
-// PrometheusRuleGroupProperties - An alert rule.
-type PrometheusRuleGroupProperties struct {
-	// REQUIRED; defines the rules in the Prometheus rule group.
-	Rules []*PrometheusRule
-
-	// REQUIRED; the list of resource id's that this rule group is scoped to.
-	Scopes []*string
-
-	// the cluster name of the rule group evaluation.
-	ClusterName *string
-
-	// the description of the Prometheus rule group that will be included in the alert email.
+	// REQUIRED; The enrichment description.
 	Description *string
 
-	// the flag that indicates whether the Prometheus rule group is enabled.
-	Enabled *bool
+	// REQUIRED; Partial link to the Grafana explore API.
+	GrafanaExplorePath *string
 
-	// the interval in which to run the Prometheus rule group represented in ISO 8601 duration format. Should be between 1 and
-	// 15 minutes
-	Interval *string
+	// REQUIRED; Link to Prometheus query API (Url format).
+	LinkToAPI *string
+
+	// REQUIRED; The Prometheus expression query.
+	Query *string
+
+	// REQUIRED; The status of the evaluation of the enrichment.
+	Status *Status
+
+	// REQUIRED; The enrichment title.
+	Title *string
+
+	// REQUIRED; The enrichment type.
+	Type *Type
+
+	// The error message. Will be present only if the status is 'Failed'.
+	ErrorMessage *string
 }
 
-// PrometheusRuleGroupResource - The Prometheus rule group resource.
-type PrometheusRuleGroupResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; The Prometheus rule group properties of the resource.
-	Properties *PrometheusRuleGroupProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PrometheusRuleGroupResourceCollection - Represents a collection of alert rule resources.
-type PrometheusRuleGroupResourceCollection struct {
-	// the values for the alert rule resources.
-	Value []*PrometheusRuleGroupResource
-}
-
-// PrometheusRuleGroupResourcePatch - The Prometheus rule group resource for patch operations.
-type PrometheusRuleGroupResourcePatch struct {
-	Properties *PrometheusRuleGroupResourcePatchProperties
-
-	// Resource tags
-	Tags map[string]*string
-}
-
-type PrometheusRuleGroupResourcePatchProperties struct {
-	// the flag that indicates whether the Prometheus rule group is enabled.
-	Enabled *bool
-}
-
-// PrometheusRuleResolveConfiguration - Specifies the Prometheus alert rule configuration.
-type PrometheusRuleResolveConfiguration struct {
-	// the flag that indicates whether or not to auto resolve a fired alert.
-	AutoResolved *bool
-
-	// the duration a rule must evaluate as healthy before the fired alert is automatically resolved represented in ISO 8601 duration
-	// format. Should be between 1 and 15 minutes
-	TimeToResolve *string
-}
-
-// Recurrence object.
-type Recurrence struct {
-	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType
-
-	// End time for recurrence.
-	EndTime *string
-
-	// Start time for recurrence.
-	StartTime *string
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type Recurrence.
-func (r *Recurrence) GetRecurrence() *Recurrence { return r }
-
-// RemoveAllActionGroups - Indicates if all action groups should be removed.
-type RemoveAllActionGroups struct {
-	// REQUIRED; Action that should be applied.
-	ActionType *ActionType
-}
-
-// GetAction implements the ActionClassification interface for type RemoveAllActionGroups.
-func (r *RemoveAllActionGroups) GetAction() *Action {
-	return &Action{
-		ActionType: r.ActionType,
+// GetAlertEnrichmentItem implements the AlertEnrichmentItemClassification interface for type PrometheusEnrichmentItem.
+func (p *PrometheusEnrichmentItem) GetAlertEnrichmentItem() *AlertEnrichmentItem {
+	return &AlertEnrichmentItem{
+		Description:  p.Description,
+		ErrorMessage: p.ErrorMessage,
+		Status:       p.Status,
+		Title:        p.Title,
+		Type:         p.Type,
 	}
 }
 
-// RuleArmTemplate - A complete ARM template to deploy the alert rules.
-type RuleArmTemplate struct {
-	// REQUIRED; A 4 number format for the version number of this template file. For example, 1.0.0.0
-	ContentVersion *string
+// GetPrometheusEnrichmentItem implements the PrometheusEnrichmentItemClassification interface for type PrometheusEnrichmentItem.
+func (p *PrometheusEnrichmentItem) GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem { return p }
 
-	// REQUIRED; Input parameter definitions
-	Parameters any
+// PrometheusInstantQuery - Prometheus instant query enrichment object.
+type PrometheusInstantQuery struct {
+	// REQUIRED; An array of the azure monitor workspace resource ids.
+	Datasources []*string
 
-	// REQUIRED; Alert rule resource definitions
-	Resources []any
-
-	// REQUIRED; JSON schema reference
-	Schema *string
-
-	// REQUIRED; Variable definitions
-	Variables any
-}
-
-// Schedule - Scheduling configuration for a given alert processing rule.
-type Schedule struct {
-	// Scheduling effective from time. Date-Time in ISO-8601 format without timezone suffix.
-	EffectiveFrom *string
-
-	// Scheduling effective until time. Date-Time in ISO-8601 format without timezone suffix.
-	EffectiveUntil *string
-
-	// List of recurrences.
-	Recurrences []RecurrenceClassification
-
-	// Scheduling time zone.
-	TimeZone *string
-}
-
-// SmartGroup - Set of related alerts grouped together smartly by AMS.
-type SmartGroup struct {
-	// Properties of smart group.
-	Properties *SmartGroupProperties
-
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Azure resource name
-	Name *string
-
-	// READ-ONLY; Azure resource type
-	Type *string
-}
-
-// SmartGroupAggregatedProperty - Aggregated property of each type
-type SmartGroupAggregatedProperty struct {
-	// Total number of items of type.
-	Count *int64
-
-	// Name of the type.
-	Name *string
-}
-
-// SmartGroupModification - Alert Modification details
-type SmartGroupModification struct {
-	// Properties of the smartGroup modification item.
-	Properties *SmartGroupModificationProperties
-
-	// READ-ONLY; Azure resource Id
-	ID *string
-
-	// READ-ONLY; Azure resource name
-	Name *string
-
-	// READ-ONLY; Azure resource type
-	Type *string
-}
-
-// SmartGroupModificationItem - smartGroup modification item.
-type SmartGroupModificationItem struct {
-	// Modification comments
-	Comments *string
-
-	// Description of the modification
+	// REQUIRED; The enrichment description.
 	Description *string
 
-	// Reason for the modification
-	ModificationEvent *SmartGroupModificationEvent
+	// REQUIRED; Partial link to the Grafana explore API.
+	GrafanaExplorePath *string
 
-	// Modified date and time
-	ModifiedAt *string
+	// REQUIRED; Link to Prometheus query API (Url format).
+	LinkToAPI *string
 
-	// Modified user details (Principal client name)
-	ModifiedBy *string
+	// REQUIRED; The Prometheus expression query.
+	Query *string
 
-	// New value
+	// REQUIRED; The status of the evaluation of the enrichment.
+	Status *Status
+
+	// REQUIRED; The date and the time of the evaluation.
+	Time *string
+
+	// REQUIRED; The enrichment title.
+	Title *string
+
+	// REQUIRED; The enrichment type.
+	Type *Type
+
+	// The error message. Will be present only if the status is 'Failed'.
+	ErrorMessage *string
+}
+
+// GetAlertEnrichmentItem implements the AlertEnrichmentItemClassification interface for type PrometheusInstantQuery.
+func (p *PrometheusInstantQuery) GetAlertEnrichmentItem() *AlertEnrichmentItem {
+	return &AlertEnrichmentItem{
+		Description:  p.Description,
+		ErrorMessage: p.ErrorMessage,
+		Status:       p.Status,
+		Title:        p.Title,
+		Type:         p.Type,
+	}
+}
+
+// GetPrometheusEnrichmentItem implements the PrometheusEnrichmentItemClassification interface for type PrometheusInstantQuery.
+func (p *PrometheusInstantQuery) GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem {
+	return &PrometheusEnrichmentItem{
+		Datasources:        p.Datasources,
+		Description:        p.Description,
+		ErrorMessage:       p.ErrorMessage,
+		GrafanaExplorePath: p.GrafanaExplorePath,
+		LinkToAPI:          p.LinkToAPI,
+		Query:              p.Query,
+		Status:             p.Status,
+		Title:              p.Title,
+		Type:               p.Type,
+	}
+}
+
+// PrometheusRangeQuery - Prometheus instant query enrichment object.
+type PrometheusRangeQuery struct {
+	// REQUIRED; An array of the azure monitor workspace resource ids.
+	Datasources []*string
+
+	// REQUIRED; The enrichment description.
+	Description *string
+
+	// REQUIRED; The end evaluation date and time in ISO8601 format.
+	End *time.Time
+
+	// REQUIRED; Partial link to the Grafana explore API.
+	GrafanaExplorePath *string
+
+	// REQUIRED; Link to Prometheus query API (Url format).
+	LinkToAPI *string
+
+	// REQUIRED; The Prometheus expression query.
+	Query *string
+
+	// REQUIRED; The start evaluation date and time in ISO8601 format.
+	Start *time.Time
+
+	// REQUIRED; The status of the evaluation of the enrichment.
+	Status *Status
+
+	// REQUIRED; Query resolution step width in ISO8601 format.
+	Step *string
+
+	// REQUIRED; The enrichment title.
+	Title *string
+
+	// REQUIRED; The enrichment type.
+	Type *Type
+
+	// The error message. Will be present only if the status is 'Failed'.
+	ErrorMessage *string
+}
+
+// GetAlertEnrichmentItem implements the AlertEnrichmentItemClassification interface for type PrometheusRangeQuery.
+func (p *PrometheusRangeQuery) GetAlertEnrichmentItem() *AlertEnrichmentItem {
+	return &AlertEnrichmentItem{
+		Description:  p.Description,
+		ErrorMessage: p.ErrorMessage,
+		Status:       p.Status,
+		Title:        p.Title,
+		Type:         p.Type,
+	}
+}
+
+// GetPrometheusEnrichmentItem implements the PrometheusEnrichmentItemClassification interface for type PrometheusRangeQuery.
+func (p *PrometheusRangeQuery) GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem {
+	return &PrometheusEnrichmentItem{
+		Datasources:        p.Datasources,
+		Description:        p.Description,
+		ErrorMessage:       p.ErrorMessage,
+		GrafanaExplorePath: p.GrafanaExplorePath,
+		LinkToAPI:          p.LinkToAPI,
+		Query:              p.Query,
+		Status:             p.Status,
+		Title:              p.Title,
+		Type:               p.Type,
+	}
+}
+
+type PropertyChangeDetails struct {
+	// REQUIRED; Type of modification details
+	Type *AlertModificationType
+
+	// The comment
+	Comment *string
+
+	// The value after the change
 	NewValue *string
 
-	// Old value
+	// The value before the change
 	OldValue *string
 }
 
-// SmartGroupModificationProperties - Properties of the smartGroup modification item.
-type SmartGroupModificationProperties struct {
-	// Modification details
-	Modifications []*SmartGroupModificationItem
-
-	// URL to fetch the next set of results.
-	NextLink *string
-
-	// READ-ONLY; Unique Id of the smartGroup for which the history is being retrieved
-	SmartGroupID *string
-}
-
-// SmartGroupProperties - Properties of smart group.
-type SmartGroupProperties struct {
-	// Summary of alertSeverities in the smart group
-	AlertSeverities []*SmartGroupAggregatedProperty
-
-	// Summary of alertStates in the smart group
-	AlertStates []*SmartGroupAggregatedProperty
-
-	// Total number of alerts in smart group
-	AlertsCount *int64
-
-	// Summary of monitorConditions in the smart group
-	MonitorConditions []*SmartGroupAggregatedProperty
-
-	// Summary of monitorServices in the smart group
-	MonitorServices []*SmartGroupAggregatedProperty
-
-	// The URI to fetch the next page of alerts. Call ListNext() with this URI to fetch the next page alerts.
-	NextLink *string
-
-	// Summary of target resource groups in the smart group
-	ResourceGroups []*SmartGroupAggregatedProperty
-
-	// Summary of target resource types in the smart group
-	ResourceTypes []*SmartGroupAggregatedProperty
-
-	// Summary of target resources in the smart group
-	Resources []*SmartGroupAggregatedProperty
-
-	// READ-ONLY; Last updated time of smart group. Date-Time in ISO-8601 format.
-	LastModifiedDateTime *time.Time
-
-	// READ-ONLY; Last modified by user name.
-	LastModifiedUserName *string
-
-	// READ-ONLY; Severity of smart group is the highest(Sev0 >… > Sev4) severity of all the alerts in the group.
-	Severity *Severity
-
-	// READ-ONLY; Smart group state
-	SmartGroupState *State
-
-	// READ-ONLY; Creation time of smart group. Date-Time in ISO-8601 format.
-	StartDateTime *time.Time
-}
-
-// SmartGroupsList - List the alerts.
-type SmartGroupsList struct {
-	// URL to fetch the next set of alerts.
-	NextLink *string
-
-	// List of alerts
-	Value []*SmartGroup
+// GetBaseDetails implements the BaseDetailsClassification interface for type PropertyChangeDetails.
+func (p *PropertyChangeDetails) GetBaseDetails() *BaseDetails {
+	return &BaseDetails{
+		Type: p.Type,
+	}
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -895,73 +614,13 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// TenantActivityLogAlertResource - A Tenant Activity Log Alert rule resource.
-type TenantActivityLogAlertResource struct {
-	// REQUIRED; The Activity Log Alert rule properties of the resource.
-	Properties *AlertRuleProperties
+type TriggeredRule struct {
+	// The action group ID
+	ActionGroupID *string
 
-	// The location of the resource. Since Azure Activity Log Alerts is a global service, the location of the rules should always
-	// be 'global'.
-	Location *string
+	// The rule ID
+	RuleID *string
 
-	// The tags of the resource.
-	Tags map[string]*string
-
-	// READ-ONLY; The resource Id.
-	ID *string
-
-	// READ-ONLY; The name of the resource.
-	Name *string
-
-	// READ-ONLY; The type of the resource.
-	Type *string
-}
-
-// TenantAlertRuleList - A list of Tenant Activity Log Alert rules.
-type TenantAlertRuleList struct {
-	// Provides the link to retrieve the next set of elements.
-	NextLink *string
-
-	// The list of Tenant Activity Log Alert rules.
-	Value []*TenantActivityLogAlertResource
-}
-
-// TenantAlertRulePatchObject - An Activity Log Alert rule object for the body of patch operations.
-type TenantAlertRulePatchObject struct {
-	// The activity log alert settings for an update operation.
-	Properties *TenantAlertRulePatchProperties
-
-	// The resource tags
-	Tags map[string]*string
-}
-
-// TenantAlertRulePatchProperties - An Activity Log Alert rule properties for patch operations.
-type TenantAlertRulePatchProperties struct {
-	// Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its
-	// actions will be activated.
-	Enabled *bool
-}
-
-// WeeklyRecurrence - Weekly recurrence object.
-type WeeklyRecurrence struct {
-	// REQUIRED; Specifies the values for weekly recurrence pattern.
-	DaysOfWeek []*DaysOfWeek
-
-	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType
-
-	// End time for recurrence.
-	EndTime *string
-
-	// Start time for recurrence.
-	StartTime *string
-}
-
-// GetRecurrence implements the RecurrenceClassification interface for type WeeklyRecurrence.
-func (w *WeeklyRecurrence) GetRecurrence() *Recurrence {
-	return &Recurrence{
-		EndTime:        w.EndTime,
-		RecurrenceType: w.RecurrenceType,
-		StartTime:      w.StartTime,
-	}
+	// The rule type
+	RuleType *RuleType
 }

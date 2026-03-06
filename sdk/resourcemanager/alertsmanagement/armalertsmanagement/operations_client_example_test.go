@@ -14,14 +14,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertsmanagement/armalertsmanagement"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/6d2438481021a94793b07b226df06d5f3c61d51d/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Operations_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/44a12ed5a9045bb04ad3759bd96c32fe970a935c/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement/preview/2025-05-25-preview/examples/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armalertsmanagement.NewClientFactory("<subscription-id>", cred, nil)
+	clientFactory, err := armalertsmanagement.NewClientFactory("<scope>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -234,6 +234,33 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Operation: to.Ptr("Read operations"),
 		// 				Provider: to.Ptr("Microsoft.AlertsManagement"),
 		// 				Resource: to.Ptr("operations"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups/Write"),
+		// 			Display: &armalertsmanagement.OperationDisplay{
+		// 				Description: to.Ptr("Set prometheusRuleGroups"),
+		// 				Operation: to.Ptr("Creates or updates the prometheusRuleGroups"),
+		// 				Provider: to.Ptr("Microsoft.AlertsManagement"),
+		// 				Resource: to.Ptr("prometheusRuleGroups"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups/Delete"),
+		// 			Display: &armalertsmanagement.OperationDisplay{
+		// 				Description: to.Ptr("Delete prometheusRuleGroups"),
+		// 				Operation: to.Ptr("Deletes the prometheusRuleGroups"),
+		// 				Provider: to.Ptr("Microsoft.AlertsManagement"),
+		// 				Resource: to.Ptr("prometheusRuleGroups"),
+		// 			},
+		// 		},
+		// 		{
+		// 			Name: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups/Read"),
+		// 			Display: &armalertsmanagement.OperationDisplay{
+		// 				Description: to.Ptr("Read prometheusRuleGroups"),
+		// 				Operation: to.Ptr("Reads the prometheusRuleGroups"),
+		// 				Provider: to.Ptr("Microsoft.AlertsManagement"),
+		// 				Resource: to.Ptr("prometheusRuleGroups"),
 		// 			},
 		// 	}},
 		// }

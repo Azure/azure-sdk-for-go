@@ -6,8 +6,6 @@ config:
   trials_per_task: 1
   timeout_seconds: 600
   parallel: false
-  executor: copilot-sdk
-  model: claude-sonnet-4.6
 graders:
   - type: text
     name: mentions_sdk_tools

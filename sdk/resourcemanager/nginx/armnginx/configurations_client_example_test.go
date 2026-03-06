@@ -72,11 +72,11 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientCreateOrUpdateResponse{
-	// 	ConfigurationResponse: &armnginx.ConfigurationResponse{
+	// 	Configuration: &armnginx.Configuration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
-	// 		Properties: &armnginx.ConfigurationResponseProperties{
+	// 		Properties: &armnginx.ConfigurationProperties{
 	// 			Files: []*armnginx.ConfigurationFile{
 	// 				{
 	// 					Content: to.Ptr("ABCDEF=="),
@@ -132,11 +132,11 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientGetResponse{
-	// 	ConfigurationResponse: &armnginx.ConfigurationResponse{
+	// 	Configuration: &armnginx.Configuration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
-	// 		Properties: &armnginx.ConfigurationResponseProperties{
+	// 		Properties: &armnginx.ConfigurationProperties{
 	// 			Files: []*armnginx.ConfigurationFile{
 	// 				{
 	// 					Content: to.Ptr("ABCDEF=="),
@@ -182,12 +182,12 @@ func ExampleConfigurationsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armnginx.ConfigurationsClientListResponse{
 		// 	ConfigurationListResponse: armnginx.ConfigurationListResponse{
-		// 		Value: []*armnginx.ConfigurationResponse{
+		// 		Value: []*armnginx.Configuration{
 		// 			{
 		// 				Name: to.Ptr("default"),
 		// 				Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
-		// 				Properties: &armnginx.ConfigurationResponseProperties{
+		// 				Properties: &armnginx.ConfigurationProperties{
 		// 					Files: []*armnginx.ConfigurationFile{
 		// 						{
 		// 							Content: to.Ptr("ABCDEF=="),

@@ -1,5 +1,221 @@
 # Release History
 
+## 4.0.0-beta.1 (2026-02-28)
+### Breaking Changes
+
+- Function `*AccountConnectionsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, connection ConnectionPropertiesV2BasicResource, options *AccountConnectionsClientCreateOptions)`
+- Function `*AccountConnectionsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, connection ConnectionUpdateContent, options *AccountConnectionsClientUpdateOptions)`
+- Function `*ProjectConnectionsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, connection ConnectionPropertiesV2BasicResource, options *ProjectConnectionsClientCreateOptions)`
+- Function `*ProjectConnectionsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, connection ConnectionUpdateContent, options *ProjectConnectionsClientUpdateOptions)`
+- Function `*RaiBlocklistItemsClient.BatchDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames any, options *RaiBlocklistItemsClientBatchDeleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames []*string, options *RaiBlocklistItemsClientBatchDeleteOptions)`
+- Function `*ClientFactory.NewManagementClient` has been removed
+- Function `NewManagementClient` has been removed
+- Function `*ManagementClient.CalculateModelCapacity` has been removed
+- Function `*ManagementClient.CheckDomainAvailability` has been removed
+- Function `*ManagementClient.CheckSKUAvailability` has been removed
+- Operation `*PrivateEndpointConnectionsClient.List` has supported pagination, use `*PrivateEndpointConnectionsClient.NewListPager` instead.
+- Struct `AzureEntityResource` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `PatchResourceTags` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `RaiBlocklistConfig` has been removed
+- Struct `RaiTopicConfig` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceBase` has been removed
+- Field `Connection` of struct `AccountConnectionsClientCreateOptions` has been removed
+- Field `Connection` of struct `AccountConnectionsClientUpdateOptions` has been removed
+- Field `Connection` of struct `ProjectConnectionsClientCreateOptions` has been removed
+- Field `Connection` of struct `ProjectConnectionsClientUpdateOptions` has been removed
+
+### Features Added
+
+- New value `ConnectionAuthTypeAccountManagedIdentity`, `ConnectionAuthTypeAgentUserImpersonation`, `ConnectionAuthTypeAgenticIdentityToken`, `ConnectionAuthTypeAgenticUser`, `ConnectionAuthTypeDelegatedSAS`, `ConnectionAuthTypeProjectManagedIdentity`, `ConnectionAuthTypeUserEntraToken` added to enum type `ConnectionAuthType`
+- New value `ConnectionCategoryAPIManagement`, `ConnectionCategoryAppConfig`, `ConnectionCategoryAppInsights`, `ConnectionCategoryAzureContainerAppEnvironment`, `ConnectionCategoryAzureKeyVault`, `ConnectionCategoryDatabricks`, `ConnectionCategoryGroundingWithBingSearch`, `ConnectionCategoryGroundingWithCustomSearch`, `ConnectionCategoryMicrosoftFabric`, `ConnectionCategoryModelGateway`, `ConnectionCategoryPowerPlatformEnvironment`, `ConnectionCategoryRemoteA2A`, `ConnectionCategoryRemoteTool`, `ConnectionCategorySharepoint` added to enum type `ConnectionCategory`
+- New value `RaiPolicyContentSourcePostRun`, `RaiPolicyContentSourcePostToolCall`, `RaiPolicyContentSourcePreRun`, `RaiPolicyContentSourcePreToolCall` added to enum type `RaiPolicyContentSource`
+- New enum type `AgentDeploymentProvisioningState` with values `AgentDeploymentProvisioningStateCanceled`, `AgentDeploymentProvisioningStateCreating`, `AgentDeploymentProvisioningStateDeleting`, `AgentDeploymentProvisioningStateFailed`, `AgentDeploymentProvisioningStateSucceeded`, `AgentDeploymentProvisioningStateUpdating`
+- New enum type `AgentDeploymentState` with values `AgentDeploymentStateDeleted`, `AgentDeploymentStateDeleting`, `AgentDeploymentStateFailed`, `AgentDeploymentStateRunning`, `AgentDeploymentStateStarting`, `AgentDeploymentStateStopped`, `AgentDeploymentStateStopping`, `AgentDeploymentStateUpdating`
+- New enum type `AgentDeploymentType` with values `AgentDeploymentTypeCustom`, `AgentDeploymentTypeHosted`, `AgentDeploymentTypeManaged`
+- New enum type `AgentProtocol` with values `AgentProtocolA2A`, `AgentProtocolAgent`, `AgentProtocolResponses`
+- New enum type `AgenticApplicationProvisioningState` with values `AgenticApplicationProvisioningStateCanceled`, `AgenticApplicationProvisioningStateCreating`, `AgenticApplicationProvisioningStateDeleting`, `AgenticApplicationProvisioningStateFailed`, `AgenticApplicationProvisioningStateSucceeded`, `AgenticApplicationProvisioningStateUpdating`
+- New enum type `BuiltInAuthorizationScheme` with values `BuiltInAuthorizationSchemeChannels`, `BuiltInAuthorizationSchemeCustom`, `BuiltInAuthorizationSchemeDefault`, `BuiltInAuthorizationSchemeOrganizationScope`
+- New enum type `DeploymentState` with values `DeploymentStatePaused`, `DeploymentStateRunning`
+- New enum type `FirewallSKU` with values `FirewallSKUBasic`, `FirewallSKUStandard`
+- New enum type `IdentityKind` with values `IdentityKindAgentBlueprint`, `IdentityKindAgentInstance`, `IdentityKindAgenticUser`, `IdentityKindManaged`, `IdentityKindNone`
+- New enum type `IdentityManagementType` with values `IdentityManagementTypeNone`, `IdentityManagementTypeSystem`, `IdentityManagementTypeUser`
+- New enum type `IdentityProvisioningState` with values `IdentityProvisioningStateCanceled`, `IdentityProvisioningStateCreating`, `IdentityProvisioningStateDeleting`, `IdentityProvisioningStateFailed`, `IdentityProvisioningStateSucceeded`, `IdentityProvisioningStateUpdating`
+- New enum type `IsolationMode` with values `IsolationModeAllowInternetOutbound`, `IsolationModeAllowOnlyApprovedOutbound`, `IsolationModeDisabled`
+- New enum type `ManagedNetworkKind` with values `ManagedNetworkKindV1`, `ManagedNetworkKindV2`
+- New enum type `ManagedNetworkProvisioningState` with values `ManagedNetworkProvisioningStateDeferred`, `ManagedNetworkProvisioningStateDeleted`, `ManagedNetworkProvisioningStateDeleting`, `ManagedNetworkProvisioningStateFailed`, `ManagedNetworkProvisioningStateSucceeded`, `ManagedNetworkProvisioningStateUpdating`
+- New enum type `ManagedNetworkStatus` with values `ManagedNetworkStatusActive`, `ManagedNetworkStatusInactive`
+- New enum type `RaiActionType` with values `RaiActionTypeANNOTATING`, `RaiActionTypeBLOCKING`, `RaiActionTypeHITL`, `RaiActionTypeNone`, `RaiActionTypeRETRY`
+- New enum type `RuleCategory` with values `RuleCategoryDependency`, `RuleCategoryRecommended`, `RuleCategoryRequired`, `RuleCategoryUserDefined`
+- New enum type `RuleStatus` with values `RuleStatusActive`, `RuleStatusDeleting`, `RuleStatusFailed`, `RuleStatusInactive`, `RuleStatusProvisioning`
+- New enum type `RuleType` with values `RuleTypeFQDN`, `RuleTypePrivateEndpoint`, `RuleTypeServiceTag`
+- New enum type `ServiceTier` with values `ServiceTierDefault`, `ServiceTierPriority`
+- New enum type `TrafficRoutingProtocol` with values `TrafficRoutingProtocolFixedRatio`
+- New function `NewAgentApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentApplicationsClient, error)`
+- New function `*AgentApplicationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, body AgentApplication, options *AgentApplicationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentApplicationsClientCreateOrUpdateResponse], error)`
+- New function `*AgentApplicationsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*runtime.Poller[AgentApplicationsClientDeleteResponse], error)`
+- New function `*AgentApplicationsClient.Disable(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientDisableOptions) (AgentApplicationsClientDisableResponse, error)`
+- New function `*AgentApplicationsClient.Enable(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientEnableOptions) (AgentApplicationsClientEnableResponse, error)`
+- New function `*AgentApplicationsClient.Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientGetOptions) (AgentApplicationsClientGetResponse, error)`
+- New function `*AgentApplicationsClient.ListAgents(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientListAgentsOptions) (AgentApplicationsClientListAgentsResponse, error)`
+- New function `*AgentApplicationsClient.NewListPager(resourceGroupName string, accountName string, projectName string, options *AgentApplicationsClientListOptions) *runtime.Pager[AgentApplicationsClientListResponse]`
+- New function `*AgentDeploymentProperties.GetAgentDeploymentProperties() *AgentDeploymentProperties`
+- New function `NewAgentDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentDeploymentsClient, error)`
+- New function `*AgentDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, body AgentDeployment, options *AgentDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AgentDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*AgentDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientBeginDeleteOptions) (*runtime.Poller[AgentDeploymentsClientDeleteResponse], error)`
+- New function `*AgentDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientGetOptions) (AgentDeploymentsClientGetResponse, error)`
+- New function `*AgentDeploymentsClient.NewListPager(resourceGroupName string, accountName string, projectName string, appName string, options *AgentDeploymentsClientListOptions) *runtime.Pager[AgentDeploymentsClientListResponse]`
+- New function `*AgentDeploymentsClient.Start(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientStartOptions) (AgentDeploymentsClientStartResponse, error)`
+- New function `*AgentDeploymentsClient.Stop(ctx context.Context, resourceGroupName string, accountName string, projectName string, appName string, deploymentName string, options *AgentDeploymentsClientStopOptions) (AgentDeploymentsClientStopResponse, error)`
+- New function `*ApplicationAuthorizationPolicy.GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy`
+- New function `*ChannelsBuiltInAuthorizationPolicy.GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy`
+- New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
+- New function `*Client.CalculateModelCapacity(ctx context.Context, parameters CalculateModelCapacityParameter, options *ClientCalculateModelCapacityOptions) (ClientCalculateModelCapacityResponse, error)`
+- New function `*Client.CheckDomainAvailability(ctx context.Context, parameters CheckDomainAvailabilityParameter, options *ClientCheckDomainAvailabilityOptions) (ClientCheckDomainAvailabilityResponse, error)`
+- New function `*Client.CheckSKUAvailability(ctx context.Context, location string, parameters CheckSKUAvailabilityParameter, options *ClientCheckSKUAvailabilityOptions) (ClientCheckSKUAvailabilityResponse, error)`
+- New function `*Client.NewAccountCapabilityHostsClient() *AccountCapabilityHostsClient`
+- New function `*Client.NewAccountConnectionsClient() *AccountConnectionsClient`
+- New function `*Client.NewAccountsClient() *AccountsClient`
+- New function `*Client.NewAgentApplicationsClient() *AgentApplicationsClient`
+- New function `*Client.NewAgentDeploymentsClient() *AgentDeploymentsClient`
+- New function `*Client.NewCommitmentPlansClient() *CommitmentPlansClient`
+- New function `*Client.NewCommitmentTiersClient() *CommitmentTiersClient`
+- New function `*Client.NewDefenderForAISettingsClient() *DefenderForAISettingsClient`
+- New function `*Client.NewDeletedAccountsClient() *DeletedAccountsClient`
+- New function `*Client.NewDeploymentsClient() *DeploymentsClient`
+- New function `*Client.NewEncryptionScopesClient() *EncryptionScopesClient`
+- New function `*Client.NewLocationBasedModelCapacitiesClient() *LocationBasedModelCapacitiesClient`
+- New function `*Client.NewManagedNetworkProvisionsClient() *ManagedNetworkProvisionsClient`
+- New function `*Client.NewManagedNetworkSettingsClient() *ManagedNetworkSettingsClient`
+- New function `*Client.NewModelCapacitiesClient() *ModelCapacitiesClient`
+- New function `*Client.NewModelsClient() *ModelsClient`
+- New function `*Client.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `*Client.NewOperationsClient() *OperationsClient`
+- New function `*Client.NewOutboundRuleClient() *OutboundRuleClient`
+- New function `*Client.NewOutboundRulesClient() *OutboundRulesClient`
+- New function `*Client.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*Client.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `*Client.NewProjectCapabilityHostsClient() *ProjectCapabilityHostsClient`
+- New function `*Client.NewProjectConnectionsClient() *ProjectConnectionsClient`
+- New function `*Client.NewProjectsClient() *ProjectsClient`
+- New function `*Client.NewQuotaTiersClient() *QuotaTiersClient`
+- New function `*Client.NewRaiBlocklistItemsClient() *RaiBlocklistItemsClient`
+- New function `*Client.NewRaiBlocklistsClient() *RaiBlocklistsClient`
+- New function `*Client.NewRaiContentFiltersClient() *RaiContentFiltersClient`
+- New function `*Client.NewRaiExternalSafetyProviderClient() *RaiExternalSafetyProviderClient`
+- New function `*Client.NewRaiExternalSafetyProvidersClient() *RaiExternalSafetyProvidersClient`
+- New function `*Client.NewRaiPoliciesClient() *RaiPoliciesClient`
+- New function `*Client.NewRaiToolLabelsClient() *RaiToolLabelsClient`
+- New function `*Client.NewRaiTopicsClient() *RaiTopicsClient`
+- New function `*Client.NewResourceSKUsClient() *ResourceSKUsClient`
+- New function `*Client.NewSubscriptionRaiPolicyClient() *SubscriptionRaiPolicyClient`
+- New function `*Client.NewTestRaiExternalSafetyProviderClient() *TestRaiExternalSafetyProviderClient`
+- New function `*Client.NewUsagesClient() *UsagesClient`
+- New function `*ClientFactory.NewAgentApplicationsClient() *AgentApplicationsClient`
+- New function `*ClientFactory.NewAgentDeploymentsClient() *AgentDeploymentsClient`
+- New function `*ClientFactory.NewClient() *Client`
+- New function `*ClientFactory.NewManagedNetworkProvisionsClient() *ManagedNetworkProvisionsClient`
+- New function `*ClientFactory.NewManagedNetworkSettingsClient() *ManagedNetworkSettingsClient`
+- New function `*ClientFactory.NewOutboundRuleClient() *OutboundRuleClient`
+- New function `*ClientFactory.NewOutboundRulesClient() *OutboundRulesClient`
+- New function `*ClientFactory.NewRaiExternalSafetyProviderClient() *RaiExternalSafetyProviderClient`
+- New function `*ClientFactory.NewRaiExternalSafetyProvidersClient() *RaiExternalSafetyProvidersClient`
+- New function `*ClientFactory.NewRaiToolLabelsClient() *RaiToolLabelsClient`
+- New function `*ClientFactory.NewSubscriptionRaiPolicyClient() *SubscriptionRaiPolicyClient`
+- New function `*ClientFactory.NewTestRaiExternalSafetyProviderClient() *TestRaiExternalSafetyProviderClient`
+- New function `*DeploymentsClient.Pause(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientPauseOptions) (DeploymentsClientPauseResponse, error)`
+- New function `*DeploymentsClient.Resume(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientResumeOptions) (DeploymentsClientResumeResponse, error)`
+- New function `*FqdnOutboundRule.GetOutboundRule() *OutboundRule`
+- New function `*HostedAgentDeployment.GetAgentDeploymentProperties() *AgentDeploymentProperties`
+- New function `*ManagedAgentDeployment.GetAgentDeploymentProperties() *AgentDeploymentProperties`
+- New function `NewManagedNetworkProvisionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedNetworkProvisionsClient, error)`
+- New function `*ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork(ctx context.Context, resourceGroupName string, accountName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*runtime.Poller[ManagedNetworkProvisionsClientProvisionManagedNetworkResponse], error)`
+- New function `NewManagedNetworkSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedNetworkSettingsClient, error)`
+- New function `*ManagedNetworkSettingsClient.Get(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientGetOptions) (ManagedNetworkSettingsClientGetResponse, error)`
+- New function `*ManagedNetworkSettingsClient.NewListPager(resourceGroupName string, accountName string, options *ManagedNetworkSettingsClientListOptions) *runtime.Pager[ManagedNetworkSettingsClientListResponse]`
+- New function `*ManagedNetworkSettingsClient.BeginPatch(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPatchOptions) (*runtime.Poller[ManagedNetworkSettingsClientPatchResponse], error)`
+- New function `*ManagedNetworkSettingsClient.BeginPut(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, options *ManagedNetworkSettingsClientBeginPutOptions) (*runtime.Poller[ManagedNetworkSettingsClientPutResponse], error)`
+- New function `*OrganizationSharedBuiltInAuthorizationPolicy.GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy`
+- New function `*OutboundRule.GetOutboundRule() *OutboundRule`
+- New function `NewOutboundRuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundRuleClient, error)`
+- New function `*OutboundRuleClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, body OutboundRuleBasicResource, options *OutboundRuleClientBeginCreateOrUpdateOptions) (*runtime.Poller[OutboundRuleClientCreateOrUpdateResponse], error)`
+- New function `*OutboundRuleClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, options *OutboundRuleClientBeginDeleteOptions) (*runtime.Poller[OutboundRuleClientDeleteResponse], error)`
+- New function `*OutboundRuleClient.Get(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, options *OutboundRuleClientGetOptions) (OutboundRuleClientGetResponse, error)`
+- New function `*OutboundRuleClient.NewListPager(resourceGroupName string, accountName string, managedNetworkName string, options *OutboundRuleClientListOptions) *runtime.Pager[OutboundRuleClientListResponse]`
+- New function `NewOutboundRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundRulesClient, error)`
+- New function `*OutboundRulesClient.BeginPost(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, options *OutboundRulesClientBeginPostOptions) (*runtime.Poller[OutboundRulesClientPostResponse], error)`
+- New function `NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiExternalSafetyProviderClient, error)`
+- New function `*RaiExternalSafetyProviderClient.CreateOrUpdate(ctx context.Context, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, options *RaiExternalSafetyProviderClientCreateOrUpdateOptions) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error)`
+- New function `*RaiExternalSafetyProviderClient.BeginDelete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*runtime.Poller[RaiExternalSafetyProviderClientDeleteResponse], error)`
+- New function `*RaiExternalSafetyProviderClient.Get(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientGetOptions) (RaiExternalSafetyProviderClientGetResponse, error)`
+- New function `NewRaiExternalSafetyProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiExternalSafetyProvidersClient, error)`
+- New function `*RaiExternalSafetyProvidersClient.NewListPager(options *RaiExternalSafetyProvidersClientListOptions) *runtime.Pager[RaiExternalSafetyProvidersClientListResponse]`
+- New function `NewRaiToolLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiToolLabelsClient, error)`
+- New function `*RaiToolLabelsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, raiToolLabel RaiToolLabel, options *RaiToolLabelsClientCreateOrUpdateOptions) (RaiToolLabelsClientCreateOrUpdateResponse, error)`
+- New function `*RaiToolLabelsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientBeginDeleteOptions) (*runtime.Poller[RaiToolLabelsClientDeleteResponse], error)`
+- New function `*RaiToolLabelsClient.Get(ctx context.Context, resourceGroupName string, accountName string, raiToolConnectionName string, options *RaiToolLabelsClientGetOptions) (RaiToolLabelsClientGetResponse, error)`
+- New function `*RaiToolLabelsClient.NewListPager(resourceGroupName string, accountName string, options *RaiToolLabelsClientListOptions) *runtime.Pager[RaiToolLabelsClientListResponse]`
+- New function `*RoleBasedBuiltInAuthorizationPolicy.GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy`
+- New function `NewSubscriptionRaiPolicyClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionRaiPolicyClient, error)`
+- New function `*SubscriptionRaiPolicyClient.CreateOrUpdate(ctx context.Context, raiPolicyName string, raiPolicy RaiPolicy, options *SubscriptionRaiPolicyClientCreateOrUpdateOptions) (SubscriptionRaiPolicyClientCreateOrUpdateResponse, error)`
+- New function `*SubscriptionRaiPolicyClient.BeginDelete(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientBeginDeleteOptions) (*runtime.Poller[SubscriptionRaiPolicyClientDeleteResponse], error)`
+- New function `*SubscriptionRaiPolicyClient.Get(ctx context.Context, raiPolicyName string, options *SubscriptionRaiPolicyClientGetOptions) (SubscriptionRaiPolicyClientGetResponse, error)`
+- New function `NewTestRaiExternalSafetyProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TestRaiExternalSafetyProviderClient, error)`
+- New function `*TestRaiExternalSafetyProviderClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, options *TestRaiExternalSafetyProviderClientCreateOrUpdateOptions) (TestRaiExternalSafetyProviderClientCreateOrUpdateResponse, error)`
+- New struct `AgentApplication`
+- New struct `AgentApplicationResourceArmPaginatedResult`
+- New struct `AgentDeployment`
+- New struct `AgentDeploymentResourceArmPaginatedResult`
+- New struct `AgentProtocolVersion`
+- New struct `AgentReference`
+- New struct `AgentReferenceProperties`
+- New struct `AgentReferenceResourceArmPaginatedResult`
+- New struct `AgenticApplicationProperties`
+- New struct `ApplicationTrafficRoutingPolicy`
+- New struct `AssignedIdentity`
+- New struct `ChannelsBuiltInAuthorizationPolicy`
+- New struct `FqdnOutboundRule`
+- New struct `HostedAgentDeployment`
+- New struct `ManagedAgentDeployment`
+- New struct `ManagedNetworkListResult`
+- New struct `ManagedNetworkProvisionOptions`
+- New struct `ManagedNetworkProvisionStatus`
+- New struct `ManagedNetworkSettings`
+- New struct `ManagedNetworkSettingsBasicResource`
+- New struct `ManagedNetworkSettingsEx`
+- New struct `ManagedNetworkSettingsProperties`
+- New struct `ManagedNetworkSettingsPropertiesBasicResource`
+- New struct `OrganizationSharedBuiltInAuthorizationPolicy`
+- New struct `OutboundRuleBasicResource`
+- New struct `OutboundRuleListResult`
+- New struct `RaiExternalSafetyProvider`
+- New struct `RaiExternalSafetyProviderProperties`
+- New struct `RaiExternalSafetyProviderResult`
+- New struct `RaiExternalSafetyProviderSchema`
+- New struct `RaiExternalSafetyProviderSchemaProperties`
+- New struct `RaiToolLabel`
+- New struct `RaiToolLabelProperties`
+- New struct `RaiToolLabelPropertiesAccountScope`
+- New struct `RaiToolLabelPropertiesProjectScopesItem`
+- New struct `RaiToolLabelResult`
+- New struct `RoleBasedBuiltInAuthorizationPolicy`
+- New struct `SafetyProviderConfig`
+- New struct `TrafficRoutingRule`
+- New struct `VersionedAgentReference`
+- New field `AsyncOperationTimeout` in struct `AccountCapabilityHostsClientCreateOrUpdateResponse`
+- New field `AsyncOperationTimeout` in struct `AccountCapabilityHostsClientDeleteResponse`
+- New field `EnablePublicHostingEnvironment` in struct `CapabilityHostProperties`
+- New field `DeploymentState`, `ServiceTier` in struct `DeploymentProperties`
+- New field `AsyncOperationTimeout` in struct `ProjectCapabilityHostsClientCreateOrUpdateResponse`
+- New field `AsyncOperationTimeout` in struct `ProjectCapabilityHostsClientDeleteResponse`
+- New field `Action` in struct `RaiPolicyContentFilter`
+- New field `SafetyProviders` in struct `RaiPolicyProperties`
+
+
 ## 3.0.0 (2025-11-12)
 ### Breaking Changes
 

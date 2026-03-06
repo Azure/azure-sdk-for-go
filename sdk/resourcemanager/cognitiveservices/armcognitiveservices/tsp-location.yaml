@@ -1,0 +1,4 @@
+directory: specification/cognitiveservices/CognitiveServices.Management
+commit: 853cc9dc24429b8c642f631a1ca4c3ff4570f8ee
+repo: i-specs
+additionalDirectories: 

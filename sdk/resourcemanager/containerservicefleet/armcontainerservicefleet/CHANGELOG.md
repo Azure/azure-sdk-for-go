@@ -1,5 +1,16 @@
 # Release History
 
+## 3.0.0-beta.3 (2026-02-25)
+### Features Added
+
+- New field `SkipToken`, `Top` in struct `AutoUpgradeProfilesClientListByFleetOptions`
+- New field `Filter`, `SkipToken`, `Top` in struct `FleetMembersClientListByFleetOptions`
+- New field `SkipToken`, `Top` in struct `FleetUpdateStrategiesClientListByFleetOptions`
+- New field `SkipToken`, `Top` in struct `FleetsClientListBySubscriptionOptions`
+- New field `Filter`, `SkipToken`, `Top` in struct `GatesClientListByFleetOptions`
+- New field `SkipToken`, `Top` in struct `UpdateRunsClientListByFleetOptions`
+
+
 ## 3.0.0-beta.2 (2025-12-03)
 ### Features Added
 

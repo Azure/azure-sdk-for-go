@@ -37,12 +37,14 @@ func PossibleActionValues() []Action {
 	}
 }
 
-// ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple
-// revisions can be active.Single: Only one revision can be active at a time. Revision weights can
-// not be used in this mode. If no value if provided, this is the default.
+// ActiveRevisionsMode - ActiveRevisionsMode controls how active revisions are handled for the Container app:Single: Only
+// one revision can be active at a time. Traffic weights cannot be used. This is the default.Multiple:
+// Multiple revisions can be active, including optional traffic weights and labels.Labels: Only revisions with labels are
+// active. Traffic weights can be applied to labels.
 type ActiveRevisionsMode string
 
 const (
+	ActiveRevisionsModeLabels   ActiveRevisionsMode = "Labels"
 	ActiveRevisionsModeMultiple ActiveRevisionsMode = "Multiple"
 	ActiveRevisionsModeSingle   ActiveRevisionsMode = "Single"
 )
@@ -50,6 +52,7 @@ const (
 // PossibleActiveRevisionsModeValues returns the possible values for the ActiveRevisionsMode const type.
 func PossibleActiveRevisionsModeValues() []ActiveRevisionsMode {
 	return []ActiveRevisionsMode{
+		ActiveRevisionsModeLabels,
 		ActiveRevisionsModeMultiple,
 		ActiveRevisionsModeSingle,
 	}
@@ -121,6 +124,76 @@ func PossibleBindingTypeValues() []BindingType {
 	}
 }
 
+// BuildProvisioningState - Resource instance provisioning state.
+type BuildProvisioningState string
+
+const (
+	BuildProvisioningStateCanceled  BuildProvisioningState = "Canceled"
+	BuildProvisioningStateCreating  BuildProvisioningState = "Creating"
+	BuildProvisioningStateDeleting  BuildProvisioningState = "Deleting"
+	BuildProvisioningStateFailed    BuildProvisioningState = "Failed"
+	BuildProvisioningStateSucceeded BuildProvisioningState = "Succeeded"
+	BuildProvisioningStateUpdating  BuildProvisioningState = "Updating"
+)
+
+// PossibleBuildProvisioningStateValues returns the possible values for the BuildProvisioningState const type.
+func PossibleBuildProvisioningStateValues() []BuildProvisioningState {
+	return []BuildProvisioningState{
+		BuildProvisioningStateCanceled,
+		BuildProvisioningStateCreating,
+		BuildProvisioningStateDeleting,
+		BuildProvisioningStateFailed,
+		BuildProvisioningStateSucceeded,
+		BuildProvisioningStateUpdating,
+	}
+}
+
+// BuildStatus - Status of the build once it has been provisioned.
+type BuildStatus string
+
+const (
+	BuildStatusCanceled   BuildStatus = "Canceled"
+	BuildStatusFailed     BuildStatus = "Failed"
+	BuildStatusInProgress BuildStatus = "InProgress"
+	BuildStatusNotStarted BuildStatus = "NotStarted"
+	BuildStatusSucceeded  BuildStatus = "Succeeded"
+)
+
+// PossibleBuildStatusValues returns the possible values for the BuildStatus const type.
+func PossibleBuildStatusValues() []BuildStatus {
+	return []BuildStatus{
+		BuildStatusCanceled,
+		BuildStatusFailed,
+		BuildStatusInProgress,
+		BuildStatusNotStarted,
+		BuildStatusSucceeded,
+	}
+}
+
+// BuilderProvisioningState - Resource instance provisioning state.
+type BuilderProvisioningState string
+
+const (
+	BuilderProvisioningStateCanceled  BuilderProvisioningState = "Canceled"
+	BuilderProvisioningStateCreating  BuilderProvisioningState = "Creating"
+	BuilderProvisioningStateDeleting  BuilderProvisioningState = "Deleting"
+	BuilderProvisioningStateFailed    BuilderProvisioningState = "Failed"
+	BuilderProvisioningStateSucceeded BuilderProvisioningState = "Succeeded"
+	BuilderProvisioningStateUpdating  BuilderProvisioningState = "Updating"
+)
+
+// PossibleBuilderProvisioningStateValues returns the possible values for the BuilderProvisioningState const type.
+func PossibleBuilderProvisioningStateValues() []BuilderProvisioningState {
+	return []BuilderProvisioningState{
+		BuilderProvisioningStateCanceled,
+		BuilderProvisioningStateCreating,
+		BuilderProvisioningStateDeleting,
+		BuilderProvisioningStateFailed,
+		BuilderProvisioningStateSucceeded,
+		BuilderProvisioningStateUpdating,
+	}
+}
+
 // CertificateProvisioningState - Provisioning state of the certificate.
 type CertificateProvisioningState string
 
@@ -142,6 +215,22 @@ func PossibleCertificateProvisioningStateValues() []CertificateProvisioningState
 		CertificateProvisioningStateFailed,
 		CertificateProvisioningStatePending,
 		CertificateProvisioningStateSucceeded,
+	}
+}
+
+// CertificateType - The type of the certificate. Allowed values are ServerSSLCertificate and ImagePullTrustedCA
+type CertificateType string
+
+const (
+	CertificateTypeImagePullTrustedCA   CertificateType = "ImagePullTrustedCA"
+	CertificateTypeServerSSLCertificate CertificateType = "ServerSSLCertificate"
+)
+
+// PossibleCertificateTypeValues returns the possible values for the CertificateType const type.
+func PossibleCertificateTypeValues() []CertificateType {
+	return []CertificateType{
+		CertificateTypeImagePullTrustedCA,
+		CertificateTypeServerSSLCertificate,
 	}
 }
 
@@ -296,19 +385,24 @@ func PossibleContainerAppRunningStatusValues() []ContainerAppRunningStatus {
 	}
 }
 
-// ContainerType - The container type of the sessions.
+// ContainerType - The container type of the sessions. You can use your own container to build the session pool, or you can
+// use a predefined container to run workload with specific language.
 type ContainerType string
 
 const (
 	ContainerTypeCustomContainer ContainerType = "CustomContainer"
+	ContainerTypeNodeLTS         ContainerType = "NodeLTS"
 	ContainerTypePythonLTS       ContainerType = "PythonLTS"
+	ContainerTypeShell           ContainerType = "Shell"
 )
 
 // PossibleContainerTypeValues returns the possible values for the ContainerType const type.
 func PossibleContainerTypeValues() []ContainerType {
 	return []ContainerType{
 		ContainerTypeCustomContainer,
+		ContainerTypeNodeLTS,
 		ContainerTypePythonLTS,
+		ContainerTypeShell,
 	}
 }
 
@@ -366,7 +460,7 @@ func PossibleDNSVerificationTestResultValues() []DNSVerificationTestResult {
 	}
 }
 
-// DaprComponentProvisioningState - Provisioning state of the Dapr Component.
+// DaprComponentProvisioningState - Provisioning state of the Connected Environment Dapr Component.
 type DaprComponentProvisioningState string
 
 const (
@@ -385,6 +479,60 @@ func PossibleDaprComponentProvisioningStateValues() []DaprComponentProvisioningS
 		DaprComponentProvisioningStateFailed,
 		DaprComponentProvisioningStateInProgress,
 		DaprComponentProvisioningStateSucceeded,
+	}
+}
+
+// DetectionStatus - The status of the patch detection.
+type DetectionStatus string
+
+const (
+	DetectionStatusFailed              DetectionStatus = "Failed"
+	DetectionStatusRegistryLoginFailed DetectionStatus = "RegistryLoginFailed"
+	DetectionStatusSucceeded           DetectionStatus = "Succeeded"
+)
+
+// PossibleDetectionStatusValues returns the possible values for the DetectionStatus const type.
+func PossibleDetectionStatusValues() []DetectionStatus {
+	return []DetectionStatus{
+		DetectionStatusFailed,
+		DetectionStatusRegistryLoginFailed,
+		DetectionStatusSucceeded,
+	}
+}
+
+// DotNetComponentProvisioningState - Provisioning state of the .NET Component.
+type DotNetComponentProvisioningState string
+
+const (
+	DotNetComponentProvisioningStateCanceled   DotNetComponentProvisioningState = "Canceled"
+	DotNetComponentProvisioningStateDeleting   DotNetComponentProvisioningState = "Deleting"
+	DotNetComponentProvisioningStateFailed     DotNetComponentProvisioningState = "Failed"
+	DotNetComponentProvisioningStateInProgress DotNetComponentProvisioningState = "InProgress"
+	DotNetComponentProvisioningStateSucceeded  DotNetComponentProvisioningState = "Succeeded"
+)
+
+// PossibleDotNetComponentProvisioningStateValues returns the possible values for the DotNetComponentProvisioningState const type.
+func PossibleDotNetComponentProvisioningStateValues() []DotNetComponentProvisioningState {
+	return []DotNetComponentProvisioningState{
+		DotNetComponentProvisioningStateCanceled,
+		DotNetComponentProvisioningStateDeleting,
+		DotNetComponentProvisioningStateFailed,
+		DotNetComponentProvisioningStateInProgress,
+		DotNetComponentProvisioningStateSucceeded,
+	}
+}
+
+// DotNetComponentType - Type of the .NET Component.
+type DotNetComponentType string
+
+const (
+	DotNetComponentTypeAspireDashboard DotNetComponentType = "AspireDashboard"
+)
+
+// PossibleDotNetComponentTypeValues returns the possible values for the DotNetComponentType const type.
+func PossibleDotNetComponentTypeValues() []DotNetComponentType {
+	return []DotNetComponentType{
+		DotNetComponentTypeAspireDashboard,
 	}
 }
 
@@ -499,6 +647,23 @@ func PossibleIdentitySettingsLifeCycleValues() []IdentitySettingsLifeCycle {
 	}
 }
 
+// ImageType - The type of the image. Set to CloudBuild to let the system manages the image, where user will not be able to
+// update image through image field. Set to ContainerImage for user provided image.
+type ImageType string
+
+const (
+	ImageTypeCloudBuild     ImageType = "CloudBuild"
+	ImageTypeContainerImage ImageType = "ContainerImage"
+)
+
+// PossibleImageTypeValues returns the possible values for the ImageType const type.
+func PossibleImageTypeValues() []ImageType {
+	return []ImageType{
+		ImageTypeCloudBuild,
+		ImageTypeContainerImage,
+	}
+}
+
 // IngressClientCertificateMode - Client certificate mode for mTLS authentication. Ignore indicates server drops client certificate
 // on forwarding. Accept indicates server forwards client certificate but does not require a client
 // certificate. Require indicates server requires a client certificate.
@@ -516,6 +681,22 @@ func PossibleIngressClientCertificateModeValues() []IngressClientCertificateMode
 		IngressClientCertificateModeAccept,
 		IngressClientCertificateModeIgnore,
 		IngressClientCertificateModeRequire,
+	}
+}
+
+// IngressTargetPortHTTPScheme - Whether an http app listens on http or https
+type IngressTargetPortHTTPScheme string
+
+const (
+	IngressTargetPortHTTPSchemeHTTP  IngressTargetPortHTTPScheme = "http"
+	IngressTargetPortHTTPSchemeHTTPS IngressTargetPortHTTPScheme = "https"
+)
+
+// PossibleIngressTargetPortHTTPSchemeValues returns the possible values for the IngressTargetPortHTTPScheme const type.
+func PossibleIngressTargetPortHTTPSchemeValues() []IngressTargetPortHTTPScheme {
+	return []IngressTargetPortHTTPScheme{
+		IngressTargetPortHTTPSchemeHTTP,
+		IngressTargetPortHTTPSchemeHTTPS,
 	}
 }
 
@@ -565,17 +746,21 @@ func PossibleJavaComponentProvisioningStateValues() []JavaComponentProvisioningS
 type JavaComponentType string
 
 const (
-	JavaComponentTypeSpringBootAdmin   JavaComponentType = "SpringBootAdmin"
-	JavaComponentTypeSpringCloudConfig JavaComponentType = "SpringCloudConfig"
-	JavaComponentTypeSpringCloudEureka JavaComponentType = "SpringCloudEureka"
+	JavaComponentTypeNacos              JavaComponentType = "Nacos"
+	JavaComponentTypeSpringBootAdmin    JavaComponentType = "SpringBootAdmin"
+	JavaComponentTypeSpringCloudConfig  JavaComponentType = "SpringCloudConfig"
+	JavaComponentTypeSpringCloudEureka  JavaComponentType = "SpringCloudEureka"
+	JavaComponentTypeSpringCloudGateway JavaComponentType = "SpringCloudGateway"
 )
 
 // PossibleJavaComponentTypeValues returns the possible values for the JavaComponentType const type.
 func PossibleJavaComponentTypeValues() []JavaComponentType {
 	return []JavaComponentType{
+		JavaComponentTypeNacos,
 		JavaComponentTypeSpringBootAdmin,
 		JavaComponentTypeSpringCloudConfig,
 		JavaComponentTypeSpringCloudEureka,
+		JavaComponentTypeSpringCloudGateway,
 	}
 }
 
@@ -627,6 +812,24 @@ func PossibleJobProvisioningStateValues() []JobProvisioningState {
 	}
 }
 
+// JobRunningState - Current running state of the job
+type JobRunningState string
+
+const (
+	JobRunningStateProgressing JobRunningState = "Progressing"
+	JobRunningStateReady       JobRunningState = "Ready"
+	JobRunningStateSuspended   JobRunningState = "Suspended"
+)
+
+// PossibleJobRunningStateValues returns the possible values for the JobRunningState const type.
+func PossibleJobRunningStateValues() []JobRunningState {
+	return []JobRunningState{
+		JobRunningStateProgressing,
+		JobRunningStateReady,
+		JobRunningStateSuspended,
+	}
+}
+
 // Kind - Metadata to represent the container app kind, representing if a container app is workflowapp or functionapp.
 type Kind string
 
@@ -640,6 +843,30 @@ func PossibleKindValues() []Kind {
 	return []Kind{
 		KindFunctionapp,
 		KindWorkflowapp,
+	}
+}
+
+// Level - The specified logger's log level.
+type Level string
+
+const (
+	LevelDebug Level = "debug"
+	LevelError Level = "error"
+	LevelInfo  Level = "info"
+	LevelOff   Level = "off"
+	LevelTrace Level = "trace"
+	LevelWarn  Level = "warn"
+)
+
+// PossibleLevelValues returns the possible values for the Level const type.
+func PossibleLevelValues() []Level {
+	return []Level{
+		LevelDebug,
+		LevelError,
+		LevelInfo,
+		LevelOff,
+		LevelTrace,
+		LevelWarn,
 	}
 }
 
@@ -679,6 +906,21 @@ func PossibleLogLevelValues() []LogLevel {
 	}
 }
 
+type LogicAppsProxyMethod string
+
+const (
+	LogicAppsProxyMethodGET  LogicAppsProxyMethod = "GET"
+	LogicAppsProxyMethodPOST LogicAppsProxyMethod = "POST"
+)
+
+// PossibleLogicAppsProxyMethodValues returns the possible values for the LogicAppsProxyMethod const type.
+func PossibleLogicAppsProxyMethodValues() []LogicAppsProxyMethod {
+	return []LogicAppsProxyMethod{
+		LogicAppsProxyMethodGET,
+		LogicAppsProxyMethodPOST,
+	}
+}
+
 // ManagedCertificateDomainControlValidation - Selected type of domain control validation for managed certificates.
 type ManagedCertificateDomainControlValidation string
 
@@ -714,6 +956,76 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// PatchApplyStatus - The status of the patch once it has been provisioned
+type PatchApplyStatus string
+
+const (
+	PatchApplyStatusCanceled               PatchApplyStatus = "Canceled"
+	PatchApplyStatusCreatingRevision       PatchApplyStatus = "CreatingRevision"
+	PatchApplyStatusImagePushPullFailed    PatchApplyStatus = "ImagePushPullFailed"
+	PatchApplyStatusManuallySkipped        PatchApplyStatus = "ManuallySkipped"
+	PatchApplyStatusNotStarted             PatchApplyStatus = "NotStarted"
+	PatchApplyStatusRebaseFailed           PatchApplyStatus = "RebaseFailed"
+	PatchApplyStatusRebaseInProgress       PatchApplyStatus = "RebaseInProgress"
+	PatchApplyStatusRevisionCreationFailed PatchApplyStatus = "RevisionCreationFailed"
+	PatchApplyStatusSucceeded              PatchApplyStatus = "Succeeded"
+)
+
+// PossiblePatchApplyStatusValues returns the possible values for the PatchApplyStatus const type.
+func PossiblePatchApplyStatusValues() []PatchApplyStatus {
+	return []PatchApplyStatus{
+		PatchApplyStatusCanceled,
+		PatchApplyStatusCreatingRevision,
+		PatchApplyStatusImagePushPullFailed,
+		PatchApplyStatusManuallySkipped,
+		PatchApplyStatusNotStarted,
+		PatchApplyStatusRebaseFailed,
+		PatchApplyStatusRebaseInProgress,
+		PatchApplyStatusRevisionCreationFailed,
+		PatchApplyStatusSucceeded,
+	}
+}
+
+// PatchType - The type for the patch.
+type PatchType string
+
+const (
+	PatchTypeFrameworkAndOSSecurity PatchType = "FrameworkAndOSSecurity"
+	PatchTypeFrameworkSecurity      PatchType = "FrameworkSecurity"
+	PatchTypeOSSecurity             PatchType = "OSSecurity"
+	PatchTypeOther                  PatchType = "Other"
+)
+
+// PossiblePatchTypeValues returns the possible values for the PatchType const type.
+func PossiblePatchTypeValues() []PatchType {
+	return []PatchType{
+		PatchTypeFrameworkAndOSSecurity,
+		PatchTypeFrameworkSecurity,
+		PatchTypeOSSecurity,
+		PatchTypeOther,
+	}
+}
+
+// PatchingMode - Patching mode for the container app. Null or default in this field will be interpreted as Automatic by RP.
+// Automatic mode will automatically apply available patches. Manual mode will require the user
+// to manually apply patches. Disabled mode will stop patch detection and auto patching.
+type PatchingMode string
+
+const (
+	PatchingModeAutomatic PatchingMode = "Automatic"
+	PatchingModeDisabled  PatchingMode = "Disabled"
+	PatchingModeManual    PatchingMode = "Manual"
+)
+
+// PossiblePatchingModeValues returns the possible values for the PatchingMode const type.
+func PossiblePatchingModeValues() []PatchingMode {
+	return []PatchingMode{
+		PatchingModeAutomatic,
+		PatchingModeDisabled,
+		PatchingModeManual,
 	}
 }
 
@@ -913,6 +1225,23 @@ func PossibleSessionPoolProvisioningStateValues() []SessionPoolProvisioningState
 	}
 }
 
+// SessionProbeType - Denotes the type of probe. Can be Liveness or Startup, Readiness probe is not supported in sessions.
+// Type must be unique for each probe within the context of a list of probes (SessionProbes).
+type SessionProbeType string
+
+const (
+	SessionProbeTypeLiveness SessionProbeType = "Liveness"
+	SessionProbeTypeStartup  SessionProbeType = "Startup"
+)
+
+// PossibleSessionProbeTypeValues returns the possible values for the SessionProbeType const type.
+func PossibleSessionProbeTypeValues() []SessionProbeType {
+	return []SessionProbeType{
+		SessionProbeTypeLiveness,
+		SessionProbeTypeStartup,
+	}
+}
+
 // SourceControlOperationState - Current provisioning State of the operation
 type SourceControlOperationState string
 
@@ -933,6 +1262,24 @@ func PossibleSourceControlOperationStateValues() []SourceControlOperationState {
 	}
 }
 
+// Status - Status of the label history record.
+type Status string
+
+const (
+	StatusFailed    Status = "Failed"
+	StatusStarting  Status = "Starting"
+	StatusSucceeded Status = "Succeeded"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusFailed,
+		StatusStarting,
+		StatusSucceeded,
+	}
+}
+
 // StorageType - Storage type for the volume. If not provided, use EmptyDir.
 type StorageType string
 
@@ -941,6 +1288,7 @@ const (
 	StorageTypeEmptyDir     StorageType = "EmptyDir"
 	StorageTypeNfsAzureFile StorageType = "NfsAzureFile"
 	StorageTypeSecret       StorageType = "Secret"
+	StorageTypeSmb          StorageType = "Smb"
 )
 
 // PossibleStorageTypeValues returns the possible values for the StorageType const type.
@@ -950,6 +1298,7 @@ func PossibleStorageTypeValues() []StorageType {
 		StorageTypeEmptyDir,
 		StorageTypeNfsAzureFile,
 		StorageTypeSecret,
+		StorageTypeSmb,
 	}
 }
 

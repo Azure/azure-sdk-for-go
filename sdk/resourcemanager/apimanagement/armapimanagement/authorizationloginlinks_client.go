@@ -27,7 +27,7 @@ type AuthorizationLoginLinksClient struct {
 // NewAuthorizationLoginLinksClient creates a new instance of AuthorizationLoginLinksClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthorizationLoginLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizationLoginLinksClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewAuthorizationLoginLinksClient(subscriptionID string, credential azcore.T
 // Post - Gets authorization login links.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - authorizationProviderID - Identifier of the authorization provider.
@@ -101,7 +101,7 @@ func (client *AuthorizationLoginLinksClient) postCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -28,7 +28,7 @@ type WorkspaceCertificateClient struct {
 // NewWorkspaceCertificateClient creates a new instance of WorkspaceCertificateClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceCertificateClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkspaceCertificateClient(subscriptionID string, credential azcore.Toke
 // CreateOrUpdate - Creates or updates the certificate being used for authentication with the backend.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -102,7 +102,7 @@ func (client *WorkspaceCertificateClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -129,7 +129,7 @@ func (client *WorkspaceCertificateClient) createOrUpdateHandleResponse(resp *htt
 // Delete - Deletes specific certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -187,7 +187,7 @@ func (client *WorkspaceCertificateClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -197,7 +197,7 @@ func (client *WorkspaceCertificateClient) deleteCreateRequest(ctx context.Contex
 // Get - Gets the details of the certificate specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -254,7 +254,7 @@ func (client *WorkspaceCertificateClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -274,7 +274,7 @@ func (client *WorkspaceCertificateClient) getHandleResponse(resp *http.Response)
 
 // GetEntityTag - Gets the entity state (Etag) version of the certificate specified by its identifier.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -331,7 +331,7 @@ func (client *WorkspaceCertificateClient) getEntityTagCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -348,7 +348,7 @@ func (client *WorkspaceCertificateClient) getEntityTagHandleResponse(resp *http.
 
 // NewListByWorkspacePager - Lists a collection of all certificates in the specified workspace.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -410,7 +410,7 @@ func (client *WorkspaceCertificateClient) listByWorkspaceCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	if options != nil && options.IsKeyVaultRefreshFailed != nil {
 		reqQP.Set("isKeyVaultRefreshFailed", strconv.FormatBool(*options.IsKeyVaultRefreshFailed))
 	}
@@ -431,7 +431,7 @@ func (client *WorkspaceCertificateClient) listByWorkspaceHandleResponse(resp *ht
 // RefreshSecret - From KeyVault, Refresh the certificate being used for authentication with the backend.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -488,7 +488,7 @@ func (client *WorkspaceCertificateClient) refreshSecretCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

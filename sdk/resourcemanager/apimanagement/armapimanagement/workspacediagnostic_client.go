@@ -28,7 +28,7 @@ type WorkspaceDiagnosticClient struct {
 // NewWorkspaceDiagnosticClient creates a new instance of WorkspaceDiagnosticClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWorkspaceDiagnosticClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceDiagnosticClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewWorkspaceDiagnosticClient(subscriptionID string, credential azcore.Token
 // CreateOrUpdate - Creates a new Diagnostic or updates an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -102,7 +102,7 @@ func (client *WorkspaceDiagnosticClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -129,7 +129,7 @@ func (client *WorkspaceDiagnosticClient) createOrUpdateHandleResponse(resp *http
 // Delete - Deletes the specified Diagnostic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -187,7 +187,7 @@ func (client *WorkspaceDiagnosticClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -197,7 +197,7 @@ func (client *WorkspaceDiagnosticClient) deleteCreateRequest(ctx context.Context
 // Get - Gets the details of the Diagnostic specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -253,7 +253,7 @@ func (client *WorkspaceDiagnosticClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,7 +273,7 @@ func (client *WorkspaceDiagnosticClient) getHandleResponse(resp *http.Response) 
 
 // GetEntityTag - Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -330,7 +330,7 @@ func (client *WorkspaceDiagnosticClient) getEntityTagCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +347,7 @@ func (client *WorkspaceDiagnosticClient) getEntityTagHandleResponse(resp *http.R
 
 // NewListByWorkspacePager - Lists all diagnostics in the specified workspace.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -409,7 +409,7 @@ func (client *WorkspaceDiagnosticClient) listByWorkspaceCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -427,7 +427,7 @@ func (client *WorkspaceDiagnosticClient) listByWorkspaceHandleResponse(resp *htt
 // Update - Updates the details of the Diagnostic specified by its identifier.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - workspaceID - Workspace identifier. Must be unique in the current API Management service instance.
@@ -487,7 +487,7 @@ func (client *WorkspaceDiagnosticClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}

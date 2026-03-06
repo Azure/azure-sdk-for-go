@@ -11,10 +11,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementListWorkspaceNotificationRecipientUsers.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementListWorkspaceNotificationRecipientUsers.json
 func ExampleWorkspaceNotificationRecipientUserClient_ListByNotification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleWorkspaceNotificationRecipientUserClient_ListByNotification() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementHeadWorkspaceNotificationRecipientUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementHeadWorkspaceNotificationRecipientUser.json
 func ExampleWorkspaceNotificationRecipientUserClient_CheckEntityExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleWorkspaceNotificationRecipientUserClient_CheckEntityExists() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementCreateWorkspaceNotificationRecipientUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementCreateWorkspaceNotificationRecipientUser.json
 func ExampleWorkspaceNotificationRecipientUserClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleWorkspaceNotificationRecipientUserClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e436160e64c0f8d7fb20d662be2712f71f0a7ef5/specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/ApiManagementDeleteWorkspaceNotificationRecipientUser.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5dd143cb4df0d7aa187b68a4ae5dc0d5aff966fc/specification/apimanagement/resource-manager/Microsoft.ApiManagement/ApiManagement/preview/2025-03-01-preview/examples/ApiManagementDeleteWorkspaceNotificationRecipientUser.json
 func ExampleWorkspaceNotificationRecipientUserClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

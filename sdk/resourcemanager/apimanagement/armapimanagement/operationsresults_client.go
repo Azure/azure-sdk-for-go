@@ -27,7 +27,7 @@ type OperationsResultsClient struct {
 // NewOperationsResultsClient creates a new instance of OperationsResultsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsResultsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -43,7 +43,7 @@ func NewOperationsResultsClient(subscriptionID string, credential azcore.TokenCr
 // Get - Returns operation results for long running operations executing DELETE or PATCH on the resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - location - The name of the Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationsResultsClientGetOptions contains the optional parameters for the OperationsResultsClient.Get method.
@@ -89,7 +89,7 @@ func (client *OperationsResultsClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -1,5 +1,101 @@
 # Release History
 
+## 3.1.0-beta.1 (2026-01-20)
+### Features Added
+
+- New value `SKUTypePremiumV2` added to enum type `SKUType`
+- New enum type `BackendSessionIDSource` with values `BackendSessionIDSourceCookie`
+- New enum type `CarbonEmissionCategory` with values `CarbonEmissionCategoryHigh`, `CarbonEmissionCategoryLow`, `CarbonEmissionCategoryMedium`, `CarbonEmissionCategoryVeryHigh`, `CarbonEmissionCategoryVeryLow`
+- New enum type `ClientApplicationState` with values `ClientApplicationStateActive`, `ClientApplicationStateApproved`, `ClientApplicationStatePending`, `ClientApplicationStateRejected`
+- New enum type `KeyVaultFetchCode` with values `KeyVaultFetchCodeFailed`, `KeyVaultFetchCodeSuccess`
+- New enum type `LlmDiagnosticSettings` with values `LlmDiagnosticSettingsDisabled`, `LlmDiagnosticSettingsEnabled`
+- New enum type `LlmMessageLogTypes` with values `LlmMessageLogTypesAll`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `ProductAuthType` with values `ProductAuthTypeApplicationToken`, `ProductAuthTypeSubscriptionKey`
+- New enum type `ReleaseChannel` with values `ReleaseChannelDefault`, `ReleaseChannelPreview`, `ReleaseChannelStable`
+- New function `NewAPIGatewayHostnameBindingClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIGatewayHostnameBindingClient, error)`
+- New function `*APIGatewayHostnameBindingClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, parameters GatewayHostnameBindingResource, options *APIGatewayHostnameBindingClientBeginCreateOrUpdateOptions) (*runtime.Poller[APIGatewayHostnameBindingClientCreateOrUpdateResponse], error)`
+- New function `*APIGatewayHostnameBindingClient.BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, ifMatch string, options *APIGatewayHostnameBindingClientBeginDeleteOptions) (*runtime.Poller[APIGatewayHostnameBindingClientDeleteResponse], error)`
+- New function `*APIGatewayHostnameBindingClient.Get(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, options *APIGatewayHostnameBindingClientGetOptions) (APIGatewayHostnameBindingClientGetResponse, error)`
+- New function `*APIGatewayHostnameBindingClient.NewListByGatewayPager(resourceGroupName string, gatewayName string, options *APIGatewayHostnameBindingClientListByGatewayOptions) *runtime.Pager[APIGatewayHostnameBindingClientListByGatewayResponse]`
+- New function `*APIGatewayHostnameBindingClient.BeginRefreshSecret(ctx context.Context, resourceGroupName string, gatewayName string, hostnameBindingName string, options *APIGatewayHostnameBindingClientBeginRefreshSecretOptions) (*runtime.Poller[APIGatewayHostnameBindingClientRefreshSecretResponse], error)`
+- New function `NewAPIToolClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIToolClient, error)`
+- New function `*APIToolClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, parameters ToolContract, options *APIToolClientCreateOrUpdateOptions) (APIToolClientCreateOrUpdateResponse, error)`
+- New function `*APIToolClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientDeleteOptions) (APIToolClientDeleteResponse, error)`
+- New function `*APIToolClient.Get(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientGetOptions) (APIToolClientGetResponse, error)`
+- New function `*APIToolClient.GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, options *APIToolClientGetEntityTagOptions) (APIToolClientGetEntityTagResponse, error)`
+- New function `*APIToolClient.NewListByAPIPager(resourceGroupName string, serviceName string, apiID string, options *APIToolClientListByAPIOptions) *runtime.Pager[APIToolClientListByAPIResponse]`
+- New function `*APIToolClient.Update(ctx context.Context, resourceGroupName string, serviceName string, apiID string, toolID string, parameters ToolContract, options *APIToolClientUpdateOptions) (APIToolClientUpdateResponse, error)`
+- New function `*AuthorizationProviderClient.RefreshSecret(ctx context.Context, resourceGroupName string, serviceName string, authorizationProviderID string, options *AuthorizationProviderClientRefreshSecretOptions) (AuthorizationProviderClientRefreshSecretResponse, error)`
+- New function `NewClientApplicationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationClient, error)`
+- New function `*ClientApplicationClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, parameters ClientApplicationContract, options *ClientApplicationClientCreateOrUpdateOptions) (ClientApplicationClientCreateOrUpdateResponse, error)`
+- New function `*ClientApplicationClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientDeleteOptions) (ClientApplicationClientDeleteResponse, error)`
+- New function `*ClientApplicationClient.Get(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientGetOptions) (ClientApplicationClientGetResponse, error)`
+- New function `*ClientApplicationClient.GetEntityTag(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientGetEntityTagOptions) (ClientApplicationClientGetEntityTagResponse, error)`
+- New function `*ClientApplicationClient.NewListByServicePager(resourceGroupName string, serviceName string, options *ClientApplicationClientListByServiceOptions) *runtime.Pager[ClientApplicationClientListByServiceResponse]`
+- New function `*ClientApplicationClient.ListSecrets(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationClientListSecretsOptions) (ClientApplicationClientListSecretsResponse, error)`
+- New function `NewClientApplicationProductLinkClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClientApplicationProductLinkClient, error)`
+- New function `*ClientApplicationProductLinkClient.Create(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, parameters ClientApplicationProductLinkContract, options *ClientApplicationProductLinkClientCreateOptions) (ClientApplicationProductLinkClientCreateResponse, error)`
+- New function `*ClientApplicationProductLinkClient.Delete(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, options *ClientApplicationProductLinkClientDeleteOptions) (ClientApplicationProductLinkClientDeleteResponse, error)`
+- New function `*ClientApplicationProductLinkClient.Get(ctx context.Context, resourceGroupName string, serviceName string, clientApplicationID string, clientApplicationProductLinkID string, options *ClientApplicationProductLinkClientGetOptions) (ClientApplicationProductLinkClientGetResponse, error)`
+- New function `*ClientApplicationProductLinkClient.NewListByClientApplicationsPager(resourceGroupName string, serviceName string, clientApplicationID string, options *ClientApplicationProductLinkClientListByClientApplicationsOptions) *runtime.Pager[ClientApplicationProductLinkClientListByClientApplicationsResponse]`
+- New function `*ClientFactory.NewAPIGatewayHostnameBindingClient() *APIGatewayHostnameBindingClient`
+- New function `*ClientFactory.NewAPIToolClient() *APIToolClient`
+- New function `*ClientFactory.NewClientApplicationClient() *ClientApplicationClient`
+- New function `*ClientFactory.NewClientApplicationProductLinkClient() *ClientApplicationProductLinkClient`
+- New function `*ServiceClient.BeginRefreshHostnames(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceClientBeginRefreshHostnamesOptions) (*runtime.Poller[ServiceClientRefreshHostnamesResponse], error)`
+- New struct `AuthorizationProviderKeyVaultContract`
+- New struct `AuthorizationProviderKeyVaultCreateProperties`
+- New struct `BackendFailureResponse`
+- New struct `BackendSessionAffinity`
+- New struct `BackendSessionID`
+- New struct `ClientApplicationCollection`
+- New struct `ClientApplicationContract`
+- New struct `ClientApplicationContractProperties`
+- New struct `ClientApplicationProductLinkCollection`
+- New struct `ClientApplicationProductLinkContract`
+- New struct `ClientApplicationProductLinkContractProperties`
+- New struct `ClientApplicationSecretsContract`
+- New struct `ClientApplicationSecretsContractEntra`
+- New struct `GatewayHostnameBindingBaseProperties`
+- New struct `GatewayHostnameBindingCertificate`
+- New struct `GatewayHostnameBindingKeyVault`
+- New struct `GatewayHostnameBindingKeyVaultLastStatus`
+- New struct `GatewayHostnameBindingListResult`
+- New struct `GatewayHostnameBindingResource`
+- New struct `LLMDiagnosticSettings`
+- New struct `LLMMessageDiagnosticSettings`
+- New struct `ManagedServiceIdentity`
+- New struct `ProductApplicationContract`
+- New struct `ProductApplicationContractEntra`
+- New struct `ProductEntityBaseParametersApplication`
+- New struct `ToolCollection`
+- New struct `ToolContract`
+- New struct `ToolContractProperties`
+- New struct `UserAssignedIdentity`
+- New field `KeyVault` in struct `AuthorizationProviderOAuth2Settings`
+- New field `AzureRegion` in struct `BackendBaseParameters`
+- New field `FailureResponse`, `SessionAffinity` in struct `BackendBaseParametersPool`
+- New field `AzureRegion` in struct `BackendContractProperties`
+- New field `FailureResponse`, `SessionAffinity` in struct `BackendPool`
+- New field `PreferredCarbonEmission` in struct `BackendPoolItem`
+- New field `ServerCertificateThumbprints`, `ServerX509Names` in struct `BackendTLSProperties`
+- New field `AzureRegion` in struct `BackendUpdateParameterProperties`
+- New field `FailureResponse` in struct `CircuitBreakerRule`
+- New field `LargeLanguageModel` in struct `DiagnosticContractProperties`
+- New field `Identity` in struct `GatewayContract`
+- New field `CertificateID` in struct `IdentityProviderContractProperties`
+- New field `CertificateID` in struct `IdentityProviderCreateContractProperties`
+- New field `CertificateID` in struct `IdentityProviderUpdateProperties`
+- New field `Application`, `AuthenticationType` in struct `ProductContractProperties`
+- New field `Application`, `AuthenticationType` in struct `ProductEntityBaseParameters`
+- New field `Application`, `AuthenticationType` in struct `ProductTagResourceContractProperties`
+- New field `Application`, `AuthenticationType` in struct `ProductUpdateProperties`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceBaseProperties`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceProperties`
+- New field `ReleaseChannel`, `ZoneRedundant` in struct `ServiceUpdateProperties`
+
+
 ## 3.0.0 (2025-04-10)
 ### Breaking Changes
 

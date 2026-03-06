@@ -31,6 +31,9 @@ type ServerFactory struct {
 	// APIGatewayConfigConnectionServer contains the fakes for client APIGatewayConfigConnectionClient
 	APIGatewayConfigConnectionServer APIGatewayConfigConnectionServer
 
+	// APIGatewayHostnameBindingServer contains the fakes for client APIGatewayHostnameBindingClient
+	APIGatewayHostnameBindingServer APIGatewayHostnameBindingServer
+
 	// APIIssueAttachmentServer contains the fakes for client APIIssueAttachmentClient
 	APIIssueAttachmentServer APIIssueAttachmentServer
 
@@ -63,6 +66,9 @@ type ServerFactory struct {
 
 	// APITagDescriptionServer contains the fakes for client APITagDescriptionClient
 	APITagDescriptionServer APITagDescriptionServer
+
+	// APIToolServer contains the fakes for client APIToolClient
+	APIToolServer APIToolServer
 
 	// APIVersionSetServer contains the fakes for client APIVersionSetClient
 	APIVersionSetServer APIVersionSetServer
@@ -102,6 +108,12 @@ type ServerFactory struct {
 
 	// Server contains the fakes for client Client
 	Server Server
+
+	// ClientApplicationServer contains the fakes for client ClientApplicationClient
+	ClientApplicationServer ClientApplicationServer
+
+	// ClientApplicationProductLinkServer contains the fakes for client ClientApplicationProductLinkClient
+	ClientApplicationProductLinkServer ClientApplicationProductLinkServer
 
 	// ContentItemServer contains the fakes for client ContentItemClient
 	ContentItemServer ContentItemServer
@@ -447,6 +459,7 @@ type ServerFactoryTransport struct {
 	trAPIExportServer                            *APIExportServerTransport
 	trAPIGatewayServer                           *APIGatewayServerTransport
 	trAPIGatewayConfigConnectionServer           *APIGatewayConfigConnectionServerTransport
+	trAPIGatewayHostnameBindingServer            *APIGatewayHostnameBindingServerTransport
 	trAPIIssueAttachmentServer                   *APIIssueAttachmentServerTransport
 	trAPIIssueServer                             *APIIssueServerTransport
 	trAPIIssueCommentServer                      *APIIssueCommentServerTransport
@@ -458,6 +471,7 @@ type ServerFactoryTransport struct {
 	trAPIRevisionServer                          *APIRevisionServerTransport
 	trAPISchemaServer                            *APISchemaServerTransport
 	trAPITagDescriptionServer                    *APITagDescriptionServerTransport
+	trAPIToolServer                              *APIToolServerTransport
 	trAPIVersionSetServer                        *APIVersionSetServerTransport
 	trAPIWikiServer                              *APIWikiServerTransport
 	trAPIWikisServer                             *APIWikisServerTransport
@@ -471,6 +485,8 @@ type ServerFactoryTransport struct {
 	trCacheServer                                *CacheServerTransport
 	trCertificateServer                          *CertificateServerTransport
 	trServer                                     *ServerTransport
+	trClientApplicationServer                    *ClientApplicationServerTransport
+	trClientApplicationProductLinkServer         *ClientApplicationProductLinkServerTransport
 	trContentItemServer                          *ContentItemServerTransport
 	trContentTypeServer                          *ContentTypeServerTransport
 	trDelegationSettingsServer                   *DelegationSettingsServerTransport
@@ -613,6 +629,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAPIGatewayConfigConnectionServerTransport(&s.srv.APIGatewayConfigConnectionServer)
 		})
 		resp, err = s.trAPIGatewayConfigConnectionServer.Do(req)
+	case "APIGatewayHostnameBindingClient":
+		initServer(s, &s.trAPIGatewayHostnameBindingServer, func() *APIGatewayHostnameBindingServerTransport {
+			return NewAPIGatewayHostnameBindingServerTransport(&s.srv.APIGatewayHostnameBindingServer)
+		})
+		resp, err = s.trAPIGatewayHostnameBindingServer.Do(req)
 	case "APIIssueAttachmentClient":
 		initServer(s, &s.trAPIIssueAttachmentServer, func() *APIIssueAttachmentServerTransport {
 			return NewAPIIssueAttachmentServerTransport(&s.srv.APIIssueAttachmentServer)
@@ -654,6 +675,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAPITagDescriptionServerTransport(&s.srv.APITagDescriptionServer)
 		})
 		resp, err = s.trAPITagDescriptionServer.Do(req)
+	case "APIToolClient":
+		initServer(s, &s.trAPIToolServer, func() *APIToolServerTransport { return NewAPIToolServerTransport(&s.srv.APIToolServer) })
+		resp, err = s.trAPIToolServer.Do(req)
 	case "APIVersionSetClient":
 		initServer(s, &s.trAPIVersionSetServer, func() *APIVersionSetServerTransport {
 			return NewAPIVersionSetServerTransport(&s.srv.APIVersionSetServer)
@@ -705,6 +729,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "ClientApplicationClient":
+		initServer(s, &s.trClientApplicationServer, func() *ClientApplicationServerTransport {
+			return NewClientApplicationServerTransport(&s.srv.ClientApplicationServer)
+		})
+		resp, err = s.trClientApplicationServer.Do(req)
+	case "ClientApplicationProductLinkClient":
+		initServer(s, &s.trClientApplicationProductLinkServer, func() *ClientApplicationProductLinkServerTransport {
+			return NewClientApplicationProductLinkServerTransport(&s.srv.ClientApplicationProductLinkServer)
+		})
+		resp, err = s.trClientApplicationProductLinkServer.Do(req)
 	case "ContentItemClient":
 		initServer(s, &s.trContentItemServer, func() *ContentItemServerTransport { return NewContentItemServerTransport(&s.srv.ContentItemServer) })
 		resp, err = s.trContentItemServer.Do(req)

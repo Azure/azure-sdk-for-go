@@ -28,7 +28,7 @@ type PolicyFragmentClient struct {
 // NewPolicyFragmentClient creates a new instance of PolicyFragmentClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPolicyFragmentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyFragmentClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -44,7 +44,7 @@ func NewPolicyFragmentClient(subscriptionID string, credential azcore.TokenCrede
 // BeginCreateOrUpdate - Creates or updates a policy fragment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - id - A resource identifier.
@@ -72,7 +72,7 @@ func (client *PolicyFragmentClient) BeginCreateOrUpdate(ctx context.Context, res
 // CreateOrUpdate - Creates or updates a policy fragment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 func (client *PolicyFragmentClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, id string, parameters PolicyFragmentContract, options *PolicyFragmentClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PolicyFragmentClient.BeginCreateOrUpdate"
@@ -118,7 +118,7 @@ func (client *PolicyFragmentClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -133,7 +133,7 @@ func (client *PolicyFragmentClient) createOrUpdateCreateRequest(ctx context.Cont
 // Delete - Deletes a policy fragment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - id - A resource identifier.
@@ -185,7 +185,7 @@ func (client *PolicyFragmentClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -195,7 +195,7 @@ func (client *PolicyFragmentClient) deleteCreateRequest(ctx context.Context, res
 // Get - Gets a policy fragment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - id - A resource identifier.
@@ -246,7 +246,7 @@ func (client *PolicyFragmentClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	if options != nil && options.Format != nil {
 		reqQP.Set("format", string(*options.Format))
 	}
@@ -269,7 +269,7 @@ func (client *PolicyFragmentClient) getHandleResponse(resp *http.Response) (Poli
 
 // GetEntityTag - Gets the entity state (Etag) version of a policy fragment.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - id - A resource identifier.
@@ -321,7 +321,7 @@ func (client *PolicyFragmentClient) getEntityTagCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -338,7 +338,7 @@ func (client *PolicyFragmentClient) getEntityTagHandleResponse(resp *http.Respon
 
 // NewListByServicePager - Gets all policy fragments.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - options - PolicyFragmentClientListByServiceOptions contains the optional parameters for the PolicyFragmentClient.NewListByServicePager
@@ -398,7 +398,7 @@ func (client *PolicyFragmentClient) listByServiceCreateRequest(ctx context.Conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -416,7 +416,7 @@ func (client *PolicyFragmentClient) listByServiceHandleResponse(resp *http.Respo
 // ListReferences - Lists policy resources that reference the policy fragment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2024-05-01
+// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serviceName - The name of the API Management service.
 //   - id - A resource identifier.
@@ -474,7 +474,7 @@ func (client *PolicyFragmentClient) listReferencesCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-05-01")
+	reqQP.Set("api-version", "2025-03-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

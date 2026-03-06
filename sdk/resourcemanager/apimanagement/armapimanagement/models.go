@@ -1013,6 +1013,26 @@ type AuthorizationProviderContractProperties struct {
 	Oauth2 *AuthorizationProviderOAuth2Settings
 }
 
+// AuthorizationProviderKeyVaultContract - Authorization Provider KeyVault contract properties.
+type AuthorizationProviderKeyVaultContract struct {
+	// Key vault secret identifier for client secret. When provided, client secret will be retrieved from the provided key vault
+	// secret.
+	SecretIdentifier *string
+
+	// READ-ONLY; Last time sync and refresh of secret from key vault.
+	LastStatus *KeyVaultLastAccessStatusContractProperties
+
+	// READ-ONLY; When the secret was last updated in key vault.
+	Updated *time.Time
+}
+
+// AuthorizationProviderKeyVaultCreateProperties - Authorization Provider KeyVault create contract properties.
+type AuthorizationProviderKeyVaultCreateProperties struct {
+	// Key vault secret identifier for client secret. When provided, client secret will be retrieved from the provided key vault
+	// secret.
+	SecretIdentifier *string
+}
+
 // AuthorizationProviderOAuth2GrantTypes - Authorization Provider oauth2 grant types settings
 type AuthorizationProviderOAuth2GrantTypes struct {
 	// OAuth2 authorization code grant parameters
@@ -1026,6 +1046,9 @@ type AuthorizationProviderOAuth2GrantTypes struct {
 type AuthorizationProviderOAuth2Settings struct {
 	// OAuth2 settings
 	GrantTypes *AuthorizationProviderOAuth2GrantTypes
+
+	// Key Vault reference for client secret storage
+	KeyVault *AuthorizationProviderKeyVaultContract
 
 	// Redirect URL to be set in the OAuth application.
 	RedirectURL *string
@@ -1275,6 +1298,10 @@ type BackendAuthorizationHeaderCredentials struct {
 
 // BackendBaseParameters - Backend entity base Parameter set.
 type BackendBaseParameters struct {
+	// Azure region in which the backend is deployed. Can be optionally specified to use features such as carbon-optimized load
+	// balancer.
+	AzureRegion *string
+
 	// Backend Circuit Breaker Configuration
 	CircuitBreaker *BackendCircuitBreaker
 
@@ -1306,8 +1333,14 @@ type BackendBaseParameters struct {
 }
 
 type BackendBaseParametersPool struct {
+	// The response to be returned when all the backends in the pool are inactive.
+	FailureResponse *BackendFailureResponse
+
 	// The list of backend entities belonging to a pool.
 	Services []*BackendPoolItem
+
+	// The session stickiness properties of the backend pool.
+	SessionAffinity *BackendSessionAffinity
 }
 
 // BackendCircuitBreaker - The configuration of the backend circuit breaker
@@ -1351,11 +1384,9 @@ type BackendContract struct {
 
 // BackendContractProperties - Parameters supplied to the Create Backend operation.
 type BackendContractProperties struct {
-	// REQUIRED; Backend communication protocol.
-	Protocol *BackendProtocol
-
-	// REQUIRED; Runtime Url of the Backend.
-	URL *string
+	// Azure region in which the backend is deployed. Can be optionally specified to use features such as carbon-optimized load
+	// balancer.
+	AzureRegion *string
 
 	// Backend Circuit Breaker Configuration
 	CircuitBreaker *BackendCircuitBreaker
@@ -1369,6 +1400,9 @@ type BackendContractProperties struct {
 
 	// Backend Properties contract
 	Properties *BackendProperties
+
+	// Backend communication protocol. Required when backend type is 'Single'.
+	Protocol *BackendProtocol
 
 	// Backend gateway Contract Properties
 	Proxy *BackendProxyContract
@@ -1385,6 +1419,9 @@ type BackendContractProperties struct {
 
 	// Type of the backend. A backend can be either Single or Pool.
 	Type *BackendType
+
+	// Runtime Url of the Backend. Required when backend type is 'Single'.
+	URL *string
 }
 
 // BackendCredentialsContract - Details of the Credentials used to connect to Backend.
@@ -1405,16 +1442,34 @@ type BackendCredentialsContract struct {
 	Query map[string][]*string
 }
 
+// BackendFailureResponse - The response to be returned when a backend fails to respond
+type BackendFailureResponse struct {
+	// The status code of the response.
+	StatusCode *int32
+}
+
 // BackendPool - Backend pool information
 type BackendPool struct {
+	// The response to be returned when all the backends in the pool are inactive.
+	FailureResponse *BackendFailureResponse
+
 	// The list of backend entities belonging to a pool.
 	Services []*BackendPoolItem
+
+	// The session stickiness properties of the backend pool.
+	SessionAffinity *BackendSessionAffinity
 }
 
 // BackendPoolItem - Backend pool service information
 type BackendPoolItem struct {
 	// REQUIRED; The unique ARM id of the backend entity. The ARM id should refer to an already existing backend entity.
 	ID *string
+
+	// Scope 2 carbon emission preference for the backend. When specified, the load balancer will optimize traffic flow by routing
+	// to regions that have carbon emission less than or equal to the specified
+	// category. However, when all other backends are not available it will route traffic to these regions anyway. This requires
+	// the backend to be attributed with 'azureRegion' information.
+	PreferredCarbonEmission *CarbonEmissionCategory
 
 	// The priority of the backend entity in the backend pool. Must be between 0 and 100. It can be also null if the value not
 	// specified.
@@ -1485,6 +1540,21 @@ type BackendServiceFabricClusterProperties struct {
 	ServerX509Names []*X509CertificateName
 }
 
+// BackendSessionAffinity - The session stickiness properties of the backend pool.
+type BackendSessionAffinity struct {
+	// The id that identifies the requests belonging to the same session.
+	SessionID *BackendSessionID
+}
+
+// BackendSessionID - The properties of the id that identifies the requests belonging to the same session.
+type BackendSessionID struct {
+	// Name of the variable that refers to the session id.
+	Name *string
+
+	// Source from where the session id is extracted.
+	Source *BackendSessionIDSource
+}
+
 // BackendSubnetConfiguration - Information regarding how the subnet to which the gateway should be injected.
 type BackendSubnetConfiguration struct {
 	// The ARM ID of the subnet in which the backend systems are hosted.
@@ -1493,6 +1563,12 @@ type BackendSubnetConfiguration struct {
 
 // BackendTLSProperties - Properties controlling TLS Certificate Validation.
 type BackendTLSProperties struct {
+	// Thumbprints of certificates used by the backend host for TLS communication.
+	ServerCertificateThumbprints []*string
+
+	// Server X509 Certificate Names of the Backend Host.
+	ServerX509Names []*X509CertificateName
+
 	// Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend
 	// host.
 	ValidateCertificateChain *bool
@@ -1504,6 +1580,10 @@ type BackendTLSProperties struct {
 
 // BackendUpdateParameterProperties - Parameters supplied to the Update Backend operation.
 type BackendUpdateParameterProperties struct {
+	// Azure region in which the backend is deployed. Can be optionally specified to use features such as carbon-optimized load
+	// balancer.
+	AzureRegion *string
+
 	// Backend Circuit Breaker Configuration
 	CircuitBreaker *BackendCircuitBreaker
 
@@ -1731,11 +1811,107 @@ type CircuitBreakerRule struct {
 	// The conditions for tripping the circuit breaker.
 	FailureCondition *CircuitBreakerFailureCondition
 
+	// The response of the backend when the circuit breaker gets open.
+	FailureResponse *BackendFailureResponse
+
 	// The rule name.
 	Name *string
 
 	// The duration for which the circuit will be tripped.
 	TripDuration *string
+}
+
+// ClientApplicationCollection - Paged ClientApplication list representation.
+type ClientApplicationCollection struct {
+	// Next page link if any.
+	NextLink *string
+
+	// Page values.
+	Value []*ClientApplicationContract
+}
+
+// ClientApplicationContract - Client application details.
+type ClientApplicationContract struct {
+	// Client application entity contract properties.
+	Properties *ClientApplicationContractProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClientApplicationContractProperties - Client Application Entity Properties
+type ClientApplicationContractProperties struct {
+	// REQUIRED; Client application name.
+	DisplayName *string
+
+	// REQUIRED; A resource identifier for the user who owns the application.
+	OwnerID *string
+
+	// Client application description.
+	Description *string
+
+	// READ-ONLY; Microsoft EntraID Application ID (Client ID). This is the value that is used to identify the application when
+	// it is requesting access tokens from Microsoft EntraID. This property is read-only and will
+	// be set by the system when the application is created.
+	EntraApplicationID *string
+
+	// READ-ONLY; Tenant ID is a unique identifier (a GUID) for an organization directory in Microsoft’s cloud. It’s used to identify
+	// tenants across Microsoft services.
+	EntraTenantID *string
+
+	// READ-ONLY; Client application state. The value derives the state of an application based on the statuses of its associated
+	// ClientApplicationProductLinks.
+	State *ClientApplicationState
+}
+
+// ClientApplicationProductLinkCollection - Paged ClientApplicationProductLinkContract list representation.
+type ClientApplicationProductLinkCollection struct {
+	// Next page link if any.
+	NextLink *string
+
+	// Page values.
+	Value []*ClientApplicationProductLinkContract
+}
+
+// ClientApplicationProductLinkContract - Specifies Client Application - Product link assignment
+type ClientApplicationProductLinkContract struct {
+	// Client application - product link entity contract properties.
+	Properties *ClientApplicationProductLinkContractProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type ClientApplicationProductLinkContractProperties struct {
+	// REQUIRED; The unique resource identifier of the Product.
+	ProductID *string
+}
+
+// ClientApplicationSecretsContract - Specifies client application secrets needed to authorize applications API calls
+type ClientApplicationSecretsContract struct {
+	// Microsoft EntraID client application secrets
+	Entra *ClientApplicationSecretsContractEntra
+}
+
+// ClientApplicationSecretsContractEntra - Microsoft EntraID client application secrets
+type ClientApplicationSecretsContractEntra struct {
+	// EntraID client application secret
+	ClientSecret *string
+
+	// READ-ONLY; EntraID client application secret expiration date.
+	ExpiresAt *time.Time
 }
 
 // ClientSecretContract - Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
@@ -2076,6 +2252,9 @@ type DiagnosticContractProperties struct {
 
 	// Sets correlation protocol to use for Application Insights diagnostics.
 	HTTPCorrelationProtocol *HTTPCorrelationProtocol
+
+	// Large Language Models diagnostic settings
+	LargeLanguageModel *LLMDiagnosticSettings
 
 	// Log the ClientIP. Default is false.
 	LogClientIP *bool
@@ -2475,6 +2654,9 @@ type GatewayConfigurationAPI struct {
 
 // GatewayContract - Gateway details.
 type GatewayContract struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
 	// Gateway details.
 	Properties *GatewayContractProperties
 
@@ -2501,6 +2683,83 @@ type GatewayContractProperties struct {
 type GatewayDebugCredentialsContract struct {
 	// Gateway debug token.
 	Token *string
+}
+
+type GatewayHostnameBindingBaseProperties struct {
+	// REQUIRED; The default hostname of the data-plane gateway.
+	Hostname *string
+
+	// REQUIRED; The link to the API Management service workspace.
+	KeyVault *GatewayHostnameBindingKeyVault
+
+	// READ-ONLY; The hostnames of the data-plane gateway to which requests can be sent.
+	Certificate *GatewayHostnameBindingCertificate
+
+	// READ-ONLY; The current provisioning state of the API Management gateway hostname binding.
+	ProvisioningState *string
+}
+
+type GatewayHostnameBindingCertificate struct {
+	// READ-ONLY; The expiration date of the certificate.
+	Expiry *time.Time
+
+	// READ-ONLY; The subject of the certificate.
+	Subject *string
+
+	// READ-ONLY; The thumbprint of the certificate.
+	Thumbprint *string
+}
+
+type GatewayHostnameBindingKeyVault struct {
+	// REQUIRED; The current provisioning state of the API Management gateway hostname binding.
+	SecretID *string
+
+	// The default hostname of the data-plane gateway.
+	IdentityClientID *string
+
+	// The last status of the Key Vault certificate fetch process.
+	LastStatus *GatewayHostnameBindingKeyVaultLastStatus
+}
+
+type GatewayHostnameBindingKeyVaultLastStatus struct {
+	// READ-ONLY; The last status of the Key Vault certificate fetch process.
+	Code *KeyVaultFetchCode
+
+	// READ-ONLY; The last time the Key Vault certificate fetch process was successful. Only when the fetch process has succeeded
+	// at least once and current state is failed. The date conforms to the following format:
+	// yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	LastSuccessTimeStampUTC *time.Time
+
+	// READ-ONLY; The last time the Key Vault certificate fetch process was attempted. The date conforms to the following format:
+	// yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+	TimeStampUTC *time.Time
+}
+
+// GatewayHostnameBindingListResult - The response of the List API Management gateway hostname binding operation.
+type GatewayHostnameBindingListResult struct {
+	// REQUIRED; Result of the List API Management gateway hostname binding operation.
+	Value []*GatewayHostnameBindingResource
+
+	// Link to the next set of results. Not empty if Value contains incomplete list of API Management gateway hostname bindings.
+	NextLink *string
+}
+
+// GatewayHostnameBindingResource - A single API Management gateway hostname binding resource in List or Get response.
+type GatewayHostnameBindingResource struct {
+	// REQUIRED; Properties of the API Management gateway hostname binding.
+	Properties *GatewayHostnameBindingBaseProperties
+
+	// READ-ONLY; ETag of the resource.
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // GatewayHostnameConfigurationCollection - Paged Gateway hostname configuration list representation.
@@ -3041,6 +3300,9 @@ type IdentityProviderContractProperties struct {
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
 	Authority *string
 
+	// Certificate full resource ID used in external Identity Provider
+	CertificateID *string
+
 	// The client library to be used in the developer portal. Only applies to AAD and AAD B2C Identity Provider.
 	ClientLibrary *string
 
@@ -3101,6 +3363,9 @@ type IdentityProviderCreateContractProperties struct {
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
 	Authority *string
 
+	// Certificate full resource ID used in external Identity Provider
+	CertificateID *string
+
 	// The client library to be used in the developer portal. Only applies to AAD and AAD B2C Identity Provider.
 	ClientLibrary *string
 
@@ -3148,6 +3413,9 @@ type IdentityProviderUpdateProperties struct {
 
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
 	Authority *string
+
+	// Certificate full resource ID used in external Identity Provider
+	CertificateID *string
 
 	// Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login,
 	// App ID for Microsoft.
@@ -3382,6 +3650,27 @@ type KeyVaultLastAccessStatusContractProperties struct {
 	TimeStampUTC *time.Time
 }
 
+// LLMDiagnosticSettings - Diagnostic settings for Large Language Models
+type LLMDiagnosticSettings struct {
+	// Specifies whether default diagnostic should be enabled for Large Language Models or not.
+	Logs *LlmDiagnosticSettings
+
+	// Diagnostic settings for Large Language Models requests.
+	Requests *LLMMessageDiagnosticSettings
+
+	// Diagnostic settings for Large Language Models responses.
+	Responses *LLMMessageDiagnosticSettings
+}
+
+// LLMMessageDiagnosticSettings - Diagnostic settings for Large Language Models Messages
+type LLMMessageDiagnosticSettings struct {
+	// Maximum size of message to logs in bytes. The default size is 32KB.
+	MaxSizeInBytes *int32
+
+	// Specifies which message should be logged. Currently there is only 'all' option.
+	Messages *LlmMessageLogTypes
+}
+
 // LoggerCollection - Paged Logger list representation.
 type LoggerCollection struct {
 	// Total record count number across all pages.
@@ -3448,6 +3737,26 @@ type LoggerUpdateParameters struct {
 
 	// Logger type.
 	LoggerType *LoggerType
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // MigrateToStv2Contract - Describes an available API Management SKU.
@@ -4664,6 +4973,23 @@ type ProductAPILinkContractProperties struct {
 	APIID *string
 }
 
+// ProductApplicationContract - Specifies Microsoft Entra settings needed to authorize product API calls using client applications.
+type ProductApplicationContract struct {
+	// Specifies Microsoft Entra settings needed to authorize product API calls using client application with Microsoft Entra
+	// OAuth token.
+	Entra *ProductApplicationContractEntra
+}
+
+// ProductApplicationContractEntra - Specifies Microsoft Entra settings needed to authorize product API calls using client
+// application with Microsoft Entra OAuth token.
+type ProductApplicationContractEntra struct {
+	// Product facing EntraID application client ID.
+	ApplicationID *string
+
+	// The EntraID application audience claim. The audience claim is used to validate the token.
+	Audience *string
+}
+
 // ProductCollection - Paged Products list representation.
 type ProductCollection struct {
 	// Total record count number across all pages.
@@ -4696,11 +5022,19 @@ type ProductContractProperties struct {
 	// REQUIRED; Product name.
 	DisplayName *string
 
+	// Specifies identity provider settings needed to authorize applications API calls.
+	Application *ProductEntityBaseParametersApplication
+
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
+
+	// Type of supported authentication for the product. The application configuration is required for application-token authentication
+	// type. The subscription-key authentication type is used by default. If
+	// the property is omitted, the subscription-key authentication type is used.
+	AuthenticationType []*ProductAuthType
 
 	// Product description. May include HTML formatting tags.
 	Description *string
@@ -4729,11 +5063,19 @@ type ProductContractProperties struct {
 
 // ProductEntityBaseParameters - Product Entity Base Parameters
 type ProductEntityBaseParameters struct {
+	// Specifies identity provider settings needed to authorize applications API calls.
+	Application *ProductEntityBaseParametersApplication
+
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
+
+	// Type of supported authentication for the product. The application configuration is required for application-token authentication
+	// type. The subscription-key authentication type is used by default. If
+	// the property is omitted, the subscription-key authentication type is used.
+	AuthenticationType []*ProductAuthType
 
 	// Product description. May include HTML formatting tags.
 	Description *string
@@ -4758,6 +5100,13 @@ type ProductEntityBaseParameters struct {
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
 	// before they can complete the subscription process.
 	Terms *string
+}
+
+// ProductEntityBaseParametersApplication - Specifies identity provider settings needed to authorize applications API calls.
+type ProductEntityBaseParametersApplication struct {
+	// Specifies Microsoft Entra settings needed to authorize product API calls using client application with Microsoft Entra
+	// OAuth token.
+	Entra *ProductApplicationContractEntra
 }
 
 // ProductGroupLinkCollection - Paged Product-group link list representation.
@@ -4798,11 +5147,19 @@ type ProductTagResourceContractProperties struct {
 	// REQUIRED; Product name.
 	Name *string
 
+	// Specifies identity provider settings needed to authorize applications API calls.
+	Application *ProductEntityBaseParametersApplication
+
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
+
+	// Type of supported authentication for the product. The application configuration is required for application-token authentication
+	// type. The subscription-key authentication type is used by default. If
+	// the property is omitted, the subscription-key authentication type is used.
+	AuthenticationType []*ProductAuthType
 
 	// Product description. May include HTML formatting tags.
 	Description *string
@@ -4840,11 +5197,19 @@ type ProductUpdateParameters struct {
 
 // ProductUpdateProperties - Parameters supplied to the Update Product operation.
 type ProductUpdateProperties struct {
+	// Specifies identity provider settings needed to authorize applications API calls.
+	Application *ProductEntityBaseParametersApplication
+
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
 	ApprovalRequired *bool
+
+	// Type of supported authentication for the product. The application configuration is required for application-token authentication
+	// type. The subscription-key authentication type is used by default. If
+	// the property is omitted, the subscription-key authentication type is used.
+	AuthenticationType []*ProductAuthType
 
 	// Product description. May include HTML formatting tags.
 	Description *string
@@ -5800,6 +6165,9 @@ type ServiceBaseProperties struct {
 	// exclusive access method. Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
+	// Release Channel of this API Management service.
+	ReleaseChannel *ReleaseChannel
+
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
 	// properties will be ignored.
 	Restore *bool
@@ -5813,6 +6181,11 @@ type ServiceBaseProperties struct {
 	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 	// only.
 	VirtualNetworkType *VirtualNetworkType
+
+	// Zone Redundant Requirement when creating StandardV2 and PremiumV2. If this flag is set to True, will return a APIM service
+	// with Zone redundant or fail the request if any underneath component cannot be
+	// zone redundant.
+	ZoneRedundant *bool
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
@@ -6004,6 +6377,9 @@ type ServiceProperties struct {
 	// exclusive access method. Default value is 'Enabled'
 	PublicNetworkAccess *PublicNetworkAccess
 
+	// Release Channel of this API Management service.
+	ReleaseChannel *ReleaseChannel
+
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
 	// properties will be ignored.
 	Restore *bool
@@ -6017,6 +6393,11 @@ type ServiceProperties struct {
 	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 	// only.
 	VirtualNetworkType *VirtualNetworkType
+
+	// Zone Redundant Requirement when creating StandardV2 and PremiumV2. If this flag is set to True, will return a APIM service
+	// with Zone redundant or fail the request if any underneath component cannot be
+	// zone redundant.
+	ZoneRedundant *bool
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
@@ -6222,6 +6603,9 @@ type ServiceUpdateProperties struct {
 	// Publisher name.
 	PublisherName *string
 
+	// Release Channel of this API Management service.
+	ReleaseChannel *ReleaseChannel
+
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
 	// properties will be ignored.
 	Restore *bool
@@ -6235,6 +6619,11 @@ type ServiceUpdateProperties struct {
 	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 	// only.
 	VirtualNetworkType *VirtualNetworkType
+
+	// Zone Redundant Requirement when creating StandardV2 and PremiumV2. If this flag is set to True, will return a APIM service
+	// with Zone redundant or fail the request if any underneath component cannot be
+	// zone redundant.
+	ZoneRedundant *bool
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
@@ -6821,6 +7210,50 @@ type TokenBodyParameterContract struct {
 
 	// REQUIRED; body parameter value.
 	Value *string
+}
+
+// ToolCollection - Paged Tool list representation.
+type ToolCollection struct {
+	// READ-ONLY; Next page link if any.
+	NextLink *string
+
+	// READ-ONLY; Page values of Tools contract.
+	Value []*ToolContract
+}
+
+// ToolContract - Tool details.
+type ToolContract struct {
+	// Properties of the Tool Contract.
+	Properties *ToolContractProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+type ToolContractProperties struct {
+	// Description of the tool.
+	Description *string
+
+	// Tool Name. MCP tool name must contain only letters, numbers, underscores, and hyphens.
+	DisplayName *string
+
+	// Identifier of the operation this MCP tool is associated with in the form of /apis/{apiId}/operations/{operationId}.
+	OperationID *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 // UserCollection - Paged Users list representation.

@@ -69,9 +69,6 @@ go build ./...
 
 # Run tests
 go test ./...
-
-# Run tests with coverage
-go test -race -coverprofile=coverage.txt ./...
 ```
 
 ### TypeSpec/Code Generation Workflow
@@ -86,8 +83,8 @@ npm install -g @azure-tools/typespec-client-generator-cli
 # Navigate to the module directory
 cd sdk/<service>/<module>
 
-# Regenerate the SDK
-go generate
+# Regenerate the SDK from TypeSpec
+tsp-client update
 ```
 
 See [TypeSpec location instructions](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/instructions/tsp-location.instructions.md) for details.

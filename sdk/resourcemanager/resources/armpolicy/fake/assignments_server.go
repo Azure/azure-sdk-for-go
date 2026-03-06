@@ -167,7 +167,7 @@ func (a *AssignmentsServerTransport) dispatchCreate(req *http.Request) (*http.Re
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpolicy.Assignment](req)
@@ -204,7 +204,7 @@ func (a *AssignmentsServerTransport) dispatchCreateByID(req *http.Request) (*htt
 	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpolicy.Assignment](req)
@@ -237,7 +237,7 @@ func (a *AssignmentsServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
@@ -270,7 +270,7 @@ func (a *AssignmentsServerTransport) dispatchDeleteByID(req *http.Request) (*htt
 	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
@@ -299,7 +299,7 @@ func (a *AssignmentsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
@@ -344,26 +344,14 @@ func (a *AssignmentsServerTransport) dispatchGetByID(req *http.Request) (*http.R
 	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
 	policyAssignmentIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("policyAssignmentId")])
 	if err != nil {
 		return nil, err
 	}
-	expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-	if err != nil {
-		return nil, err
-	}
-	expandParam := getOptional(expandUnescaped)
-	var options *armpolicy.AssignmentsClientGetByIDOptions
-	if expandParam != nil {
-		options = &armpolicy.AssignmentsClientGetByIDOptions{
-			Expand: expandParam,
-		}
-	}
-	respr, errRespr := a.srv.GetByID(req.Context(), policyAssignmentIDParam, options)
+	respr, errRespr := a.srv.GetByID(req.Context(), policyAssignmentIDParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -387,7 +375,7 @@ func (a *AssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -453,7 +441,7 @@ func (a *AssignmentsServerTransport) dispatchNewListForManagementGroupPager(req 
 		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -523,7 +511,7 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourcePager(req *http.R
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<resourceProviderNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<parentResourcePath>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 6 {
+		if len(matches) < 7 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -609,7 +597,7 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourceGroupPager(req *h
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
@@ -677,7 +665,7 @@ func (a *AssignmentsServerTransport) dispatchUpdate(req *http.Request) (*http.Re
 	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/policyAssignments/(?P<policyAssignmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 2 {
+	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpolicy.AssignmentUpdate](req)
@@ -714,7 +702,7 @@ func (a *AssignmentsServerTransport) dispatchUpdateByID(req *http.Request) (*htt
 	const regexStr = `/(?P<policyAssignmentId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 1 {
+	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	body, err := server.UnmarshalRequestAsJSON[armpolicy.AssignmentUpdate](req)

@@ -404,94 +404,14 @@ type SetDefinitionsClientListResponse struct {
 	SetDefinitionListResult
 }
 
-// VariableValuesClientCreateOrUpdateAtManagementGroupResponse contains the response from method VariableValuesClient.CreateOrUpdateAtManagementGroup.
-type VariableValuesClientCreateOrUpdateAtManagementGroupResponse struct {
-	// The variable value.
-	VariableValue
+// TokensClientAcquireAtManagementGroupResponse contains the response from method TokensClient.AcquireAtManagementGroup.
+type TokensClientAcquireAtManagementGroupResponse struct {
+	// The policy token response properties.
+	TokenResponse
 }
 
-// VariableValuesClientCreateOrUpdateResponse contains the response from method VariableValuesClient.CreateOrUpdate.
-type VariableValuesClientCreateOrUpdateResponse struct {
-	// The variable value.
-	VariableValue
-}
-
-// VariableValuesClientDeleteAtManagementGroupResponse contains the response from method VariableValuesClient.DeleteAtManagementGroup.
-type VariableValuesClientDeleteAtManagementGroupResponse struct {
-	// placeholder for future response values
-}
-
-// VariableValuesClientDeleteResponse contains the response from method VariableValuesClient.Delete.
-type VariableValuesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// VariableValuesClientGetAtManagementGroupResponse contains the response from method VariableValuesClient.GetAtManagementGroup.
-type VariableValuesClientGetAtManagementGroupResponse struct {
-	// The variable value.
-	VariableValue
-}
-
-// VariableValuesClientGetResponse contains the response from method VariableValuesClient.Get.
-type VariableValuesClientGetResponse struct {
-	// The variable value.
-	VariableValue
-}
-
-// VariableValuesClientListForManagementGroupResponse contains the response from method VariableValuesClient.NewListForManagementGroupPager.
-type VariableValuesClientListForManagementGroupResponse struct {
-	// List of variable values.
-	VariableValueListResult
-}
-
-// VariableValuesClientListResponse contains the response from method VariableValuesClient.NewListPager.
-type VariableValuesClientListResponse struct {
-	// List of variable values.
-	VariableValueListResult
-}
-
-// VariablesClientCreateOrUpdateAtManagementGroupResponse contains the response from method VariablesClient.CreateOrUpdateAtManagementGroup.
-type VariablesClientCreateOrUpdateAtManagementGroupResponse struct {
-	// The variable.
-	Variable
-}
-
-// VariablesClientCreateOrUpdateResponse contains the response from method VariablesClient.CreateOrUpdate.
-type VariablesClientCreateOrUpdateResponse struct {
-	// The variable.
-	Variable
-}
-
-// VariablesClientDeleteAtManagementGroupResponse contains the response from method VariablesClient.DeleteAtManagementGroup.
-type VariablesClientDeleteAtManagementGroupResponse struct {
-	// placeholder for future response values
-}
-
-// VariablesClientDeleteResponse contains the response from method VariablesClient.Delete.
-type VariablesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// VariablesClientGetAtManagementGroupResponse contains the response from method VariablesClient.GetAtManagementGroup.
-type VariablesClientGetAtManagementGroupResponse struct {
-	// The variable.
-	Variable
-}
-
-// VariablesClientGetResponse contains the response from method VariablesClient.Get.
-type VariablesClientGetResponse struct {
-	// The variable.
-	Variable
-}
-
-// VariablesClientListForManagementGroupResponse contains the response from method VariablesClient.NewListForManagementGroupPager.
-type VariablesClientListForManagementGroupResponse struct {
-	// List of variables.
-	VariableListResult
-}
-
-// VariablesClientListResponse contains the response from method VariablesClient.NewListPager.
-type VariablesClientListResponse struct {
-	// List of variables.
-	VariableListResult
+// TokensClientAcquireResponse contains the response from method TokensClient.Acquire.
+type TokensClientAcquireResponse struct {
+	// The policy token response properties.
+	TokenResponse
 }

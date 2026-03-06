@@ -5,11 +5,6 @@
 
 package armpolicy
 
-const (
-	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
-	moduleVersion = "v0.10.0"
-)
-
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
 type AliasPathAttributes string
 
@@ -122,6 +117,26 @@ func PossibleAssignmentScopeValidationValues() []AssignmentScopeValidation {
 	}
 }
 
+// AssignmentType - The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
+type AssignmentType string
+
+const (
+	AssignmentTypeCustom       AssignmentType = "Custom"
+	AssignmentTypeNotSpecified AssignmentType = "NotSpecified"
+	AssignmentTypeSystem       AssignmentType = "System"
+	AssignmentTypeSystemHidden AssignmentType = "SystemHidden"
+)
+
+// PossibleAssignmentTypeValues returns the possible values for the AssignmentType const type.
+func PossibleAssignmentTypeValues() []AssignmentType {
+	return []AssignmentType{
+		AssignmentTypeCustom,
+		AssignmentTypeNotSpecified,
+		AssignmentTypeSystem,
+		AssignmentTypeSystemHidden,
+	}
+}
+
 // CreatedByType - The type of identity that created the resource.
 type CreatedByType string
 
@@ -142,7 +157,7 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
-// EnforcementMode - The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
+// EnforcementMode - The policy assignment enforcement mode. Possible values are Default, DoNotEnforce, and Enroll
 type EnforcementMode string
 
 const (
@@ -150,6 +165,9 @@ const (
 	EnforcementModeDefault EnforcementMode = "Default"
 	// EnforcementModeDoNotEnforce - The policy effect is not enforced during resource creation or update.
 	EnforcementModeDoNotEnforce EnforcementMode = "DoNotEnforce"
+	// EnforcementModeEnroll - The policy effect is not enforced during resource creation or update until the resource or scope
+	// of the resource is enrolled to the assignment instance. Enrollment occurs upon deployment of the policy enrollment resource.
+	EnforcementModeEnroll EnforcementMode = "Enroll"
 )
 
 // PossibleEnforcementModeValues returns the possible values for the EnforcementMode const type.
@@ -157,6 +175,7 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 	return []EnforcementMode{
 		EnforcementModeDefault,
 		EnforcementModeDoNotEnforce,
+		EnforcementModeEnroll,
 	}
 }
 
@@ -179,10 +198,28 @@ func PossibleExemptionCategoryValues() []ExemptionCategory {
 	}
 }
 
+// ExternalEndpointResult - The result of the external endpoint. Possible values are Succeeded and Failed.
+type ExternalEndpointResult string
+
+const (
+	ExternalEndpointResultFailed    ExternalEndpointResult = "Failed"
+	ExternalEndpointResultSucceeded ExternalEndpointResult = "Succeeded"
+)
+
+// PossibleExternalEndpointResultValues returns the possible values for the ExternalEndpointResult const type.
+func PossibleExternalEndpointResultValues() []ExternalEndpointResult {
+	return []ExternalEndpointResult{
+		ExternalEndpointResultFailed,
+		ExternalEndpointResultSucceeded,
+	}
+}
+
 // OverrideKind - The override kind.
 type OverrideKind string
 
 const (
+	// OverrideKindDefinitionVersion - It will override the definition version property value of the policy assignment.
+	OverrideKindDefinitionVersion OverrideKind = "definitionVersion"
 	// OverrideKindPolicyEffect - It will override the policy effect type.
 	OverrideKindPolicyEffect OverrideKind = "policyEffect"
 )
@@ -190,6 +227,7 @@ const (
 // PossibleOverrideKindValues returns the possible values for the OverrideKind const type.
 func PossibleOverrideKindValues() []OverrideKind {
 	return []OverrideKind{
+		OverrideKindDefinitionVersion,
 		OverrideKindPolicyEffect,
 	}
 }
@@ -217,6 +255,22 @@ func PossibleParameterTypeValues() []ParameterType {
 		ParameterTypeInteger,
 		ParameterTypeObject,
 		ParameterTypeString,
+	}
+}
+
+// PolicyTokenResult - The result of the completed token acquisition operation. Possible values are Succeeded and Failed.
+type PolicyTokenResult string
+
+const (
+	PolicyTokenResultFailed    PolicyTokenResult = "Failed"
+	PolicyTokenResultSucceeded PolicyTokenResult = "Succeeded"
+)
+
+// PossiblePolicyTokenResultValues returns the possible values for the PolicyTokenResult const type.
+func PossiblePolicyTokenResultValues() []PolicyTokenResult {
+	return []PolicyTokenResult{
+		PolicyTokenResultFailed,
+		PolicyTokenResultSucceeded,
 	}
 }
 

@@ -42,7 +42,7 @@ func NewModelCapacitiesClient(subscriptionID string, credential azcore.TokenCred
 
 // NewListPager - List ModelCapacities.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2025-10-01-preview
 //   - modelFormat - The format of the Model
 //   - modelName - The name of the Model
 //   - modelVersion - The version of the Model
@@ -83,7 +83,7 @@ func (client *ModelCapacitiesClient) listCreateRequest(ctx context.Context, mode
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", "2025-10-01-preview")
 	reqQP.Set("modelFormat", modelFormat)
 	reqQP.Set("modelName", modelName)
 	reqQP.Set("modelVersion", modelVersion)

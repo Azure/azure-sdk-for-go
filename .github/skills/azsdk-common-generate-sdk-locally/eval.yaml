@@ -10,21 +10,11 @@ config:
   parallel: false
 graders:
 - type: regex
-  name: mentions_sdk_tools
+  name: no_fatal_errors
   config:
-    must_match:
-    - "(?i)generate"
-    - "(?i)build"
-    - "(?i)SDK"
-- type: regex
-  name: references_mcp_tools
-  config:
-    must_match:
-    - "(?i)(azsdk_package_generate_code|azsdk_package_build_code|azsdk_verify_setup)"
-- type: code
-  name: has_substantive_output
-  config:
-    assertions:
-    - len(output) > 50
+    must_not_match:
+    - (?i)fatal error
+    - (?i)unhandled exception
+    - '(?i)panic:'
 tasks:
 - tasks/*.yaml

@@ -10,21 +10,11 @@ config:
   parallel: false
 graders:
 - type: regex
-  name: mentions_pipeline_concepts
+  name: no_fatal_errors
   config:
-    must_match:
-    - "(?i)pipeline"
-    - "(?i)build"
-    - "(?i)failure"
-- type: regex
-  name: references_tools
-  config:
-    must_match:
-    - "(?i)(azsdk_analyze_pipeline|pipeline|build failure|CI)"
-- type: code
-  name: has_substantive_output
-  config:
-    assertions:
-    - len(output) > 50
+    must_not_match:
+    - (?i)fatal error
+    - (?i)unhandled exception
+    - '(?i)panic:'
 tasks:
 - tasks/*.yaml

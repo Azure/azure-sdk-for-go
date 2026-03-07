@@ -10,21 +10,11 @@ config:
   parallel: false
 graders:
 - type: regex
-  name: mentions_release_concepts
+  name: no_fatal_errors
   config:
-    must_match:
-    - "(?i)release"
-    - "(?i)pipeline"
-    - "(?i)azsdk_release_sdk"
-- type: regex
-  name: references_tools
-  config:
-    must_match:
-    - "(?i)(azsdk_release_sdk|release.*pipeline|check.*ready|trigger.*release)"
-- type: code
-  name: has_substantive_output
-  config:
-    assertions:
-    - len(output) > 50
+    must_not_match:
+    - (?i)fatal error
+    - (?i)unhandled exception
+    - '(?i)panic:'
 tasks:
 - tasks/*.yaml

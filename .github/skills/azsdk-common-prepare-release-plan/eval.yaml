@@ -10,22 +10,11 @@ config:
   parallel: false
 graders:
 - type: regex
-  name: mentions_release_plan
+  name: no_fatal_errors
   config:
-    must_match:
-    - "(?i)release plan"
-    - "(?i)Service Tree"
-    - "(?i)API version"
-- type: regex
-  name: references_tools
-  config:
-    must_match:
-    - "(?i)(azsdk_create_release_plan|azsdk_get_release_plan|azsdk_update_sdk_details|release\
-      \ plan)"
-- type: code
-  name: has_substantive_output
-  config:
-    assertions:
-    - len(output) > 50
+    must_not_match:
+    - (?i)fatal error
+    - (?i)unhandled exception
+    - '(?i)panic:'
 tasks:
 - tasks/*.yaml

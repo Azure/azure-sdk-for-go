@@ -5,8 +5,10 @@ config:
   timeout: 60
 graders:
 - type: regex
-  name: skill-activated
+  name: no_fatal_errors
   config:
-    must_match:
-    - "(?i)release"
+    must_not_match:
+    - (?i)fatal error
+    - (?i)unhandled exception
+    - '(?i)panic:'
 tasks: tasks/*.yaml

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -965,6 +965,10 @@ func (v *VolumesServerTransport) dispatchBeginListQuotaReport(req *http.Request)
 		if len(matches) < 6 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armnetapp.QuotaReportFilterRequest](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -981,7 +985,13 @@ func (v *VolumesServerTransport) dispatchBeginListQuotaReport(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := v.srv.BeginListQuotaReport(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		var options *armnetapp.VolumesClientBeginListQuotaReportOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armnetapp.VolumesClientBeginListQuotaReportOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := v.srv.BeginListQuotaReport(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

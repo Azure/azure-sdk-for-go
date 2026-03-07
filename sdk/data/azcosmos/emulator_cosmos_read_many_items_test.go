@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	azcosmosinternal "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/internal/mock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -68,16 +68,16 @@ func TestReadMany_ReadSeveralItems(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 3, len(resp.Items))
 	require.Positive(t, resp.RequestCharge, "expected positive request charge")
-	// verify items ids are as expected as the items created before
-	for i := 0; i < 3; i++ {
+	// verify all expected ids are present (order is not guaranteed)
+	returnedIDs := make(map[string]bool)
+	for _, item := range resp.Items {
 		var returnedItem map[string]interface{}
-		err := json.Unmarshal(resp.Items[i], &returnedItem)
-		require.NoError(t, err, "failed to unmarshal returned item %d", i)
-		expectedID := fmt.Sprintf("%d", i)
-		// id in the returned JSON might be a string or a number; stringify for comparison
-		idVal := returnedItem["id"]
-		gotID := fmt.Sprintf("%v", idVal)
-		require.Equal(t, expectedID, gotID)
+		err := json.Unmarshal(item, &returnedItem)
+		require.NoError(t, err, "failed to unmarshal returned item")
+		returnedIDs[fmt.Sprintf("%v", returnedItem["id"])] = true
+	}
+	for i := 0; i < 3; i++ {
+		require.True(t, returnedIDs[fmt.Sprintf("%d", i)], "expected item %d to be returned", i)
 	}
 
 }
@@ -129,19 +129,16 @@ func TestReadMany_PartialFailure(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 2, len(resp.Items))
 
-	var returnedItem map[string]interface{}
-	err = json.Unmarshal(resp.Items[0], &returnedItem)
-	require.NoError(t, err, "failed to unmarshal returned item")
-	idVal := returnedItem["id"]
-	gotID := fmt.Sprintf("%v", idVal)
-	require.Equal(t, "good", gotID)
-
-	returnedItem = map[string]interface{}{}
-	err = json.Unmarshal(resp.Items[1], &returnedItem)
-	require.NoError(t, err, "failed to unmarshal returned item")
-	idVal = returnedItem["id"]
-	gotID = fmt.Sprintf("%v", idVal)
-	require.Equal(t, "good2", gotID)
+	// Verify the two found items are "good" and "good2" (order not guaranteed)
+	returnedIDs := make(map[string]bool)
+	for _, item := range resp.Items {
+		var returnedItem map[string]interface{}
+		err = json.Unmarshal(item, &returnedItem)
+		require.NoError(t, err, "failed to unmarshal returned item")
+		returnedIDs[fmt.Sprintf("%v", returnedItem["id"])] = true
+	}
+	require.True(t, returnedIDs["good"], "expected 'good' to be returned")
+	require.True(t, returnedIDs["good2"], "expected 'good2' to be returned")
 
 }
 
@@ -155,7 +152,7 @@ func TestReadMany_WithQueryEngine_EmptyItems(t *testing.T) {
 	require.NoError(t, err)
 
 	// call ReadMany with empty list and a mock engine
-	options := &ReadManyOptions{QueryEngine: azcosmosinternal.NewMockQueryEngine()}
+	options := &ReadManyOptions{QueryEngine: mock.NewMockQueryEngine()}
 	resp, err := container.ReadManyItems(context.Background(), []ItemIdentity{}, options)
 	require.NoError(t, err)
 	require.Empty(t, resp.Items)
@@ -188,9 +185,121 @@ func TestReadMany_WithQueryEngine_ReturnsItems(t *testing.T) {
 	idents := []ItemIdentity{{ID: "0", PartitionKey: NewPartitionKeyString("pk_0")}, {ID: "1", PartitionKey: NewPartitionKeyString("pk_1")}}
 
 	// Use the mock query engine which will echo these identities as documents
-	options := &ReadManyOptions{QueryEngine: azcosmosinternal.NewMockQueryEngine()}
+	options := &ReadManyOptions{QueryEngine: mock.NewMockQueryEngine()}
 	resp, err := container.ReadManyItems(context.Background(), idents, options)
 	require.NoError(t, err)
 	// Expect two items per engine's behavior
 	require.Equal(t, 2, len(resp.Items))
+}
+
+// TestReadManyWithQueries_MultipleLogicalPKs exercises the query-based read-many
+// path with items that have distinct logical partition key values. On the emulator
+// (single physical range) this validates that per-logical-PK query routing works.
+func TestReadManyWithQueries_MultipleLogicalPKs(t *testing.T) {
+	e := newEmulatorTests(t)
+	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
+	database := e.createDatabase(t, context.Background(), client, "readmany_multipk_db")
+	defer e.deleteDatabase(t, context.Background(), database)
+
+	// Create container with /pk partition key (not /id)
+	_, err := database.CreateContainer(context.Background(), ContainerProperties{
+		ID: "rmmulti",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}, nil)
+	require.NoError(t, err)
+	container, err := database.NewContainer("rmmulti")
+	require.NoError(t, err)
+
+	// Insert items with several distinct logical PK values
+	type testItem struct {
+		ID string `json:"id"`
+		PK string `json:"pk"`
+	}
+	testItems := []testItem{
+		{ID: "item1", PK: "alpha"},
+		{ID: "item2", PK: "alpha"},
+		{ID: "item3", PK: "beta"},
+		{ID: "item4", PK: "gamma"},
+		{ID: "item5", PK: "gamma"},
+	}
+	for _, ti := range testItems {
+		b, err := json.Marshal(ti)
+		require.NoError(t, err)
+		_, err = container.CreateItem(context.Background(), NewPartitionKeyString(ti.PK), b, nil)
+		require.NoError(t, err)
+	}
+
+	// Build identities for all items
+	idents := make([]ItemIdentity, len(testItems))
+	for i, ti := range testItems {
+		idents[i] = ItemIdentity{ID: ti.ID, PartitionKey: NewPartitionKeyString(ti.PK)}
+	}
+
+	resp, err := container.ReadManyItems(context.Background(), idents, nil)
+	require.NoError(t, err)
+	require.Equal(t, len(testItems), len(resp.Items), "all items should be returned")
+	require.Positive(t, resp.RequestCharge, "expected positive request charge")
+
+	// Verify all expected items are present (order is not guaranteed)
+	type idPK struct{ id, pk string }
+	returnedSet := make(map[idPK]bool)
+	for _, raw := range resp.Items {
+		var returned testItem
+		err := json.Unmarshal(raw, &returned)
+		require.NoError(t, err, "failed to unmarshal returned item")
+		returnedSet[idPK{returned.ID, returned.PK}] = true
+	}
+	for _, ti := range testItems {
+		require.True(t, returnedSet[idPK{ti.ID, ti.PK}], "expected item %s/%s to be returned", ti.ID, ti.PK)
+	}
+}
+
+// TestReadMany_NullPartitionKey verifies that ReadManyItems can retrieve an item
+// that was created with a null partition key value. The query builder currently
+// previously emitted IS_DEFINED(c.pk) = false for null PKs, which was incorrect.
+// It should use IS_NULL(c.pk) since the field exists but has a null value.
+func TestReadMany_NullPartitionKey(t *testing.T) {
+	e := newEmulatorTests(t)
+	client := e.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
+	database := e.createDatabase(t, context.Background(), client, "readmany_nullpk_db")
+	defer e.deleteDatabase(t, context.Background(), database)
+
+	// Create container with /pk partition key
+	_, err := database.CreateContainer(context.Background(), ContainerProperties{
+		ID: "rmnullpk",
+		PartitionKeyDefinition: PartitionKeyDefinition{
+			Paths: []string{"/pk"},
+		},
+	}, nil)
+	require.NoError(t, err)
+	container, err := database.NewContainer("rmnullpk")
+	require.NoError(t, err)
+
+	// Insert an item with a null partition key value.
+	// The JSON will be {"id":"null-item","pk":null}
+	nullPKItem := []byte(`{"id":"null-item","pk":null}`)
+	_, err = container.CreateItem(context.Background(), NullPartitionKey, nullPKItem, nil)
+	require.NoError(t, err)
+
+	// Also insert a non-null PK item to ensure the query differentiates
+	nonNullItem := []byte(`{"id":"normal-item","pk":"hello"}`)
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("hello"), nonNullItem, nil)
+	require.NoError(t, err)
+
+	// ReadMany requesting only the null-PK item
+	idents := []ItemIdentity{
+		{ID: "null-item", PartitionKey: NullPartitionKey},
+	}
+
+	resp, err := container.ReadManyItems(context.Background(), idents, nil)
+	require.NoError(t, err)
+	require.Equal(t, 1, len(resp.Items), "expected exactly 1 item with null PK to be returned")
+
+	// Verify the returned item is the correct one
+	var returned map[string]interface{}
+	err = json.Unmarshal(resp.Items[0], &returned)
+	require.NoError(t, err)
+	require.Equal(t, "null-item", returned["id"])
 }

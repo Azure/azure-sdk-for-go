@@ -6,16 +6,21 @@ package azcosmos
 import (
 	"context"
 	"errors"
+	"sort"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/queryengine"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // executeReadManyWithEngine executes a query using the provided query engine.
 func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.QueryEngine, items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
-	path, _ := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		// We are specifying the resource type here, so this shouldn't fail. Still, we can't crash the process on a panic, so we return an error instead.
+		return ReadManyItemsResponse{}, errors.New("invalid resource address in operation context: " + operationContext.resourceAddress)
+	}
 
 	// get the partition key ranges for the container
 	rawPartitionKeyRanges, err := c.getPartitionKeyRangesRaw(ctx, operationContext)
@@ -96,84 +101,162 @@ func (c *ContainerClient) executeReadManyWithEngine(queryEngine queryengine.Quer
 	}
 }
 
-func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, readManyOptions *ReadManyOptions, operationContext pipelineRequestOptions, ctx context.Context) (ReadManyItemsResponse, error) {
+const maxItemsPerQuery = 1000
 
-	// Determine concurrency: use provided MaxConcurrency or number of CPU cores
-	concurrency := determineConcurrency(nil)
-	if readManyOptions != nil {
-		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
+// queryChunk is a single parameterized query targeting one physical partition key range.
+type queryChunk struct {
+	query   string
+	params  []QueryParameter
+	rangeID string // physical partition key range ID for x-ms-documentdb-partitionkeyrangeid header
+}
+
+// chunkResult holds the outcome of executing a single queryChunk.
+type chunkResult struct {
+	items         [][]byte
+	requestCharge float32
+	err           error
+}
+
+// findPhysicalRangeForEPK finds the partition key range that contains the given
+// EPK value. The ranges must be sorted by MinInclusive ascending. Returns the
+// range ID and true if found, or ("", false) otherwise.
+func findPhysicalRangeForEPK(epkValue string, ranges []partitionKeyRange) (string, bool) {
+	// Binary search: find the last range whose MinInclusive <= epkValue.
+	idx := sort.Search(len(ranges), func(i int) bool {
+		return ranges[i].MinInclusive > epkValue
+	}) - 1
+	if idx < 0 {
+		return "", false
+	}
+	// Verify epkValue < MaxExclusive (empty MaxExclusive means unbounded).
+	r := ranges[idx]
+	if r.MaxExclusive != "" && epkValue >= r.MaxExclusive {
+		return "", false
+	}
+	return r.ID, true
+}
+
+// groupItemsByPhysicalRange computes the EPK for each item and groups them by
+// physical partition range. It returns the range IDs in first-seen order and
+// the groups keyed by range ID.
+func groupItemsByPhysicalRange(items []ItemIdentity, pkDef PartitionKeyDefinition, ranges []partitionKeyRange) ([]string, map[string][]ItemIdentity, error) {
+	// Sort ranges by MinInclusive for binary search.
+	sorted := make([]partitionKeyRange, len(ranges))
+	copy(sorted, ranges)
+	sort.Slice(sorted, func(i, j int) bool {
+		return sorted[i].MinInclusive < sorted[j].MinInclusive
+	})
+
+	order := make([]string, 0)
+	seen := make(map[string]bool)
+	groups := make(map[string][]ItemIdentity)
+
+	pkVersion := pkDef.Version
+	if pkVersion == 0 {
+		pkVersion = 1
 	}
 
-	// Prepare result slots to preserve input order
-	type slot struct {
-		value         []byte
-		requestCharge float32
-		err           error
+	for _, item := range items {
+		epkVal := item.PartitionKey.computeEffectivePartitionKey(pkDef.Kind, pkVersion)
+		rangeID, ok := findPhysicalRangeForEPK(epkVal.EPK, sorted)
+		if !ok {
+			return nil, nil, errors.New("could not find physical partition range for item EPK")
+		}
+
+		if !seen[rangeID] {
+			order = append(order, rangeID)
+			seen[rangeID] = true
+		}
+		groups[rangeID] = append(groups[rangeID], item)
 	}
 
-	results := make([]slot, len(items))
+	return order, groups, nil
+}
 
-	// Worker pool
+// buildQueryChunksForRanges creates queryChunk values by splitting each physical
+// range's item list into slices of at most maxItemsPerQuery and building
+// parameterized SQL for each.
+func buildQueryChunksForRanges(orderedRangeIDs []string, groups map[string][]ItemIdentity, pkDef PartitionKeyDefinition) ([]queryChunk, error) {
+	qb := queryBuilder{}
+	var chunks []queryChunk
+
+	for _, rangeID := range orderedRangeIDs {
+		items := groups[rangeID]
+		for start := 0; start < len(items); start += maxItemsPerQuery {
+			end := start + maxItemsPerQuery
+			if end > len(items) {
+				end = len(items)
+			}
+			q, params := qb.buildParameterizedQueryForItems(items[start:end], pkDef)
+			chunks = append(chunks, queryChunk{
+				query:   q,
+				params:  params,
+				rangeID: rangeID,
+			})
+		}
+	}
+	return chunks, nil
+}
+
+// executeQueryChunks runs the provided query chunks concurrently using a
+// goroutine pool and returns the per-chunk results. It creates a child context
+// so that when any chunk fails, all in-flight sibling requests are cancelled.
+func (c *ContainerClient) executeQueryChunks(
+	ctx context.Context,
+	chunks []queryChunk,
+	queryOpts *QueryOptions,
+	operationContext pipelineRequestOptions,
+	concurrency int,
+) ([]chunkResult, error) {
+	results := make([]chunkResult, len(chunks))
+	jobs := make(chan int, len(chunks))
 	var wg sync.WaitGroup
-	jobs := make(chan int)
 
-	// cancellation channel to short-circuit on first error
-	done := make(chan struct{})
+	// Create a child context that can be cancelled when any chunk encounters an error, to stop in-flight sibling requests.
+	chunksCtx, cancelChunks := context.WithCancel(ctx)
+	defer cancelChunks()
 
-	// Start workers
 	workerCount := concurrency
-	if workerCount > len(items) {
-		workerCount = len(items)
+	if workerCount > len(chunks) {
+		workerCount = len(chunks)
 	}
-	itemOptions := ItemOptions{}
-	if readManyOptions != nil {
-		itemOptions.ConsistencyLevel = readManyOptions.ConsistencyLevel
-		itemOptions.SessionToken = readManyOptions.SessionToken
+	if workerCount < 1 {
+		workerCount = 1
 	}
-	for worker := 0; worker < workerCount; worker++ {
+
+	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, true)
+	if err != nil {
+		// Unlikely since we are specifying the resource type, but handle just in case.
+		return nil, errors.New("invalid resource address in operation context: " + operationContext.resourceAddress)
+	}
+
+	for w := 0; w < workerCount; w++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for idx := range jobs {
-				select {
-				case <-done:
+				if chunksCtx.Err() != nil {
 					return
-				default:
 				}
-				item := items[idx]
 
-				itemResponse, err := c.ReadItem(ctx, item.PartitionKey, item.ID, &itemOptions)
+				// Cancellation errors are stored in results and flow to collectChunkResults,
+				// which reports the entire operation as failed.
+				// Cancellation can come from EITHER the parent context, or the `cancelChunks` function cancelling our child context when any chunk encounters an error.
+				items, charge, err := c.executeOneChunk(chunksCtx, chunks[idx], queryOpts, operationContext, path)
+				results[idx] = chunkResult{items: items, requestCharge: charge, err: err}
 				if err != nil {
-					var azErr *azcore.ResponseError
-					// for 404, just continue without error
-					if errors.As(err, &azErr) {
-						if azErr.StatusCode == 404 {
-							continue
-						}
-					}
-					results[idx].err = err
-					// signal cancellation
-					select {
-					case <-done:
-					default:
-						close(done)
-					}
-					// store error and continue to allow workers to exit
+					cancelChunks()
 					return
 				}
-				results[idx].value = itemResponse.Value
-				results[idx].requestCharge = itemResponse.RequestCharge
 			}
 		}()
 	}
 
-	// Start a goroutine to distribute item indices to the worker pool via the jobs channel.
+	// Feed jobs
 	go func() {
-		for i := range items {
-			select {
-			case <-done:
-				return
-			default:
+		for i := range chunks {
+			if chunksCtx.Err() != nil {
+				break
 			}
 			jobs <- i
 		}
@@ -181,18 +264,125 @@ func (c *ContainerClient) executeReadManyWithPointReads(items []ItemIdentity, re
 	}()
 
 	wg.Wait()
+	return results, nil
+}
 
-	// Check for errors and build response in original order
-	var readManyResponse ReadManyItemsResponse
-	for i := range results {
-		if results[i].err != nil {
-			return ReadManyItemsResponse{}, results[i].err
+// executeOneChunk sends a single parameterized query for a chunk, paging
+// through continuation tokens until all results are collected.
+func (c *ContainerClient) executeOneChunk(
+	ctx context.Context,
+	chunk queryChunk,
+	queryOpts *QueryOptions,
+	operationContext pipelineRequestOptions,
+	path string,
+) ([][]byte, float32, error) {
+	var allItems [][]byte
+	var totalCharge float32
+	continuation := ""
+
+	for {
+		localOpts := *queryOpts
+		if continuation != "" {
+			localOpts.ContinuationToken = &continuation
 		}
-		if results[i].value != nil {
-			readManyResponse.Items = append(readManyResponse.Items, results[i].value)
-			readManyResponse.RequestCharge += results[i].requestCharge
+
+		rangeID := chunk.rangeID
+		azResponse, err := c.database.client.sendQueryRequest(
+			path,
+			ctx,
+			chunk.query,
+			chunk.params,
+			operationContext,
+			&localOpts,
+			func(req *policy.Request) {
+				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
+			},
+		)
+		if err != nil {
+			return nil, totalCharge, err
 		}
+
+		qResp, err := newQueryResponse(azResponse)
+		if err != nil {
+			return nil, totalCharge, err
+		}
+
+		totalCharge += qResp.RequestCharge
+		allItems = append(allItems, qResp.Items...)
+
+		ct := azResponse.Header.Get(cosmosHeaderContinuationToken)
+		if ct == "" {
+			break
+		}
+		continuation = ct
 	}
 
-	return readManyResponse, nil
+	return allItems, totalCharge, nil
+}
+
+// collectChunkResults merges per-chunk results into a single ReadManyItemsResponse.
+// Returns the first error encountered, if any.
+func collectChunkResults(results []chunkResult) (ReadManyItemsResponse, error) {
+	var totalCharge float32
+	var allItems [][]byte
+	for _, res := range results {
+		if res.err != nil {
+			return ReadManyItemsResponse{}, res.err
+		}
+		totalCharge += res.requestCharge
+		allItems = append(allItems, res.items...)
+	}
+	return ReadManyItemsResponse{RequestCharge: totalCharge, Items: allItems}, nil
+}
+
+// executeReadManyWithQueries groups items by physical partition range using EPK
+// hashing, builds parameterized SQL queries (one per physical range, chunked at
+// maxItemsPerQuery), and executes them concurrently. This replaces the previous
+// per-logical-PK strategy with fewer HTTP round-trips when multiple logical PKs
+// map to the same physical partition range.
+func (c *ContainerClient) executeReadManyWithQueries(
+	ctx context.Context,
+	items []ItemIdentity,
+	readManyOptions *ReadManyOptions,
+	operationContext pipelineRequestOptions,
+) (ReadManyItemsResponse, error) {
+	containerResp, err := c.Read(ctx, nil)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+	pkDef := containerResp.ContainerProperties.PartitionKeyDefinition
+
+	pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	orderedRangeIDs, groups, err := groupItemsByPhysicalRange(items, pkDef, pkRangeResp.PartitionKeyRanges)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	chunks, err := buildQueryChunksForRanges(orderedRangeIDs, groups, pkDef)
+	if err != nil {
+		return ReadManyItemsResponse{}, err
+	}
+
+	concurrency := determineConcurrency(nil)
+	if readManyOptions != nil {
+		concurrency = determineConcurrency(readManyOptions.MaxConcurrency)
+	}
+
+	queryOpts := &QueryOptions{}
+	if readManyOptions != nil {
+		queryOpts.ConsistencyLevel = readManyOptions.ConsistencyLevel
+		queryOpts.SessionToken = readManyOptions.SessionToken
+		queryOpts.DedicatedGatewayRequestOptions = readManyOptions.DedicatedGatewayRequestOptions
+	}
+
+	results, err := c.executeQueryChunks(ctx, chunks, queryOpts, operationContext, concurrency)
+	if err != nil {
+		// An error here means we failed to even start executing the queries, so we return it directly. Errors from individual chunks are handled in collectChunkResults.
+		return ReadManyItemsResponse{}, err
+	}
+	return collectChunkResults(results)
 }

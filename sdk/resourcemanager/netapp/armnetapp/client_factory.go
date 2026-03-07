@@ -40,14 +40,6 @@ func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	}
 }
 
-// NewActiveDirectoryConfigsClient creates a new instance of ActiveDirectoryConfigsClient.
-func (c *ClientFactory) NewActiveDirectoryConfigsClient() *ActiveDirectoryConfigsClient {
-	return &ActiveDirectoryConfigsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewBackupPoliciesClient creates a new instance of BackupPoliciesClient.
 func (c *ClientFactory) NewBackupPoliciesClient() *BackupPoliciesClient {
 	return &BackupPoliciesClient{
@@ -91,86 +83,6 @@ func (c *ClientFactory) NewBackupsUnderBackupVaultClient() *BackupsUnderBackupVa
 // NewBackupsUnderVolumeClient creates a new instance of BackupsUnderVolumeClient.
 func (c *ClientFactory) NewBackupsUnderVolumeClient() *BackupsUnderVolumeClient {
 	return &BackupsUnderVolumeClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewBucketsClient creates a new instance of BucketsClient.
-func (c *ClientFactory) NewBucketsClient() *BucketsClient {
-	return &BucketsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewCachesClient creates a new instance of CachesClient.
-func (c *ClientFactory) NewCachesClient() *CachesClient {
-	return &CachesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticAccountsClient creates a new instance of ElasticAccountsClient.
-func (c *ClientFactory) NewElasticAccountsClient() *ElasticAccountsClient {
-	return &ElasticAccountsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticBackupPoliciesClient creates a new instance of ElasticBackupPoliciesClient.
-func (c *ClientFactory) NewElasticBackupPoliciesClient() *ElasticBackupPoliciesClient {
-	return &ElasticBackupPoliciesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticBackupVaultsClient creates a new instance of ElasticBackupVaultsClient.
-func (c *ClientFactory) NewElasticBackupVaultsClient() *ElasticBackupVaultsClient {
-	return &ElasticBackupVaultsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticBackupsClient creates a new instance of ElasticBackupsClient.
-func (c *ClientFactory) NewElasticBackupsClient() *ElasticBackupsClient {
-	return &ElasticBackupsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticCapacityPoolsClient creates a new instance of ElasticCapacityPoolsClient.
-func (c *ClientFactory) NewElasticCapacityPoolsClient() *ElasticCapacityPoolsClient {
-	return &ElasticCapacityPoolsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticSnapshotPoliciesClient creates a new instance of ElasticSnapshotPoliciesClient.
-func (c *ClientFactory) NewElasticSnapshotPoliciesClient() *ElasticSnapshotPoliciesClient {
-	return &ElasticSnapshotPoliciesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticSnapshotsClient creates a new instance of ElasticSnapshotsClient.
-func (c *ClientFactory) NewElasticSnapshotsClient() *ElasticSnapshotsClient {
-	return &ElasticSnapshotsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewElasticVolumesClient creates a new instance of ElasticVolumesClient.
-func (c *ClientFactory) NewElasticVolumesClient() *ElasticVolumesClient {
-	return &ElasticVolumesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v9"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/BackupPolicies_Create.json
+// Generated from example definition: 2025-12-01/BackupPolicies_Create.json
 func ExampleBackupPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupPolicies_Delete.json
+// Generated from example definition: 2025-12-01/BackupPolicies_Delete.json
 func ExampleBackupPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleBackupPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupPolicies_Get.json
+// Generated from example definition: 2025-12-01/BackupPolicies_Get.json
 func ExampleBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// 	BackupPolicy: &armnetapp.BackupPolicy{
 	// 		Name: to.Ptr("account1/backupPolicyName"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupPolicies"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolocies/backupPolicyName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/backupPolicyName"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.BackupPolicyProperties{
 	// 			DailyBackupsToKeep: to.Ptr[int32](10),
@@ -127,7 +127,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupPolicies_List.json
+// Generated from example definition: 2025-12-01/BackupPolicies_List.json
 func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("account1/backupPolicy1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupPolicies"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolocies/backupPolicy1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/backupPolicy1"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armnetapp.BackupPolicyProperties{
 		// 					DailyBackupsToKeep: to.Ptr[int32](10),
@@ -171,7 +171,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/BackupPolicies_Update.json
+// Generated from example definition: 2025-12-01/BackupPolicies_Update.json
 func ExampleBackupPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 	// 	BackupPolicy: &armnetapp.BackupPolicy{
 	// 		Name: to.Ptr("account1/backupPolicyName"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupPolicies"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolocies/backupPolicyName"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/backupPolicyName"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armnetapp.BackupPolicyProperties{
 	// 			DailyBackupsToKeep: to.Ptr[int32](5),

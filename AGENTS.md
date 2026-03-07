@@ -223,5 +223,4 @@ When working with tests:
 
 This AGENTS.md file follows the emerging AGENTS.md standard to provide consistent AI agent guidance across Azure SDK repositories.
 
-**Last Updated**: 2025-01-09
 **Maintainers**: Azure SDK Go Team

@@ -146,7 +146,6 @@ sdk/<service>/<module>/
 
 - go.mod should only have direct references to:
   - Azure SDK modules (`github.com/Azure/azure-sdk-for-go/sdk/...`)
-  - Standard library modules
   - `golang.org/x/...` modules
 - Exception: `github.com/stretchr/testify` can be an indirect dependency
 - See [Go mod standards](https://github.com/Azure/azure-sdk-for-go/blob/main/.github/instructions/go-mod-standards.instructions.md)

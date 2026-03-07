@@ -118,7 +118,7 @@ Agents can help verify PRs meet key requirements:
 
 ### Module Structure
 
-Each SDK module follows this structure:
+Most SDK modules follow this structure:
 
 ```
 sdk/<service>/<module>/

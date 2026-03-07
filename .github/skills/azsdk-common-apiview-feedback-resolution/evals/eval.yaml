@@ -4,9 +4,9 @@ skill: azsdk-common-apiview-feedback-resolution
 config:
   timeout: 60
 graders:
-  - type: text
-    name: skill-activated
-    config:
-      contains:
-        - "APIView"
+- type: regex
+  name: skill-activated
+  config:
+    must_match:
+    - "(?i)APIView"
 tasks: tasks/*.yaml

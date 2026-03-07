@@ -4,9 +4,9 @@ skill: azsdk-common-prepare-release-plan
 config:
   timeout: 60
 graders:
-  - type: text
-    name: skill-activated
-    config:
-      contains:
-        - "release"
+- type: regex
+  name: skill-activated
+  config:
+    must_match:
+    - "(?i)release"
 tasks: tasks/*.yaml

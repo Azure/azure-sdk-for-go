@@ -1,7 +1,7 @@
 name: azsdk-common-generate-sdk-locally-eval
 description: Evaluation suite for local SDK generation skill.
 skill: azsdk-common-generate-sdk-locally
-version: "1.0"
+version: '1.0'
 config:
   model: gpt-4o
   executor: mock
@@ -9,18 +9,22 @@ config:
   timeout_seconds: 600
   parallel: false
 graders:
-  - type: text
-    name: mentions_sdk_tools
-    config:
-      contains: ["generate", "build", "SDK"]
-  - type: text
-    name: references_mcp_tools
-    config:
-      regex_match: "(?i)(azsdk_package_generate_code|azsdk_package_build_code|azsdk_verify_setup)"
-  - type: code
-    name: has_substantive_output
-    config:
-      assertions:
-        - "len(output) > 50"
+- type: regex
+  name: mentions_sdk_tools
+  config:
+    must_match:
+    - "(?i)generate"
+    - "(?i)build"
+    - "(?i)SDK"
+- type: regex
+  name: references_mcp_tools
+  config:
+    must_match:
+    - "(?i)(azsdk_package_generate_code|azsdk_package_build_code|azsdk_verify_setup)"
+- type: code
+  name: has_substantive_output
+  config:
+    assertions:
+    - len(output) > 50
 tasks:
-  - "tasks/*.yaml"
+- tasks/*.yaml

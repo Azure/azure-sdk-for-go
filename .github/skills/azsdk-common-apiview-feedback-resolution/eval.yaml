@@ -1,7 +1,7 @@
 name: azsdk-common-apiview-feedback-resolution-eval
 description: Evaluation suite for APIView feedback resolution skill.
 skill: azsdk-common-apiview-feedback-resolution
-version: "1.0"
+version: '1.0'
 config:
   model: gpt-4o
   executor: mock
@@ -9,18 +9,22 @@ config:
   timeout_seconds: 300
   parallel: false
 graders:
-  - type: text
-    name: mentions_apiview
-    config:
-      contains: ["APIView", "feedback", "comment"]
-  - type: text
-    name: references_tools
-    config:
-      regex_match: "(?i)(azsdk_apiview_get_comments|azsdk_typespec_delegate_apiview_feedback|APIView)"
-  - type: code
-    name: has_substantive_output
-    config:
-      assertions:
-        - "len(output) > 50"
+- type: regex
+  name: mentions_apiview
+  config:
+    must_match:
+    - "(?i)APIView"
+    - "(?i)feedback"
+    - "(?i)comment"
+- type: regex
+  name: references_tools
+  config:
+    must_match:
+    - "(?i)(azsdk_apiview_get_comments|azsdk_typespec_delegate_apiview_feedback|APIView)"
+- type: code
+  name: has_substantive_output
+  config:
+    assertions:
+    - len(output) > 50
 tasks:
-  - "tasks/*.yaml"
+- tasks/*.yaml

@@ -1,7 +1,7 @@
 name: azsdk-common-prepare-release-plan-eval
 description: Evaluation suite for release plan management skill.
 skill: azsdk-common-prepare-release-plan
-version: "1.0"
+version: '1.0'
 config:
   model: gpt-4o
   executor: mock
@@ -9,18 +9,23 @@ config:
   timeout_seconds: 300
   parallel: false
 graders:
-  - type: text
-    name: mentions_release_plan
-    config:
-      contains: ["release plan", "Service Tree", "API version"]
-  - type: text
-    name: references_tools
-    config:
-      regex_match: "(?i)(azsdk_create_release_plan|azsdk_get_release_plan|azsdk_update_sdk_details|release plan)"
-  - type: code
-    name: has_substantive_output
-    config:
-      assertions:
-        - "len(output) > 50"
+- type: regex
+  name: mentions_release_plan
+  config:
+    must_match:
+    - "(?i)release plan"
+    - "(?i)Service Tree"
+    - "(?i)API version"
+- type: regex
+  name: references_tools
+  config:
+    must_match:
+    - "(?i)(azsdk_create_release_plan|azsdk_get_release_plan|azsdk_update_sdk_details|release\
+      \ plan)"
+- type: code
+  name: has_substantive_output
+  config:
+    assertions:
+    - len(output) > 50
 tasks:
-  - "tasks/*.yaml"
+- tasks/*.yaml

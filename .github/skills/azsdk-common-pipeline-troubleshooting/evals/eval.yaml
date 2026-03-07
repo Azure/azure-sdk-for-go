@@ -4,9 +4,9 @@ skill: azsdk-common-pipeline-troubleshooting
 config:
   timeout: 60
 graders:
-  - type: text
-    name: skill-activated
-    config:
-      contains:
-        - "pipeline"
+- type: regex
+  name: skill-activated
+  config:
+    must_match:
+    - "(?i)pipeline"
 tasks: tasks/*.yaml

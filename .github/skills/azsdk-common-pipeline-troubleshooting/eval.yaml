@@ -1,7 +1,7 @@
 name: azsdk-common-pipeline-troubleshooting-eval
 description: Evaluation suite for pipeline troubleshooting skill.
 skill: azsdk-common-pipeline-troubleshooting
-version: "1.0"
+version: '1.0'
 config:
   model: gpt-4o
   executor: mock
@@ -9,18 +9,22 @@ config:
   timeout_seconds: 300
   parallel: false
 graders:
-  - type: text
-    name: mentions_pipeline_concepts
-    config:
-      contains: ["pipeline", "build", "failure"]
-  - type: text
-    name: references_tools
-    config:
-      regex_match: "(?i)(azsdk_analyze_pipeline|pipeline|build failure|CI)"
-  - type: code
-    name: has_substantive_output
-    config:
-      assertions:
-        - "len(output) > 50"
+- type: regex
+  name: mentions_pipeline_concepts
+  config:
+    must_match:
+    - "(?i)pipeline"
+    - "(?i)build"
+    - "(?i)failure"
+- type: regex
+  name: references_tools
+  config:
+    must_match:
+    - "(?i)(azsdk_analyze_pipeline|pipeline|build failure|CI)"
+- type: code
+  name: has_substantive_output
+  config:
+    assertions:
+    - len(output) > 50
 tasks:
-  - "tasks/*.yaml"
+- tasks/*.yaml

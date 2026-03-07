@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/managedHsmCreateKey.json
+// Generated from example definition: 2026-02-01/managedHsmCreateKey.json
 func ExampleManagedHsmKeysClient_CreateIfNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleManagedHsmKeysClient_CreateIfNotExist() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/managedHsmGetKey.json
+// Generated from example definition: 2026-02-01/managedHsmGetKey.json
 func ExampleManagedHsmKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleManagedHsmKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/managedHsmGetKeyVersion.json
+// Generated from example definition: 2026-02-01/managedHsmGetKeyVersion.json
 func ExampleManagedHsmKeysClient_GetVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleManagedHsmKeysClient_GetVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/managedHsmListKeys.json
+// Generated from example definition: 2026-02-01/managedHsmListKeys.json
 func ExampleManagedHsmKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleManagedHsmKeysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/managedHsmListKeyVersions.json
+// Generated from example definition: 2026-02-01/managedHsmListKeyVersions.json
 func ExampleManagedHsmKeysClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

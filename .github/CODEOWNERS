@@ -388,7 +388,7 @@
 # ServiceOwners:                                                   @inesk-vt @sourabhguha
 
 # ServiceLabel: %Discovery
-# ServiceOwners:                                                   @oylawal @achocron
+# ServiceOwners:                                                   @achocron
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                                   @ahmedelnably @fabiocav
@@ -647,7 +647,7 @@
 # ServiceOwners:                                                   @armleads-azure
 
 # PRLabel: %Discovery
-/sdk/resourcemanager/discovery/                                    @olawal @alchocro @anmaga
+/sdk/resourcemanager/discovery/                                    @oylawal @achocron
 
 # PRLabel: %Mgmt
 /sdk/resourcemanager/                                              @lirenhe @tadelesh @JiaqiZhang-Dev

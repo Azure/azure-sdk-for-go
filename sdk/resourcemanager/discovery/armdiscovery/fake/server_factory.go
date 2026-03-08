@@ -102,62 +102,62 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "BookshelfPrivateEndpointConnectionsClient":
-		initServer(&s.trMu, &s.trBookshelfPrivateEndpointConnectionsServer, func() *BookshelfPrivateEndpointConnectionsServerTransport {
+		initServer(s, &s.trBookshelfPrivateEndpointConnectionsServer, func() *BookshelfPrivateEndpointConnectionsServerTransport {
 			return NewBookshelfPrivateEndpointConnectionsServerTransport(&s.srv.BookshelfPrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trBookshelfPrivateEndpointConnectionsServer.Do(req)
 	case "BookshelfPrivateLinkResourcesClient":
-		initServer(&s.trMu, &s.trBookshelfPrivateLinkResourcesServer, func() *BookshelfPrivateLinkResourcesServerTransport {
+		initServer(s, &s.trBookshelfPrivateLinkResourcesServer, func() *BookshelfPrivateLinkResourcesServerTransport {
 			return NewBookshelfPrivateLinkResourcesServerTransport(&s.srv.BookshelfPrivateLinkResourcesServer)
 		})
 		resp, err = s.trBookshelfPrivateLinkResourcesServer.Do(req)
 	case "BookshelvesClient":
-		initServer(&s.trMu, &s.trBookshelvesServer, func() *BookshelvesServerTransport { return NewBookshelvesServerTransport(&s.srv.BookshelvesServer) })
+		initServer(s, &s.trBookshelvesServer, func() *BookshelvesServerTransport { return NewBookshelvesServerTransport(&s.srv.BookshelvesServer) })
 		resp, err = s.trBookshelvesServer.Do(req)
 	case "ChatModelDeploymentsClient":
-		initServer(&s.trMu, &s.trChatModelDeploymentsServer, func() *ChatModelDeploymentsServerTransport {
+		initServer(s, &s.trChatModelDeploymentsServer, func() *ChatModelDeploymentsServerTransport {
 			return NewChatModelDeploymentsServerTransport(&s.srv.ChatModelDeploymentsServer)
 		})
 		resp, err = s.trChatModelDeploymentsServer.Do(req)
 	case "NodePoolsClient":
-		initServer(&s.trMu, &s.trNodePoolsServer, func() *NodePoolsServerTransport { return NewNodePoolsServerTransport(&s.srv.NodePoolsServer) })
+		initServer(s, &s.trNodePoolsServer, func() *NodePoolsServerTransport { return NewNodePoolsServerTransport(&s.srv.NodePoolsServer) })
 		resp, err = s.trNodePoolsServer.Do(req)
 	case "OperationsClient":
-		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ProjectsClient":
-		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
+		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)
 	case "StorageAssetsClient":
-		initServer(&s.trMu, &s.trStorageAssetsServer, func() *StorageAssetsServerTransport {
+		initServer(s, &s.trStorageAssetsServer, func() *StorageAssetsServerTransport {
 			return NewStorageAssetsServerTransport(&s.srv.StorageAssetsServer)
 		})
 		resp, err = s.trStorageAssetsServer.Do(req)
 	case "StorageContainersClient":
-		initServer(&s.trMu, &s.trStorageContainersServer, func() *StorageContainersServerTransport {
+		initServer(s, &s.trStorageContainersServer, func() *StorageContainersServerTransport {
 			return NewStorageContainersServerTransport(&s.srv.StorageContainersServer)
 		})
 		resp, err = s.trStorageContainersServer.Do(req)
 	case "SupercomputersClient":
-		initServer(&s.trMu, &s.trSupercomputersServer, func() *SupercomputersServerTransport {
+		initServer(s, &s.trSupercomputersServer, func() *SupercomputersServerTransport {
 			return NewSupercomputersServerTransport(&s.srv.SupercomputersServer)
 		})
 		resp, err = s.trSupercomputersServer.Do(req)
 	case "ToolsClient":
-		initServer(&s.trMu, &s.trToolsServer, func() *ToolsServerTransport { return NewToolsServerTransport(&s.srv.ToolsServer) })
+		initServer(s, &s.trToolsServer, func() *ToolsServerTransport { return NewToolsServerTransport(&s.srv.ToolsServer) })
 		resp, err = s.trToolsServer.Do(req)
 	case "WorkspacePrivateEndpointConnectionsClient":
-		initServer(&s.trMu, &s.trWorkspacePrivateEndpointConnectionsServer, func() *WorkspacePrivateEndpointConnectionsServerTransport {
+		initServer(s, &s.trWorkspacePrivateEndpointConnectionsServer, func() *WorkspacePrivateEndpointConnectionsServerTransport {
 			return NewWorkspacePrivateEndpointConnectionsServerTransport(&s.srv.WorkspacePrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trWorkspacePrivateEndpointConnectionsServer.Do(req)
 	case "WorkspacePrivateLinkResourcesClient":
-		initServer(&s.trMu, &s.trWorkspacePrivateLinkResourcesServer, func() *WorkspacePrivateLinkResourcesServerTransport {
+		initServer(s, &s.trWorkspacePrivateLinkResourcesServer, func() *WorkspacePrivateLinkResourcesServerTransport {
 			return NewWorkspacePrivateLinkResourcesServerTransport(&s.srv.WorkspacePrivateLinkResourcesServer)
 		})
 		resp, err = s.trWorkspacePrivateLinkResourcesServer.Do(req)
 	case "WorkspacesClient":
-		initServer(&s.trMu, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
+		initServer(s, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
 		resp, err = s.trWorkspacesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -168,4 +168,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
+}
+
+func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
+	s.trMu.Lock()
+	if *dst == nil {
+		*dst = src()
+	}
+	s.trMu.Unlock()
 }

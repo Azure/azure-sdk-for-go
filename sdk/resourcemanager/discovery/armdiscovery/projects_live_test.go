@@ -35,61 +35,18 @@ func (testsuite *ProjectsTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 
-	// Add EUAP redirect policy
-	euapOptions := GetEUAPClientOptions()
-	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, euapOptions.PerCallPolicies...)
-
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "discovery-test-rg")
-	testsuite.workspaceName = "test-workspace-proj"
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "newapiversiontest")
+	testsuite.workspaceName = "test-wrksp-go01"
 	testsuite.projectName = "test-project"
-
-	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
-	testsuite.Require().NoError(err)
-	testsuite.resourceGroupName = *resourceGroup.Name
-	fmt.Println("Created resource group:", testsuite.resourceGroupName)
-
-	// Create a workspace for project tests
-	testsuite.createWorkspace()
-}
-
-func (testsuite *ProjectsTestSuite) createWorkspace() {
-	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-
-	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(
-		testsuite.ctx,
-		testsuite.resourceGroupName,
-		testsuite.workspaceName,
-		armdiscovery.Workspace{
-			Location:   to.Ptr(testsuite.location),
-			Properties: &armdiscovery.WorkspaceProperties{},
-		},
-		nil,
-	)
-	testsuite.Require().NoError(err)
-	_, err = poller.PollUntilDone(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
-	fmt.Println("Created workspace for project tests:", testsuite.workspaceName)
 }
 
 func (testsuite *ProjectsTestSuite) TearDownSuite() {
-	// Delete workspace (will cascade delete projects)
-	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
-	if err == nil {
-		delPoller, err := clientFactory.NewWorkspacesClient().BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
-		if err == nil {
-			_, _ = delPoller.PollUntilDone(testsuite.ctx, nil)
-		}
-	}
-
-	_, err = testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
-	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
-func SkipTestProjectsTestSuite(t *testing.T) {
+func TestProjectsTestSuite(t *testing.T) {
 	suite.Run(t, new(ProjectsTestSuite))
 }
 

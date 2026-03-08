@@ -31,10 +31,6 @@ func (testsuite *OperationsTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 
-	// Add EUAP redirect policy
-	euapOptions := GetEUAPClientOptions()
-	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, euapOptions.PerCallPolicies...)
-
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 }
@@ -43,7 +39,7 @@ func (testsuite *OperationsTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func SkipTestOperationsTestSuite(t *testing.T) {
+func TestOperationsTestSuite(t *testing.T) {
 	suite.Run(t, new(OperationsTestSuite))
 }
 

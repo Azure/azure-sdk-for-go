@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
@@ -18,12 +19,13 @@ import (
 
 type SupercomputersTestSuite struct {
 	suite.Suite
-	ctx               context.Context
-	cred              azcore.TokenCredential
-	options           *arm.ClientOptions
-	location          string
-	resourceGroupName string
-	subscriptionId    string
+	ctx                context.Context
+	cred               azcore.TokenCredential
+	options            *arm.ClientOptions
+	location           string
+	resourceGroupName  string
+	subscriptionId     string
+	supercomputerName  string
 }
 
 func (testsuite *SupercomputersTestSuite) SetupSuite() {
@@ -32,23 +34,13 @@ func (testsuite *SupercomputersTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 
-	// Add EUAP redirect policy
-	euapOptions := GetEUAPClientOptions()
-	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, euapOptions.PerCallPolicies...)
-
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "discovery-test-rg")
-
-	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
-	testsuite.Require().NoError(err)
-	testsuite.resourceGroupName = *resourceGroup.Name
-	fmt.Println("Created resource group:", testsuite.resourceGroupName)
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "newapiversiontest")
+	testsuite.supercomputerName = "test-sc-go01"
 }
 
 func (testsuite *SupercomputersTestSuite) TearDownSuite() {
-	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
-	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
@@ -69,6 +61,46 @@ func (testsuite *SupercomputersTestSuite) TestSupercomputersListBySubscription()
 		testsuite.Require().NotNil(result.Value)
 		break // Just verify first page
 	}
+}
+
+// Test creating a supercomputer
+func (testsuite *SupercomputersTestSuite) TestSupercomputersCreateOrUpdate() {
+	fmt.Println("Call operation: Supercomputers_CreateOrUpdate")
+	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+
+	miID := "/subscriptions/" + testsuite.subscriptionId + "/resourcegroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"
+	subnetID := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default"
+
+	supercomputersClient := clientFactory.NewSupercomputersClient()
+	poller, err := supercomputersClient.BeginCreateOrUpdate(
+		testsuite.ctx,
+		testsuite.resourceGroupName,
+		testsuite.supercomputerName,
+		armdiscovery.Supercomputer{
+			Location: to.Ptr(testsuite.location),
+			Properties: &armdiscovery.SupercomputerProperties{
+				SubnetID: to.Ptr(subnetID),
+				Identities: &armdiscovery.SupercomputerIdentities{
+					ClusterIdentity: &armdiscovery.Identity{
+						ID: to.Ptr(miID),
+					},
+					KubeletIdentity: &armdiscovery.Identity{
+						ID: to.Ptr(miID),
+					},
+					WorkloadIdentities: map[string]*armdiscovery.UserAssignedIdentity{
+						miID: {},
+					},
+				},
+			},
+		},
+		nil,
+	)
+	testsuite.Require().NoError(err)
+	sc, err := poller.PollUntilDone(testsuite.ctx, nil)
+	testsuite.Require().NoError(err)
+	testsuite.Require().NotNil(sc.ID)
+	fmt.Println("Created supercomputer:", *sc.Name)
 }
 
 // Test listing supercomputers by resource group

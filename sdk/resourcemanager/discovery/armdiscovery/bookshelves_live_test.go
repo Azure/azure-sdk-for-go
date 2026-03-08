@@ -34,24 +34,13 @@ func (testsuite *BookshelvesTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 
-	// Add EUAP redirect policy
-	euapOptions := GetEUAPClientOptions()
-	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, euapOptions.PerCallPolicies...)
-
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "discovery-test-rg")
-	testsuite.bookshelfName = "test-bookshelf"
-
-	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
-	testsuite.Require().NoError(err)
-	testsuite.resourceGroupName = *resourceGroup.Name
-	fmt.Println("Created resource group:", testsuite.resourceGroupName)
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "newapiversiontest")
+	testsuite.bookshelfName = "test-bookshelf-go01"
 }
 
 func (testsuite *BookshelvesTestSuite) TearDownSuite() {
-	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
-	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
@@ -89,22 +78,26 @@ func (testsuite *BookshelvesTestSuite) TestBookshelvesListByResourceGroup() {
 	}
 }
 
-// Test bookshelf CRUD operations
-func (testsuite *BookshelvesTestSuite) SkipTestBookshelvesCRUD() {
+// Test creating a bookshelf
+func (testsuite *BookshelvesTestSuite) TestBookshelvesCreateOrUpdate() {
 	fmt.Println("Call operation: Bookshelves_CreateOrUpdate")
 	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 
-	bookshelvesClient := clientFactory.NewBookshelvesClient()
+	subnetDefault := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default"
+	subnetDefault2 := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default2"
 
-	// Create bookshelf
+	bookshelvesClient := clientFactory.NewBookshelvesClient()
 	poller, err := bookshelvesClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		testsuite.bookshelfName,
 		armdiscovery.Bookshelf{
-			Location:   to.Ptr(testsuite.location),
-			Properties: &armdiscovery.BookshelfProperties{},
+			Location: to.Ptr(testsuite.location),
+			Properties: &armdiscovery.BookshelfProperties{
+				PrivateEndpointSubnetID: to.Ptr(subnetDefault),
+				SearchSubnetID:          to.Ptr(subnetDefault2),
+			},
 		},
 		nil,
 	)
@@ -113,37 +106,4 @@ func (testsuite *BookshelvesTestSuite) SkipTestBookshelvesCRUD() {
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(bookshelf.ID)
 	fmt.Println("Created bookshelf:", *bookshelf.Name)
-
-	// Get bookshelf
-	fmt.Println("Call operation: Bookshelves_Get")
-	getResp, err := bookshelvesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.bookshelfName, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(testsuite.bookshelfName, *getResp.Name)
-
-	// Update bookshelf
-	fmt.Println("Call operation: Bookshelves_Update")
-	updatePoller, err := bookshelvesClient.BeginUpdate(
-		testsuite.ctx,
-		testsuite.resourceGroupName,
-		testsuite.bookshelfName,
-		armdiscovery.Bookshelf{
-			Location: to.Ptr(testsuite.location),
-			Tags: map[string]*string{
-				"environment": to.Ptr("test"),
-			},
-		},
-		nil,
-	)
-	testsuite.Require().NoError(err)
-	updateResp, err := updatePoller.PollUntilDone(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().NotNil(updateResp.ID)
-
-	// Delete bookshelf
-	fmt.Println("Call operation: Bookshelves_Delete")
-	delPoller, err := bookshelvesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.bookshelfName, nil)
-	testsuite.Require().NoError(err)
-	_, err = delPoller.PollUntilDone(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
-	fmt.Println("Deleted bookshelf:", testsuite.bookshelfName)
 }

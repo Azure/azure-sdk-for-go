@@ -34,24 +34,13 @@ func (testsuite *WorkspacesTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 
-	// Add EUAP redirect policy
-	euapOptions := GetEUAPClientOptions()
-	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, euapOptions.PerCallPolicies...)
-
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
-	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "discovery-test-rg")
-	testsuite.workspaceName = "test-workspace"
-
-	resourceGroup, _, err := testutil.CreateResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.location)
-	testsuite.Require().NoError(err)
-	testsuite.resourceGroupName = *resourceGroup.Name
-	fmt.Println("Created resource group:", testsuite.resourceGroupName)
+	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "newapiversiontest")
+	testsuite.workspaceName = "test-wrksp-go01"
 }
 
 func (testsuite *WorkspacesTestSuite) TearDownSuite() {
-	_, err := testutil.DeleteResourceGroup(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName)
-	testsuite.Require().NoError(err)
 	testutil.StopRecording(testsuite.T())
 }
 
@@ -89,22 +78,42 @@ func (testsuite *WorkspacesTestSuite) TestWorkspacesListByResourceGroup() {
 	}
 }
 
-// Test workspace CRUD operations
-func (testsuite *WorkspacesTestSuite) SkipTestWorkspacesCRUD() {
+// Test creating a workspace
+func (testsuite *WorkspacesTestSuite) TestWorkspacesCreateOrUpdate() {
 	fmt.Println("Call operation: Workspaces_CreateOrUpdate")
 	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
 
-	workspacesClient := clientFactory.NewWorkspacesClient()
+	miID := "/subscriptions/" + testsuite.subscriptionId + "/resourcegroups/" + testsuite.resourceGroupName + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"
+	subnetDefault := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default"
+	subnetDefault2 := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default2"
+	subnetDefault3 := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/newapiv/subnets/default3"
+	logAnalyticsClusterID := "/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/" + testsuite.resourceGroupName + "/providers/Microsoft.OperationalInsights/clusters/mycluse"
 
-	// Create workspace
+	workspacesClient := clientFactory.NewWorkspacesClient()
 	poller, err := workspacesClient.BeginCreateOrUpdate(
 		testsuite.ctx,
 		testsuite.resourceGroupName,
 		testsuite.workspaceName,
 		armdiscovery.Workspace{
-			Location:   to.Ptr(testsuite.location),
-			Properties: &armdiscovery.WorkspaceProperties{},
+			Location: to.Ptr(testsuite.location),
+			Properties: &armdiscovery.WorkspaceProperties{
+				WorkspaceIdentity: &armdiscovery.Identity{
+					ID: to.Ptr(miID),
+				},
+				AgentSubnetID:          to.Ptr(subnetDefault3),
+				PrivateEndpointSubnetID: to.Ptr(subnetDefault),
+				WorkspaceSubnetID:      to.Ptr(subnetDefault2),
+				CustomerManagedKeys:    to.Ptr(armdiscovery.CustomerManagedKeysEnabled),
+				KeyVaultProperties: &armdiscovery.KeyVaultProperties{
+					KeyName:     to.Ptr("discoverykey"),
+					KeyVaultURI: to.Ptr("https://newapik.vault.azure.net/"),
+					KeyVersion:  to.Ptr("2c9db3cf55d247b4a1c1831fbbdad906"),
+				},
+				LogAnalyticsClusterID: to.Ptr(logAnalyticsClusterID),
+				PublicNetworkAccess:   to.Ptr(armdiscovery.PublicNetworkAccessDisabled),
+				SupercomputerIDs:      []*string{},
+			},
 		},
 		nil,
 	)
@@ -113,37 +122,4 @@ func (testsuite *WorkspacesTestSuite) SkipTestWorkspacesCRUD() {
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(workspace.ID)
 	fmt.Println("Created workspace:", *workspace.Name)
-
-	// Get workspace
-	fmt.Println("Call operation: Workspaces_Get")
-	getResp, err := workspacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().Equal(testsuite.workspaceName, *getResp.Name)
-
-	// Update workspace (add tags)
-	fmt.Println("Call operation: Workspaces_Update")
-	updatePoller, err := workspacesClient.BeginUpdate(
-		testsuite.ctx,
-		testsuite.resourceGroupName,
-		testsuite.workspaceName,
-		armdiscovery.Workspace{
-			Location: to.Ptr(testsuite.location),
-			Tags: map[string]*string{
-				"environment": to.Ptr("test"),
-			},
-		},
-		nil,
-	)
-	testsuite.Require().NoError(err)
-	updateResp, err := updatePoller.PollUntilDone(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
-	testsuite.Require().NotNil(updateResp.Tags)
-
-	// Delete workspace
-	fmt.Println("Call operation: Workspaces_Delete")
-	delPoller, err := workspacesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, nil)
-	testsuite.Require().NoError(err)
-	_, err = delPoller.PollUntilDone(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
-	fmt.Println("Deleted workspace:", testsuite.workspaceName)
 }

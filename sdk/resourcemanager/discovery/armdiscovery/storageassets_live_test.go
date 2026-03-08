@@ -10,6 +10,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
@@ -34,10 +35,6 @@ func (testsuite *StorageAssetsTestSuite) SetupSuite() {
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
 
-	// Add EUAP redirect policy
-	euapOptions := GetEUAPClientOptions()
-	testsuite.options.PerCallPolicies = append(testsuite.options.PerCallPolicies, euapOptions.PerCallPolicies...)
-
 	testsuite.location = recording.GetEnvVariable("LOCATION", ResourceLocation)
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "newapiversiontest")
@@ -54,7 +51,7 @@ func TestStorageAssetsTestSuite(t *testing.T) {
 }
 
 // Test listing storage assets by storage container
-func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsListByStorageContainer() {
+func (testsuite *StorageAssetsTestSuite) TestStorageAssetsListByStorageContainer() {
 	fmt.Println("Call operation: StorageAssets_ListByStorageContainer")
 	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -69,7 +66,7 @@ func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsListByStorageConta
 }
 
 // Test getting a storage asset
-func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsGet() {
+func (testsuite *StorageAssetsTestSuite) TestStorageAssetsGet() {
 	fmt.Println("Call operation: StorageAssets_Get")
 	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
@@ -79,19 +76,73 @@ func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsGet() {
 }
 
 // Test creating a storage asset
-func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsCreateOrUpdate() {
+func (testsuite *StorageAssetsTestSuite) TestStorageAssetsCreateOrUpdate() {
 	fmt.Println("Call operation: StorageAssets_CreateOrUpdate")
-	// Requires storage container with proper configuration
+	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+
+	storageAssetsClient := clientFactory.NewStorageAssetsClient()
+	poller, err := storageAssetsClient.BeginCreateOrUpdate(
+		testsuite.ctx,
+		testsuite.resourceGroupName,
+		testsuite.storageContainerName,
+		testsuite.storageAssetName,
+		armdiscovery.StorageAsset{
+			Location: to.Ptr(testsuite.location),
+			Properties: &armdiscovery.StorageAssetProperties{
+				Description: to.Ptr("Test storage asset for SDK validation"),
+				Path:        to.Ptr("data/test-assets"),
+			},
+		},
+		nil,
+	)
+	testsuite.Require().NoError(err)
+	sa, err := poller.PollUntilDone(testsuite.ctx, nil)
+	testsuite.Require().NoError(err)
+	testsuite.Require().NotNil(sa.ID)
+	fmt.Println("Created storage asset:", *sa.Name)
 }
 
 // Test updating a storage asset
-func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsUpdate() {
+func (testsuite *StorageAssetsTestSuite) TestStorageAssetsUpdate() {
 	fmt.Println("Call operation: StorageAssets_Update")
-	// Requires existing storage asset
+	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+
+	poller, err := clientFactory.NewStorageAssetsClient().BeginUpdate(
+		testsuite.ctx,
+		testsuite.resourceGroupName,
+		testsuite.storageContainerName,
+		testsuite.storageAssetName,
+		armdiscovery.StorageAsset{
+			Tags: map[string]*string{
+				"updated": to.Ptr("true"),
+			},
+		},
+		nil,
+	)
+	testsuite.Require().NoError(err)
+	result, err := poller.PollUntilDone(testsuite.ctx, nil)
+	testsuite.Require().NoError(err)
+	testsuite.Require().NotNil(result.ID)
+	fmt.Println("Updated storage asset:", *result.Name)
 }
 
 // Test deleting a storage asset
-func (testsuite *StorageAssetsTestSuite) SkipTestStorageAssetsDelete() {
+func (testsuite *StorageAssetsTestSuite) TestStorageAssetsDelete() {
 	fmt.Println("Call operation: StorageAssets_Delete")
-	// Requires existing storage asset
+	clientFactory, err := armdiscovery.NewClientFactory(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+
+	poller, err := clientFactory.NewStorageAssetsClient().BeginDelete(
+		testsuite.ctx,
+		testsuite.resourceGroupName,
+		testsuite.storageContainerName,
+		testsuite.storageAssetName,
+		nil,
+	)
+	testsuite.Require().NoError(err)
+	_, err = poller.PollUntilDone(testsuite.ctx, nil)
+	testsuite.Require().NoError(err)
+	fmt.Println("Deleted storage asset:", testsuite.storageAssetName)
 }

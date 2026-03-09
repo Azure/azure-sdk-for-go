@@ -1,0 +1,4 @@
+directory: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/AlertsManagement
+commit: <replace with your value>
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

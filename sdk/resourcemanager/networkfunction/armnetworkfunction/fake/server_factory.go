@@ -16,11 +16,20 @@ import (
 
 // ServerFactory is a fake server for instances of the armnetworkfunction.ClientFactory type.
 type ServerFactory struct {
+	// AzureTrafficCollectorsByResourceGroupServer contains the fakes for client AzureTrafficCollectorsByResourceGroupClient
 	AzureTrafficCollectorsByResourceGroupServer AzureTrafficCollectorsByResourceGroupServer
-	AzureTrafficCollectorsBySubscriptionServer  AzureTrafficCollectorsBySubscriptionServer
-	AzureTrafficCollectorsServer                AzureTrafficCollectorsServer
-	Server                                      Server
-	CollectorPoliciesServer                     CollectorPoliciesServer
+
+	// AzureTrafficCollectorsBySubscriptionServer contains the fakes for client AzureTrafficCollectorsBySubscriptionClient
+	AzureTrafficCollectorsBySubscriptionServer AzureTrafficCollectorsBySubscriptionServer
+
+	// AzureTrafficCollectorsServer contains the fakes for client AzureTrafficCollectorsClient
+	AzureTrafficCollectorsServer AzureTrafficCollectorsServer
+
+	// Server contains the fakes for client Client
+	Server Server
+
+	// CollectorPoliciesServer contains the fakes for client CollectorPoliciesClient
+	CollectorPoliciesServer CollectorPoliciesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.

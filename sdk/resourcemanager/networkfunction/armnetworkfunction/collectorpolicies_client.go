@@ -27,7 +27,7 @@ type CollectorPoliciesClient struct {
 // NewCollectorPoliciesClient creates a new instance of CollectorPoliciesClient with the specified values.
 //   - subscriptionID - Azure Subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCollectorPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectorPoliciesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -94,7 +94,7 @@ func (client *CollectorPoliciesClient) createOrUpdate(ctx context.Context, resou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CollectorPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters CollectorPolicy, options *CollectorPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *CollectorPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters CollectorPolicy, _ *CollectorPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -179,7 +179,7 @@ func (client *CollectorPoliciesClient) deleteOperation(ctx context.Context, reso
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CollectorPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, options *CollectorPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *CollectorPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, _ *CollectorPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -239,7 +239,7 @@ func (client *CollectorPoliciesClient) Get(ctx context.Context, resourceGroupNam
 }
 
 // getCreateRequest creates the Get request.
-func (client *CollectorPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, options *CollectorPoliciesClientGetOptions) (*policy.Request, error) {
+func (client *CollectorPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, _ *CollectorPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -308,7 +308,7 @@ func (client *CollectorPoliciesClient) NewListPager(resourceGroupName string, az
 }
 
 // listCreateRequest creates the List request.
-func (client *CollectorPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, options *CollectorPoliciesClientListOptions) (*policy.Request, error) {
+func (client *CollectorPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, _ *CollectorPoliciesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -375,7 +375,7 @@ func (client *CollectorPoliciesClient) UpdateTags(ctx context.Context, resourceG
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *CollectorPoliciesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters TagsObject, options *CollectorPoliciesClientUpdateTagsOptions) (*policy.Request, error) {
+func (client *CollectorPoliciesClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, azureTrafficCollectorName string, collectorPolicyName string, parameters TagsObject, _ *CollectorPoliciesClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -27,7 +27,7 @@ type AzureTrafficCollectorsBySubscriptionClient struct {
 // NewAzureTrafficCollectorsBySubscriptionClient creates a new instance of AzureTrafficCollectorsBySubscriptionClient with the specified values.
 //   - subscriptionID - Azure Subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAzureTrafficCollectorsBySubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureTrafficCollectorsBySubscriptionClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -69,7 +69,7 @@ func (client *AzureTrafficCollectorsBySubscriptionClient) NewListPager(options *
 }
 
 // listCreateRequest creates the List request.
-func (client *AzureTrafficCollectorsBySubscriptionClient) listCreateRequest(ctx context.Context, options *AzureTrafficCollectorsBySubscriptionClientListOptions) (*policy.Request, error) {
+func (client *AzureTrafficCollectorsBySubscriptionClient) listCreateRequest(ctx context.Context, _ *AzureTrafficCollectorsBySubscriptionClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NetworkFunction/azureTrafficCollectors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

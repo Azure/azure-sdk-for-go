@@ -27,7 +27,7 @@ type AzureTrafficCollectorsByResourceGroupClient struct {
 // NewAzureTrafficCollectorsByResourceGroupClient creates a new instance of AzureTrafficCollectorsByResourceGroupClient with the specified values.
 //   - subscriptionID - Azure Subscription ID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAzureTrafficCollectorsByResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AzureTrafficCollectorsByResourceGroupClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -70,7 +70,7 @@ func (client *AzureTrafficCollectorsByResourceGroupClient) NewListPager(resource
 }
 
 // listCreateRequest creates the List request.
-func (client *AzureTrafficCollectorsByResourceGroupClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *AzureTrafficCollectorsByResourceGroupClientListOptions) (*policy.Request, error) {
+func (client *AzureTrafficCollectorsByResourceGroupClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *AzureTrafficCollectorsByResourceGroupClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -22,7 +22,7 @@ type Client struct {
 
 // NewClient creates a new instance of Client with the specified values.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -63,7 +63,7 @@ func (client *Client) NewListOperationsPager(options *ClientListOperationsOption
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *Client) listOperationsCreateRequest(ctx context.Context, options *ClientListOperationsOptions) (*policy.Request, error) {
+func (client *Client) listOperationsCreateRequest(ctx context.Context, _ *ClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.NetworkFunction/operations"
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

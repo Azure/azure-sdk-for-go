@@ -20,14 +20,14 @@ type AzureTrafficCollectorsBySubscriptionClientListOptions struct {
 // AzureTrafficCollectorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginCreateOrUpdate
 // method.
 type AzureTrafficCollectorsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // AzureTrafficCollectorsClientBeginDeleteOptions contains the optional parameters for the AzureTrafficCollectorsClient.BeginDelete
 // method.
 type AzureTrafficCollectorsClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
@@ -50,14 +50,14 @@ type ClientListOperationsOptions struct {
 // CollectorPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the CollectorPoliciesClient.BeginCreateOrUpdate
 // method.
 type CollectorPoliciesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // CollectorPoliciesClientBeginDeleteOptions contains the optional parameters for the CollectorPoliciesClient.BeginDelete
 // method.
 type CollectorPoliciesClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
+	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 

@@ -1,5 +1,11 @@
 # Release History
 
+## 0.1.0 (Unreleased)
+
+### Other Changes
+
+- Package regenerated from TypeSpec specification.
+
 ## 0.10.0 (2024-03-01)
 ### Breaking Changes
 

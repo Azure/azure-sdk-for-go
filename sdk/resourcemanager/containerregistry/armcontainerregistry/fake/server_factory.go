@@ -86,40 +86,40 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CacheRulesClient":
-		initServer(s, &s.trCacheRulesServer, func() *CacheRulesServerTransport { return NewCacheRulesServerTransport(&s.srv.CacheRulesServer) })
+		initServer(&s.trMu, &s.trCacheRulesServer, func() *CacheRulesServerTransport { return NewCacheRulesServerTransport(&s.srv.CacheRulesServer) })
 		resp, err = s.trCacheRulesServer.Do(req)
 	case "ConnectedRegistriesClient":
-		initServer(s, &s.trConnectedRegistriesServer, func() *ConnectedRegistriesServerTransport {
+		initServer(&s.trMu, &s.trConnectedRegistriesServer, func() *ConnectedRegistriesServerTransport {
 			return NewConnectedRegistriesServerTransport(&s.srv.ConnectedRegistriesServer)
 		})
 		resp, err = s.trConnectedRegistriesServer.Do(req)
 	case "CredentialSetsClient":
-		initServer(s, &s.trCredentialSetsServer, func() *CredentialSetsServerTransport {
+		initServer(&s.trMu, &s.trCredentialSetsServer, func() *CredentialSetsServerTransport {
 			return NewCredentialSetsServerTransport(&s.srv.CredentialSetsServer)
 		})
 		resp, err = s.trCredentialSetsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "RegistriesClient":
-		initServer(s, &s.trRegistriesServer, func() *RegistriesServerTransport { return NewRegistriesServerTransport(&s.srv.RegistriesServer) })
+		initServer(&s.trMu, &s.trRegistriesServer, func() *RegistriesServerTransport { return NewRegistriesServerTransport(&s.srv.RegistriesServer) })
 		resp, err = s.trRegistriesServer.Do(req)
 	case "ReplicationsClient":
-		initServer(s, &s.trReplicationsServer, func() *ReplicationsServerTransport { return NewReplicationsServerTransport(&s.srv.ReplicationsServer) })
+		initServer(&s.trMu, &s.trReplicationsServer, func() *ReplicationsServerTransport { return NewReplicationsServerTransport(&s.srv.ReplicationsServer) })
 		resp, err = s.trReplicationsServer.Do(req)
 	case "ScopeMapsClient":
-		initServer(s, &s.trScopeMapsServer, func() *ScopeMapsServerTransport { return NewScopeMapsServerTransport(&s.srv.ScopeMapsServer) })
+		initServer(&s.trMu, &s.trScopeMapsServer, func() *ScopeMapsServerTransport { return NewScopeMapsServerTransport(&s.srv.ScopeMapsServer) })
 		resp, err = s.trScopeMapsServer.Do(req)
 	case "TokensClient":
-		initServer(s, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
+		initServer(&s.trMu, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
 		resp, err = s.trTokensServer.Do(req)
 	case "WebhooksClient":
-		initServer(s, &s.trWebhooksServer, func() *WebhooksServerTransport { return NewWebhooksServerTransport(&s.srv.WebhooksServer) })
+		initServer(&s.trMu, &s.trWebhooksServer, func() *WebhooksServerTransport { return NewWebhooksServerTransport(&s.srv.WebhooksServer) })
 		resp, err = s.trWebhooksServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -130,12 +130,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

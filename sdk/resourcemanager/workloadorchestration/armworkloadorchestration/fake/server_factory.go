@@ -130,91 +130,91 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "ConfigTemplateVersionsClient":
-		initServer(s, &s.trConfigTemplateVersionsServer, func() *ConfigTemplateVersionsServerTransport {
+		initServer(&s.trMu, &s.trConfigTemplateVersionsServer, func() *ConfigTemplateVersionsServerTransport {
 			return NewConfigTemplateVersionsServerTransport(&s.srv.ConfigTemplateVersionsServer)
 		})
 		resp, err = s.trConfigTemplateVersionsServer.Do(req)
 	case "ConfigTemplatesClient":
-		initServer(s, &s.trConfigTemplatesServer, func() *ConfigTemplatesServerTransport {
+		initServer(&s.trMu, &s.trConfigTemplatesServer, func() *ConfigTemplatesServerTransport {
 			return NewConfigTemplatesServerTransport(&s.srv.ConfigTemplatesServer)
 		})
 		resp, err = s.trConfigTemplatesServer.Do(req)
 	case "ContextsClient":
-		initServer(s, &s.trContextsServer, func() *ContextsServerTransport { return NewContextsServerTransport(&s.srv.ContextsServer) })
+		initServer(&s.trMu, &s.trContextsServer, func() *ContextsServerTransport { return NewContextsServerTransport(&s.srv.ContextsServer) })
 		resp, err = s.trContextsServer.Do(req)
 	case "DiagnosticsClient":
-		initServer(s, &s.trDiagnosticsServer, func() *DiagnosticsServerTransport { return NewDiagnosticsServerTransport(&s.srv.DiagnosticsServer) })
+		initServer(&s.trMu, &s.trDiagnosticsServer, func() *DiagnosticsServerTransport { return NewDiagnosticsServerTransport(&s.srv.DiagnosticsServer) })
 		resp, err = s.trDiagnosticsServer.Do(req)
 	case "DynamicSchemaVersionsClient":
-		initServer(s, &s.trDynamicSchemaVersionsServer, func() *DynamicSchemaVersionsServerTransport {
+		initServer(&s.trMu, &s.trDynamicSchemaVersionsServer, func() *DynamicSchemaVersionsServerTransport {
 			return NewDynamicSchemaVersionsServerTransport(&s.srv.DynamicSchemaVersionsServer)
 		})
 		resp, err = s.trDynamicSchemaVersionsServer.Do(req)
 	case "DynamicSchemasClient":
-		initServer(s, &s.trDynamicSchemasServer, func() *DynamicSchemasServerTransport {
+		initServer(&s.trMu, &s.trDynamicSchemasServer, func() *DynamicSchemasServerTransport {
 			return NewDynamicSchemasServerTransport(&s.srv.DynamicSchemasServer)
 		})
 		resp, err = s.trDynamicSchemasServer.Do(req)
 	case "ExecutionsClient":
-		initServer(s, &s.trExecutionsServer, func() *ExecutionsServerTransport { return NewExecutionsServerTransport(&s.srv.ExecutionsServer) })
+		initServer(&s.trMu, &s.trExecutionsServer, func() *ExecutionsServerTransport { return NewExecutionsServerTransport(&s.srv.ExecutionsServer) })
 		resp, err = s.trExecutionsServer.Do(req)
 	case "InstanceHistoriesClient":
-		initServer(s, &s.trInstanceHistoriesServer, func() *InstanceHistoriesServerTransport {
+		initServer(&s.trMu, &s.trInstanceHistoriesServer, func() *InstanceHistoriesServerTransport {
 			return NewInstanceHistoriesServerTransport(&s.srv.InstanceHistoriesServer)
 		})
 		resp, err = s.trInstanceHistoriesServer.Do(req)
 	case "InstancesClient":
-		initServer(s, &s.trInstancesServer, func() *InstancesServerTransport { return NewInstancesServerTransport(&s.srv.InstancesServer) })
+		initServer(&s.trMu, &s.trInstancesServer, func() *InstancesServerTransport { return NewInstancesServerTransport(&s.srv.InstancesServer) })
 		resp, err = s.trInstancesServer.Do(req)
 	case "JobsClient":
-		initServer(s, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
+		initServer(&s.trMu, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
 		resp, err = s.trJobsServer.Do(req)
 	case "SchemaReferencesClient":
-		initServer(s, &s.trSchemaReferencesServer, func() *SchemaReferencesServerTransport {
+		initServer(&s.trMu, &s.trSchemaReferencesServer, func() *SchemaReferencesServerTransport {
 			return NewSchemaReferencesServerTransport(&s.srv.SchemaReferencesServer)
 		})
 		resp, err = s.trSchemaReferencesServer.Do(req)
 	case "SchemaVersionsClient":
-		initServer(s, &s.trSchemaVersionsServer, func() *SchemaVersionsServerTransport {
+		initServer(&s.trMu, &s.trSchemaVersionsServer, func() *SchemaVersionsServerTransport {
 			return NewSchemaVersionsServerTransport(&s.srv.SchemaVersionsServer)
 		})
 		resp, err = s.trSchemaVersionsServer.Do(req)
 	case "SchemasClient":
-		initServer(s, &s.trSchemasServer, func() *SchemasServerTransport { return NewSchemasServerTransport(&s.srv.SchemasServer) })
+		initServer(&s.trMu, &s.trSchemasServer, func() *SchemasServerTransport { return NewSchemasServerTransport(&s.srv.SchemasServer) })
 		resp, err = s.trSchemasServer.Do(req)
 	case "SiteReferencesClient":
-		initServer(s, &s.trSiteReferencesServer, func() *SiteReferencesServerTransport {
+		initServer(&s.trMu, &s.trSiteReferencesServer, func() *SiteReferencesServerTransport {
 			return NewSiteReferencesServerTransport(&s.srv.SiteReferencesServer)
 		})
 		resp, err = s.trSiteReferencesServer.Do(req)
 	case "SolutionTemplateVersionsClient":
-		initServer(s, &s.trSolutionTemplateVersionsServer, func() *SolutionTemplateVersionsServerTransport {
+		initServer(&s.trMu, &s.trSolutionTemplateVersionsServer, func() *SolutionTemplateVersionsServerTransport {
 			return NewSolutionTemplateVersionsServerTransport(&s.srv.SolutionTemplateVersionsServer)
 		})
 		resp, err = s.trSolutionTemplateVersionsServer.Do(req)
 	case "SolutionTemplatesClient":
-		initServer(s, &s.trSolutionTemplatesServer, func() *SolutionTemplatesServerTransport {
+		initServer(&s.trMu, &s.trSolutionTemplatesServer, func() *SolutionTemplatesServerTransport {
 			return NewSolutionTemplatesServerTransport(&s.srv.SolutionTemplatesServer)
 		})
 		resp, err = s.trSolutionTemplatesServer.Do(req)
 	case "SolutionVersionsClient":
-		initServer(s, &s.trSolutionVersionsServer, func() *SolutionVersionsServerTransport {
+		initServer(&s.trMu, &s.trSolutionVersionsServer, func() *SolutionVersionsServerTransport {
 			return NewSolutionVersionsServerTransport(&s.srv.SolutionVersionsServer)
 		})
 		resp, err = s.trSolutionVersionsServer.Do(req)
 	case "SolutionsClient":
-		initServer(s, &s.trSolutionsServer, func() *SolutionsServerTransport { return NewSolutionsServerTransport(&s.srv.SolutionsServer) })
+		initServer(&s.trMu, &s.trSolutionsServer, func() *SolutionsServerTransport { return NewSolutionsServerTransport(&s.srv.SolutionsServer) })
 		resp, err = s.trSolutionsServer.Do(req)
 	case "TargetsClient":
-		initServer(s, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
+		initServer(&s.trMu, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
 		resp, err = s.trTargetsServer.Do(req)
 	case "WorkflowVersionsClient":
-		initServer(s, &s.trWorkflowVersionsServer, func() *WorkflowVersionsServerTransport {
+		initServer(&s.trMu, &s.trWorkflowVersionsServer, func() *WorkflowVersionsServerTransport {
 			return NewWorkflowVersionsServerTransport(&s.srv.WorkflowVersionsServer)
 		})
 		resp, err = s.trWorkflowVersionsServer.Do(req)
 	case "WorkflowsClient":
-		initServer(s, &s.trWorkflowsServer, func() *WorkflowsServerTransport { return NewWorkflowsServerTransport(&s.srv.WorkflowsServer) })
+		initServer(&s.trMu, &s.trWorkflowsServer, func() *WorkflowsServerTransport { return NewWorkflowsServerTransport(&s.srv.WorkflowsServer) })
 		resp, err = s.trWorkflowsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -225,12 +225,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

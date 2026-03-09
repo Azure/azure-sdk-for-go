@@ -39,15 +39,38 @@ type RetentionPoliciesClientUpdateResponse struct {
 	RetentionPolicy
 }
 
+// SchedulersClientCreateOrUpdatePrivateEndpointConnectionResponse contains the response from method SchedulersClient.BeginCreateOrUpdatePrivateEndpointConnection.
+type SchedulersClientCreateOrUpdatePrivateEndpointConnectionResponse struct {
+	// A private endpoint connection resource
+	PrivateEndpointConnection
+}
+
 // SchedulersClientCreateOrUpdateResponse contains the response from method SchedulersClient.BeginCreateOrUpdate.
 type SchedulersClientCreateOrUpdateResponse struct {
 	// A Durable Task Scheduler resource
 	Scheduler
 }
 
+// SchedulersClientDeletePrivateEndpointConnectionResponse contains the response from method SchedulersClient.BeginDeletePrivateEndpointConnection.
+type SchedulersClientDeletePrivateEndpointConnectionResponse struct {
+	// placeholder for future response values
+}
+
 // SchedulersClientDeleteResponse contains the response from method SchedulersClient.BeginDelete.
 type SchedulersClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// SchedulersClientGetPrivateEndpointConnectionResponse contains the response from method SchedulersClient.GetPrivateEndpointConnection.
+type SchedulersClientGetPrivateEndpointConnectionResponse struct {
+	// A private endpoint connection resource
+	PrivateEndpointConnection
+}
+
+// SchedulersClientGetPrivateLinkResponse contains the response from method SchedulersClient.GetPrivateLink.
+type SchedulersClientGetPrivateLinkResponse struct {
+	// A private link resource.
+	SchedulerPrivateLinkResource
 }
 
 // SchedulersClientGetResponse contains the response from method SchedulersClient.Get.
@@ -66,6 +89,24 @@ type SchedulersClientListByResourceGroupResponse struct {
 type SchedulersClientListBySubscriptionResponse struct {
 	// The response of a Scheduler list operation.
 	SchedulerListResult
+}
+
+// SchedulersClientListPrivateEndpointConnectionsResponse contains the response from method SchedulersClient.NewListPrivateEndpointConnectionsPager.
+type SchedulersClientListPrivateEndpointConnectionsResponse struct {
+	// The response of a PrivateEndpointConnection list operation.
+	PrivateEndpointConnectionListResult
+}
+
+// SchedulersClientListPrivateLinksResponse contains the response from method SchedulersClient.NewListPrivateLinksPager.
+type SchedulersClientListPrivateLinksResponse struct {
+	// The response of a SchedulerPrivateLinkResource list operation.
+	SchedulerPrivateLinkResourceListResult
+}
+
+// SchedulersClientUpdatePrivateEndpointConnectionResponse contains the response from method SchedulersClient.BeginUpdatePrivateEndpointConnection.
+type SchedulersClientUpdatePrivateEndpointConnectionResponse struct {
+	// A private endpoint connection resource
+	PrivateEndpointConnection
 }
 
 // SchedulersClientUpdateResponse contains the response from method SchedulersClient.BeginUpdate.

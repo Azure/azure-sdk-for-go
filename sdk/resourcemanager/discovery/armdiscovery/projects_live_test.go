@@ -7,9 +7,11 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
@@ -85,7 +87,7 @@ func (testsuite *ProjectsTestSuite) SkipTestProjectsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	project, err := poller.PollUntilDone(testsuite.ctx, nil)
+	project, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(project.ID)
 	fmt.Println("Created project:", *project.Name)
@@ -111,7 +113,7 @@ func (testsuite *ProjectsTestSuite) SkipTestProjectsCRUD() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	updateResp, err := updatePoller.PollUntilDone(testsuite.ctx, nil)
+	updateResp, err := updatePoller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(updateResp.ID)
 
@@ -119,7 +121,7 @@ func (testsuite *ProjectsTestSuite) SkipTestProjectsCRUD() {
 	fmt.Println("Call operation: Projects_Delete")
 	delPoller, err := projectsClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.workspaceName, testsuite.projectName, nil)
 	testsuite.Require().NoError(err)
-	_, err = delPoller.PollUntilDone(testsuite.ctx, nil)
+	_, err = delPoller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	fmt.Println("Deleted project:", testsuite.projectName)
 }

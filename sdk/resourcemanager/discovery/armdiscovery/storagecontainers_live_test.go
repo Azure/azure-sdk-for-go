@@ -7,9 +7,11 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
@@ -111,7 +113,7 @@ func (testsuite *StorageContainersTestSuite) TestStorageContainersCreateOrUpdate
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	sc, err := poller.PollUntilDone(testsuite.ctx, nil)
+	sc, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(sc.ID)
 	fmt.Println("Created storage container:", *sc.Name)
@@ -135,7 +137,7 @@ func (testsuite *StorageContainersTestSuite) TestStorageContainersUpdate() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	result, err := poller.PollUntilDone(testsuite.ctx, nil)
+	result, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(result.ID)
 	fmt.Println("Updated storage container:", *result.Name)
@@ -154,7 +156,7 @@ func (testsuite *StorageContainersTestSuite) TestStorageContainersDelete() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	_, err = poller.PollUntilDone(testsuite.ctx, nil)
+	_, err = poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	fmt.Println("Deleted storage container:", testsuite.storageContainerName)
 }

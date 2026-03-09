@@ -7,9 +7,11 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
@@ -153,7 +155,7 @@ func (testsuite *ToolsTestSuite) TestToolsCreateOrUpdate() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	tool, err := poller.PollUntilDone(testsuite.ctx, nil)
+	tool, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(tool.ID)
 	fmt.Println("Created tool:", *tool.Name)
@@ -177,7 +179,7 @@ func (testsuite *ToolsTestSuite) TestToolsUpdate() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	result, err := poller.PollUntilDone(testsuite.ctx, nil)
+	result, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(result.ID)
 	fmt.Println("Updated tool:", *result.Name)
@@ -196,7 +198,7 @@ func (testsuite *ToolsTestSuite) TestToolsDelete() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	_, err = poller.PollUntilDone(testsuite.ctx, nil)
+	_, err = poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	fmt.Println("Deleted tool:", testsuite.toolName)
 }

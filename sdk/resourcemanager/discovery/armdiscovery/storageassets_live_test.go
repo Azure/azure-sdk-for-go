@@ -7,9 +7,11 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
@@ -97,7 +99,7 @@ func (testsuite *StorageAssetsTestSuite) TestStorageAssetsCreateOrUpdate() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	sa, err := poller.PollUntilDone(testsuite.ctx, nil)
+	sa, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(sa.ID)
 	fmt.Println("Created storage asset:", *sa.Name)
@@ -122,7 +124,7 @@ func (testsuite *StorageAssetsTestSuite) TestStorageAssetsUpdate() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	result, err := poller.PollUntilDone(testsuite.ctx, nil)
+	result, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(result.ID)
 	fmt.Println("Updated storage asset:", *result.Name)
@@ -142,7 +144,7 @@ func (testsuite *StorageAssetsTestSuite) TestStorageAssetsDelete() {
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	_, err = poller.PollUntilDone(testsuite.ctx, nil)
+	_, err = poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	fmt.Println("Deleted storage asset:", testsuite.storageAssetName)
 }

@@ -7,9 +7,11 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
@@ -97,7 +99,7 @@ func (testsuite *ChatModelDeploymentsTestSuite) SkipTestChatModelDeploymentsCrea
 		nil,
 	)
 	testsuite.Require().NoError(err)
-	cmd, err := poller.PollUntilDone(testsuite.ctx, nil)
+	cmd, err := poller.PollUntilDone(testsuite.ctx, &runtime.PollUntilDoneOptions{Frequency: time.Second})
 	testsuite.Require().NoError(err)
 	testsuite.Require().NotNil(cmd.ID)
 	fmt.Println("Created chat model deployment:", *cmd.Name)

@@ -1,0 +1,4 @@
+directory: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/privateLinkScopes
+commit: <replace with your value>
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

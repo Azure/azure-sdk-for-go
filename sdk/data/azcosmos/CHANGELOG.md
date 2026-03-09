@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.5 (Unreleased)
+## 1.5.0-beta.5 (2026-03-09)
 
 ### Features Added
 
@@ -10,8 +10,6 @@
 ### Breaking Changes
 
 * Removed `QueryEngine` field from `ReadManyOptions`. ReadMany now always uses the built-in Go-native implementation.
-
-### Bugs Fixed
 
 ### Other Changes
 

@@ -52,13 +52,10 @@ func (testsuite *OperationsTestSuite) TestOperationsNewListPager() {
 	pager := clientFactory.NewOperationsClient().NewListPager(nil)
 	testsuite.Require().True(pager.More())
 
-	for pager.More() {
-		result, err := pager.NextPage(testsuite.ctx)
-		testsuite.Require().NoError(err)
-		testsuite.Require().NotNil(result.Value)
-		if len(result.Value) > 0 {
-			testsuite.Require().NotNil(result.Value[0].Name)
-		}
-		break // Just verify first page
+	result, err := pager.NextPage(testsuite.ctx)
+	testsuite.Require().NoError(err)
+	testsuite.Require().NotNil(result.Value)
+	if len(result.Value) > 0 {
+		testsuite.Require().NotNil(result.Value[0].Name)
 	}
 }

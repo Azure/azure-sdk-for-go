@@ -1,0 +1,4 @@
+directory: specification/commerce/resource-manager/Microsoft.Commerce/Commerce
+commit: <replace with your value>
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

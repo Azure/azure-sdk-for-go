@@ -1,0 +1,4 @@
+directory: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/SecurityInsights
+commit: dbfd98df5681534b57f164b335e7e1a14e9d867d
+repo: i-specs
+additionalDirectories: 

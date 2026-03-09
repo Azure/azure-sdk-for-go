@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_Create.json
+// Generated from example definition: 2025-07-01/DeploymentSafeguards_Create.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_Delete.json
+// Generated from example definition: 2025-07-01/DeploymentSafeguards_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_Get.json
+// Generated from example definition: 2025-07-01/DeploymentSafeguards_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-02-preview/DeploymentSafeguards_List.json
+// Generated from example definition: 2025-07-01/DeploymentSafeguards_List.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

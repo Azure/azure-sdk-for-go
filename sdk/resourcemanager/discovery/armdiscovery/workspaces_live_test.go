@@ -103,10 +103,10 @@ func (testsuite *WorkspacesTestSuite) SkipTestWorkspacesCreateOrUpdate() {
 				WorkspaceIdentity: &armdiscovery.Identity{
 					ID: to.Ptr(miID),
 				},
-				AgentSubnetID:          to.Ptr(subnetDefault3),
+				AgentSubnetID:           to.Ptr(subnetDefault3),
 				PrivateEndpointSubnetID: to.Ptr(subnetDefault),
-				WorkspaceSubnetID:      to.Ptr(subnetDefault2),
-				CustomerManagedKeys:    to.Ptr(armdiscovery.CustomerManagedKeysEnabled),
+				WorkspaceSubnetID:       to.Ptr(subnetDefault2),
+				CustomerManagedKeys:     to.Ptr(armdiscovery.CustomerManagedKeysEnabled),
 				KeyVaultProperties: &armdiscovery.KeyVaultProperties{
 					KeyName:     to.Ptr("discoverykey"),
 					KeyVaultURI: to.Ptr("https://newapik.vault.azure.net/"),
